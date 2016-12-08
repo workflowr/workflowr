@@ -1,7 +1,7 @@
 name: {{name}}
 output_dir: "../docs"
 include: [".nojekyll"]
-exclude: ["data", "include"]
+exclude: ["include"]
 navbar:
   title: {{name}}
   left:

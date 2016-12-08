@@ -1,18 +1,22 @@
 Package: workflowr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: A workflow template for creating a research website
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: John Blischak
+Maintainer: John Blischak <jdblischak@uchicago.edu>
+Description: workflowr provides helper functions to get started using R Markdown
+    to create a research website.
+URL: https://github.com/jdblischak/workflowr
+BugReports: https://github.com/jdblischak/workflowr/issues
+Depends:
+    R (>= 3.0.2)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports:
     git2r,
     knitr,
-    rmarkdown,
+    rmarkdown (>= 0.9.6),
     rstudioapi,
     whisker
 RoxygenNote: 5.0.1

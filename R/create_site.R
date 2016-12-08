@@ -1,4 +1,22 @@
-
+#' Creates a new site.
+#'
+#' \code{create_site} creates a new project directory for the site.
+#'
+#' This is the initial function that organizes the infrastructure to create a
+#' research website for your project.
+#'
+#' @param name Project name, e.g. "My Project"
+#' @param directory The directory for the project, e.g. "new-project". Will be
+#'   created if necessary.
+#' @param git_init Control whether the directory is initiatlized as a Git
+#'   repository (default: TRUE).
+#' @param rstudio Control whether an RStudio Project file is created (default:
+#'   TRUE).
+#'
+#' @examples
+#' \dontrun{
+#' create_site("My Project", "path/to/new-project")
+#' }
 #' @export
 create_site <- function(name, directory, git_init = TRUE, rstudio = TRUE) {
   # Create directory if it doesn't already exist

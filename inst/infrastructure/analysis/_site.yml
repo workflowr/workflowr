@@ -9,6 +9,8 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
+    - text: "License"
+      href: license.html
   right:
     - icon: fa-github
       href: https://github.com/jdblischak/workflowr

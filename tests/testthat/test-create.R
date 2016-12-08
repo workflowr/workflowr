@@ -6,8 +6,7 @@ context("create")
 project_name <- "test-project"
 
 project_files <- c("analysis/about.Rmd",
-                   "analysis/chunks/_sessioninfo.Rmd",
-                   "analysis/chunks/_setup.Rmd",
+                   "analysis/chunks.R",
                    "analysis/include/footer.html",
                    "analysis/index.Rmd",
                    "analysis/.nojekyll",

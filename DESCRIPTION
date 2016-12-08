@@ -12,6 +12,8 @@ LazyData: true
 Imports:
     git2r,
     knitr,
-    rmarkdown
+    rmarkdown,
+    rstudioapi,
+    whisker
 RoxygenNote: 5.0.1
 Suggests: testthat

@@ -1,9 +1,9 @@
-name: "temp-name"
+name: {{name}}
 output_dir: "../docs"
 include: [".nojekyll"]
 exclude: ["data", "include"]
 navbar:
-  title: "temp-name"
+  title: {{name}}
   left:
     - text: "Home"
       href: index.html

@@ -32,8 +32,21 @@ create_site <- function(name, directory, git_init = TRUE, rstudio = TRUE) {
   file.copy(from = paste0(infrastructure_path, "/."), to = directory,
             recursive = TRUE)
 
+  # Add project name to YAML file
+  yml_template <- readLines(file.path(directory, "analysis/_site.yml"))
+  writeLines(whisker::whisker.render(yml_template, list(name = name)),
+             file.path(directory, "analysis/_site.yml"))
+
   # Configure RStudio Project
   if (rstudio) {
+    # Add RStudio version
+    rs_version <- rstudioapi::getVersion()
+    rs_version_short <- paste(strsplit(as.character(rs_version), "\\.")[[1]][1:2],
+                              collapse = ".")
+    rproj_template <- readLines(file.path(directory, "temp-name.Rproj"))
+    writeLines(whisker::whisker.render(rproj_template,
+                                       list(version = rs_version_short)),
+               file.path(directory, "temp-name.Rproj"))
     # Rename RStudio Project file
     file.rename(file.path(directory, "temp-name.Rproj"),
                 file.path(directory, paste0(basename(directory), ".Rproj")))

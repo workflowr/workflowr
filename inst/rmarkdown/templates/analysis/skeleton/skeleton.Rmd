@@ -5,16 +5,17 @@ date: YYYY-MM-DD
 output: html_document
 ---
 
-```{r, child="chunks/_setup.Rmd"}
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
 ```
 
 **Last updated:** `r Sys.Date()`
 
 **Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
-```{r set-fig-path, include=FALSE}
-knitr::opts_chunk$set(fig.path = paste0("figure/", knitr::current_input(), "/"))
-```
 
 ## R Markdown
 
@@ -36,5 +37,7 @@ plot(pressure)
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
-```{r, child="chunks/_sessioninfo.Rmd"}
+## Session Information
+
+```{r session-info}
 ```

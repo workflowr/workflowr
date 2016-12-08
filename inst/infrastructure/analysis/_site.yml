@@ -1,0 +1,22 @@
+name: "temp-name"
+output_dir: "../docs"
+include: [".nojekyll"]
+exclude: ["data", "include"]
+navbar:
+  title: "temp-name"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+  right:
+    - icon: fa-github
+      href: https://github.com/jdblischak/workflowr
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    highlight: textmate
+    include:
+      after_body: include/footer.html

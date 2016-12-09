@@ -5,19 +5,14 @@ context("create")
 
 project_name <- "test-project"
 
-project_files <- c("analysis/about.Rmd",
-                   "analysis/chunks.R",
-                   "analysis/include/footer.html",
-                   "analysis/index.Rmd",
-                   "analysis/.nojekyll",
-                   "analysis/README.md",
-                   "analysis/_site.yml",
-                   "code/README.md",
-                   "code/script.py",
-                   "code/script.R",
-                   "code/script.sh",
-                   "data/README.md",
-                   "output/README.md")
+infrastructure_path <- system.file("infrastructure/",
+                                   package = "workflowr")
+project_files <- list.files(path = infrastructure_path, all.files = TRUE,
+                            recursive = TRUE)
+# Remove Rproj file since that is dynamically renamed
+project_files <- project_files[!grepl("Rproj", project_files)]
+# Remove .gitignore since that is checked separately to test git_init
+project_files <- project_files[project_files != ".gitignore"]
 
 git_files <- c(".git", ".gitignore")
 

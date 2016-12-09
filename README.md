@@ -1,5 +1,14 @@
 # workflowr - A workflow template for creating a research website
 
+Some demos:
+
+*  [workflowr-demo01][demo01] - A small project with a few pages
+*  [workflowr-demo02][demo02] - A re-implementation of [fiveMinuteStats][]
+
+[demo01]: https://github.com/jdblischak/workflowr-demo01
+[demo02]: https://github.com/jdblischak/workflowr-demo02
+[fiveMinuteStats]: http://stephens999.github.io/fiveMinuteStats/analysis/
+
 To install:
 
 ```

@@ -17,7 +17,9 @@ Imports:
     git2r,
     knitr,
     rmarkdown (>= 0.9.6),
+    rprojroot,
     rstudioapi,
+    stringr,
     whisker
 RoxygenNote: 5.0.1
 Suggests: testthat

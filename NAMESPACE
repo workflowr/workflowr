@@ -2,3 +2,4 @@
 
 export(create_site)
 export(extract_commit)
+export(make_site)

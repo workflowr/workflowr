@@ -1,0 +1,9 @@
+---
+title: Results
+output: html_document
+---
+
+
+* [Clean data](b.html)
+* [Model data](a.html)
+* [Visualize data](c.html)

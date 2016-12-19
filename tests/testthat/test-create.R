@@ -28,6 +28,7 @@ test_that("create_site copies files correctly", {
   }
   expect_true(file.exists(file.path(site_dir,
                                     paste0(basename(site_dir), ".Rproj"))))
+  unlink(site_dir, recursive = TRUE)
 })
 
 test_that("create_site git_init = FALSE removes all Git files", {
@@ -46,6 +47,7 @@ test_that("create_site git_init = FALSE removes all Git files", {
   for (f in git_files) {
     expect_false(file.exists(file.path(site_dir, f)))
   }
+  unlink(site_dir, recursive = TRUE)
 })
 
 test_that("create_site rstudio = FALSE removes RStudio Project file", {
@@ -61,4 +63,5 @@ test_that("create_site rstudio = FALSE removes RStudio Project file", {
   # RStudio Project file does not exist
   expect_false(file.exists(file.path(site_dir,
                                     paste0(basename(site_dir), ".Rproj"))))
+  unlink(site_dir, recursive = TRUE)
 })

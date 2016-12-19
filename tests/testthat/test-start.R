@@ -1,4 +1,4 @@
-context("create")
+context("start")
 
 # Inspired by rmarkdown tests of render_site
 # https://github.com/rstudio/rmarkdown/blob/b95340817f3b285d38be4ba4ceb0a1d280de65f4/tests/testthat/test-site.R
@@ -16,12 +16,12 @@ project_files <- project_files[project_files != ".gitignore"]
 
 git_files <- c(".git", ".gitignore")
 
-test_that("create_site copies files correctly", {
+test_that("start_project copies files correctly", {
 
-  # create site in a tempdir
+  # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
-  capture.output(create_site(project_name, site_dir))
+  capture.output(start_project(project_name, site_dir))
 
   for (f in c(project_files, git_files)) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -31,12 +31,12 @@ test_that("create_site copies files correctly", {
   unlink(site_dir, recursive = TRUE)
 })
 
-test_that("create_site git_init = FALSE removes all Git files", {
+test_that("start_project git_init = FALSE removes all Git files", {
 
-  # create site in a tempdir
+  # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
-  capture.output(create_site(project_name, site_dir, git_init = FALSE))
+  capture.output(start_project(project_name, site_dir, git_init = FALSE))
 
   for (f in project_files) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -50,12 +50,12 @@ test_that("create_site git_init = FALSE removes all Git files", {
   unlink(site_dir, recursive = TRUE)
 })
 
-test_that("create_site rstudio = FALSE removes RStudio Project file", {
+test_that("start_project rstudio = FALSE removes RStudio Project file", {
 
-  # create site in a tempdir
+  # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
-  capture.output(create_site(project_name, site_dir, rstudio = FALSE))
+  capture.output(start_project(project_name, site_dir, rstudio = FALSE))
 
   for (f in c(project_files, git_files)) {
     expect_true(file.exists(file.path(site_dir, f)))

@@ -1,6 +1,6 @@
-#' Creates a new site.
+#' Start a new workflowr project.
 #'
-#' \code{create_site} creates a new project directory for the site.
+#' \code{start_project} creates a new project directory for the site.
 #'
 #' This is the initial function that organizes the infrastructure to create a
 #' research website for your project.
@@ -15,10 +15,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' create_site("My Project", "path/to/new-project")
+#' start_project("My Project", "path/to/new-project")
 #' }
 #' @export
-create_site <- function(name, directory, git_init = TRUE, rstudio = TRUE) {
+start_project <- function(name, directory, git_init = TRUE, rstudio = TRUE) {
   # Create directory if it doesn't already exist
   if (!dir.exists(directory)) {
     dir.create(directory)

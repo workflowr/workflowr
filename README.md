@@ -27,10 +27,10 @@ Start R and load workflowr:
 > library("workflowr")
 ```
 
-Create a new project:
+Start a new project:
 
 ```
-> create_site("A new project", "new")
+> start_project("A new project", "new")
 ```
 
 Open the project using the RStudio Project file. Build the site with the Build tab in RStudio or by running the following from the root of the directory:

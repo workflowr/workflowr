@@ -16,7 +16,7 @@ test_that("create_results orders files correctly", {
   # Set up a temporary project
   site_dir <- tempfile()
   dir.create(site_dir)
-  capture.output(create_site("Testing create_results", site_dir))
+  capture.output(start_project("Testing create_results", site_dir))
   # Add analysis files
   file.copy(Sys.glob("files/test_create_results/[abc].Rmd"),
             file.path(site_dir, "analysis"))

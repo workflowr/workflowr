@@ -49,19 +49,3 @@ test_that("start_project git_init = FALSE removes all Git files", {
   }
   unlink(site_dir, recursive = TRUE)
 })
-
-test_that("start_project rstudio = FALSE removes RStudio Project file", {
-
-  # start project in a tempdir
-  site_dir <- tempfile()
-  dir.create(site_dir)
-  capture.output(start_project(project_name, site_dir, rstudio = FALSE))
-
-  for (f in c(project_files, git_files)) {
-    expect_true(file.exists(file.path(site_dir, f)))
-  }
-  # RStudio Project file does not exist
-  expect_false(file.exists(file.path(site_dir,
-                                    paste0(basename(site_dir), ".Rproj"))))
-  unlink(site_dir, recursive = TRUE)
-})

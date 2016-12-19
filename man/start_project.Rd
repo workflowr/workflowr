@@ -4,7 +4,7 @@
 \alias{start_project}
 \title{Start a new workflowr project.}
 \usage{
-start_project(name, directory, git_init = TRUE, rstudio = TRUE)
+start_project(name, directory, git_init = TRUE)
 }
 \arguments{
 \item{name}{Project name, e.g. "My Project"}
@@ -14,16 +14,15 @@ created if necessary.}
 
 \item{git_init}{Control whether the directory is initiatlized as a Git
 repository (default: TRUE).}
-
-\item{rstudio}{Control whether an RStudio Project file is created (default:
-TRUE).}
 }
 \description{
 \code{start_project} creates a new project directory for the site.
 }
 \details{
 This is the initial function that organizes the infrastructure to create a
-research website for your project.
+research website for your project. Note that while you do not need to use
+RStudio with workflowr, do not delete the Rproj file because it is required
+by other functions.
 }
 \examples{
 \dontrun{

@@ -19,6 +19,7 @@
 #' }
 #' @export
 start_project <- function(name, directory, git_init = TRUE) {
+
   # Create directory if it doesn't already exist
   if (!dir.exists(directory)) {
     dir.create(directory)
@@ -43,15 +44,23 @@ start_project <- function(name, directory, git_init = TRUE) {
   file.rename(file.path(directory, "temp-name.Rproj"),
               file.path(directory, paste0(basename(directory), ".Rproj")))
 
-  message("Project ", name, " started in ", directory)
+  message("Project \"", name, "\" started in ", directory, "\n")
 
   # Configure Git repository
   if (git_init) {
     git2r::init(directory)
+    message("Git repository initialized.")
     repo <- git2r::repository(directory)
-    # Make the first initial commit?
-    # git2r::commit(repo, message = "Initial commit")
-    message("Git repository initialized")
+    config_info <- git2r::config()
+    if (is.null(config_info$global$user.name) |
+        is.null(config_info$global$user.email)) {
+      message("\nThe Git user.name and/or user.email have not been configured.")
+      message("\nRun ?git2r::config to learn how to update this.")
+    } else {
+      # Make the first initial commit
+      git2r::add(repo, ".")
+      git2r::commit(repo, message = "Start workflowr project.")
+    }
   } else {
     unlink(file.path(directory, ".gitignore"))
   }

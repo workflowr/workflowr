@@ -3,4 +3,5 @@
 export(create_results)
 export(extract_commit)
 export(make_site)
+export(open_rmd)
 export(start_project)

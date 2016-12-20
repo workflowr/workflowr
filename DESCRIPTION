@@ -23,3 +23,4 @@ Imports:
     whisker
 RoxygenNote: 5.0.1
 Suggests: testthat
+VignetteBuilder: knitr

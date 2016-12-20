@@ -48,6 +48,10 @@ make_site <- function(dry_run = FALSE, ...) {
     }
   }
 
+  if (length(files_to_update) == 0) {
+    message("All HTML files have been rendered")
+  }
+
   # Render the updated R Markdown files
   if (dry_run) {
     return(files_to_update)

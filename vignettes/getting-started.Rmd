@@ -11,6 +11,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r chunk-options, include=FALSE}
+library("knitr")
+opts_chunk$set(eval = FALSE)
+```
+
+
 The goal of the workflowr package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like [this][demo01].
 
 [demo01]: https://github.com/jdblischak/workflowr-demo01
@@ -39,11 +45,7 @@ devtools::install_github("jdblischak/workflowr")
 [swc-git-config]: http://swcarpentry.github.io/git-novice/02-setup/
 [repo]: https://github.com/jdblischak/workflowr
 
-As you use workflowr, if you find any unexpected behavior or think of an additional feature that would be nice to have, please open an Issue [here][issues]. When writing your bug report or feature request, please note the version of workflowr you are using.
-
-```{r version}
-packageVersion("workflowr")
-```
+As you use workflowr, if you find any unexpected behavior or think of an additional feature that would be nice to have, please open an Issue [here][issues]. When writing your bug report or feature request, please note the version of workflowr you are using (which you can obtain by running `packageVersion("workflowr")`).
 
 [issues]: https://github.com/jdblischak/workflowr/issues
 
@@ -56,13 +58,39 @@ library("workflowr")
 start_project("A new project", "new-project")
 ```
 
-If you're using RStudio, you can choose `Open Project...` and select the file
-`new-project.Rproj`. This will set the correct working directory in the R
-console, switch the file navigator to the project, and configure the Git and
-Build panes. It will also reset the R environment, so you'll need to re-run
-`library("workflowr")`.
+If you're using RStudio, you can choose `Open Project...` and select the file 
+`new-project.Rproj`. This will set the correct working directory in the R 
+console, switch the file navigator to the project, and configure the Git and 
+Build panes. It will also reset the R environment, so you'll need to re-run 
+`library("workflowr")`. If you're not using RStudio, set the working directory
+to the root of the project directory.
+
+The project directory contains multiple files and subdirectories. The goal is for these to help organize your project.
+
+* Put raw data files in `data/`
+* Put processed data files in `output/`
+* Put long running scripts in `code/`. Ideally these steps can be automated using GNU Make or a similar tool
+* Put R Markdown analysis files in `analysis/`. These should load data using relative paths, e.g. `d <- read.table("../output/clean-data.txt")`
+* The rendered HTML files and other website code will automatically be put in `docs/` (described in the next section)
 
 ## Build the website
+
+There are two principal methods for building the website.
+The first is to build all the pages, regardless of whether the R Markdown files have been updated, using the function `render_site` from the rmarkdown package.
+This is most useful for when you have made aesthetic changes to the look of your website.
+Run the function `render_site` in the R console, making sure that the argument `input` points to `analysis/`.
+
+```{r render-site}
+render_site(input = "analysis/")
+```
+
+This is much simpler if you are using RStudio version 1.0 or greater because you do not have to worry about the current working directory. Click "Build Website" in the Build pane (or use the keyboard shortcut Ctrl+Shift+B) to have RStudio properly run `render_site` and load a preview of the website in the Viewer pane.
+
+Re-building the entire site can become tedious, especially as your project grows. To only render those R Markdown files that have been updated, use the workflowr function `make_site`.
+
+```{r make-site}
+make_site()
+```
 
 ## Add a new analysis file
 

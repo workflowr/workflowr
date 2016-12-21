@@ -35,7 +35,7 @@ The [rmarkdown][] website configuration file `_site.yml` allows convenient custo
 It has many powerful features, but only a handful of the main functions are required to use workflowr.
 To aid reproducibility, workflowr provides an R Markdown template that automatically inserts the latest version number (its technical name is a [SHA-1][] hash) into the top of the rendered HTML, so you always know which version of the code produced the results contained in that particular file.
 [GitHub][] is a website that hosts [Git][] repositories and additionally provides collaboration tools for developing software.
-[GitHub Pages][] is a [GitHub][] service that offers free web hosting.
+[GitHub Pages][] is a [GitHub][] service that offers free hosting of [static websites][static].
 By placing the HTML files for the website in the subdirectory `docs/`, [GitHub Pages][] serves them online.
 
 [R]: https://cran.r-project.org/
@@ -48,6 +48,7 @@ By placing the HTML files for the website in the subdirectory `docs/`, [GitHub P
 [SHA-1]: https://en.wikipedia.org/wiki/SHA-1
 [GitHub]: https://github.com/
 [GitHub Pages]: https://pages.github.com/
+[static]: https://en.wikipedia.org/wiki/Static_web_page
 
 ## Additional tools
 

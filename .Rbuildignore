@@ -1,3 +1,5 @@
-^.*\.Rproj$
+^workflowr\.Rproj$
 ^\.Rproj\.user$
-README.md
+^README\.md$
+^LICENSE$
+^CITATION$

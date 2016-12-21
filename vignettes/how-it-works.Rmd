@@ -1,0 +1,92 @@
+---
+title: "How the workflowr package works"
+author: "John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{How the workflowr package works}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The workflowr packages combines many powerful tools in order to produce a
+research website. It is absolutely **not** necessary to understand all the 
+underlying tools to take advantage of workflowr, and in fact that is one of the 
+primary goals of workflowr: to allow researchers to focus on their analyses 
+without having to worry too much about the technical details. However, if you
+are interested in implementing advanced customization options, contributing to
+workflowr, or simply want to learn more about these tools, the sections below
+provide some explanations of how workflowr works.
+
+## Overview
+
+[R][] is the computer programming language used to perform the analysis.
+[knitr][] is an R package that executes code chunks in an R Markdown file to create a Markdown file.
+[Markdown][] is a lightweight markup language that is easier to read and write than HTML.
+[rmarkdown][] is an R package that combines the functionality of [knitr][] and the document converter [Pandoc][].
+[Pandoc][] powers the conversion of [knitr][]-produced Markdown files into HTML, Word, or PDF documents.
+Additionally, newer versions of [rmarkdown][] contain functions for building websites.
+The styling of the websites is performed by the web framework [Bootstrap][].
+[Bootstrap][] implements the navigation bar at the top of the website, has many available themes to customize the look of the site, and dynamically adjusts the website so it can be viewed on a desktop, tablet, or mobile device.
+The [rmarkdown][] website configuration file `_site.yml` allows convenient customization of the [Bootstrap][] navigation bar and theme.
+[Git][] is a distributed version control system (VCS) that tracks code development.
+It has many powerful features, but only a handful of the main functions are required to use workflowr.
+To aid reproducibility, workflowr provides an R Markdown template that automatically inserts the latest version number (its technical name is a [SHA-1][] hash) into the top of the rendered HTML, so you always know which version of the code produced the results contained in that particular file.
+[GitHub][] is a website that hosts [Git][] repositories and additionally provides collaboration tools for developing software.
+[GitHub Pages][] is a [GitHub][] service that offers free web hosting.
+By placing the HTML files for the website in the subdirectory `docs/`, [GitHub Pages][] serves them online.
+
+[R]: https://cran.r-project.org/
+[knitr]: http://yihui.name/knitr/
+[Markdown]: http://daringfireball.net/projects/markdown/
+[rmarkdown]: http://rmarkdown.rstudio.com/
+[Pandoc]: http://pandoc.org/
+[Bootstrap]: http://getbootstrap.com/
+[Git]: http://git-scm.com/
+[SHA-1]: https://en.wikipedia.org/wiki/SHA-1
+[GitHub]: https://github.com/
+[GitHub Pages]: https://pages.github.com/
+
+## Additional tools
+
+[RStudio, Inc.][] is a company that develops open source software for R users.
+They are the principal developers of [RStudio][], an integrated development environment (IDE) for R, and the [rmarkdown][] package.
+Because of this tight integration, new developments in the [rmarkdown][] package are quickly incorporated into the [RStudio][] IDE.
+While not strictly required for using workflowr, using [RStudio][] provides many benefits, including:
+
+* RStudio projects make it easier to setup your R environment, e.g. set the correct working directory, and quickly switch between different projects
+
+* The Git pane allows you to conveniently view your changes and run the main Git functions
+
+* The Build pane enables you to build your entire website with one click (or the keyboard shortcut Ctrl+Shift+B) (requires version 1.0 or greater)
+
+* workflowr uses the [rstudioapi][] R package to automatically open R Markdown files in the editor (implemented in the function `open_rmd`)
+
+* The Viewer pane displays the rendered HTML results for immediate feedback
+
+* Clicking the `Knit` button automatically uses the [Bootstrap][] options specified in `_site.yml` and moves the rendered HTML to the website subdirectory `docs/` (requires version 1.0 or greater)
+
+* Includes an up-to-date copy [Pandoc][] so you don't have to install or update it
+
+* Tons of other cool features like debugging and source code inspection
+
+Another key R package used by workflowr is [rprojroot][].
+This package finds the root of the repository, so workflowr functions like `make_site` will work the same regardless of the current working directory.
+Specifically, [rprojroot][] searches for the RStudio project `.Rproj` file at the base of the workflowr project (so don't delete it!).
+
+[RStudio, Inc.]: https://www.rstudio.com/
+[RStudio]: https://www.rstudio.com/products/rstudio/
+[rstudioapi]: https://github.com/rstudio/rstudioapi
+[rprojroot]: https://krlmlr.github.io/rprojroot/
+
+## Further reading
+
+* How the code, results, and figures are executed and displayed can be customized using [knitr chunk and package options](http://yihui.name/knitr/options/)
+
+* How [R Markdown websites](http://rmarkdown.rstudio.com/rmarkdown_websites.html) are configured
+
+* The many [features](https://www.rstudio.com/products/rstudio/features/) of the [RStudio][] IDE
+
+* [Directions](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) to publish your [GitHub Pages][] site using the `docs/` subdirectory

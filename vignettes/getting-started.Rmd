@@ -75,27 +75,108 @@ The project directory contains multiple files and subdirectories. The goal is fo
 
 ## Build the website
 
-There are two principal methods for building the website.
-The first is to build all the pages, regardless of whether the R Markdown files have been updated, using the function `render_site` from the rmarkdown package.
-This is most useful for when you have made aesthetic changes to the look of your website.
-Run the function `render_site` in the R console, making sure that the argument `input` points to `analysis/`.
+To build the website, run the function `render_site` in the R console, making sure that the argument `input` points to `analysis/`.
 
 ```{r render-site}
 render_site(input = "analysis/")
 ```
 
-This is much simpler if you are using RStudio version 1.0 or greater because you do not have to worry about the current working directory. Click "Build Website" in the Build pane (or use the keyboard shortcut Ctrl+Shift+B) to have RStudio properly run `render_site` and load a preview of the website in the Viewer pane.
+This is much simpler if you are using RStudio version 1.0 or greater because you
+do not have to worry about the current working directory. Click "Build Website"
+in the Build pane (or use the keyboard shortcut Ctrl+Shift+B) to have RStudio
+properly run `render_site` and load a preview of the website in the Viewer pane.
 
-Re-building the entire site can become tedious, especially as your project grows. To only render those R Markdown files that have been updated, use the workflowr function `make_site`.
+You now have a functioning website on your local computer. All the website files
+are located in `docs/`. Open `docs/index.html` to view the website in your 
+computer's web browser. Update the files `index.Rmd` and `about.Rmd` in the 
+`analysis`, re-build the site, and refresh your browser to see your changes.
+
+## Add a new analysis file
+
+To start a new analysis, run the following command:
+
+```{r open-rmd}
+open_rmd("first-analysis.Rmd")
+```
+
+This performs multiple actions:
+
+1. Creates a new file `analysis/first-analysis.Rmd` based on the workflowr R Markdown template (it doesn't overwrite the file if it already exists)
+2. Sets the working directory to the `analysis/` directory
+3. If you are using RStudio, opens the file for editing
+
+Now you are ready to start writing! At the top of the file, edit the author,
+title, and date. If you are using RStudio, press the Knit button to see a
+preview in the Viewer pane. From the R console, you could run `render_site`
+again, but this would re-render every R Markdown file. To only render those R
+Markdown files that are new or have been updated, use the workflowr function
+`make_site`.
 
 ```{r make-site}
 make_site()
 ```
 
-## Add a new analysis file
+Check out your new file `docs/first-analysis.html`. Near the top you will see a line that says "Code version:" followed by an alphanumeric character string. This informs you which version of the code was used to create the file (this is explained more below in the section "Version the website").
+
+In order to make it easier to navigate to your new file, you can include a link
+to it on the main index page. For example, open `analysis/index.Rmd` and paste
+the following line. This uses the Markdown syntax for creating a hyperlink (for
+a quick reference guide in RStudio click "Help" -> "Markdown Quick Reference").
+You specify the HTML version of the file since this is what is comprises the
+website.
+
+```
+Click on this [link](first-analysis.html) to see my results.
+```
+
+Run `make_site` again to view the update.
+
+## Version the website
+
+One of the main goals of workflowr is to help make your research more
+transparent and reproducible. An important component of this is using the
+version control system Git. By including the unique identifier that Git assigns
+a snapshot (or "commit" as Git calls it) at the top of each of your rendered
+HTML files, you always know which version of the code produced the results.
+
+To get started with workflowr, the main Git commands you will need to use are
+`git add` and `git commit`. There are many ways to use Git: in the Terminal, in
+the RStudio Git pane, or another Git graphical user interface (GUI) (see
+[here](https://git-scm.com/download/gui/linux) for GUI options). This vignette will display the Git commands to run in the Terminal.
+
+When you first started the project with `start_project`, workflowr automatically
+made the first commit of all the project files. Since then you have updated some
+of the R Markdown files, added a new file `first-analysis.Rmd`, and built the 
+website in `docs/`. In order for the version of the code displayed at the top of
+the file to be useful, it needs to refer to the exact state of the R Markdown
+files when the HTML was rendered. To acheive this, you'll need to commit the R M
+arkdown files and corresponding HTML in separate steps. First add and commit the
+R Markdown files in `analysis/`.
+
+```
+git add analysis/*Rmd
+git commit -m "Started my first analysis"
+```
+
+Second you'll need to re-render the corresponding HTML files so that they have
+the latest commit identifier at the top of the file. However you can't use
+`make_site` for this like you did during testing, because the R Markdown files
+haven't changed. To re-build only those HTML files that correspond to the R
+Markdown files in the previous commit, run the workflowr function `commit_site`.
+
+```{r commit-site}
+commit_site()
+```
+
+`commit_site` will render the R Markdown files and create a new commit with the
+message "Build site.".
+
+This is the general workflow.
+
+1. Write code in the R Markdown files (For RStudio users: to quickly develop the code I recommend executing the code in the R console via Ctrl-Enter to send one line or Ctrl-Alt-C to execute the entire code chunk)
+1. Run `make_site` to view the results as they will appear on the website
+1. Go back to step 1 until you are satisfied with the result
+1. Commit the R Markdown files in `analysis`
+1. Run `commit_site` to build and commit the website
 
 ## Deploy the website
-
-```{r teardown, include=FALSE}
-unlink("new-project", recursive = TRUE)
-```

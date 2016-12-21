@@ -4,11 +4,15 @@
 \alias{make_site}
 \title{Render only the updated R Markdown files}
 \usage{
-make_site(dry_run = FALSE, ...)
+make_site(dry_run = FALSE, path = ".", ...)
 }
 \arguments{
 \item{dry_run}{Identifies R Markdown files that have been updated, but does
 not render them.}
+
+\item{path}{By default the function assumes the current working directory is
+within the project. If this is not true, you'll need to provide the path to
+the project directory.}
 
 \item{...}{Additional arguments that can be passed to
 \code{rmarkdown::render_site}. Should only be needed for testing potential

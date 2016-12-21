@@ -13,6 +13,9 @@
 #'
 #' @param dry_run Identifies R Markdown files that have been updated, but does
 #'   not render them.
+#' @param path By default the function assumes the current working directory is
+#'   within the project. If this is not true, you'll need to provide the path to
+#'   the project directory.
 #' @param ... Additional arguments that can be passed to
 #'   \code{rmarkdown::render_site}. Should only be needed for testing potential
 #'   changes. Any permanent settings should be specified in
@@ -26,8 +29,8 @@
 #' make_site()
 #' }
 #' @export
-make_site <- function(dry_run = FALSE, ...) {
-  analysis_dir <- rprojroot::find_rstudio_root_file("analysis")
+make_site <- function(dry_run = FALSE, path = ".", ...) {
+  analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
   stopifnot(dir.exists(analysis_dir))
 
   # Gather Rmd files

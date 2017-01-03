@@ -10,16 +10,32 @@
 decide_to_render <- function(repo, log, rmd) {
   stopifnot(class(repo) == "git_repository",
             class(log) == "list",
-            sapply(log, function(x) class(x) == "git_commit"),
             is.character(rmd))
-  if (length(log) == 1) {
+  if (length(log) == 0) {
     warning("File not found in commit log: ", rmd)
     return(NA)
+  } else {
+    stopifnot(sapply(log, function(x) class(x) == "git_commit"))
   }
   html <- file.path("docs", stringr::str_replace(basename(rmd), "Rmd$", "html"))
   # Obtain the files updated in the most recent commit, similar to `git
   # status --stat`
-  files <- obtain_files_in_commit(repo, log[[1]])
+  parent_commit <- git2r::parents(log[[1]])
+  # The next action depends on what kind of commit is the most recent. Skip
+  # merge commits (2 parents). Obtain files from a standard commit (1 parent)
+  # using obtain_files_in_commit. Obtain files from root commit (0 parents)
+  # using obtain_files_in_commit_root.
+  if (length(parent_commit) == 2) {
+    return(decide_to_render(repo, log[-1], rmd))
+  } else if (length(parent_commit) == 1) {
+    files <- obtain_files_in_commit(repo, log[[1]])
+  } else if (length(parent_commit) == 0) {
+    files <- obtain_files_in_commit_root(repo, log[[1]])
+  }
+  # Decide if the R Markdown file should be rendered (it has been updated most
+  # recently), not rendered (the HTML has been updated more recently), or to
+  # continue searching the commit log (neither the Rmd nor HTML has been
+  # observed in the commit log yet).
   if (rmd %in% files) {
     return(TRUE)
   } else if (html %in% files) {
@@ -28,6 +44,8 @@ decide_to_render <- function(repo, log, rmd) {
     return(decide_to_render(repo, log[-1], rmd))
   }
 
+  # This final return should only be executed if there is an error in the
+  # recursive function.
   return(files)
 }
 
@@ -79,7 +97,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
                  commit@sha, length(parent_commit)))
   }
   # Cannot assume that the working directory is located within the Git repo
-  path_to_repo <- workdir(repo)
+  path_to_repo <- git2r::workdir(repo)
   cmd <- sprintf("cd %s; git diff-tree --no-commit-id --name-only -r --root %s",
                  path_to_repo, commit@sha)
   files <- system(cmd, intern = TRUE)

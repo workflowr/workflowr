@@ -7,7 +7,7 @@ Some demos:
 
 [demo01]: https://github.com/jdblischak/workflowr-demo01
 [demo02]: https://github.com/jdblischak/workflowr-demo02
-[fiveMinuteStats]: http://stephens999.github.io/fiveMinuteStats/analysis/
+[fiveMinuteStats]: https://github.com/stephens999/fiveMinuteStats
 
 To install:
 

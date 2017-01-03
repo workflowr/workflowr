@@ -77,10 +77,14 @@ Another key R package used by workflowr is [rprojroot][].
 This package finds the root of the repository, so workflowr functions like `make_site` will work the same regardless of the current working directory.
 Specifically, [rprojroot][] searches for the RStudio project `.Rproj` file at the base of the workflowr project (so don't delete it!).
 
+To perform Git commands, workflowr uses the R package [git2r][], which is an API to [libgit2][], a pure C implementation of Git.
+
 [RStudio, Inc.]: https://www.rstudio.com/
 [RStudio]: https://www.rstudio.com/products/rstudio/
 [rstudioapi]: https://github.com/rstudio/rstudioapi
 [rprojroot]: https://krlmlr.github.io/rprojroot/
+[git2r]: https://cran.r-project.org/web/packages/git2r/index.html
+[libgit2]: https://libgit2.github.com/
 
 ## Further reading
 

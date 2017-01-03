@@ -179,4 +179,51 @@ This is the general workflow.
 1. Commit the R Markdown files in `analysis`
 1. Run `commit_site` to build and commit the website
 
+You only need to run `render_site`, which re-renders every single R Markdown
+file, if you are updating the aesthetics of your website (e.g. anytime you make
+edits to `_analysis/_site.yml`).
+
 ## Deploy the website
+
+At this point you have built a version-controlled website that exists on your
+local computer. The next step is to put your code on GitHub so that it can serve
+your website online. To do this, login to your account on GitHub and create a
+new repository following these [instructions][new-repo]. Make sure you do not
+add an automatically-generated README, .gitignore, or license (these are
+important, but workflowr already creates them for you). Next you will copy the
+Git commands under the heading "…or push an existing repository from the command
+line". Using the hypothetical GitHub username "myname" and hypothetical
+repository name "myproject"^[The name of the repository on GitHub does not need to be identical to the directory name of your local Git repo; however, it is convenient to have them match since this is the default behavior of `git clone` when copying your repo to a another computer], the two lines will look like the following:
+
+```
+git remote add origin https://github.com/myname/myproject.git
+git push -u origin master
+```
+
+The first line creates the alias "origin" that points to your remote repository
+on GitHub^["origin" is the convential name, but could be anything you wanted]. 
+The second pushes your current commit history to GitHub.
+
+Now that your code is on GitHub, you need to tell GitHub that you want the files
+in `docs/` to be published as a website. Go to Settings -> GitHub Pages and 
+choose "master branch docs/ folder" as the Source ([instructions][publish-docs]). Using the hypothetical names
+above, the repository would be hosted at the URL
+`https://myname.github.io/myproject/`^[It may take a few minutes for the site to
+be rendered.].
+
+Note that even if you create a private GitHub repository, the website it creates
+is still public. If you're not ready to publish your results online, you can 
+always wait and activate GitHub Pages later. In the meantime, you'll still have 
+a version-controlled, organized set of results for your project. However, the
+risk that someone that doesn't have the link to your website is able to find it
+is very low. Search engines prioritize the results by how many other sites link
+to a site, so your website will not be high in the results even if you search 
+for very specific terms. Thus if you only share the URL to your results with
+your close collaborators, and request that they not share it widely, your
+website is effectively private. That being said, being truly scooped in science 
+is rare (at best) and openly sharing your work will help establish your 
+expertise in the field (and furthermore establishes your priority), so you
+should consider keeping both your code and website public.
+
+[new-repo]: https://help.github.com/articles/creating-a-new-repository/
+[publish-docs]: https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch

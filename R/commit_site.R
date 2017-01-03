@@ -5,7 +5,8 @@
 #' needs to be re-rendered, added, and committed (return TRUE). If the HTML file
 #' is found first, then it is up-to-date (return FALSE).
 #'
-#' To do: What if the Rmd was added in the first commit?
+#' @seealso \code{\link{obtain_files_in_commit}},
+#'   \code{\link{obtain_files_in_commit_root}}, \code{\link{commit_site}}
 decide_to_render <- function(repo, log, rmd) {
   stopifnot(class(repo) == "git_repository",
             class(log) == "list",
@@ -42,6 +43,9 @@ decide_to_render <- function(repo, log, rmd) {
 #' \url{https://github.com/ropensci/git2r/blob/89d916f17cb979b3cc21cbb5834755a2cf075f5f/R/diff.r#L314}
 #' and examples at
 #' \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
+#'
+#' @seealso \code{\link{obtain_files_in_commit_root}},
+#'   \code{\link{decide_to_render}}
 obtain_files_in_commit <- function(repo, commit) {
   stopifnot(class(repo) == "git_repository",
             class(commit) == "git_commit")
@@ -53,6 +57,32 @@ obtain_files_in_commit <- function(repo, commit) {
   git_diff <- git2r::diff(git2r::tree(commit),
                           git2r::tree(parent_commit[[1]]))
   files <- sapply(git_diff@files, function(x) x@new_file)
+  return(files)
+}
+
+#' Obtain the files updated in the root commit
+#'
+#' There is currently no obvious way to obtain the files included in the initial
+#' root commit using the git2r API. Thus these are obtained using the
+#' command-line. See
+#' \url{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}.
+#'
+#' This only works for the root commit, i.e. it must have no parents.
+#'
+#' @seealso \code{\link{obtain_files_in_commit}}, \code{\link{decide_to_render}}
+obtain_files_in_commit_root <- function(repo, commit) {
+  stopifnot(class(repo) == "git_repository",
+            class(commit) == "git_commit")
+  parent_commit <- git2r::parents(commit)
+  if (length(parent_commit) != 0) {
+    stop(sprintf("Cannot perform diff on commit %s because it has %d parents",
+                 commit@sha, length(parent_commit)))
+  }
+  # Cannot assume that the working directory is located within the Git repo
+  path_to_repo <- workdir(repo)
+  cmd <- sprintf("cd %s; git diff-tree --no-commit-id --name-only -r --root %s",
+                 path_to_repo, commit@sha)
+  files <- system(cmd, intern = TRUE)
   return(files)
 }
 

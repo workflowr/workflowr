@@ -16,13 +16,9 @@ decide_to_render <- function(repo, log, rmd) {
     return(NA)
   }
   html <- file.path("docs", stringr::str_replace(basename(rmd), "Rmd$", "html"))
-  # Obtain the files updated in the most recent commit, similar to `git status
-  # --stat`, by running a diff between the trees pointed to by the two most
-  # recent commits.
-  # https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88
-  git_diff <- git2r::diff(git2r::tree(log[[1]]),
-                          git2r::tree(log[[2]]))
-  files <- sapply(git_diff@files, function(x) x@new_file)
+  # Obtain the files updated in the most recent commit, similar to `git
+  # status --stat`
+  files <- obtain_files_in_commit(repo, log[[1]])
   if (rmd %in% files) {
     return(TRUE)
   } else if (html %in% files) {
@@ -31,6 +27,32 @@ decide_to_render <- function(repo, log, rmd) {
     return(decide_to_render(repo, log[-1], rmd))
   }
 
+  return(files)
+}
+
+#' Obtain the files updated in a commit
+#'
+#' Obtain the files updated in a commit, similar to \code{git status --stat}, by
+#' running a diff between the trees pointed to by the commit and its parent
+#' commit.
+#'
+#' This only works for commits that have one parent commit. Thus it will fail
+#' for merge commits (two parents) or the initial root commit (zero parents).
+#' two most recent commits. This uses `diff,git_tree`. See the source code at
+#' \url{https://github.com/ropensci/git2r/blob/89d916f17cb979b3cc21cbb5834755a2cf075f5f/R/diff.r#L314}
+#' and examples at
+#' \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
+obtain_files_in_commit <- function(repo, commit) {
+  stopifnot(class(repo) == "git_repository",
+            class(commit) == "git_commit")
+  parent_commit <- git2r::parents(commit)
+  if (length(parent_commit) != 1) {
+    stop(sprintf("Cannot perform diff on commit %s because it has %d parents",
+                 commit@sha, length(parent_commit)))
+  }
+  git_diff <- git2r::diff(git2r::tree(commit),
+                          git2r::tree(parent_commit[[1]]))
+  files <- sapply(git_diff@files, function(x) x@new_file)
   return(files)
 }
 

@@ -152,9 +152,11 @@ commit_site <- function(dry_run = FALSE, path = ".") {
     to_render[i] <- decide_to_render(repo, log, rmd_to_consider[i])
   }
   files_to_update <- rmd_to_consider[to_render]
+  files_to_update <- file.path(root_path, files_to_update)
 
   if (length(files_to_update) == 0) {
     message("Everything up-to-date")
+    return(invisible(files_to_update))
   }
 
   # Render the updated R Markdown files
@@ -163,8 +165,8 @@ commit_site <- function(dry_run = FALSE, path = ".") {
   } else {
     for (f in files_to_update) {
       # Delete the figures first? In both analysis/ and docs/?
-      cat(sprintf("\n\nRendering %s\n\n", f))
-      rmarkdown::render_site(file.path(root_path, f))
+      cat(sprintf("\n\nRendering %s\n\n", basename(f)))
+      rmarkdown::render_site(f)
       html <- file.path(root_path, "docs",
                         stringr::str_replace(basename(f), "Rmd$", "html"))
       git2r::add(repo, html)
@@ -172,7 +174,9 @@ commit_site <- function(dry_run = FALSE, path = ".") {
       git2r::add(repo, figure)
     }
     site_libs <- file.path(root_path, "docs", "site_libs")
+    nojekyll <- file.path(root_path, "docs", ".nojekyll")
     git2r::add(repo, site_libs)
+    git2r::add(repo, nojekyll)
     git2r::commit(repo, message = "Build site.")
   }
 

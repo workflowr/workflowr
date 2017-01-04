@@ -36,7 +36,7 @@ workflowr is hosted in a [GitHub repository][repo]. Install it with devtools.
 
 ```{r install, eval=FALSE}
 # install.packages("devtools")
-devtools::install_github("jdblischak/workflowr")
+devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 ```
 
 [swc]: https://software-carpentry.org
@@ -44,6 +44,9 @@ devtools::install_github("jdblischak/workflowr")
 [swc-git]: https://swcarpentry.github.io/workshop-template/#git
 [swc-git-config]: http://swcarpentry.github.io/git-novice/02-setup/
 [repo]: https://github.com/jdblischak/workflowr
+
+To see the available vignettes, run `browseVignettes("workflowr")`. This will
+open a webpage with a link to each vignette.
 
 As you use workflowr, if you find any unexpected behavior or think of an additional feature that would be nice to have, please open an Issue [here][issues]. When writing your bug report or feature request, please note the version of workflowr you are using (which you can obtain by running `packageVersion("workflowr")`).
 

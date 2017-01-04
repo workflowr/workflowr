@@ -1,0 +1,145 @@
+---
+title: "Customize your research website"
+author: "John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Customize your research website}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r chunk-options, include=FALSE}
+library("knitr")
+opts_chunk$set(eval = FALSE)
+```
+
+There are many ways to custome your research website. Below are some common
+options.
+
+## Changing the theme
+
+The theme is defined in the file `analysis/_site.yml`. The default is cosmo, but
+the rmarkdown package accepts multiple Bootstrap themes. These are listed in the
+[rmarkdown documentation][rmd-themes]. Go to 
+[bootswatch.com](http://bootswatch.com/) to compare the bootstrap themes. When
+typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).
+
+If you are using RStudio (version > 1.0), you can quickly see how the theme
+looks for one of your files. Open one of your R Markdown files, click Knit so
+that it appears in the Viewer tab, and then edit `analysis/_site.yml`. Everytime
+you save an edit to the file, it will automatically re-render the R Markdown
+file and update the result in the Viewer (thus you'll want to use a
+quick-running file like `index.Rmd` when testing aesthetic changes).
+
+Once you have chosen a theme, add and commit the updated `analysis/_site.yml`.
+
+```
+git add analysis/_site.yml
+git commit -m "Change theme."
+```
+
+Next apply this new theme to every page of the website by running `render_site(input = "analysis")`. Then commit the updated website:
+
+```
+git add docs/
+git commit -m "Change theme."
+```
+
+Note that the above strategy will commit all HTML files in `docs/`, even those
+that correspond to R Markdown files that are untracked or have changes in the
+working directory. To keep organized, have a clean working directory (i.e. no
+unsaved changes to any R Markdown files) before updating the theme.
+
+[rmd-themes]: http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style
+
+## Customize the navigation bar
+
+The navigation bar appears on the top of each page. By default it includes links
+to `index.html` (Home), `about.html` (About), `license.html` (License), and the 
+workflowr repository (the GitHub icon). This is all specified in
+`analysis/_site.yml`. To start, replace the URL to the workflowr GitHub
+repository with the URL to your GitHub repository.
+
+If you have other important pages, you can add them as well. For example, to add
+the text "The main result" which links to `main-result.html`, you would add the
+following:
+
+```
+    - text: "The main result"
+      href: main-result.html
+```
+
+You can also create a drop-down menu from the navigation bar. See the [rmarkdown
+documentation][navbar] for instructions.
+
+Similar to changing the theme above, you will need to re-render each page of the
+website (the navbar is embedded within each individual HTML file). Thus you
+should also try to follow these steps:
+
+1. Add and commit any changes to R Markdown files in `analysis/`. This will ensure that the Git commit ID at the top of the file corresponds to the exact version of the R Markdown file that produced the result.
+1. Add and commit `analysis/_site.yml`.
+1. Run `render_site(input = "analysis")` to re-render each page.
+1. Add and commit the `docs/` directory.
+
+[navbar]: http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation
+
+## Add a results page
+
+To make it easy to navigate to the pages of your website, you can manually add
+links either to `analysis/index.Rmd` or to the navigation bar defined in
+`analysis/_site.yml`. This can become tedious as the project grows to many
+files. To create a file called `analysis/results.Rmd` that lists each analysis
+file, run the workflowr function `create_results()`. By default it sorts the 
+files by their filename, but there are other options (see `?create_results`). 
+Next add this page to the navigation bar in `analysis/_site.yml` to make it
+easily accessible.
+
+```
+    - text: "Results"
+      href: results.html
+```
+
+Lastly, since the navigation bar was changed, follow the directions above for 
+building and commiting the website. Future updates of `results.Rmd` will not
+require re-building the entire website since it is an independent page (as
+opposed to the navigation bar).
+
+## Customize the footer
+
+By default your workflowr website has the footer "This site was created with R
+Markdown" added to the end of each page. This is specified in the file `analysis/include/footer.html` and this file is specified in `analysis/_site.yml`. To remove the footer entirely, delete the following lines:
+
+```
+    include:
+      after_body: include/footer.html
+```
+
+To change the text that appears, directly edit the HTML file. Including
+formatting (e.g. bold, hyperlink, etc.) requires knowing HTML.
+
+This file is also how you can enable [disqus](https://disqus.com/) comments for
+your website pages. To enable comments, follow these steps:
+
+1. Start a disqus account
+1. Add your disqus shortname to `footer.html`
+1. Uncomment the disqus code in `footer.html`
+
+## Setup SSH keys
+
+Using the https protocol to communicate with GitHub is tedious because it
+requires entering your GitHub username and password. Using SSH keys for
+authentication removes the password requirement. Follow these [GitHub
+instructions][ssh] for creating SSH keys and linking them to your GitHub
+account.
+
+The easiest way to update your repository would be to delete your old version
+(after pushing all the changes to GitHub of course) and then run `git clone` 
+using the SSH URL. This will set the remote URL ("origin") to use SSH 
+authentication. The other option would be to delete the HTTPS remote (`git
+remote rm origin`) and then re-add "origin" using the SSH URL (`git remote add
+origin <insert SSH URL>`).
+
+[ssh]: https://help.github.com/articles/generating-an-ssh-key/

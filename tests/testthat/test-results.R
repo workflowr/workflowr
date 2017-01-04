@@ -6,7 +6,7 @@ test_that("Properly formatted dates are handled correctly", {
 })
 
 test_that("Improperly formatted dates are assigned NA", {
-  expect_output(d <- attempt_date_conversion("Nov 01 2016", "example.Rmd"),
+  expect_warning(d <- attempt_date_conversion("Nov 01 2016", "example.Rmd"),
                 "Unable to convert the date Nov 01 2016 found in example.Rmd")
   expect_identical(d, NA)
 })

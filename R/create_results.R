@@ -116,7 +116,7 @@ attempt_date_conversion <- function(x, rmd_fname) {
     rmd_fname <- rmd_fname
     as.Date(x)},
     error = function(err) {
-      print(sprintf("Unable to convert the date %s found in %s",
+      warning(sprintf("Unable to convert the date %s found in %s",
                     tmp_date, rmd_fname))
       return(NA)
     }

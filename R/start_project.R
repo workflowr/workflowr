@@ -48,6 +48,7 @@ start_project <- function(name, directory, git_init = TRUE) {
 
   # Configure Git repository
   if (git_init) {
+    create_gitignore(directory)
     git2r::init(directory)
     message("Git repository initialized.")
     repo <- git2r::repository(directory)
@@ -61,8 +62,6 @@ start_project <- function(name, directory, git_init = TRUE) {
       git2r::add(repo, ".")
       git2r::commit(repo, message = "Start workflowr project.")
     }
-  } else {
-    unlink(file.path(directory, ".gitignore"))
   }
 
   return(invisible())

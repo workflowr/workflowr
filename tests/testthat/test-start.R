@@ -11,8 +11,6 @@ project_files <- list.files(path = infrastructure_path, all.files = TRUE,
                             recursive = TRUE)
 # Remove Rproj file since that is dynamically renamed
 project_files <- project_files[!grepl("Rproj", project_files)]
-# Remove .gitignore since that is checked separately to test git_init
-project_files <- project_files[project_files != ".gitignore"]
 
 git_files <- c(".git", ".gitignore")
 

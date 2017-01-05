@@ -248,3 +248,10 @@ should consider keeping both your code and website public.
 
 [new-repo]: https://help.github.com/articles/creating-a-new-repository/
 [publish-docs]: https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
+
+## Further reading
+
+* For advice on using R Markdown files to organize your analysis, read the
+chapter [R Markdown workflow](http://r4ds.had.co.nz/r-markdown-workflow.html) in
+the book [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and
+Hadley Wickham

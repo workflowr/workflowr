@@ -19,6 +19,16 @@ opts_chunk$set(eval = FALSE)
 There are many ways to custome your research website. Below are some common
 options.
 
+## Adding project details
+
+workflowr automatically creates many files when the project is first started. As
+a first step for customizing your site, provide the necessary information:
+
+* Briefly describe your project in `analysis/index.Rmd`
+* Share details about yourself in `analysis/about.Rmd`
+* Copy the text for a license into `LICENSE` and state the name of the license in `analysis/license.Rmd`. See [A Quick Guide to Software Licensing for the Scientist-Programmer](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598) by Morin et al., 2012 for advice. If you're ambivalent, the MIT license is a standard choice
+* Decide how authors should attribute your work by providing a citaiton in `CITATION`
+
 ## Changing the theme
 
 The theme is defined in the file `analysis/_site.yml`. The default is cosmo, but

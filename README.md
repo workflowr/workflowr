@@ -2,7 +2,7 @@
 
 The goal of the workflowr package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like [this][demo01].
 
-[demo01]: https://github.com/jdblischak/workflowr-demo01
+[demo01]: https://jdblischak.github.io/workflowr-demo01/
 
 ## Setup
 
@@ -30,7 +30,13 @@ devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 [repo]: https://github.com/jdblischak/workflowr
 
 To see the available vignettes, run `browseVignettes("workflowr")`. This will
-open a webpage with a link to each vignette.
+open a webpage with a link to each vignette. Currently the following vignettes are available (you are currently reading the first vignette):
+
+Vignette title  | To open from R
+------------- | -------------
+Getting started with workflowr  | `vignette("getting-started", "workflowr")`
+Customize your research website  | `vignette("customization", "workflowr")`
+How the workflowr package works | `vignette("how-it-works", "workflowr")`
 
 As you use workflowr, if you find any unexpected behavior or think of an additional feature that would be nice to have, please open an Issue [here][issues]. When writing your bug report or feature request, please note the version of workflowr you are using (which you can obtain by running `packageVersion("workflowr")`).
 

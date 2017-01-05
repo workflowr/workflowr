@@ -4,7 +4,7 @@
 \alias{start_project}
 \title{Start a new workflowr project.}
 \usage{
-start_project(name, directory, git_init = TRUE)
+start_project(name, directory, git_init = TRUE, overwrite = FALSE)
 }
 \arguments{
 \item{name}{Project name, e.g. "My Project"}
@@ -14,6 +14,9 @@ created if necessary.}
 
 \item{git_init}{Control whether the directory is initiatlized as a Git
 repository (default: TRUE).}
+
+\item{overwrite}{overwrite    Control whether to overwrite existing files
+(default: FALSE). Passed to \code{file.copy}.}
 }
 \description{
 \code{start_project} creates a new project directory for the site.

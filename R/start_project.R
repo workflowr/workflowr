@@ -12,13 +12,15 @@
 #'   created if necessary.
 #' @param git_init Control whether the directory is initiatlized as a Git
 #'   repository (default: TRUE).
+#' @param overwrite overwrite	Control whether to overwrite existing files
+#'   (default: FALSE). Passed to \code{file.copy}.
 #'
 #' @examples
 #' \dontrun{
 #' start_project("My Project", "path/to/new-project")
 #' }
 #' @export
-start_project <- function(name, directory, git_init = TRUE) {
+start_project <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
 
   # Create directory if it doesn't already exist
   if (!dir.exists(directory)) {
@@ -31,7 +33,7 @@ start_project <- function(name, directory, git_init = TRUE) {
   # Add . to end of path to copy its contents w/o creating a top-level directory
   # source; http://superuser.com/a/367303/449452
   file.copy(from = paste0(infrastructure_path, "/."), to = directory,
-            recursive = TRUE)
+            overwrite = overwrite, recursive = TRUE)
 
   # Add project name to YAML file
   yml_template <- readLines(file.path(directory, "analysis/_site.yml"))

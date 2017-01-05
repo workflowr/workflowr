@@ -47,3 +47,31 @@ test_that("start_project git_init = FALSE removes all Git files", {
   }
   unlink(site_dir, recursive = TRUE)
 })
+
+test_that("start_project does not overwrite files by default", {
+
+  # start project in a tempdir
+  site_dir <- tempfile()
+  dir.create(site_dir)
+  readme_file <- file.path(site_dir, "README.md")
+  writeLines("original", con = readme_file)
+  capture.output(start_project(project_name, site_dir))
+
+  readme_contents <- readLines(readme_file)
+  expect_true(readme_contents == "original")
+  unlink(site_dir, recursive = TRUE)
+})
+
+test_that("start_project overwrites files when forced", {
+
+  # start project in a tempdir
+  site_dir <- tempfile()
+  dir.create(site_dir)
+  readme_file <- file.path(site_dir, "README.md")
+  writeLines("original", con = readme_file)
+  capture.output(start_project(project_name, site_dir, overwrite = TRUE))
+
+  readme_contents <- readLines(readme_file)
+  expect_true(readme_contents[1] == sprintf("# %s", project_name))
+  unlink(site_dir, recursive = TRUE)
+})

@@ -24,7 +24,7 @@ The goal of the workflowr package is to make it easier for researchers to organi
 ## Setup
 
 This tutorial assumes you have already R and Git installed, have a global
-user.name and user.email set (you can run `git config -l` in the Terminal to
+user.name and user.email set (you can run `git config -l` in the shell to
 confirm), and have an account on GitHub. Rstudio is also convenient, especially
 if you have a version greater than 1.0, but is not required. If you need
 instructions to install these, [Software Carpentry][swc] maintains high-quality
@@ -96,9 +96,11 @@ in the Build pane (or use the keyboard shortcut Ctrl+Shift+B) to have RStudio
 properly run `render_site` and load a preview of the website in the Viewer pane.
 
 You now have a functioning website on your local computer. All the website files
-are located in `docs/`. Open `docs/index.html` to view the website in your 
-computer's web browser. Update the files `index.Rmd` and `about.Rmd` in the 
-`analysis`, re-build the site, and refresh your browser to see your changes.
+are located in `docs/`. Update the files `index.Rmd` and `about.Rmd` in 
+`analysis/` and re-build the site to see your changes. If you aren't using
+RStudio, open `docs/index.html` to view the website in your computer's web
+browser and refresh your browser after running `render_site` to see your
+changes.
 
 ## Add a new analysis file
 
@@ -114,31 +116,35 @@ This performs multiple actions:
 2. Sets the working directory to the `analysis/` directory
 3. If you are using RStudio, opens the file for editing
 
-Now you are ready to start writing! At the top of the file, edit the author,
-title, and date. If you are using RStudio, press the Knit button to see a
-preview in the Viewer pane. From the R console, you could run `render_site`
-again, but this would re-render every R Markdown file. To only render those R
-Markdown files that are new or have been updated, use the workflowr function
-`make_site`.
+Now you are ready to start writing! At the top of the file, edit the author, 
+title, and date. If you are using RStudio, press the Knit button to render the
+file and see a preview in the Viewer pane. From the R console, you could run
+`render_site` again (equivalent to clicking "Build Website" in RStudio), but
+this would re-render every R Markdown file. To only render those R Markdown
+files that are new or have been updated, use the workflowr function `make_site`.
 
 ```{r make-site}
 make_site()
 ```
 
-Check out your new file `docs/first-analysis.html`. Near the top you will see a line that says "Code version:" followed by an alphanumeric character string. This informs you which version of the code was used to create the file (this is explained more below in the section "Version the website").
+Check out your new file `docs/first-analysis.html`. Near the top you will see a
+line that says "Code version:" followed by an alphanumeric character string.
+This informs you which version of the code was used to create the file (this is
+explained more below in the section [Version the
+website](#version-the-website)).
 
 In order to make it easier to navigate to your new file, you can include a link
 to it on the main index page. For example, open `analysis/index.Rmd` and paste
 the following line. This uses the Markdown syntax for creating a hyperlink (for
 a quick reference guide in RStudio click "Help" -> "Markdown Quick Reference").
-You specify the HTML version of the file since this is what is comprises the
+You specify the HTML version of the file since this is what comprises the
 website.
 
 ```
 Click on this [link](first-analysis.html) to see my results.
 ```
 
-Run `make_site` again to view the update.
+Click Knit (or run `make_site` again) to render the file.
 
 ## Version the website
 
@@ -148,21 +154,25 @@ version control system Git. By including the unique identifier that Git assigns
 a snapshot (or "commit" as Git calls it) at the top of each of your rendered
 HTML files, you always know which version of the code produced the results.
 
-To get started with workflowr, the main Git commands you will need to use are
-`git add` and `git commit`. There are many ways to use Git: in the Terminal, in
-the RStudio Git pane, or another Git graphical user interface (GUI) (see
-[here](https://git-scm.com/download/gui/linux) for GUI options). This vignette will display the Git commands to run in the Terminal.
+To get started with workflowr, the main Git commands you will need to use are 
+`git add` and `git commit`. There are many ways to use Git: in the shell, in 
+the RStudio Git pane, or another Git graphical user interface (GUI) (see 
+[here](https://git-scm.com/download/gui/linux) for GUI options). This vignette 
+will display the Git commands to run in the shell (you can quickly open the
+Terminal to the correct working directoy from RStudio by choosing "Tools" ->
+"Shell...").
 
 When you first started the project with `start_project`, workflowr automatically
 made the first commit of all the project files. Since then you have updated some
 of the R Markdown files, added a new file `first-analysis.Rmd`, and built the 
 website in `docs/`. In order for the version of the code displayed at the top of
-the file to be useful, it needs to refer to the exact state of the R Markdown
-files when the HTML was rendered. To acheive this, you'll need to commit the R M
-arkdown files and corresponding HTML in separate steps. First add and commit the
-R Markdown files in `analysis/`.
+the file to be useful, it needs to refer to the exact state of the R Markdown 
+files when the HTML was rendered. To acheive this, you'll need to commit the R 
+Markdown files and corresponding HTML in separate steps. First add and commit 
+the R Markdown files in `analysis/`.
 
 ```
+# Run in the shell
 git add analysis/*Rmd
 git commit -m "Started my first analysis"
 ```
@@ -205,6 +215,7 @@ line". Using the hypothetical GitHub username "myname" and hypothetical
 repository name "myproject"^[The name of the repository on GitHub does not need to be identical to the directory name of your local Git repo; however, it is convenient to have them match since this is the default behavior of `git clone` when copying your repo to a another computer], the two lines will look like the following:
 
 ```
+# Run in the shell
 git remote add origin https://github.com/myname/myproject.git
 git push -u origin master
 ```
@@ -215,10 +226,11 @@ The second pushes your current commit history to GitHub.
 
 Now that your code is on GitHub, you need to tell GitHub that you want the files
 in `docs/` to be published as a website. Go to Settings -> GitHub Pages and 
-choose "master branch docs/ folder" as the Source ([instructions][publish-docs]). Using the hypothetical names
-above, the repository would be hosted at the URL
-`https://myname.github.io/myproject/`^[It may take a few minutes for the site to
-be rendered.].
+choose "master branch docs/ folder" as the Source
+([instructions][publish-docs]). Using the hypothetical names above, the
+repository would be hosted at the URL `https://myname.github.io/myproject/`^[It 
+may take a few minutes for the site to be rendered.]. If you scroll back down to
+the GitHub Pages section of the Settings page, you can click on the URL there.
 
 Note that even if you create a private GitHub repository, the website it creates
 is still public. If you're not ready to publish your results online, you can 

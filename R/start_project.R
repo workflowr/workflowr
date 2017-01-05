@@ -38,6 +38,11 @@ start_project <- function(name, directory, git_init = TRUE) {
   writeLines(whisker::whisker.render(yml_template, list(name = name)),
              file.path(directory, "analysis/_site.yml"))
 
+  # Add project name to README.md file
+  readme_template <- readLines(file.path(directory, "README.md"))
+  writeLines(whisker::whisker.render(readme_template, list(name = name)),
+             file.path(directory, "README.md"))
+
   # Configure RStudio
   check_rstudio_version()
   # Rename RStudio Project file

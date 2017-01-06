@@ -1,5 +1,6 @@
 ---
 title: "How the workflowr package works"
+subtitle: "workflowr version `r packageVersion('workflowr')`"
 author: "John Blischak"
 date: "`r Sys.Date()`"
 output:

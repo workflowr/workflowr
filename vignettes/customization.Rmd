@@ -1,5 +1,6 @@
 ---
 title: "Customize your research website"
+subtitle: "workflowr version `r packageVersion('workflowr')`"
 author: "John Blischak"
 date: "`r Sys.Date()`"
 output:

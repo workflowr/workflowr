@@ -211,8 +211,12 @@ new repository following these [instructions][new-repo]. Make sure you do not
 add an automatically-generated README, .gitignore, or license (these are
 important, but workflowr already creates them for you). Next you will copy the
 Git commands under the heading "…or push an existing repository from the command
-line". Using the hypothetical GitHub username "myname" and hypothetical
-repository name "myproject"^[The name of the repository on GitHub does not need to be identical to the directory name of your local Git repo; however, it is convenient to have them match since this is the default behavior of `git clone` when copying your repo to a another computer], the two lines will look like the following:
+line". Using the hypothetical GitHub username "myname" and hypothetical 
+repository name "myproject"^[The name of the repository on GitHub does not need
+to be identical to the directory name of your local Git repo; however, it is
+convenient to have them match since this is the default behavior of `git clone`
+when copying your repo to a another computer], the two lines will look like the
+following:
 
 ```
 # Run in the shell
@@ -222,7 +226,9 @@ git push -u origin master
 
 The first line creates the alias "origin" that points to your remote repository
 on GitHub^["origin" is the convential name, but could be anything you wanted]. 
-The second pushes your current commit history to GitHub.
+The second pushes your current commit history to GitHub. You will be prompted to
+enter your GitHub username and password for authentication after you run `git
+push`.
 
 Now that your code is on GitHub, you need to tell GitHub that you want the files
 in `docs/` to be published as a website. Go to Settings -> GitHub Pages and 

@@ -46,7 +46,16 @@ start_project <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
              file.path(directory, "README.md"))
 
   # Configure RStudio
-  check_rstudio_version()
+  rs_version <- check_rstudio_version()
+  # If the user is running RStdudio and it is greater than version 1.0, specify
+  # that the BuildType is Website.
+  if (!is.null(rs_version)) {
+    if (rs_version >= "1.0.0") {
+      cat("\nBuildType: Website\nWebsitePath: analysis\n",
+          file = file.path(directory, "temp-name.Rproj"),
+          append = TRUE)
+    }
+  }
   # Rename RStudio Project file
   file.rename(file.path(directory, "temp-name.Rproj"),
               file.path(directory, paste0(basename(directory), ".Rproj")))
@@ -82,5 +91,8 @@ check_rstudio_version <- function() {
                               by updating to RStudio version 1.0 or greater.
                               You are running RStudio %s", rs_version)))
     }
+  } else {
+    rs_version <- NULL
   }
+  return(rs_version)
 }

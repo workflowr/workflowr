@@ -22,7 +22,7 @@ options.
 ## Adding project details
 
 workflowr automatically creates many files when the project is first started. As
-a first step for customizing your site, provide the necessary information:
+a first step for customizing your site, add the following information:
 
 * Briefly describe your project in `analysis/index.Rmd`
 * Share details about yourself in `analysis/about.Rmd`
@@ -55,7 +55,7 @@ Next apply this new theme to every page of the website by running `render_site(i
 
 ```
 git add docs/
-git commit -m "Change theme."
+git commit -m "Apply new theme."
 ```
 
 Note that the above strategy will commit all HTML files in `docs/`, even those
@@ -89,10 +89,10 @@ Similar to changing the theme above, you will need to re-render each page of the
 website (the navbar is embedded within each individual HTML file). Thus you
 should also try to follow these steps:
 
-1. Add and commit any changes to R Markdown files in `analysis/`. This will ensure that the Git commit ID at the top of the file corresponds to the exact version of the R Markdown file that produced the result.
-1. Add and commit `analysis/_site.yml`.
-1. Run `render_site(input = "analysis")` to re-render each page.
-1. Add and commit the `docs/` directory.
+1. Add and commit any changes to R Markdown files in `analysis/`. This will ensure that the Git commit ID at the top of the file corresponds to the exact version of the R Markdown file that produced the result
+1. Add and commit `analysis/_site.yml`
+1. Run `render_site(input = "analysis")` to re-render each page
+1. Add and commit the `docs/` directory
 
 [navbar]: http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation
 

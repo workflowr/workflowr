@@ -1,6 +1,5 @@
 # Getting started with workflowr
 
-
 The goal of the workflowr package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like [this][demo01].
 
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
@@ -238,3 +237,10 @@ should consider keeping both your code and website public.
 
 [new-repo]: https://help.github.com/articles/creating-a-new-repository/
 [publish-docs]: https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
+
+## Further reading
+
+* For advice on using R Markdown files to organize your analysis, read the
+chapter [R Markdown workflow](http://r4ds.had.co.nz/r-markdown-workflow.html) in
+the book [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and
+Hadley Wickham

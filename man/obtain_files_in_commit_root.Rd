@@ -7,10 +7,10 @@
 obtain_files_in_commit_root(repo, commit)
 }
 \description{
-There is currently no obvious way to obtain the files included in the initial
-root commit using the git2r API. Thus these are obtained using the
-command-line. See
-\url{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}.
+The files included in the root commit cannot be determined comparing two
+trees (which is how \code{\link{obtain_files_in_commit}} works). See
+\href{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}{this
+Stack Overflow question} for details.
 }
 \details{
 This only works for the root commit, i.e. it must have no parents.

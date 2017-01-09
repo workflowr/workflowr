@@ -1,6 +1,6 @@
-#' Create a results file
+#' Create a results page with links to analysis files
 #'
-#' \code{create_results} automates the curation of all the analyses for a
+#' \code{create_links_page} automates the curation of all the analyses for a
 #' project.
 #'
 #' By default, this creates the file "results.Rmd" in the analysis/
@@ -30,10 +30,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' create_results()
+#' create_links_page()
 #' }
 #' @export
-create_results <- function(output = "results.Rmd",
+create_links_page <- function(output = "results.Rmd",
                            sort_method = "filename",
                            path = ".",
                            exclude_rmd = NULL,

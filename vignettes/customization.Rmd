@@ -99,12 +99,14 @@ should also try to follow these steps:
 
 ## Add a results page
 
-To make it easy to navigate to the pages of your website, you can manually add
-links either to `analysis/index.Rmd` or to the navigation bar defined in
-`analysis/_site.yml`. This can become tedious as the project grows to many
-files. To create a file called `analysis/results.Rmd` that lists each analysis
-file, run the workflowr function `create_results()`. By default it sorts the 
-files by their filename, but there are other options (see `?create_results`). 
+To make it easy to navigate to the pages of your website, you can manually add 
+links either to `analysis/index.Rmd` or to the navigation bar defined in 
+`analysis/_site.yml`. This can become tedious as the project grows to many 
+files. To create a file called `analysis/results.Rmd` that contains links to 
+each analysis file, run the workflowr function `create_links_page()`. By default
+it sorts the files by their filename, but there are other options (see
+`?create_links_page`).
+
 Next add this page to the navigation bar in `analysis/_site.yml` to make it
 easily accessible.
 

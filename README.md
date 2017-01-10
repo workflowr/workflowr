@@ -4,6 +4,16 @@ The goal of the workflowr package is to make it easier for researchers to organi
 
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 
+workflowr was developed, and is maintained, by John Blischak, a postdoctoral 
+researcher in the laboratory of [Matthew Stephens][stephens] at [The University 
+of Chicago][uchicago]. He is funded by a grant from the [Gordon and Betty Moore 
+Foundation][moore] to MS.
+
+
+[stephens]: http://stephenslab.uchicago.edu/
+[uchicago]: http://www.uchicago.edu/
+[moore]: https://www.moore.org/
+
 ## Setup
 
 This tutorial assumes you have already R and Git installed, have a global

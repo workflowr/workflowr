@@ -24,7 +24,7 @@ When you are ready to add the analysis to your research website, add and commit
 the R Markdown file using Git. Then render the HTML, add, and commit it, run
 
 ```
-commit_site()
+wflow_commit()
 ```
 
 Run `vignette("getting-started", "workflowr")` for more details.

@@ -6,7 +6,7 @@
 #' is found first, then it is up-to-date (return FALSE).
 #'
 #' @seealso \code{\link{obtain_files_in_commit}},
-#'   \code{\link{obtain_files_in_commit_root}}, \code{\link{commit_site}}
+#'   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_commit}}
 decide_to_render <- function(repo, log, rmd) {
   stopifnot(class(repo) == "git_repository",
             class(log) == "list",
@@ -122,7 +122,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
 
 #' Commit the website files
 #'
-#' \code{commit_site} ensures that the website files are created by the code
+#' \code{wflow_commit} ensures that the website files are created by the code
 #' that has been committed to the Git repository.
 #'
 #' @param dry_run Identifies R Markdown files that have been updated, but does
@@ -136,10 +136,10 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #'
 #' @examples
 #' \dontrun{
-#' commit_site()
+#' wflow_commit()
 #' }
 #' @export
-commit_site <- function(dry_run = FALSE, path = ".") {
+wflow_commit <- function(dry_run = FALSE, path = ".") {
   root_path <- rprojroot::find_rstudio_root_file(path = path)
   analysis_dir <- file.path(root_path, "analysis")
   stopifnot(dir.exists(analysis_dir))

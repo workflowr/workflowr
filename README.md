@@ -182,14 +182,14 @@ Second you'll need to re-render the corresponding HTML files so that they have
 the latest commit identifier at the top of the file. However you can't use
 `wflow_build` for this like you did during testing, because the R Markdown files
 haven't changed. To re-build only those HTML files that correspond to the R
-Markdown files in the previous commit, run the workflowr function `commit_site`.
+Markdown files in the previous commit, run the workflowr function `wflow_commit`.
 
 
 ```r
-commit_site()
+wflow_commit()
 ```
 
-`commit_site` will render the R Markdown files and create a new commit with the
+`wflow_commit` will render the R Markdown files and create a new commit with the
 message "Build site.".
 
 This is the general workflow.
@@ -198,7 +198,7 @@ This is the general workflow.
 1. Run `wflow_build` to view the results as they will appear on the website
 1. Go back to step 1 until you are satisfied with the result
 1. Commit the R Markdown files in `analysis`
-1. Run `commit_site` to build and commit the website
+1. Run `wflow_commit` to build and commit the website
 
 You only need to run `render_site`, which re-renders every single R Markdown
 file, if you are updating the aesthetics of your website (e.g. anytime you make

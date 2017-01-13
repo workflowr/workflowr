@@ -9,15 +9,15 @@ dir.create(site_dir)
 suppressMessages(wflow_start(project_name, site_dir))
 r <- repository(path = site_dir)
 
-test_that("commit_site detects R Markdown files in root commit", {
+test_that("wflow_commit detects R Markdown files in root commit", {
   expect_identical(wflow_build(dry_run = TRUE, path = site_dir),
-                   commit_site(dry_run = TRUE, path = site_dir))
+                   wflow_commit(dry_run = TRUE, path = site_dir))
 })
 
 # Commit site
-suppressMessages(capture.output(commit_site(path = site_dir)))
+suppressMessages(capture.output(wflow_commit(path = site_dir)))
 
-test_that("commit_site creates HTML files", {
+test_that("wflow_commit creates HTML files", {
   html_files <- file.path(site_dir, "docs", c("about.html",
                                               "index.html",
                                               "license.html"))
@@ -28,11 +28,11 @@ test_that("commit_site creates HTML files", {
 
 log <- commits(r)
 
-test_that("commit_site creates a new commit", {
+test_that("wflow_commit creates a new commit", {
   expect_identical(log[[1]]@message, "Build site.")
 })
 
-test_that("commit_site include .nojekyll in commit", {
+test_that("wflow_commit include .nojekyll in commit", {
   files_in_commit <- workflowr:::obtain_files_in_commit(r, log[[1]])
   expect_true("docs/.nojekyll" %in% files_in_commit)
 })
@@ -45,39 +45,39 @@ new_rmd <- file.path(site_dir, "analysis", "test.Rmd")
 file.create(new_rmd)
 new_html <- file.path(site_dir, "docs", "test.html")
 
-test_that("wflow_build, but not commit_site, renders untracked Rmd file", {
+test_that("wflow_build, but not wflow_commit, renders untracked Rmd file", {
   wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
-  commit_site_files <- commit_site(dry_run = TRUE, path = site_dir)
+  wflow_commit_files <- wflow_commit(dry_run = TRUE, path = site_dir)
   expect_true(new_rmd %in% wflow_build_files)
-  expect_false(new_rmd %in% commit_site_files)
+  expect_false(new_rmd %in% wflow_commit_files)
 })
 
 # Stage file
 add(r, new_rmd)
 
-test_that("wflow_build, but not commit_site, renders staged Rmd file", {
+test_that("wflow_build, but not wflow_commit, renders staged Rmd file", {
   wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
-  commit_site_files <- commit_site(dry_run = TRUE, path = site_dir)
+  wflow_commit_files <- wflow_commit(dry_run = TRUE, path = site_dir)
   expect_true(new_rmd %in% wflow_build_files)
-  expect_false(new_rmd %in% commit_site_files)
+  expect_false(new_rmd %in% wflow_commit_files)
 })
 
 # Commit file
 commit(r, new_rmd)
 
-test_that("wflow_build **and** commit_site render committed Rmd file", {
+test_that("wflow_build **and** wflow_commit render committed Rmd file", {
   wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
-  commit_site_files <- commit_site(dry_run = TRUE, path = site_dir)
+  wflow_commit_files <- wflow_commit(dry_run = TRUE, path = site_dir)
   expect_true(new_rmd %in% wflow_build_files)
-  expect_true(new_rmd %in% commit_site_files)
+  expect_true(new_rmd %in% wflow_commit_files)
 })
 
 # Commit site
-suppressMessages(capture.output(commit_site(path = site_dir)))
+suppressMessages(capture.output(wflow_commit(path = site_dir)))
 
 log <- commits(r)
 
-test_that("commit_site includes latest html in commit, but not previous html", {
+test_that("wflow_commit includes latest html in commit, but not previous html", {
   files_in_commit <- workflowr:::obtain_files_in_commit(r, log[[1]])
   expect_true(file.path("docs", basename(new_html)) %in% files_in_commit)
   # Extract only files/directories in base of docs/

@@ -34,6 +34,7 @@ create_gitignore <- function(path, overwrite = FALSE) {
              ".Rhistory",
              ".RData",
              ".Ruserdata",
+             ".DS_Store",
              "analysis/figure",
              "analysis/*html",
              "analysis/*_cache")

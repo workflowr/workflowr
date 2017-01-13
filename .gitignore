@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+.DS_Store
 inst/doc
 vignettes/*R
 vignettes/*html

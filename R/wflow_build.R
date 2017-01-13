@@ -1,6 +1,6 @@
 #' Render only the updated R Markdown files
 #'
-#' \code{make_site} provides Makefile-like functionality to render only the R
+#' \code{wflow_build} provides Makefile-like functionality to render only the R
 #' Markdown files that have been modified. This is in contrast to
 #' \code{rmarkdown::render_site}, which always renders all the pages. You should
 #' use the latter if you've made aesthetic changes that you want applied to all
@@ -26,10 +26,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' make_site()
+#' wflow_build()
 #' }
 #' @export
-make_site <- function(dry_run = FALSE, path = ".", ...) {
+wflow_build <- function(dry_run = FALSE, path = ".", ...) {
   analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
   stopifnot(dir.exists(analysis_dir))
 

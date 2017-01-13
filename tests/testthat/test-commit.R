@@ -10,7 +10,7 @@ suppressMessages(wflow_start(project_name, site_dir))
 r <- repository(path = site_dir)
 
 test_that("commit_site detects R Markdown files in root commit", {
-  expect_identical(make_site(dry_run = TRUE, path = site_dir),
+  expect_identical(wflow_build(dry_run = TRUE, path = site_dir),
                    commit_site(dry_run = TRUE, path = site_dir))
 })
 
@@ -45,30 +45,30 @@ new_rmd <- file.path(site_dir, "analysis", "test.Rmd")
 file.create(new_rmd)
 new_html <- file.path(site_dir, "docs", "test.html")
 
-test_that("make_site, but not commit_site, renders untracked Rmd file", {
-  make_site_files <- make_site(dry_run = TRUE, path = site_dir)
+test_that("wflow_build, but not commit_site, renders untracked Rmd file", {
+  wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
   commit_site_files <- commit_site(dry_run = TRUE, path = site_dir)
-  expect_true(new_rmd %in% make_site_files)
+  expect_true(new_rmd %in% wflow_build_files)
   expect_false(new_rmd %in% commit_site_files)
 })
 
 # Stage file
 add(r, new_rmd)
 
-test_that("make_site, but not commit_site, renders staged Rmd file", {
-  make_site_files <- make_site(dry_run = TRUE, path = site_dir)
+test_that("wflow_build, but not commit_site, renders staged Rmd file", {
+  wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
   commit_site_files <- commit_site(dry_run = TRUE, path = site_dir)
-  expect_true(new_rmd %in% make_site_files)
+  expect_true(new_rmd %in% wflow_build_files)
   expect_false(new_rmd %in% commit_site_files)
 })
 
 # Commit file
 commit(r, new_rmd)
 
-test_that("make_site **and** commit_site render committed Rmd file", {
-  make_site_files <- make_site(dry_run = TRUE, path = site_dir)
+test_that("wflow_build **and** commit_site render committed Rmd file", {
+  wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
   commit_site_files <- commit_site(dry_run = TRUE, path = site_dir)
-  expect_true(new_rmd %in% make_site_files)
+  expect_true(new_rmd %in% wflow_build_files)
   expect_true(new_rmd %in% commit_site_files)
 })
 

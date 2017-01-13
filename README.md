@@ -121,11 +121,11 @@ title, and date. If you are using RStudio, press the Knit button to render the
 file and see a preview in the Viewer pane. From the R console, you could run
 `render_site` again (equivalent to clicking "Build Website" in RStudio), but
 this would re-render every R Markdown file. To only render those R Markdown
-files that are new or have been updated, use the workflowr function `make_site`.
+files that are new or have been updated, use the workflowr function `wflow_build`.
 
 
 ```r
-make_site()
+wflow_build()
 ```
 
 Check out your new file `docs/first-analysis.html`. Near the top you will see a
@@ -145,7 +145,7 @@ website.
 Click on this [link](first-analysis.html) to see my results.
 ```
 
-Click Knit (or run `make_site` again) to render the file.
+Click Knit (or run `wflow_build` again) to render the file.
 
 ## Version the website
 
@@ -180,7 +180,7 @@ git commit -m "Started my first analysis"
 
 Second you'll need to re-render the corresponding HTML files so that they have
 the latest commit identifier at the top of the file. However you can't use
-`make_site` for this like you did during testing, because the R Markdown files
+`wflow_build` for this like you did during testing, because the R Markdown files
 haven't changed. To re-build only those HTML files that correspond to the R
 Markdown files in the previous commit, run the workflowr function `commit_site`.
 
@@ -195,7 +195,7 @@ message "Build site.".
 This is the general workflow.
 
 1. Write code in the R Markdown files (For RStudio users: to quickly develop the code I recommend executing the code in the R console via Ctrl-Enter to send one line or Ctrl-Alt-C to execute the entire code chunk)
-1. Run `make_site` to view the results as they will appear on the website
+1. Run `wflow_build` to view the results as they will appear on the website
 1. Go back to step 1 until you are satisfied with the result
 1. Commit the R Markdown files in `analysis`
 1. Run `commit_site` to build and commit the website

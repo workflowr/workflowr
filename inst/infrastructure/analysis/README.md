@@ -12,7 +12,7 @@ Alternatively in RStudio, you can use the dropdown menu: `File` -> `New File` ->
 To render your file, run
 
 ```
-make_site()
+wflow_build()
 ```
 
 This will create the HTML file in the website directory `docs/`. The figures

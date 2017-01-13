@@ -35,7 +35,8 @@ create_gitignore <- function(path, overwrite = FALSE) {
              ".RData",
              ".Ruserdata",
              "analysis/figure",
-             "analysis/*html")
+             "analysis/*html",
+             "analysis/*_cache")
   fname <- file.path(path, ".gitignore")
   exists <- file.exists(fname)
   if (exists & !overwrite) {

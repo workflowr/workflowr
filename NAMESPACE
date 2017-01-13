@@ -3,6 +3,6 @@
 export(commit_site)
 export(create_links_page)
 export(extract_commit)
-export(open_rmd)
 export(wflow_build)
+export(wflow_open)
 export(wflow_start)

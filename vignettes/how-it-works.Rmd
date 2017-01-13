@@ -86,7 +86,7 @@ While not strictly required for using workflowr, using [RStudio][] provides many
 
 * The Build pane enables you to build your entire website with one click (or the keyboard shortcut Ctrl+Shift+B) (requires version 1.0 or greater)
 
-* workflowr uses the [rstudioapi][] R package to automatically open R Markdown files in the editor (implemented in the function `open_rmd`)
+* workflowr uses the [rstudioapi][] R package to automatically open R Markdown files in the editor (implemented in the function `wflow_open`)
 
 * The Viewer pane displays the rendered HTML results for immediate feedback
 

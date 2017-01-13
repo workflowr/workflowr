@@ -38,8 +38,8 @@ test_that("commit_site include .nojekyll in commit", {
 })
 
 # Add a new R Markdown file
-# Can't use open_rmd b/c of the issue with devtools shims
-# new_rmd <- open_rmd("test.Rmd", change_wd = FALSE, open_file = FALSE,
+# Can't use wflow_open b/c of the issue with devtools shims
+# new_rmd <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
 #                     path = site_dir)
 new_rmd <- file.path(site_dir, "analysis", "test.Rmd")
 file.create(new_rmd)

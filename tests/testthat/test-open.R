@@ -32,35 +32,35 @@ context("open")
 # start project in a tempdir
 site_dir <- tempfile()
 dir.create(site_dir)
-suppressMessages(wflow_start("Test open_rmd", site_dir))
+suppressMessages(wflow_start("Test wflow_open", site_dir))
 
-test_that("open_rmd creates a new file, but does not overwrite", {
+test_that("wflow_open creates a new file, but does not overwrite", {
 
   if (skipping)
     skip("Must be run manually.")
 
-  full_file_path <- open_rmd("test.Rmd", change_wd = FALSE, open_file = FALSE,
+  full_file_path <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
                              path = site_dir)
   expect_true(file.exists(full_file_path))
   modification_time_pre <- file.mtime(full_file_path)
-  full_file_path_2 <- open_rmd("test.Rmd", change_wd = FALSE, open_file = FALSE,
+  full_file_path_2 <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
                                path = site_dir)
   expect_true(full_file_path_2 == full_file_path)
   modification_time_post <- file.mtime(full_file_path)
   expect_true(modification_time_post == modification_time_pre)
 })
 
-test_that("open_rmd changes the working directory", {
+test_that("wflow_open changes the working directory", {
 
   if (skipping)
     skip("Must be run manually.")
 
   wd_pre <- getwd()
-  open_rmd("do-not-change-wd.Rmd", change_wd = FALSE, open_file = FALSE,
+  wflow_open("do-not-change-wd.Rmd", change_wd = FALSE, open_file = FALSE,
            path = site_dir)
   wd_same <- getwd()
   expect_identical(wd_pre, wd_same)
-  open_rmd("do-change-wd.Rmd", change_wd = TRUE, open_file = FALSE,
+  wflow_open("do-change-wd.Rmd", change_wd = TRUE, open_file = FALSE,
            path = site_dir)
   wd_change <- getwd()
   expect_identical(wd_change, file.path(site_dir, "analysis"))

@@ -3,7 +3,7 @@
 Save your R Markdown analyses here. To create a new one, run
 
 ```
-open_rmd("filename.Rmd")
+wflow_open("filename.Rmd")
 ```
 
 Alternatively in RStudio, you can use the dropdown menu: `File` -> `New File` ->

@@ -1,10 +1,10 @@
 #' Open an R Markdown analysis file
 #'
-#' \code{open_rmd} opens an R Markdown file in RStudio and sets the working
+#' \code{wflow_open} opens an R Markdown file in RStudio and sets the working
 #' directory to \code{analysis/}. If the file does not exist, it creates a new
 #' Rmd using the workflowr template.
 #'
-#' \code{open_rmd} is a convenience function to make it easier to start working,
+#' \code{wflow_open} is a convenience function to make it easier to start working,
 #' especially when starting a new analysis. It will create the new file if
 #' necessary, set the working directory to \code{analysis/}, and open the file
 #' in RStudio. The latter two side effects can be turned off if desired.
@@ -28,10 +28,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' open_rmd("model-data.Rmd")
+#' wflow_open("model-data.Rmd")
 #' }
 #' @export
-open_rmd <- function(filename,
+wflow_open <- function(filename,
                      change_wd = TRUE,
                      open_file = TRUE,
                      path = ".") {
@@ -41,7 +41,7 @@ open_rmd <- function(filename,
     message(sprintf("e.g. %s", filename_base))
     message(sprintf("not %s", filename))
     message("It will be saved in analysis/")
-    stop(sprintf("open_rmd: Invalid filename argument"))
+    stop(sprintf("wflow_open: Invalid filename argument"))
   }
   analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
   rmd_filename <- file.path(analysis_dir, filename)

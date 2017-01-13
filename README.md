@@ -107,7 +107,7 @@ To start a new analysis, run the following command:
 
 
 ```r
-open_rmd("first-analysis.Rmd")
+wflow_open("first-analysis.Rmd")
 ```
 
 This performs multiple actions:

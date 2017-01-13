@@ -2,11 +2,15 @@
 % Please edit documentation in R/wflow_build.R
 \name{wflow_build}
 \alias{wflow_build}
-\title{Render only the updated R Markdown files}
+\title{Build the website}
 \usage{
-wflow_build(dry_run = FALSE, path = ".", ...)
+wflow_build(files = "", dry_run = FALSE, path = ".", ...)
 }
 \arguments{
+\item{files}{R Markdown files to be rendered. The files can be specified
+using the path or just the basename. Set to "all" to render every R
+Markdown file (default: "").}
+
 \item{dry_run}{Identifies R Markdown files that have been updated, but does
 not render them.}
 
@@ -24,21 +28,36 @@ If \code{dry_run = TRUE}, returns the character vector of R Markdown
   files that would be rendered. Otherwise invisibly returns this vector.
 }
 \description{
-\code{wflow_build} provides Makefile-like functionality to render only the R
-Markdown files that have been modified. This is in contrast to
-\code{rmarkdown::render_site}, which always renders all the pages. You should
-use the latter if you've made aesthetic changes that you want applied to all
-the R Markdown files.
+\code{wflow_build} builds the website by rendering the R Markdown files in
+the analysis directory and saving them to \code{docs/}. By default it only
+renders the R Markdown files that have been modified more recently than their
+corresponding HTML file (similar to a Makefile). To render specific R
+Markdown files, pass them as a vector to the argument \code{files}. To render
+every single page (e.g. to change the theme across the entire site), set
+\code{files = "all"}.
 }
 \details{
 Under the hood, this runs \code{rmarkdown::render_site} on each updated file
-individually. This provides all the website styling (which you would lose if
-you ran \code{rmarkdown::render}) without re-building the entire site (which
-would happen if you ran \code{rmarkdown::render_site with no arguments}).
+individually. This provides all the website styling specified in
+\code{_site.yml} (which you would lose if you ran \code{rmarkdown::render})
+without re-building the entire site (which would happen if you ran
+\code{rmarkdown::render_site with no arguments}).
+
+To include R Markdown files in your workflowr project that are not included
+as part of the website, you have multiple options: 1) Prepend an underscore
+to the filename, 2) move them to a subdirectory within the analysis
+directory, or 3) move them to another directory at the root of your project.
 }
 \examples{
 \dontrun{
+# View the files that would be rendered
+wflow_build(dry_run = TRUE)
+# Render all modified files
 wflow_build()
+# Render specific files
+wflow_build(files = c("one.Rmd", "two.Rmd"))
+# Render all files
+wflow_build(files = "all")
 }
 }
 

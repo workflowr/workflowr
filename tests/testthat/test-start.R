@@ -14,12 +14,12 @@ project_files <- project_files[!grepl("Rproj", project_files)]
 
 git_files <- c(".git", ".gitignore")
 
-test_that("start_project copies files correctly", {
+test_that("wflow_start copies files correctly", {
 
   # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
-  capture.output(start_project(project_name, site_dir))
+  capture.output(wflow_start(project_name, site_dir))
 
   for (f in c(project_files, git_files)) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -29,12 +29,12 @@ test_that("start_project copies files correctly", {
   unlink(site_dir, recursive = TRUE)
 })
 
-test_that("start_project git_init = FALSE removes all Git files", {
+test_that("wflow_start git_init = FALSE removes all Git files", {
 
   # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
-  capture.output(start_project(project_name, site_dir, git_init = FALSE))
+  capture.output(wflow_start(project_name, site_dir, git_init = FALSE))
 
   for (f in project_files) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -48,28 +48,28 @@ test_that("start_project git_init = FALSE removes all Git files", {
   unlink(site_dir, recursive = TRUE)
 })
 
-test_that("start_project does not overwrite files by default", {
+test_that("wflow_start does not overwrite files by default", {
 
   # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
-  capture.output(start_project(project_name, site_dir))
+  capture.output(wflow_start(project_name, site_dir))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents == "original")
   unlink(site_dir, recursive = TRUE)
 })
 
-test_that("start_project overwrites files when forced", {
+test_that("wflow_start overwrites files when forced", {
 
   # start project in a tempdir
   site_dir <- tempfile()
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
-  capture.output(start_project(project_name, site_dir, overwrite = TRUE))
+  capture.output(wflow_start(project_name, site_dir, overwrite = TRUE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents[1] == sprintf("# %s", project_name))

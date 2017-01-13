@@ -32,7 +32,7 @@ context("open")
 # start project in a tempdir
 site_dir <- tempfile()
 dir.create(site_dir)
-suppressMessages(start_project("Test open_rmd", site_dir))
+suppressMessages(wflow_start("Test open_rmd", site_dir))
 
 test_that("open_rmd creates a new file, but does not overwrite", {
 

@@ -62,13 +62,13 @@ As you use workflowr, if you find any unexpected behavior or think of an additio
 ## Start the project
 
 To start a new project, open R (or RStudio), load the workflowr package, and run
-the function `start_project`. The code below creates a directory called 
+the function `wflow_start`. The code below creates a directory called 
 `new-project/` in your home folder that contains all the files to get started,
 and also initializes a Git repository with the inital commit already made.
 
 ```{r start-project}
 library("workflowr")
-start_project("A new project", "~/new-project")
+wflow_start("A new project", "~/new-project")
 ```
 
 If you're using RStudio, you can choose `Open Project...` and select the file 
@@ -166,7 +166,7 @@ will display the Git commands to run in the shell (you can quickly open the
 Terminal to the correct working directoy from RStudio by choosing "Tools" ->
 "Shell...").
 
-When you first started the project with `start_project`, workflowr automatically
+When you first started the project with `wflow_start`, workflowr automatically
 made the first commit of all the project files. Since then you have updated some
 of the R Markdown files, added a new file `first-analysis.Rmd`, and built the 
 website in `docs/`. In order for the version of the code displayed at the top of

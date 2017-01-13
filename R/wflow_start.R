@@ -1,6 +1,6 @@
 #' Start a new workflowr project.
 #'
-#' \code{start_project} creates a new project directory for the site.
+#' \code{wflow_start} creates a new project directory for the site.
 #'
 #' This is the initial function that organizes the infrastructure to create a
 #' research website for your project. Note that while you do not need to use
@@ -17,10 +17,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' start_project("My Project", "path/to/new-project")
+#' wflow_start("My Project", "path/to/new-project")
 #' }
 #' @export
-start_project <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
+wflow_start <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
 
   # Create directory if it doesn't already exist
   if (!dir.exists(directory)) {

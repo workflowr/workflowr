@@ -54,27 +54,25 @@ wflow_build <- function(files = "", dry_run = FALSE, path = ".", ...) {
   analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
   stopifnot(dir.exists(analysis_dir))
 
-  if (files == "" | files == "all") {
+  if (files[1] == "" | files[1] == "all") {
     # Gather Rmd files (any file starting with _ is ignored)
     rmd_files <- list.files(path = analysis_dir, pattern = "^[^_].*Rmd$",
                             full.names = TRUE)
   } else {
     rmd_files <- file.path(analysis_dir, basename(files))
-    stopifnot(file.exists(rmd_files), grep("Rmd$", rmd_files))
+    stopifnot(file.exists(rmd_files), grepl("Rmd$", rmd_files))
   }
 
-  if (files != "" | files == "all") {
+  if (files[1] != "" | files[1] == "all") {
     files_to_update <- rmd_files
   } else {
     files_to_update <- return_modified_rmd(rmd_files)
   }
 
+  # Render the updated R Markdown files
   if (length(files_to_update) == 0) {
     message("All HTML files have been rendered")
-  }
-
-  # Render the updated R Markdown files
-  if (dry_run) {
+  } else if (dry_run) {
     message("The following R Markdown files would be rendered:")
     return(files_to_update)
   } else {

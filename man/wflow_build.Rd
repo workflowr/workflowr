@@ -4,12 +4,14 @@
 \alias{wflow_build}
 \title{Build the website}
 \usage{
-wflow_build(files = "", dry_run = FALSE, path = ".", ...)
+wflow_build(all = FALSE, files = NULL, dry_run = FALSE, path = ".", ...)
 }
 \arguments{
+\item{all}{logical indicating if every R Markdown file should be rendered
+when building the site (default: FALSE).}
+
 \item{files}{R Markdown files to be rendered. The files can be specified
-using the path or just the basename. Set to "all" to render every R
-Markdown file (default: "").}
+using the path or just the basename (default: NULL).}
 
 \item{dry_run}{Identifies R Markdown files that have been updated, but does
 not render them.}
@@ -31,10 +33,10 @@ If \code{dry_run = TRUE}, returns the character vector of R Markdown
 \code{wflow_build} builds the website by rendering the R Markdown files in
 the analysis directory and saving them to \code{docs/}. By default it only
 renders the R Markdown files that have been modified more recently than their
-corresponding HTML file (similar to a Makefile). To render specific R
-Markdown files, pass them as a vector to the argument \code{files}. To render
-every single page (e.g. to change the theme across the entire site), set
-\code{files = "all"}.
+corresponding HTML file (similar to a Makefile). To render every single page
+(e.g. to change the theme across the entire site), set \code{all = TRUE}. To
+render specific R Markdown files, pass them as a vector to the argument
+\code{files}.
 }
 \details{
 Under the hood, this runs \code{rmarkdown::render_site} on each updated file
@@ -54,10 +56,10 @@ directory, or 3) move them to another directory at the root of your project.
 wflow_build(dry_run = TRUE)
 # Render all modified files
 wflow_build()
+# Render all files
+wflow_build(all = TRUE)
 # Render specific files
 wflow_build(files = c("one.Rmd", "two.Rmd"))
-# Render all files
-wflow_build(files = "all")
 }
 }
 

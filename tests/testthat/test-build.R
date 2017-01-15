@@ -109,13 +109,13 @@ all_html <- sort(c(html_files, test_html))
 
 test_that("wflow_build can build 'all' files", {
   html_mtime_pre <- file.mtime(all_html)
-  expect_message(wflow_build(files = "all", dry_run = TRUE,
+  expect_message(wflow_build(all = TRUE, dry_run = TRUE,
                              path = site_dir),
                  "The following R Markdown files would be rendered:")
-  expect_identical(wflow_build(files = "all", dry_run = TRUE,
+  expect_identical(wflow_build(all = TRUE, dry_run = TRUE,
                                path = site_dir),
                    all_rmd)
-  output <- capture.output(built_files <- wflow_build(files = "all",
+  output <- capture.output(built_files <- wflow_build(all = TRUE,
                                                       path = site_dir,
                                                       quiet = TRUE))
   expect_identical(all_rmd, built_files)
@@ -133,7 +133,7 @@ ignore_html <- stringr::str_replace(ignore_rmd, "Rmd$", "html")
 ignore_html <- stringr::str_replace(ignore_html, "/analysis/", "/docs/")
 
 test_that("wflow_build ignores file starting with underscore", {
-  capture.output(wflow_build(files = "all", path = site_dir))
+  capture.output(wflow_build(all = TRUE, path = site_dir))
   expect_false(file.exists(ignore_html))
 })
 

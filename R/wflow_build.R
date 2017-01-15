@@ -3,10 +3,10 @@
 #' \code{wflow_build} builds the website by rendering the R Markdown files in
 #' the analysis directory and saving them to \code{docs/}. By default it only
 #' renders the R Markdown files that have been modified more recently than their
-#' corresponding HTML file (similar to a Makefile). To render specific R
-#' Markdown files, pass them as a vector to the argument \code{files}. To render
-#' every single page (e.g. to change the theme across the entire site), set
-#' \code{files = "all"}.
+#' corresponding HTML file (similar to a Makefile). To render every single page
+#' (e.g. to change the theme across the entire site), set \code{all = TRUE}. To
+#' render specific R Markdown files, pass them as a vector to the argument
+#' \code{files}.
 #'
 #' Under the hood, this runs \code{rmarkdown::render_site} on each updated file
 #' individually. This provides all the website styling specified in
@@ -19,9 +19,10 @@
 #' to the filename, 2) move them to a subdirectory within the analysis
 #' directory, or 3) move them to another directory at the root of your project.
 #'
+#' @param all logical indicating if every R Markdown file should be rendered
+#'   when building the site (default: FALSE).
 #' @param files R Markdown files to be rendered. The files can be specified
-#'   using the path or just the basename. Set to "all" to render every R
-#'   Markdown file (default: "").
+#'   using the path or just the basename (default: NULL).
 #' @param dry_run Identifies R Markdown files that have been updated, but does
 #'   not render them.
 #' @param path By default the function assumes the current working directory is
@@ -41,20 +42,22 @@
 #' wflow_build(dry_run = TRUE)
 #' # Render all modified files
 #' wflow_build()
+#' # Render all files
+#' wflow_build(all = TRUE)
 #' # Render specific files
 #' wflow_build(files = c("one.Rmd", "two.Rmd"))
-#' # Render all files
-#' wflow_build(files = "all")
 #' }
 #' @export
-wflow_build <- function(files = "", dry_run = FALSE, path = ".", ...) {
-  stopifnot(is.character(files),
+wflow_build <- function(all = FALSE, files = NULL, dry_run = FALSE,
+                        path = ".", ...) {
+  stopifnot(is.logical(all),
+            is.null(files) | is.character(files),
             is.logical(dry_run),
             is.character(path))
   analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
   stopifnot(dir.exists(analysis_dir))
 
-  if (files[1] == "" | files[1] == "all") {
+  if (all | is.null(files)) {
     # Gather Rmd files (any file starting with _ is ignored)
     rmd_files <- list.files(path = analysis_dir, pattern = "^[^_].*Rmd$",
                             full.names = TRUE)
@@ -63,7 +66,7 @@ wflow_build <- function(files = "", dry_run = FALSE, path = ".", ...) {
     stopifnot(file.exists(rmd_files), grepl("Rmd$", rmd_files))
   }
 
-  if (files[1] != "" | files[1] == "all") {
+  if (all | !is.null(files)) {
     files_to_update <- rmd_files
   } else {
     files_to_update <- return_modified_rmd(rmd_files)

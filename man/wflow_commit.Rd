@@ -4,14 +4,18 @@
 \alias{wflow_commit}
 \title{Commit the website files}
 \usage{
-wflow_commit(files = "", message = NULL, dry_run = FALSE, path = ".")
+wflow_commit(all = FALSE, commit_files = NULL, commit_message = NULL,
+  dry_run = FALSE, path = ".")
 }
 \arguments{
-\item{files}{Files to be committed to Git before building and committing
-website files. Set to "all" to re-build every webpage (default: "").}
+\item{all}{logical indicating if every R Markdown file should be rendered
+when building and committing the site (default: FALSE).}
 
-\item{message}{A commit message. Only used if specific files are specified to
-the argument \code{files} (default: NULL).}
+\item{commit_files}{Files to be committed to Git before building and
+committing website files (default: NULL).}
+
+\item{commit_message}{A commit message. Only used if specific files are
+specified to the argument \code{files} (default: NULL).}
 
 \item{dry_run}{Identifies R Markdown files that have been updated, but does
 not render them.}
@@ -45,12 +49,13 @@ currently have any subsequent changes that have not been committed. The files
 will be built and the correspoding HTML committed.
 
 Second, you can have \code{wflow_commit} first add and commit files specified
-with the argument \code{files}. A message for this commit can also be
-specified with the argument \code{message}. After this commit has been made,
-\code{wflow_commit} then searches the Git commit history as described above.
+with the argument \code{commit_files}. A message for this commit can also be
+specified with the argument \code{commit_message}. After this commit has been
+made, \code{wflow_commit} then searches the Git commit history as described
+above.
 
 Third, you can have \code{wflow_commit} re-build and commit all the webpages
-by setting \code{files = "all"}. This is useful if you are making an
+by setting \code{all = TRUE}. This is useful if you are making an
 aesthetic change, e.g. the theme, that needs to be applied regardless of
 whether the R Markdown file has been edited. Only tracked files without
 uncommitted changes will be re-built (this prevents the HTML not matching the
@@ -58,15 +63,15 @@ corresponding R Markdown file).
 }
 \examples{
 \dontrun{
-# Specify files to commit (with a corresponding commit message),
-prior to building and committing the webpages
-wflow_commit(files = c("pipeline.R", "new-analysis.Rmd"),
-             message = "Finished new analysis")
 # Build and commit the webpages that are out of date
 wflow_commit()
+# Specify files to commit (with a corresponding commit message),
+# prior to building and committing the webpages
+wflow_commit(commit_files = c("pipeline.R", "new-analysis.Rmd"),
+             commit_message = "Finished new analysis")
 # Re-build all the webpages
 # (e.g. to implement an aesthetic change)
-wflow_commit(files = "all")
+wflow_commit(all = TRUE)
 }
 }
 

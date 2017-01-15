@@ -141,21 +141,24 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #' will be built and the correspoding HTML committed.
 #'
 #' Second, you can have \code{wflow_commit} first add and commit files specified
-#' with the argument \code{files}. A message for this commit can also be
-#' specified with the argument \code{message}. After this commit has been made,
-#' \code{wflow_commit} then searches the Git commit history as described above.
+#' with the argument \code{commit_files}. A message for this commit can also be
+#' specified with the argument \code{commit_message}. After this commit has been
+#' made, \code{wflow_commit} then searches the Git commit history as described
+#' above.
 #'
 #' Third, you can have \code{wflow_commit} re-build and commit all the webpages
-#' by setting \code{files = "all"}. This is useful if you are making an
+#' by setting \code{all = TRUE}. This is useful if you are making an
 #' aesthetic change, e.g. the theme, that needs to be applied regardless of
 #' whether the R Markdown file has been edited. Only tracked files without
 #' uncommitted changes will be re-built (this prevents the HTML not matching the
 #' corresponding R Markdown file).
 #'
-#' @param files Files to be committed to Git before building and committing
-#'   website files. Set to "all" to re-build every webpage (default: "").
-#' @param message A commit message. Only used if specific files are specified to
-#'   the argument \code{files} (default: NULL).
+#' @param all logical indicating if every R Markdown file should be rendered
+#'   when building and committing the site (default: FALSE).
+#' @param commit_files Files to be committed to Git before building and
+#'   committing website files (default: NULL).
+#' @param commit_message A commit message. Only used if specific files are
+#'   specified to the argument \code{files} (default: NULL).
 #' @param dry_run Identifies R Markdown files that have been updated, but does
 #'   not render them.
 #' @param path By default the function assumes the current working directory is
@@ -167,21 +170,22 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #'
 #' @examples
 #' \dontrun{
-#' # Specify files to commit (with a corresponding commit message),
-#' # prior to building and committing the webpages
-#' wflow_commit(files = c("pipeline.R", "new-analysis.Rmd"),
-#'              message = "Finished new analysis")
 #' # Build and commit the webpages that are out of date
 #' wflow_commit()
+#' # Specify files to commit (with a corresponding commit message),
+#' # prior to building and committing the webpages
+#' wflow_commit(commit_files = c("pipeline.R", "new-analysis.Rmd"),
+#'              commit_message = "Finished new analysis")
 #' # Re-build all the webpages
 #' # (e.g. to implement an aesthetic change)
-#' wflow_commit(files = "all")
+#' wflow_commit(all = TRUE)
 #' }
 #' @export
-wflow_commit <- function(files = "", message = NULL, dry_run = FALSE,
-                         path = ".") {
-  stopifnot(is.character(files),
-            is.null(message) | is.character(message),
+wflow_commit <- function(all = FALSE, commit_files = NULL,
+                         commit_message = NULL, dry_run = FALSE, path = ".") {
+  stopifnot(is.logical(all),
+            is.null(commit_files) | is.character(commit_files),
+            is.null(commit_message) | is.character(commit_message),
             is.logical(dry_run),
             is.character(path))
   root_path <- rprojroot::find_rstudio_root_file(path = path)
@@ -189,17 +193,17 @@ wflow_commit <- function(files = "", message = NULL, dry_run = FALSE,
   stopifnot(dir.exists(analysis_dir))
   repo <- git2r::repository(root_path)
 
-  if (files[1] != "" & files[1] != "all") {
-    stopifnot(file.exists(files))
+  if (!is.null(commit_files)) {
+    stopifnot(file.exists(commit_files))
     if (dry_run) {
       message("The following files would be committed before building the site:")
-      message(cat(files, sep = "\n"))
+      message(cat(commit_files, sep = "\n"))
     } else {
-      git2r::add(repo, files)
-      if (is.null(message)) {
+      git2r::add(repo, commit_files)
+      if (is.null(commit_message)) {
         git2r::commit(repo, message = "Files commited by wflow_commit")
       } else{
-        git2r::commit(repo, message = message)
+        git2r::commit(repo, message = commit_message)
       }
     }
   }
@@ -226,7 +230,7 @@ wflow_commit <- function(files = "", message = NULL, dry_run = FALSE,
   rmd_to_consider <- setdiff(rmd_all, c(staged_rmd, unstaged_rmd,
                                         untracked_rmd, ignored_rmd))
   # If all eligible R Markdown files should be built
-  if (files[1] == "all") {
+  if (all) {
     to_render <- TRUE
   } else {
     # Determine which R Markdown files need to be updated

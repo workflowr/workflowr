@@ -2,7 +2,7 @@
 % Please edit documentation in R/wflow_commit.R
 \name{decide_to_render}
 \alias{decide_to_render}
-\title{Decide with files to render and commit}
+\title{Decide which files to render and commit}
 \usage{
 decide_to_render(repo, log, rmd)
 }

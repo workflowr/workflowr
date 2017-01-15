@@ -21,9 +21,7 @@ test_that("wflow_commit creates HTML files", {
   html_files <- file.path(site_dir, "docs", c("about.html",
                                               "index.html",
                                               "license.html"))
-  for (html in html_files) {
-    expect_true(file.exists(html))
-  }
+  expect_true(all(file.exists(html_files)))
 })
 
 log <- commits(r)

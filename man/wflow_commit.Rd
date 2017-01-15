@@ -4,9 +4,15 @@
 \alias{wflow_commit}
 \title{Commit the website files}
 \usage{
-wflow_commit(dry_run = FALSE, path = ".")
+wflow_commit(files = "", message = NULL, dry_run = FALSE, path = ".")
 }
 \arguments{
+\item{files}{Files to be committed to Git before building and committing
+website files. Set to "all" to re-build every webpage (default: "").}
+
+\item{message}{A commit message. Only used if specific files are specified to
+the argument \code{files} (default: NULL).}
+
 \item{dry_run}{Identifies R Markdown files that have been updated, but does
 not render them.}
 
@@ -19,12 +25,48 @@ If \code{dry_run = TRUE}, returns the character vector of R Markdown
   files that would be rendered. Otherwise invisibly returns this vector.
 }
 \description{
-\code{wflow_commit} ensures that the website files are created by the code
-that has been committed to the Git repository.
+\code{wflow_commit} builds and commits the website files, ensuring that the
+website files are created by the proper R Markdown files that have been
+committed to the Git repository. Optionally can specify files to be committed
+before building the website.
+}
+\details{
+worklowr facilitates reproducibility by placing the current SHA-1 of the Git
+repository at the top of each HTML file. This indicates which version of the
+code could be used to reproduce the results. In order for this to be
+meaningful, the R Markdown file must not have changed since it was last
+committed. \code{wflow_commit} can be invoked in 3 different (though not
+mutually exclusive) modes.
+
+First, running \code{wflow_commit} with the default arguments will identify
+all R Markdown files which have been modified more recently in the Git commit
+history than their corresponding HTML files. Furthermore these files must not
+currently have any subsequent changes that have not been committed. The files
+will be built and the correspoding HTML committed.
+
+Second, you can have \code{wflow_commit} first add and commit files specified
+with the argument \code{files}. A message for this commit can also be
+specified with the argument \code{message}. After this commit has been made,
+\code{wflow_commit} then searches the Git commit history as described above.
+
+Third, you can have \code{wflow_commit} re-build and commit all the webpages
+by setting \code{files = "all"}. This is useful if you are making an
+aesthetic change, e.g. the theme, that needs to be applied regardless of
+whether the R Markdown file has been edited. Only tracked files without
+uncommitted changes will be re-built (this prevents the HTML not matching the
+corresponding R Markdown file).
 }
 \examples{
 \dontrun{
+# Specify files to commit (with a corresponding commit message),
+prior to building and committing the webpages
+wflow_commit(files = c("pipeline.R", "new-analysis.Rmd"),
+             message = "Finished new analysis")
+# Build and commit the webpages that are out of date
 wflow_commit()
+# Re-build all the webpages
+# (e.g. to implement an aesthetic change)
+wflow_commit(files = "all")
 }
 }
 

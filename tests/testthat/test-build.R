@@ -60,7 +60,7 @@ test_that("wflow_build only builds new HTML files", {
                                                       quiet = TRUE))
   expect_identical(test_rmd, built_files)
   expect_identical(test_rmd, stringr::str_split(output[output != ""], " ",
-                                                 simplify = TRUE)[, 2])
+                                                simplify = TRUE)[, 2])
   expect_true(all(file.exists(test_html)))
   html_mtime_post <- file.mtime(html_files)
   expect_identical(html_mtime_pre, html_mtime_post)
@@ -98,7 +98,7 @@ test_that("wflow_build builds multiple specified files", {
                                                       quiet = TRUE))
   expect_identical(test_rmd[1:2], built_files)
   expect_identical(test_rmd[1:2], stringr::str_split(output[output != ""], " ",
-                                                   simplify = TRUE)[, 2])
+                                                     simplify = TRUE)[, 2])
   expect_true(all(file.exists(test_html[1:2])))
   html_mtime_post <- file.mtime(test_html[1:2])
   expect_true(all(html_mtime_pre < html_mtime_post))
@@ -120,10 +120,31 @@ test_that("wflow_build can build 'all' files", {
                                                       quiet = TRUE))
   expect_identical(all_rmd, built_files)
   expect_identical(all_rmd, stringr::str_split(output[output != ""], " ",
-                                                     simplify = TRUE)[, 2])
+                                               simplify = TRUE)[, 2])
   expect_true(all(file.exists(all_html)))
   html_mtime_post <- file.mtime(all_html)
   expect_true(all(html_mtime_pre < html_mtime_post))
+})
+
+ignore_rmd <- file.path(site_dir, paste0("analysis/_ignore.Rmd"))
+file.copy("files/workflowr-template.Rmd", ignore_rmd)
+# Expected html files
+ignore_html <- stringr::str_replace(ignore_rmd, "Rmd$", "html")
+ignore_html <- stringr::str_replace(ignore_html, "/analysis/", "/docs/")
+
+test_that("wflow_build ignores file starting with underscore", {
+  capture.output(wflow_build(files = "all", path = site_dir))
+  expect_false(file.exists(ignore_html))
+})
+
+test_that("wflow_build builds file starting with underscore if specified", {
+  output <- capture.output(built_files <- wflow_build(files = ignore_rmd,
+                                                      path = site_dir,
+                                                      quiet = TRUE))
+  expect_identical(ignore_rmd, built_files)
+  expect_identical(ignore_rmd, stringr::str_split(output[output != ""], " ",
+                                                  simplify = TRUE)[, 2])
+  expect_true(file.exists(ignore_html))
 })
 
 unlink(site_dir, recursive = TRUE)

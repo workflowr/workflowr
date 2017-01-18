@@ -254,7 +254,7 @@ wflow_commit <- function(all = FALSE, commit_files = NULL,
     for (f in files_to_update) {
       # Delete the figures first? In both analysis/ and docs/?
       cat(sprintf("\n\nRendering %s\n\n", basename(f)))
-      rmarkdown::render_site(f)
+      rmarkdown::render_site(f, envir = new.env())
       html <- file.path(root_path, "docs",
                         stringr::str_replace(basename(f), "Rmd$", "html"))
       git2r::add(repo, html)

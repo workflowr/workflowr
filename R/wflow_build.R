@@ -81,7 +81,7 @@ wflow_build <- function(all = FALSE, files = NULL, dry_run = FALSE,
   } else {
     for (f in files_to_update) {
       cat(sprintf("\n\nRendering %s\n\n", f))
-      rmarkdown::render_site(f, ...)
+      rmarkdown::render_site(f, envir = new.env(), ...)
     }
   }
 

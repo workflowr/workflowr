@@ -17,12 +17,16 @@ LazyData: true
 Imports:
     git2r,
     knitr,
+    methods,
     rprojroot,
     rstudioapi,
     stringr,
-    whisker
+    utils,
+    whisker,
+    yaml
 RoxygenNote: 5.0.1
 Suggests:
     devtools,
     testthat
 VignetteBuilder: knitr
+SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org

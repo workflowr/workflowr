@@ -30,6 +30,7 @@
 #' \dontrun{
 #' wflow_open("model-data.Rmd")
 #' }
+#' @import rmarkdown
 #' @export
 wflow_open <- function(filename,
                      change_wd = TRUE,

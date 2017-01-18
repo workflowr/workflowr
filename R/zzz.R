@@ -3,7 +3,7 @@
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(sprintf("This is workflowr version %s",
-                                packageVersion("workflowr")))
+                                utils::packageVersion("workflowr")))
   packageStartupMessage("Please send bug reports and feature requests to:")
   packageStartupMessage("https://github.com/jdblischak/workflowr/issues")
 }

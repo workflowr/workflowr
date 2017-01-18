@@ -8,7 +8,7 @@ extract_commit <- function(path, num) {
     return(list(sha1 = "NA", message = "NA"))
   }
   repo <- git2r::repository(path, discover = TRUE)
-  git_log <- capture.output(git2r::reflog(repo))
+  git_log <- utils::capture.output(git2r::reflog(repo))
   total_commits <- length(git_log)
   if (total_commits == 0) {
     return(list(sha1 = "NA", message = "NA"))

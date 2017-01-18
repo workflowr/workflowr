@@ -32,6 +32,7 @@
 #' \dontrun{
 #' create_links_page()
 #' }
+#' @import rmarkdown
 #' @export
 create_links_page <- function(output = "results.Rmd",
                            sort_method = "filename",
@@ -40,7 +41,8 @@ create_links_page <- function(output = "results.Rmd",
                            datatable = FALSE) {
   analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
   # Gather Rmd files, only need basename
-  rmd_files <- list.files(path = analysis_dir, pattern = glob2rx("*Rmd"))
+  rmd_files <- list.files(path = analysis_dir,
+                          pattern = utils::glob2rx("*Rmd"))
   # Files to exclude
   excluded <- c("index.Rmd", "about.Rmd", "license.Rmd", "results.Rmd")
   if (!is.null(exclude_rmd)) {

@@ -47,6 +47,7 @@
 #' # Render specific files
 #' wflow_build(files = c("one.Rmd", "two.Rmd"))
 #' }
+#' @import rmarkdown
 #' @export
 wflow_build <- function(all = FALSE, files = NULL, dry_run = FALSE,
                         path = ".", ...) {

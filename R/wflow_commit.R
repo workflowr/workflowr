@@ -93,7 +93,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
   stopifnot(class(repo) ==  "git_repository",
             class(commit) == "git_commit",
             length(git2r::parents(commit)) == 0)
-  entries <- as(git2r::tree(commit), "data.frame")
+  entries <- methods::as(git2r::tree(commit), "data.frame")
   files <- character()
   while (nrow(entries) > 0) {
     if (entries$type[1] == "blob") {
@@ -108,7 +108,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
       #  - add the subdirectory to the name so that path is correct
       #  - remove the entry from beginning and add new entries to end of
       #    data.frame
-      new_tree_df <- as(git2r::lookup(repo, entries$sha[1]), "data.frame")
+      new_tree_df <- methods::as(git2r::lookup(repo, entries$sha[1]), "data.frame")
       new_tree_df$name <- file.path(entries$name[1], new_tree_df$name)
       entries <- rbind(entries[-1, ], new_tree_df)
     } else {
@@ -180,6 +180,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #' # (e.g. to implement an aesthetic change)
 #' wflow_commit(all = TRUE)
 #' }
+#' @import rmarkdown
 #' @export
 wflow_commit <- function(all = FALSE, commit_files = NULL,
                          commit_message = NULL, dry_run = FALSE, path = ".") {

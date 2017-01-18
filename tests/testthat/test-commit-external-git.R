@@ -1,9 +1,11 @@
-context("commit")
+context("commit-external-git")
+
+# Test wflow_commit used in conjuction with external Git commands
 
 library("git2r")
 
 # start project in a tempdir
-project_name <- "test-commit"
+project_name <- "test-commit-external-git"
 site_dir <- tempfile(paste0(project_name, "-"))
 dir.create(site_dir)
 suppressMessages(wflow_start(project_name, site_dir))
@@ -55,9 +57,14 @@ add(r, new_rmd)
 
 test_that("wflow_build, but not wflow_commit, renders staged Rmd file", {
   wflow_build_files <- wflow_build(dry_run = TRUE, path = site_dir)
-  wflow_commit_files <- wflow_commit(dry_run = TRUE, path = site_dir)
   expect_true(new_rmd %in% wflow_build_files)
-  expect_false(new_rmd %in% wflow_commit_files)
+  # It gives a warning if there are staged files
+  expect_warning(wflow_commit(dry_run = TRUE, include_staged = TRUE,
+                              path = site_dir),
+                 "Files have already been added to the staging area.")
+  # It fails by default if there are staged file
+  expect_error(suppressWarnings(wflow_commit(dry_run = TRUE, path = site_dir)),
+               "wflow_commit stopped because of files in the staging area.")
 })
 
 # Commit file

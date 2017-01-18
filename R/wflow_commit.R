@@ -147,11 +147,11 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #' above.
 #'
 #' Third, you can have \code{wflow_commit} re-build and commit all the webpages
-#' by setting \code{all = TRUE}. This is useful if you are making an
-#' aesthetic change, e.g. the theme, that needs to be applied regardless of
-#' whether the R Markdown file has been edited. Only tracked files without
-#' uncommitted changes will be re-built (this prevents the HTML not matching the
-#' corresponding R Markdown file).
+#' by setting \code{all = TRUE}. This is useful if you are making an aesthetic
+#' change, e.g. the theme, that needs to be applied regardless of whether the R
+#' Markdown file has been edited. Only tracked files without uncommitted changes
+#' will be re-built (this prevents the HTML not matching the corresponding R
+#' Markdown file).
 #'
 #' @param all logical indicating if every R Markdown file should be rendered
 #'   when building and committing the site (default: FALSE).
@@ -161,6 +161,10 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #'   specified to the argument \code{files} (default: NULL).
 #' @param dry_run Identifies R Markdown files that have been updated, but does
 #'   not render them.
+#' @param include_staged logical. By default \code{wflow_commit} will stop if it
+#'   detects any files in the staging area. Set to TRUE ff you want these files
+#'   to be included in the commit created by \code{wflow_commit} (not
+#'   recommended).
 #' @param path By default the function assumes the current working directory is
 #'   within the project. If this is not true, you'll need to provide the path to
 #'   the project directory.
@@ -183,7 +187,8 @@ obtain_files_in_commit_root <- function(repo, commit) {
 #' @import rmarkdown
 #' @export
 wflow_commit <- function(all = FALSE, commit_files = NULL,
-                         commit_message = NULL, dry_run = FALSE, path = ".") {
+                         commit_message = NULL, dry_run = FALSE,
+                         include_staged = FALSE, path = ".") {
   stopifnot(is.logical(all),
             is.null(commit_files) | is.character(commit_files),
             is.null(commit_message) | is.character(commit_message),
@@ -193,16 +198,32 @@ wflow_commit <- function(all = FALSE, commit_files = NULL,
   analysis_dir <- file.path(root_path, "analysis")
   stopifnot(dir.exists(analysis_dir))
   repo <- git2r::repository(root_path)
+  s <- git2r::status(repo)
+  num_staged <- length(s$staged)
+
+  if (num_staged > 0) {
+    warning("Files have already been added to the staging area.")
+    warning("You probably want to commit them first before running commit_site")
+  }
+  if (num_staged > 0 & !include_staged) {
+    stop("wflow_commit stopped because of files in the staging area. Either commit these first or set the argument `include_staged = TRUE` to include these files in the commit created by wflow_commit.")
+  }
 
   if (!is.null(commit_files)) {
     stopifnot(file.exists(commit_files))
     if (dry_run) {
-      message("The following files would be committed before building the site:")
-      message(cat(commit_files, sep = "\n"))
+      message("The current status of the Git repo is:")
+      message(paste(utils::capture.output(s), collapse = "\n"))
+      message("You are planning to commit the following files before building the site:")
+      message(paste(commit_files, collapse = "\n"))
     } else {
       git2r::add(repo, commit_files)
-      if (is.null(commit_message)) {
-        git2r::commit(repo, message = "Files commited by wflow_commit")
+      s <- git2r::status(repo)
+      num_staged <- length(s$staged)
+      if (num_staged == 0) {
+        warning("None of the commit_files provided were committed, presumably because they have not been updated.")
+      } else if (is.null(commit_message)) {
+        git2r::commit(repo, message = "Files commited by wflow_commit.")
       } else{
         git2r::commit(repo, message = commit_message)
       }
@@ -254,8 +275,8 @@ wflow_commit <- function(all = FALSE, commit_files = NULL,
   } else {
     for (f in files_to_update) {
       # Delete the figures first? In both analysis/ and docs/?
-      cat(sprintf("\n\nRendering %s\n\n", basename(f)))
-      rmarkdown::render_site(f, envir = new.env())
+      message(sprintf("\n\nRendering %s\n\n", basename(f)))
+      rmarkdown::render_site(f, envir = new.env(), quiet = TRUE)
       html <- file.path(root_path, "docs",
                         stringr::str_replace(basename(f), "Rmd$", "html"))
       git2r::add(repo, html)

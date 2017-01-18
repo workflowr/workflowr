@@ -5,7 +5,7 @@
 \title{Commit the website files}
 \usage{
 wflow_commit(all = FALSE, commit_files = NULL, commit_message = NULL,
-  dry_run = FALSE, path = ".")
+  dry_run = FALSE, include_staged = FALSE, path = ".")
 }
 \arguments{
 \item{all}{logical indicating if every R Markdown file should be rendered
@@ -19,6 +19,11 @@ specified to the argument \code{files} (default: NULL).}
 
 \item{dry_run}{Identifies R Markdown files that have been updated, but does
 not render them.}
+
+\item{include_staged}{logical. By default \code{wflow_commit} will stop if it
+detects any files in the staging area. Set to TRUE ff you want these files
+to be included in the commit created by \code{wflow_commit} (not
+recommended).}
 
 \item{path}{By default the function assumes the current working directory is
 within the project. If this is not true, you'll need to provide the path to
@@ -55,11 +60,11 @@ made, \code{wflow_commit} then searches the Git commit history as described
 above.
 
 Third, you can have \code{wflow_commit} re-build and commit all the webpages
-by setting \code{all = TRUE}. This is useful if you are making an
-aesthetic change, e.g. the theme, that needs to be applied regardless of
-whether the R Markdown file has been edited. Only tracked files without
-uncommitted changes will be re-built (this prevents the HTML not matching the
-corresponding R Markdown file).
+by setting \code{all = TRUE}. This is useful if you are making an aesthetic
+change, e.g. the theme, that needs to be applied regardless of whether the R
+Markdown file has been edited. Only tracked files without uncommitted changes
+will be re-built (this prevents the HTML not matching the corresponding R
+Markdown file).
 }
 \examples{
 \dontrun{

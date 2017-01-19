@@ -2,12 +2,14 @@
 % Please edit documentation in R/wflow_open.R
 \name{wflow_open}
 \alias{wflow_open}
-\title{Open an R Markdown analysis file}
+\title{Open R Markdown analysis file(s)}
 \usage{
 wflow_open(filename, change_wd = TRUE, open_file = TRUE, path = ".")
 }
 \arguments{
-\item{filename}{The basename of the R Markdown file.}
+\item{filename}{The name of the R Markdown file(s) (can be either a path or
+just the basename, but will always be written to \code{analysis/}
+directory). File extension must be .Rmd.}
 
 \item{change_wd}{Should the working directory be changed to the analysis
 subdirectory? (default: TRUE)}
@@ -19,21 +21,21 @@ within the project. If this is not true, you'll need to provide the path to
 the project directory.}
 }
 \value{
-Invisibly returns the full path to the R Markdown file.
+Invisibly returns the full path to the R Markdown file(s).
 }
 \description{
-\code{wflow_open} opens an R Markdown file in RStudio and sets the working
-directory to \code{analysis/}. If the file does not exist, it creates a new
-Rmd using the workflowr template.
+\code{wflow_open} opens R Markdown files in RStudio and sets the working
+directory to \code{analysis/}. If a file does not exist, it is created using
+the workflowr R Markdown template.
 }
 \details{
-\code{wflow_open} is a convenience function to make it easier to start working,
-especially when starting a new analysis. It will create the new file if
-necessary, set the working directory to \code{analysis/}, and open the file
-in RStudio. The latter two side effects can be turned off if desired.
+\code{wflow_open} is a convenience function to make it easier to start
+working, especially when starting a new analysis. It will create a new file
+if necessary, set the working directory to \code{analysis/}, and open the
+file(s) in RStudio. The latter two side effects can be turned off if desired.
 
 If you are not using RStudio and are comfortable with relative paths and
-managing your working directory, you could instead use directly use the
+managing your working directory, you could instead directly use the
 underlying commands. First set the working directory to the \code{analysis/}
 subdirectory of your workflowr project. Second create the new file with
 \code{draft("model-data.Rmd", template = "analysis", package = "workflowr",
@@ -41,7 +43,14 @@ edit = FALSE)}. Third open the file in your text editor.
 }
 \examples{
 \dontrun{
+# Any of the following are valid input. Files would be created if they did
+# not exist.
+# Basename of file:
 wflow_open("model-data.Rmd")
+# Path to file
+wflow_open("analysis/model-data.Rmd")
+# Multiple files
+wflow_open(c("model-data.Rmd", "another-analysis.Rmd"))
 }
 }
 

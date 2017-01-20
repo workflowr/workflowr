@@ -24,9 +24,6 @@ if ("devtools_shims" %in% search()) {
 } else {
   skipping <- FALSE
   message("Running tests in test-open.R")
-}
-
-if (!skipping) {
   library("testthat")
   library("workflowr")
 }

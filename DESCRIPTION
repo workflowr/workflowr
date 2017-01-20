@@ -16,7 +16,6 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     git2r,
-    knitr,
     methods,
     rprojroot,
     rstudioapi,
@@ -27,6 +26,7 @@ Imports:
 RoxygenNote: 5.0.1
 Suggests:
     devtools,
+    knitr,
     testthat
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org

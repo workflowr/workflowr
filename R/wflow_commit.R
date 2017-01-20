@@ -1,12 +1,12 @@
-#' Decide which files to render and commit
-#'
-#' Recursively search the commit log until the R Markdown file or its
-#' corresponding HTML file is found. If the Rmd is found first, the HTML file
-#' needs to be re-rendered, added, and committed (return TRUE). If the HTML file
-#' is found first, then it is up-to-date (return FALSE).
-#'
-#' @seealso \code{\link{obtain_files_in_commit}},
-#'   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_commit}}
+# Decide which files to render and commit
+#
+# Recursively search the commit log until the R Markdown file or its
+# corresponding HTML file is found. If the Rmd is found first, the HTML file
+# needs to be re-rendered, added, and committed (return TRUE). If the HTML file
+# is found first, then it is up-to-date (return FALSE).
+#
+# @seealso \code{\link{obtain_files_in_commit}},
+#   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_commit}}
 decide_to_render <- function(repo, log, rmd) {
   stopifnot(class(repo) == "git_repository",
             class(log) == "list",
@@ -49,21 +49,21 @@ decide_to_render <- function(repo, log, rmd) {
   return(files)
 }
 
-#' Obtain the files updated in a commit
-#'
-#' Obtain the files updated in a commit, similar to \code{git status --stat}, by
-#' running a diff between the trees pointed to by the commit and its parent
-#' commit.
-#'
-#' This only works for commits that have one parent commit. Thus it will fail
-#' for merge commits (two parents) or the initial root commit (zero parents).
-#' two most recent commits. This uses `diff,git_tree`. See the source code at
-#' \url{https://github.com/ropensci/git2r/blob/89d916f17cb979b3cc21cbb5834755a2cf075f5f/R/diff.r#L314}
-#' and examples at
-#' \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
-#'
-#' @seealso \code{\link{obtain_files_in_commit_root}},
-#'   \code{\link{decide_to_render}}
+# Obtain the files updated in a commit
+#
+# Obtain the files updated in a commit, similar to \code{git status --stat}, by
+# running a diff between the trees pointed to by the commit and its parent
+# commit.
+#
+# This only works for commits that have one parent commit. Thus it will fail
+# for merge commits (two parents) or the initial root commit (zero parents).
+# two most recent commits. This uses `diff,git_tree`. See the source code at
+# \url{https://github.com/ropensci/git2r/blob/89d916f17cb979b3cc21cbb5834755a2cf075f5f/R/diff.r#L314}
+# and examples at
+# \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
+#
+# @seealso \code{\link{obtain_files_in_commit_root}},
+#   \code{\link{decide_to_render}}
 obtain_files_in_commit <- function(repo, commit) {
   stopifnot(class(repo) == "git_repository",
             class(commit) == "git_commit")
@@ -78,16 +78,16 @@ obtain_files_in_commit <- function(repo, commit) {
   return(files)
 }
 
-#' Obtain the files updated in the root commit
-#'
-#' The files included in the root commit cannot be determined comparing two
-#' trees (which is how \code{\link{obtain_files_in_commit}} works). See
-#' \href{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}{this
-#' Stack Overflow question} for details.
-#'
-#' This only works for the root commit, i.e. it must have no parents.
-#'
-#' @seealso \code{\link{obtain_files_in_commit}}, \code{\link{decide_to_render}}
+# Obtain the files updated in the root commit
+#
+# The files included in the root commit cannot be determined comparing two
+# trees (which is how \code{\link{obtain_files_in_commit}} works). See
+# \href{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}{this
+# Stack Overflow question} for details.
+#
+# This only works for the root commit, i.e. it must have no parents.
+#
+# @seealso \code{\link{obtain_files_in_commit}}, \code{\link{decide_to_render}}
 obtain_files_in_commit_root <- function(repo, commit) {
   # Obtain the files in the root commit of a Git repository
   stopifnot(class(repo) ==  "git_repository",

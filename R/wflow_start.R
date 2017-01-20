@@ -30,6 +30,8 @@ wflow_start <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
   # Copy infrastructure files to new directory
   infrastructure_path <- system.file("infrastructure/",
                                      package = "workflowr")
+  project_files <- list.files(path = infrastructure_path, all.files = TRUE,
+                              recursive = TRUE)
   # Add . to end of path to copy its contents w/o creating a top-level directory
   # source; http://superuser.com/a/367303/449452
   file.copy(from = paste0(infrastructure_path, "/."), to = directory,
@@ -59,14 +61,21 @@ wflow_start <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
   # Rename RStudio Project file
   file.rename(file.path(directory, "temp-name.Rproj"),
               file.path(directory, paste0(basename(directory), ".Rproj")))
+  project_files <- stringr::str_replace(project_files, "temp-name",
+                                        basename(directory))
 
   message("Project \"", name, "\" started in ", directory, "\n")
 
   # Configure Git repository
   if (git_init) {
     create_gitignore(directory)
-    git2r::init(directory)
-    message("Git repository initialized.")
+    project_files <- c(project_files, file.path(directory, ".gitignore"))
+    if (git2r::in_repository(directory)) {
+      warning(sprintf("A .git directory already exists in %s", directory))
+    } else {
+      git2r::init(directory)
+      message("Git repository initialized.")
+    }
     repo <- git2r::repository(directory)
     config_info <- git2r::config()
     if (is.null(config_info$global$user.name) |
@@ -75,12 +84,12 @@ wflow_start <- function(name, directory, git_init = TRUE, overwrite = FALSE) {
       message("\nRun ?git2r::config to learn how to update this.")
     } else {
       # Make the first initial commit
-      git2r::add(repo, ".")
+      git2r::add(repo, project_files)
       git2r::commit(repo, message = "Start workflowr project.")
     }
   }
 
-  return(invisible())
+  return(invisible(directory))
 }
 
 check_rstudio_version <- function() {

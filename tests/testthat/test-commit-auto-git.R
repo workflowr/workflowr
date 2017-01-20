@@ -1,4 +1,4 @@
-context("commit-files-auto-git")
+context("commit-auto-git")
 
 # Test wflow_commit when used to for all commit actions, i.e. both source and
 # website files.

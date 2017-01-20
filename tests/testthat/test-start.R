@@ -75,3 +75,24 @@ test_that("wflow_start overwrites files when forced", {
   expect_true(readme_contents[1] == sprintf("# %s", project_name))
   unlink(site_dir, recursive = TRUE)
 })
+
+test_that("wflow_start does not overwrite an existing .git directory and does not commit existing files", {
+
+  # start project in a tempdir
+  site_dir <- tempfile()
+  dir.create(site_dir)
+  git2r::init(site_dir)
+  r <- git2r::repository(site_dir)
+  fake_file <- file.path(site_dir, "file.txt")
+  file.create(fake_file)
+  git2r::add(r, fake_file)
+  git2r::commit(r, message = "The first commit")
+  fake_untracked <- file.path(site_dir, "untracked.txt")
+  expect_warning(wflow_start(project_name, site_dir),
+                 "A .git directory already exists in")
+  log <- git2r::commits(r)
+  expect_true(length(log) == 2)
+  expect_false(fake_untracked %in%
+                 workflowr:::obtain_files_in_commit(r, log[[1]]))
+  unlink(site_dir, recursive = TRUE)
+})

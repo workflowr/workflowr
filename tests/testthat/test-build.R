@@ -4,7 +4,7 @@ context("build")
 project_name <- "test-build"
 site_dir <- tempfile(paste0(project_name, "-"))
 dir.create(site_dir)
-suppressMessages(wflow_start(project_name, site_dir, git_init = FALSE))
+suppressMessages(wflow_start(project_name, site_dir, git = FALSE))
 
 rmd_files <- list.files(path = file.path(site_dir, "analysis"),
                         pattern = "^[^_].*Rmd$",

@@ -4,19 +4,23 @@
 \alias{wflow_start}
 \title{Start a new workflowr project.}
 \usage{
-wflow_start(name, directory, git_init = TRUE, overwrite = FALSE)
+wflow_start(name, directory, git = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{name}{Project name, e.g. "My Project"}
+\item{name}{character. Project name, e.g. "My Project"}
 
-\item{directory}{The directory for the project, e.g. "new-project". Will be
-created if necessary.}
+\item{directory}{character. The directory for the project, e.g.
+"~/new-project". Will be created if necessary.}
 
-\item{git_init}{Control whether the directory is initiatlized as a Git
-repository (default: TRUE).}
+\item{git}{logical (default: TRUE). Should Git be used for version control?
+If \code{directory} is a new Git repository, \code{wflow_start} will
+initialize the repository and make an initial commit. If \code{directory}
+is already a Git repository, \code{wflow_start} will make an additional
+commit. In both cases, only files needed for the workflowr project will be
+included in the commit.}
 
-\item{overwrite}{overwrite    Control whether to overwrite existing files
-(default: FALSE). Passed to \code{file.copy}.}
+\item{overwrite}{logical (default: FALSE). Control whether to overwrite
+existing files . Passed to \code{file.copy}.}
 }
 \description{
 \code{wflow_start} creates a new project directory for the site.

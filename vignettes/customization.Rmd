@@ -17,7 +17,7 @@ library("knitr")
 opts_chunk$set(eval = FALSE)
 ```
 
-There are many ways to custome your research website. Below are some common
+There are many ways to customize your research website. Below are some common
 options.
 
 ## Adding project details
@@ -28,7 +28,7 @@ a first step for customizing your site, add the following information:
 * Briefly describe your project in `analysis/index.Rmd`
 * Share details about yourself in `analysis/about.Rmd`
 * Copy the text for a license into `LICENSE` and state the name of the license in `analysis/license.Rmd`. See [A Quick Guide to Software Licensing for the Scientist-Programmer](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598) by Morin et al., 2012 for advice. If you're ambivalent, the MIT license is a standard choice
-* Decide how authors should attribute your work by providing a citaiton in `CITATION`
+* Decide how authors should attribute your work by providing a citation in `CITATION`
 
 ## Changing the theme
 
@@ -40,29 +40,19 @@ typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).
 
 If you are using RStudio (version > 1.0), you can quickly see how the theme
 looks for one of your files. Open one of your R Markdown files, click Knit so
-that it appears in the Viewer tab, and then edit `analysis/_site.yml`. Everytime
+that it appears in the Viewer tab, and then edit `analysis/_site.yml`. Every time
 you save an edit to the file, it will automatically re-render the R Markdown
 file and update the result in the Viewer (thus you'll want to use a
 quick-running file like `index.Rmd` when testing aesthetic changes).
 
-Once you have chosen a theme, add and commit the updated `analysis/_site.yml`.
+Once you have chosen a theme, update the website by running the following:
 
-```
-git add analysis/_site.yml
-git commit -m "Change theme."
-```
-
-Next apply this new theme to every page of the website by running `render_site(input = "analysis")`. Then commit the updated website:
-
-```
-git add docs/
-git commit -m "Apply new theme."
+```{r wflow-commit-theme}
+wflow_commit(commit_files = "analysis/_site.yml", all = TRUE)
 ```
 
-Note that the above strategy will commit all HTML files in `docs/`, even those
-that correspond to R Markdown files that are untracked or have changes in the
-working directory. To keep organized, have a clean working directory (i.e. no
-unsaved changes to any R Markdown files) before updating the theme.
+This commits `analysis/_site.yml`, re-builds every HTML file using the new
+theme, and commits all the updated HTML pages.
 
 [rmd-themes]: http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style
 
@@ -88,16 +78,15 @@ documentation][navbar] for instructions.
 
 Similar to changing the theme above, you will need to re-render each page of the
 website (the navbar is embedded within each individual HTML file). Thus you
-should also try to follow these steps:
+could run the same command as above:
 
-1. Add and commit any changes to R Markdown files in `analysis/`. This will ensure that the Git commit ID at the top of the file corresponds to the exact version of the R Markdown file that produced the result
-1. Add and commit `analysis/_site.yml`
-1. Run `render_site(input = "analysis")` to re-render each page
-1. Add and commit the `docs/` directory
+```{r wflow-commit-navbar}
+wflow_commit(commit_files = "analysis/_site.yml", all = TRUE)
+```
 
 [navbar]: http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation
 
-## Add a results page
+## Add a links page
 
 To make it easy to navigate to the pages of your website, you can manually add 
 links either to `analysis/index.Rmd` or to the navigation bar defined in 
@@ -115,10 +104,15 @@ easily accessible.
       href: results.html
 ```
 
-Lastly, since the navigation bar was changed, follow the directions above for 
-building and commiting the website. Future updates of `results.Rmd` will not
-require re-building the entire website since it is an independent page (as
-opposed to the navigation bar).
+Lastly, since the navigation bar was changed, re-build the website using the following command:
+
+```{r wflow-commit-links}
+wflow_commit(commit_files = c("analysis/_site.yml", "analysis/results.Rmd"),
+             all = TRUE)
+```
+
+Future updates of `results.Rmd` will not require re-building the entire website
+since it is an independent page (as opposed to the navigation bar).
 
 ## Customize the footer
 
@@ -139,6 +133,12 @@ your website pages. To enable comments, follow these steps:
 1. Start a disqus account
 1. Add your disqus shortname to `footer.html`
 1. Uncomment the disqus code in `footer.html`
+
+To change the footer for every page of the website, run the following:
+
+```{r wflow-commit-footer}
+wflow_commit(commit_files = "analysis/include/footer.html", all = TRUE)
+```
 
 ## Setup SSH keys
 

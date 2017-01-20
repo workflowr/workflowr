@@ -64,7 +64,7 @@ As you use workflowr, if you find any unexpected behavior or think of an additio
 To start a new project, open R (or RStudio), load the workflowr package, and run
 the function `wflow_start`. The code below creates a directory called 
 `new-project/` in your home folder that contains all the files to get started,
-and also initializes a Git repository with the inital commit already made.
+and also initializes a Git repository with the initial commit already made.
 
 ```{r start-project}
 library("workflowr")
@@ -84,27 +84,30 @@ The project directory contains multiple files and subdirectories. The goal is fo
 * Put processed data files in `output/`
 * Put long running scripts in `code/`. Ideally these steps can be automated using GNU Make or a similar tool
 * Put R Markdown analysis files in `analysis/`. These should load data using relative paths, e.g. `d <- read.table("../output/clean-data.txt")`
-* The rendered HTML files and other website code will automatically be put in `docs/` (described in the next section)
+* The HTML files and other website code will automatically be put in `docs/` (described in the next section)
+
+All the R Markdown files in `analysis/` should be independent of each other, i.e. these files should be able to be run in any order. The idea is that code that produces output data needed by other files should be stored in `code/`.
 
 ## Build the website
 
-To build the website, run the function `render_site` in the R console, making sure that the argument `input` points to `analysis/`.
+To build the website, run the function `wflow_build` in the R console:
 
-```{r render-site}
-render_site(input = "analysis/")
+```{r wflow-build}
+wflow_build()
 ```
 
-This is much simpler if you are using RStudio version 1.0 or greater because you
-do not have to worry about the current working directory. Click "Build Website"
-in the Build pane (or use the keyboard shortcut Ctrl+Shift+B) to have RStudio
-properly run `render_site` and load a preview of the website in the Viewer pane.
+This commands builds all the R Markdown files located in `analysis/` and saves
+the corresponding HTML files in `docs/`. Open the file `docs/index.html` in your
+browser to see your site.
 
-You now have a functioning website on your local computer. All the website files
-are located in `docs/`. Update the files `index.Rmd` and `about.Rmd` in 
-`analysis/` and re-build the site to see your changes. If you aren't using
-RStudio, open `docs/index.html` to view the website in your computer's web
-browser and refresh your browser after running `render_site` to see your
-changes.
+Open `analysis/about.Rmd` in your text editor and write a sentence about your 
+project. `wflow_build` only builds new or updated R Markdown files. Confirm that
+the only file to be updated is `analysis/about.Rmd` by invoking `wflow_build` as
+a dry run.
+
+```{r wflow-build-dry-run}
+wflow_build(dry_run = TRUE)
+```
 
 ## Add a new analysis file
 
@@ -121,21 +124,25 @@ This performs multiple actions:
 3. If you are using RStudio, opens the file for editing
 
 Now you are ready to start writing! At the top of the file, edit the author, 
-title, and date. If you are using RStudio, press the Knit button to render the
-file and see a preview in the Viewer pane. From the R console, you could run
-`render_site` again (equivalent to clicking "Build Website" in RStudio), but
-this would re-render every R Markdown file. To only render those R Markdown
-files that are new or have been updated, use the workflowr function `wflow_build`.
-
-```{r make-site}
-wflow_build()
-```
+title, and date. If you are using RStudio, press the Knit button to build the 
+file and see a preview in the Viewer pane. Alternatively from the R console, you
+can run `wflow_build` again (it can be run from the base directory of your
+project or any subdirectory).
 
 Check out your new file `docs/first-analysis.html`. Near the top you will see a
 line that says "Code version:" followed by an alphanumeric character string.
 This informs you which version of the code was used to create the file (this is
 explained more below in the section [Version the
 website](#version-the-website)).
+
+The template R Markdown files contains example code, including creating a 
+figure. This figure was saved as
+`analysis/figure/first-analysis.Rmd/pressure-1.png`. Using workflowr, the
+figures are automatically saved as `analysis/figure/<insert Rmd 
+filename>/<insert chunk name>-#.png`, where `#` corresponds to which of the 
+plots the chunk generated (since one chunk can produce an arbitrary number of 
+plots). Note that the `figure/` directory is also copied to `docs/` when
+building the site.
 
 In order to make it easier to navigate to your new file, you can include a link
 to it on the main index page. For example, open `analysis/index.Rmd` and paste
@@ -148,63 +155,54 @@ website.
 Click on this [link](first-analysis.html) to see my results.
 ```
 
-Click Knit (or run `wflow_build` again) to render the file.
+Click Knit (or run `wflow_build` again) to update the file.
 
 ## Version the website
 
-One of the main goals of workflowr is to help make your research more
-transparent and reproducible. An important component of this is using the
-version control system Git. By including the unique identifier that Git assigns
-a snapshot (or "commit" as Git calls it) at the top of each of your rendered
-HTML files, you always know which version of the code produced the results.
-
-To get started with workflowr, the main Git commands you will need to use are 
-`git add` and `git commit`. There are many ways to use Git: in the shell, in 
-the RStudio Git pane, or another Git graphical user interface (GUI) (see 
-[here](https://git-scm.com/download/gui/linux) for GUI options). This vignette 
-will display the Git commands to run in the shell (you can quickly open the
-Terminal to the correct working directoy from RStudio by choosing "Tools" ->
-"Shell...").
+One of the main goals of workflowr is to help make your research more 
+transparent and reproducible. An important component of this is using the 
+version control system Git^[There are many ways to use Git: in the shell, in the
+RStudio Git pane, or another Git graphical user interface (GUI) (see 
+[here](https://git-scm.com/download/gui/linux) for GUI options). When necessary,
+this vignette will display the Git commands to run in the shell (you can quickly
+open the Terminal to the correct working directory from RStudio by choosing 
+"Tools" -> "Shell...").]. By including the unique identifier that Git assigns a 
+snapshot (or "commit" as Git calls it) at the top of each of your HTML files, 
+you always know which version of the code produced the results.
 
 When you first started the project with `wflow_start`, workflowr automatically
-made the first commit of all the project files. Since then you have updated some
-of the R Markdown files, added a new file `first-analysis.Rmd`, and built the 
-website in `docs/`. In order for the version of the code displayed at the top of
-the file to be useful, it needs to refer to the exact state of the R Markdown 
-files when the HTML was rendered. To acheive this, you'll need to commit the R 
-Markdown files and corresponding HTML in separate steps. First add and commit 
-the R Markdown files in `analysis/`.
+made the first commit of all the project files. Since then you have updated
+`about.Rmd` and `index.Rmd`, added a new file `first-analysis.Rmd`, and built
+the website in `docs/`. In order for the version of the code displayed at the
+top of the file to be useful, it needs to refer to the exact state of the R
+Markdown files when the HTML was rendered. To achieve this, use the command
+`wflow_commit`:
 
-```
-# Run in the shell
-git add analysis/*Rmd
-git commit -m "Started my first analysis"
+```{r wflow_commit}
+# Assuming working directory is `analysis/`. Run getwd() to confirm
+wflow_commit(commit_files = c("about.Rmd", "index.Rmd", "first-analysis.Rmd"))
 ```
 
-Second you'll need to re-render the corresponding HTML files so that they have
-the latest commit identifier at the top of the file. However you can't use
-`wflow_build` for this like you did during testing, because the R Markdown files
-haven't changed. To re-build only those HTML files that correspond to the R
-Markdown files in the previous commit, run the workflowr function `wflow_commit`.
+You must provide the path to the files to be committed in your are not currently
+in `analysis/`. This one command performs the following 3 actions:
 
-```{r commit-site}
-wflow_commit()
-```
+1. Adds and commits the 3 specified R Markdown files
+2. Builds all the HTML files where the corresponding R Markdown file has been commited more recently (since this is the first time running `wflow_commit`, all the R Markdown files will be built)
+3. Adds and commits the HTML files, figures, and supporting website files
 
-`wflow_commit` will render the R Markdown files and create a new commit with the
-message "Build site.".
-
-This is the general workflow.
+This is the general workflow:
 
 1. Write code in the R Markdown files (For RStudio users: to quickly develop the code I recommend executing the code in the R console via Ctrl-Enter to send one line or Ctrl-Alt-C to execute the entire code chunk)
 1. Run `wflow_build` to view the results as they will appear on the website
 1. Go back to step 1 until you are satisfied with the result
-1. Commit the R Markdown files in `analysis`
-1. Run `wflow_commit` to build and commit the website
+1. Run `wflow_commit` to build and commit the website (make sure to specify the files that are ready to commit using the argument `commit_files`)
 
-You only need to run `render_site`, which re-renders every single R Markdown
-file, if you are updating the aesthetics of your website (e.g. anytime you make
-edits to `_analysis/_site.yml`).
+The only exception to this workflow is if you are updating the aesthetics of
+your website (e.g. anytime you make edits to `_analysis/_site.yml`). In this case you'll want to update all the HTML files, regardless of whether or not their corresponding R Markdown files have been updated. To update every HTML page, run the following:
+
+```{r wflow-commit-all}
+wflow_commit(all = TRUE)
+```
 
 ## Deploy the website
 
@@ -229,7 +227,7 @@ git push -u origin master
 ```
 
 The first line creates the alias "origin" that points to your remote repository
-on GitHub^["origin" is the convential name, but could be anything you wanted]. 
+on GitHub^["origin" is the conventional name, but could be anything you wanted]. 
 The second pushes your current commit history to GitHub. You will be prompted to
 enter your GitHub username and password for authentication after you run `git
 push`.

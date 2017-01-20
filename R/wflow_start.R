@@ -121,7 +121,11 @@ check_git_config <- function(path) {
   stopifnot(is.character(path))
   # Only look for local configuration file if the directory exists and it is a
   # Git repo
-  look_for_local <- dir.exists(path) & git2r::in_repository(path)
+  if (dir.exists(path)) {
+    look_for_local <- git2r::in_repository(path)
+  } else {
+    look_for_local <- FALSE
+  }
 
   # Determine if user.name and user.email are set
   if (look_for_local) {

@@ -32,7 +32,6 @@ context("open")
 
 # start project in a tempdir
 site_dir <- tempfile()
-dir.create(site_dir)
 suppressMessages(wflow_start("Test wflow_open", site_dir))
 
 test_that("wflow_open creates a new file, but does not overwrite", {

@@ -7,7 +7,6 @@ library("git2r")
 # start project in a tempdir
 project_name <- "A new project"
 site_dir <- tempfile("new-")
-dir.create(site_dir)
 suppressMessages(wflow_start(project_name, site_dir))
 r <- repository(path = site_dir)
 

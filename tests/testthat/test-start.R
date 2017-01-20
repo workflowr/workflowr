@@ -18,7 +18,6 @@ test_that("wflow_start copies files correctly", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  dir.create(site_dir)
   capture.output(wflow_start(project_name, site_dir))
 
   for (f in c(project_files, git_files)) {
@@ -33,7 +32,6 @@ test_that("wflow_start git = FALSE removes all Git files", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  dir.create(site_dir)
   capture.output(wflow_start(project_name, site_dir, git = FALSE))
 
   for (f in project_files) {
@@ -105,7 +103,6 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
     on.exit(file.rename(from = config_tmp, to = config_original))
   }
   site_dir <- tempfile()
-  dir.create(site_dir)
   expect_error(wflow_start(project_name, site_dir),
                "You must set your user.name and user.email for Git first\n")
   expect_false(dir.exists(site_dir))

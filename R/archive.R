@@ -40,7 +40,7 @@ archive <- function(..., id, location, overwrite = FALSE) {
   if (!is.character(location) | length(location) > 1)
     stop("location must be a one element character vector")
   if (!dir.exists(location))
-    stop("location must already exist: ", "location")
+    stop("location must already exist: ", location)
   if (!is.logical(overwrite) | length(overwrite) != 1)
     stop("overwrite must be one element logical vector")
 
@@ -48,11 +48,16 @@ archive <- function(..., id, location, overwrite = FALSE) {
     fname_base <- paste0(names(objs)[i], "-", id, ".rds")
     fname = file.path(location, fname_base)
     if (file.exists(fname) & !overwrite) {
-      warning("Archive file already exists: ", fname)
+      warning("Archive file already exists: ", fname,
+              "\nSet `overwrite = TRUE` to overwrite.")
+    } else if (file.exists(fname) & overwrite) {
+      warning("Overwriting existing archive file: ", fname)
+      saveRDS(objs[[i]], file = fname)
     } else {
       saveRDS(objs[[i]], file = fname)
     }
   }
+  return(invisible(names(objs)))
 }
 
 
@@ -65,7 +70,7 @@ restore <- function(..., location) {
   if (!is.character(location) | length(location) > 1)
     stop("location must be a one element character vector")
   if (!dir.exists(location))
-    stop("location must already exist: ", "location")
+    stop("location must already exist: ", location)
 
   result <- list()
   for (i in seq_along(obj_names)) {

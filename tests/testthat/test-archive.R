@@ -3,10 +3,10 @@ context("archive")
 library("git2r")
 
 # Set up a temporary directory
-site_dir <- tempfile("test-archive")
-dir.create(site_dir)
+tmp_dir <- tempfile("test-archive")
+dir.create(tmp_dir)
 cwd <- getwd()
-setwd(site_dir)
+setwd(tmp_dir)
 
 # Some toy objects
 x <- 1
@@ -32,7 +32,7 @@ test_that("restore can load objects", {
 rm(x, y, z)
 rest2 <- restore(x, y, z, location = ".")
 
-test_that("restore can load objects when they don't exist", {
+test_that("restore can load objects when they don't exist in .GlobalEnv", {
   expect_true(all(rest2$x$abc == rest1$x$abc,
                   rest2$y$abc == rest1$y$abc,
                   rest2$z$abc == rest1$z$abc))
@@ -82,9 +82,57 @@ test_that("restore sends warning if no archive available and returns NA", {
   expect_identical(rest5$a, NA)
 })
 
-# To do:
-# overwriting file
-# error handling (no spaces or dashes in id)
+test_that("archive does not overwrite existing files (default)", {
+  mtime_pre <- file.mtime(files_expected)
+  expect_warning(archive(x, y, z, id = "abc", location = "."),
+                 "Archive file already exists: ")
+  mtime_post <- file.mtime(files_expected)
+  expect_identical(mtime_pre, mtime_post)
+})
+
+test_that("archive does overwrite existing files if forced", {
+  mtime_pre <- file.mtime(files_expected)
+  expect_warning(archive(x, y, z, id = "abc", location = ".",
+                         overwrite = TRUE),
+                 "Overwriting existing archive file: ")
+  mtime_post <- file.mtime(files_expected)
+  expect_true(all(mtime_pre < mtime_post))
+})
+
+test_that("archive throws errors for invalid input", {
+  expect_error(archive(id = "error", location = "id"),
+               "No objects to archive")
+  expect_error(archive(x, y, z, id = 1, location = "id"),
+               "id must be a one element character vector")
+  expect_error(archive(x, y, z, id = c("1", "2"), location = "id"),
+               "id must be a one element character vector")
+  expect_error(archive(x, y, z, id = "test-dash", location = "id"),
+               "id cannot contain dashes: ")
+  expect_error(archive(x, y, z, id = "test space", location = "id"),
+               "id cannot contain spaces: ")
+  expect_error(archive(x, y, z, id = "test", location = 1),
+               "location must be a one element character vector")
+  expect_error(archive(x, y, z, id = "test", location = c("1", "2")),
+               "location must be a one element character vector")
+  expect_error(archive(x, y, z, id = "test", location = "nonexistent"),
+               "location must already exist: ")
+  expect_error(archive(x, y, z, id = "test", location = ".", overwrite = 1),
+               "overwrite must be one element logical vector")
+  expect_error(archive(x, y, z, id = "test", location = ".",
+                       overwrite = c(FALSE, TRUE)),
+               "overwrite must be one element logical vector")
+})
+
+test_that("restore throws errors for invalid input", {
+  expect_error(restore(location = "."),
+               "No objects to resurrect")
+  expect_error(restore(x, y, z, location = 1),
+               "location must be a one element character vector")
+  expect_error(restore(x, y, z, location = c("1", "2")),
+               "location must be a one element character vector")
+  expect_error(restore(x, y, z, location =  "nonexistent"),
+               "location must already exist: ")
+})
 
 setwd(cwd)
-unlink(site_dir)
+unlink(tmp_dir)

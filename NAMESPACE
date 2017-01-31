@@ -2,6 +2,7 @@
 
 export(create_links_page)
 export(extract_commit)
+export(wflow_archive)
 export(wflow_build)
 export(wflow_commit)
 export(wflow_open)

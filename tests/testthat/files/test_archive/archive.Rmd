@@ -1,0 +1,39 @@
+---
+title: "Untitled"
+author: "First Last"
+date: YYYY-MM-DD
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+
+Create some variables.
+
+```{r create}
+var_1 <- "a"
+var_2 <- 1:10
+var_3 <- TRUE
+```
+
+Archive them.
+
+```{r archive}
+library("workflowr")
+wflow_archive(var_1, var_2, var_3)
+```
+
+
+
+## Session Information
+
+```{r session-info}
+```

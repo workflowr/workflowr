@@ -2,6 +2,8 @@ context("archive")
 
 library("git2r")
 
+# Test base function archive and restore ---------------------------------------
+
 # Set up a temporary directory
 tmp_dir <- tempfile("test-archive")
 dir.create(tmp_dir)
@@ -135,4 +137,21 @@ test_that("restore throws errors for invalid input", {
 })
 
 setwd(cwd)
-unlink(tmp_dir)
+unlink(tmp_dir, recursive = TRUE)
+
+# Test wflow_archive and wflow_restore -----------------------------------------
+
+# Set up a temporary workflowr project
+site_dir <- tempfile("wflow_archive-")
+suppressMessages(wflow_start("Testing wflow_archive", site_dir))
+# Add analysis files
+file.copy("files/test_archive/archive.Rmd",
+          file.path(site_dir, "analysis"))
+
+# Test in progress
+test_that("wflow_archive archives files in correct location", {
+  wflow_build(files = "archive.Rmd", path = site_dir, quiet = TRUE)
+})
+
+
+unlink(site_dir, recursive = TRUE)

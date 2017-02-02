@@ -25,10 +25,14 @@
 #' }
 #' @export
 wflow_start <- function(name, directory, git = TRUE, overwrite = FALSE) {
-  stopifnot(is.character(name),
-            is.character(directory),
-            is.logical(git),
-            is.logical(overwrite))
+  if (!is.character(name) | length(name) != 1)
+    stop("name must be a one element character vector: ", name)
+  if (!is.character(directory) | length(directory) != 1)
+    stop("directory must be a one element character vector: ", directory)
+  if (!is.logical(git) | length(git) != 1)
+    stop("git must be a one element character vector: ", git)
+  if (!is.logical(overwrite) | length(overwrite) != 1)
+    stop("overwrite must be a one element character vector: ", overwrite)
 
   # Require that user.name and user.email be set locally or globally
   if (git) {
@@ -92,7 +96,12 @@ wflow_start <- function(name, directory, git = TRUE, overwrite = FALSE) {
     repo <- git2r::repository(directory)
     # Make the first workflowr commit
     git2r::add(repo, project_files)
-    git2r::commit(repo, message = "Start workflowr project.")
+    status <- git2r::status(repo)
+    if (length(status$staged) == 0) {
+      warning("No new workflowr files were committed.")
+    } else{
+      git2r::commit(repo, message = "Start workflowr project.")
+    }
   }
 
   return(invisible(directory))

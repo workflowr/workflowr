@@ -2,7 +2,7 @@ context("archive")
 
 library("git2r")
 
-# Test base function archive and restore ---------------------------------------
+# Test base functions `archive` and `restore` ----------------------------------
 
 # Set up a temporary directory
 tmp_dir <- tempfile("test-archive")
@@ -144,7 +144,7 @@ unlink(tmp_dir, recursive = TRUE)
 # Set up a temporary workflowr project
 site_dir <- tempfile("wflow_archive-")
 suppressMessages(wflow_start("Testing wflow_archive", site_dir))
-# Add analysis files
+# Add analysis file
 file.copy("files/test_archive/archive.Rmd",
           file.path(site_dir, "analysis"))
 

@@ -45,6 +45,13 @@ wflow_start <- function(name,
   if (!is.logical(overwrite) | length(overwrite) != 1)
     stop("overwrite must be a one element logical vector: ", overwrite)
 
+  if (git & !existing) {
+    if (git2r::in_repository(dirname(directory))) {
+      r <- repository(dirname(directory), discover = TRUE)
+      stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", dirname(r@path))
+    }
+  }
+
   # Require that user.name and user.email be set locally or globally
   if (git) {
     check_git_config(path = directory)

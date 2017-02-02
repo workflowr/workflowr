@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Test wflow_archive and wflow_restore"
 author: "First Last"
 date: YYYY-MM-DD
 output: html_document
@@ -16,22 +16,65 @@ knitr::read_chunk("chunks.R")
 
 **Code version:** `r workflowr::extract_commit(".", 1)$sha1`
 
-Create some variables.
+```{r packages}
+library("workflowr")
+library("ggplot2")
+theme_set(theme_bw())
+```
+
+Generate some values from a normal distribution.
 
 ```{r create}
-var_1 <- "a"
-var_2 <- 1:10
-var_3 <- TRUE
+mean_value <- sample(1:10, size = 1)
+normal_dist <- rnorm(5, mean = mean_value)
 ```
 
 Archive them.
 
 ```{r archive}
-library("workflowr")
-wflow_archive(var_1, var_2, var_3)
+wflow_archive(mean_value, normal_dist)
 ```
 
+Restore them.
 
+```{r restore}
+restored <- wflow_restore(mean_value, normal_dist)
+str(restored)
+```
+
+Analyze them.
+
+```{r analysis}
+mean_set <- sapply(restored$mean_value, function(x) x)
+mean_estimate <- sapply(restored$normal_dist, function(x) mean(x))
+error <- abs(mean_set - mean_estimate)
+d <- data.frame(mean_set, error, commit = names(error))
+ggplot(d, aes(x = mean_set, y = error, label = commit)) +
+  geom_text() +
+  labs(x = "Actual mean",
+       y = "Absolute error between actual and estimated mean",
+       title = "Relationship between the mean, its estimation error, and commit")
+```
+
+## Decisions
+
+The functions `wflow_archive` and `wflow_restore` use the name of the file to
+save and load the objects. Thus this only works if the file is knit. Running the
+chunks individually (e.g. "Run All" in RStudio) cannot access the name of the
+current file. What do we want the behaviour to be?
+
+The function currently use non-standard evaluation tricks so that the objects
+can be directly passed (instead of creating a named list). This works great
+unless they are embedded inside of another function. Do we expect it will be
+common to embed these functions within other functions? If yes, we need to make
+standard evaluation options avaialable as well (e.g. dplyr has the non-standard
+evalation function `select` and the corresponding standard evalation `select_`
+for use inside functions).
+
+What beyond the sha1? The commit message? The date?
+
+How to commit them? Have `wflow_commit` check the archive directory? This may
+need to wait until a configuration file is implemented.
 
 ## Session Information
 

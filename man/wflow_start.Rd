@@ -4,7 +4,8 @@
 \alias{wflow_start}
 \title{Start a new workflowr project.}
 \usage{
-wflow_start(name, directory, git = TRUE, overwrite = FALSE)
+wflow_start(name, directory, git = TRUE, existing = FALSE,
+  overwrite = FALSE)
 }
 \arguments{
 \item{name}{character. Project name, e.g. "My Project"}
@@ -19,8 +20,14 @@ is already a Git repository, \code{wflow_start} will make an additional
 commit. In both cases, only files needed for the workflowr project will be
 included in the commit.}
 
+\item{existing}{logical (default: FALSE). Indicate if the specified
+\code{directory} already exists. The default prevents injecting the
+workflowr files into an unwanted location. Only set to TRUE if you wish to
+add the workflowr files to an existing project.}
+
 \item{overwrite}{logical (default: FALSE). Control whether to overwrite
-existing files . Passed to \code{file.copy}.}
+existing files. Only relevant if \code{existing = TRUE}. Passed to
+\code{file.copy}.}
 }
 \description{
 \code{wflow_start} creates a new project directory for the site.

@@ -16,23 +16,34 @@
 #'   is already a Git repository, \code{wflow_start} will make an additional
 #'   commit. In both cases, only files needed for the workflowr project will be
 #'   included in the commit.
+#' @param existing logical (default: FALSE). Indicate if the specified
+#'   \code{directory} already exists. The default prevents injecting the
+#'   workflowr files into an unwanted location. Only set to TRUE if you wish to
+#'   add the workflowr files to an existing project.
 #' @param overwrite logical (default: FALSE). Control whether to overwrite
-#'   existing files . Passed to \code{file.copy}.
+#'   existing files. Only relevant if \code{existing = TRUE}. Passed to
+#'   \code{file.copy}.
 #'
 #' @examples
 #' \dontrun{
 #' wflow_start("My Project", "path/to/new-project")
 #' }
 #' @export
-wflow_start <- function(name, directory, git = TRUE, overwrite = FALSE) {
+wflow_start <- function(name,
+                        directory,
+                        git = TRUE,
+                        existing = FALSE,
+                        overwrite = FALSE) {
   if (!is.character(name) | length(name) != 1)
     stop("name must be a one element character vector: ", name)
   if (!is.character(directory) | length(directory) != 1)
     stop("directory must be a one element character vector: ", directory)
   if (!is.logical(git) | length(git) != 1)
-    stop("git must be a one element character vector: ", git)
+    stop("git must be a one element logical vector: ", git)
+  if (!is.logical(existing) | length(existing) != 1)
+    stop("existing must be a one element logical vector: ", existing)
   if (!is.logical(overwrite) | length(overwrite) != 1)
-    stop("overwrite must be a one element character vector: ", overwrite)
+    stop("overwrite must be a one element logical vector: ", overwrite)
 
   # Require that user.name and user.email be set locally or globally
   if (git) {
@@ -40,8 +51,12 @@ wflow_start <- function(name, directory, git = TRUE, overwrite = FALSE) {
   }
 
   # Create directory if it doesn't already exist
-  if (!dir.exists(directory)) {
-    dir.create(directory)
+  if (!existing & !dir.exists(directory)) {
+    dir.create(directory, recursive = TRUE)
+  } else if (!existing & dir.exists(directory)) {
+    stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
+  } else if (existing & !dir.exists(directory)) {
+    stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
   }
 
   # Copy infrastructure files to new directory
@@ -85,7 +100,7 @@ wflow_start <- function(name, directory, git = TRUE, overwrite = FALSE) {
 
   # Configure Git repository
   if (git) {
-    create_gitignore(directory)
+    create_gitignore(directory, overwrite = overwrite)
     project_files <- c(project_files, file.path(directory, ".gitignore"))
     if (git2r::in_repository(directory)) {
       warning(sprintf("A .git directory already exists in %s", directory))

@@ -53,7 +53,7 @@ test_that("wflow_start does not overwrite files by default", {
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
-  capture.output(wflow_start(project_name, site_dir))
+  capture.output(wflow_start(project_name, site_dir, existing = TRUE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents == "original")
@@ -67,7 +67,8 @@ test_that("wflow_start overwrites files when forced", {
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
-  capture.output(wflow_start(project_name, site_dir, overwrite = TRUE))
+  capture.output(wflow_start(project_name, site_dir,
+                             existing = TRUE, overwrite = TRUE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents[1] == sprintf("# %s", project_name))
@@ -86,7 +87,7 @@ test_that("wflow_start does not overwrite an existing .git directory and does no
   git2r::add(r, fake_file)
   git2r::commit(r, message = "The first commit")
   fake_untracked <- file.path(site_dir, "untracked.txt")
-  expect_warning(wflow_start(project_name, site_dir),
+  expect_warning(wflow_start(project_name, site_dir, existing = TRUE),
                  "A .git directory already exists in")
   log <- git2r::commits(r)
   expect_true(length(log) == 2)

@@ -6,7 +6,8 @@
 #' \code{wflow_archive} serializes each object to a separate file using
 #' \code{\link{saveRDS}}. To maintain organization and reduce the possibility of
 #' conflict, the default is to save the objects within a subdirectory of the
-#' archive directory which is named after the R Markdown file being knit.
+#' archive directory which is named after the R Markdown file being knit (i.e.
+#' the path is \code{archive_dir/subdir}).
 #'
 #' Note that this function uses non-standard evaluation to save the objects. Do
 #' not use \code{wflow_archive} within a function (please open an Issue if it
@@ -124,14 +125,15 @@ archive <- function(..., id, location, overwrite = FALSE) {
 #'
 #' \code{wflow_restore} loads each serialized object to a separate file using
 #' \code{\link{readRDS}}. By default it searches for a subdirectory within the
-#' archive directory which is named after the R Markdown file being knit.
+#' archive directory which is named after the R Markdown file being knit (i.e.
+#' the search path is \code{archive_dir/subdir}).
 #'
 #' Note that this function uses non-standard evaluation to save the objects. Do
 #' not use \code{wflow_restore} within a function (please open an Issue if it
 #' would be useful to you to have a standard evaluation option for use within
 #' functions).
 #'
-#' @param ... Objects to be archived.
+#' @param ... Objects to be restored.
 #' @param archive_dir character (default: "../archive"). The path to the main
 #'   archive directory.
 #' @param subdir character (default: NULL). The name of the subdirectory to save

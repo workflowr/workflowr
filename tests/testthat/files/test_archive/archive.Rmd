@@ -76,6 +76,8 @@ What beyond the sha1? The commit message? The date?
 How to commit them? Have `wflow_commit` check the archive directory? This may
 need to wait until a configuration file is implemented.
 
+What about the files created while testing? These will have the wrong commit.
+
 ## Session Information
 
 ```{r session-info}

@@ -139,7 +139,7 @@ test_that("restore throws errors for invalid input", {
 setwd(cwd)
 unlink(tmp_dir, recursive = TRUE)
 
-# Test wflow_archive and wflow_restore -----------------------------------------
+# Test wflow_archive -----------------------------------------------------------
 
 # Set up a temporary workflowr project
 site_dir <- tempfile("wflow_archive-")
@@ -147,11 +147,32 @@ suppressMessages(wflow_start("Testing wflow_archive", site_dir))
 # Add analysis file
 file.copy("files/test_archive/archive.Rmd",
           file.path(site_dir, "analysis"))
+# Commit and build file
+cwd <- getwd()
+setwd(site_dir); on.exit(setwd(cwd))
+suppressMessages(wflow_commit(commit_files = "analysis/archive.Rmd"))
+# Expected archive files
+r <- repository()
+id <- extract_commit(".", 2)$sha1 # Should be the commit ID from before the site
+                                  # was built.
+archive_files_1 <- file.path("archive", "archive.Rmd",
+                             paste0(c("mean_value", "normal_dist"),
+                                    "-", id, ".rds"))
 
-# Test in progress
 test_that("wflow_archive archives files in correct location", {
-  wflow_build(files = "archive.Rmd", path = site_dir, quiet = TRUE)
+  expect_true(all(file.exists(archive_files_1)))
 })
 
+# Make an arbitrary edit to archive.Rmd so that it can be committed and re-built
+cat("\ban edit\n", file = "analysis/archive.Rmd", append = TRUE)
+suppressMessages(wflow_commit(commit_files = "analysis/archive.Rmd"))
+# Expected archive files
+id2 <- extract_commit(".", 2)$sha1
+archive_files_2 <- file.path("archive", "archive.Rmd",
+                             paste0(c("mean_value", "normal_dist"),
+                                    "-", id2, ".rds"))
+test_that("wflow_archive archives files for multiple versions", {
+  expect_true(all(file.exists(archive_files_1, archive_files_2)))
+})
 
 unlink(site_dir, recursive = TRUE)

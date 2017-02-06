@@ -1,6 +1,8 @@
 #' Start a new workflowr project.
 #'
-#' \code{wflow_start} creates a new project directory for the site.
+#' \code{wflow_start} adds the necesary files for a workflowr project. The
+#' default is to create a new directory, but it is also possible to add the
+#' files to an already existing project.
 #'
 #' This is the initial function that organizes the infrastructure to create a
 #' research website for your project. Note that while you do not need to use
@@ -9,7 +11,8 @@
 #'
 #' @param name character. Project name, e.g. "My Project"
 #' @param directory character. The directory for the project, e.g.
-#'   "~/new-project". Will be created if necessary.
+#'   "~/new-project". By default the directory will be created (\code{existing =
+#'   FALSE}.
 #' @param git logical (default: TRUE). Should Git be used for version control?
 #'   If \code{directory} is a new Git repository, \code{wflow_start} will
 #'   initialize the repository and make an initial commit. If \code{directory}
@@ -45,6 +48,8 @@ wflow_start <- function(name,
   if (!is.logical(overwrite) | length(overwrite) != 1)
     stop("overwrite must be a one element logical vector: ", overwrite)
 
+  # A workflowr directory cannot be created within an existing Git repository if
+  # git = TRUE & existing = FALSE.
   if (git & !existing) {
     if (git2r::in_repository(dirname(directory))) {
       r <- repository(dirname(directory), discover = TRUE)
@@ -110,7 +115,7 @@ wflow_start <- function(name,
     create_gitignore(directory, overwrite = overwrite)
     project_files <- c(project_files, file.path(directory, ".gitignore"))
     if (git2r::in_repository(directory)) {
-      warning(sprintf("A .git directory already exists in %s", directory))
+      warning("A .git directory already exists in ", directory)
     } else {
       git2r::init(directory)
       message("Git repository initialized.")
@@ -133,9 +138,10 @@ check_rstudio_version <- function() {
   if (rstudioapi::isAvailable()) {
     rs_version <- rstudioapi::getVersion()
     if (rs_version < "1.0.0") {
-      message(strwrap(sprintf("You can gain lots of new useful features
-                              by updating to RStudio version 1.0 or greater.
-                              You are running RStudio %s", rs_version)))
+      message(strwrap(paste("You can gain lots of new useful features",
+                        "by updating to RStudio version 1.0 or greater.",
+                        "You are running RStudio",
+                        as.character(rs_version)), prefix = "\n"))
     }
   } else {
     rs_version <- NULL

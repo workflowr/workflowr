@@ -11,7 +11,8 @@ wflow_start(name, directory, git = TRUE, existing = FALSE,
 \item{name}{character. Project name, e.g. "My Project"}
 
 \item{directory}{character. The directory for the project, e.g.
-"~/new-project". Will be created if necessary.}
+"~/new-project". By default the directory will be created (\code{existing =
+FALSE}.}
 
 \item{git}{logical (default: TRUE). Should Git be used for version control?
 If \code{directory} is a new Git repository, \code{wflow_start} will
@@ -30,7 +31,9 @@ existing files. Only relevant if \code{existing = TRUE}. Passed to
 \code{file.copy}.}
 }
 \description{
-\code{wflow_start} creates a new project directory for the site.
+\code{wflow_start} adds the necesary files for a workflowr project. The
+default is to create a new directory, but it is also possible to add the
+files to an already existing project.
 }
 \details{
 This is the initial function that organizes the infrastructure to create a

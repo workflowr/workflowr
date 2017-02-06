@@ -1,0 +1,47 @@
+---
+title: "Migrating an existing project to use workflowr"
+subtitle: "workflowr version `r packageVersion('workflowr')`"
+author: "John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Migrating an existing project to use workflowr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r chunk-options, include=FALSE}
+library("knitr")
+opts_chunk$set(eval = FALSE)
+```
+
+## Introduction
+
+This vignette is for those users that already have an existing project and wish 
+to incorporate workflowr to create a research website. Migrating an existing 
+project to use workflowr varies from straightforward to difficult depending on 
+the scenario and your comfort level with Git. This vignette assumes that you
+have the background knowledge of workflowr explained in the Getting Started
+vignette. Even if you have no need for a new workflowr project, please run
+through that vignette first as an exercise to familiarize yourself with the
+workflowr philosophy and functions.
+
+```{r getting-started}
+vignette("getting-started", "workflowr")
+```
+
+## Scenario: I have a collection of R Markdown files (no version control)
+
+## Scenario: I have a collection of R Markdown files (with version control)
+
+## Scenario: I have a collection of R Markdown files with lots of other supporting files (no version control)
+
+## Scenario: I have a collection of R Markdown files with lots of other supporting files (with version control)
+
+## Scenario: I have an R package (no version control)
+
+## Scenario: I have an R package (with version control)
+
+## Scenario: I have an ashlar project

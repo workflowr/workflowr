@@ -15,10 +15,10 @@
 #' functions).
 #'
 #' @param ... Objects to be archived.
+#' @param subdir character. The name of the subdirectory to save the objects.
+#'   Highly recommended to use the name of the current R Markdown file.
 #' @param archive_dir character (default: "../archive"). The path to the main
 #'   archive directory.
-#' @param subdir character (default: NULL). The name of the subdirectory to save
-#'   the objects. If NULL, the name of the R Markdown file is used.
 #' @param overwrite logical (default: FALSE). If the object already has an
 #'   archived file for the current version of the workflowr project, should it
 #'   be overwritten?
@@ -31,19 +31,19 @@
 #' x <- 1
 #' y <- 2
 #' z <- 3
-#' wflow_archive(x, y, z)
+#' wflow_archive(x, y, z, subdir = "filename.Rmd")
 #' }
 #' @seealso \code{\link{wflow_restore}}, \code{\link{saveRDS}}
 #' @export
 wflow_archive <- function(...,
+                          subdir,
                           archive_dir = "../archive",
-                          subdir = NULL,
                           overwrite = FALSE,
                           path = ".") {
+  if (!is.character(subdir) & length(subdir) != 1)
+    stop("subdir must be NULL or a one element character vector: ", subdir)
   if (!is.character(archive_dir) | length(archive_dir) != 1)
     stop("archive_dir must be a one element character vector: ", archive_dir)
-  if (!is.null(subdir) | !is.character(archive_dir) & length(archive_dir) != 1)
-    stop("subdir must be NULL or a one element character vector: ", subdir)
   if (!is.logical(overwrite) | length(overwrite) != 1)
     stop("overwrite must be one element logical vector")
   if (!is.character(path) | length(path) != 1)
@@ -58,14 +58,15 @@ wflow_archive <- function(...,
     message("Archive directory created: ", archive_dir)
   }
 
-  if (is.null(subdir)) {
-    rmd_file <- knitr::current_input()
-    if (is.null(rmd_file)) {
-      stop("wflow_archive must be knit in an R Markdown document")
-    } else {
-      subdir <- basename(rmd_file)
+  rmd_file <- knitr::current_input()
+  if (!is.null(rmd_file)) {
+    if (subdir != rmd_file) {
+      warning("Highly recommended to set subdir to the name of the R Markdown file",
+              "\nR Markdown: ", rmd_file,
+              "\nsubdir: ", subdir)
     }
   }
+
   location <- file.path(archive_dir, subdir)
   if (!dir.exists(location)) {
     dir.create(location, recursive = TRUE)
@@ -124,9 +125,8 @@ archive <- function(..., id, location, overwrite = FALSE) {
 #' archived with \code{wflow_archive}.
 #'
 #' \code{wflow_restore} loads each serialized object to a separate file using
-#' \code{\link{readRDS}}. By default it searches for a subdirectory within the
-#' archive directory which is named after the R Markdown file being knit (i.e.
-#' the search path is \code{archive_dir/subdir}).
+#' \code{\link{readRDS}}. It searches for the archived objects in
+#' \code{archive_dir/subdir}).
 #'
 #' Note that this function uses non-standard evaluation to save the objects. Do
 #' not use \code{wflow_restore} within a function (please open an Issue if it
@@ -134,10 +134,9 @@ archive <- function(..., id, location, overwrite = FALSE) {
 #' functions).
 #'
 #' @param ... Objects to be restored.
+#' @param subdir character. The name of the subdirectory to load the objects.
 #' @param archive_dir character (default: "../archive"). The path to the main
 #'   archive directory.
-#' @param subdir character (default: NULL). The name of the subdirectory to save
-#'   the objects. If NULL, the name of the R Markdown file is used.
 #' @param path character (default: "."). By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
@@ -148,18 +147,18 @@ archive <- function(..., id, location, overwrite = FALSE) {
 #'
 #' @examples
 #' \dontrun{
-#' restored <- wflow_restore(x, y, z)
+#' restored <- wflow_restore(x, y, z, subdir = "filename.Rmd")
 #' }
 #' @seealso \code{\link{wflow_archive}}, \code{\link{readRDS}}
 #' @export
 wflow_restore <- function(...,
+                          subdir,
                           archive_dir = "../archive",
-                          subdir = NULL,
                           path = ".") {
+  if (!is.character(subdir) & length(subdir) != 1)
+    stop("subdir must be NULL or a one element character vector: ", subdir)
   if (!is.character(archive_dir) | length(archive_dir) != 1)
     stop("archive_dir must be a one element character vector: ", archive_dir)
-  if (!is.null(subdir) | !is.character(archive_dir) & length(archive_dir) != 1)
-    stop("subdir must be NULL or a one element character vector: ", subdir)
   if (!is.character(path) | length(path) != 1)
     stop("path must be a one element character vector: ", path)
 
@@ -170,14 +169,6 @@ wflow_restore <- function(...,
   if (!dir.exists(archive_dir))
     stop("Archive directory does not exist: ", archive_dir)
 
-  if (is.null(subdir)) {
-    rmd_file <- knitr::current_input()
-    if (is.null(rmd_file)) {
-      stop("wflow_archive must be knit in an R Markdown document")
-    } else {
-      subdir <- basename(rmd_file)
-    }
-  }
   location <- file.path(archive_dir, subdir)
   if (!dir.exists(location)) {
     stop("Archive subdirectory does not exist: ", location)

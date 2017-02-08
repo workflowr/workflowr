@@ -150,6 +150,7 @@ file.copy("files/test_archive/archive.Rmd",
 # Commit and build file
 cwd <- getwd()
 setwd(site_dir); on.exit(setwd(cwd))
+
 suppressMessages(wflow_commit(commit_files = "analysis/archive.Rmd"))
 # Expected archive files
 r <- repository()
@@ -164,7 +165,7 @@ test_that("wflow_archive archives files in correct location", {
 })
 
 # Make an arbitrary edit to archive.Rmd so that it can be committed and re-built
-cat("\ban edit\n", file = "analysis/archive.Rmd", append = TRUE)
+cat("\nan edit\n", file = "analysis/archive.Rmd", append = TRUE)
 suppressMessages(wflow_commit(commit_files = "analysis/archive.Rmd"))
 # Expected archive files
 id2 <- extract_commit(".", 2)$sha1

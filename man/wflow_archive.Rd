@@ -4,17 +4,17 @@
 \alias{wflow_archive}
 \title{Archive objects}
 \usage{
-wflow_archive(..., archive_dir = "../archive", subdir = NULL,
-  overwrite = FALSE, path = ".")
+wflow_archive(..., subdir, archive_dir = "../archive", overwrite = FALSE,
+  path = ".")
 }
 \arguments{
 \item{...}{Objects to be archived.}
 
+\item{subdir}{character. The name of the subdirectory to save the objects.
+Highly recommended to use the name of the current R Markdown file.}
+
 \item{archive_dir}{character (default: "../archive"). The path to the main
 archive directory.}
-
-\item{subdir}{character (default: NULL). The name of the subdirectory to save
-the objects. If NULL, the name of the R Markdown file is used.}
 
 \item{overwrite}{logical (default: FALSE). If the object already has an
 archived file for the current version of the workflowr project, should it
@@ -45,7 +45,7 @@ functions).
 x <- 1
 y <- 2
 z <- 3
-wflow_archive(x, y, z)
+wflow_archive(x, y, z, subdir = "filename.Rmd")
 }
 }
 \seealso{

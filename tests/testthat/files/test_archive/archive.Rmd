@@ -29,23 +29,27 @@ mean_value <- sample(1:10, size = 1)
 normal_dist <- rnorm(5, mean = mean_value)
 ```
 
+## Archive and restore
+
 Archive them.
 
 ```{r archive}
-wflow_archive(mean_value, normal_dist)
+wflow_archive(mean_value, normal_dist, subdir = "archive.Rmd")
 ```
 
 Restore them.
 
 ```{r restore}
-restored <- wflow_restore(mean_value, normal_dist)
+restored <- wflow_restore(mean_value, normal_dist, subdir = "archive.Rmd")
 str(restored)
 ```
+
+## Analysis
 
 Analyze them.
 
 ```{r analysis}
-mean_set <- sapply(restored$mean_value, function(x) x)
+mean_set <- unlist(restored$mean_value)
 mean_estimate <- sapply(restored$normal_dist, function(x) mean(x))
 error <- abs(mean_set - mean_estimate)
 d <- data.frame(mean_set, error, commit = names(error))
@@ -55,28 +59,6 @@ ggplot(d, aes(x = mean_set, y = error, label = commit)) +
        y = "Absolute error between actual and estimated mean",
        title = "Relationship between the mean, its estimation error, and commit")
 ```
-
-## Decisions
-
-The functions `wflow_archive` and `wflow_restore` use the name of the file to
-save and load the objects. Thus this only works if the file is knit. Running the
-chunks individually (e.g. "Run All" in RStudio) cannot access the name of the
-current file. What do we want the behaviour to be?
-
-The function currently use non-standard evaluation tricks so that the objects
-can be directly passed (instead of creating a named list). This works great
-unless they are embedded inside of another function. Do we expect it will be
-common to embed these functions within other functions? If yes, we need to make
-standard evaluation options avaialable as well (e.g. dplyr has the non-standard
-evalation function `select` and the corresponding standard evalation `select_`
-for use inside functions).
-
-What beyond the sha1? The commit message? The date?
-
-How to commit them? Have `wflow_commit` check the archive directory? This may
-need to wait until a configuration file is implemented.
-
-What about the files created while testing? These will have the wrong commit.
 
 ## Session Information
 

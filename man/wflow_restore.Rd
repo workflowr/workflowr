@@ -4,16 +4,15 @@
 \alias{wflow_restore}
 \title{Restore objects}
 \usage{
-wflow_restore(..., archive_dir = "../archive", subdir = NULL, path = ".")
+wflow_restore(..., subdir, archive_dir = "../archive", path = ".")
 }
 \arguments{
 \item{...}{Objects to be restored.}
 
+\item{subdir}{character. The name of the subdirectory to load the objects.}
+
 \item{archive_dir}{character (default: "../archive"). The path to the main
 archive directory.}
-
-\item{subdir}{character (default: NULL). The name of the subdirectory to save
-the objects. If NULL, the name of the R Markdown file is used.}
 
 \item{path}{character (default: "."). By default the function assumes the
 current working directory is within the project. If this is not true,
@@ -30,9 +29,8 @@ archived with \code{wflow_archive}.
 }
 \details{
 \code{wflow_restore} loads each serialized object to a separate file using
-\code{\link{readRDS}}. By default it searches for a subdirectory within the
-archive directory which is named after the R Markdown file being knit (i.e.
-the search path is \code{archive_dir/subdir}).
+\code{\link{readRDS}}. It searches for the archived objects in
+\code{archive_dir/subdir}).
 
 Note that this function uses non-standard evaluation to save the objects. Do
 not use \code{wflow_restore} within a function (please open an Issue if it
@@ -41,7 +39,7 @@ functions).
 }
 \examples{
 \dontrun{
-restored <- wflow_restore(x, y, z)
+restored <- wflow_restore(x, y, z, subdir = "filename.Rmd")
 }
 }
 \seealso{

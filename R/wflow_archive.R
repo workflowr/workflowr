@@ -165,6 +165,9 @@ wflow_restore <- function(...,
   if (!git2r::in_repository(path))
     stop("wflow_restore requires a Git repository.",
          "\nPlease update path: ", path)
+  else {
+    r <- git2r::repository(path, discover = TRUE)
+  }
 
   if (!dir.exists(archive_dir))
     stop("Archive directory does not exist: ", archive_dir)
@@ -175,7 +178,9 @@ wflow_restore <- function(...,
   }
   message("Restoring files from ", location)
 
-  restore(...,  location = location)
+  restored <- restore(...,  location = location)
+  # To do: Add commit time to sha1
+  # Use git2r::lookup(r, sha1)
 }
 
 restore <- function(..., location) {

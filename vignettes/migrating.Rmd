@@ -45,7 +45,7 @@ be created in the new directory `~/projects/new-project/`.
 library("workflowr")
 wflow_start("Name of project", "~/projects/new-project")
 file.copy(from = glob2rx("~/projects/misc/*Rmd"),
-                         to = "~/projects/new-project")
+          to = "~/projects/new-project/analysis")
 ```
 
 ## Scenario: I have a collection of R Markdown files and other project infrastructure
@@ -135,19 +135,26 @@ library("workflowr")
 wflow_start("Name of project", "~/projects/ashlar-project", existing = TRUE)
 ```
 
-Lastly, you'll need to update each of your R Markdown files (helper function coming soon). Make the following substitutions:
+Lastly, you'll need to update each of your R Markdown files. Make the following substitutions:
+
+```{r verbatim-inline-r-code-hack, include=FALSE}
+# I had to use a hack to get the inline R code to show verbatim as opposed to
+# being evaluated.
+#
+# http://stackoverflow.com/a/20419016
+```
 
 ashlar:
 
 ```
-**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`
+**Code version:** `r '\x60r system(\"git log -1 --format=\'%H\'\", intern = TRUE)\x60'`
 ```
 
 workflowr:
 
-<pre><code>
-**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
-</code></pre>
+```
+**Code version:** `r '\x60r workflowr::extract_commit(".", 1)$sha1\x60'
+```
 
 ashlar:
 

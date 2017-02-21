@@ -2,8 +2,11 @@ Package: workflowr
 Type: Package
 Title: A workflow template for creating a research website
 Version: 0.3.0
-Author: John Blischak
-Maintainer: John Blischak <jdblischak@uchicago.edu>
+Authors@R:
+    person(given = "John",
+           family = "Blischak",
+           role = c("aut", "cre"),
+           email = "jdblischak@uchicago.edu")
 Description: workflowr provides helper functions to get started using R Markdown
     to create a research website.
 URL: https://github.com/jdblischak/workflowr
@@ -23,7 +26,7 @@ Imports:
     utils,
     whisker,
     yaml
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests:
     devtools,
     knitr,

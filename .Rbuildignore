@@ -2,3 +2,5 @@
 ^README\.md$
 ^\.Rproj\.user$
 ^workflowr\.Rproj$
+^docs$
+^\.travis\.yml$

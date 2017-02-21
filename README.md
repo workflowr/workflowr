@@ -1,5 +1,7 @@
 # workflowr
 
+[![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=dev)](https://travis-ci.org/jdblischak/workflowr)
+
 The goal of the workflowr package is to make it easier for researchers to 
 organize their projects and share their results with colleagues. If you are 
 already writing R code to analyze data, and know the basics of Git and GitHub, 

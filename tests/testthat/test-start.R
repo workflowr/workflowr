@@ -108,3 +108,34 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
                "You must set your user.name and user.email for Git first\n")
   expect_false(dir.exists(site_dir))
 })
+
+test_that("wflow_start can handle relative path to current directory: .", {
+
+  # start project in a tempdir
+  site_dir <- tempfile("test-start-")
+  dir.create(site_dir)
+  cwd <- getwd()
+  setwd(site_dir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(site_dir, recursive = TRUE), add = TRUE)
+
+  capture.output(wflow_start(project_name, ".", existing = TRUE))
+
+  expect_true(file.exists(paste0(basename(site_dir), ".Rproj")))
+})
+
+test_that("wflow_start can handle relative path to upstream directory: ..", {
+
+  # start project in a tempdir
+  site_dir <- tempfile("test-start-")
+  site_dir_subdir <- file.path(site_dir, "random-subdir")
+  dir.create(site_dir_subdir, recursive = TRUE)
+  cwd <- getwd()
+  setwd(site_dir_subdir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(site_dir, recursive = TRUE), add = TRUE)
+
+  capture.output(wflow_start(project_name, "..", existing = TRUE))
+
+  expect_true(file.exists(file.path("..", paste0(basename(site_dir), ".Rproj"))))
+})

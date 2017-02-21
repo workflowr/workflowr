@@ -48,6 +48,10 @@ wflow_start <- function(name,
   if (!is.logical(overwrite) | length(overwrite) != 1)
     stop("overwrite must be a one element logical vector: ", overwrite)
 
+  # Convert directory to absolute path. May still need to be created, which is
+  # determined later.
+  directory <- normalizePath(directory, mustWork = FALSE)
+
   # A workflowr directory cannot be created within an existing Git repository if
   # git = TRUE & existing = FALSE.
   if (git & !existing) {

@@ -8,3 +8,7 @@ cache: packages
 branches:
   only:
   - dev
+
+before_install:
+  - git config --global user.name "Travis CI"
+  - git config --global user.email "testing@fake.domain"

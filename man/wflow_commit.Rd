@@ -79,4 +79,3 @@ wflow_commit(commit_files = c("pipeline.R", "new-analysis.Rmd"),
 wflow_commit(all = TRUE)
 }
 }
-

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A workflow template for creating a research website • workflowr</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -29,10 +29,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="index.html">Home</a>
 </li>
 <li>
-  <a href="articles/index.html">Articles</a>
+  <a href="articles/getting-started.html">Getting Started</a>
+</li>
+<li>
+  <a href="articles/index.html">Vignettes</a>
+</li>
+<li>
+  <a href="reference/index.html">Functions</a>
 </li>
 <li>
   <a href="news/index.html">News</a>
@@ -60,12 +66,12 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#workflowr" class="anchor"> </a>workflowr</h1></div>
 
-<p>The goal of the workflowr package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like <a href="https://jdblischak.github.io/workflowr-demo01/">this</a>.</p>
+<p>The goal of the <a href="https://jdblischak.github.io/workflowr/">workflowr</a> package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like <a href="https://jdblischak.github.io/workflowr-demo01/">this</a>.</p>
 <p><strong>WARNING:</strong> workflowr is still in the early stages of development, so there will potentially be major changes between versions. Thus make sure to upgrade if necessary and look over the documentation. The good news is that any site you create will not be affected by these changes and will continue to function with new versions of the workflowr functions. If you find any problems, or would like to suggest new features, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"> </a>Installation</h2>
-<p>workflowr is hosted in a <a href="https://github.com/jdblischak/workflowr">GitHub repository</a>. To install or upgrade workflowr, run the following in R:</p>
+<p>workflowr is hosted in a <a href="https://github.com/jdblischak/workflowr">GitHub repository</a>. To install or upgrade workflowr to the most recent stable release, run the following in R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools") </span>
 devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
@@ -84,47 +90,19 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"> </a>Documentation</h2>
-<p>The following vignettes are available. You can open these locally from R after you’ve installed the package, or view the vignette online by clicking on the title in the table below.</p>
-<table style="width:40%;" class="table">
-<colgroup>
-<col width="20%">
-<col width="19%">
-</colgroup>
-<thead><tr class="header">
-<th>Vignette title</th>
-<th>To open from R</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://jdblischak.github.io/workflowr/inst/doc/getting-started.html">Getting started with workflowr</a></td>
-<td><code><a href="articles/getting-started.html">vignette("getting-started", "workflowr")</a></code></td>
-</tr>
-<tr class="even">
-<td><a href="https://jdblischak.github.io/workflowr/inst/doc/customization.html">Customize your research website</a></td>
-<td><code><a href="articles/customization.html">vignette("customization", "workflowr")</a></code></td>
-</tr>
-<tr class="odd">
-<td><a href="https://jdblischak.github.io/workflowr/inst/doc/how-it-works.html">How the workflowr package works</a></td>
-<td><code><a href="articles/how-it-works.html">vignette("how-it-works", "workflowr")</a></code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="news" class="section level2">
-<h2 class="hasAnchor">
-<a href="#news" class="anchor"> </a>News</h2>
-<p>See the file <a href="./NEWS.md">NEWS.md</a> to learn about recent updates.</p>
+<p>Please see the <a href="https://jdblischak.github.io/workflowr/">online documentation</a> to learn how to use workflowr. The vignettes describe how to get started, customize your research website, migrate an existing project, and more. Alternatively, you can view the available vignettes locally by running the following in R: <code>browseVignettes("workflowr")</code></p>
 </div>
 <div id="credits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#credits" class="anchor"> </a>Credits</h2>
 <p>workflowr was developed, and is maintained, by John Blischak, a postdoctoral researcher in the laboratory of <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a> at <a href="http://www.uchicago.edu/">The University of Chicago</a>. He is funded by a grant from the <a href="https://www.moore.org/">Gordon and Betty Moore Foundation</a> to MS.</p>
-<p>The workflowr package uses many great open source packages. Most importantly it depends on the R packages <a href="http://rmarkdown.rstudio.com/">rmarkdown</a>, which is responsible for providing the infrastructure to convert a collection of R Markdown files into a static website, and <a href="https://cran.r-project.org/web/packages/git2r/index.html">git2r</a>, which enables running Git commands from R. Furthermore it relies on the <a href="https://pages.github.com/">GitHub Pages</a> service for hosting the websites for free. See <a href="./DESCRIPTION">DESCRIPTION</a> for the full list of R packages used and the <a href="https://jdblischak.github.io/workflowr/inst/doc/how-it-works.html">vignette</a> that describes the details of how workflowr works.</p>
+<p>The workflowr package uses many great open source packages. Most importantly it depends on the R packages <a href="http://rmarkdown.rstudio.com/">rmarkdown</a>, which is responsible for providing the infrastructure to convert a collection of R Markdown files into a static website, and <a href="https://cran.r-project.org/web/packages/git2r/index.html">git2r</a>, which enables running Git commands from R. Furthermore it relies on the <a href="https://pages.github.com/">GitHub Pages</a> service for hosting the websites for free. See the file DESCRIPTION for the full list of R packages used and the <a href="https://jdblischak.github.io/workflowr/docs/articles/how-it-works.html">vignette</a> that describes the details of how workflowr works.</p>
+<p>The package documentation is created with <a href="http://hadley.github.io/pkgdown/">pkgdown</a> and continuous integration testing is performed by <a href="https://travis-ci.org/">Travis CI</a>.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"> </a>License</h2>
-<p>workflowr is available under the MIT license. See the files <a href="./DESCRIPTION">DESCRIPTION</a> and <a href="./LICENSE">LICENSE</a> for more details.</p>
+<p>workflowr is available under the <a href="https://opensource.org/licenses/mit-license.php">MIT</a> license.</p>
 </div>
 <div id="pronunciation" class="section level2">
 <h2 class="hasAnchor">
@@ -151,7 +129,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <html><body>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/jdblischak/workflowr"><img src="https://travis-ci.org/jdblischak/workflowr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://travis-ci.org/jdblischak/workflowr"><img src="https://travis-ci.org/jdblischak/workflowr.svg?branch=dev" alt="Travis-CI Build Status"></a></li>
 </ul>
 </body></html>
 </div>

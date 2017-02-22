@@ -33,7 +33,8 @@ installation instructions for use in its workshops. Follow the instructions for
 your particular operating system to [install R][swc-r], [install Git][swc-git], and [configure Git][swc-git-config]. You can
 obtain a GitHub account at https://github.com/.
 
-workflowr is hosted in a [GitHub repository][repo]. Install it with devtools.
+workflowr is hosted in a [GitHub repository][repo]. Install the most recent
+stable release with devtools.
 
 ```{r install, eval=FALSE}
 # install.packages("devtools")

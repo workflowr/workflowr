@@ -4,3 +4,4 @@
 ^workflowr\.Rproj$
 ^docs$
 ^\.travis\.yml$
+^_pkgdown\.yaml$

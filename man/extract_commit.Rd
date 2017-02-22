@@ -31,4 +31,3 @@ extract_commit(".", 1)
 extract_commit(".", 2)
 }
 }
-

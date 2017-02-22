@@ -1,0 +1,45 @@
+templates:
+  params:
+    bootswatch: readable
+
+navbar:
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Getting Started"
+      href: articles/getting-started.html
+    - text: "Vignettes"
+      href: articles/index.html
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+
+articles:
+  - title: "Vignettes"
+    desc: >
+      The following vignettes provide detailed instructions for using workflowr.
+      To view locally, run the following in the R console:
+      `browseVignettes("workflowr")`
+    contents:
+    - getting-started
+    - customization
+    - migrating
+    - how-it-works
+
+reference:
+  - title: "Starting a workflowr project"
+    contents:
+      - wflow_start
+  - title: "Creating new files"
+    contents:
+      - wflow_open
+      - create_links_page
+  - title: "Building the research website"
+    contents:
+      - wflow_build
+      - wflow_commit
+  - title: "Main functions"
+    desc: "All the main workflowr functions (alphabetical order)."
+    contents:
+      - starts_with("wflow_")

@@ -2,7 +2,7 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=dev)](https://travis-ci.org/jdblischak/workflowr)
 
-The goal of the workflowr package is to make it easier for researchers to 
+The goal of the [workflowr][] package is to make it easier for researchers to 
 organize their projects and share their results with colleagues. If you are 
 already writing R code to analyze data, and know the basics of Git and GitHub, 
 you can start taking advantage of workflowr immediately. In a matter of minutes,
@@ -15,13 +15,14 @@ create will not be affected by these changes and will continue to function with
 new versions of the workflowr functions. If you find any problems, or would like
 to suggest new features, please open an [Issue][issues].
 
+[workflowr]: https://jdblischak.github.io/workflowr/
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 [issues]: https://github.com/jdblischak/workflowr/issues
 
 ## Installation
 
 workflowr is hosted in a [GitHub repository][repo]. To install or upgrade 
-workflowr, run the following in R:
+workflowr to the most recent stable release, run the following in R:
 
 ```r
 # install.packages("devtools") 
@@ -51,23 +52,10 @@ a researcher to maintain a version-controlled R Markdown website:
 
 ## Documentation
 
-The following vignettes are available. You can open these locally from R after 
-you've installed the package, or view the vignette online by clicking on the
-title in the table below.
-
-Vignette title | To open from R
--------------- | -------------
-[Getting started with workflowr][vig-start] | `vignette("getting-started", "workflowr")` 
-[Customize your research website][vig-custom] | `vignette("customization", "workflowr")` 
-[How the workflowr package works][vig-details] | `vignette("how-it-works", "workflowr")`
-
-[vig-start]: https://jdblischak.github.io/workflowr/inst/doc/getting-started.html 
-[vig-custom]: https://jdblischak.github.io/workflowr/inst/doc/customization.html
-[vig-details]: https://jdblischak.github.io/workflowr/inst/doc/how-it-works.html
-
-## News
-
-See the file [NEWS.md](./NEWS.md) to learn about recent updates.
+Please see the [online documentation][workflowr] to learn how to use workflowr. 
+The vignettes describe how to get started, customize your research website, 
+migrate an existing project, and more. Alternatively, you can view the available
+vignettes locally by running the following in R: `browseVignettes("workflowr")`
 
 ## Credits
 
@@ -81,8 +69,11 @@ depends on the R packages [rmarkdown][], which is responsible for providing the
 infrastructure to convert a collection of R Markdown files into a static 
 website, and [git2r][], which enables running Git commands from R. Furthermore 
 it relies on the [GitHub Pages][] service for hosting the websites for free. See
-[DESCRIPTION](./DESCRIPTION) for the full list of R packages used and the
+the file DESCRIPTION for the full list of R packages used and the 
 [vignette][vig-details] that describes the details of how workflowr works.
+
+The package documentation is created with [pkgdown][] and continuous integration
+testing is performed by [Travis CI][travis].
 
 [stephens]: http://stephenslab.uchicago.edu/
 [uchicago]: http://www.uchicago.edu/
@@ -90,11 +81,15 @@ it relies on the [GitHub Pages][] service for hosting the websites for free. See
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
+[vig-details]: https://jdblischak.github.io/workflowr/docs/articles/how-it-works.html
+[pkgdown]: http://hadley.github.io/pkgdown/
+[travis]: https://travis-ci.org/
 
 ## License
 
-workflowr is available under the MIT license. See the files
-[DESCRIPTION](./DESCRIPTION) and [LICENSE](./LICENSE) for more details.
+workflowr is available under the [MIT][] license.
+
+[MIT]: https://opensource.org/licenses/mit-license.php
 
 ## Pronunciation
 

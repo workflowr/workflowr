@@ -48,4 +48,3 @@ chronological order.
 create_links_page()
 }
 }
-

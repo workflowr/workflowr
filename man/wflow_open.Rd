@@ -53,4 +53,3 @@ wflow_open("analysis/model-data.Rmd")
 wflow_open(c("model-data.Rmd", "another-analysis.Rmd"))
 }
 }
-

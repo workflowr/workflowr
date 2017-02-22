@@ -62,4 +62,3 @@ wflow_build(all = TRUE)
 wflow_build(files = c("one.Rmd", "two.Rmd"))
 }
 }
-

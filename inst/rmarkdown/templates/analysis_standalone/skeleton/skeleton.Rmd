@@ -1,7 +1,11 @@
-# These chunks can be shared across multiple documents with knitr::read_chunk().
-# http://yihui.name/knitr/demo/externalization/
+---
+title: "Untitled"
+author: "First Last"
+date: YYYY-MM-DD
+output: html_document
+---
 
-# ---- knitr-opts-chunk ----
+```{r knitr-opts-chunk, include=FALSE}
 # Update knitr chunk options
 # https://yihui.name/knitr/options/#chunk-options
 knitr::opts_chunk$set(
@@ -10,12 +14,14 @@ knitr::opts_chunk$set(
   tidy = FALSE,
   fig.path = paste0("figure/", knitr::current_input(), "/")
 )
+```
 
-# ---- last-updated ----
+```{r last-updated, echo=FALSE, results='asis'}
 # Insert the date the file was last updated
 cat(sprintf("**Last updated:** %s", Sys.Date()))
+```
 
-# ---- code-version ----
+```{r code-version, echo=FALSE, results='asis'}
 # Insert the code version (Git commit SHA1) if Git repository exists and R
 # package git2r is installed
 if(requireNamespace("git2r", quietly = TRUE)) {
@@ -29,6 +35,13 @@ if(requireNamespace("git2r", quietly = TRUE)) {
 }
 cat(sprintf("**Code version:** %s", code_version))
 rm(code_version)
+```
 
-# ---- session-info ----
+<!-- Add your analysis here -->
+
+## Session Information
+
+<!-- Insert the session information into the document -->
+```{r session-info}
 sessionInfo()
+```

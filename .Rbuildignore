@@ -5,3 +5,4 @@
 ^docs$
 ^\.travis\.yml$
 ^_pkgdown\.yaml$
+^document\.R$

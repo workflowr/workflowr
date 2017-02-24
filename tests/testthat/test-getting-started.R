@@ -34,6 +34,12 @@ test_that("wflow_build builds the website, but only once", {
                  "All HTML files have been rendered")
 })
 
+test_that("wflow_view opens website.", {
+  expected <- file.path(site_dir, "docs/index.html")
+  actual <- wflow_view(dry_run = TRUE, path = site_dir)
+  expect_identical(actual, expected)
+})
+
 test_rmd <- file.path(site_dir, paste0("analysis/first-analysis.Rmd"))
 file.copy("files/workflowr-template.Rmd", test_rmd)
 # Expected html file
@@ -58,6 +64,12 @@ test_that("wflow_build only builds new file", {
   expect_identical(html_mtime_pre, html_mtime_post)
   expect_message(wflow_build(path = site_dir),
                  "All HTML files have been rendered")
+})
+
+test_that("wflow_view can open specific file with Rmd extension & without path.", {
+  expected <- file.path(site_dir, "docs/first-analysis.html")
+  actual <- wflow_view("first-analysis.Rmd", dry_run = TRUE, path = site_dir)
+  expect_identical(actual, expected)
 })
 
 all_rmd <- sort(c(test_rmd, rmd_files))

@@ -129,7 +129,8 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <html><body><a href="#build-the-website" class="anchor"> </a></body></html>Build the website</h2>
 <p>To build the website, run the function <code>wflow_build</code> in the R console:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</code></pre></div>
-<p>This commands builds all the R Markdown files located in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. Open the file <code>docs/index.html</code> in your browser to see your site.</p>
+<p>This commands builds all the R Markdown files located in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. To view the site, run <code>wflow_view</code>, which by default opens the file <code>docs/index.html</code> in your browser:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_view.html">wflow_view</a></span>()</code></pre></div>
 <p>Open <code>analysis/about.Rmd</code> in your text editor and write a sentence about your project. <code>wflow_build</code> only builds new or updated R Markdown files. Confirm that the only file to be updated is <code>analysis/about.Rmd</code> by invoking <code>wflow_build</code> as a dry run.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>(<span class="dt">dry_run =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
@@ -144,7 +145,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <li>Sets the working directory to the <code>analysis/</code> directory</li>
 <li>If you are using RStudio, opens the file for editing</li>
 </ol>
-<p>Now you are ready to start writing! At the top of the file, edit the author, title, and date. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code>wflow_build</code> again (it can be run from the base directory of your project or any subdirectory).</p>
+<p>Now you are ready to start writing! At the top of the file, edit the author, title, and date. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code>wflow_build</code> again and <code><a href="../reference/wflow_view.html">wflow_view("first-analysis.Rmd")</a></code> (these can be run from the base directory of your project or any subdirectory).</p>
 <p>Check out your new file <code>docs/first-analysis.html</code>. Near the top you will see a line that says “Code version:” followed by an alphanumeric character string. This informs you which version of the code was used to create the file (this is explained more below in the section <a href="#version-the-website">Version the website</a>).</p>
 <p>The template R Markdown files contains example code, including creating a figure. This figure was saved as <code>analysis/figure/first-analysis.Rmd/pressure-1.png</code>. Using workflowr, the figures are automatically saved as <code>analysis/figure/&lt;insert Rmd  filename&gt;/&lt;insert chunk name&gt;-#.png</code>, where <code>#</code> corresponds to which of the plots the chunk generated (since one chunk can produce an arbitrary number of plots). Note that the <code>figure/</code> directory is also copied to <code>docs/</code> when building the site.</p>
 <p>In order to make it easier to navigate to your new file, you can include a link to it on the main index page. For example, open <code>analysis/index.Rmd</code> and paste the following line. This uses the Markdown syntax for creating a hyperlink (for a quick reference guide in RStudio click “Help” -&gt; “Markdown Quick Reference”). You specify the HTML version of the file since this is what comprises the website.</p>
@@ -167,7 +168,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <p>This is the general workflow:</p>
 <ol style="list-style-type: decimal">
 <li>Write code in the R Markdown files (For RStudio users: to quickly develop the code I recommend executing the code in the R console via Ctrl-Enter to send one line or Ctrl-Alt-C to execute the entire code chunk)</li>
-<li>Run <code>wflow_build</code> to view the results as they will appear on the website</li>
+<li>Run <code>wflow_build</code> and <code>wflow_view</code> to view the results as they will appear on the website (alternatively press the Knit button in RStudio)</li>
 <li>Go back to step 1 until you are satisfied with the result</li>
 <li>Run <code>wflow_commit</code> to build and commit the website (make sure to specify the files that are ready to commit using the argument <code>commit_files</code>)</li>
 </ol>

@@ -39,6 +39,7 @@ reference:
     contents:
       - wflow_build
       - wflow_commit
+      - wflow_view
   - title: "Managing Git and GitHub"
     desc: "Functions to perform local Git commands"
     contents:

@@ -1,5 +1,13 @@
 context("wflow_remotes")
 
+# Setup ------------------------------------------------------------------------
+
+# Setup workflowr project for testing
+site_dir <- tempfile("wflow_remotes-")
+suppressMessages(wflow_start("Test wflow_remotes", site_dir))
+# Delete workflowr project on exit
+on.exit(unlink(site_dir, recursive = TRUE))
+
 # Test create_remote_url -------------------------------------------------------
 
 test_that("create_remote_url can create https URLs.", {
@@ -20,10 +28,6 @@ test_that("create_remote_url throws error for improper protocol.", {
 })
 
 # Test wflow_remotes -----------------------------------------------------------
-
-# Setup workflowr project for testing
-site_dir <- tempfile("wflow_remotes-")
-suppressMessages(wflow_start("Test wflow_remotes", site_dir))
 
 test_that("wflow_remotes reports no remotes when none have been set.", {
   expect_message(remotes <- wflow_remotes(path = site_dir),
@@ -111,6 +115,3 @@ test_that("wflow_remotes will not update URL of non-existent remotes", {
                              path = site_dir),
                "wrong is not defined as a remote.")
 })
-
-# Delete workflowr project
-unlink(site_dir, recursive = TRUE)

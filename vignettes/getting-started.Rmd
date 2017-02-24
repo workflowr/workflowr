@@ -97,9 +97,13 @@ To build the website, run the function `wflow_build` in the R console:
 wflow_build()
 ```
 
-This commands builds all the R Markdown files located in `analysis/` and saves
-the corresponding HTML files in `docs/`. Open the file `docs/index.html` in your
-browser to see your site.
+This commands builds all the R Markdown files located in `analysis/` and saves 
+the corresponding HTML files in `docs/`. To view the site, run `wflow_view`,
+which by default opens the file `docs/index.html` in your browser:
+
+```{r wflow-view}
+wflow_view()
+```
 
 Open `analysis/about.Rmd` in your text editor and write a sentence about your 
 project. `wflow_build` only builds new or updated R Markdown files. Confirm that
@@ -127,8 +131,8 @@ This performs multiple actions:
 Now you are ready to start writing! At the top of the file, edit the author, 
 title, and date. If you are using RStudio, press the Knit button to build the 
 file and see a preview in the Viewer pane. Alternatively from the R console, you
-can run `wflow_build` again (it can be run from the base directory of your
-project or any subdirectory).
+can run `wflow_build` again and `wflow_view("first-analysis.Rmd")` (these can be
+run from the base directory of your project or any subdirectory).
 
 Check out your new file `docs/first-analysis.html`. Near the top you will see a
 line that says "Code version:" followed by an alphanumeric character string.
@@ -136,7 +140,7 @@ This informs you which version of the code was used to create the file (this is
 explained more below in the section [Version the
 website](#version-the-website)).
 
-The template R Markdown files contains example code, including creating a 
+The template R Markdown files contains example code, including creating a
 figure. This figure was saved as
 `analysis/figure/first-analysis.Rmd/pressure-1.png`. Using workflowr, the
 figures are automatically saved as `analysis/figure/<insert Rmd 
@@ -194,7 +198,7 @@ in `analysis/`. This one command performs the following 3 actions:
 This is the general workflow:
 
 1. Write code in the R Markdown files (For RStudio users: to quickly develop the code I recommend executing the code in the R console via Ctrl-Enter to send one line or Ctrl-Alt-C to execute the entire code chunk)
-1. Run `wflow_build` to view the results as they will appear on the website
+1. Run `wflow_build` and `wflow_view` to view the results as they will appear on the website (alternatively press the Knit button in RStudio)
 1. Go back to step 1 until you are satisfied with the result
 1. Run `wflow_commit` to build and commit the website (make sure to specify the files that are ready to commit using the argument `commit_files`)
 

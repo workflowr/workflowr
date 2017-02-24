@@ -23,6 +23,7 @@ Imports:
     rprojroot,
     rstudioapi,
     stringr,
+    tools,
     utils,
     whisker,
     yaml

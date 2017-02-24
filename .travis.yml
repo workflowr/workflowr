@@ -4,6 +4,9 @@ language: R
 sudo: false
 cache: packages
 
+r_github_packages:
+  - jimhester/covr
+
 # safelist
 branches:
   only:
@@ -12,3 +15,6 @@ branches:
 before_install:
   - git config --global user.name "Travis CI"
   - git config --global user.email "testing@fake.domain"
+
+after_success:
+  - Rscript -e 'covr::codecov()'

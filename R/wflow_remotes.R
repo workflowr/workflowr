@@ -43,7 +43,7 @@
 #' wflow_remotes("origin", "example_user", "example_repo")
 #' # Remove the remote named upstream
 #' wflow_remotes("upstream", action = "remove")
-#' # Change the protocol from https to ssh
+#' # Change the protocol of the remote origin from https to ssh
 #' wflow_remotes("origin", "example_user", "example_repo", protocol = "ssh",
 #'               action = "set_url")
 #' }
@@ -63,7 +63,7 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
   if (!(protocol %in% c("https", "ssh")))
     stop("protocol must be either https or ssh. You entered: ", protocol)
   if (!(action %in% c("add", "remove", "set_url")))
-    stop("action must be add, remove, ore set_url. You entered: ", action)
+    stop("action must be add, remove, or set_url. You entered: ", action)
   if (!is.logical(verbose) | length(verbose) != 1)
     stop("verbose must be a one element logical vector. You entered: ", verbose)
   if (!is.character(path) | length(path) != 1)
@@ -77,7 +77,7 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
     stop("The specified path is not in a Git repository: ", path)
   }
 
-  remotes_current <- git2r::remotes()
+  remotes_current <- git2r::remotes(r)
 
   # Add, remove, or change URL based on value of `action`
   if (action == "add" & !is.null(remote)) {
@@ -86,14 +86,7 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
            "Use `action = \"set_url\"` to update the URL.")
     if (is.null(user) | is.null(repo))
       stop("Must specify both `user` and `repo` to add remote.")
-    remote_url <- paste0(user, "/", repo, ".git")
-    if (protocol == "https") {
-      remote_url <- paste0("https://github.com/", remote_url)
-    } else if (protocol == "ssh") {
-      remote_url <- paste0("git@github.com:", remote_url)
-    } else {
-      stop("Invalid input for protocol. You entered: ", protocol)
-    }
+    remote_url <- create_remote_url(user, repo, protocol)
     git2r::remote_add(r, remote, remote_url)
   } else if (action == "remove" & !is.null(remote)) {
     if (remote %in% remotes_current) {
@@ -107,14 +100,7 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
            "Use `action = \"add\"` to add it.")
     if (is.null(user) | is.null(repo))
       stop("Must specify both `user` and `repo` to change URL with set_url.")
-    remote_url <- paste0(user, "/", repo, ".git")
-    if (protocol == "https") {
-      remote_url <- paste0("https://github.com/", remote_url)
-    } else if (protocol == "ssh") {
-      remote_url <- paste0("git@github.com:", remote_url)
-    } else {
-      stop("Invalid input for protocol. You entered: ", protocol)
-    }
+    remote_url <- create_remote_url(user, repo, protocol)
     git2r::remote_set_url(r, remote, remote_url)
   }
 
@@ -124,14 +110,39 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
 
   # Output a table of the current remote repositories
   if (verbose) {
-    remote_df_string <- capture.output(print(remote_df, quote = FALSE,
-                                             row.names = FALSE))
-    remote_df_string <- paste(remote_df_string, "\n", sep = "")
-    message("The repository has the following remotes set:\n\n",
-            remote_df_string)
+    if (nrow(remote_df) > 0) {
+      remote_df_string <- utils::capture.output(print(remote_df, quote = FALSE,
+                                                      row.names = FALSE))
+      remote_df_string <- paste(remote_df_string, "\n", sep = "")
+      message("The repository has the following remotes set:\n\n",
+              remote_df_string)
+    } else {
+      message("The repository has no remotes set.")
+    }
   }
 
   # Return invisibly a named character vector of the remote URLs.
   names(urls) <- remotes
   return(invisible(urls))
+}
+
+# Create remote URLs.
+#
+# Examples:
+# > workflowr:::create_remote_url("fakename", "fakerepo", "https")
+# [1] "https://github.com/fakename/fakerepo.git"
+#
+# > workflowr:::create_remote_url("fakename", "fakerepo", "ssh")
+# [1] "git@github.com:fakename/fakerepo.git"
+#
+create_remote_url <- function(user, repo, protocol) {
+  remote_url <- paste0(user, "/", repo, ".git")
+  if (protocol == "https") {
+    remote_url <- paste0("https://github.com/", remote_url)
+  } else if (protocol == "ssh") {
+    remote_url <- paste0("git@github.com:", remote_url)
+  } else {
+    stop("Invalid input for protocol. You entered: ", protocol)
+  }
+  return(remote_url)
 }

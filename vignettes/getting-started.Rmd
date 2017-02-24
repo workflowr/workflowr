@@ -227,11 +227,12 @@ git remote add origin https://github.com/myname/myproject.git
 git push -u origin master
 ```
 
-The first line creates the alias "origin" that points to your remote repository
-on GitHub^["origin" is the conventional name, but could be anything you wanted]. 
+The first line creates the alias "origin" that points to your remote repository 
+on GitHub^["origin" is the conventional name, but could be anything you wanted].
 The second pushes your current commit history to GitHub. You will be prompted to
-enter your GitHub username and password for authentication after you run `git
-push`.
+enter your GitHub username and password for authentication after you run `git 
+push`. To view or update your remote repositories, use the function
+`wflow_remotes`.
 
 Now that your code is on GitHub, you need to tell GitHub that you want the files
 in `docs/` to be published as a website. Go to Settings -> GitHub Pages and 

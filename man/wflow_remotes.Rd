@@ -60,7 +60,7 @@ wflow_remotes()
 wflow_remotes("origin", "example_user", "example_repo")
 # Remove the remote named upstream
 wflow_remotes("upstream", action = "remove")
-# Change the protocol from https to ssh
+# Change the protocol of the remote origin from https to ssh
 wflow_remotes("origin", "example_user", "example_repo", protocol = "ssh",
               action = "set_url")
 }

@@ -39,6 +39,11 @@ reference:
     contents:
       - wflow_build
       - wflow_commit
+  - title: "Managing Git and GitHub"
+    desc: "Functions to perform local Git commands"
+    contents:
+      - wflow_commit
+      - wflow_remotes
   - title: "Main functions"
     desc: "All the main workflowr functions (alphabetical order)."
     contents:

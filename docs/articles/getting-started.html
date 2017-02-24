@@ -67,7 +67,7 @@
             <h3 class="subtitle">workflowr version 0.3.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-02-22</h4>
+            <h4 class="date">2017-02-24</h4>
           </div>
 
     
@@ -181,7 +181,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <pre><code># Run in the shell
 git remote add origin https://github.com/myname/myproject.git
 git push -u origin master</code></pre>
-<p>The first line creates the alias “origin” that points to your remote repository on GitHub<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. The second pushes your current commit history to GitHub. You will be prompted to enter your GitHub username and password for authentication after you run <code>git push</code>.</p>
+<p>The first line creates the alias “origin” that points to your remote repository on GitHub<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>. The second pushes your current commit history to GitHub. You will be prompted to enter your GitHub username and password for authentication after you run <code>git  push</code>. To view or update your remote repositories, use the function <code>wflow_remotes</code>.</p>
 <p>Now that your code is on GitHub, you need to tell GitHub that you want the files in <code>docs/</code> to be published as a website. Go to Settings -&gt; GitHub Pages and choose “master branch docs/ folder” as the Source (<a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch">instructions</a>). Using the hypothetical names above, the repository would be hosted at the URL <code>https://myname.github.io/myproject/</code><a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. If you scroll back down to the GitHub Pages section of the Settings page, you can click on the URL there.</p>
 <p>Note that even if you create a private GitHub repository, the website it creates is still public. If you’re not ready to publish your results online, you can always wait and activate GitHub Pages later. In the meantime, you’ll still have a version-controlled, organized set of results for your project. However, the risk that someone that doesn’t have the link to your website is able to find it is very low. Search engines prioritize the results by how many other sites link to a site, so your website will not be high in the results even if you search for very specific terms. Thus if you only share the URL to your results with your close collaborators, and request that they not share it widely, your website is effectively private. That being said, being truly scooped in science is rare (at best) and openly sharing your work will help establish your expertise in the field (and furthermore establishes your priority), so you should consider keeping both your code and website public.</p>
 </div>

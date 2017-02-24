@@ -67,7 +67,7 @@
             <h3 class="subtitle">workflowr version 0.3.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-02-22</h4>
+            <h4 class="date">2017-02-24</h4>
           </div>
 
     
@@ -141,8 +141,11 @@
 <div id="setup-ssh-keys" class="section level2">
 <h2 class="hasAnchor">
 <html><body><a href="#setup-ssh-keys" class="anchor"> </a></body></html>Setup SSH keys</h2>
-<p>Using the https protocol to communicate with GitHub is tedious because it requires entering your GitHub username and password. Using SSH keys for authentication removes the password requirement. Follow these <a href="https://help.github.com/articles/generating-an-ssh-key/">GitHub instructions</a> for creating SSH keys and linking them to your GitHub account.</p>
-<p>The easiest way to update your repository would be to delete your old version (after pushing all the changes to GitHub of course) and then run <code>git clone</code> using the SSH URL. This will set the remote URL (“origin”) to use SSH authentication. The other option would be to delete the HTTPS remote (<code>git remote rm origin</code>) and then re-add “origin” using the SSH URL (<code>git remote add origin &lt;insert SSH URL&gt;</code>).</p>
+<p>Using the https protocol to communicate with GitHub is tedious because it requires entering your GitHub username and password. Using SSH keys for authentication removes the password requirement. Follow these <a href="https://help.github.com/articles/generating-an-ssh-key/">GitHub instructions</a> for creating SSH keys and linking them to your GitHub account. You’ll need to create separate SSH keys and link them each to GitHub for each machine where you clone your Git repository.</p>
+<p>After you create your SSH keys and add them to your GitHub account, you’ll need to instruct your local Git repository to use the SSH protocol. For a hypothetical GitHub username of “myname” and GitHub repository of “myproject”, you would change the remote “origin” (the default name by convention) using the function <code>wflow_remotes</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_remotes.html">wflow_remotes</a></span>(<span class="dt">remote =</span> <span class="st">"origin"</span>, <span class="dt">user =</span> <span class="st">"myname"</span>, <span class="dt">repo =</span> <span class="st">"myproject"</span>,
+              <span class="dt">protocol =</span> <span class="st">"ssh"</span>, <span class="dt">action =</span> <span class="st">"set_url"</span>)</code></pre></div>
+<p>Alternatively you could update the remote URL using Git directly in the shell. See this GitHub documentation on <a href="https://help.github.com/articles/changing-a-remote-s-url/">changing a remote URL</a> for instructions.</p>
 </div>
 </div>
   </div>

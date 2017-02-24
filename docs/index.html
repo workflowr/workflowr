@@ -66,6 +66,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#workflowr" class="anchor"> </a>workflowr</h1></div>
 
+<p><a href="https://codecov.io/gh/jdblischak/workflowr"><img src="https://codecov.io/gh/jdblischak/workflowr/branch/dev/graph/badge.svg" alt="codecov"></a></p>
 <p>The goal of the <a href="https://jdblischak.github.io/workflowr/">workflowr</a> package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like <a href="https://jdblischak.github.io/workflowr-demo01/">this</a>.</p>
 <p><strong>WARNING:</strong> workflowr is still in the early stages of development, so there will potentially be major changes between versions. Thus make sure to upgrade if necessary and look over the documentation. The good news is that any site you create will not be affected by these changes and will continue to function with new versions of the workflowr functions. If you find any problems, or would like to suggest new features, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
 <div id="installation" class="section level2">
@@ -97,7 +98,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <a href="#credits" class="anchor"> </a>Credits</h2>
 <p>workflowr was developed, and is maintained, by John Blischak, a postdoctoral researcher in the laboratory of <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a> at <a href="http://www.uchicago.edu/">The University of Chicago</a>. He is funded by a grant from the <a href="https://www.moore.org/">Gordon and Betty Moore Foundation</a> to MS.</p>
 <p>The workflowr package uses many great open source packages. Most importantly it depends on the R packages <a href="http://rmarkdown.rstudio.com/">rmarkdown</a>, which is responsible for providing the infrastructure to convert a collection of R Markdown files into a static website, and <a href="https://cran.r-project.org/web/packages/git2r/index.html">git2r</a>, which enables running Git commands from R. Furthermore it relies on the <a href="https://pages.github.com/">GitHub Pages</a> service for hosting the websites for free. See the file DESCRIPTION for the full list of R packages used and the <a href="https://jdblischak.github.io/workflowr/docs/articles/how-it-works.html">vignette</a> that describes the details of how workflowr works.</p>
-<p>The package documentation is created with <a href="http://hadley.github.io/pkgdown/">pkgdown</a> and continuous integration testing is performed by <a href="https://travis-ci.org/">Travis CI</a>.</p>
+<p>The package documentation is created with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>, continuous integration testing is performed by <a href="https://travis-ci.org/">Travis CI</a>, and code coverage is calculated with <a href="https://github.com/jimhester/covr">covr</a> and <a href="https://codecov.io/">Codecov</a>.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">

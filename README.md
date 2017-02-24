@@ -2,6 +2,8 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=dev)](https://travis-ci.org/jdblischak/workflowr)
 
+[![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/dev/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
+
 The goal of the [workflowr][] package is to make it easier for researchers to 
 organize their projects and share their results with colleagues. If you are 
 already writing R code to analyze data, and know the basics of Git and GitHub, 
@@ -72,8 +74,9 @@ it relies on the [GitHub Pages][] service for hosting the websites for free. See
 the file DESCRIPTION for the full list of R packages used and the 
 [vignette][vig-details] that describes the details of how workflowr works.
 
-The package documentation is created with [pkgdown][] and continuous integration
-testing is performed by [Travis CI][travis].
+The package documentation is created with [pkgdown][], continuous integration 
+testing is performed by [Travis CI][travis], and code coverage is calculated
+with [covr][] and [Codecov][].
 
 [stephens]: http://stephenslab.uchicago.edu/
 [uchicago]: http://www.uchicago.edu/
@@ -84,6 +87,8 @@ testing is performed by [Travis CI][travis].
 [vig-details]: https://jdblischak.github.io/workflowr/docs/articles/how-it-works.html
 [pkgdown]: http://hadley.github.io/pkgdown/
 [travis]: https://travis-ci.org/
+[covr]: https://github.com/jimhester/covr
+[Codecov]: https://codecov.io/
 
 ## License
 

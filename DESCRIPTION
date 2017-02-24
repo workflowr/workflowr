@@ -28,6 +28,7 @@ Imports:
     yaml
 RoxygenNote: 6.0.1
 Suggests:
+    covr,
     devtools,
     knitr,
     testthat

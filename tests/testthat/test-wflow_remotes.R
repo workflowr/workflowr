@@ -4,7 +4,7 @@ context("wflow_remotes")
 
 # Setup workflowr project for testing
 site_dir <- tempfile("wflow_remotes-")
-suppressMessages(wflow_start("Test wflow_remotes", site_dir))
+suppressMessages(wflow_start("Test wflow_remotes", site_dir, change_wd = FALSE))
 # Delete workflowr project on exit
 on.exit(unlink(site_dir, recursive = TRUE))
 

@@ -7,7 +7,7 @@ library("git2r")
 # start project in a tempdir
 project_name <- "A new project"
 site_dir <- tempfile("new-")
-suppressMessages(wflow_start(project_name, site_dir))
+suppressMessages(wflow_start(project_name, site_dir, change_wd = FALSE))
 r <- repository(path = site_dir)
 
 test_that("wflow_start provides necessary infrastructure", {

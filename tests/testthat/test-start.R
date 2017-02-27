@@ -18,7 +18,7 @@ test_that("wflow_start copies files correctly", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  capture.output(wflow_start(project_name, site_dir))
+  capture.output(wflow_start(project_name, site_dir, change_wd = FALSE))
 
   for (f in c(project_files, git_files)) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -32,7 +32,8 @@ test_that("wflow_start git = FALSE removes all Git files", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  capture.output(wflow_start(project_name, site_dir, git = FALSE))
+  capture.output(wflow_start(project_name, site_dir,
+                             git = FALSE, change_wd = FALSE))
 
   for (f in project_files) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -53,7 +54,8 @@ test_that("wflow_start does not overwrite files by default", {
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
-  capture.output(wflow_start(project_name, site_dir, existing = TRUE))
+  capture.output(wflow_start(project_name, site_dir, existing = TRUE,
+                             change_wd = FALSE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents == "original")
@@ -68,7 +70,8 @@ test_that("wflow_start overwrites files when forced", {
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
   capture.output(wflow_start(project_name, site_dir,
-                             existing = TRUE, overwrite = TRUE))
+                             existing = TRUE, overwrite = TRUE,
+                             change_wd = FALSE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents[1] == sprintf("# %s", project_name))
@@ -87,7 +90,8 @@ test_that("wflow_start does not overwrite an existing .git directory and does no
   git2r::add(r, fake_file)
   git2r::commit(r, message = "The first commit")
   fake_untracked <- file.path(site_dir, "untracked.txt")
-  expect_warning(wflow_start(project_name, site_dir, existing = TRUE),
+  expect_warning(wflow_start(project_name, site_dir, existing = TRUE,
+                             change_wd = FALSE),
                  "A .git directory already exists in")
   log <- git2r::commits(r)
   expect_true(length(log) == 2)
@@ -104,7 +108,7 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
     on.exit(file.rename(from = config_tmp, to = config_original))
   }
   site_dir <- tempfile()
-  expect_error(wflow_start(project_name, site_dir),
+  expect_error(wflow_start(project_name, site_dir, change_wd = FALSE),
                "You must set your user.name and user.email for Git first\n")
   expect_false(dir.exists(site_dir))
 })
@@ -119,7 +123,8 @@ test_that("wflow_start can handle relative path to current directory: .", {
   on.exit(setwd(cwd))
   on.exit(unlink(site_dir, recursive = TRUE), add = TRUE)
 
-  capture.output(wflow_start(project_name, ".", existing = TRUE))
+  capture.output(wflow_start(project_name, ".", existing = TRUE,
+                             change_wd = FALSE))
 
   expect_true(file.exists(paste0(basename(site_dir), ".Rproj")))
 })
@@ -135,7 +140,46 @@ test_that("wflow_start can handle relative path to upstream directory: ..", {
   on.exit(setwd(cwd))
   on.exit(unlink(site_dir, recursive = TRUE), add = TRUE)
 
-  capture.output(wflow_start(project_name, "..", existing = TRUE))
+  capture.output(wflow_start(project_name, "..", existing = TRUE,
+                             change_wd = FALSE))
 
   expect_true(file.exists(file.path("..", paste0(basename(site_dir), ".Rproj"))))
+})
+
+test_that("wflow_start can handle relative paths to non-existent directories", {
+
+  # Create and move to a temp directory
+  tmp_dir <- tempfile("test-start-relative-")
+  dir.create(tmp_dir)
+  cwd <- getwd()
+  setwd(tmp_dir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+
+  # Use the current working directory to set path to new directory, e.g. specify
+  # "./new" instead of "new". There is no advantage to this more verbose option,
+  # but it shouldn't break the code.
+  capture.output(wflow_start(project_name, "./new", change_wd = FALSE))
+  expect_true(file.exists("./new/new.Rproj"))
+
+  # Create and move to an unrelated subdirectory
+  dir.create("unrelated")
+  setwd("unrelated")
+
+  # Start a new workflowr project in an upstream, non-existent directory
+  capture.output(wflow_start(project_name, "../upstream", change_wd = FALSE))
+  expect_true(file.exists("../upstream/upstream.Rproj"))
+})
+
+test_that("wflow_start changes to workflowr directory by default", {
+
+  # start project in a tempdir
+  site_dir <- tempfile("test-start-")
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  on.exit(unlink(site_dir, recursive = TRUE), add = TRUE)
+
+  capture.output(wflow_start(project_name, site_dir))
+
+  expect_identical(getwd(), site_dir)
 })

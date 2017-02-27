@@ -5,7 +5,7 @@
 \title{Start a new workflowr project.}
 \usage{
 wflow_start(name, directory, git = TRUE, existing = FALSE,
-  overwrite = FALSE)
+  overwrite = FALSE, change_wd = TRUE)
 }
 \arguments{
 \item{name}{character. Project name, e.g. "My Project"}
@@ -29,11 +29,15 @@ add the workflowr files to an existing project.}
 \item{overwrite}{logical (default: FALSE). Control whether to overwrite
 existing files. Only relevant if \code{existing = TRUE}. Passed to
 \code{file.copy}.}
+
+\item{change_wd}{logical (default: TRUE). Change the working directory to the
+\code{directory}.}
 }
 \description{
 \code{wflow_start} adds the necesary files for a workflowr project. The
 default is to create a new directory, but it is also possible to add the
-files to an already existing project.
+files to an already existing project. By default it also changes the working
+directory to the workflowr project.
 }
 \details{
 This is the initial function that organizes the infrastructure to create a

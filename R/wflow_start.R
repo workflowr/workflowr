@@ -2,7 +2,8 @@
 #'
 #' \code{wflow_start} adds the necesary files for a workflowr project. The
 #' default is to create a new directory, but it is also possible to add the
-#' files to an already existing project.
+#' files to an already existing project. By default it also changes the working
+#' directory to the workflowr project.
 #'
 #' This is the initial function that organizes the infrastructure to create a
 #' research website for your project. Note that while you do not need to use
@@ -26,6 +27,8 @@
 #' @param overwrite logical (default: FALSE). Control whether to overwrite
 #'   existing files. Only relevant if \code{existing = TRUE}. Passed to
 #'   \code{file.copy}.
+#' @param change_wd logical (default: TRUE). Change the working directory to the
+#'   \code{directory}.
 #'
 #' @examples
 #' \dontrun{
@@ -36,7 +39,8 @@ wflow_start <- function(name,
                         directory,
                         git = TRUE,
                         existing = FALSE,
-                        overwrite = FALSE) {
+                        overwrite = FALSE,
+                        change_wd = TRUE) {
   if (!is.character(name) | length(name) != 1)
     stop("name must be a one element character vector: ", name)
   if (!is.character(directory) | length(directory) != 1)
@@ -47,6 +51,8 @@ wflow_start <- function(name,
     stop("existing must be a one element logical vector: ", existing)
   if (!is.logical(overwrite) | length(overwrite) != 1)
     stop("overwrite must be a one element logical vector: ", overwrite)
+  if (!is.logical(change_wd) | length(change_wd) != 1)
+    stop("change_wd must be a one element logical vector: ", change_wd)
 
   # Convert directory to absolute path. May still need to be created, which is
   # determined later.
@@ -113,6 +119,15 @@ wflow_start <- function(name,
                                         basename(directory))
 
   message("Project \"", name, "\" started in ", directory, "\n")
+
+  # Change working directory to workflowr project
+  if (change_wd) {
+    setwd(directory)
+  } else {
+    message("Did not change working directory.\n",
+            "Current working directory: ", getwd(),
+            call. = FALSE)
+  }
 
   # Configure Git repository
   if (git) {

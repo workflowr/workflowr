@@ -7,7 +7,7 @@ library("git2r")
 # start project in a tempdir
 project_name <- "test-commit-external-git"
 site_dir <- tempfile(paste0(project_name, "-"))
-suppressMessages(wflow_start(project_name, site_dir))
+suppressMessages(wflow_start(project_name, site_dir, change_wd = FALSE))
 r <- repository(path = site_dir)
 
 test_that("wflow_commit detects R Markdown files in root commit", {

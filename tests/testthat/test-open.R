@@ -34,7 +34,7 @@ context("wflow_open")
 
 # start project in a tempdir
 site_dir <- tempfile("test-wflow_open-")
-suppressMessages(wflow_start("Test wflow_open", site_dir))
+suppressMessages(wflow_start("Test wflow_open", site_dir, change_wd = FALSE))
 if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE))
 
 # Test wflow_open --------------------------------------------------------------
@@ -77,6 +77,7 @@ test_that("wflow_open can accept multiple files", {
 
   if (skipping)
     skip("Must be run manually.")
+
   rmd_multi <- paste0(1:3, ".Rmd")
   full_file_path <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
                                path = site_dir)
@@ -93,6 +94,7 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
 
   if (skipping)
     skip("Must be run manually.")
+
   rmd_paths <- c("basename.Rmd",
                  file.path(site_dir, "analysis", "full.Rmd"),
                  file.path(site_dir, "code", "wrong.Rmd"))
@@ -110,6 +112,10 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
 })
 
 test_that("wflow_open can save outside of analysis/ when path = NULL", {
+
+  if (skipping)
+    skip("Must be run manually.")
+
   # When path = NULL, wflow_open will create output directories if needed, and
   # switches the working directory to the path of the first input file.
   cwd <- getwd()
@@ -131,6 +137,9 @@ test_that("wflow_open can save outside of analysis/ when path = NULL", {
 })
 
 test_that("wflow_open can create a standalone version of the template", {
+
+  if (skipping)
+    skip("Must be run manually.")
 
   file_standalone <- wflow_open("standalone.Rmd", change_wd = FALSE,
                                 open_file = FALSE, standalone = TRUE,

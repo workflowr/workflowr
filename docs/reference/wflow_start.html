@@ -89,11 +89,12 @@
     
     <p><code>wflow_start</code> adds the necesary files for a workflowr project. The
 default is to create a new directory, but it is also possible to add the
-files to an already existing project.</p>
+files to an already existing project. By default it also changes the working
+directory to the workflowr project.</p>
     
 
     <pre><span class='fu'>wflow_start</span>(<span class='no'>name</span>, <span class='no'>directory</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -119,6 +120,9 @@ add the workflowr files to an existing project.</dd>
       <dd>logical (default: FALSE). Control whether to overwrite
 existing files. Only relevant if <code>existing = TRUE</code>. Passed to
 <code>file.copy</code>.</dd>
+      <dt>change_wd</dt>
+      <dd>logical (default: TRUE). Change the working directory to the
+<code>directory</code>.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

@@ -15,7 +15,8 @@ test_that("create_links_page orders files correctly", {
 
   # Set up a temporary project
   site_dir <- tempfile()
-  capture.output(wflow_start("Testing create_links_page", site_dir))
+  capture.output(wflow_start("Testing create_links_page", site_dir,
+                             change_wd = FALSE))
   # Add analysis files
   file.copy(Sys.glob("files/test_create_links_page/[abc].Rmd"),
             file.path(site_dir, "analysis"))

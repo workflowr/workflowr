@@ -92,23 +92,31 @@ directory to <code>analysis/</code>. If a file does not exist, it is created usi
 the workflowr R Markdown template.</p>
     
 
-    <pre><span class='fu'>wflow_open</span>(<span class='no'>filename</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>open_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre><span class='fu'>wflow_open</span>(<span class='no'>files</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>open_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>standalone</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>filename</dt>
-      <dd>The name of the R Markdown file(s) (can be either a path or
-just the basename, but will always be written to <code>analysis/</code>
-directory). File extension must be .Rmd.</dd>
+      <dt>files</dt>
+      <dd>character. The name of the R Markdown file(s). If <code>path</code>
+points to a workflowr project (or any subdirectory) the file(s) will be
+saved in the <code>analysis/</code> directory. Set <code>path = NULL</code> to override
+this default behavior. Files must have the extension Rmd or rmd.</dd>
       <dt>change_wd</dt>
-      <dd>Should the working directory be changed to the analysis
-subdirectory? (default: TRUE)</dd>
+      <dd>logical (default: TRUE). Change the working directory to the
+<code>analysis/</code> subdirectory.</dd>
       <dt>open_file</dt>
-      <dd>Should the file be opened in RStudio editor? (default: TRUE)</dd>
+      <dd>logical (default: TRUE). Open the file in the RStudio
+editor.</dd>
+      <dt>standalone</dt>
+      <dd>logical (default: FALSE). Embed the configuration chunks
+directly in the document to create a standalone file. Should only need to
+be used when creating files outside the context of a workflowr project.</dd>
       <dt>path</dt>
-      <dd>By default the function assumes the current working directory is
-within the project. If this is not true, you&#39;ll need to provide the path to
-the project directory.</dd>
+      <dd>character (or NULL). By default the function assumes the current
+working directory is within the project. If this is not true, you&#39;ll need
+to provide the path to the project directory. Set <code>path = NULL</code> if
+running this command to create a file for a non-workflowr project.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -117,10 +125,16 @@ the project directory.</dd>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>wflow_open</code> is a convenience function to make it easier to start
+    <p><code>wflow_open</code> is a convenience function to make it easier to begin
 working, especially when starting a new analysis. It will create a new file
-if necessary, set the working directory to <code>analysis/</code>, and open the
-file(s) in RStudio. The latter two side effects can be turned off if desired.</p>
+if necessary using the workflowr template, set the working directory to
+<code>analysis/</code>, and open the file(s) in RStudio. The latter two side
+effects can be turned off if desired.</p>
+    <p>If you would like to create a file using the workflowr template for an
+analysis that is not part of a workflowr project, set <code>standalone =
+TRUE</code> to directly embed the shared configuration chunks into the document and
+set <code>path = NULL</code> to prevent <code>wflow_open</code> from searching for an
+<code>analysis/</code> subdirectory.</p>
     <p>If you are not using RStudio and are comfortable with relative paths and
 managing your working directory, you could instead directly use the
 underlying commands. First set the working directory to the <code>analysis/</code>
@@ -139,6 +153,8 @@ edit = FALSE)</code>. Third open the file in your text editor.</p>
 <span class='co'># wflow_open("analysis/model-data.Rmd")</span>
 <span class='co'># # Multiple files</span>
 <span class='co'># wflow_open(c("model-data.Rmd", "another-analysis.Rmd"))</span>
+<span class='co'># # Use the workflowr template in a non-worklowr project</span>
+<span class='co'># wflow_open("model-data.Rmd", standalone = TRUE, path = NULL)</span>
 <span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

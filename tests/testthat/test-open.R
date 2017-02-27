@@ -28,11 +28,16 @@ if ("devtools_shims" %in% search()) {
   library("workflowr")
 }
 
-context("open")
+context("wflow_open")
+
+# Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-site_dir <- tempfile()
+site_dir <- tempfile("test-wflow_open-")
 suppressMessages(wflow_start("Test wflow_open", site_dir))
+if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE))
+
+# Test wflow_open --------------------------------------------------------------
 
 test_that("wflow_open creates a new file, but does not overwrite", {
 
@@ -104,14 +109,21 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
   expect_identical(modification_time_post, modification_time_pre)
 })
 
-test_that("wflow_open rejects filenames without Rmd extension", {
+# Errors -----------------------------------------------------------------------
+
+test_that("wflow_open rejects filenames without Rmd or rmd extension", {
 
   if (skipping)
     skip("Must be run manually.")
 
-  expect_error(wflow_open("file.rmd", change_wd = FALSE, open_file = FALSE,
+  expect_error(wflow_open("invalid-ext.md", change_wd = FALSE, open_file = FALSE,
                           path = site_dir),
-               "grepl")
+                 "R Markdown files must have the extension Rmd or rmd.")
+  expect_error(wflow_open("no-ext", change_wd = FALSE, open_file = FALSE,
+                            path = site_dir),
+                 "R Markdown files must have the extension Rmd or rmd.")
+  expect_silent(wflow_open("valid-ext.Rmd", change_wd = FALSE, open_file = FALSE,
+                           path = site_dir))
+  expect_silent(wflow_open("valid-ext.rmd", change_wd = FALSE, open_file = FALSE,
+                           path = site_dir))
 })
-
-unlink(site_dir, recursive = TRUE)

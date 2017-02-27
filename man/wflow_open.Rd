@@ -4,21 +4,29 @@
 \alias{wflow_open}
 \title{Open R Markdown analysis file(s)}
 \usage{
-wflow_open(filename, change_wd = TRUE, open_file = TRUE, path = ".")
+wflow_open(files, change_wd = TRUE, open_file = TRUE, standalone = FALSE,
+  path = ".")
 }
 \arguments{
-\item{filename}{The name of the R Markdown file(s) (can be either a path or
-just the basename, but will always be written to \code{analysis/}
-directory). File extension must be .Rmd.}
+\item{files}{character. The name of the R Markdown file(s). If \code{path}
+points to a workflowr project (or any subdirectory) the file(s) will be
+saved in the \code{analysis/} directory. Set \code{path = NULL} to override
+this default behavior. Files must have the extension Rmd or rmd.}
 
-\item{change_wd}{Should the working directory be changed to the analysis
-subdirectory? (default: TRUE)}
+\item{change_wd}{logical (default: TRUE). Change the working directory to the
+\code{analysis/} subdirectory.}
 
-\item{open_file}{Should the file be opened in RStudio editor? (default: TRUE)}
+\item{open_file}{logical (default: TRUE). Open the file in the RStudio
+editor.}
 
-\item{path}{By default the function assumes the current working directory is
-within the project. If this is not true, you'll need to provide the path to
-the project directory.}
+\item{standalone}{logical (default: FALSE). Embed the configuration chunks
+directly in the document to create a standalone file. Should only need to
+be used when creating files outside the context of a workflowr project.}
+
+\item{path}{character (or NULL). By default the function assumes the current
+working directory is within the project. If this is not true, you'll need
+to provide the path to the project directory. Set \code{path = NULL} if
+running this command to create a file for a non-workflowr project.}
 }
 \value{
 Invisibly returns the full path to the R Markdown file(s).
@@ -29,10 +37,17 @@ directory to \code{analysis/}. If a file does not exist, it is created using
 the workflowr R Markdown template.
 }
 \details{
-\code{wflow_open} is a convenience function to make it easier to start
+\code{wflow_open} is a convenience function to make it easier to begin
 working, especially when starting a new analysis. It will create a new file
-if necessary, set the working directory to \code{analysis/}, and open the
-file(s) in RStudio. The latter two side effects can be turned off if desired.
+if necessary using the workflowr template, set the working directory to
+\code{analysis/}, and open the file(s) in RStudio. The latter two side
+effects can be turned off if desired.
+
+If you would like to create a file using the workflowr template for an
+analysis that is not part of a workflowr project, set \code{standalone =
+TRUE} to directly embed the shared configuration chunks into the document and
+set \code{path = NULL} to prevent \code{wflow_open} from searching for an
+\code{analysis/} subdirectory.
 
 If you are not using RStudio and are comfortable with relative paths and
 managing your working directory, you could instead directly use the
@@ -51,5 +66,7 @@ wflow_open("model-data.Rmd")
 wflow_open("analysis/model-data.Rmd")
 # Multiple files
 wflow_open(c("model-data.Rmd", "another-analysis.Rmd"))
+# Use the workflowr template in a non-worklowr project
+wflow_open("model-data.Rmd", standalone = TRUE, path = NULL)
 }
 }

@@ -7,3 +7,5 @@ inst/doc
 vignettes/*R
 vignettes/*html
 docs/articles/*R
+workflowr_*
+workflowr.Rcheck

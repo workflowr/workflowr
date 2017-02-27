@@ -50,7 +50,7 @@ test_html <- stringr::str_replace(test_html, "/analysis/", "/docs/")
 test_that("wflow_open sets correct working directory", {
   cwd <- getwd()
   on.exit(setwd(cwd))
-  wflow_open(filename = basename(test_rmd), change_wd = TRUE,
+  wflow_open(files = basename(test_rmd), change_wd = TRUE,
              open_file = FALSE, path = site_dir)
   expect_identical(getwd(), dirname(test_rmd))
 })

@@ -109,6 +109,42 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
   expect_identical(modification_time_post, modification_time_pre)
 })
 
+test_that("wflow_open can save outside of analysis/ when path = NULL", {
+  # When path = NULL, wflow_open will create output directories if needed, and
+  # switches the working directory to the path of the first input file.
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  location_exist <- tempfile("test-wflow_open-exist-")
+  dir.create(location_exist)
+  on.exit(unlink(location_exist, recursive = TRUE), add = TRUE)
+  testfile1 <- file.path(location_exist, "exist.Rmd")
+  location_nonexist <- tempfile("test-wflow_open-nonexist-")
+  on.exit(unlink(location_nonexist, recursive = TRUE), add = TRUE)
+  testfile2 <- file.path(location_nonexist, "nonexist.Rmd")
+
+  expect_message(outfile <- wflow_open(c(testfile1, testfile2),
+                                       change_wd = TRUE,
+                                       open_file = FALSE, path = NULL),
+                 "Creating output directory ", location_nonexist,
+                 "Current working directory changed to:", location_exist)
+  expect_identical(outfile, c(testfile1, testfile2))
+})
+
+test_that("wflow_open can create a standalone version of the template", {
+
+  file_standalone <- wflow_open("standalone.Rmd", change_wd = FALSE,
+                                open_file = FALSE, standalone = TRUE,
+                                path = site_dir)
+  lines_standalone <- readLines(file_standalone)
+  expect_true("sessionInfo()" %in% lines_standalone)
+
+  file_default <- wflow_open("default.Rmd", change_wd = FALSE,
+                             open_file = FALSE, standalone = FALSE,
+                             path = site_dir)
+  lines_default <- readLines(file_default)
+  expect_false("sessionInfo()" %in% lines_default)
+})
+
 # Errors -----------------------------------------------------------------------
 
 test_that("wflow_open rejects filenames without Rmd or rmd extension", {

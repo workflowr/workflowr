@@ -28,7 +28,8 @@
 #'   saved in the \code{analysis/} directory. Set \code{path = NULL} to override
 #'   this default behavior. Files must have the extension Rmd or rmd.
 #' @param change_wd logical (default: TRUE). Change the working directory to the
-#'   \code{analysis/} subdirectory.
+#'   \code{analysis/} subdirectory. If \code{path = NULL}, change working
+#'   directory to destination of first file in \code{files}.
 #' @param open_file logical (default: TRUE). Open the file in the RStudio
 #'   editor.
 #' @param standalone logical (default: FALSE). Embed the configuration chunks
@@ -78,10 +79,21 @@ wflow_open <- function(files,
   if (any(non_standard))
     stop("R Markdown files must have the extension Rmd or rmd.")
 
+  # If path is NULL, create destination directories if they do not exist. Also
+  # set `analysis_dir` to the directory of the first file for `change_wd`.
+  #
   # If path is set, attempt to find the analysis/ subdirectory. Provide warning
   # if user included a path to a location other than analysis/
   if (is.null(path)) {
     rmd_files <- files
+    files_dir <- dirname(rmd_files)
+    for (fdir in files_dir) {
+      if (!dir.exists(fdir)) {
+        message("Creating output directory ", fdir)
+        dir.create(fdir, recursive = TRUE)
+      }
+    }
+    analysis_dir <- tools::file_path_as_absolute(files_dir[1])
   } else {
     # Confirm that path exists
     if (!dir.exists(path)) {

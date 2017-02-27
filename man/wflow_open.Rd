@@ -14,7 +14,8 @@ saved in the \code{analysis/} directory. Set \code{path = NULL} to override
 this default behavior. Files must have the extension Rmd or rmd.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
-\code{analysis/} subdirectory.}
+\code{analysis/} subdirectory. If \code{path = NULL}, change working
+directory to destination of first file in \code{files}.}
 
 \item{open_file}{logical (default: TRUE). Open the file in the RStudio
 editor.}

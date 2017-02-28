@@ -43,7 +43,7 @@ be created in the new directory `~/projects/new-project/`.
 
 ```{r}
 library("workflowr")
-wflow_start("Name of project", "~/projects/new-project")
+wflow_start("~/projects/new-project")
 file.copy(from = glob2rx("~/projects/misc/*Rmd"),
           to = "~/projects/new-project/analysis")
 ```
@@ -57,7 +57,7 @@ existing project is located at `~/projects/mature-project/`.
 
 ```{r}
 library("workflowr")
-wflow_start("Name of project", "~/projects/mature-project", existing = TRUE)
+wflow_start("~/projects/mature-project", existing = TRUE)
 ```
 
 The above command will add the workflowr files to your existing project and also
@@ -83,7 +83,7 @@ existing package is located at `~/projects/my-package/`.
 
 ```{r}
 library("workflowr")
-wflow_start("Name of project", "~/projects/my-package", existing = TRUE)
+wflow_start("~/projects/my-package", existing = TRUE)
 ```
 
 The above command will add the workflowr files to your existing project and also
@@ -132,7 +132,7 @@ package is located at `~/projects/ashlar-project/`.
 
 ```{r}
 library("workflowr")
-wflow_start("Name of project", "~/projects/ashlar-project", existing = TRUE)
+wflow_start("~/projects/ashlar-project", existing = TRUE)
 ```
 
 Lastly, you'll need to update each of your R Markdown files. Make the following substitutions:

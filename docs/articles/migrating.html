@@ -67,7 +67,7 @@
             <h3 class="subtitle">workflowr version 0.3.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-02-24</h4>
+            <h4 class="date">2017-02-28</h4>
           </div>
 
     
@@ -84,7 +84,7 @@
 <html><body><a href="#scenario-i-have-a-collection-of-r-markdown-files" class="anchor"> </a></body></html>Scenario: I have a collection of R Markdown files</h2>
 <p>If you have a collection of R Markdown files, but no version control or other files, the most straightfoward solution would be to create a workflowr project in a new directory and then move the R Markdown files to the <code>analysis/</code> subdirectory. In the hypothetical example below, the original R Markdown files are located in the directory <code>~/projects/misc/</code> and the workflowr project will be created in the new directory <code>~/projects/new-project/</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"Name of project"</span>, <span class="st">"~/projects/new-project"</span>)
+<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/new-project"</span>)
 <span class="kw">file.copy</span>(<span class="dt">from =</span> <span class="kw">glob2rx</span>(<span class="st">"~/projects/misc/*Rmd"</span>),
           <span class="dt">to =</span> <span class="st">"~/projects/new-project/analysis"</span>)</code></pre></div>
 </div>
@@ -93,7 +93,7 @@
 <html><body><a href="#scenario-i-have-a-collection-of-r-markdown-files-and-other-project-infrastructure" class="anchor"> </a></body></html>Scenario: I have a collection of R Markdown files and other project infrastructure</h2>
 <p>If your project already has lots of infrastructure, it is most convenient to add the workflowr files directory to your already existing directory. This is controlled with the argument <code>existing</code>. In the hypothetical example below, the existing project is located at <code>~/projects/mature-project/</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"Name of project"</span>, <span class="st">"~/projects/mature-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/mature-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>To add your R Markdown files to the research website, you can move them to the subdirectory <code>analysis/</code> (note you can do this before or after running <code>wflow_start</code>).</p>
 <p>Lastly, by default <code>wflow_start</code> will not overwrite your existing files (e.g. if you already have a <code>README.md</code>). If you’d prefer to overwrite your files with the default workflowr files, set <code>overwrite = TRUE</code>.</p>
@@ -103,7 +103,7 @@
 <html><body><a href="#scenario-i-have-an-r-package" class="anchor"> </a></body></html>Scenario: I have an R package</h2>
 <p>If your project is organized as an R package, you can still add a website using workflowr. In the hypothetical example below, the existing package is located at <code>~/projects/my-package/</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"Name of project"</span>, <span class="st">"~/projects/my-package"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/my-package"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>You’ll want R to ignore the workflowr directories when building the R pacakge. Thus add the following to the <code>.Rbuildignore</code> file:</p>
 <pre><code>^analysis$
@@ -122,7 +122,7 @@
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> rm analysis/chunk-options.R</code></pre></div>
 <p>Next add the workflowr files. In the hypothetical example below, the existing package is located at <code>~/projects/ashlar-project/</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"Name of project"</span>, <span class="st">"~/projects/ashlar-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/ashlar-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>Lastly, you’ll need to update each of your R Markdown files. Make the following substitutions:</p>
 <p>ashlar:</p>
 <pre><code>**Code version:** `r system("git log -1 --format='%H'", intern = TRUE)`</code></pre>

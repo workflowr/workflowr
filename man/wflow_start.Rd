@@ -35,6 +35,9 @@ existing files. Only relevant if \code{existing = TRUE}. Passed to
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
 \code{directory}.}
 }
+\value{
+Invisibly returns absolute path to workflowr project.
+}
 \description{
 \code{wflow_start} adds the necesary files for a workflowr project. The
 default is to create a new directory, but it is also possible to add the

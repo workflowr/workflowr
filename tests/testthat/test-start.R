@@ -5,6 +5,8 @@ context("start")
 
 # Setup ------------------------------------------------------------------------
 
+library("git2r")
+
 infrastructure_path <- system.file("infrastructure/",
                                    package = "workflowr")
 project_files <- list.files(path = infrastructure_path, all.files = TRUE,
@@ -198,6 +200,91 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
   # Start a new workflowr project in an upstream, non-existent directory
   capture.output(wflow_start("../upstream", change_wd = FALSE))
   expect_true(file.exists("../upstream/upstream.Rproj"))
+})
+
+
+test_that("wflow_start can handle deeply nested paths that need to be created", {
+
+  # Create and move to a temp directory
+  tmp_dir <- tempfile("test-deeply-nested-")
+  dir.create(tmp_dir)
+  cwd <- getwd()
+  setwd(tmp_dir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+
+  dir_test <- "a/b/c/x/y/z"
+  expected <- file.path(normalizePath("."), dir_test)
+  capture.output(actual <- wflow_start(dir_test, change_wd = FALSE))
+  expect_identical(actual, expected)
+  expect_true(file.exists(file.path(expected, "z.Rproj")))
+})
+
+test_that("wflow_start can handle deeply nested paths that need to be created and begin with ./", {
+
+  # Create and move to a temp directory
+  tmp_dir <- tempfile("test-deeply-nested-plus-cwd-")
+  dir.create(tmp_dir)
+  cwd <- getwd()
+  setwd(tmp_dir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+
+  dir_test <- "./a/b/c/x/y/z"
+  expected <- file.path(normalizePath("."),
+                        substr(dir_test, 3, nchar(dir_test)))
+  capture.output(actual <- wflow_start(dir_test, change_wd = FALSE))
+  expect_identical(actual, expected)
+  expect_true(file.exists(file.path(expected, "z.Rproj")))
+})
+
+test_that("wflow_start can handle deeply nested paths that need to be created and use relative paths", {
+
+  # Create and move to a temp directory
+  tmp_dir <- tempfile("test-deeply-nested-plus-relative-")
+  dir.create(tmp_dir)
+  cwd <- getwd()
+  setwd(tmp_dir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+
+  # Create and move to a nested directory
+  dir_unrelated <- "1/2/3/4/5/6"
+  dir.create(dir_unrelated, recursive = TRUE)
+  setwd(dir_unrelated)
+
+  # Start workflowr project in a highly nested upstream directory
+  dir_test <- "../../../../../../a/b/c/x/y/z"
+  expected <- file.path(tmp_dir, "a/b/c/x/y/z")
+  capture.output(actual <- wflow_start(dir_test, change_wd = FALSE))
+  expect_identical(actual, expected)
+  expect_true(file.exists(file.path(expected, "z.Rproj")))
+})
+
+test_that("wflow_start throws error when given a deeply nested path that needs to be created, uses relative paths, and is contained within a Git repository", {
+
+  # Create and move to a temp directory
+  tmp_dir <- tempfile("test-deeply-nested-plus-relative-git-")
+  dir.create(tmp_dir)
+  cwd <- getwd()
+  setwd(tmp_dir)
+  on.exit(setwd(cwd))
+  on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+
+  # Make this base directory a Git repository
+  git2r::init(".")
+
+  # Create and move to a nested directory
+  dir_unrelated <- "1/2/3/4/5/6"
+  dir.create(dir_unrelated, recursive = TRUE)
+  setwd(dir_unrelated)
+
+  # Start workflowr project in a highly nested upstream directory
+  dir_test <- "../../../../../../a/b/c/x/y/z"
+  # Should throw error and not create directory
+  expect_error(wflow_start(dir_test, change_wd = FALSE),
+               tmp_dir)
+  expect_false(dir.exists(file.path(tmp_dir, "a/b/c/x/y/z")))
 })
 
 test_that("wflow_start changes to workflowr directory by default", {

@@ -32,6 +32,8 @@
 #' @param change_wd logical (default: TRUE). Change the working directory to the
 #'   \code{directory}.
 #'
+#' @return Invisibly returns absolute path to workflowr project.
+#'
 #' @examples
 #' \dontrun{
 #'
@@ -64,15 +66,14 @@ wflow_start <- function(directory,
   if (!is.logical(change_wd) | length(change_wd) != 1)
     stop("change_wd must be a one element logical vector: ", change_wd)
 
-  # Convert directory to absolute path. May still need to be created, which is
-  # determined later.
-  directory <- normalizePath(directory, mustWork = FALSE)
-
   # A workflowr directory cannot be created within an existing Git repository if
   # git = TRUE & existing = FALSE.
   if (git & !existing) {
-    if (git2r::in_repository(dirname(directory))) {
-      r <- git2r::repository(dirname(directory), discover = TRUE)
+    # In order to check if location is within an existing Git repository, first
+    # must obtain the most upstream existing directory
+    dir_existing <- obtain_existing_path(directory)
+    if (git2r::in_repository(dir_existing)) {
+      r <- git2r::repository(dir_existing, discover = TRUE)
       stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", dirname(r@path))
     }
   }

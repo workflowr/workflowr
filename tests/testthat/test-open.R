@@ -34,7 +34,7 @@ context("wflow_open")
 
 # start project in a tempdir
 site_dir <- tempfile("test-wflow_open-")
-suppressMessages(wflow_start("Test wflow_open", site_dir, change_wd = FALSE))
+suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE))
 
 # Test wflow_open --------------------------------------------------------------

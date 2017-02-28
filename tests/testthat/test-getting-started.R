@@ -5,9 +5,8 @@ context("getting-started")
 library("git2r")
 
 # start project in a tempdir
-project_name <- "A new project"
 site_dir <- tempfile("new-")
-suppressMessages(wflow_start(project_name, site_dir, change_wd = FALSE))
+suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 r <- repository(path = site_dir)
 
 test_that("wflow_start provides necessary infrastructure", {
@@ -15,6 +14,8 @@ test_that("wflow_start provides necessary infrastructure", {
   expect_true(dir.exists(file.path(site_dir, "analysis")))
   expect_true(file.exists(file.path(site_dir, "analysis/_site.yml")))
   expect_true(file.exists(file.path(site_dir, "analysis/index.Rmd")))
+  expect_true(file.exists(file.path(site_dir,
+                                    paste0(basename(site_dir), ".Rproj"))))
   expect_true(length(commits(r)) == 1)
 })
 

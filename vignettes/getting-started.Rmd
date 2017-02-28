@@ -70,7 +70,7 @@ repository with the initial commit already made.
 
 ```{r start-project}
 library("workflowr")
-wflow_start("A new project", "~/new-project")
+wflow_start("~/new-project")
 ```
 
 If you're using RStudio, you can choose `Open Project...` and select the file 

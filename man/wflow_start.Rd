@@ -4,15 +4,17 @@
 \alias{wflow_start}
 \title{Start a new workflowr project.}
 \usage{
-wflow_start(name, directory, git = TRUE, existing = FALSE,
+wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
   overwrite = FALSE, change_wd = TRUE)
 }
 \arguments{
-\item{name}{character. Project name, e.g. "My Project"}
-
 \item{directory}{character. The directory for the project, e.g.
 "~/new-project". By default the directory will be created (\code{existing =
 FALSE}.}
+
+\item{name}{character (default: NULL). Project name, e.g. "My Project". By
+default \code{name} is the same as \code{directory}. It is displayed on the
+site's navigation bar and the README.md.}
 
 \item{git}{logical (default: TRUE). Should Git be used for version control?
 If \code{directory} is a new Git repository, \code{wflow_start} will
@@ -47,6 +49,14 @@ by other functions.
 }
 \examples{
 \dontrun{
-wflow_start("My Project", "path/to/new-project")
+
+wflow_start("path/to/new-project")
+# Provide a custom name for the project
+wflow_start("path/to/new-project", name = "My Project")
+# Add workflowr files to an existing project
+wflow_start("path/to/current-project", existing = TRUE)
+# Add workflowr files to an existing project, but do not automatically
+# commit them
+wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
 }
 }

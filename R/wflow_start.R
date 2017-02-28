@@ -10,10 +10,12 @@
 #' RStudio with workflowr, do not delete the Rproj file because it is required
 #' by other functions.
 #'
-#' @param name character. Project name, e.g. "My Project"
 #' @param directory character. The directory for the project, e.g.
 #'   "~/new-project". By default the directory will be created (\code{existing =
 #'   FALSE}.
+#' @param name character (default: NULL). Project name, e.g. "My Project". By
+#'   default \code{name} is the same as \code{directory}. It is displayed on the
+#'   site's navigation bar and the README.md.
 #' @param git logical (default: TRUE). Should Git be used for version control?
 #'   If \code{directory} is a new Git repository, \code{wflow_start} will
 #'   initialize the repository and make an initial commit. If \code{directory}
@@ -32,19 +34,27 @@
 #'
 #' @examples
 #' \dontrun{
-#' wflow_start("My Project", "path/to/new-project")
+#'
+#' wflow_start("path/to/new-project")
+#' # Provide a custom name for the project
+#' wflow_start("path/to/new-project", name = "My Project")
+#' # Add workflowr files to an existing project
+#' wflow_start("path/to/current-project", existing = TRUE)
+#' # Add workflowr files to an existing project, but do not automatically
+#' # commit them
+#' wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
 #' }
 #' @export
-wflow_start <- function(name,
-                        directory,
+wflow_start <- function(directory,
+                        name = NULL,
                         git = TRUE,
                         existing = FALSE,
                         overwrite = FALSE,
                         change_wd = TRUE) {
-  if (!is.character(name) | length(name) != 1)
-    stop("name must be a one element character vector: ", name)
   if (!is.character(directory) | length(directory) != 1)
     stop("directory must be a one element character vector: ", directory)
+  if (!(is.null(name) | (is.character(name) | length(name) != 1)))
+    stop("name must be NULL or a one element character vector: ", name)
   if (!is.logical(git) | length(git) != 1)
     stop("git must be a one element logical vector: ", git)
   if (!is.logical(existing) | length(existing) != 1)
@@ -79,6 +89,14 @@ wflow_start <- function(name,
     stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
   } else if (existing & !dir.exists(directory)) {
     stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
+  }
+
+  # Convert to absolute path
+  directory <- tools::file_path_as_absolute(directory)
+
+  # Configure name of workflowr project
+  if (is.null(name)) {
+    name <- basename(directory)
   }
 
   # Copy infrastructure files to new directory

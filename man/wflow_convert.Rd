@@ -21,7 +21,10 @@ replacement.}
 \item{verbose}{logical (default: TRUE). Report progress.}
 }
 \value{
-Invisibly returns the files which were successfully converted.
+Invisibly returns a list which contains the results of running
+  \code{diff} between the original and converted versions of each file. The
+  names of the list elements are the filenames. The diffs are character
+  vectors. Only files which were successfully converted are included.
 }
 \description{
 \code{wflow_convert} converts existing R Markdown files to use the workflowr

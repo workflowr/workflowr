@@ -24,3 +24,15 @@ obtain_existing_path <- function(path) {
     return(obtain_existing_path(newpath))
   }
 }
+
+# Run diff between two files.
+#
+# tools::Rdiff runs `diff` between two files. Unfortunately it sends messages
+# with `cat`, which makes it difficult to control its output programmatically.
+# This is a simple wrapper that returns the results as a character vector.
+#
+diff_file <- function(from, to) {
+  ignore <- utils::capture.output(
+    diffs <- tools::Rdiff(from = from, to = to, Log = TRUE))
+  return(diffs$out)
+}

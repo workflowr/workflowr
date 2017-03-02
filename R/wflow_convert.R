@@ -41,7 +41,10 @@
 #'   replacement.
 #' @param verbose logical (default: TRUE). Report progress.
 #'
-#' @return Invisibly returns the files which were successfully converted.
+#' @return Invisibly returns a list which contains the results of running
+#'   \code{diff} between the original and converted versions of each file. The
+#'   names of the list elements are the filenames. The diffs are character
+#'   vectors. Only files which were successfully converted are included.
 #'
 #' @seealso \code{\link{wflow_open}}
 #'
@@ -81,8 +84,8 @@ wflow_convert <- function(files,
   if (any(non_standard))
     stop("R Markdown files must have the extension Rmd or rmd.")
 
-  # Track successfully converted files
-  success <- character()
+  # Track successfully converted files. Store their diffs.
+  success <- list()
 
   for (f in files) {
     if (!file.exists(f)) {
@@ -92,16 +95,15 @@ wflow_convert <- function(files,
     if (verbose) message("\nProcessing ", f)
     lines_original <- readLines(f)
     lines_converted <- wflow_convert_decide(lines_original, standalone, verbose)
-    success <- c(success, f)
+    f_tmp <- tempfile(paste(basename(f), sep = "-"), fileext = ".Rmd")
+    cat(lines_converted, file = f_tmp, sep = "\n")
+    on.exit(unlink(f_tmp))
+    diffs <- diff_file(from = f, to = f_tmp)
+    success[[f]] <- diffs
     if (dry_run) {
-      f_tmp <- tempfile(paste(basename(f), sep = "-"), fileext = ".Rmd")
-      cat(lines_converted, file = f_tmp, sep = "\n")
-      on.exit(unlink(f_tmp))
       if (verbose) {
         message("\nPotential changes to ", f)
-        ignore <- utils::capture.output(
-          diffs <- tools::Rdiff(from = f, to = f_tmp, Log = TRUE))
-        message(paste(diffs$out, collapse = "\n"))
+        message(paste(diffs, collapse = "\n"))
       }
     } else {
       cat(lines_converted, file = f, sep = "\n")

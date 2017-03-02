@@ -25,9 +25,10 @@ test_that("Can convert standard Rmd to workflowr", {
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   expected <- gold_workflowr_lines
-  wflow_convert(tmp_standard)
+  diffs_list <- wflow_convert(tmp_standard)
   actual <- readLines(tmp_standard)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("Can convert standard Rmd to standalone workflowr", {
@@ -35,9 +36,10 @@ test_that("Can convert standard Rmd to standalone workflowr", {
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   expected <- gold_standalone_lines
-  wflow_convert(tmp_standard, standalone = TRUE)
+  diffs_list <- wflow_convert(tmp_standard, standalone = TRUE)
   actual <- readLines(tmp_standard)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("Can add missing yaml header", {
@@ -45,9 +47,10 @@ test_that("Can add missing yaml header", {
   file.copy(gold_noyaml, tmp_noyaml)
   on.exit(unlink(tmp_noyaml))
   expected <- gold_workflowr_lines
-  wflow_convert(tmp_noyaml)
+  diffs_list <- wflow_convert(tmp_noyaml)
   actual <- readLines(tmp_noyaml)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("Can convert ashlar file", {
@@ -55,9 +58,10 @@ test_that("Can convert ashlar file", {
   file.copy(gold_ashlar, tmp_ashlar)
   on.exit(unlink(tmp_ashlar))
   expected <- gold_workflowr_lines
-  wflow_convert(tmp_ashlar)
+  diffs_list <- wflow_convert(tmp_ashlar)
   actual <- readLines(tmp_ashlar)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("Can convert previous workflowr file", {
@@ -65,9 +69,10 @@ test_that("Can convert previous workflowr file", {
   file.copy(gold_previous, tmp_previous)
   on.exit(unlink(tmp_previous))
   expected <- gold_workflowr_lines
-  wflow_convert(tmp_previous)
+  diffs_list <- wflow_convert(tmp_previous)
   actual <- readLines(tmp_previous)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("Does not affect a current workflowr file if standalone = FALSE", {
@@ -75,10 +80,11 @@ test_that("Does not affect a current workflowr file if standalone = FALSE", {
   file.copy(gold_workflowr, tmp_workflowr)
   on.exit(unlink(tmp_workflowr))
   expected <- gold_workflowr_lines
-  expect_message(wflow_convert(tmp_workflowr),
+  expect_message(diffs_list <- wflow_convert(tmp_workflowr),
                  "This file is already using the current workflowr format")
   actual <- readLines(tmp_workflowr)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) == 0)
 })
 
 test_that("Does not affect a current standalone workflowr file if standalone = TRUE", {
@@ -86,10 +92,11 @@ test_that("Does not affect a current standalone workflowr file if standalone = T
   file.copy(gold_standalone, tmp_standalone)
   on.exit(unlink(tmp_standalone))
   expected <- gold_standalone_lines
-  expect_message(wflow_convert(tmp_standalone, standalone = TRUE),
+  expect_message(diffs_list <- wflow_convert(tmp_standalone, standalone = TRUE),
                  "This file is already using the standalone workflowr format")
   actual <- readLines(tmp_standalone)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) == 0)
 })
 
 test_that("Can convert current workflowr file to standalone", {
@@ -97,9 +104,10 @@ test_that("Can convert current workflowr file to standalone", {
   file.copy(gold_workflowr, tmp_workflowr)
   on.exit(unlink(tmp_workflowr))
   expected <- gold_standalone_lines
-  wflow_convert(tmp_workflowr, standalone = TRUE)
+  diffs_list <- wflow_convert(tmp_workflowr, standalone = TRUE)
   actual <- readLines(tmp_workflowr)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("Can convert standalone workflowr file to non-standalone", {
@@ -107,9 +115,10 @@ test_that("Can convert standalone workflowr file to non-standalone", {
   file.copy(gold_standalone, tmp_standalone)
   on.exit(unlink(tmp_standalone))
   expected <- gold_workflowr_lines
-  wflow_convert(tmp_standalone, standalone = FALSE)
+  diffs_list <- wflow_convert(tmp_standalone, standalone = FALSE)
   actual <- readLines(tmp_standalone)
   expect_identical(actual, expected)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("dry_run does not overwrite file and produces diff", {
@@ -117,18 +126,23 @@ test_that("dry_run does not overwrite file and produces diff", {
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   mtime_pre <- file.mtime(tmp_standard)
-  expect_message(wflow_convert(tmp_standard, dry_run = TRUE),
+  expect_message(diffs_list <- wflow_convert(tmp_standard, dry_run = TRUE),
                  "r read-chunk, include=FALSE, cache=FALSE")
   mtime_post <- file.mtime(tmp_standard)
   expect_equal(mtime_post, mtime_pre)
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 test_that("verbose = FALSE suppresses all output", {
   tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
-  expect_silent(wflow_convert(tmp_standard, dry_run = TRUE, verbose = FALSE))
-  expect_silent(wflow_convert(tmp_standard, dry_run = FALSE, verbose = FALSE))
+  expect_silent(diffs_list <- wflow_convert(tmp_standard, dry_run = TRUE,
+                                            verbose = FALSE))
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
+  expect_silent(diffs_list <- wflow_convert(tmp_standard, dry_run = FALSE,
+                                            verbose = FALSE))
+  expect_true(length(diffs_list) == 1 & length(diffs_list[[1]]) > 0)
 })
 
 # Warnings ---------------------------------------------------------------------
@@ -140,7 +154,7 @@ test_that("wflow_convert skips missing files and continues processing", {
   expected <- gold_workflowr_lines
   expect_warning(success <- wflow_convert(c("missing.Rmd", tmp_standard)),
                  "Skipping missing file: missing.Rmd")
-  expect_identical(success, tmp_standard)
+  expect_identical(names(success), tmp_standard)
   actual <- readLines(tmp_standard)
   expect_identical(actual, expected)
 })

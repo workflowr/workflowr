@@ -70,6 +70,48 @@ test_that("Can convert previous workflowr file", {
   expect_identical(actual, expected)
 })
 
+test_that("Does not affect a current workflowr file if standalone = FALSE", {
+  tmp_workflowr <- tempfile("workflowr-", fileext = ".Rmd")
+  file.copy(gold_workflowr, tmp_workflowr)
+  on.exit(unlink(tmp_workflowr))
+  expected <- gold_workflowr_lines
+  expect_message(wflow_convert(tmp_workflowr),
+                 "This file is already using the current workflowr format")
+  actual <- readLines(tmp_workflowr)
+  expect_identical(actual, expected)
+})
+
+test_that("Does not affect a current standalone workflowr file if standalone = TRUE", {
+  tmp_standalone <- tempfile("standalone-", fileext = ".Rmd")
+  file.copy(gold_standalone, tmp_standalone)
+  on.exit(unlink(tmp_standalone))
+  expected <- gold_standalone_lines
+  expect_message(wflow_convert(tmp_standalone, standalone = TRUE),
+                 "This file is already using the standalone workflowr format")
+  actual <- readLines(tmp_standalone)
+  expect_identical(actual, expected)
+})
+
+test_that("Can convert current workflowr file to standalone", {
+  tmp_workflowr <- tempfile("workflowr-", fileext = ".Rmd")
+  file.copy(gold_workflowr, tmp_workflowr)
+  on.exit(unlink(tmp_workflowr))
+  expected <- gold_standalone_lines
+  wflow_convert(tmp_workflowr, standalone = TRUE)
+  actual <- readLines(tmp_workflowr)
+  expect_identical(actual, expected)
+})
+
+test_that("Can convert standalone workflowr file to non-standalone", {
+  tmp_standalone <- tempfile("standalone-", fileext = ".Rmd")
+  file.copy(gold_standalone, tmp_standalone)
+  on.exit(unlink(tmp_standalone))
+  expected <- gold_workflowr_lines
+  wflow_convert(tmp_standalone, standalone = FALSE)
+  actual <- readLines(tmp_standalone)
+  expect_identical(actual, expected)
+})
+
 test_that("dry_run does not overwrite file and produces diff", {
   tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)

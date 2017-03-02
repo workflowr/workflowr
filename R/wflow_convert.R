@@ -4,6 +4,33 @@
 #' template. This is especially useful when migrating an existing project with
 #' many R Markdown files to use workflowr.
 #'
+#' \code{wflow_convert} attempts to identify the current state of each R
+#' Markdown file and convert it to the latest version of the workflowr template.
+#' Specifically, it can perform any of the following conversions:
+#'
+#' \itemize{
+#'
+#' \item Convert a standard R Markdown file to use the workflowr template
+#'
+#' \item Convert an outdated workflowr Rmd file to use the latest workflowr
+#' template
+#'
+#' \item Convert a workflowr Rmd file to the standalone version of the template
+#' (if \code{standalone = TRUE})
+#'
+#' \item Convert a standalone workflowr Rmd file to the non-standalone version
+#' of the template (if \code{standalone = FALSE})
+#'
+#' \item Convert an \href{https://github.com/jhsiao999/ashlar}{ashlar} R
+#' Markdown file to use the workflwor template
+#'
+#' }
+#'
+#' If a given R Markdown file is already using the latest version of the
+#' template, it is not changed.
+#'
+#' If a file is lacking a YAML header, a generic YAML header is added.
+#'
 #' @section Warning: \code{wflow_convert} overwrites the original files.
 #'
 #' @param files character. The R Markdown file(s) to be converted. Must have
@@ -64,7 +91,7 @@ wflow_convert <- function(files,
     }
     if (verbose) message("\nProcessing ", f)
     lines_original <- readLines(f)
-    lines_converted <- wflow_convert_decide(lines_original, standalone)
+    lines_converted <- wflow_convert_decide(lines_original, standalone, verbose)
     success <- c(success, f)
     if (dry_run) {
       f_tmp <- tempfile(paste(basename(f), sep = "-"), fileext = ".Rmd")
@@ -78,14 +105,14 @@ wflow_convert <- function(files,
       }
     } else {
       cat(lines_converted, file = f, sep = "\n")
-      if (verbose) message("Successfull converted ", f)
+      if (verbose) message("Successfully converted ", f)
     }
   }
 
   return(invisible(success))
 }
 
-wflow_convert_decide <- function(lines, standalone) {
+wflow_convert_decide <- function(lines, standalone, verbose) {
 
   # Does the file contain a yaml header?
   has_yaml <- lines[1] == "---"
@@ -96,11 +123,37 @@ wflow_convert_decide <- function(lines, standalone) {
   # https://github.com/jhsiao999/ashlar
   signature_ashlar <- "git log -1 --format="
   ashlar <- sum(grepl(signature_ashlar, lines)) == 1
+  # Is the file using a current version of the workflowr template?
+  signature_current <- "r last-updated, echo=FALSE,"
+  current <- sum(grepl(signature_current, lines)) == 1
+  # Is the file using a current version of the standalone workflowr template?
+  signature_current_stand <- "Unavailable. Initialize Git repository to enable."
+  current_stand <- sum(grepl(signature_current_stand, lines)) == 1
 
   if (!has_yaml)
     lines <- wflow_convert_yaml(lines)
 
-  if (previous) {
+  if (current & current_stand & standalone) {
+    # If file is using current standalone workflowr template and `standalone =
+    # TRUE`, nothing needs to be done
+    if (verbose)
+      message("This file is already using the standalone workflowr format")
+    return(lines)
+  } else if (current & current_stand & !standalone) {
+    # If file is using current standalone workflowr template and `standalone =
+    # FALSE`, then convert to non-standalone
+    newlines <- wflow_convert_to_non_standalone(lines)
+  } else if (current & !current_stand & standalone) {
+    # If file is using current workflowr template and `standalone =
+    # TRUE`, then convert to standalone
+    newlines <- wflow_convert_to_standalone(lines)
+  } else if (current & !current_stand & !standalone) {
+    # If file is using current workflowr template and `standalone =
+    # FALSE`, nothing needs to be done
+    if (verbose)
+      message("This file is already using the current workflowr format")
+    return(lines)
+  } else if (previous) {
     newlines <- wflow_convert_previous(lines, standalone)
   } else if (ashlar) {
     newlines <- wflow_convert_ashlar(lines, standalone)
@@ -135,7 +188,7 @@ wflow_convert_standard <- function(lines, standalone) {
   return(result)
 }
 
-wflow_convert_previous <-  function(lines, standalone) {
+wflow_convert_previous <- function(lines, standalone) {
 
   # Identify the read-chunk line
   pos_read_chunk <- grep("read-chunk", lines)
@@ -202,6 +255,86 @@ wflow_convert_ashlar <-  function(lines, standalone) {
   wflow_convert_standard(newlines, standalone)
 }
 
+wflow_convert_to_standalone <- function(lines) {
+
+  # Identify the read-chunk line
+  pos_read_chunk <- grep("read-chunk, include=FALSE, cache=FALSE", lines)
+  if (length(pos_read_chunk) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Include the HTML comment above if the user hasn't deleted it
+  if (stringr::str_sub(lines[pos_read_chunk - 2], 1, 4)  == "<!--") {
+    pos_read_chunk <- pos_read_chunk - 2
+  }
+  # Identify the code-version line
+  pos_code_vers <- grep("r code-version, echo=FALSE, results=", lines)
+  if (length(pos_code_vers) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Add 1 to include the closing backticks of this chunk
+  pos_code_vers <- pos_code_vers + 1
+  # If the line after is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_code_vers + 1] == "")
+    pos_code_vers <- pos_code_vers + 1
+  # Identify the session information header H2
+  pos_info_h2 <- grep("## Session Information", lines)
+  # If the line above is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_info_h2 - 1] == "") {
+    pos_info_h2 <- pos_info_h2 - 1
+  }
+  # Identify the session-info chunk
+  pos_info <- grep("r session-info", lines)
+  if (length(pos_info) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Add 1 to include the closing backticks
+  pos_info <- pos_info + 1
+
+  # Remove the workflowr-specific lines from the beginning and end of the file
+  remove_begin <- -(pos_read_chunk:pos_code_vers)
+  remove_end <- -(pos_info_h2:pos_info)
+  newlines <- lines[c(remove_begin, remove_end)]
+
+  wflow_convert_standard(newlines, standalone = TRUE)
+}
+
+wflow_convert_to_non_standalone <- function(lines) {
+
+  # Identify the knitr-opts-chunk line
+  pos_knitr_chunk <- grep("r knitr-opts-chunk, include=FALSE", lines)
+  if (length(pos_knitr_chunk) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Identify the code-version chunk
+  pos_code_vers <- grep("r code-version, echo=FALSE, results=", lines)
+  if (length(pos_code_vers) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Identify the closing backticks of the code-version chunk
+  pos_code_vers_end <- grep("```", lines[(pos_code_vers + 1):length(lines)])[1]
+  pos_code_vers_end <- pos_code_vers + pos_code_vers_end
+  # If the line after is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_code_vers_end + 1] == "")
+    pos_code_vers_end <- pos_code_vers_end + 1
+  # Identify the session information header H2
+  pos_info_h2 <- grep("## Session Information", lines)
+  # If the line above is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_info_h2 - 1] == "") {
+    pos_info_h2 <- pos_info_h2 - 1
+  }
+  # Identify the sessionInfo() call
+  pos_info_call <- grep("sessionInfo()", lines)
+  if (length(pos_info_call) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Add 1 to include the closing backticks
+  pos_info_call <- pos_info_call + 1
+
+  # Remove the workflowr-specific lines from the beginning and end of the file
+  remove_begin <- -(pos_knitr_chunk:pos_code_vers_end)
+  remove_end <- -(pos_info_h2:pos_info_call)
+  newlines <- lines[c(remove_begin, remove_end)]
+
+  wflow_convert_standard(newlines, standalone = FALSE)
+}
 
 workflowr_yaml <- c(
   "---",

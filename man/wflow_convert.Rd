@@ -28,6 +28,34 @@ Invisibly returns the files which were successfully converted.
 template. This is especially useful when migrating an existing project with
 many R Markdown files to use workflowr.
 }
+\details{
+\code{wflow_convert} attempts to identify the current state of each R
+Markdown file and convert it to the latest version of the workflowr template.
+Specifically, it can perform any of the following conversions:
+
+\itemize{
+
+\item Convert a standard R Markdown file to use the workflowr template
+
+\item Convert an outdated workflowr Rmd file to use the latest workflowr
+template
+
+\item Convert a workflowr Rmd file to the standalone version of the template
+(if \code{standalone = TRUE})
+
+\item Convert a standalone workflowr Rmd file to the non-standalone version
+of the template (if \code{standalone = FALSE})
+
+\item Convert an \href{https://github.com/jhsiao999/ashlar}{ashlar} R
+Markdown file to use the workflwor template
+
+}
+
+If a given R Markdown file is already using the latest version of the
+template, it is not changed.
+
+If a file is lacking a YAML header, a generic YAML header is added.
+}
 \section{Warning}{
  \code{wflow_convert} overwrites the original files.
 }

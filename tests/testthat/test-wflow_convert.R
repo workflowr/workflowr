@@ -11,6 +11,12 @@ gold_workflowr_lines <- readLines(gold_workflowr)
 # A standalone workflowr R Markdown file
 gold_standalone <- "files/test-wflow_convert/workflowr-standalone.Rmd"
 gold_standalone_lines <- readLines(gold_standalone)
+# A standard R Markdown files without a yaml header
+gold_noyaml <- "files/test-wflow_convert/standard-no-yaml.Rmd"
+# An ashlar R Markdown file
+gold_ashlar <- "files/test-wflow_convert/ashlar.Rmd"
+# A previous workflowr R Markdown file (v0.3.0)
+gold_previous <- "files/test-wflow_convert/workflowr-previous.Rmd"
 
 # Test wflow_convert -----------------------------------------------------------
 
@@ -31,6 +37,36 @@ test_that("Can convert standard Rmd to standalone workflowr", {
   expected <- gold_standalone_lines
   wflow_convert(tmp_standard, standalone = TRUE)
   actual <- readLines(tmp_standard)
+  expect_identical(actual, expected)
+})
+
+test_that("Can add missing yaml header", {
+  tmp_noyaml <- tempfile("noyaml-", fileext = ".Rmd")
+  file.copy(gold_noyaml, tmp_noyaml)
+  on.exit(unlink(tmp_noyaml))
+  expected <- gold_workflowr_lines
+  wflow_convert(tmp_noyaml)
+  actual <- readLines(tmp_noyaml)
+  expect_identical(actual, expected)
+})
+
+test_that("Can convert ashlar file", {
+  tmp_ashlar <- tempfile("ashlar-", fileext = ".Rmd")
+  file.copy(gold_ashlar, tmp_ashlar)
+  on.exit(unlink(tmp_ashlar))
+  expected <- gold_workflowr_lines
+  wflow_convert(tmp_ashlar)
+  actual <- readLines(tmp_ashlar)
+  expect_identical(actual, expected)
+})
+
+test_that("Can convert previous workflowr file", {
+  tmp_previous <- tempfile("previous-", fileext = ".Rmd")
+  file.copy(gold_previous, tmp_previous)
+  on.exit(unlink(tmp_previous))
+  expected <- gold_workflowr_lines
+  wflow_convert(tmp_previous)
+  actual <- readLines(tmp_previous)
   expect_identical(actual, expected)
 })
 

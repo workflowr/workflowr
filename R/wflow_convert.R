@@ -64,7 +64,7 @@ wflow_convert <- function(files,
     }
     if (verbose) message("\nProcessing ", f)
     lines_original <- readLines(f)
-    lines_converted <- wflow_convert_standard(lines_original, standalone)
+    lines_converted <- wflow_convert_decide(lines_original, standalone)
     success <- c(success, f)
     if (dry_run) {
       f_tmp <- tempfile(paste(basename(f), sep = "-"), fileext = ".Rmd")
@@ -83,6 +83,35 @@ wflow_convert <- function(files,
   }
 
   return(invisible(success))
+}
+
+wflow_convert_decide <- function(lines, standalone) {
+
+  # Does the file contain a yaml header?
+  has_yaml <- lines[1] == "---"
+  # Is the file using a previous version of the workflowr template?
+  signature_previous <- "workflowr::extract_commit"
+  previous <- sum(grepl(signature_previous, lines)) == 1
+  # Is the file based on the ashlar template?
+  # https://github.com/jhsiao999/ashlar
+  signature_ashlar <- "git log -1 --format="
+  ashlar <- sum(grepl(signature_ashlar, lines)) == 1
+
+  if (!has_yaml)
+    lines <- wflow_convert_yaml(lines)
+
+  if (previous) {
+    newlines <- wflow_convert_previous(lines, standalone)
+  } else if (ashlar) {
+    newlines <- wflow_convert_ashlar(lines, standalone)
+  } else {
+    newlines <- wflow_convert_standard(lines, standalone)
+  }
+  return(newlines)
+}
+
+wflow_convert_yaml <- function(lines) {
+  c(workflowr_yaml, lines)
 }
 
 wflow_convert_standard <- function(lines, standalone) {
@@ -105,6 +134,83 @@ wflow_convert_standard <- function(lines, standalone) {
   }
   return(result)
 }
+
+wflow_convert_previous <-  function(lines, standalone) {
+
+  # Identify the read-chunk line
+  pos_read_chunk <- grep("read-chunk", lines)
+  if (length(pos_read_chunk) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Identify the "Code version" line
+  pos_code_vers <- grep("Code version:", lines)
+  if (length(pos_code_vers) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # If the line after is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_code_vers + 1] == "")
+    pos_code_vers <- pos_code_vers + 1
+  # Identify the session information header H2
+  pos_info_h2 <- grep("## Session Information", lines)
+  # If the line above is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_info_h2 - 1] == "")
+    pos_info_h2 <- pos_info_h2 - 1
+  # Identify the session-info chunk
+  pos_info_chunk <- grep("session-info", lines)
+  # Add 1 since so it includes the ending backticks
+  pos_info_chunk <- pos_info_chunk + 1
+
+  # Remove the ashlar-specific lines from the beginning and end of the file
+  remove_begin <- -(pos_read_chunk:pos_code_vers)
+  remove_end <- -(pos_info_h2:pos_info_chunk)
+  newlines <- lines[c(remove_begin, remove_end)]
+
+  wflow_convert_standard(newlines, standalone)
+}
+
+wflow_convert_ashlar <-  function(lines, standalone) {
+
+  # Identify the "Last Updated" line
+  pos_last_updated <- grep("Last updated:", lines)
+  if (length(pos_last_updated) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Identify the "chunk-options" line
+  pos_chunk_opts <- grep("chunk-options.R", lines)
+  if (length(pos_chunk_opts) != 1)
+    stop("Unable to process this file with wflow_convert", call. = FALSE)
+  # Identify the closing backticks of the "chunk-options" chunk
+  pos_chunk_opts_end <- grep("```", lines[pos_chunk_opts:length(lines)])[1]
+  pos_chunk_opts_end <- pos_chunk_opts + pos_chunk_opts_end
+  # Identify the session information header H2
+  pos_info_h2 <- grep("## Session information", lines)
+  # If the line above is a blank line, set the position to that line. This helps
+  # maintain nice spacing but avoids accidentally overwriting content.
+  if (lines[pos_info_h2 - 1] == "") {
+    pos_info_h2 <- pos_info_h2 - 1
+  }
+  # Identify the sessionInfo() call
+  pos_info_call <- grep("sessionInfo()", lines)
+  # Identify the closing backticks of the session information chunk
+  pos_info_call_end <- grep("```", lines[pos_info_call:length(lines)])[1]
+  pos_info_call_end <- pos_info_call + pos_info_call_end
+
+  # Remove the ashlar-specific lines from the beginning and end of the file
+  remove_begin <- -(pos_last_updated:pos_chunk_opts_end)
+  remove_end <- -(pos_info_h2:pos_info_call_end)
+  newlines <- lines[c(remove_begin, remove_end)]
+
+  wflow_convert_standard(newlines, standalone)
+}
+
+
+workflowr_yaml <- c(
+  "---",
+  "title: \"Untitled\"",
+  "author: \"First Last\"",
+  "date: YYYY-MM-DD",
+  "output: html_document",
+  "---",
+  "")
 
 workflowr_front_matter <- c(
   "",

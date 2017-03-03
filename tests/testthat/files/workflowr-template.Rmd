@@ -26,7 +26,7 @@ knitr::read_chunk("chunks.R")
 
 <!-- Add your analysis here -->
 
-## Session Information
+## Session information
 
 <!-- Insert the session information into the document -->
 ```{r session-info}

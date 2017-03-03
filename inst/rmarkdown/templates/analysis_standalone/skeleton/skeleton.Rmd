@@ -39,7 +39,7 @@ rm(code_version)
 
 <!-- Add your analysis here -->
 
-## Session Information
+## Session information
 
 <!-- Insert the session information into the document -->
 ```{r session-info}

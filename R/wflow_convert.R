@@ -278,7 +278,7 @@ wflow_convert_to_standalone <- function(lines) {
   if (lines[pos_code_vers + 1] == "")
     pos_code_vers <- pos_code_vers + 1
   # Identify the session information header H2
-  pos_info_h2 <- grep("## Session Information", lines)
+  pos_info_h2 <- grep("## Session information", lines)
   # If the line above is a blank line, set the position to that line. This helps
   # maintain nice spacing but avoids accidentally overwriting content.
   if (lines[pos_info_h2 - 1] == "") {
@@ -317,7 +317,7 @@ wflow_convert_to_non_standalone <- function(lines) {
   if (lines[pos_code_vers_end + 1] == "")
     pos_code_vers_end <- pos_code_vers_end + 1
   # Identify the session information header H2
-  pos_info_h2 <- grep("## Session Information", lines)
+  pos_info_h2 <- grep("## Session information", lines)
   # If the line above is a blank line, set the position to that line. This helps
   # maintain nice spacing but avoids accidentally overwriting content.
   if (lines[pos_info_h2 - 1] == "") {
@@ -370,7 +370,7 @@ workflowr_front_matter <- c(
 
 workflowr_end_matter <- c(
   "",
-  "## Session Information",
+  "## Session information",
   "",
   "<!-- Insert the session information into the document -->",
   "```{r session-info}",
@@ -411,7 +411,7 @@ workflowr_front_matter_standalone <- c(
 
 workflowr_end_matter_standalone <- c(
   "",
-  "## Session Information",
+  "## Session information",
   "",
   "<!-- Insert the session information into the document -->",
   "```{r session-info}",

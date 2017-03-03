@@ -125,6 +125,31 @@ wflow_update <- function(dry_run = TRUE,
         file = log_file, append = TRUE)
   }
 
+  # Update Rproj file. Remove BuildType
+  rproj_file <- list.files(path = root_path, pattern = "Rproj$",
+                           full.names = TRUE)
+  if (length(rproj_file) != 1) {
+    cat("\nUnable to locate a single Rproj file\n")
+  } else {
+    rproj_lines <- readLines(rproj_file)
+    website_lines <- grepl("Website", rproj_lines)
+    if (sum(website_lines) == 0) {
+      cat(sprintf("\nNo changes to %s\n", rproj_file), sep = "\n",
+          file = log_file, append = TRUE)
+    } else {
+      files_updated <- c(files_updated, rproj_file)
+      rproj_tmp <- tempfile("rproj-", fileext = "Rproj")
+      rproj_lines_new <- rproj_lines[!website_lines]
+      cat(rproj_lines_new, sep = "\n", file = rproj_tmp)
+      rproj_diffs <- diff_file(from = rproj_file, to = rproj_tmp)
+      cat(sprintf("\nChanges to %s\n", rproj_file), rproj_diffs,
+          sep = "\n", file = log_file, append = TRUE)
+      if (!dry_run) {
+        file.copy(from = rproj_tmp, to = rproj_file, overwrite = TRUE)
+      }
+    }
+  }
+
   # Gather all R Markdown analysis files
   rmd_all <- list.files(path = analysis_dir, pattern = "[Rr]md$",
                         full.names = TRUE)
@@ -140,11 +165,11 @@ wflow_update <- function(dry_run = TRUE,
     git_rmd <- git_all[grepl("[Rd]md$", git_all)]
     if (length(git_rmd) > 0) {
       rmd_to_convert <- setdiff(rmd_to_convert, git_rmd)
-      cat(strwrap(
+      cat("", strwrap(
 "The following R Markdown files are not converted because they are untracked
 or have staged (or unstaged) changes. To convert, first commit the
-changes and then re-run `wflow_update`:\n\n"
-      ), git_rmd, sep = "\n", file = log_file, append = TRUE)
+changes and then re-run `wflow_update`:"
+      ), "", git_rmd, sep = "\n", file = log_file, append = TRUE)
     }
   }
 
@@ -184,11 +209,20 @@ changes and then re-run `wflow_update`:\n\n"
               paste(unlist(status$staged), collapse = "\n"))
     }
     git2r::add(r, path = files_updated)
-    git2r::commit(r, message = sprintf(
-      "Update workflowr project with wflow_update (version %s).", current_vers))
-    last_commit <- git2r::commits(r)[[1]]
-    cat("Changes committed", utils::capture.output(methods::show(last_commit)),
-        sep = "\n\n", file = log_file, append = TRUE)
+    status <- git2r::status(r)
+    if (length(unlist(status$staged)) > 0) {
+      git2r::commit(r, message = sprintf(
+        "Update workflowr project with wflow_update (version %s).",
+        current_vers))
+      last_commit <- git2r::commits(r)[[1]]
+      cat("Changes committed",
+          utils::capture.output(methods::show(last_commit)),
+          sep = "\n\n", file = log_file, append = TRUE)
+    } else {
+      cat("\nUnable to commit changes for unknown reason.",
+          "Manual intervention required.\n",
+          file = log_file, append = TRUE)
+    }
   }
 
   return(invisible(files_updated))

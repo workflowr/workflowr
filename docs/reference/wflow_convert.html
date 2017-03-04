@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Manage remote Git repositories. — wflow_remotes • workflowr</title>
+<title>Convert R Markdown files to workflowr template. — wflow_convert • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,74 +83,89 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Manage remote Git repositories.</h1>
+    <h1>Convert R Markdown files to workflowr template.</h1>
     </div>
 
     
-    <p><code>wflow_remotes</code> is a convenience function for managing remote
-repositories from R. By default is displays the current remote repositories
-(analogous to <code>git remote -v</code>). It can add a remote, remove a remote, or
-update the URL for an existing remote.</p>
+    <p><code>wflow_convert</code> converts existing R Markdown files to use the workflowr
+template. This is especially useful when migrating an existing project with
+many R Markdown files to use workflowr.</p>
     
 
-    <pre><span class='fu'>wflow_remotes</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre><span class='fu'>wflow_convert</span>(<span class='no'>files</span>, <span class='kw'>standalone</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>remote</dt>
-      <dd>character (default: NULL). The name of the remote.</dd>
-      <dt>user</dt>
-      <dd>character (default: NULL). The GitHub username for the remote
-repository.</dd>
-      <dt>repo</dt>
-      <dd>character (default: NULL). The name of the remote repository on
-GitHub.</dd>
-      <dt>protocol</dt>
-      <dd>character (default: &quot;https&quot;). The protocol for communicating
-with GitHub. Must be either &quot;https&quot; or &quot;ssh&quot;.</dd>
-      <dt>action</dt>
-      <dd>character (default: &quot;add&quot;). The action to perform on the
-remotes. Must be one of &quot;add&quot;, &quot;remove&quot;, or &quot;set_url&quot;. This argument is
-ignored if <code>remote = NULL</code>.</dd>
+      <dt>files</dt>
+      <dd>character. The R Markdown file(s) to be converted. Must have
+file extension Rmd or rmd.</dd>
+      <dt>standalone</dt>
+      <dd>logical (default: FALSE). Embed the configuration chunks
+directly in the document to create a standalone file. Should only need to
+be used when creating files outside the context of a workflowr project.</dd>
+      <dt>dry_run</dt>
+      <dd>logical (default: FALSE). Preview the changes to the files.
+Show the output of <code>diff</code> between the original and the proposed
+replacement.</dd>
       <dt>verbose</dt>
-      <dd>logical (default: TRUE). Display the current remotes.
-Analogous to <code>git remote -v</code>.</dd>
-      <dt>path</dt>
-      <dd>character (default: &quot;.&quot;) By default the function assumes the
-current working directory is within the project. If this is not true,
-you&#39;ll need to provide the path to the project directory.</dd>
+      <dd>logical (default: TRUE). Report progress.</dd>
     </dl>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns a named character vector of the remote URLs.</p>
+    <p>Invisibly returns a list which contains the results of running
+  <code>diff</code> between the original and converted versions of each file. The
+  names of the list elements are the filenames. The diffs are character
+  vectors. Only files which were successfully converted are included.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>wflow_remotes</code> constructs a URL to a remote GitHub repository based on
-the input GitHub username, GitHub repository name, and protocol (https or
-ssh). It can add a remote (<code>action = &quot;add&quot;</code>), remove a remote
-(<code>action = &quot;remove&quot;</code>), or update the URL for an existing remote
-(<code>action = &quot;set_url&quot;</code>).</p>
-    <p>This function cannot change the name of an existing remote. To accomplish
-this, you could run Git from the command line (<code>git remote rename &lt;old&gt;
-&lt;new&gt;</code>) or use <code>git2r::remote_rename</code> from R.</p>
+    <p><code>wflow_convert</code> attempts to identify the current state of each R
+Markdown file and convert it to the latest version of the workflowr template.
+Specifically, it can perform any of the following conversions:</p>
+    <p><ul>
+<li> Convert a standard R Markdown file to use the workflowr template</p>
+    <p></li>
+<li> Convert an outdated workflowr Rmd file to use the latest workflowr
+template</p>
+    <p></li>
+<li> Convert a workflowr Rmd file to the standalone version of the template
+(if <code>standalone = TRUE</code>)</p>
+    <p></li>
+<li> Convert a standalone workflowr Rmd file to the non-standalone version
+of the template (if <code>standalone = FALSE</code>)</p>
+    <p></li>
+<li> Convert an <a href = 'ashlar'>https://github.com/jhsiao999/ashlar</a> R
+Markdown file to use the workflwor template</p>
+    <p></li>
+</ul></p>
+    <p>If a given R Markdown file is already using the latest version of the
+template, it is not changed.</p>
+    <p>If a file is lacking a YAML header, a generic YAML header is added.</p>
+    
+    <h2 class="hasAnchor" id="warning"><a class="anchor" href="#warning"></a>Warning</h2>
+
+    <p><code>wflow_convert</code> overwrites the original files.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='wflow_open.html'>wflow_open</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># # Display the current remotes</span>
-<span class='co'># wflow_remotes()</span>
-<span class='co'># # Add a remote called origin that points to the</span>
-<span class='co'># # GitHub repository example_repo owned by</span>
-<span class='co'># # the GitHub user example_user</span>
-<span class='co'># wflow_remotes("origin", "example_user", "example_repo")</span>
-<span class='co'># # Remove the remote named upstream</span>
-<span class='co'># wflow_remotes("upstream", action = "remove")</span>
-<span class='co'># # Change the protocol of the remote origin from https to ssh</span>
-<span class='co'># wflow_remotes("origin", "example_user", "example_repo", protocol = "ssh",</span>
-<span class='co'>#               action = "set_url")</span>
+<span class='co'># </span>
+<span class='co'># # Convert an R Markdown file to use workflowr template</span>
+<span class='co'># wflow_convert("existing.Rmd")</span>
+<span class='co'># # Convert an R Markdown file to use workflowr template,</span>
+<span class='co'># # but embed the shared chunks to create a standalone file</span>
+<span class='co'># wflow_convert("existing.Rmd", standalone = TRUE)</span>
+<span class='co'># # Preview the changes</span>
+<span class='co'># wflow_convert("existing.Rmd", dry_run = TRUE)</span>
+<span class='co'># # Convert multiple an R Markdown files</span>
+<span class='co'># wflow_convert(files = list.files(path = "analysis",</span>
+<span class='co'>#                                  pattern = "Rmd$",</span>
+<span class='co'>#                                  full.names = TRUE))</span>
 <span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -161,6 +176,10 @@ this, you could run Git from the command line (<code>git remote rename &lt;old&g
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#warning">Warning</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

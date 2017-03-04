@@ -1,7 +1,6 @@
 # workflowr
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=dev)](https://travis-ci.org/jdblischak/workflowr)
-
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/dev/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
 The goal of the [workflowr][] package is to make it easier for researchers to 

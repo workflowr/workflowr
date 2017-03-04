@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Manage remote Git repositories. — wflow_remotes • workflowr</title>
+<title>Update a workflowr project. — wflow_update • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -83,39 +83,32 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Manage remote Git repositories.</h1>
+    <h1>Update a workflowr project.</h1>
     </div>
 
     
-    <p><code>wflow_remotes</code> is a convenience function for managing remote
-repositories from R. By default is displays the current remote repositories
-(analogous to <code>git remote -v</code>). It can add a remote, remove a remote, or
-update the URL for an existing remote.</p>
+    <p>Newer versions of workflowr sometimes make changes that need to be
+coordinated across multiple files. After upgrading workflowr, run
+<code>wflow_update</code> to make all the necessary changes.</p>
     
 
-    <pre><span class='fu'>wflow_remotes</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre><span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>commit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>log_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>log_open</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>remote</dt>
-      <dd>character (default: NULL). The name of the remote.</dd>
-      <dt>user</dt>
-      <dd>character (default: NULL). The GitHub username for the remote
-repository.</dd>
-      <dt>repo</dt>
-      <dd>character (default: NULL). The name of the remote repository on
-GitHub.</dd>
-      <dt>protocol</dt>
-      <dd>character (default: &quot;https&quot;). The protocol for communicating
-with GitHub. Must be either &quot;https&quot; or &quot;ssh&quot;.</dd>
-      <dt>action</dt>
-      <dd>character (default: &quot;add&quot;). The action to perform on the
-remotes. Must be one of &quot;add&quot;, &quot;remove&quot;, or &quot;set_url&quot;. This argument is
-ignored if <code>remote = NULL</code>.</dd>
-      <dt>verbose</dt>
-      <dd>logical (default: TRUE). Display the current remotes.
-Analogous to <code>git remote -v</code>.</dd>
+      <dt>dry_run</dt>
+      <dd>logical (default: TRUE). Preview the proposed updates.</dd>
+      <dt>commit</dt>
+      <dd>logical (default: TRUE). Commit the updated files. Only
+executed if <code>dry_run = FALSE</code>.</dd>
+      <dt>log_file</dt>
+      <dd>character (default: NULL). A file to save the log messages.
+If NULL, a temporary file is created.</dd>
+      <dt>log_open</dt>
+      <dd>logical (default: <code>interactive()</code>). Should the log file
+be opened in RStudio? This argument is ignored if the function is not run
+from within RStudio.</dd>
       <dt>path</dt>
       <dd>character (default: &quot;.&quot;) By default the function assumes the
 current working directory is within the project. If this is not true,
@@ -124,33 +117,41 @@ you&#39;ll need to provide the path to the project directory.</dd>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns a named character vector of the remote URLs.</p>
+    <p>A character vector of the updated files.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>wflow_remotes</code> constructs a URL to a remote GitHub repository based on
-the input GitHub username, GitHub repository name, and protocol (https or
-ssh). It can add a remote (<code>action = &quot;add&quot;</code>), remove a remote
-(<code>action = &quot;remove&quot;</code>), or update the URL for an existing remote
-(<code>action = &quot;set_url&quot;</code>).</p>
-    <p>This function cannot change the name of an existing remote. To accomplish
-this, you could run Git from the command line (<code>git remote rename &lt;old&gt;
-&lt;new&gt;</code>) or use <code>git2r::remote_rename</code> from R.</p>
+    <p>By default, <code>wflow_update</code> is run in <code>dry_run</code> mode so that no
+unwanted changes are made. The log files contains the changes to each file,
+represented with the syntax from the
+<a href = 'Unix diff utility'>https://en.wikipedia.org/wiki/Diff_utility#Usage</a>.
+After reviewing the log file for the proposed changes, re-run the function
+with <code>dry_run = FALSE</code> to implement them.</p>
+    <p>Currently <code>wflow_update</code> checks for the following items:</p>
+    <p><ul>
+<li> Updates the shared chunks in <code>analysis/chunks.R</code>.</p>
+    <p></li>
+<li> Updates each R Markdown file in <code>analysis/</code> to use the shared
+chunks. This is implemented with <code><a href='wflow_convert.html'>wflow_convert</a></code>.</p>
+    <p></li>
+<li> Removes the &quot;BuildType: Website&quot; from the Rproj file. This re-builds
+every R Markdown file everytime, so it is safer to always use
+<code><a href='wflow_build.html'>wflow_build</a></code>.</p>
+    <p></li>
+</ul></p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='wflow_convert.html'>wflow_convert</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># # Display the current remotes</span>
-<span class='co'># wflow_remotes()</span>
-<span class='co'># # Add a remote called origin that points to the</span>
-<span class='co'># # GitHub repository example_repo owned by</span>
-<span class='co'># # the GitHub user example_user</span>
-<span class='co'># wflow_remotes("origin", "example_user", "example_repo")</span>
-<span class='co'># # Remove the remote named upstream</span>
-<span class='co'># wflow_remotes("upstream", action = "remove")</span>
-<span class='co'># # Change the protocol of the remote origin from https to ssh</span>
-<span class='co'># wflow_remotes("origin", "example_user", "example_repo", protocol = "ssh",</span>
-<span class='co'>#               action = "set_url")</span>
+<span class='co'># </span>
+<span class='co'># # Preview the potential changes</span>
+<span class='co'># wflow_update()</span>
+<span class='co'># # Incorporate the changes</span>
+<span class='co'># wflow_update(dry_run = FALSE)</span>
 <span class='co'>## ---------------------------------------------</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -161,6 +162,8 @@ this, you could run Git from the command line (<code>git remote rename &lt;old&g
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

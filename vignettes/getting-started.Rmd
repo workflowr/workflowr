@@ -48,13 +48,7 @@ devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 [repo]: https://github.com/jdblischak/workflowr
 
 To see the available vignettes, run `browseVignettes("workflowr")`. This will
-open a webpage with a link to each vignette. Currently the following vignettes are available (you are currently reading the first vignette):
-
-Vignette title  | To open from R
-------------- | -------------
-Getting started with workflowr  | `vignette("getting-started", "workflowr")`
-Customize your research website  | `vignette("customization", "workflowr")`
-How the workflowr package works | `vignette("how-it-works", "workflowr")`
+open a webpage with a link to each vignette.
 
 As you use workflowr, if you find any unexpected behavior or think of an additional feature that would be nice to have, please open an Issue [here][issues]. When writing your bug report or feature request, please note the version of workflowr you are using (which you can obtain by running `packageVersion("workflowr")`).
 

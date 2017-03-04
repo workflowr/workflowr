@@ -18,27 +18,27 @@ test_that("create_links_page orders files correctly", {
   capture.output(wflow_start(site_dir,
                              change_wd = FALSE))
   # Add analysis files
-  file.copy(Sys.glob("files/test_create_links_page/[abc].Rmd"),
+  file.copy(Sys.glob("files/test-create_links_page/[abc].Rmd"),
             file.path(site_dir, "analysis"))
 
   # Sort by filename (default)
   results_table <- create_links_page(path = site_dir)
   expect_identical(readLines(file.path(site_dir, "analysis/results.Rmd")),
-                   readLines("files/test_create_links_page/sort-filename.Rmd"))
+                   readLines("files/test-create_links_page/sort-filename.Rmd"))
   # Sort by title
   results_table <- create_links_page(path = site_dir, sort_method = "title")
   expect_identical(readLines(file.path(site_dir, "analysis/results.Rmd")),
-                   readLines("files/test_create_links_page/sort-title.Rmd"))
+                   readLines("files/test-create_links_page/sort-title.Rmd"))
 
   # Sort by date, i.e. chronological order
   results_table <- create_links_page(path = site_dir, sort_method = "date")
   expect_identical(readLines(file.path(site_dir, "analysis/results.Rmd")),
-                   readLines("files/test_create_links_page/sort-date.Rmd"))
+                   readLines("files/test-create_links_page/sort-date.Rmd"))
 
   # Sort by "date reverse", i.e. reverse chronological order
   results_table <- create_links_page(path = site_dir, sort_method = "date reverse")
   expect_identical(readLines(file.path(site_dir, "analysis/results.Rmd")),
-                   readLines("files/test_create_links_page/sort-date-reverse.Rmd"))
+                   readLines("files/test-create_links_page/sort-date-reverse.Rmd"))
 
   unlink(site_dir, recursive = TRUE)
 })

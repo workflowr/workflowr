@@ -1,4 +1,4 @@
-context("getting-started")
+context("vig-getting-started")
 
 # Testing similar workflow as in getting-started vignette
 

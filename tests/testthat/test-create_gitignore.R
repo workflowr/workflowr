@@ -1,4 +1,4 @@
-context("git")
+context("create_gitignore")
 
 # Create a temp directory
 tmp_dir <- tempfile("test-git-")

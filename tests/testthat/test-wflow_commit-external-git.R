@@ -1,4 +1,4 @@
-context("commit-external-git")
+context("wflow_commit-external-git")
 
 # Test wflow_commit used in conjuction with external Git commands
 

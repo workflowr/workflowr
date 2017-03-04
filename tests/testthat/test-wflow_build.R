@@ -1,4 +1,4 @@
-context("build")
+context("wflow_build")
 
 # start project in a tempdir
 site_dir <- tempfile("test-build-")

@@ -1,4 +1,4 @@
-context("start")
+context("wflow_start")
 
 # Inspired by rmarkdown tests of render_site
 # https://github.com/rstudio/rmarkdown/blob/b95340817f3b285d38be4ba4ceb0a1d280de65f4/tests/testthat/test-site.R

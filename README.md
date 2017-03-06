@@ -1,7 +1,7 @@
 # workflowr
 
-[![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=dev)](https://travis-ci.org/jdblischak/workflowr)
-[![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/dev/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
+[![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
+[![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
 The goal of the [workflowr][] package is to make it easier for researchers to 
 organize their projects and share their results with colleagues. If you are 

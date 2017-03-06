@@ -30,6 +30,14 @@ workflowr to the most recent stable release, run the following in R:
 devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 ```
 
+If you are upgrading workflowr, run `wflow_update` to preview potential changes
+to your project files. To implement these changes, set `dry_run = FALSE`:
+
+```r
+wflow_update()
+# wflow_update(dry_run = FALSE)
+```
+
 [repo]: https://github.com/jdblischak/workflowr
 
 ## Why use workflowr?

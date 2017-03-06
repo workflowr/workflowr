@@ -5,7 +5,7 @@
 #' \code{wflow_update} to make all the necessary changes.
 #'
 #' By default, \code{wflow_update} is run in \code{dry_run} mode so that no
-#' unwanted changes are made. The log files contains the changes to each file,
+#' unwanted changes are made. The log file contains the changes to each file,
 #' represented with the syntax from the
 #' \href{https://en.wikipedia.org/wiki/Diff_utility#Usage}{Unix diff utility}.
 #' After reviewing the log file for the proposed changes, re-run the function

@@ -74,6 +74,9 @@
 <p>workflowr is hosted in a <a href="https://github.com/jdblischak/workflowr">GitHub repository</a>. To install or upgrade workflowr to the most recent stable release, run the following in R:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools") </span>
 devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>If you are upgrading workflowr, run <code>wflow_update</code> to preview potential changes to your project files. To implement these changes, set <code>dry_run = FALSE</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/wflow_update.html">wflow_update</a></span>()
+<span class="co"># wflow_update(dry_run = FALSE)</span></code></pre></div>
 </div>
 <div id="why-use-workflowr" class="section level2">
 <h2 class="hasAnchor">

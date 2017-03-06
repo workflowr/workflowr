@@ -35,7 +35,7 @@ vignette("getting-started", "workflowr")
 ## Scenario: I have a collection of R Markdown files
 
 If you have a collection of R Markdown files, but no version control or other 
-files, the most straightfoward solution would be to create a workflowr project 
+files, the most straightforward solution would be to create a workflowr project 
 in a new directory and then move the R Markdown files to the `analysis/` 
 subdirectory. In the hypothetical example below, the original R Markdown files 
 are located in the directory `~/projects/misc/` and the workflowr project will
@@ -46,6 +46,21 @@ library("workflowr")
 wflow_start("~/projects/new-project")
 file.copy(from = glob2rx("~/projects/misc/*Rmd"),
           to = "~/projects/new-project/analysis")
+```
+
+Next add and commit your R Markdown files using Git at the command-line:
+
+```bash
+git add analysis/*Rmd
+```
+
+Finally, update your R Markdown files to use the workflowr template (you can
+first run `wflow_update` with no arguments to preview the potential changes).
+Afterwards, build and commit the website using `wflow_commit`:
+
+```{r}
+wflow_update(dry_run = FALSE)
+wflow_commit()
 ```
 
 ## Scenario: I have a collection of R Markdown files and other project infrastructure
@@ -67,13 +82,24 @@ you'd prefer to commit the workflowr files yourself manually, you can set `git =
 FALSE` (this is also useful if you want to first test to see what would happen
 without committing the results).
 
+By default `wflow_start` will not overwrite your existing files (e.g. if
+you already have a `README.md`). If you'd prefer to overwrite your files with
+the default workflowr files, set `overwrite = TRUE`.
+
 To add your R Markdown files to the research website, you can move them to the 
 subdirectory `analysis/` (note you can do this before or after running 
 `wflow_start`).
 
-Lastly, by default `wflow_start` will not overwrite your existing files (e.g. if
-you already have a `README.md`). If you'd prefer to overwrite your files with
-the default workflowr files, set `overwrite = TRUE`.
+If you are using version control, first commit your R Markdown files in 
+`analysis/` and then run `wflow_update` to convert the R Markdown files to use
+the workflowr template:
+
+```{r}
+wflow_update(dry_run = FALSE)
+```
+
+If you are not using Git, then you'll have to specify the files to update using
+the function `wflow_convert`.
 
 ## Scenario: I have an R package
 
@@ -93,7 +119,7 @@ you'd prefer to commit the workflowr files yourself manually, you can set `git =
 FALSE` (this is also useful if you want to first test to see what would happen
 without committing the results).
 
-You'll want R to ignore the workflowr directories when building the R pacakge.
+You'll want R to ignore the workflowr directories when building the R package.
 Thus add the following to the `.Rbuildignore` file:
 
 ```
@@ -127,6 +153,12 @@ Additionally, remove `chunk-options.R`.
 git rm analysis/chunk-options.R
 ```
 
+Commit these changes.
+
+```bash
+git commit -m "Removed ashlar infrastructure."
+```
+
 Next add the workflowr files. In the hypothetical example below, the existing
 package is located at `~/projects/ashlar-project/`.
 
@@ -135,50 +167,12 @@ library("workflowr")
 wflow_start("~/projects/ashlar-project", existing = TRUE)
 ```
 
-Lastly, you'll need to update each of your R Markdown files. Make the following substitutions:
+Lastly, you'll need to update your R Markdown files to use the workflowr
+template, which you can do using the function `wflow_update`:
 
-```{r verbatim-inline-r-code-hack, include=FALSE}
-# I had to use a hack to get the inline R code to show verbatim as opposed to
-# being evaluated.
-#
-# http://stackoverflow.com/a/20419016
+```{r convert-ashlar}
+wflow_update()
 ```
 
-ashlar:
-
-```
-**Code version:** `r '\x60r system(\"git log -1 --format=\'%H\'\", intern = TRUE)\x60'`
-```
-
-workflowr:
-
-```
-**Code version:** `r '\x60r workflowr::extract_commit(".", 1)$sha1\x60'
-```
-
-ashlar:
-
-<pre><code>```{r chunk-options, include=FALSE}
-source("chunk-options.R")
-```</code></pre>
-
-workflowr:
-
-<pre><code>```{r read-chunk, include=FALSE, cache=FALSE}
-knitr::read_chunk("chunks.R")
-```</code></pre>
-
-<pre><code>```{r knitr-opts-chunk, include=FALSE}
-```</code></pre>
-
-
-ashlar:
-
-<pre><code>```{r info}
-sessionInfo()
-```</code></pre>
-
-workflowr:
-
-<pre><code>```{r session-info}
-```</code></pre>
+This will update every R Markdown file, with the exception of `index.Rmd`,
+`about.Rmd`, and `license.Rmd`.

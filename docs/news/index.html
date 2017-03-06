@@ -88,6 +88,67 @@
     </div>
 
     <div class="contents">
+    <div id="workflowr-0-4-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflowr-0-4-0" class="anchor"> </a>workflowr 0.4.0</h1>
+<div id="wflow_start" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_start" class="anchor"> </a>wflow_start</h2>
+<ul>
+<li>The <code><a href="../reference/wflow_start.html">wflow_start()</a></code> API has been simplified. Now the first (and only required) argument is the directory to be created. By default, the name of the project will be determined from the directory name. For example, <code><a href="../reference/wflow_start.html">wflow_start("~/projects/proj-x")</a></code> will create a workflowr project with the name “proj-x”. To specify a different name, provide the argument <code>name</code>
+</li>
+<li>New argument <code>change_wd = TRUE</code> changes the working directory to the newly created project.</li>
+<li>New argument <code>existing = FALSE</code> is a safety feature so that by default workflowr projects are only created in new directories</li>
+<li>
+<code><a href="../reference/wflow_start.html">wflow_start()</a></code> no longer adds “BuildType: Website” to RStudio project file. Users should run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> instead. <code><a href="../reference/wflow_update.html">wflow_update()</a></code> removes the build specification for existing workflowr projects</li>
+<li>Fixed bugs related to relative paths and nested paths</li>
+</ul>
+</div>
+<div id="workflowr-r-markdown-template" class="section level2">
+<h2 class="hasAnchor">
+<a href="#workflowr-r-markdown-template" class="anchor"> </a>workflowr R Markdown template</h2>
+<ul>
+<li>Updated workflowr R Markdown template can be built even if the user does not have workflowr installed</li>
+<li>Use new function <code><a href="../reference/wflow_convert.html">wflow_convert()</a></code> to convert an R Markdown file based on the previous template to use the latest version</li>
+<li>New optional “standalone” version of the workflowr template for creating files outside of a workflowr project (set <code>standalone = TRUE</code> for <code><a href="../reference/wflow_open.html">wflow_open()</a></code>)</li>
+<li>Can create a workflowr R Markdown file outside of a workflowr project by setting <code>path = NULL</code>
+</li>
+</ul>
+</div>
+<div id="migrating-an-existing-project-to-use-workflowr" class="section level2">
+<h2 class="hasAnchor">
+<a href="#migrating-an-existing-project-to-use-workflowr" class="anchor"> </a>Migrating an existing project to use workflowr</h2>
+<ul>
+<li>New vignette on “Migrating an existing project to use workflowr”</li>
+<li>
+<code><a href="../reference/wflow_update.html">wflow_update()</a></code> function updates workflowr projects to use the latest version of the template</li>
+<li>
+<code><a href="../reference/wflow_convert.html">wflow_convert()</a></code> converts an existing R Markdown file to use the workflowr template (can also update a file that uses a previous version of the template)</li>
+</ul>
+</div>
+<div id="other-new-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-new-functions" class="anchor"> </a>Other new functions</h2>
+<ul>
+<li>
+<code><a href="../reference/wflow_view.html">wflow_view()</a></code> opens the website in the browser</li>
+<li>
+<code><a href="../reference/wflow_remotes.html">wflow_remotes()</a></code> manages remote Git repositories on GitHub. It can add a remote, remove a remote, or update the URL for an existing remote</li>
+</ul>
+</div>
+<div id="improvements-to-the-workflowr-r-package-itself" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements-to-the-workflowr-r-package-itself" class="anchor"> </a>Improvements to the workflowr R package itself</h2>
+<ul>
+<li>Continuous integration testing with <a href="https://travis-ci.org/">Travis CI</a>
+</li>
+<li>Code coverage with <a href="https://github.com/jimhester/covr">covr</a> and <a href="https://codecov.io/">Codecov</a>
+</li>
+<li>Package documentation with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>
+</li>
+</ul>
+</div>
+</div>
     <div id="workflowr-0-3-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-3-0" class="anchor"> </a>workflowr 0.3.0</h1>
@@ -121,6 +182,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-0-4-0">0.4.0</a></li>
         <li><a href="#workflowr-0-3-0">0.3.0</a></li>
         <li><a href="#workflowr-0-2-0">0.2.0</a></li>
         <li><a href="#workflowr-0-1-0">0.1.0</a></li>

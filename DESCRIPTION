@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A workflow template for creating a research website
-Version: 0.3.0
+Version: 0.4.0
 Authors@R:
     person(given = "John",
            family = "Blischak",

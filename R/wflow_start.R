@@ -152,7 +152,7 @@ wflow_start <- function(directory,
     }
     repo <- git2r::repository(directory)
     # Make the first workflowr commit
-    git2r::add(repo, project_files)
+    git2r::add(repo, project_files, force = TRUE)
     status <- git2r::status(repo)
     if (length(status$staged) == 0) {
       warning("No new workflowr files were committed.")

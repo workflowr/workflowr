@@ -140,17 +140,39 @@ demonstrate results you obtained using the package, use workflowr.
 
 ## Scenario: I have an ashlar project
 
-First, make sure you are in the "master" branch. If you have any HTML files in
-`analysis/` remove them using Git at the command line.
+First, make sure you are in the "master" branch. Also, you should run the following Git commands from the base of the project directory.
+
+```bash
+git checkout master
+```
+
+If you have any HTML files in `analysis/` remove them using Git at the command
+line.
 
 ```bash
 git rm analysis/*html
 ```
 
-Additionally, remove `chunk-options.R`.
+Next remove the other ashlar infrastructure files.
 
 ```bash
-git rm analysis/chunk-options.R
+git rm analysis/chunk-options.R analysis/Makefile analysis/_output.yaml
+git rm -r analysis/libs analysis/include analysis/figure
+```
+
+Modify `.gitignore` so that it ignores HTML and figure files in `analysis/` only
+by changing `*html` to `analysis/*html` and `*png` to `analysis/figure`.
+Afterwards add the file.
+
+```bash
+nano .gitignore
+git add .gitignore
+```
+
+And move the RStudio project file from `analysis/` to the base of the project.
+
+```bash
+git mv analysis/*Rproj .
 ```
 
 Commit these changes.
@@ -159,20 +181,41 @@ Commit these changes.
 git commit -m "Removed ashlar infrastructure."
 ```
 
-Next add the workflowr files. In the hypothetical example below, the existing
-package is located at `~/projects/ashlar-project/`.
+Next open R to add the workflowr files. In the hypothetical example below, the
+existing package is located at `~/projects/ashlar-project/`.
 
 ```{r}
 library("workflowr")
 wflow_start("~/projects/ashlar-project", existing = TRUE)
 ```
 
+This will generate a few warning messages stating that the directory already
+contains a `.git` directory and a `.gitignore` file. These can be safely ignored
+because ashlar projects are expected to be using Git for version control.
+
 Lastly, you'll need to update your R Markdown files to use the workflowr
 template, which you can do using the function `wflow_update`:
 
 ```{r convert-ashlar}
 wflow_update()
+# Run with `dry_run = FALSE` to apply the updates
+# wflow_update(dry_run = FALSE)
 ```
 
-This will update every R Markdown file, with the exception of `index.Rmd`,
-`about.Rmd`, and `license.Rmd`.
+This will update every R Markdown file, with the exception of `index.Rmd`, 
+`about.Rmd`, and `license.Rmd`. It will also fail to automatically convert any
+ashlar files that do not follow the template (e.g. they do not have the
+`sessionInfo()` chunk), so you will have to manually update these files. Also,
+workflowr no longer includes the date and SHA1 in the organizational files like
+`index.Rmd`, so you can remove this if you like.
+
+Now you should have a functioning workflowr project! From here you should be able to make a few more small edits and then follow the workflowr steps to create your website:
+
+* Edit the navbar in `analysis/_site.yml` so that the GitHub URL points to your repository (and commit the change)
+* Edit the README (and potentially other places, including on GitHub) so that the URL to the website no longer contains the trailing "analysis" in the name (and commit the change(s))
+* Run `wflow_commit` to build and commit the website files
+* Push the changes to GitHub
+* Change the Settings so that the website is served from "master branch /docs folder"
+* Optionally remove the gh-pages branch ([GitHub instructions][gh-remove-branch])
+
+[gh-remove-branch]: https://github.com/blog/1377-create-and-delete-branches

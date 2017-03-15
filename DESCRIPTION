@@ -18,6 +18,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
+    callr,
     git2r,
     methods,
     rprojroot,

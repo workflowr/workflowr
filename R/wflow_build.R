@@ -113,3 +113,42 @@ return_modified_rmd <- function(rmd_files) {
 
   return(files_to_update)
 }
+
+build_rmd_external <- function(rmd, seed, log_dir) {
+  if (!is.character(rmd) | length(character) != 1)
+    stop("rmd must be a one element character vector")
+  if (!file.exists(rmd))
+    stop("rmd does not exist: ", rmd)
+  if (!is.numeric(seed) | length(seed) != 1)
+    stop("seed must be a one element numeric vector")
+  if (!is.character(log_dir) | length(log_dir) != 1)
+    stop("log_dir must be a one element character vector")
+  if (!dir.exists(log_dir)) {
+    dir.create(log_dir, recursive = TRUE)
+    message("log directory created: ", log_dir)
+  }
+
+  rmd_base <- basename(rmd)
+  date_current <- format(Sys.time(), "%Y-%m-%d-%Hh-%Mm-%Ss")
+  stdout_file <- file.path(log_dir,
+                           paste(rmd_base, date_current, "out.txt", sep = "-"))
+  stderr_file <- file.path(log_dir,
+                           paste(rmd_base, date_current, "err.txt", sep = "-"))
+  result <- tryCatch(
+    callr::r(build_rmd,
+             args = list(rmd, seed),
+             stdout = stdout_file, stderr = stderr_file),
+    error = function(e) return(FALSE)
+  )
+  return(result)
+}
+
+build_rmd <- function(rmd, seed, ...) {
+  if (!is.character(rmd) | length(character) != 1)
+    stop("rmd must be a one element character vector")
+  if (!is.numeric(seed) | length(seed) != 1)
+    stop("seed must be a one element numeric vector")
+
+  set.seed(seed)
+  rmarkdown::render_site(rmd, ...)
+}

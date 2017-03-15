@@ -299,3 +299,24 @@ test_that("wflow_start changes to workflowr directory by default", {
 
   expect_identical(getwd(), site_dir)
 })
+
+test_that("wflow_start fails early if directory exists and `existing = FALSE`", {
+
+  site_dir <- tempfile("test-start-")
+  dir.create(site_dir)
+  on.exit(unlink(site_dir, recursive = TRUE))
+
+  expect_error(wflow_start(site_dir, change_wd = FALSE),
+               "Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
+
+})
+
+test_that("wflow_start fails early if directory does not exist and `existing = TRUE`", {
+
+  site_dir <- tempfile("test-start-")
+
+  expect_error(wflow_start(site_dir, existing = TRUE, change_wd = FALSE),
+               "Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
+  expect_false(dir.exists(site_dir))
+
+})

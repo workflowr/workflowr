@@ -66,6 +66,12 @@ wflow_start <- function(directory,
   if (!is.logical(change_wd) | length(change_wd) != 1)
     stop("change_wd must be a one element logical vector: ", change_wd)
 
+  if (!existing & dir.exists(directory)) {
+    stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
+  } else if (existing & !dir.exists(directory)) {
+    stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
+  }
+
   # A workflowr directory cannot be created within an existing Git repository if
   # git = TRUE & existing = FALSE.
   if (git & !existing) {
@@ -86,10 +92,6 @@ wflow_start <- function(directory,
   # Create directory if it doesn't already exist
   if (!existing & !dir.exists(directory)) {
     dir.create(directory, recursive = TRUE)
-  } else if (!existing & dir.exists(directory)) {
-    stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
-  } else if (existing & !dir.exists(directory)) {
-    stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
   }
 
   # Convert to absolute path
@@ -136,8 +138,7 @@ wflow_start <- function(directory,
     setwd(directory)
   } else {
     message("Did not change working directory.\n",
-            "Current working directory: ", getwd(),
-            call. = FALSE)
+            "Current working directory: ", getwd())
   }
 
   # Configure Git repository

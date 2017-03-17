@@ -1,11 +1,209 @@
-# To eventually replace current functionality of wflow_commit
-# wflow_publish <- function() {
-#   # wflow_commit_()
-#   # wflow_build()
-#   # wflow_commit_()
-# }
 
-# Wrapper for git2r::commit
+#'Publish the site
+#'
+#'\code{wflow_publish} is the main workflowr function. Use it when you are ready
+#'to publish an analysis to your site. \code{wflow_publish} performs three
+#'steps: 1) commit the file(s), 2) rebuild the files(s), 3) commit the generated
+#'website file(s). These steps ensure that the version of the HTML file is
+#'created by the latest version of the R Markdown file, which is critical for
+#'reproducibility.
+#'
+#'@inheritParams wflow_commit_
+#'@inheritParams wflow_build_
+#'
+#'@return Invisibly returns the full path to the R Markdown file(s).
+#'
+#'@seealso \code{\link{wflow_commit_}}, \code{\link{wflow_build_}}
+#'
+#' @examples
+#' \dontrun{
+#' # single file
+#' wflow_publish("analysis/file.Rmd")
+#' # All tracked files that have been updated
+#' wflow_publish()
+#' # A new file plus all tracked files that have been updated
+#' wflow_publish("analysis/file.Rmd", all = TRUE)
+#' # Multiple files
+#' wflow_publish(c("analysis/file.Rmd", "analysis/another.Rmd"))
+#' # All R Markdown files that start with the pattern "new_"
+#' wflow_publish(Sys.glob("analysis/new_*Rmd"))
+#'
+#' }
+#'
+#'@import rmarkdown
+#'
+wflow_publish <- function(
+  # args to wflow_commit
+  files = NULL,
+  message = NULL,
+  all = is.null(files),
+  force = FALSE,
+  # args to wflow_build
+  update = FALSE,
+  everything = FALSE,
+  # general
+  dry_run = FALSE,
+  path = "."
+  ) {
+  # To do:
+  # * Warning for cache directories
+  # * Warning if files in docs/ included
+
+  # Commit the provided files
+  f_committed <- wflow_commit_(files = files, message = message,
+                               all = all, force = force,
+                               dry_run = dry_run, path = path)
+  # Build the site
+  f_built <- wflow_build_(files = f_committed, make = FALSE,
+                          update = update, everything = everything,
+                          local = FALSE, dry_run = dry_run, path = path)
+  # Commit the site
+  f_committed_site <- wflow_commit_(files = f_built, message = "Build site.",
+                                    all = FALSE, force = force,
+                                    dry_run = dry_run, path = path)
+  f_committed_all <- sort(c(f_committed, f_committed_site))
+  return(invisible(f_committed_all))
+}
+
+#' Build the site
+#'
+#' \code{wflow_build} builds the website from the files in the analysis
+#' directory. This is intended to be used when developing your code to preview
+#' the changes. When you are ready to commit the files, use
+#' \code{\link{wflow_publish}}.
+#'
+#' \code{wflow_build} has multiple, non-mutually exclusive options for deciding
+#' which files to build:
+#'
+#' \itemize{
+#'
+#' \item Files specified via the argument \code{files} are always built.
+#'
+#' \item If \code{make = TRUE}, all files which have been modified more recently
+#' than their corresponding HTML files will be built.
+#'
+#' \item If \code{update = TRUE}, all files which have been committed more
+#' recently than their corresponding HTML files will be built. However, files
+#' which currently have staged or unstaged changes will be ignored.
+#'
+#' \item If \code{everything = TRUE}, all files will be built.
+#'
+#' }
+#'
+#' Under the hood, \code{wflow_build} is a wrapper for
+#' \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
+#'
+#' @param files character (default: NULL). Files to build. Supports file
+#'   extensions Rmd, rmd, and md. Only files in the analysis directory are
+#'   allowed (and therefore any path to a file is ignored).
+#' @param make logical (default: \code{is.null(files)}). Use Make-like behavior,
+#'   i.e. build the files that have been updated more recently than their
+#'   corresponding HTML files. This is the default action if no files are
+#'   specified.
+#' @param update logical (default: FALSE). Build the files that have been
+#'   committed more recently than their corresponding HTML files (and do not
+#'   have any unstaged or staged changes). This ensures that the commit version
+#'   ID inserted into the HTML corresponds to the exact version of the source
+#'   file that was used to produce it.
+#' @param everything logical (default: FALSE). Build all R Markdown (and
+#'   Markdown) files. Useful for site-wide changes like updating the theme,
+#'   navigation bar, or any other setting in \code{_site.yml}.
+#' @param seed numeric (default: 12345). The seed to set before building each
+#'   file. Passed to \code{\link{set.seed}}.
+#' @param log_dir character (default: NULL). The directory to save log files
+#'   from building files. It will be created if necessary and ignored if
+#'   \code{local = TRUE}. The default is to create a directory in \code{/tmp}.
+#' @param local logical (default: FALSE). Build files locally in the R console.
+#'   This should only be used for debugging purposes. The default is to build
+#'   each file in its own separate fresh R process to ensure each file is
+#'   reproducible in isolation.
+#' @param dry_run logical (default: FALSE). Preview the files to be built, but
+#'   do not actually build them.
+#' @inheritParams wflow_commit_
+#'
+#' @return A character vector of the built files
+#'
+#' @seealso \code{\link{wflow_publish}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Build all files
+#' wflow_build() # equivalent to wflow_build(make = TRUE)
+#' # Build a single file
+#' wflow_build("file.Rmd")
+#' # Build multiple files
+#' wflow_build(c("file1.Rmd", "file2.Rmd"))
+#' # Build every file
+#' wflow_build(everything = TRUE)
+#' }
+#'
+#' @import rmarkdown
+#'
+wflow_build_ <- function(files = NULL, make = is.null(files),
+                         update = FALSE, everything = FALSE,
+                         seed = 12345, log_dir = NULL,
+                         local = FALSE, dry_run = FALSE, path = ".") {
+  return(NULL)
+}
+
+
+#' Commit files
+#'
+#' \code{wflow_commit} adds and commits files with Git. This is a convenience
+#' function to run Git commands from the R console instead of the shell. For
+#' most use cases, you should use \code{\link{wflow_publish}} instead, which
+#' calls \code{wflow_commit} and then subsequently also builds and commits the
+#' website files.
+#'
+#' Some potential use cases for \code{wflow_commit}:
+#'
+#' \itemize{
+#'
+#' \item Commit drafts which you do not yet want to be included in the website
+#'
+#' \item Commit files which do not directly affect the website (e.g. when you
+#' are writing scripts for a data processing pipeline)
+#'
+#' \item Manually commit files in \code{docs/} (proceed with caution!). This
+#' should only be done for content that is not automatically generated from the
+#' source files in the analysis directory, e.g. an image file you want to
+#' include in one of your pages.
+#'
+#' }
+#'
+#' Under the hood, \code{wflow_commit} is a wrapper for \code{\link[git2r]{add}}
+#' and \code{\link[git2r]{commit}} from the package \link{git2r}.
+#'
+#' @param files character (default: NULL). Files to be added and committed with
+#'   Git.
+#' @param message character (default: NULL). A commit message.
+#' @param all logical (default: FALSE). Automatically stage files that have been
+#'   modified and deleted. Equivalent to: \code{git commit -a}
+#' @param force logical (default: FALSE). Allow adding otherwise ignored files.
+#'   Equivalent to: \code{git add -f}
+#' @param dry_run logical (default: FALSE). Preview the proposed action but do
+#'   not actually add or commit any files.
+#' @param path character (default: ".") By default the function assumes the
+#'   current working directory is within the project. If this is not true,
+#'   you'll need to provide the path to the project directory.
+#'
+#' @return A character vector of the committed files
+#'
+#' @seealso \code{\link{wflow_publish}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Commit a single file
+#' wflow_commit("analysis/file.Rmd", "Add new analysis")
+#' # Commit multiple files
+#' wflow_commit(c("code/process-data.sh", "output/small-data.txt"),
+#'              "Process data set")
+#' # Add and commit all tracked files, similar to `git commit -a`
+#' wflow_commit(message = "Lots of changes", all = TRUE)
+#' }
+#'
 wflow_commit_ <- function(files = NULL, message = NULL, all = FALSE,
                           force = FALSE, dry_run = FALSE, path = ".") {
   if (!(is.null(files) | is.character(files)))

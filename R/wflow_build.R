@@ -115,7 +115,7 @@ return_modified_rmd <- function(rmd_files) {
 }
 
 build_rmd_external <- function(rmd, seed, log_dir) {
-  if (!is.character(rmd) | length(character) != 1)
+  if (!is.character(rmd) | length(rmd) != 1)
     stop("rmd must be a one element character vector")
   if (!file.exists(rmd))
     stop("rmd does not exist: ", rmd)
@@ -144,10 +144,12 @@ build_rmd_external <- function(rmd, seed, log_dir) {
 }
 
 build_rmd <- function(rmd, seed, ...) {
-  if (!is.character(rmd) | length(character) != 1)
+  if (!is.character(rmd) || length(rmd) != 1)
     stop("rmd must be a one element character vector")
   if (!is.numeric(seed) | length(seed) != 1)
     stop("seed must be a one element numeric vector")
+  if (!file.exists(rmd))
+    stop("rmd must exist")
 
   set.seed(seed)
   rmarkdown::render_site(rmd, ...)

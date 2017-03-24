@@ -1,0 +1,11 @@
+---
+title: "Untitled"
+author: "First Last"
+date: YYYY-MM-DD
+output: html_document
+---
+
+```{r}
+x <- sample(1:1000, size = 1)
+cat("The random number is", x)
+```

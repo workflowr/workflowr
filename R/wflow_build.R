@@ -135,9 +135,10 @@ build_rmd_external <- function(rmd, seed, log_dir) {
   stderr_file <- file.path(log_dir,
                            paste(rmd_base, date_current, "err.txt", sep = "-"))
   result <- tryCatch(
-    callr::r(build_rmd,
-             args = list(rmd, seed),
-             stdout = stdout_file, stderr = stderr_file),
+    callr::r_safe(build_rmd,
+                  args = list(rmd, seed),
+                  stdout = stdout_file,
+                  stderr = stderr_file),
     error = function(e) return(FALSE)
   )
   return(result)

@@ -12,7 +12,7 @@ Description: workflowr provides helper functions to get started using R Markdown
 URL: https://github.com/jdblischak/workflowr
 BugReports: https://github.com/jdblischak/workflowr/issues
 Depends:
-    R (>= 3.0.2),
+    R (>= 3.2.5),
     rmarkdown (>= 0.9.6)
 License: MIT + file LICENSE
 Encoding: UTF-8

@@ -94,8 +94,8 @@ test_that("wflow_remotes requires correct action", {
                "action must be add, remove, or set_url. You entered: wrong")
 })
 
-wflow_remotes(remote = "origin", user = "fakename",
-              repo = "fakerepo", path = site_dir)
+wflow_remotes(remote = "origin", user = "fakename", repo = "fakerepo",
+              verbose = FALSE, path = site_dir)
 
 test_that("wflow_remotes will not overwrite existing remotes", {
   expect_error(wflow_remotes(remote = "origin", user = "fakaename2",

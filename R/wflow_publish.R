@@ -3,7 +3,7 @@
 #'
 #'\code{wflow_publish} is the main workflowr function. Use it when you are ready
 #'to publish an analysis to your site. \code{wflow_publish} performs three
-#'steps: 1) commit the file(s), 2) rebuild the files(s), 3) commit the generated
+#'steps: 1) commit the file(s), 2) rebuild the file(s), 3) commit the generated
 #'website file(s). These steps ensure that the version of the HTML file is
 #'created by the latest version of the R Markdown file, which is critical for
 #'reproducibility.
@@ -48,6 +48,11 @@ wflow_publish <- function(
   # To do:
   # * Warning for cache directories
   # * Warning if files in docs/ included
+  # Check for modifications to _site.yml. Refuse to build if it is modified
+
+  if (is.null(message)) {
+    message <- sys.call()
+  }
 
   # Commit the provided files
   f_committed <- wflow_commit_(files = files, message = message,
@@ -144,7 +149,71 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
                          update = FALSE, everything = FALSE,
                          seed = 12345, log_dir = NULL,
                          local = FALSE, dry_run = FALSE, path = ".") {
-  return(NULL)
+  if (!(is.null(files) | is.character(files)))
+    stop("files must be NULL or a character vector")
+  if (!is.logical(make) | length(make) != 1)
+    stop("make must be a one-element logical vector")
+  if (!is.logical(update) | length(update) != 1)
+    stop("update must be a one-element logical vector")
+  if (!is.logical(everything) | length(everything) != 1)
+    stop("everything must be a one-element logical vector")
+  if (!is.numeric(seed) | length(seed) != 1)
+    stop("seed must be a one element numeric vector")
+  if (!(is.null(log_dir) | (is.character(log_dir) & length(log_dir) == 1)))
+    stop("log_dir must be a one element character vector")
+  if (!is.logical(local) | length(local) != 1)
+    stop("local must be a one-element logical vector")
+  if (!is.logical(dry_run) | length(dry_run) != 1)
+    stop("dry_run must be a one-element logical vector")
+  if (!is.character(path) | length(path) != 1)
+    stop("path must be a one element character vector")
+
+  # Check that directories and files exist
+  if (!dir.exists(path)) {
+    stop("path does not exist.")
+  } else {
+    path <- normalizePath(path)
+  }
+  if (is.null(log_dir))
+    log_dir <- "/tmp/workflowr"
+  if (!is.null(files)) {
+    files_missing <- !file.exists(files)
+    if (any(files_missing)) {
+      stop("missing files: ", files[files_missing])
+    } else {
+      files <- normalizePath(files)
+    }
+  }
+  files_to_build <- files
+
+  root_path <- rprojroot::find_rstudio_root_file(path = path)
+  analysis_dir <- file.path(root_path, "analysis")
+
+  if (make) {
+    files_make <- return_modified_rmd(Sys.glob(file.path(analysis_dir, "*Rmd")))
+    files_to_build <- union(files_to_build, files_make)
+  }
+
+  # This currently gets every Rmd file. May want to change to only tracked files
+  if (everything) {
+    files_everything <- Sys.glob(file.path(analysis_dir, "*Rmd"))
+    files_to_build <- union(files_to_build, files_everything)
+  } else if (update) {
+    # To do: Adapt from wflow_commit
+  }
+
+  if (!dry_run) {
+    for (f in files_to_build) {
+      cat(sprintf("\n\nRendering %s\n\n", f))
+      if (local) {
+        build_rmd(f, seed = seed, envir = new.env())
+      } else {
+        build_rmd_external(f, seed = seed, log_dir = log_dir)
+      }
+    }
+  }
+
+  return(files_to_build)
 }
 
 

@@ -36,3 +36,13 @@ diff_file <- function(from, to) {
     diffs <- tools::Rdiff(from = from, to = to, Log = TRUE))
   return(diffs$out)
 }
+
+# Wrap long messages
+# https://github.com/jdblischak/workflowr/issues/29
+wrap <- function(...) {
+  input <- list(...)
+  if (!all(sapply(input, is.character)))
+    stop("All input must be a character vector")
+  m <- paste(unlist(input), collapse = "")
+  paste(strwrap(m), collapse = "\n")
+}

@@ -3,7 +3,7 @@ context("wflow_view")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- tempfile("test-wflow_remotes-")
+site_dir <- tempfile("test-wflow_view-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE))

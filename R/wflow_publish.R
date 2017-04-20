@@ -189,16 +189,20 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
   root_path <- rprojroot::find_rstudio_root_file(path = path)
   analysis_dir <- file.path(root_path, "analysis")
 
+  files_all <- Sys.glob(file.path(analysis_dir, "*Rmd"))
+
   if (make) {
-    files_make <- return_modified_rmd(Sys.glob(file.path(analysis_dir, "*Rmd")))
+    files_make <- return_modified_rmd(files_all)
     files_to_build <- union(files_to_build, files_make)
   }
 
   # This currently gets every Rmd file. May want to change to only tracked files
   if (everything) {
-    files_everything <- Sys.glob(file.path(analysis_dir, "*Rmd"))
-    files_to_build <- union(files_to_build, files_everything)
+    files_to_build <- files_all
   } else if (update) {
+    # Build files if their corresponding HTML file in out-of-date in the Git
+    # commit history
+    #
     # To do: Adapt from wflow_commit
   }
 
@@ -213,7 +217,7 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
     }
   }
 
-  return(files_to_build)
+  return(invisible(files_to_build))
 }
 
 

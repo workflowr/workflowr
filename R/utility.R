@@ -1,3 +1,7 @@
+# Non-exported utility functions
+#
+# See tests/testthat/test-utility.R for usage examples.
+
 # Obtain the most upstream existing path.
 #
 # normalizePath only returns the absolute path if the directory exists. It is
@@ -45,4 +49,17 @@ wrap <- function(...) {
     stop("All input must be a character vector")
   m <- paste(unlist(input), collapse = "")
   paste(strwrap(m), collapse = "\n")
+}
+
+# Convert R Markdown file to corresponding HTML
+to_html <- function(files, outdir = NULL) {
+  html <- stringr::str_replace(files, "[Rr]md$", "html")
+  if (!is.null(outdir)) {
+    # Remove trailing slash if present
+    if (stringr::str_sub(outdir, nchar(outdir), nchar(outdir)) == "/") {
+      outdir <- stringr::str_sub(outdir, 1, nchar(outdir) - 1)
+    }
+    html <- file.path(outdir, basename(html))
+  }
+  return(html)
 }

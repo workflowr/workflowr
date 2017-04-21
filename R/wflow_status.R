@@ -96,6 +96,16 @@ wflow_status <- function(verbose = TRUE, project = ".") {
     ignored <- files_analysis %in% s$ignored
     o$status <- data.frame(tracked, staged, unstaged, ignored,
                            row.names = files_analysis)
+    if (dir.exists(o$docs)) {
+      html <- to_html(files_analysis, outdir = o$docs)
+      # Has the HTML file been built?
+      built <- file.exists(html)
+      # To do: Has the HTML file been committed?
+      published <- FALSE
+      # To do: Is the committed HTML file up-to-date?
+      up_to_date <- FALSE
+      o$status <- cbind(o$status, built, published, up_to_date)
+    }
   }
 
   return(invisible(o))

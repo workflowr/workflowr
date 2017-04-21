@@ -53,6 +53,9 @@ wrap <- function(...) {
 
 # Convert R Markdown file to corresponding HTML
 to_html <- function(files, outdir = NULL) {
+  ext <- tools::file_ext(files)
+  if (!all(stringr::str_detect(ext, "[Rr]md$")))
+      stop("Invalid file extension")
   html <- stringr::str_replace(files, "[Rr]md$", "html")
   if (!is.null(outdir)) {
     # Remove trailing slash if present

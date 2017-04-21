@@ -48,3 +48,9 @@ test_that("to_html handles trailing slashes", {
   actual <- to_html("/home/user/project/analysis/file.Rmd", outdir = docs)
   expect_identical(actual, expected)
 })
+
+test_that("to_html throws errors for invalid extensions", {
+  expect_error(to_html("file.md"), "Invalid file extension")
+  expect_error(to_html("file.z"), "Invalid file extension")
+  expect_error(to_html("file"), "Invalid file extension")
+})

@@ -69,7 +69,7 @@ wflow_status <- function(verbose = TRUE, project = ".") {
   # (files that start with an underscore are ignored)
   files_all <- list.files(path = o$analysis, pattern = "^[^_]", full.names = TRUE)
   files_all_ext <- tools::file_ext(files_all)
-  files_analysis <- files_all[files_all_ext %in% c("Rmd", "rmd", "md")]
+  files_analysis <- files_all[files_all_ext %in% c("Rmd", "rmd")]
   o$files <- files_analysis
 
   # Git repository

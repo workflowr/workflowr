@@ -103,8 +103,10 @@ wflow_status <- function(verbose = TRUE, project = ".") {
       # Has the HTML file been committed?
       committed <- paste0(git2r::workdir(r), get_committed_files(r))
       published <- html %in% committed
-      # To do: Is the committed HTML file up-to-date?
-      up_to_date <- FALSE
+      # Is the committed HTML file up-to-date?
+      files_outdated <- get_outdated_files(r, files_analysis[published],
+                                           outdir = o$docs)
+      up_to_date <- published & !(files_analysis %in% files_outdated)
       o$status <- cbind(o$status, built, published, up_to_date)
     }
   }

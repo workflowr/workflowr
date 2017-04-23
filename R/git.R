@@ -85,8 +85,8 @@ get_committed_files <- function(repo, commit = NULL) {
 
 # List all files in a given "git_tree" object.
 ls_files <- function (tree) {
-  tree_list <- as(tree, "list")
-  tree_df <- as(tree, "data.frame")
+  tree_list <- methods::as(tree, "list")
+  tree_df <- methods::as(tree, "data.frame")
   names(tree_list) <- tree_df$name
   files <- tree_df$name[tree_df$type == "blob"]
   dirs <- tree_df$name[tree_df$type == "tree"]
@@ -98,4 +98,56 @@ ls_files <- function (tree) {
     out <- c(out, file.path(dir, ls_files(tree_next)))
   }
   return(out)
+}
+
+# Get the files that have been committed to the repsitory more recently than
+# their corresponding HTML files.
+#
+# repo: git_repository object
+# files: character vector of filenames
+# outdir: directory with website files
+get_outdated_files <- function(repo, files, outdir = NULL) {
+  ext <- tools::file_ext(files)
+  if (!all(grepl("[Rr]md", ext)))
+    stop("Only R Markdown files are accepted.")
+  # Corresponding HTML files
+  html <- to_html(files, outdir = outdir)
+  # Remove preceding path if necessary. Has to be relative to .git directory.
+  path_to_git <- git2r::workdir(repo)
+  files <- stringr::str_replace(files, path_to_git, "")
+  html <- stringr::str_replace(html, path_to_git, "")
+  # For each source file, determine if it has been committed more recently than
+  # its corresponding HTML
+  out_of_date <- logical(length = length(files))
+  for (i in seq_along(files)) {
+    # Most recent commit time of source and HTML files
+    recent_source <- get_recent_commit_time(repo, files[i])
+    recent_html <- get_recent_commit_time(repo, html[i])
+    if (recent_source >= recent_html) {
+      out_of_date[i] <- TRUE
+    }
+  }
+  outdated <- files[out_of_date]
+  # Prepend path to Git repository
+  outdated <- paste0(path_to_git, outdated)
+  return(outdated)
+}
+
+# Get the time of the most recent commit for a file.
+#
+# repo: git_repository object
+# f: path to file relative to .git
+#
+# Note: This function is not vectorized.
+get_recent_commit_time <- function(repo, f) {
+  # Obtain every commit for the file
+  blame <- git2r::blame(repo, f)
+  # Extract the times of the commits
+  times <- sapply(blame@hunks,
+                  function(x) git2r::when(x@final_signature@when))
+  times <- strptime(times, format = "%Y-%m-%d %H:%M:%S")
+  times <- sort(unique(times), decreasing = TRUE)
+  # Most recent commit time
+  recent <- times[1]
+  return(recent)
 }

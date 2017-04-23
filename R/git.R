@@ -70,3 +70,32 @@ create_gitignore <- function(path, overwrite = FALSE) {
   }
   return(invisible(fname))
 }
+
+# Obtain all the committed files in a Git repository at a given commit.
+#
+# The default is to use the head commit.
+get_committed_files <- function(repo, commit = NULL) {
+  if (is.null(commit)) {
+    commit <- git2r::lookup(repo, git2r::branch_target(git2r::head(repo)))
+  }
+  tree <- git2r::tree(commit)
+  files <- ls_files(tree)
+  return(files)
+}
+
+# List all files in a given "git_tree" object.
+ls_files <- function (tree) {
+  tree_list <- as(tree, "list")
+  tree_df <- as(tree, "data.frame")
+  names(tree_list) <- tree_df$name
+  files <- tree_df$name[tree_df$type == "blob"]
+  dirs <- tree_df$name[tree_df$type == "tree"]
+  out <- files
+  # Recurisvely call ls_files on the "git_tree" objects corresponding to each
+  # subdirectory
+  for (dir in dirs) {
+    tree_next <- tree_list[[dir]]
+    out <- c(out, file.path(dir, ls_files(tree_next)))
+  }
+  return(out)
+}

@@ -111,18 +111,113 @@ wflow_status <- function(verbose = TRUE, project = ".") {
     }
   }
 
+  if (verbose)
+    print(o)
+
   return(invisible(o))
 }
 
-# @export
-print.wflow_status <- function(x) {
-  m <- sprintf("workflowr status report\n
-               ------------------------\n
-               Working directory:\t%s\n
-               Root of workflowr project:\t%s\n",
-               x$wd, x$root)
-  cat(wrap(m))
-  # message("this is your status")
-  # message("Working directory:", x$wd)
-  # message("Root of worflowr project:", x$root)
+#' @export
+print.wflow_status <- function(x, ...) {
+
+  template <-
+"workflowr project status report
+-------------------------------
+
+You have the following directories set:
+
+working:      {{wd}}
+project root: {{root}}
+analysis:     {{analysis}}
+docs:         {{docs}}
+git:          {{git}}
+
+You have {{n_analysis}} R Markdown files ({{n_published}} published).
+
+{{#display_outdated}}
+  * {{n_outdated}} outdated.
+
+{{f_outdated}}
+
+{{/display_outdated}}
+{{#display_unpublished}}
+  * {{n_unpublished}} unpublished.
+
+{{f_unpublished}}
+
+{{/display_unpublished}}
+{{#display_staged}}
+  * {{n_staged}} with staged changes.
+
+{{f_staged}}
+
+{{/display_staged}}
+{{#display_unstaged}}
+  * {{n_unstaged}} with unstaged changes.
+
+{{f_unstaged}}
+
+{{/display_unstaged}}
+{{#display_untracked}}
+  * {{n_untracked}} untracked by Git.
+
+{{f_untracked}}
+
+{{/display_untracked}}
+{{#display_ignored}}
+  * {{n_ignored}} ignored by Git.
+
+{{f_ignored}}
+
+{{/display_ignored}}
+
+To publish a file as part of your site, use `wflow_publish()`. To commit a
+file to the Git repository without yet publishing the HTML, use
+`wflow_commit()`.
+"
+
+  published <- x$status$published
+  outdated <- x$status$published & !x$status$up_to_date
+  unpublished <- x$status$tracked & !x$status$published
+  staged <- x$status$staged
+  unstaged <- x$status$unstaged
+  untracked <- !x$status$tracked
+  ignored <-x$status$ignored
+
+  variables <- list(
+    wd = x$wd,
+    root = x$root,
+    analysis = x$analysis,
+    docs = x$docs,
+    git = x$git,
+    n_analysis = length(x$files),
+
+    n_published = sum(published),
+
+    display_outdated = if (any(outdated)) TRUE else FALSE,
+    n_outdated = if (any(outdated)) sum(outdated) else NA,
+    f_outdated = if (any(outdated)) paste(basename(x$files[outdated]), collapse = "\n") else NA,
+
+    display_unpublished = if (any(unpublished)) TRUE else FALSE,
+    n_unpublished = if (any(unpublished)) sum(unpublished) else NA,
+    f_unpublished = if (any(unpublished)) paste(basename(x$files[unpublished]), collapse = "\n") else NA,
+
+    display_staged = if (any(staged)) TRUE else FALSE,
+    n_staged = if (any(staged)) sum(staged) else NA,
+    f_staged = if (any(staged)) paste(basename(x$files[staged]), collapse = "\n") else NA,
+
+    display_unstaged = if (any(unstaged)) TRUE else FALSE,
+    n_unstaged = if (any(unstaged)) sum(unstaged) else NA,
+    f_unstaged = if (any(unstaged)) paste(basename(x$files[unstaged]), collapse = "\n") else NA,
+
+    display_untracked = if (any(untracked)) TRUE else FALSE,
+    n_untracked = if (any(untracked)) sum(untracked) else NA,
+    f_untracked = if (any(untracked)) paste(basename(x$files[untracked]), collapse = "\n") else NA,
+
+    display_ignored = if (any(ignored)) TRUE else FALSE,
+    n_ignored = if (any(ignored)) sum(ignored) else NA,
+    f_ignored = if (any(ignored)) paste(basename(x$files[ignored]), collapse = "\n") else NA)
+
+  m <- whisker::whisker.render(template, variables)
+  cat(m)
 }

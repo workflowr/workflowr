@@ -19,6 +19,50 @@ Invisibly returns an object of class \code{wflow_status}.
 \description{
 \code{wflow_status} reports the current status of the workflowr project.
 }
+\details{
+\code{wflow_status} reports the paths to the main directories of the
+workflowr project:
+
+\itemize{
+
+\item \bold{working directory}: The current directory in the R console (i.e.
+\code{getwd{}}).
+
+\item \bold{project root}: The directory that contains the RStudio .Rproj
+file.
+
+\item \bold{analysis}: The directory that contains \code{_site.yml} and the R
+Markdown files.
+
+\item \bold{docs}: The directory that contains the HTML files and figures.
+
+\item \bold{git}: The \code{.git} directory that contains the history of the
+Git repository.
+
+}
+
+\code{wflow_status} also reports the status of files that require user
+action:
+
+\itemize{
+
+\item \bold{outdated}: When an R Markdown file has been committed to the
+repository without updating the previously published HTML file.
+
+\item \bold{staged}: When an R Markdown file has changes that have been added
+to the index (e.g. with \code{git add}).
+
+\item \bold{unstaged}: When a tracked R Markdown file has changes in the
+working directory.
+
+\item \bold{untracked}: When an R Markdown file has not been added or
+committed to the Git repository.
+
+\item \bold{ignored}: When an R Markdown file has been ignored by Git
+according to the patterns in the file \code{.gitignore}.
+
+}
+}
 \examples{
 \dontrun{
 

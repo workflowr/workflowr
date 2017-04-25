@@ -214,9 +214,20 @@ You have {{n_analysis}} R Markdown files ({{n_published}} published).
 
 {{/display_ignored}}
 
-To publish a file as part of your site, use `wflow_publish()`. To commit a
-file to the Git repository without yet publishing the HTML, use
-`wflow_commit()`.
+Your options are:
+
+  *  To publish a new file to include in your site, use `wflow_publish()`.
+
+  *  To publish staged and unstaged changes to tracked files, use
+     `wflow_publish(all = TRUE)`.
+
+  *  To commit a file to the Git repository without yet publishing the HTML, use
+     `wflow_commit()`.
+
+  *  To update outdated files, use `wflow_publish(update = TRUE)`.
+
+  *  To re-build and publish every single file, use `wflow_publish(everything =
+     TRUE)`.
 "
 
   published <- x$status$published

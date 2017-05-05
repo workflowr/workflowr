@@ -54,3 +54,13 @@ test_that("to_html throws errors for invalid extensions", {
   expect_error(to_html("file.z"), "Invalid file extension")
   expect_error(to_html("file"), "Invalid file extension")
 })
+
+# Test relpath -----------------------------------------------------------------
+
+test_that("relpath works on basic input", {
+  file1 = "~/git/ash/analysis"
+  file2 = "~/git/ash/code/dsc-shrink/datamakers"
+  expected <- "../code/dsc-shrink/datamakers"
+  actual <- relpath(file2, file1)
+  expect_identical(actual, expected)
+})

@@ -66,3 +66,58 @@ to_html <- function(files, outdir = NULL) {
   }
   return(html)
 }
+
+# Return a relative version of a path
+#
+# This is a port of the Python function os.path.relpath. I couldn't find an
+# equivalent. If you know of an available function in a lightweight dependency,
+# please let me know.
+#
+# Description from Python docs: Return a relative filepath to path either from
+# the current directory or from an optional start directory. This is a path
+# computation: the filesystem is not accessed to confirm the existence or nature
+# of path or start.
+#
+# Note on this implementation:
+#  * Not vectorized.
+#  * Expects absolute paths with no tilde.
+#
+# https://docs.python.org/3.5/library/os.path.html#os.path.relpath
+relpath <- function(path, start = NULL) {
+  if (!(is.character(path) & length(path) == 1))
+    stop("path must be a character vector")
+  if (!(is.null(start) | is.character(start) & length(start) == 1))
+    stop("start must be NULL or a 1-element character vector")
+
+  curdir <- "."
+  sep <- .Platform$file.sep
+  pardir <- ".."
+
+  if (is.null(start))
+    start <- getwd()
+
+  start_list <- unlist(stringr::str_split(start, sep))
+  path_list <- unlist(stringr::str_split(path, sep))
+  # Work out how much of the filepath is shared by start and path.
+  i <- length(commonprefix(list(start_list, path_list)))
+
+  rel_list <- c(rep(pardir, length(start_list) - i),
+                path_list[(i + 1):length(path_list)])
+  if (length(rel_list) == 0)
+    return(curdir)
+  return(paste(rel_list, collapse = sep))
+}
+
+# "Given a list of pathnames, returns the longest common leading component"
+commonprefix <- function(m) {
+  if (length(m) == 0)
+    return("")
+  path_lengths <- sapply(m, length)
+  s1 <- m[[which.min(path_lengths)]]
+  s2 <- m[[which.max(path_lengths)]]
+  for (i in seq_along(s1)) {
+    if (s1[i] != s2[i])
+      return(s1[1:(i - 1)])
+  }
+  return(s1)
+}

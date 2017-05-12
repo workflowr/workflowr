@@ -12,7 +12,7 @@ suppressMessages(utils::capture.output(wflow_build(path = site_dir)))
 
 # Test wflow_status --------------------------------------------------------------
 
-s <- wflow_status(verbose = FALSE, project = site_dir)
+s <- wflow_status(project = site_dir)
 
 test_that("wflow_status identifies working directory.", {
   expected <- getwd()

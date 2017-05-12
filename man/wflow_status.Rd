@@ -4,17 +4,15 @@
 \alias{wflow_status}
 \title{Report status of workflowr project.}
 \usage{
-wflow_status(verbose = TRUE, project = ".")
+wflow_status(project = ".")
 }
 \arguments{
-\item{verbose}{logical (default: TRUE). Prints status to R console.}
-
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
 }
 \value{
-Invisibly returns an object of class \code{wflow_status}.
+Returns an object of class \code{wflow_status}.
 }
 \description{
 \code{wflow_status} reports the current status of the workflowr project.

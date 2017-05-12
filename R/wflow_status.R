@@ -45,12 +45,11 @@
 #'
 #' }
 #'
-#' @param verbose logical (default: TRUE). Prints status to R console.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return Invisibly returns an object of class \code{wflow_status}.
+#' @return Returns an object of class \code{wflow_status}.
 #'
 #' @examples
 #' \dontrun{
@@ -60,9 +59,7 @@
 #' s <- wflow_status()
 #' }
 #' @export
-wflow_status <- function(verbose = TRUE, project = ".") {
-  if (!is.logical(verbose) | length(verbose) != 1)
-    stop("verbose must be a one-element logical vector")
+wflow_status <- function(project = ".") {
   if (!is.character(project) | length(project) != 1)
     stop("project must be a one element character vector")
   if (!dir.exists(project))
@@ -154,10 +151,7 @@ wflow_status <- function(verbose = TRUE, project = ".") {
     }
   }
 
-  if (verbose)
-    print(o)
-
-  return(invisible(o))
+  return(o)
 }
 
 #' @export

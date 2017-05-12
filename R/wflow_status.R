@@ -1,55 +1,82 @@
 #' Report status of workflowr project.
 #'
-#' \code{wflow_status} reports the current status of the workflowr project.
+#' \code{wflow_status} reports the analysis files that require user
+#' action.
 #'
-#' \code{wflow_status} reports the paths to the main directories of the
-#' workflowr project:
-#'
-#' \itemize{
-#'
-#' \item \bold{working directory}: The current directory in the R console (i.e.
-#' \code{getwd{}}).
-#'
-#' \item \bold{project root}: The directory that contains the RStudio .Rproj
-#' file.
-#'
-#' \item \bold{analysis}: The directory that contains \code{_site.yml} and the R
-#' Markdown files.
-#'
-#' \item \bold{docs}: The directory that contains the HTML files and figures.
-#'
-#' \item \bold{git}: The \code{.git} directory that contains the history of the
-#' Git repository.
-#'
-#' }
-#'
-#' \code{wflow_status} also reports the status of files that require user
-#' action:
+#' \code{wflow_status} reports analysis files with one of the
+#' following statuses:
 #'
 #' \itemize{
 #'
-#' \item \bold{outdated}: When an R Markdown file has been committed to the
-#' repository without updating the previously published HTML file.
+#' \item \bold{Mod}: Modified file. Any published file that has been
+#' modified since the last time the HTML was published.
 #'
-#' \item \bold{staged}: When an R Markdown file has changes that have been added
-#' to the index (e.g. with \code{git add}).
+#' \item \bold{Unp}: Unpublished file. Any tracked file whose
+#' corresponding HTML is not tracked. May or may not have staged or
+#' unstaged changes.
 #'
-#' \item \bold{unstaged}: When a tracked R Markdown file has changes in the
-#' working directory.
-#'
-#' \item \bold{untracked}: When an R Markdown file has not been added or
-#' committed to the Git repository.
-#'
-#' \item \bold{ignored}: When an R Markdown file has been ignored by Git
-#' according to the patterns in the file \code{.gitignore}.
+#' \item \bold{New}: New file. Any untracked file that is not
+#' specifically ignored.
 #'
 #' }
 #'
-#' @param project character (default: ".") By default the function assumes the
-#'   current working directory is within the project. If this is not true,
-#'   you'll need to provide the path to the project directory.
+#'@param project character (default: ".") By default the function
+#'  assumes the current working directory is within the project. If
+#'  this is not true, you'll need to provide the path to the project
+#'  directory.
 #'
-#' @return Returns an object of class \code{wflow_status}.
+#'@return Returns an object of class \code{wflow_status}, which is a
+#'  list with the following elements:
+#'
+#'  \itemize{
+#'
+#'  \item \bold{wd}: The current working directory in the R console
+#'  (i.e. \code{getwd{}}).
+#'
+#'  \item \bold{root}: The root directory of the workflowr project
+#'  (i.e. contains the RStudio .Rproj file).
+#'
+#'  \item \bold{analysis}: The directory that contains
+#'  \code{_site.yml} and the R Markdown files.
+#'
+#'  \item \bold{docs}: The directory that contains the HTML files and
+#'  figures.
+#'
+#'  \item \bold{files}: The files whose status was checked.
+#'
+#'  \item \bold{git}: The \code{.git} directory that contains the
+#'  history of the Git repository.
+#'
+#'  \item \bold{git_status}: The output from
+#'  \code{git2r::\link[git2r]{status}}.
+#'
+#'  \item \bold{status}: A data frame with detailed information on the
+#'  status of each file (see below).
+#'
+#'  }
+#'
+#'  The data frame \code{status} contains the following columns (all
+#'  logical vectors):
+#'
+#'  \itemize{
+#'
+#'  \item \bold{outdated}: When an R Markdown file has been committed
+#'  to the repository without updating the previously published HTML
+#'  file.
+#'
+#'  \item \bold{staged}: When an R Markdown file has changes that have
+#'  been added to the index (e.g. with \code{git add}).
+#'
+#'  \item \bold{unstaged}: When a tracked R Markdown file has changes
+#'  in the working directory.
+#'
+#'  \item \bold{untracked}: When an R Markdown file has not been added
+#'  or committed to the Git repository.
+#'
+#'  \item \bold{ignored}: When an R Markdown file has been ignored by
+#'  Git according to the patterns in the file \code{.gitignore}.
+#'
+#'  }
 #'
 #' @examples
 #' \dontrun{
@@ -58,7 +85,7 @@
 #' # Save the results
 #' s <- wflow_status()
 #' }
-#' @export
+#'@export
 wflow_status <- function(project = ".") {
   if (!is.character(project) | length(project) != 1)
     stop("project must be a one element character vector")
@@ -156,126 +183,33 @@ wflow_status <- function(project = ".") {
 
 #' @export
 print.wflow_status <- function(x, ...) {
-
-  template <-
-"workflowr project status report
--------------------------------
-
-You have the following directories set:
-
-working:      \"{{{wd}}}\"
-project root: \"{{root}}\"
-analysis:     \"{{analysis}}\"
-docs:         \"{{docs}}\"
-git:          \"{{git}}\"
-
-You have {{n_analysis}} R Markdown files ({{n_published}} published).
-
-{{#display_outdated}}
-  * {{n_outdated}} outdated.
-
-{{{f_outdated}}}
-
-{{/display_outdated}}
-{{#display_unpublished}}
-  * {{n_unpublished}} unpublished.
-
-{{{f_unpublished}}}
-
-{{/display_unpublished}}
-{{#display_staged}}
-  * {{n_staged}} with staged changes.
-
-{{{f_staged}}}
-
-{{/display_staged}}
-{{#display_unstaged}}
-  * {{n_unstaged}} with unstaged changes.
-
-{{{f_unstaged}}}
-
-{{/display_unstaged}}
-{{#display_untracked}}
-  * {{n_untracked}} untracked by Git.
-
-{{{f_untracked}}}
-
-{{/display_untracked}}
-{{#display_ignored}}
-  * {{n_ignored}} ignored by Git.
-
-{{{f_ignored}}}
-
-{{/display_ignored}}
-
-Your options are:
-
-  *  To publish a new file to include in your site, use `wflow_publish()`.
-
-  *  To publish staged and unstaged changes to tracked files, use
-     `wflow_publish(all = TRUE)`.
-
-  *  To commit a file to the Git repository without yet publishing the HTML, use
-     `wflow_commit()`.
-
-  *  To update outdated files, use `wflow_publish(update = TRUE)`.
-
-  *  To re-build and publish every single file, use `wflow_publish(everything =
-     TRUE)`.
-"
-
-  published <- x$status$published
-  outdated <- x$status$published & !x$status$up_to_date
+  # Status Mod
+  #
+  # Published file that has been modified since last publication
+  modified <- x$status$published & (x$status$staged |
+                                      x$status$unstaged |
+                                      !x$status$up_to_date)
+  # Status Unp
+  #
+  # Unpublished file. Any tracked file whose corresponding HTML is not
+  # tracked. May or may not have staged or unstaged changes.
   unpublished <- x$status$tracked & !x$status$published
-  staged <- x$status$staged
-  unstaged <- x$status$unstaged
-  untracked <- !x$status$tracked
-  ignored <-x$status$ignored
+  # Status New
+  #
+  # New file. Any untracked file that is not specifically ignored.
+  new <- !x$status$tracked & !x$status$ignored
 
-  variables <- list(
-    wd = x$wd,
-    root = x$root,
-    analysis = x$analysis,
-    docs = x$docs,
-    git = x$git,
-    n_analysis = length(x$files),
-
-    n_published = sum(published),
-
-    display_outdated = if (any(outdated)) TRUE else FALSE,
-    n_outdated = if (any(outdated)) sum(outdated) else NA,
-    f_outdated = if (any(outdated)) display_files(x$files[outdated]) else NA,
-
-    display_unpublished = if (any(unpublished)) TRUE else FALSE,
-    n_unpublished = if (any(unpublished)) sum(unpublished) else NA,
-    f_unpublished = if (any(unpublished)) display_files(x$files[unpublished]) else NA,
-
-    display_staged = if (any(staged)) TRUE else FALSE,
-    n_staged = if (any(staged)) sum(staged) else NA,
-    f_staged = if (any(staged)) display_files(x$files[staged]) else NA,
-
-    display_unstaged = if (any(unstaged)) TRUE else FALSE,
-    n_unstaged = if (any(unstaged)) sum(unstaged) else NA,
-    f_unstaged = if (any(unstaged)) display_files(x$files[unstaged]) else NA,
-
-    display_untracked = if (any(untracked)) TRUE else FALSE,
-    n_untracked = if (any(untracked)) sum(untracked) else NA,
-    f_untracked = if (any(untracked)) display_files(x$files[untracked]) else NA,
-
-    display_ignored = if (any(ignored)) TRUE else FALSE,
-    n_ignored = if (any(ignored)) sum(ignored) else NA,
-    f_ignored = if (any(ignored)) display_files(x$files[ignored]) else NA)
-
-  m <- whisker::whisker.render(template, variables)
-  cat(m)
-}
-
-display_files <- function(files) {
-  out <- "c("
-  for (f in files) {
-    out <- paste0(out, "\"", f, "\",\n")
+  for (i in seq_along(x$files)) {
+    file_rel <- relpath(x$files[i], start = getwd())
+    if (modified[i]) {
+      o <- sprintf("Mod %s\n", file_rel)
+      cat(o)
+    } else if (unpublished[i]) {
+      o <- sprintf("Unp %s\n", file_rel)
+      cat(o)
+    } else if (new[i]) {
+      o <- sprintf("New %s\n", file_rel)
+      cat(o)
+    }
   }
-  out <- stringr::str_sub(out, 1, nchar(out) - 2)
-  out <- paste0(out, ")")
-  return(out)
 }

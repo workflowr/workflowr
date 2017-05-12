@@ -20,6 +20,8 @@
 #'
 #' }
 #'
+#' \code{wflow_status} only works for workflowr projects that use Git.
+#'
 #' @param files character (default: NULL) The analysis file(s) to
 #'   report the status. By default checks the status of all analysis
 #'   files.
@@ -155,40 +157,39 @@ wflow_status <- function(files = NULL, project = ".") {
   # Git repository
   r <- try(git2r::repository(o$root, discover = TRUE), silent = TRUE)
   if (class(r) == "try-error") {
-    o$git <- NA
+    stop("wflow_status only works if the workflowr project uses Git.")
   } else {
     o$git <- normalizePath(r@path) # remove trailing slash
   }
 
   # Obtain status of each file
-  if (!is.na(o$git)) {
-    s <- git2r::status(r, ignored = TRUE)
-    o$git_status <- s
-    # Convert from a list of lists of relative paths to a list of character
-    # vectors of absolute paths
-    s <- lapply(s, function(x) paste0(git2r::workdir(r), as.character(x)))
-    # Determine status of each analysis file in the Git repository. Each status
-    # is a logical vector.
-    tracked <- files_analysis %in% setdiff(files_analysis,
-                                           c(s$untracked, s$ignored))
-    staged <- files_analysis %in% s$staged
-    unstaged <- files_analysis %in% s$unstaged
-    ignored <- files_analysis %in% s$ignored
-    o$status <- data.frame(tracked, staged, unstaged, ignored,
-                           row.names = files_analysis)
-    if (dir.exists(o$docs)) {
-      html <- to_html(files_analysis, outdir = o$docs)
-      # Has the HTML file been built?
-      built <- file.exists(html)
-      # Has the HTML file been committed?
-      committed <- paste0(git2r::workdir(r), get_committed_files(r))
-      published <- html %in% committed
-      # Is the committed HTML file up-to-date?
-      files_outdated <- get_outdated_files(r, files_analysis[published],
-                                           outdir = o$docs)
-      up_to_date <- published & !(files_analysis %in% files_outdated)
-      o$status <- cbind(o$status, built, published, up_to_date)
-    }
+  s <- git2r::status(r, ignored = TRUE)
+  o$git_status <- s
+  # Convert from a list of lists of relative paths to a list of character
+  # vectors of absolute paths
+  s <- lapply(s, function(x) paste0(git2r::workdir(r), as.character(x)))
+  # Determine status of each analysis file in the Git repository. Each status
+  # is a logical vector.
+  tracked <- files_analysis %in% setdiff(files_analysis,
+                                         c(s$untracked, s$ignored))
+  staged <- files_analysis %in% s$staged
+  unstaged <- files_analysis %in% s$unstaged
+  ignored <- files_analysis %in% s$ignored
+  o$status <- data.frame(tracked, staged, unstaged, ignored,
+                         row.names = files_analysis)
+  if (dir.exists(o$docs)) {
+    html <- to_html(files_analysis, outdir = o$docs)
+    # Has the HTML file been built?
+    built <- file.exists(html)
+    # Has the HTML file been committed?
+    committed <- paste0(git2r::workdir(r), get_committed_files(r))
+    published <- html %in% committed
+    # Is the committed HTML file up-to-date?
+    files_outdated <- get_outdated_files(r, files_analysis[published],
+                                         outdir = o$docs)
+    up_to_date <- published & !(files_analysis %in% files_outdated)
+    o$status <- cbind(o$status, built, published, up_to_date)
+
   }
 
   return(o)

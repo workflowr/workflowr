@@ -91,6 +91,8 @@ unstaged changes.
 specifically ignored.
 
 }
+
+\code{wflow_status} only works for workflowr projects that use Git.
 }
 \examples{
 \dontrun{

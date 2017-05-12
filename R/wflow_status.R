@@ -1,87 +1,80 @@
 #' Report status of workflowr project.
 #'
-#' \code{wflow_status} reports the analysis files that require user
-#' action.
+#' \code{wflow_status} reports the analysis files that require user action.
 #'
-#' \code{wflow_status} reports analysis files with one of the
-#' following statuses:
+#' \code{wflow_status} reports analysis files with one of the following
+#' statuses:
 #'
 #' \itemize{
 #'
-#' \item \bold{Mod}: Modified file. Any published file that has been
-#' modified since the last time the HTML was published.
+#' \item \bold{Mod}: Modified file. Any published file that has been modified
+#' since the last time the HTML was published.
 #'
-#' \item \bold{Unp}: Unpublished file. Any tracked file whose
-#' corresponding HTML is not tracked. May or may not have staged or
-#' unstaged changes.
+#' \item \bold{Unp}: Unpublished file. Any tracked file whose corresponding HTML
+#' is not tracked. May or may not have staged or unstaged changes.
 #'
-#' \item \bold{New}: New file. Any untracked file that is not
-#' specifically ignored.
+#' \item \bold{New}: New file. Any untracked file that is not specifically
+#' ignored.
 #'
 #' }
 #'
 #' \code{wflow_status} only works for workflowr projects that use Git.
 #'
-#' @param files character (default: NULL) The analysis file(s) to
-#'   report the status. By default checks the status of all analysis
-#'   files.
-#' @param project character (default: ".") By default the function
-#'   assumes the current working directory is within the project. If
-#'   this is not true, you'll need to provide the path to the project
-#'   directory.
+#' @param files character (default: NULL) The analysis file(s) to report the
+#'   status. By default checks the status of all analysis files.
+#' @param project character (default: ".") By default the function assumes the
+#'   current working directory is within the project. If this is not true,
+#'   you'll need to provide the path to the project directory.
 #'
-#' @return Returns an object of class \code{wflow_status}, which is a
-#'   list with the following elements:
+#' @return Returns an object of class \code{wflow_status}, which is a list with
+#'   the following elements:
 #'
-#'   \itemize{
+#' \itemize{
 #'
-#'   \item \bold{wd}: The current working directory in the R console
-#'   (i.e. \code{getwd{}}).
+#' \item \bold{wd}: The current working directory in the R console (i.e.
+#' \code{getwd{}}).
 #'
-#'   \item \bold{root}: The root directory of the workflowr project
-#'   (i.e. contains the RStudio .Rproj file).
+#' \item \bold{root}: The root directory of the workflowr project (i.e. contains
+#' the RStudio .Rproj file).
 #'
-#'   \item \bold{analysis}: The directory that contains
-#'   \code{_site.yml} and the R Markdown files.
+#' \item \bold{analysis}: The directory that contains \code{_site.yml} and the R
+#' Markdown files.
 #'
-#'   \item \bold{docs}: The directory that contains the HTML files and
-#'   figures.
+#' \item \bold{docs}: The directory that contains the HTML files and figures.
 #'
-#'   \item \bold{files}: The files whose status was checked.
+#' \item \bold{files}: The files whose status was checked.
 #'
-#'   \item \bold{git}: The \code{.git} directory that contains the
-#'   history of the Git repository.
+#' \item \bold{git}: The \code{.git} directory that contains the history of the
+#' Git repository.
 #'
-#'   \item \bold{git_status}: The output from
-#'   \code{git2r::\link[git2r]{status}}.
+#' \item \bold{git_status}: The output from \code{git2r::\link[git2r]{status}}.
 #'
-#'   \item \bold{status}: A data frame with detailed information on
-#'   the status of each file (see below).
+#' \item \bold{status}: A data frame with detailed information on the status of
+#' each file (see below).
 #'
-#'   }
+#' }
 #'
-#'   The data frame \code{status} contains the following columns (all
-#'   logical vectors):
+#' The data frame \code{status} contains the following columns (all logical
+#' vectors):
 #'
-#'   \itemize{
+#' \itemize{
 #'
-#'   \item \bold{outdated}: When an R Markdown file has been committed
-#'   to the repository without updating the previously published HTML
-#'   file.
+#' \item \bold{outdated}: When an R Markdown file has been committed to the
+#' repository without updating the previously published HTML file.
 #'
-#'   \item \bold{staged}: When an R Markdown file has changes that
-#'   have been added to the index (e.g. with \code{git add}).
+#' \item \bold{staged}: When an R Markdown file has changes that have been added
+#' to the index (e.g. with \code{git add}).
 #'
-#'   \item \bold{unstaged}: When a tracked R Markdown file has changes
-#'   in the working directory.
+#' \item \bold{unstaged}: When a tracked R Markdown file has changes in the
+#' working directory.
 #'
-#'   \item \bold{untracked}: When an R Markdown file has not been
-#'   added or committed to the Git repository.
+#' \item \bold{untracked}: When an R Markdown file has not been added or
+#' committed to the Git repository.
 #'
-#'   \item \bold{ignored}: When an R Markdown file has been ignored by
-#'   Git according to the patterns in the file \code{.gitignore}.
+#' \item \bold{ignored}: When an R Markdown file has been ignored by Git
+#' according to the patterns in the file \code{.gitignore}.
 #'
-#'   }
+#' }
 #'
 #' @examples
 #' \dontrun{
@@ -201,29 +194,35 @@ print.wflow_status <- function(x, ...) {
   #
   # Published file that has been modified since last publication
   modified <- x$status$published & (x$status$staged |
-                                      x$status$unstaged |
-                                      !x$status$up_to_date)
+                                    x$status$unstaged |
+                                    !x$status$up_to_date)
   # Status Unp
   #
-  # Unpublished file. Any tracked file whose corresponding HTML is not
-  # tracked. May or may not have staged or unstaged changes.
+  # Unpublished file. Any tracked file whose corresponding HTML is not tracked.
+  # May or may not have staged or unstaged changes.
   unpublished <- x$status$tracked & !x$status$published
   # Status New
   #
   # New file. Any untracked file that is not specifically ignored.
   new <- !x$status$tracked & !x$status$ignored
 
-  for (i in seq_along(x$files)) {
-    file_rel <- relpath(x$files[i], start = getwd())
-    if (modified[i]) {
-      o <- sprintf("Mod %s\n", file_rel)
-      cat(o)
-    } else if (unpublished[i]) {
-      o <- sprintf("Unp %s\n", file_rel)
-      cat(o)
-    } else if (new[i]) {
-      o <- sprintf("New %s\n", file_rel)
-      cat(o)
-    }
+  f <- c(x$files[modified],x$files[unpublished], x$files[new])
+  names(f) <- rep(c("Mod", "Unp", "New"),
+                  times = c(sum(modified), sum(unpublished), sum(new)))
+
+  for (i in seq_along(f)) {
+    f_rel <- relpath(f[i], start = getwd())
+    o <- sprintf("%s %s\n", names(f)[i], f_rel)
+    cat(o)
+  }
+  if (length(f) == 0) {
+    message("Up-to-date")
+  } else {
+    m <- "Mod = Modified, Unp = Unpublished, New = Untracked
+
+To publish your changes as part of your website, use `wflow_publish()`.
+
+To commit your changes without publishing them yet, use `wflow_commit()`."
+    message(wrap(m))
   }
 }

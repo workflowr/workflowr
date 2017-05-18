@@ -94,45 +94,8 @@ wflow_status <- function(files = NULL, project = ".") {
   if (!dir.exists(project))
     stop("project does not exist.")
 
-  # Create list to store output
-  o <- list()
-  class(o) <- "wflow_status"
-
-  # Working directory
-  o$wd <- getwd()
-
-  # workflowr root
-  project <- normalizePath(project)
-  o$root <- try(rprojroot::find_rstudio_root_file(path = project),
-                silent = TRUE)
-  if (class(o$root) == "try-error")
-    stop(wrap(
-      "Unable to find RStudio Rproj file at the root of the workflowr project.
-      Did you delete it?"),
-      call. = FALSE)
-
-  # Analysis directory with _site.yml
-  top_level_files <- list.files(path = o$root, full.names = TRUE)
-  subdirs <- top_level_files[dir.exists(top_level_files)]
-  site_file <- list.files(path = subdirs, pattern = "_site.yml",
-                          full.names = TRUE)
-  if (length(site_file) == 0) {
-    stop("Unable to find the file _site.yml in the analysis directory. Is this a workflowr project?", call. = FALSE)
-  } else if (length(site_file) > 1) {
-    stop("Found more than one _site.yml file. Only one subdirectory at the top level of the workflowr project can contain _site.yml.", call. = FALSE)
-  } else {
-    o$analysis <- dirname(site_file)
-  }
-
-  # docs/ directory
-  output_dir <- yaml::yaml.load_file(site_file)$output_dir
-  if (is.null(output_dir))
-    stop("Unable to locate the website directory. Make sure to set the variable output_dir in the file _site.yml", call. = FALSE)
-  o$docs <- normalizePath(file.path(o$analysis, output_dir), mustWork = FALSE)
-  if (!dir.exists(o$docs)) {
-    o$docs <- NA
-    warning("Unable to locate docs directory. Run wflow_build() to create it.")
-  }
+  # Obtain list of workflowr paths. Throw error if no Git repository.
+  o <- wflow_paths(error_git = TRUE, project = project)
 
   # Gather analysis files
   # (files that start with an underscore are ignored)
@@ -143,93 +106,83 @@ wflow_status <- function(files = NULL, project = ".") {
     files <- normalizePath(files, mustWork = FALSE)
     files_analysis <- files_analysis[files_analysis %in% files]
   }
-  o$files <- files_analysis
-  if (length(o$files) == 0)
+  if (length(files_analysis) == 0)
     stop("files did not include any analysis files")
 
-  # Git repository
-  r <- try(git2r::repository(o$root, discover = TRUE), silent = TRUE)
-  if (class(r) == "try-error") {
-    stop("wflow_status only works if the workflowr project uses Git.")
-  } else {
-    o$git <- normalizePath(r@path) # remove trailing slash
-  }
-
   # Obtain status of each file
+  r <- git2r::repository(o$git)
   s <- git2r::status(r, ignored = TRUE)
-  o$git_status <- s
   # Convert from a list of lists of relative paths to a list of character
   # vectors of absolute paths
   s <- lapply(s, function(x) paste0(git2r::workdir(r), as.character(x)))
   # Determine status of each analysis file in the Git repository. Each status
   # is a logical vector.
+  ignored <- files_analysis %in% s$ignored
+  mod_unstaged <- files_analysis %in% s$unstaged
+  mod_staged <- files_analysis %in% s$staged
   tracked <- files_analysis %in% setdiff(files_analysis,
                                          c(s$untracked, s$ignored))
-  staged <- files_analysis %in% s$staged
-  unstaged <- files_analysis %in% s$unstaged
-  ignored <- files_analysis %in% s$ignored
-  o$status <- data.frame(tracked, staged, unstaged, ignored,
+  files_committed <- paste0(git2r::workdir(r), get_committed_files(r))
+  committed <- files_analysis %in% files_committed
+  files_html <- to_html(files_analysis, outdir = o$docs)
+  published <- files_html %in% files_committed
+  # Do published files have subsequently committed changes?
+  files_outdated <- get_outdated_files(r, files_analysis[published],
+                                       outdir = o$docs)
+  mod_committed <- files_analysis %in% files_outdated
+
+  # Highlevel designations
+  modified <- published & (mod_unstaged | mod_staged | mod_committed)
+  # Status Unp
+  #
+  # Unpublished file. Any tracked file whose corresponding HTML is not tracked.
+  # May or may not have staged or unstaged changes.
+  unpublished <- tracked & !published
+  # Status New
+  #
+  # New file. Any untracked file that is not specifically ignored.
+  new <- !tracked & !ignored
+
+  o$status <- data.frame(ignored, mod_unstaged, mod_staged, tracked,
+                         committed, published, mod_committed, modified,
+                         unpublished, new,
                          row.names = files_analysis)
-  if (dir.exists(o$docs)) {
-    html <- to_html(files_analysis, outdir = o$docs)
-    # Has the HTML file been built?
-    built <- file.exists(html)
-    # Has the HTML file been committed?
-    committed <- paste0(git2r::workdir(r), get_committed_files(r))
-    published <- html %in% committed
-    # Is the committed HTML file up-to-date?
-    files_outdated <- get_outdated_files(r, files_analysis[published],
-                                         outdir = o$docs)
-    up_to_date <- published & !(files_analysis %in% files_outdated)
-    o$status <- cbind(o$status, built, published, up_to_date)
 
-  }
-
+  class(o) <- "wflow_status"
   return(o)
 }
 
 #' @export
 print.wflow_status <- function(x, ...) {
-  # Status Mod
-  #
-  # Published file that has been modified since last publication
-  modified <- x$status$published & (x$status$staged |
-                                    x$status$unstaged |
-                                    !x$status$up_to_date)
-  # Status Unp
-  #
-  # Unpublished file. Any tracked file whose corresponding HTML is not tracked.
-  # May or may not have staged or unstaged changes.
-  unpublished <- x$status$tracked & !x$status$published
-  # Status New
-  #
-  # New file. Any untracked file that is not specifically ignored.
-  new <- !x$status$tracked & !x$status$ignored
 
   # The legend key to explain abbreviations of file status
   key <- character()
 
   # Report totals
   message(sprintf("Status of %d files\n\nTotals:", nrow(x$status)))
-  if (sum(x$status$published) > 0 & sum(modified) > 0) {
+  if (sum(x$status$published) > 0 & sum(x$status$modified) > 0) {
     message(sprintf(" %d Published (%d Modified)",
-            sum(x$status$published), sum(modified)))
+            sum(x$status$published), sum(x$status$modified)))
     key <- c(key, "Mod = Modified")
   } else if (sum(x$status$published) > 0) {
     message(sprintf(" %d Published", sum(x$status$published)))
   }
-  if (sum(unpublished) > 0) {
-    message(sprintf(" %d Unpublished", sum(unpublished)))
+  if (sum(x$status$unpublished) > 0) {
+    message(sprintf(" %d Unpublished", sum(x$status$unpublished)))
     key <- c(key, "Unp = Unpublished")
   }
-  if (sum(new) > 0) {
-    message(sprintf(" %d New", sum(new)))
+  if (sum(x$status$new) > 0) {
+    message(sprintf(" %d New", sum(x$status$new)))
     key <- c(key, "New = Untracked")
   }
 
-  f <- c(x$files[modified],x$files[unpublished], x$files[new])
+  f <- c(rownames(x$status)[x$status$modified],
+         rownames(x$status)[x$status$unpublished],
+         rownames(x$status)[x$status$new])
   names(f) <- rep(c("Mod", "Unp", "New"),
-                  times = c(sum(modified), sum(unpublished), sum(new)))
+                  times = c(sum(x$status$modified),
+                            sum(x$status$unpublished),
+                            sum(x$status$new)))
 
   if (length(f) > 0) {
     message("\nThe following files require attention:")
@@ -256,3 +209,4 @@ To commit your changes without publishing them yet, use `wflow_commit()`.",
   # understand why this is useful. Anyone know why?
   return(invisible(x))
 }
+

@@ -43,3 +43,14 @@ test_that("wflow_status identifies Git directory.", {
   actual <- s$git
   expect_identical(actual, expected)
 })
+
+# Warnings and Errors ----------------------------------------------------------
+
+test_that("wflow_status throws error if no Git repository.", {
+  git_original <- file.path(site_dir, ".git")
+  git_replace <-  file.path(site_dir, ".git2")
+  on.exit(file.rename(git_replace, git_original))
+  file.rename(git_original, git_replace)
+  expect_error(s <- wflow_status(project = site_dir),
+               "A Git repository is required for this functionality.")
+})

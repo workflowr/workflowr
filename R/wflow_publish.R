@@ -40,33 +40,88 @@ wflow_publish <- function(
   force = FALSE,
   # args to wflow_build
   update = FALSE,
-  everything = FALSE,
+  republish = FALSE,
   # general
   dry_run = FALSE,
-  path = "."
+  project = "."
   ) {
   # To do:
   # * Warning for cache directories
   # * Warning if files in docs/ included
   # Check for modifications to _site.yml. Refuse to build if it is modified
 
-  if (is.null(message)) {
-    message <- sys.call()
+  # Check input arguments ------------------------------------------------------
+
+  if (!is.null(files)) {
+    if (!is.character(files)) {
+      stop("files must be NULL or a character vector of filenames")
+    } else if (!all(file.exists(files))) {
+      stop("Not all files exist. Check the paths to the files")
+    }
   }
 
-  # Commit the provided files
+  if (is.null(message)) {
+    function_call <- sys.call()
+    message <- utils::capture.output(function_call)
+  } else if (is.character(message)) {
+    message <- wrap(paste(message, collapse = " "))
+  } else {
+    stop("message must be NULL or a character vector")
+  }
+
+  if (!(is.logical(all) && length(all) == 1))
+    stop("all must be a one-element logical vector")
+
+  if (!(is.logical(force) && length(force) == 1))
+    stop("force must be a one-element logical vector")
+
+  if (!(is.logical(update) && length(update) == 1))
+    stop("update must be a one-element logical vector")
+
+  if (!(is.logical(republish) && length(republish) == 1))
+    stop("republish must be a one-element logical vector")
+
+  if (!(is.logical(dry_run) && length(dry_run) == 1))
+    stop("dry_run must be a one-element logical vector")
+
+  if (is.character(project) && length(project) == 1) {
+    if (dir.exists(project)) {
+      project <- normalizePath(project)
+    } else {
+      stop("project directory does not exist.")
+    }
+  } else {
+    stop("project must be a one-element character vector")
+  }
+
+  # Step 1: Commit analysis files ----------------------------------------------
+
+  if (dry_run)
+    message("Stage 1: Commit analysis files")
+
   f_committed <- wflow_commit_(files = files, message = message,
                                all = all, force = force,
-                               dry_run = dry_run, path = path)
-  # Build the site
+                               dry_run = dry_run, project = project)
+
+  # Step 2: Build HTML files----------------------------------------------------
+
+  if (dry_run)
+    message("Step 3: Build HTML files")
+
   f_built <- wflow_build_(files = f_committed, make = FALSE,
-                          update = update, everything = everything,
-                          local = FALSE, dry_run = dry_run, path = path)
-  # Commit the site
+                          update = update, republish = republish,
+                          local = FALSE, dry_run = dry_run, project = project)
+
+  # Step 3 : Commit HTML files -------------------------------------------------
+
+  if (dry_run)
+    message("Step 2: Commit HTML files")
+
   f_committed_site <- wflow_commit_(files = f_built, message = "Build site.",
                                     all = FALSE, force = force,
-                                    dry_run = dry_run, path = path)
+                                    dry_run = dry_run, project = project)
   f_committed_all <- sort(c(f_committed, f_committed_site))
+
   return(invisible(f_committed_all))
 }
 
@@ -91,7 +146,7 @@ wflow_publish <- function(
 #' recently than their corresponding HTML files will be built. However, files
 #' which currently have staged or unstaged changes will be ignored.
 #'
-#' \item If \code{everything = TRUE}, all files will be built.
+#' \item If \code{republish = TRUE}, all files will be built.
 #'
 #' }
 #'
@@ -110,7 +165,7 @@ wflow_publish <- function(
 #'   have any unstaged or staged changes). This ensures that the commit version
 #'   ID inserted into the HTML corresponds to the exact version of the source
 #'   file that was used to produce it.
-#' @param everything logical (default: FALSE). Build all R Markdown (and
+#' @param republish logical (default: FALSE). Build all R Markdown (and
 #'   Markdown) files. Useful for site-wide changes like updating the theme,
 #'   navigation bar, or any other setting in \code{_site.yml}.
 #' @param seed numeric (default: 12345). The seed to set before building each
@@ -140,23 +195,23 @@ wflow_publish <- function(
 #' # Build multiple files
 #' wflow_build(c("file1.Rmd", "file2.Rmd"))
 #' # Build every file
-#' wflow_build(everything = TRUE)
+#' wflow_build(republish = TRUE)
 #' }
 #'
 #' @import rmarkdown
 #'
 wflow_build_ <- function(files = NULL, make = is.null(files),
-                         update = FALSE, everything = FALSE,
+                         update = FALSE, republish = FALSE,
                          seed = 12345, log_dir = NULL,
-                         local = FALSE, dry_run = FALSE, path = ".") {
+                         local = FALSE, dry_run = FALSE, project = ".") {
   if (!(is.null(files) | is.character(files)))
     stop("files must be NULL or a character vector")
   if (!is.logical(make) | length(make) != 1)
     stop("make must be a one-element logical vector")
   if (!is.logical(update) | length(update) != 1)
     stop("update must be a one-element logical vector")
-  if (!is.logical(everything) | length(everything) != 1)
-    stop("everything must be a one-element logical vector")
+  if (!is.logical(republish) | length(republish) != 1)
+    stop("republish must be a one-element logical vector")
   if (!is.numeric(seed) | length(seed) != 1)
     stop("seed must be a one element numeric vector")
   if (!(is.null(log_dir) | (is.character(log_dir) & length(log_dir) == 1)))
@@ -165,14 +220,14 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
     stop("local must be a one-element logical vector")
   if (!is.logical(dry_run) | length(dry_run) != 1)
     stop("dry_run must be a one-element logical vector")
-  if (!is.character(path) | length(path) != 1)
-    stop("path must be a one element character vector")
+  if (!is.character(project) | length(project) != 1)
+    stop("project must be a one element character vector")
 
   # Check that directories and files exist
-  if (!dir.exists(path)) {
-    stop("path does not exist.")
+  if (!dir.exists(project)) {
+    stop("project does not exist.")
   } else {
-    path <- normalizePath(path)
+    project <- normalizePath(project)
   }
   if (is.null(log_dir))
     log_dir <- "/tmp/workflowr"
@@ -186,7 +241,7 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
   }
   files_to_build <- files
 
-  root_path <- rprojroot::find_rstudio_root_file(path = path)
+  root_path <- rprojroot::find_rstudio_root_file(path = project)
   analysis_dir <- file.path(root_path, "analysis")
 
   files_all <- Sys.glob(file.path(analysis_dir, "*Rmd"))
@@ -197,7 +252,7 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
   }
 
   # This currently gets every Rmd file. May want to change to only tracked files
-  if (everything) {
+  if (republish) {
     files_to_build <- files_all
   } else if (update) {
     # Build files if their corresponding HTML file in out-of-date in the Git
@@ -257,7 +312,7 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
 #'   Equivalent to: \code{git add -f}
 #' @param dry_run logical (default: FALSE). Preview the proposed action but do
 #'   not actually add or commit any files.
-#' @param path character (default: ".") By default the function assumes the
+#' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
@@ -278,34 +333,34 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
 #' }
 #'
 wflow_commit_ <- function(files = NULL, message = NULL, all = FALSE,
-                          force = FALSE, dry_run = FALSE, path = ".") {
+                          force = FALSE, dry_run = FALSE, project = ".") {
   if (!(is.null(files) | is.character(files)))
     stop("files must be NULL or a character vector")
   if (!(is.null(message) | is.character(message)))
-    stop("files must be NULL or a character vector")
+    stop("message must be NULL or a character vector")
   if (!is.logical(all) | length(all) != 1)
     stop("all must be a one-element logical vector")
   if (!is.logical(dry_run) | length(dry_run) != 1)
     stop("dry_run must be a one-element logical vector")
-  if (!is.character(path) | length(path) != 1)
-    stop("path must be a one element character vector")
-  if (!dir.exists(path))
-    stop("path does not exist.")
+  if (!is.character(project) | length(project) != 1)
+    stop("project must be a one element character vector")
+  if (!dir.exists(project))
+    stop("project does not exist.")
 
   if (is.null(files) && !all)
     stop("Must specify files to commit, set `all = TRUE`, or both",
          call. = FALSE)
 
   # Establish connection to Git repository
-  path <- normalizePath(path)
-  root_path <- try(rprojroot::find_rstudio_root_file(path = path))
+  project <- normalizePath(project)
+  root_path <- try(rprojroot::find_rstudio_root_file(path = project))
   if (class(root_path) == "try-error")
     stop("Unable to find RStudio Rproj file ",
          "at the root of the workflowr project",
          call. = FALSE)
   r <- try(git2r::repository(root_path, discover = TRUE))
   if (class(r) == "try-error")
-    stop("Unable to locate Git repository in ", path, call. = FALSE)
+    stop("Unable to locate Git repository in ", project, call. = FALSE)
   if (root_path != dirname(r@path))
     warning("The Git repository is not at the root of the workflowr project",
             "\nworkflowr project: ", root_path,

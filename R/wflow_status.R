@@ -206,23 +206,53 @@ print.wflow_status <- function(x, ...) {
   # New file. Any untracked file that is not specifically ignored.
   new <- !x$status$tracked & !x$status$ignored
 
+  # The legend key to explain abbreviations of file status
+  key <- character()
+
+  # Report totals
+  message(sprintf("Status of %d files\n\nTotals:", nrow(x$status)))
+  if (sum(x$status$published) > 0 & sum(modified) > 0) {
+    message(sprintf(" %d Published (%d Modified)",
+            sum(x$status$published), sum(modified)))
+    key <- c(key, "Mod = Modified")
+  } else if (sum(x$status$published) > 0) {
+    message(sprintf(" %d Published", sum(x$status$published)))
+  }
+  if (sum(unpublished) > 0) {
+    message(sprintf(" %d Unpublished", sum(unpublished)))
+    key <- c(key, "Unp = Unpublished")
+  }
+  if (sum(new) > 0) {
+    message(sprintf(" %d New", sum(new)))
+    key <- c(key, "New = Untracked")
+  }
+
   f <- c(x$files[modified],x$files[unpublished], x$files[new])
   names(f) <- rep(c("Mod", "Unp", "New"),
                   times = c(sum(modified), sum(unpublished), sum(new)))
 
+  if (length(f) > 0) {
+    message("\nThe following files require attention:")
+  }
   for (i in seq_along(f)) {
     f_rel <- relpath(f[i], start = getwd())
     o <- sprintf("%s %s\n", names(f)[i], f_rel)
     cat(o)
   }
   if (length(f) == 0) {
-    message("Up-to-date")
+    message("\nFiles are up-to-date")
   } else {
-    m <- "Mod = Modified, Unp = Unpublished, New = Untracked
+    m <- sprintf("Key: %s
 
 To publish your changes as part of your website, use `wflow_publish()`.
 
-To commit your changes without publishing them yet, use `wflow_commit()`."
+To commit your changes without publishing them yet, use `wflow_commit()`.",
+    paste(key, collapse = ", "))
     message(wrap(m))
   }
+
+  # It's a convention for S3 print methods to invisibly return the original
+  # object, e.g. base::print.summaryDefault and stats:::print.lm. I don't
+  # understand why this is useful. Anyone know why?
+  return(invisible(x))
 }

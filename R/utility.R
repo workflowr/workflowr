@@ -83,11 +83,15 @@ to_html <- function(files, outdir = NULL) {
 #  * Expects absolute paths with no tilde.
 #
 # https://docs.python.org/3.5/library/os.path.html#os.path.relpath
+# https://github.com/python/cpython/blob/3.5/Lib/posixpath.py#L431
+# https://github.com/python/cpython/blob/3.5/Lib/test/test_posixpath.py#L483
 relpath <- function(path, start = NULL) {
   if (!(is.character(path) & length(path) == 1))
     stop("path must be a character vector")
   if (!(is.null(start) | is.character(start) & length(start) == 1))
     stop("start must be NULL or a 1-element character vector")
+  if (any(stringr::str_detect(c(path, start), "~")))
+    stop("No tilde allowed in path or start")
 
   curdir <- "."
   sep <- .Platform$file.sep
@@ -96,28 +100,43 @@ relpath <- function(path, start = NULL) {
   if (is.null(start))
     start <- getwd()
 
-  start_list <- unlist(stringr::str_split(start, sep))
-  path_list <- unlist(stringr::str_split(path, sep))
+  start_list <- unlist(stringr::str_split(start, sep))[-1]
+  path_list <- unlist(stringr::str_split(path, sep))[-1]
   # Work out how much of the filepath is shared by start and path.
-  i <- length(commonprefix(list(start_list, path_list)))
+  i <- length(commonprefix(start_list, path_list))
 
-  rel_list <- c(rep(pardir, length(start_list) - i),
-                path_list[(i + 1):length(path_list)])
+  rel_list <- rep(pardir, length(start_list) - i)
+  if (length(path_list) > i)
+    rel_list <- c(rel_list, path_list[(i + 1):length(path_list)])
   if (length(rel_list) == 0)
     return(curdir)
   return(paste(rel_list, collapse = sep))
 }
 
 # "Given a list of pathnames, returns the longest common leading component"
-commonprefix <- function(m) {
-  if (length(m) == 0)
-    return("")
-  path_lengths <- sapply(m, length)
-  s1 <- m[[which.min(path_lengths)]]
-  s2 <- m[[which.max(path_lengths)]]
-  for (i in seq_along(s1)) {
-    if (s1[i] != s2[i])
-      return(s1[1:(i - 1)])
+#
+# Note: This version is only inspired by the original Python one. The Python
+# version can handle a list of strings or a list of lists of strings because the
+# enumerate function works on either. The unit tests are for a list of strings,
+# but relpath uses a list of lists of strings. Since it is awkward to try and do
+# both in R, this only works on a list of character vectors. Also, it is
+# modified for the specific use case of comparing exactly two character vectors.
+#
+# https://docs.python.org/3.5/library/os.path.html#os.path.commonprefix
+# https://github.com/python/cpython/blob/3.5/Lib/genericpath.py#L68
+# https://github.com/python/cpython/blob/3.5/Lib/test/test_genericpath.py#L32
+commonprefix <- function(p1, p2) {
+  stopifnot(is.character(p1), is.character(p2))
+  if (length(p1) == 0 || length(p2) == 0)
+    return(character())
+  len_min <- pmin(length(p1), length(p2))
+  incommon <- character()
+  for (i in seq(len_min)) {
+    if (p1[i] == p2[i]) {
+      incommon <- c(incommon, p1[i])
+    } else {
+      break
+    }
   }
-  return(s1)
+  return(incommon)
 }

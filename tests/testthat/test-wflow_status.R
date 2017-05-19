@@ -14,32 +14,31 @@ suppressMessages(utils::capture.output(wflow_build(path = site_dir)))
 
 s <- wflow_status(project = site_dir)
 
-test_that("wflow_status identifies working directory.", {
-  expected <- getwd()
-  actual <- s$wd
-  expect_identical(actual, expected)
-})
+wd <- getwd()
 
 test_that("wflow_status identifies root directory.", {
-  expected <- site_dir
+  expected <- relpath(site_dir, start = wd)
   actual <- s$root
   expect_identical(actual, expected)
 })
 
 test_that("wflow_status identifies analysis directory.", {
   expected <- file.path(site_dir, "analysis")
+  expected <- relpath(expected, start = wd)
   actual <- s$analysis
   expect_identical(actual, expected)
 })
 
 test_that("wflow_status identifies docs directory.", {
   expected <- file.path(site_dir, "docs")
+  expected <- relpath(expected, start = wd)
   actual <- s$docs
   expect_identical(actual, expected)
 })
 
 test_that("wflow_status identifies Git directory.", {
   expected <- file.path(site_dir, ".git")
+  expected <- relpath(expected, start = wd)
   actual <- s$git
   expect_identical(actual, expected)
 })

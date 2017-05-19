@@ -99,11 +99,17 @@ wflow_status <- function(files = NULL, project = ".") {
 
   # Gather analysis files
   # (files that start with an underscore are ignored)
-  files_all <- list.files(path = o$analysis, pattern = "^[^_]", full.names = TRUE)
+  files_all <- list.files(path = o$analysis, pattern = "^[^_]")
+  if (o$analysis != ".")
+    files_all <- file.path(o$analysis, files_all)
   files_all_ext <- tools::file_ext(files_all)
   files_analysis <- files_all[files_all_ext %in% c("Rmd", "rmd")]
+
   if (!is.null(files)) {
+    # Don't know if file paths are relative or absolute, so ensure they are
+    # relative
     files <- normalizePath(files, mustWork = FALSE)
+    files <- sapply(files, relpath)
     files_analysis <- files_analysis[files_analysis %in% files]
   }
   if (length(files_analysis) == 0)
@@ -112,9 +118,11 @@ wflow_status <- function(files = NULL, project = ".") {
   # Obtain status of each file
   r <- git2r::repository(o$git)
   s <- git2r::status(r, ignored = TRUE)
-  # Convert from a list of lists of relative paths to a list of character
-  # vectors of absolute paths
+  # Convert from a list of lists of paths relative to the .git directory to a
+  # list of character vectors of absolute paths
   s <- lapply(s, function(x) paste0(git2r::workdir(r), as.character(x)))
+  # Convert from absolute paths to paths relative to working directory
+  s <- lapply(s, function(x) sapply(x, relpath))
   # Determine status of each analysis file in the Git repository. Each status
   # is a logical vector.
   ignored <- files_analysis %in% s$ignored
@@ -123,12 +131,15 @@ wflow_status <- function(files = NULL, project = ".") {
   tracked <- files_analysis %in% setdiff(files_analysis,
                                          c(s$untracked, s$ignored))
   files_committed <- paste0(git2r::workdir(r), get_committed_files(r))
+  files_committed <- sapply(files_committed, relpath)
   committed <- files_analysis %in% files_committed
   files_html <- to_html(files_analysis, outdir = o$docs)
   published <- files_html %in% files_committed
   # Do published files have subsequently committed changes?
-  files_outdated <- get_outdated_files(r, files_analysis[published],
-                                       outdir = o$docs)
+  files_outdated <- get_outdated_files(r,
+                                       normalizePath(files_analysis[published]),
+                                       outdir = normalizePath(o$docs))
+  files_outdated <- sapply(files_outdated, relpath)
   mod_committed <- files_analysis %in% files_outdated
 
   # Highlevel designations
@@ -188,8 +199,7 @@ print.wflow_status <- function(x, ...) {
     message("\nThe following files require attention:")
   }
   for (i in seq_along(f)) {
-    f_rel <- relpath(f[i], start = getwd())
-    o <- sprintf("%s %s\n", names(f)[i], f_rel)
+    o <- sprintf("%s %s\n", names(f)[i], f[i])
     cat(o)
   }
   if (length(f) == 0) {

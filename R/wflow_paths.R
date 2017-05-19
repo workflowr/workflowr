@@ -1,6 +1,7 @@
 # wflow_paths
 #
-# Internal function to obtain relevant paths for workflowr project.
+# Internal function to obtain relevant paths for workflowr project. The paths
+# are relative to the current working directory.
 #
 # error_git: Should the function fail if it can't find a Git repo.
 #
@@ -8,22 +9,17 @@
 #
 # Return a list with following elements:
 #
-#  $wd: working directory
+# $root: The root directory of the workflowr project
 #
-#  $root: The root directory of the workflowr project
+# $analysis: The directory that contains \code{_site.yml} and the R Markdown
+# files.
 #
-#  $analysis: The directory that contains \code{_site.yml} and the R
-#             Markdown files.
+# $docs: The directory that contains the HTML files and figures.
 #
-#  $docs: The directory that contains the HTML files and figures.
-#
-#  $git: The .git directory
+# $git: The .git directory
 wflow_paths <- function(error_git = FALSE, project = ".") {
 
   o <- list()
-
-  # Working directory
-  o$wd <- getwd()
 
   # workflowr root
   project <- normalizePath(project)
@@ -74,6 +70,9 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
   } else {
     o$git <- normalizePath(r@path) # remove trailing slash
   }
+
+  # Make paths relative to working directory
+  o <- lapply(o, relpath)
 
   return(o)
 }

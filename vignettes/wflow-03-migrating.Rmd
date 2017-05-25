@@ -29,7 +29,7 @@ through that vignette first as an exercise to familiarize yourself with the
 workflowr philosophy and functions.
 
 ```{r getting-started}
-vignette("getting-started", "workflowr")
+vignette("wflow-01-getting-started", "workflowr")
 ```
 
 ## Scenario: I have a collection of R Markdown files

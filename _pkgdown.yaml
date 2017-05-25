@@ -1,4 +1,4 @@
-templates:
+template:
   params:
     bootswatch: readable
 
@@ -22,10 +22,10 @@ articles:
       To view locally, run the following in the R console:
       `browseVignettes("workflowr")`
     contents:
-    - getting-started
-    - customization
-    - migrating
-    - how-it-works
+    - "`wflow-01-getting-started`"
+    - "`wflow-02-customization`"
+    - "`wflow-03-migrating`"
+    - "`wflow-04-how-it-works`"
 
 reference:
   - title: "Starting a workflowr project"

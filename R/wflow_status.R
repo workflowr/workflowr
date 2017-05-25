@@ -31,48 +31,54 @@
 #'
 #' \itemize{
 #'
-#' \item \bold{wd}: The current working directory in the R console (i.e.
-#' \code{getwd{}}).
+#' \item \bold{root}: The relative path to the root directory of the workflowr
+#' project (i.e. contains the RStudio .Rproj file).
 #'
-#' \item \bold{root}: The root directory of the workflowr project (i.e. contains
-#' the RStudio .Rproj file).
+#' \item \bold{analysis}: The relative path to the directory that contains
+#' \code{_site.yml} and the R Markdown files.
 #'
-#' \item \bold{analysis}: The directory that contains \code{_site.yml} and the R
-#' Markdown files.
+#' \item \bold{docs}: The relative path to the directory that contains the HTML
+#' files and figures.
 #'
-#' \item \bold{docs}: The directory that contains the HTML files and figures.
-#'
-#' \item \bold{files}: The files whose status was checked.
-#'
-#' \item \bold{git}: The \code{.git} directory that contains the history of the
-#' Git repository.
-#'
-#' \item \bold{git_status}: The output from \code{git2r::\link[git2r]{status}}.
+#' \item \bold{git}: The relative path to the \code{.git} directory that
+#' contains the history of the Git repository.
 #'
 #' \item \bold{status}: A data frame with detailed information on the status of
 #' each file (see below).
 #'
 #' }
 #'
-#' The data frame \code{status} contains the following columns (all logical
-#' vectors):
+#' The data frame \code{status} contains the following non-mutually exclusive
+#' columns (all logical vectors):
 #'
 #' \itemize{
 #'
-#' \item \bold{outdated}: When an R Markdown file has been committed to the
-#' repository without updating the previously published HTML file.
+#' \item \bold{ignored}: The R Markdown file has been ignored by Git according
+#' to the patterns in the file \code{.gitignore}.
 #'
-#' \item \bold{staged}: When an R Markdown file has changes that have been added
-#' to the index (e.g. with \code{git add}).
+#' \item \bold{mod_unstaged}: The R Markdown file has unstaged modifications.
 #'
-#' \item \bold{unstaged}: When a tracked R Markdown file has changes in the
-#' working directory.
+#' \item \bold{mod_staged}: The R Markdown file has staged modifications.
 #'
-#' \item \bold{untracked}: When an R Markdown file has not been added or
-#' committed to the Git repository.
+#' \item \bold{tracked}: The R Markdown file is tracked by Git.
 #'
-#' \item \bold{ignored}: When an R Markdown file has been ignored by Git
-#' according to the patterns in the file \code{.gitignore}.
+#' \item \bold{committed}: The R Markdown file has been previously committed to
+#' the Git repository.
+#'
+#' \item \bold{published}: The corresponding HTML file has been previously
+#' committed.
+#'
+#' \item \bold{mod_committed}: The R Markdown file has modifications that have
+#' been committed since the last time the HTML was built and committed.
+#'
+#' \item \bold{modified}: The R Markdown file has been modified since it was
+#' last published (i.e. \code{mod_unstaged} or \code{mod_staged} or
+#' \code{mod_committed}).
+#'
+#' \item \bold{unpublished}: The R Markdown file is tracked by Git but not
+#' published (i.e. the HTML has not been committed).
+#'
+#' \item \bold{new}: The R Markdown file is untracked by Git.
 #'
 #' }
 #'

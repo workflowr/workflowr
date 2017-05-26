@@ -1,3 +1,153 @@
+#' Build the site
+#'
+#' \code{wflow_build} builds the website from the files in the analysis
+#' directory. This is intended to be used when developing your code to preview
+#' the changes. When you are ready to commit the files, use
+#' \code{\link{wflow_publish}}.
+#'
+#' \code{wflow_build} has multiple, non-mutually exclusive options for deciding
+#' which files to build:
+#'
+#' \itemize{
+#'
+#' \item Files specified via the argument \code{files} are always built.
+#'
+#' \item If \code{make = TRUE}, all files which have been modified more recently
+#' than their corresponding HTML files will be built.
+#'
+#' \item If \code{update = TRUE}, all files which have been committed more
+#' recently than their corresponding HTML files will be built. However, files
+#' which currently have staged or unstaged changes will be ignored.
+#'
+#' \item If \code{republish = TRUE}, all files will be built.
+#'
+#' }
+#'
+#' Under the hood, \code{wflow_build} is a wrapper for
+#' \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
+#'
+#' @param files character (default: NULL). Files to build. Supports file
+#'   extensions Rmd, rmd, and md. Only files in the analysis directory are
+#'   allowed (and therefore any path to a file is ignored).
+#' @param make logical (default: \code{is.null(files)}). Use Make-like behavior,
+#'   i.e. build the files that have been updated more recently than their
+#'   corresponding HTML files. This is the default action if no files are
+#'   specified.
+#' @param update logical (default: FALSE). Build the files that have been
+#'   committed more recently than their corresponding HTML files (and do not
+#'   have any unstaged or staged changes). This ensures that the commit version
+#'   ID inserted into the HTML corresponds to the exact version of the source
+#'   file that was used to produce it.
+#' @param republish logical (default: FALSE). Build all R Markdown (and
+#'   Markdown) files. Useful for site-wide changes like updating the theme,
+#'   navigation bar, or any other setting in \code{_site.yml}.
+#' @param seed numeric (default: 12345). The seed to set before building each
+#'   file. Passed to \code{\link{set.seed}}.
+#' @param log_dir character (default: NULL). The directory to save log files
+#'   from building files. It will be created if necessary and ignored if
+#'   \code{local = TRUE}. The default is to create a directory in \code{/tmp}.
+#' @param local logical (default: FALSE). Build files locally in the R console.
+#'   This should only be used for debugging purposes. The default is to build
+#'   each file in its own separate fresh R process to ensure each file is
+#'   reproducible in isolation.
+#' @param dry_run logical (default: FALSE). Preview the files to be built, but
+#'   do not actually build them.
+#' @inheritParams wflow_commit_
+#'
+#' @return A character vector of the built files
+#'
+#' @seealso \code{\link{wflow_publish}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Build all files
+#' wflow_build() # equivalent to wflow_build(make = TRUE)
+#' # Build a single file
+#' wflow_build("file.Rmd")
+#' # Build multiple files
+#' wflow_build(c("file1.Rmd", "file2.Rmd"))
+#' # Build every file
+#' wflow_build(republish = TRUE)
+#' }
+#'
+#' @import rmarkdown
+#'
+wflow_build_ <- function(files = NULL, make = is.null(files),
+                         update = FALSE, republish = FALSE,
+                         seed = 12345, log_dir = NULL,
+                         local = FALSE, dry_run = FALSE, project = ".") {
+  if (!(is.null(files) | is.character(files)))
+    stop("files must be NULL or a character vector")
+  if (!is.logical(make) | length(make) != 1)
+    stop("make must be a one-element logical vector")
+  if (!is.logical(update) | length(update) != 1)
+    stop("update must be a one-element logical vector")
+  if (!is.logical(republish) | length(republish) != 1)
+    stop("republish must be a one-element logical vector")
+  if (!is.numeric(seed) | length(seed) != 1)
+    stop("seed must be a one element numeric vector")
+  if (!(is.null(log_dir) | (is.character(log_dir) & length(log_dir) == 1)))
+    stop("log_dir must be a one element character vector")
+  if (!is.logical(local) | length(local) != 1)
+    stop("local must be a one-element logical vector")
+  if (!is.logical(dry_run) | length(dry_run) != 1)
+    stop("dry_run must be a one-element logical vector")
+  if (!is.character(project) | length(project) != 1)
+    stop("project must be a one element character vector")
+
+  # Check that directories and files exist
+  if (!dir.exists(project)) {
+    stop("project does not exist.")
+  } else {
+    project <- normalizePath(project)
+  }
+  if (is.null(log_dir))
+    log_dir <- "/tmp/workflowr"
+  if (!is.null(files)) {
+    files_missing <- !file.exists(files)
+    if (any(files_missing)) {
+      stop("missing files: ", files[files_missing])
+    } else {
+      files <- normalizePath(files)
+    }
+  }
+  files_to_build <- files
+
+  root_path <- rprojroot::find_rstudio_root_file(path = project)
+  analysis_dir <- file.path(root_path, "analysis")
+
+  files_all <- Sys.glob(file.path(analysis_dir, "*Rmd"))
+
+  if (make) {
+    files_make <- return_modified_rmd(files_all)
+    files_to_build <- union(files_to_build, files_make)
+  }
+
+  # This currently gets every Rmd file. May want to change to only tracked files
+  if (republish) {
+    files_to_build <- files_all
+  } else if (update) {
+    # Build files if their corresponding HTML file in out-of-date in the Git
+    # commit history
+    #
+    # To do: Adapt from wflow_commit
+  }
+
+  if (!dry_run) {
+    for (f in files_to_build) {
+      cat(sprintf("\n\nRendering %s\n\n", f))
+      if (local) {
+        build_rmd(f, seed = seed, envir = new.env())
+      } else {
+        build_rmd_external(f, seed = seed, log_dir = log_dir)
+      }
+    }
+  }
+
+  return(invisible(files_to_build))
+}
+
 #' Build the website
 #'
 #' \code{wflow_build} builds the website by rendering the R Markdown files in

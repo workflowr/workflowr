@@ -1,123 +1,212 @@
-# Decide which files to render and commit
-#
-# Recursively search the commit log until the R Markdown file or its
-# corresponding HTML file is found. If the Rmd is found first, the HTML file
-# needs to be re-rendered, added, and committed (return TRUE). If the HTML file
-# is found first, then it is up-to-date (return FALSE).
-#
-# @seealso \code{\link{obtain_files_in_commit}},
-#   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_commit}}
-decide_to_render <- function(repo, log, rmd) {
-  stopifnot(class(repo) == "git_repository",
-            class(log) == "list",
-            is.character(rmd))
-  if (length(log) == 0) {
-    warning("File not found in commit log: ", rmd)
-    return(NA)
-  } else {
-    stopifnot(sapply(log, function(x) class(x) == "git_commit"))
-  }
-  html <- file.path("docs", stringr::str_replace(basename(rmd), "Rmd$", "html"))
-  # Obtain the files updated in the most recent commit, similar to `git
-  # status --stat`
-  parent_commit <- git2r::parents(log[[1]])
-  # The next action depends on what kind of commit is the most recent. Skip
-  # merge commits (2 parents). Obtain files from a standard commit (1 parent)
-  # using obtain_files_in_commit. Obtain files from root commit (0 parents)
-  # using obtain_files_in_commit_root.
-  if (length(parent_commit) == 2) {
-    return(decide_to_render(repo, log[-1], rmd))
-  } else if (length(parent_commit) == 1) {
-    files <- obtain_files_in_commit(repo, log[[1]])
-  } else if (length(parent_commit) == 0) {
-    files <- obtain_files_in_commit_root(repo, log[[1]])
-  }
-  # Decide if the R Markdown file should be rendered (it has been updated most
-  # recently), not rendered (the HTML has been updated more recently), or to
-  # continue searching the commit log (neither the Rmd nor HTML has been
-  # observed in the commit log yet).
-  if (rmd %in% files) {
-    return(TRUE)
-  } else if (html %in% files) {
-    return(FALSE)
-  } else {
-    return(decide_to_render(repo, log[-1], rmd))
-  }
+#' Commit files
+#'
+#' \code{wflow_commit} adds and commits files with Git. This is a convenience
+#' function to run Git commands from the R console instead of the shell. For
+#' most use cases, you should use \code{\link{wflow_publish}} instead, which
+#' calls \code{wflow_commit} and then subsequently also builds and commits the
+#' website files.
+#'
+#' Some potential use cases for \code{wflow_commit}:
+#'
+#' \itemize{
+#'
+#' \item Commit drafts which you do not yet want to be included in the website
+#'
+#' \item Commit files which do not directly affect the website (e.g. when you
+#' are writing scripts for a data processing pipeline)
+#'
+#' \item Manually commit files in \code{docs/} (proceed with caution!). This
+#' should only be done for content that is not automatically generated from the
+#' source files in the analysis directory, e.g. an image file you want to
+#' include in one of your pages.
+#'
+#' }
+#'
+#' Under the hood, \code{wflow_commit} is a wrapper for \code{\link[git2r]{add}}
+#' and \code{\link[git2r]{commit}} from the package \link{git2r}.
+#'
+#' @param files character (default: NULL). Files to be added and committed with
+#'   Git.
+#' @param message character (default: NULL). A commit message.
+#' @param all logical (default: FALSE). Automatically stage files that have been
+#'   modified and deleted. Equivalent to: \code{git commit -a}
+#' @param force logical (default: FALSE). Allow adding otherwise ignored files.
+#'   Equivalent to: \code{git add -f}
+#' @param dry_run logical (default: FALSE). Preview the proposed action but do
+#'   not actually add or commit any files.
+#' @param project character (default: ".") By default the function assumes the
+#'   current working directory is within the project. If this is not true,
+#'   you'll need to provide the path to the project directory.
+#'
+#' @return A character vector of the committed files
+#'
+#' @seealso \code{\link{wflow_publish}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#' # Commit a single file
+#' wflow_commit("analysis/file.Rmd", "Add new analysis")
+#' # Commit multiple files
+#' wflow_commit(c("code/process-data.sh", "output/small-data.txt"),
+#'              "Process data set")
+#' # Add and commit all tracked files, similar to `git commit -a`
+#' wflow_commit(message = "Lots of changes", all = TRUE)
+#' }
+#'
+wflow_commit_ <- function(files = NULL, message = NULL, all = FALSE,
+                          force = FALSE, dry_run = FALSE, project = ".") {
+  if (!(is.null(files) | is.character(files)))
+    stop("files must be NULL or a character vector")
+  if (!(is.null(message) | is.character(message)))
+    stop("message must be NULL or a character vector")
+  if (!is.logical(all) | length(all) != 1)
+    stop("all must be a one-element logical vector")
+  if (!is.logical(dry_run) | length(dry_run) != 1)
+    stop("dry_run must be a one-element logical vector")
+  if (!is.character(project) | length(project) != 1)
+    stop("project must be a one element character vector")
+  if (!dir.exists(project))
+    stop("project does not exist.")
 
-  # This final return should only be executed if there is an error in the
-  # recursive function.
-  return(files)
-}
+  if (is.null(files) && !all)
+    stop("Must specify files to commit, set `all = TRUE`, or both",
+         call. = FALSE)
 
-# Obtain the files updated in a commit
-#
-# Obtain the files updated in a commit, similar to \code{git status --stat}, by
-# running a diff between the trees pointed to by the commit and its parent
-# commit.
-#
-# This only works for commits that have one parent commit. Thus it will fail
-# for merge commits (two parents) or the initial root commit (zero parents).
-# two most recent commits. This uses `diff,git_tree`. See the source code at
-# \url{https://github.com/ropensci/git2r/blob/89d916f17cb979b3cc21cbb5834755a2cf075f5f/R/diff.r#L314}
-# and examples at
-# \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
-#
-# @seealso \code{\link{obtain_files_in_commit_root}},
-#   \code{\link{decide_to_render}}
-obtain_files_in_commit <- function(repo, commit) {
-  stopifnot(class(repo) == "git_repository",
-            class(commit) == "git_commit")
-  parent_commit <- git2r::parents(commit)
-  if (length(parent_commit) != 1) {
-    stop(sprintf("Cannot perform diff on commit %s because it has %d parents",
-                 commit@sha, length(parent_commit)))
-  }
-  git_diff <- git2r::diff(git2r::tree(commit),
-                          git2r::tree(parent_commit[[1]]))
-  files <- sapply(git_diff@files, function(x) x@new_file)
-  return(files)
-}
+  # Establish connection to Git repository
+  project <- normalizePath(project)
+  root_path <- try(rprojroot::find_rstudio_root_file(path = project))
+  if (class(root_path) == "try-error")
+    stop("Unable to find RStudio Rproj file ",
+         "at the root of the workflowr project",
+         call. = FALSE)
+  r <- try(git2r::repository(root_path, discover = TRUE))
+  if (class(r) == "try-error")
+    stop("Unable to locate Git repository in ", project, call. = FALSE)
+  if (root_path != dirname(r@path))
+    warning("The Git repository is not at the root of the workflowr project",
+            "\nworkflowr project: ", root_path,
+            "\nGit repo: ", dirname(r@path),
+            call. = FALSE)
+  status <- git2r::status(r, ignored = TRUE)
 
-# Obtain the files updated in the root commit
-#
-# The files included in the root commit cannot be determined comparing two
-# trees (which is how \code{\link{obtain_files_in_commit}} works). See
-# \href{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}{this
-# Stack Overflow question} for details.
-#
-# This only works for the root commit, i.e. it must have no parents.
-#
-# @seealso \code{\link{obtain_files_in_commit}}, \code{\link{decide_to_render}}
-obtain_files_in_commit_root <- function(repo, commit) {
-  # Obtain the files in the root commit of a Git repository
-  stopifnot(class(repo) ==  "git_repository",
-            class(commit) == "git_commit",
-            length(git2r::parents(commit)) == 0)
-  entries <- methods::as(git2r::tree(commit), "data.frame")
-  files <- character()
-  while (nrow(entries) > 0) {
-    if (entries$type[1] == "blob") {
-      # If the entry is a blob, i.e. file:
-      #  - record the name of the file
-      #  - remove the entry
-      files <- c(files, entries$name[1])
-      entries <- entries[-1, ]
-    } else if (entries$type[1] == "tree") {
-      # If the entry is a tree, i.e. subdirectory:
-      #  - lookup the entries for this tree
-      #  - add the subdirectory to the name so that path is correct
-      #  - remove the entry from beginning and add new entries to end of
-      #    data.frame
-      new_tree_df <- methods::as(git2r::lookup(repo, entries$sha[1]), "data.frame")
-      new_tree_df$name <- file.path(entries$name[1], new_tree_df$name)
-      entries <- rbind(entries[-1, ], new_tree_df)
-    } else {
-      stop(sprintf("Unknown type %s found in commit %s",
-                   entries$type[1], commit))
+  # Collate files to be added and committed
+  if (!is.null(files)) {
+    # Identify non-existent files
+    files_exist <- file.exists(files)
+    if (length(files) == sum(!files_exist)) {
+      stop("None of the files could be found. ",
+           "Check your working directory and file paths.",
+           call. = FALSE)
+    } else if (any(!files_exist)) {
+      warning("Non-existent files found.",
+              "\nThe following files do not exist:\n\n",
+              paste(files[!files_exist], collapse = "\n"),
+              call. = FALSE)
+      files <- files[files_exist]
+    }
+    files <- normalizePath(files)
+    # Identify files outside the Git repository
+    files_outside <- !stringr::str_detect(files, root_path)
+    if (length(files) == sum(files_outside)) {
+      stop("All of the files are outside of the Git repository. ",
+           "Check your working directory and file paths.",
+           call. = FALSE)
+    } else if (any(files_outside)) {
+      warning("Some files are outside of the Git repository ",
+              "and therefore will **not** be included in the commit.",
+              "\nThe following files are outside the Git repository:\n\n",
+              paste(files[files_outside], collapse = "\n"),
+              call. = FALSE)
+      files <- files[!files_outside]
+    }
+    # Refuse to commit any untracked file larger than 100MB.
+    files_untracked_all <- c(unlist(status$untracked),
+                             unlist(status$ignored))
+    files_untracked_all <- normalizePath(files_untracked_all)
+    is_untracked <- files %in% files_untracked_all
+    sizes <- file.size(files) / 10^6
+    ok_size <- sizes < 100
+    files_too_large <- is_untracked & !ok_size
+    if (length(files) == sum(files_too_large)) {
+      stop("Files must be less than 100 MB to push to GitHub. ",
+           "None of the files meet this requirement. ",
+           "Run Git from the commandline if you ",
+           "really want to commit these files.",
+           call. = FALSE)
+    } else if (any(files_too_large)) {
+      warning("Some files are larger than GitHub's limit of 100 MB ",
+              "and therefore will **not** be included in the commit. ",
+              "Run Git from the commandline if you ",
+              "really want to commit these files.",
+              "\nThe following files are larger than 100 MB:\n\n",
+              paste(files[files_too_large], collapse = "\n"),
+              call. = FALSE)
+      files <- files[!files_too_large]
     }
   }
 
-  return(files)
+  # Send warning if staged files are present but not specified to be committed
+  files_staged <- unlist(status$staged)
+  if (length(files_staged) != 0) {
+    files_staged_unexpected <- setdiff(normalizePath(files_staged), files)
+    if (length(files_staged_unexpected) != 0)
+      warning("There are unexpected staged changes ",
+              "that will be included in commit.",
+              "\nSpecifically the following files have staged changes:\n\n",
+              paste(normalizePath(files_staged_unexpected), collapse = "\n"),
+              call. = FALSE)
+  }
+
+  # Prepare commit message
+  if (is.null(message)) {
+    warning("It is strongly recommended to include a custom commit message.",
+            call. = FALSE)
+    message <- deparse(sys.call())
+  } else {
+    message <- paste(message, collapse = "\n")
+  }
+
+  # Send message for dry run, otherwise add/commit files
+  if (dry_run) {
+    message("Dry run settings",
+            "\n----",
+            "\n\n* Specified files to add:\n\n",
+            if (is.null(files)) "NA" else paste(files, collapse = "\n"),
+            "\n\n* message:\n\n", message,
+            "\n\n* Automatically stage files that have been ",
+            "modified and deleted (all): ", all,
+            "\n\n* Allow adding otherwise ignored files (force): ", force,
+            "\n\n")
+  } else {
+    # Add the specified files
+    if (!is.null(files)) {
+      git2r::add(r, files, force = force)
+      # Send warning if no files were staged
+      status_post_add <- git2r::status(r, ignored = TRUE)
+      files_staged_post_add <- unlist(status_post_add$staged)
+      files_added <- setdiff(files_staged_post_add, files_staged)
+      if (length(files_added) == 0)
+        warning("None of the specified files were added to the staging area. ",
+                "Perhaps they have not been updated ",
+                "or the changes had already been added.",
+                call. = FALSE)
+    }
+    # Commit
+    tryCatch(git2r::commit(r, message = message, all = all),
+             error = function(e) {
+               if (stringr::str_detect(e$message, "Nothing added to commit")) {
+                 reason <- "Commit failed because no files were added."
+               } else {
+                 reason <- "Commit failed for unknown reason."
+               }
+               stop(reason, " Any untracked files must manually specified",
+                    " even if `all = TRUE`.\n\n", call. = FALSE)
+             }
+    )
+  }
+
+  return(invisible(files))
 }
 
 #' Commit the website files

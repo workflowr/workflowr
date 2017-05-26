@@ -2,80 +2,94 @@
 % Please edit documentation in R/wflow_commit.R
 \name{wflow_commit}
 \alias{wflow_commit}
-\title{Commit the website files}
+\title{Commit files}
 \usage{
-wflow_commit(all = FALSE, commit_files = NULL, commit_message = NULL,
-  dry_run = FALSE, include_staged = FALSE, path = ".")
+wflow_commit(files = NULL, message = NULL, all = FALSE, force = FALSE,
+  dry_run = FALSE, project = ".")
 }
 \arguments{
-\item{all}{logical indicating if every R Markdown file should be rendered
-when building and committing the site (default: FALSE).}
+\item{files}{character (default: NULL). Files to be added and committed with
+Git.}
 
-\item{commit_files}{Files to be committed to Git before building and
-committing website files (default: NULL).}
+\item{message}{character (default: NULL). A commit message.}
 
-\item{commit_message}{A commit message. Only used if specific files are
-specified to the argument \code{files} (default: NULL).}
+\item{all}{logical (default: FALSE). Automatically stage files that have been
+modified and deleted. Equivalent to: \code{git commit -a}}
 
-\item{dry_run}{Identifies R Markdown files that have been updated, but does
-not render them.}
+\item{force}{logical (default: FALSE). Allow adding otherwise ignored files.
+Equivalent to: \code{git add -f}}
 
-\item{include_staged}{logical. By default \code{wflow_commit} will stop if it
-detects any files in the staging area. Set to TRUE ff you want these files
-to be included in the commit created by \code{wflow_commit} (not
-recommended).}
+\item{dry_run}{logical (default: FALSE). Preview the proposed action but do
+not actually add or commit any files.}
 
-\item{path}{By default the function assumes the current working directory is
-within the project. If this is not true, you'll need to provide the path to
-the project directory.}
+\item{project}{character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.}
 }
 \value{
-If \code{dry_run = TRUE}, returns the character vector of R Markdown
-  files that would be rendered. Otherwise invisibly returns this vector.
+An object of class \code{wflow_commit}, which is a list with the
+  following elements:
+
+\itemize {
+
+\item \bold{files}: The input argument \code{files}.
+
+\item \bold{message}: The message describing the commit.
+
+\item \bold{all}: The input argument \code{all}.
+
+\item \bold{force}: The input argument \code{force}.
+
+\item \bold{dry_run}: The input argument \code{dry_run}.
+
+\item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
+returned by \link{git2r} (only included if \code{dry_run == FALSE}).
+
+\item \bold{commit_files}: The relative path(s) to the file(s) included in
+the commit (only included if \code{dry_run == FALSE}).
+
+}
 }
 \description{
-\code{wflow_commit} builds and commits the website files, ensuring that the
-website files are created by the proper R Markdown files that have been
-committed to the Git repository. Optionally can specify files to be committed
-before building the website.
+\code{wflow_commit} adds and commits files with Git. This is a convenience
+function to run Git commands from the R console instead of the shell. For
+most use cases, you should use \code{\link{wflow_publish}} instead, which
+calls \code{wflow_commit} and then subsequently also builds and commits the
+website files.
 }
 \details{
-worklowr facilitates reproducibility by placing the current SHA-1 of the Git
-repository at the top of each HTML file. This indicates which version of the
-code could be used to reproduce the results. In order for this to be
-meaningful, the R Markdown file must not have changed since it was last
-committed. \code{wflow_commit} can be invoked in 3 different (though not
-mutually exclusive) modes.
+Some potential use cases for \code{wflow_commit}:
 
-First, running \code{wflow_commit} with the default arguments will identify
-all R Markdown files which have been modified more recently in the Git commit
-history than their corresponding HTML files. Furthermore these files must not
-currently have any subsequent changes that have not been committed. The files
-will be built and the correspoding HTML committed.
+\itemize{
 
-Second, you can have \code{wflow_commit} first add and commit files specified
-with the argument \code{commit_files}. A message for this commit can also be
-specified with the argument \code{commit_message}. After this commit has been
-made, \code{wflow_commit} then searches the Git commit history as described
-above.
+\item Commit drafts which you do not yet want to be included in the website
 
-Third, you can have \code{wflow_commit} re-build and commit all the webpages
-by setting \code{all = TRUE}. This is useful if you are making an aesthetic
-change, e.g. the theme, that needs to be applied regardless of whether the R
-Markdown file has been edited. Only tracked files without uncommitted changes
-will be re-built (this prevents the HTML not matching the corresponding R
-Markdown file).
+\item Commit files which do not directly affect the website (e.g. when you
+are writing scripts for a data processing pipeline)
+
+\item Manually commit files in \code{docs/} (proceed with caution!). This
+should only be done for content that is not automatically generated from the
+source files in the analysis directory, e.g. an image file you want to
+include in one of your pages.
+
+}
+
+Under the hood, \code{wflow_commit} is a wrapper for \code{\link[git2r]{add}}
+and \code{\link[git2r]{commit}} from the package \link{git2r}.
 }
 \examples{
 \dontrun{
-# Build and commit the webpages that are out of date
-wflow_commit()
-# Specify files to commit (with a corresponding commit message),
-# prior to building and committing the webpages
-wflow_commit(commit_files = c("pipeline.R", "new-analysis.Rmd"),
-             commit_message = "Finished new analysis")
-# Re-build all the webpages
-# (e.g. to implement an aesthetic change)
-wflow_commit(all = TRUE)
+
+# Commit a single file
+wflow_commit("analysis/file.Rmd", "Add new analysis")
+# Commit multiple files
+wflow_commit(c("code/process-data.sh", "output/small-data.txt"),
+             "Process data set")
+# Add and commit all tracked files, similar to `git commit -a`
+wflow_commit(message = "Lots of changes", all = TRUE)
 }
+
+}
+\seealso{
+\code{\link{wflow_publish}}
 }

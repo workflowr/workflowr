@@ -38,7 +38,28 @@
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return A character vector of the committed files
+#' @return An object of class \code{wflow_commit}, which is a list with the
+#'   following elements:
+#'
+#' \itemize {
+#'
+#' \item \bold{files}: The input argument \code{files}.
+#'
+#' \item \bold{message}: The message describing the commit.
+#'
+#' \item \bold{all}: The input argument \code{all}.
+#'
+#' \item \bold{force}: The input argument \code{force}.
+#'
+#' \item \bold{dry_run}: The input argument \code{dry_run}.
+#'
+#' \item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
+#' returned by \link{git2r} (only included if \code{dry_run == FALSE}).
+#'
+#' \item \bold{commit_files}: The relative path(s) to the file(s) included in
+#' the commit (only included if \code{dry_run == FALSE}).
+#'
+#' }
 #'
 #' @seealso \code{\link{wflow_publish}}
 #'
@@ -54,159 +75,130 @@
 #' wflow_commit(message = "Lots of changes", all = TRUE)
 #' }
 #'
-wflow_commit_ <- function(files = NULL, message = NULL, all = FALSE,
+#' @export
+wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
                           force = FALSE, dry_run = FALSE, project = ".") {
-  if (!(is.null(files) | is.character(files)))
-    stop("files must be NULL or a character vector")
-  if (!(is.null(message) | is.character(message)))
+
+  if (!is.null(files)) {
+    if (!is.character(files)) {
+      stop("files must be NULL or a character vector of filenames")
+    } else if (!all(file.exists(files))) {
+      stop("Not all files exist. Check the paths to the files")
+    }
+  }
+
+  if (is.null(message)) {
+    message <- deparse(sys.call())
+  } else if (is.character(message)) {
+    message <- wrap(paste(message, collapse = " "))
+  } else {
     stop("message must be NULL or a character vector")
-  if (!is.logical(all) | length(all) != 1)
+  }
+
+  if (!(is.logical(all) && length(all) == 1))
     stop("all must be a one-element logical vector")
-  if (!is.logical(dry_run) | length(dry_run) != 1)
+
+  if (!(is.logical(force) && length(force) == 1))
+    stop("force must be a one-element logical vector")
+
+  if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
-  if (!is.character(project) | length(project) != 1)
-    stop("project must be a one element character vector")
-  if (!dir.exists(project))
-    stop("project does not exist.")
+
+  if (is.character(project) && length(project) == 1) {
+    if (dir.exists(project)) {
+      project <- normalizePath(project)
+    } else {
+      stop("project directory does not exist.")
+    }
+  } else {
+    stop("project must be a one-element character vector")
+  }
 
   if (is.null(files) && !all)
     stop("Must specify files to commit, set `all = TRUE`, or both",
          call. = FALSE)
 
-  # Establish connection to Git repository
-  project <- normalizePath(project)
-  root_path <- try(rprojroot::find_rstudio_root_file(path = project))
-  if (class(root_path) == "try-error")
-    stop("Unable to find RStudio Rproj file ",
-         "at the root of the workflowr project",
-         call. = FALSE)
-  r <- try(git2r::repository(root_path, discover = TRUE))
-  if (class(r) == "try-error")
-    stop("Unable to locate Git repository in ", project, call. = FALSE)
-  if (root_path != dirname(r@path))
-    warning("The Git repository is not at the root of the workflowr project",
-            "\nworkflowr project: ", root_path,
-            "\nGit repo: ", dirname(r@path),
-            call. = FALSE)
-  status <- git2r::status(r, ignored = TRUE)
-
-  # Collate files to be added and committed
+  # Additional checks of files to be committed
   if (!is.null(files)) {
-    # Identify non-existent files
-    files_exist <- file.exists(files)
-    if (length(files) == sum(!files_exist)) {
-      stop("None of the files could be found. ",
-           "Check your working directory and file paths.",
-           call. = FALSE)
-    } else if (any(!files_exist)) {
-      warning("Non-existent files found.",
-              "\nThe following files do not exist:\n\n",
-              paste(files[!files_exist], collapse = "\n"),
-              call. = FALSE)
-      files <- files[files_exist]
-    }
-    files <- normalizePath(files)
-    # Identify files outside the Git repository
-    files_outside <- !stringr::str_detect(files, root_path)
-    if (length(files) == sum(files_outside)) {
-      stop("All of the files are outside of the Git repository. ",
-           "Check your working directory and file paths.",
-           call. = FALSE)
-    } else if (any(files_outside)) {
-      warning("Some files are outside of the Git repository ",
-              "and therefore will **not** be included in the commit.",
-              "\nThe following files are outside the Git repository:\n\n",
-              paste(files[files_outside], collapse = "\n"),
-              call. = FALSE)
-      files <- files[!files_outside]
-    }
-    # Refuse to commit any untracked file larger than 100MB.
-    files_untracked_all <- c(unlist(status$untracked),
-                             unlist(status$ignored))
-    files_untracked_all <- normalizePath(files_untracked_all)
-    is_untracked <- files %in% files_untracked_all
+    # Files must be within the Git repository
+    if (!all(sapply(files, git2r::in_repository)))
+      stop("Not all files are inside the Git repository")
+    # Files cannot be larger than 100MB
     sizes <- file.size(files) / 10^6
-    ok_size <- sizes < 100
-    files_too_large <- is_untracked & !ok_size
-    if (length(files) == sum(files_too_large)) {
-      stop("Files must be less than 100 MB to push to GitHub. ",
-           "None of the files meet this requirement. ",
-           "Run Git from the commandline if you ",
-           "really want to commit these files.",
-           call. = FALSE)
-    } else if (any(files_too_large)) {
-      warning("Some files are larger than GitHub's limit of 100 MB ",
-              "and therefore will **not** be included in the commit. ",
-              "Run Git from the commandline if you ",
-              "really want to commit these files.",
-              "\nThe following files are larger than 100 MB:\n\n",
-              paste(files[files_too_large], collapse = "\n"),
-              call. = FALSE)
-      files <- files[!files_too_large]
-    }
+    if (any(sizes >= 100))
+      stop(wrap("All files to be committed must be less than 100 MB (this is
+      the max file size able to be pushed to GitHub). Run Git from the
+      commandline if you really want to commit these files."))
   }
 
-  # Send warning if staged files are present but not specified to be committed
-  files_staged <- unlist(status$staged)
-  if (length(files_staged) != 0) {
-    files_staged_unexpected <- setdiff(normalizePath(files_staged), files)
-    if (length(files_staged_unexpected) != 0)
-      warning("There are unexpected staged changes ",
-              "that will be included in commit.",
-              "\nSpecifically the following files have staged changes:\n\n",
-              paste(normalizePath(files_staged_unexpected), collapse = "\n"),
-              call. = FALSE)
-  }
+  # Obtain workflowr paths
+  p <- wflow_paths(error_git = TRUE, project = project)
 
-  # Prepare commit message
-  if (is.null(message)) {
-    warning("It is strongly recommended to include a custom commit message.",
-            call. = FALSE)
-    message <- deparse(sys.call())
-  } else {
-    message <- paste(message, collapse = "\n")
-  }
+  # Establish connection to Git repository
+  r <- git2r::repository(p$git)
 
-  # Send message for dry run, otherwise add/commit files
-  if (dry_run) {
-    message("Dry run settings",
-            "\n----",
-            "\n\n* Specified files to add:\n\n",
-            if (is.null(files)) "NA" else paste(files, collapse = "\n"),
-            "\n\n* message:\n\n", message,
-            "\n\n* Automatically stage files that have been ",
-            "modified and deleted (all): ", all,
-            "\n\n* Allow adding otherwise ignored files (force): ", force,
-            "\n\n")
-  } else {
+  if (!dry_run) {
     # Add the specified files
     if (!is.null(files)) {
       git2r::add(r, files, force = force)
-      # Send warning if no files were staged
-      status_post_add <- git2r::status(r, ignored = TRUE)
-      files_staged_post_add <- unlist(status_post_add$staged)
-      files_added <- setdiff(files_staged_post_add, files_staged)
-      if (length(files_added) == 0)
-        warning("None of the specified files were added to the staging area. ",
-                "Perhaps they have not been updated ",
-                "or the changes had already been added.",
-                call. = FALSE)
     }
     # Commit
-    tryCatch(git2r::commit(r, message = message, all = all),
-             error = function(e) {
-               if (stringr::str_detect(e$message, "Nothing added to commit")) {
-                 reason <- "Commit failed because no files were added."
-               } else {
-                 reason <- "Commit failed for unknown reason."
-               }
-               stop(reason, " Any untracked files must manually specified",
-                    " even if `all = TRUE`.\n\n", call. = FALSE)
-             }
+    tryCatch(
+      commit <- git2r::commit(r, message = message, all = all),
+      error = function(e) {
+        if (stringr::str_detect(e$message, "Nothing added to commit")) {
+          reason <- "Commit failed because no files were added."
+        } else {
+          reason <- "Commit failed for unknown reason."
+        }
+        stop(wrap(reason, "Any untracked files must manually specified even if
+                  `all = TRUE`.\n\n"), call. = FALSE)
+      }
     )
   }
 
-  return(invisible(files))
+  o <- list(files = files, message = message, all = all, force = force,
+            dry_run = dry_run)
+  class(o) <- "wflow_commit"
+  if (!dry_run) {
+    commit_files <- obtain_files_in_commit(r, commit)
+    commit_files <- paste0(git2r::workdir(r), commit_files)
+    o$commit <- commit
+    o$commit_files <- sapply(commit_files, relpath)
+  }
+
+  return(o)
+}
+
+#' @export
+print.wflow_commit <- function(x, ...) {
+  cat("wflow_commit\n\n")
+  if (x$dry_run) {
+    cat(wrap("The following would be attempted:"), "\n\n")
+  } else {
+    cat(wrap("The following was run:"), "\n\n")
+  }
+  if (!is.null(x$files)) {
+    if (x$force) {
+      cat("  $ git add -f", x$files, "\n")
+    } else {
+      cat("  $ git add", x$files, "\n")
+    }
+  }
+  if (x$all) {
+    cat("  $ git commit -a -m", deparse(x$message), "\n")
+  } else {
+    cat("  $ git commit -m", deparse(x$message), "\n")
+  }
+  if (!x$dry_run) {
+    cat(sep = "", "\n",
+        wrap("The following file(s) were included in commit ",
+             stringr::str_sub(x$commit@sha, start = 1, end = 7)),
+        ":\n")
+    cat(x$commit_files, sep = "\n")
+  }
+
+  return(invisible(x))
 }
 
 #' Commit the website files
@@ -275,109 +267,109 @@ wflow_commit_ <- function(files = NULL, message = NULL, all = FALSE,
 #' }
 #' @import rmarkdown
 #' @export
-wflow_commit <- function(all = FALSE, commit_files = NULL,
-                         commit_message = NULL, dry_run = FALSE,
-                         include_staged = FALSE, path = ".") {
-  stopifnot(is.logical(all),
-            is.null(commit_files) | is.character(commit_files),
-            is.null(commit_message) | is.character(commit_message),
-            is.logical(dry_run),
-            is.character(path))
-  root_path <- rprojroot::find_rstudio_root_file(path = path)
-  analysis_dir <- file.path(root_path, "analysis")
-  stopifnot(dir.exists(analysis_dir))
-  repo <- git2r::repository(root_path)
-  s <- git2r::status(repo)
-  num_staged <- length(s$staged)
-
-  if (num_staged > 0) {
-    warning("Files have already been added to the staging area.")
-    warning("You probably want to commit them first before running commit_site")
-  }
-  if (num_staged > 0 & !include_staged) {
-    stop("wflow_commit stopped because of files in the staging area. Either commit these first or set the argument `include_staged = TRUE` to include these files in the commit created by wflow_commit.")
-  }
-
-  if (!is.null(commit_files)) {
-    stopifnot(file.exists(commit_files))
-    if (dry_run) {
-      message("The current status of the Git repo is:")
-      message(paste(utils::capture.output(s), collapse = "\n"))
-      message("You are planning to commit the following files before building the site:")
-      message(paste(commit_files, collapse = "\n"))
-    } else {
-      git2r::add(repo, commit_files)
-      s <- git2r::status(repo)
-      num_staged <- length(s$staged)
-      if (num_staged == 0) {
-        warning("None of the commit_files provided were committed, presumably because they have not been updated.")
-      } else if (is.null(commit_message)) {
-        git2r::commit(repo, message = "Files commited by wflow_commit.")
-      } else{
-        git2r::commit(repo, message = commit_message)
-      }
-    }
-  }
-
-  # Gather Rmd files
-  rmd_all <- list.files(path = analysis_dir, pattern = "^[^_].*Rmd$")
-  rmd_all <- file.path("analysis", rmd_all)
-
-  # Remove from consideration any R Markdown files that
-  #  1. Have changes in the working directory or staging area
-  #  2. Are untracked
-  #  3. Are ignored by .gitignore
-  # Determined by running `git status`
-  git_status <- git2r::status(repo, ignored = TRUE)
-  staged_files <- unlist(git_status$staged)
-  staged_rmd <- staged_files[grep("Rmd$", staged_files)]
-  unstaged_files <- unlist(git_status$unstaged)
-  unstaged_rmd <- unstaged_files[grep("Rmd$", unstaged_files)]
-  untracked_files <- unlist(git_status$untracked)
-  untracked_rmd <- untracked_files[grep("Rmd$", untracked_files)]
-  ignored_files <- unlist(git_status$ignored)
-  ignored_rmd <- ignored_files[grep("Rmd$", ignored_files)]
-
-  rmd_to_consider <- setdiff(rmd_all, c(staged_rmd, unstaged_rmd,
-                                        untracked_rmd, ignored_rmd))
-  # If all eligible R Markdown files should be built
-  if (all) {
-    to_render <- TRUE
-  } else {
-    # Determine which R Markdown files need to be updated
-    to_render <- logical(length = length(rmd_to_consider))
-    log <- git2r::commits(repo)
-    for (i in seq_along(rmd_to_consider)) {
-      to_render[i] <- decide_to_render(repo, log, rmd_to_consider[i])
-    }
-  }
-
-  files_to_update <- rmd_to_consider[to_render]
-  files_to_update <- file.path(root_path, files_to_update)
-
-  # Render the updated R Markdown files
-  if (length(files_to_update) == 0) {
-    message("Everything up-to-date")
-  } else if (dry_run) {
-    message("The HTML files would be built and comitted from the following R Markdown files:")
-    return(files_to_update)
-  } else {
-    for (f in files_to_update) {
-      # Delete the figures first? In both analysis/ and docs/?
-      message(sprintf("\n\nRendering %s\n\n", basename(f)))
-      rmarkdown::render_site(f, envir = new.env(), quiet = TRUE)
-      html <- file.path(root_path, "docs",
-                        stringr::str_replace(basename(f), "Rmd$", "html"))
-      git2r::add(repo, html)
-      figure <- file.path(root_path, "docs", "figure", basename(f))
-      git2r::add(repo, figure)
-    }
-    site_libs <- file.path(root_path, "docs", "site_libs")
-    nojekyll <- file.path(root_path, "docs", ".nojekyll")
-    git2r::add(repo, site_libs)
-    git2r::add(repo, nojekyll)
-    git2r::commit(repo, message = "Build site.")
-  }
-
-  return(invisible(files_to_update))
-}
+# wflow_commit <- function(all = FALSE, commit_files = NULL,
+#                          commit_message = NULL, dry_run = FALSE,
+#                          include_staged = FALSE, path = ".") {
+#   stopifnot(is.logical(all),
+#             is.null(commit_files) | is.character(commit_files),
+#             is.null(commit_message) | is.character(commit_message),
+#             is.logical(dry_run),
+#             is.character(path))
+#   root_path <- rprojroot::find_rstudio_root_file(path = path)
+#   analysis_dir <- file.path(root_path, "analysis")
+#   stopifnot(dir.exists(analysis_dir))
+#   repo <- git2r::repository(root_path)
+#   s <- git2r::status(repo)
+#   num_staged <- length(s$staged)
+#
+#   if (num_staged > 0) {
+#     warning("Files have already been added to the staging area.")
+#     warning("You probably want to commit them first before running commit_site")
+#   }
+#   if (num_staged > 0 & !include_staged) {
+#     stop("wflow_commit stopped because of files in the staging area. Either commit these first or set the argument `include_staged = TRUE` to include these files in the commit created by wflow_commit.")
+#   }
+#
+#   if (!is.null(commit_files)) {
+#     stopifnot(file.exists(commit_files))
+#     if (dry_run) {
+#       message("The current status of the Git repo is:")
+#       message(paste(utils::capture.output(s), collapse = "\n"))
+#       message("You are planning to commit the following files before building the site:")
+#       message(paste(commit_files, collapse = "\n"))
+#     } else {
+#       git2r::add(repo, commit_files)
+#       s <- git2r::status(repo)
+#       num_staged <- length(s$staged)
+#       if (num_staged == 0) {
+#         warning("None of the commit_files provided were committed, presumably because they have not been updated.")
+#       } else if (is.null(commit_message)) {
+#         git2r::commit(repo, message = "Files commited by wflow_commit.")
+#       } else{
+#         git2r::commit(repo, message = commit_message)
+#       }
+#     }
+#   }
+#
+#   # Gather Rmd files
+#   rmd_all <- list.files(path = analysis_dir, pattern = "^[^_].*Rmd$")
+#   rmd_all <- file.path("analysis", rmd_all)
+#
+#   # Remove from consideration any R Markdown files that
+#   #  1. Have changes in the working directory or staging area
+#   #  2. Are untracked
+#   #  3. Are ignored by .gitignore
+#   # Determined by running `git status`
+#   git_status <- git2r::status(repo, ignored = TRUE)
+#   staged_files <- unlist(git_status$staged)
+#   staged_rmd <- staged_files[grep("Rmd$", staged_files)]
+#   unstaged_files <- unlist(git_status$unstaged)
+#   unstaged_rmd <- unstaged_files[grep("Rmd$", unstaged_files)]
+#   untracked_files <- unlist(git_status$untracked)
+#   untracked_rmd <- untracked_files[grep("Rmd$", untracked_files)]
+#   ignored_files <- unlist(git_status$ignored)
+#   ignored_rmd <- ignored_files[grep("Rmd$", ignored_files)]
+#
+#   rmd_to_consider <- setdiff(rmd_all, c(staged_rmd, unstaged_rmd,
+#                                         untracked_rmd, ignored_rmd))
+#   # If all eligible R Markdown files should be built
+#   if (all) {
+#     to_render <- TRUE
+#   } else {
+#     # Determine which R Markdown files need to be updated
+#     to_render <- logical(length = length(rmd_to_consider))
+#     log <- git2r::commits(repo)
+#     for (i in seq_along(rmd_to_consider)) {
+#       to_render[i] <- decide_to_render(repo, log, rmd_to_consider[i])
+#     }
+#   }
+#
+#   files_to_update <- rmd_to_consider[to_render]
+#   files_to_update <- file.path(root_path, files_to_update)
+#
+#   # Render the updated R Markdown files
+#   if (length(files_to_update) == 0) {
+#     message("Everything up-to-date")
+#   } else if (dry_run) {
+#     message("The HTML files would be built and comitted from the following R Markdown files:")
+#     return(files_to_update)
+#   } else {
+#     for (f in files_to_update) {
+#       # Delete the figures first? In both analysis/ and docs/?
+#       message(sprintf("\n\nRendering %s\n\n", basename(f)))
+#       rmarkdown::render_site(f, envir = new.env(), quiet = TRUE)
+#       html <- file.path(root_path, "docs",
+#                         stringr::str_replace(basename(f), "Rmd$", "html"))
+#       git2r::add(repo, html)
+#       figure <- file.path(root_path, "docs", "figure", basename(f))
+#       git2r::add(repo, figure)
+#     }
+#     site_libs <- file.path(root_path, "docs", "site_libs")
+#     nojekyll <- file.path(root_path, "docs", ".nojekyll")
+#     git2r::add(repo, site_libs)
+#     git2r::add(repo, nojekyll)
+#     git2r::commit(repo, message = "Build site.")
+#   }
+#
+#   return(invisible(files_to_update))
+# }

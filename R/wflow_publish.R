@@ -96,48 +96,86 @@ wflow_publish <- function(
 
   # Assess project status ------------------------------------------------------
 
-  s <- wflow_status(project = project)
+  s0 <- wflow_status(project = project)
   r <- git2r::repository(path = s$git)
   commit_current <- git2r::commits(r, n = 1)[[1]]
 
   # Step 1: Commit analysis files ----------------------------------------------
 
   # Decide if wflow_commit should be run. At least one of the following
-  # conditions must be true:
+  # scenarios must be true:
   #
   # 1) Rmd files were specified and at least one has unstaged/staged changes
   #
   # 2) `all == TRUE` and at least one tracked file as unstaged/staged changes
   #
   # 3) At least one non-Rmd file was specified
-  scenario1 <- !is.null(files) &&
-    any(unlist(s$status[files, c("mod_unstaged", "mod_staged")]),
+  s1_scenario1 <- !is.null(files) &&
+    any(unlist(s0$status[files, c("mod_unstaged", "mod_staged")]),
         na.rm = TRUE)
-  scenario2 <- all &&
-    any(unlist(s$status[s$status$tracked, c("mod_unstaged", "mod_staged")]),
+  s1_scenario2 <- all &&
+    any(unlist(s0$status[s$status$tracked, c("mod_unstaged", "mod_staged")]),
         na.rm = TRUE)
-  scenario3 <- !is.null(files) &&
-    any(!(files %in% rownames(s$status)))
+  s1_scenario3 <- !is.null(files) &&
+    any(!(files %in% rownames(s0$status)))
 
-  if (scenario1 || scenario2 || scenario3) {
+  if (s1_scenario1 || s1_scenario2 || s1_scenario3) {
     step1 <- wflow_commit(files = files, message = message,
                           all = all, force = force,
                           dry_run = dry_run, project = project)
     # If subsequent steps fail, undo this action by resetting the Git repo to
     # its initial state.
     on.exit(git2r::reset(commit_current, reset_type = "mixed"), add = TRUE)
+    s1 <- wflow_status(project = project)
   } else {
     step1 <- NULL
+    s1 <- s0
   }
 
   # Step 2: Build HTML files----------------------------------------------------
 
-  if (dry_run)
-    message("Step 3: Build HTML files")
+  # Determine if there are any files to be built.
+  files_to_build <- character()
+  # Specified files
+  files_to_build <- union(files_to_build,
+                          files[files %in% rownames(s1$status)])
+  # Files committed in Step 1
+  files_to_build <- union(files_to_build,
+                          step1$commit_files[
+                            step1$commit_files %in% rownames(s1$status)])
+  # If `republish == TRUE`, all published files
+  if (republish) {
+    files_to_build <- union(files_to_build,
+                            rownames(s1$status)[s1$status$published])
+  }
+  # If `update == TRUE`, all published files with committed modifications
+  if (update) {
+    files_to_build <- union(files_to_build,
+                            rownames(s1$status)[s1$status$mod_committed])
+  }
+  # None of these files can have unstaged/staged changes
+  files_to_build <- files_to_build[!s1$status[files_to_build, "mod_unstaged"]]
+  files_to_build <- files_to_build[!s1$status[files_to_build, "mod_staged"]]
 
-  f_built <- wflow_build_(files = f_committed, make = FALSE,
+  if (length(files_to_build) > 0) {
+    # As a backup, copy the docs/ directory to /tmp
+    docs_backup <- tempfile(pattern = sprintf("docs-backup-%s-",
+                                              format(Sys.time(),
+                                                     "%Y-%m-%d-%Hh-%Mm-%Ss")))
+    dir.create(docs_backup)
+    file.copy(from = s1$docs, to = docs_backup, recursive = TRUE)
+    step2 <- wflow_build_(files = files_to_build, make = FALSE,
                           update = update, republish = republish,
                           local = FALSE, dry_run = dry_run, project = project)
+    # If something fails in subsequent steps, delete docs/ and restore backup
+    on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
+    on.exit(file.copy(from = docs_backup, to = s1$docs, recursive = TRUE),
+            add = TRUE)
+    s2 <- wflow_status(project = project)
+  } else {
+    step2 <- NULL
+    s2 <- s1
+  }
 
   # Step 3 : Commit HTML files -------------------------------------------------
 
@@ -149,7 +187,9 @@ wflow_publish <- function(
                                     dry_run = dry_run, project = project)
   f_committed_all <- sort(c(f_committed, f_committed_site))
 
-  o <- list(step1)
+  # Prepare output -------------------------------------------------------------
+
+  o <- list(step1, step2)
   class(o) <- "wflow_publish"
 
   # If everything worked, erase the on.exit code that would have reset
@@ -168,6 +208,13 @@ print.wflow_publish <- function(x, ...) {
     cat("No files to commit\n\n")
   } else {
     print(x$step1)
+  }
+
+  cat("Step 2: Build HTML files\n\n")
+  if (is.null(x$step2)) {
+    cat("No files to build\n\n")
+  } else {
+    print(x$step2)
   }
 
   return(invisible(x))

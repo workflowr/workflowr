@@ -58,7 +58,7 @@ wflow_publish <- function(
       stop("Not all files exist. Check the paths to the files")
     }
     # Change filepaths to relative paths
-    files <- sapply(files, relpath)
+    files <- sapply(normalizePath(files), relpath)
   }
 
   if (is.null(message)) {
@@ -97,7 +97,7 @@ wflow_publish <- function(
   # Assess project status ------------------------------------------------------
 
   s0 <- wflow_status(project = project)
-  r <- git2r::repository(path = s$git)
+  r <- git2r::repository(path = s0$git)
   commit_current <- git2r::commits(r, n = 1)[[1]]
 
   # Step 1: Commit analysis files ----------------------------------------------
@@ -105,21 +105,22 @@ wflow_publish <- function(
   # Decide if wflow_commit should be run. At least one of the following
   # scenarios must be true:
   #
-  # 1) Rmd files were specified and at least one has unstaged/staged changes
+  # 1) Rmd files were specified and at least one is new (untracked) or has
+  # unstaged/staged changes
   #
-  # 2) `all == TRUE` and at least one tracked file as unstaged/staged changes
+  # 2) `all == TRUE` and at least one tracked file has unstaged/staged changes
   #
   # 3) At least one non-Rmd file was specified
-  s1_scenario1 <- !is.null(files) &&
-    any(unlist(s0$status[files, c("mod_unstaged", "mod_staged")]),
+  scenario1 <- !is.null(files) &&
+    any(unlist(s0$status[files, c("mod_unstaged", "mod_staged", "new")]),
         na.rm = TRUE)
-  s1_scenario2 <- all &&
-    any(unlist(s0$status[s$status$tracked, c("mod_unstaged", "mod_staged")]),
+  scenario2 <- all &&
+    any(unlist(s0$status[s0$status$tracked, c("mod_unstaged", "mod_staged")]),
         na.rm = TRUE)
-  s1_scenario3 <- !is.null(files) &&
+  scenario3 <- !is.null(files) &&
     any(!(files %in% rownames(s0$status)))
 
-  if (s1_scenario1 || s1_scenario2 || s1_scenario3) {
+  if (scenario1 || scenario2 || scenario3) {
     step1 <- wflow_commit(files = files, message = message,
                           all = all, force = force,
                           dry_run = dry_run, project = project)
@@ -164,7 +165,7 @@ wflow_publish <- function(
                                                      "%Y-%m-%d-%Hh-%Mm-%Ss")))
     dir.create(docs_backup)
     file.copy(from = s1$docs, to = docs_backup, recursive = TRUE)
-    step2 <- wflow_build_(files = files_to_build, make = FALSE,
+    step2 <- wflow_build(files = files_to_build, make = FALSE,
                           update = update, republish = republish,
                           local = FALSE, dry_run = dry_run, project = project)
     # If something fails in subsequent steps, delete docs/ and restore backup
@@ -179,17 +180,22 @@ wflow_publish <- function(
 
   # Step 3 : Commit HTML files -------------------------------------------------
 
-  if (dry_run)
-    message("Step 2: Commit HTML files")
+  # Step 3 only needs to be performed if files were built in step 2.
+  if (length(step2$built) > 0) {
+    site_libs <- file.path(s2$docs, "site_libs")
+    dir_figure <- file.path(s2$docs, "figure", basename(step2$built))
+    files_to_commit <- c(step2$html, dir_figure, site_libs)
 
-  f_committed_site <- wflow_commit_(files = f_built, message = "Build site.",
-                                    all = FALSE, force = force,
-                                    dry_run = dry_run, project = project)
-  f_committed_all <- sort(c(f_committed, f_committed_site))
+    step3 <- wflow_commit(files = files_to_commit, message = "Build site.",
+                          all = FALSE, force = force,
+                          dry_run = dry_run, project = project)
+  } else {
+    step3 <- NULL
+  }
 
   # Prepare output -------------------------------------------------------------
 
-  o <- list(step1, step2)
+  o <- list(step1 = step1, step2 = step2, step3 = step3)
   class(o) <- "wflow_publish"
 
   # If everything worked, erase the on.exit code that would have reset
@@ -203,18 +209,25 @@ wflow_publish <- function(
 print.wflow_publish <- function(x, ...) {
   cat("wflow_publish\n\n")
 
-  cat("Step 1: Commit files\n\n")
+  cat("**Step 1: Commit analysis files**\n\n")
   if (is.null(x$step1)) {
     cat("No files to commit\n\n")
   } else {
     print(x$step1)
   }
 
-  cat("Step 2: Build HTML files\n\n")
+  cat("\n**Step 2: Build HTML files**\n\n")
   if (is.null(x$step2)) {
     cat("No files to build\n\n")
   } else {
     print(x$step2)
+  }
+
+  cat("\n**Step 3: Commit HTML files**\n\n")
+  if (is.null(x$step3)) {
+    cat("No HTML files to commit\n\n")
+  } else {
+    print(x$step3)
   }
 
   return(invisible(x))

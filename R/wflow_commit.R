@@ -86,7 +86,7 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
       stop("Not all files exist. Check the paths to the files")
     }
     # Change filepaths to relative paths
-    files <- sapply(files, relpath)
+    files <- sapply(normalizePath(files), relpath)
   }
 
   if (is.null(message)) {

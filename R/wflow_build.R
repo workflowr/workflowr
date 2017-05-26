@@ -179,12 +179,12 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   # Prepare output -------------------------------------------------------------
 
-  built <- to_html(files_to_build, outdir = p$docs)
   o <- list(files = files, make = make,
             update = update, republish = republish,
             seed = seed, log_dir = log_dir,
             local = local, dry_run = dry_run,
-            built = built)
+            built = files_to_build,
+            html = to_html(files_to_build, outdir = p$docs))
   class(o) <- "wflow_build"
 
   return(o)
@@ -194,7 +194,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 print.wflow_build <- function(x, ...) {
   cat("wflow_build\n\n")
   cat("Settings:\n")
-  cat("seed:", x$seed)
+  cat("  seed:", x$seed)
   if (x$make) cat(", make: TRUE")
   if (x$update) cat(", update: TRUE")
   if (x$republish) cat(", republish: TRUE")
@@ -212,7 +212,7 @@ print.wflow_build <- function(x, ...) {
     cat(wrap("The following were built externally each in their own fresh R session:"),
         "\n\n")
   }
-  cat(x$built, sep = "\n")
+  cat(x$html, sep = "\n")
   if (!x$dry_run & !x$local) {
     cat("\n")
     cat(wrap(sprintf("Log files saved in %s", x$log_dir)))

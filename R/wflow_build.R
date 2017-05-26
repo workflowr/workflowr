@@ -19,7 +19,7 @@
 #' recently than their corresponding HTML files will be built. However, files
 #' which currently have staged or unstaged changes will be ignored.
 #'
-#' \item If \code{republish = TRUE}, all files will be built.
+#' \item If \code{republish = TRUE}, all published files will be rebuilt.
 #'
 #' }
 #'
@@ -38,9 +38,9 @@
 #'   have any unstaged or staged changes). This ensures that the commit version
 #'   ID inserted into the HTML corresponds to the exact version of the source
 #'   file that was used to produce it.
-#' @param republish logical (default: FALSE). Build all R Markdown (and
-#'   Markdown) files. Useful for site-wide changes like updating the theme,
-#'   navigation bar, or any other setting in \code{_site.yml}.
+#' @param republish logical (default: FALSE). Build all published R Markdown
+#'   files. Useful for site-wide changes like updating the theme, navigation
+#'   bar, or any other setting in \code{_site.yml}.
 #' @param seed numeric (default: 12345). The seed to set before building each
 #'   file. Passed to \code{\link{set.seed}}.
 #' @param log_dir character (default: NULL). The directory to save log files
@@ -52,9 +52,9 @@
 #'   reproducible in isolation.
 #' @param dry_run logical (default: FALSE). Preview the files to be built, but
 #'   do not actually build them.
-#' @inheritParams wflow_commit_
+#' @inheritParams wflow_commit
 #'
-#' @return A character vector of the built files
+#' @return An object of class \code{wflow_publish}.
 #'
 #' @seealso \code{\link{wflow_publish}}
 #'
@@ -72,67 +72,99 @@
 #' }
 #'
 #' @import rmarkdown
-#'
-wflow_build_ <- function(files = NULL, make = is.null(files),
+#' @export
+wflow_build <- function(files = NULL, make = is.null(files),
                          update = FALSE, republish = FALSE,
                          seed = 12345, log_dir = NULL,
                          local = FALSE, dry_run = FALSE, project = ".") {
-  if (!(is.null(files) | is.character(files)))
-    stop("files must be NULL or a character vector")
-  if (!is.logical(make) | length(make) != 1)
-    stop("make must be a one-element logical vector")
-  if (!is.logical(update) | length(update) != 1)
-    stop("update must be a one-element logical vector")
-  if (!is.logical(republish) | length(republish) != 1)
-    stop("republish must be a one-element logical vector")
-  if (!is.numeric(seed) | length(seed) != 1)
-    stop("seed must be a one element numeric vector")
-  if (!(is.null(log_dir) | (is.character(log_dir) & length(log_dir) == 1)))
-    stop("log_dir must be a one element character vector")
-  if (!is.logical(local) | length(local) != 1)
-    stop("local must be a one-element logical vector")
-  if (!is.logical(dry_run) | length(dry_run) != 1)
-    stop("dry_run must be a one-element logical vector")
-  if (!is.character(project) | length(project) != 1)
-    stop("project must be a one element character vector")
 
-  # Check that directories and files exist
-  if (!dir.exists(project)) {
-    stop("project does not exist.")
-  } else {
-    project <- normalizePath(project)
-  }
-  if (is.null(log_dir))
-    log_dir <- "/tmp/workflowr"
+  # Check input arguments ------------------------------------------------------
+
   if (!is.null(files)) {
-    files_missing <- !file.exists(files)
-    if (any(files_missing)) {
-      stop("missing files: ", files[files_missing])
-    } else {
-      files <- normalizePath(files)
+    if (!is.character(files)) {
+      stop("files must be NULL or a character vector of filenames")
+    } else if (!all(file.exists(files))) {
+      stop("Not all files exist. Check the paths to the files")
     }
+    # Change filepaths to relative paths
+    files <- sapply(normalizePath(files), relpath)
   }
+  ext <- tools::file_ext(files)
+  ext_wrong <- !(ext %in% c("Rmd", "rmd"))
+  if (any(ext_wrong)) {
+    stop(wrap("File extensions must be either Rmd or rmd."))
+  }
+
+  if (!(is.logical(make) && length(make) == 1))
+    stop("make must be a one-element logical vector")
+
+  if (!(is.logical(update) && length(update) == 1))
+    stop("update must be a one-element logical vector")
+
+  if (!(is.logical(republish) && length(republish) == 1))
+    stop("republish must be a one-element logical vector")
+
+  if (!(is.numeric(seed) && length(seed) == 1))
+    stop("seed must be a one element numeric vector")
+
+  if (is.null(log_dir)) {
+    log_dir <- "/tmp/workflowr"
+  } else if (!(is.character(log_dir) && length(log_dir) == 1)) {
+    stop("log_dir must be NULL or a one element character vector")
+  }
+  dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
+
+  if (!(is.logical(local) && length(local) == 1))
+    stop("local must be a one-element logical vector")
+
+  if (!(is.logical(dry_run) && length(dry_run) == 1))
+    stop("dry_run must be a one-element logical vector")
+
+  if (is.character(project) && length(project) == 1) {
+    if (dir.exists(project)) {
+      project <- normalizePath(project)
+    } else {
+      stop("project directory does not exist.")
+    }
+  } else {
+    stop("project must be a one-element character vector")
+  }
+
+  # Obtain files to consider ---------------------------------------------------
+
+  p <- wflow_paths(project = project)
+  # All files to consider
+  files_all <- list.files(path = p$analysis, pattern = "^.*\\.[Rr]md$",
+                          full.names = TRUE)
+  files_all <- sapply(normalizePath(files_all), relpath)
+  if (!all(files %in% files_all))
+    stop(wrap(
+      "Only files in the analysis directory can be built with wflow_build. Use
+      `rmarkdown::render` to build non-workflowr files."))
+
+  # Determine which files to build ---------------------------------------------
+
   files_to_build <- files
-
-  root_path <- rprojroot::find_rstudio_root_file(path = project)
-  analysis_dir <- file.path(root_path, "analysis")
-
-  files_all <- Sys.glob(file.path(analysis_dir, "*Rmd"))
-
   if (make) {
     files_make <- return_modified_rmd(files_all)
     files_to_build <- union(files_to_build, files_make)
   }
 
-  # This currently gets every Rmd file. May want to change to only tracked files
-  if (republish) {
-    files_to_build <- files_all
-  } else if (update) {
-    # Build files if their corresponding HTML file in out-of-date in the Git
-    # commit history
-    #
-    # To do: Adapt from wflow_commit
+  if (update || republish) {
+    s <- wflow_status(project = project)
+    if (update) {
+      files_update <- rownames(s$status)[s$status$mod_committed &
+                                        !s$status$mod_unstaged &
+                                        !s$status$mod_staged]
+      files_to_build <- union(files_to_build, files_update)
+    }
+    if (republish) {
+      files_republish <- rownames(s$status)[s$status$published]
+      files_to_build <- union(files_to_build, files_republish)
+    }
   }
+
+  # Build files ----------------------------------------------------------------
 
   if (!dry_run) {
     for (f in files_to_build) {
@@ -145,98 +177,48 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
     }
   }
 
-  return(invisible(files_to_build))
+  # Prepare output -------------------------------------------------------------
+
+  built <- to_html(files_to_build, outdir = p$docs)
+  o <- list(files = files, make = make,
+            update = update, republish = republish,
+            seed = seed, log_dir = log_dir,
+            local = local, dry_run = dry_run,
+            built = built)
+  class(o) <- "wflow_build"
+
+  return(o)
 }
 
-#' Build the website
-#'
-#' \code{wflow_build} builds the website by rendering the R Markdown files in
-#' the analysis directory and saving them to \code{docs/}. By default it only
-#' renders the R Markdown files that have been modified more recently than their
-#' corresponding HTML file (similar to a Makefile). To render every single page
-#' (e.g. to change the theme across the entire site), set \code{all = TRUE}. To
-#' render specific R Markdown files, pass them as a vector to the argument
-#' \code{files}.
-#'
-#' Under the hood, this runs \code{rmarkdown::render_site} on each updated file
-#' individually. This provides all the website styling specified in
-#' \code{_site.yml} (which you would lose if you ran \code{rmarkdown::render})
-#' without re-building the entire site (which would happen if you ran
-#' \code{rmarkdown::render_site with no arguments}).
-#'
-#' To include R Markdown files in your workflowr project that are not included
-#' as part of the website, you have multiple options: 1) Prepend an underscore
-#' to the filename, 2) move them to a subdirectory within the analysis
-#' directory, or 3) move them to another directory at the root of your project.
-#'
-#' @param all logical indicating if every R Markdown file should be rendered
-#'   when building the site (default: FALSE).
-#' @param files R Markdown files to be rendered. The files can be specified
-#'   using the path or just the basename (default: NULL).
-#' @param dry_run Identifies R Markdown files that have been updated, but does
-#'   not render them.
-#' @param path By default the function assumes the current working directory is
-#'   within the project. If this is not true, you'll need to provide the path to
-#'   the project directory.
-#' @param ... Additional arguments that can be passed to
-#'   \code{rmarkdown::render_site}. Should only be needed for testing potential
-#'   changes. Any permanent settings should be specified in
-#'   \code{analysis/_site.yml}.
-#'
-#' @return If \code{dry_run = TRUE}, returns the character vector of R Markdown
-#'   files that would be rendered. Otherwise invisibly returns this vector.
-#'
-#' @examples
-#' \dontrun{
-#' # View the files that would be rendered
-#' wflow_build(dry_run = TRUE)
-#' # Render all modified files
-#' wflow_build()
-#' # Render all files
-#' wflow_build(all = TRUE)
-#' # Render specific files
-#' wflow_build(files = c("one.Rmd", "two.Rmd"))
-#' }
-#' @import rmarkdown
 #' @export
-wflow_build <- function(all = FALSE, files = NULL, dry_run = FALSE,
-                        path = ".", ...) {
-  stopifnot(is.logical(all),
-            is.null(files) | is.character(files),
-            is.logical(dry_run),
-            is.character(path))
-  analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
-  stopifnot(dir.exists(analysis_dir))
-
-  if (all | is.null(files)) {
-    # Gather Rmd files (any file starting with _ is ignored)
-    rmd_files <- list.files(path = analysis_dir, pattern = "^[^_].*Rmd$",
-                            full.names = TRUE)
-  } else {
-    rmd_files <- file.path(analysis_dir, basename(files))
-    stopifnot(file.exists(rmd_files), grepl("Rmd$", rmd_files))
+print.wflow_build <- function(x, ...) {
+  cat("wflow_build\n\n")
+  cat("Settings:\n")
+  cat("seed:", x$seed)
+  if (x$make) cat(", make: TRUE")
+  if (x$update) cat(", update: TRUE")
+  if (x$republish) cat(", republish: TRUE")
+  cat("\n\n")
+  if (x$dry_run & x$local) {
+    cat(wrap("The following would be built locally in the current R session:"),
+        "\n\n")
+  } else if (!x$dry_run & x$local) {
+    cat(wrap("The following were built locally in the current R session:"),
+        "\n\n")
+  } else if (x$dry_run & !x$local) {
+    cat(wrap("The following would be built externally each in their own fresh R session:"),
+        "\n\n")
+  } else if (!x$dry_run & !x$local) {
+    cat(wrap("The following were built externally each in their own fresh R session:"),
+        "\n\n")
+  }
+  cat(x$built, sep = "\n")
+  if (!x$dry_run & !x$local) {
+    cat("\n")
+    cat(wrap(sprintf("Log files saved in %s", x$log_dir)))
   }
 
-  if (all | !is.null(files)) {
-    files_to_update <- rmd_files
-  } else {
-    files_to_update <- return_modified_rmd(rmd_files)
-  }
-
-  # Render the updated R Markdown files
-  if (length(files_to_update) == 0) {
-    message("All HTML files have been rendered")
-  } else if (dry_run) {
-    message("The following R Markdown files would be rendered:")
-    return(files_to_update)
-  } else {
-    for (f in files_to_update) {
-      cat(sprintf("\n\nRendering %s\n\n", f))
-      rmarkdown::render_site(f, envir = new.env(), ...)
-    }
-  }
-
-  return(invisible(files_to_update))
+  return(invisible(x))
 }
 
 # Return the R Markdown files which have been modified more recently than their

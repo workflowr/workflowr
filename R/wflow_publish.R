@@ -7,12 +7,12 @@
 #' file is created by the latest version of the R Markdown file, which is
 #' critical for reproducibility.
 #'
-#' @inheritParams wflow_commit_
-#' @inheritParams wflow_build_
+#' @inheritParams wflow_commit
+#' @inheritParams wflow_build
 #'
 #' @return Invisibly returns the full path to the R Markdown file(s).
 #'
-#' @seealso \code{\link{wflow_commit_}}, \code{\link{wflow_build_}}
+#' @seealso \code{\link{wflow_commit}}, \code{\link{wflow_build}}
 #'
 #' @examples
 #' \dontrun{

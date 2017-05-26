@@ -2,63 +2,96 @@
 % Please edit documentation in R/wflow_build.R
 \name{wflow_build}
 \alias{wflow_build}
-\title{Build the website}
+\title{Build the site}
 \usage{
-wflow_build(all = FALSE, files = NULL, dry_run = FALSE, path = ".", ...)
+wflow_build(files = NULL, make = is.null(files), update = FALSE,
+  republish = FALSE, seed = 12345, log_dir = NULL, local = FALSE,
+  dry_run = FALSE, project = ".")
 }
 \arguments{
-\item{all}{logical indicating if every R Markdown file should be rendered
-when building the site (default: FALSE).}
+\item{files}{character (default: NULL). Files to build. Supports file
+extensions Rmd, rmd, and md. Only files in the analysis directory are
+allowed (and therefore any path to a file is ignored).}
 
-\item{files}{R Markdown files to be rendered. The files can be specified
-using the path or just the basename (default: NULL).}
+\item{make}{logical (default: \code{is.null(files)}). Use Make-like behavior,
+i.e. build the files that have been updated more recently than their
+corresponding HTML files. This is the default action if no files are
+specified.}
 
-\item{dry_run}{Identifies R Markdown files that have been updated, but does
-not render them.}
+\item{update}{logical (default: FALSE). Build the files that have been
+committed more recently than their corresponding HTML files (and do not
+have any unstaged or staged changes). This ensures that the commit version
+ID inserted into the HTML corresponds to the exact version of the source
+file that was used to produce it.}
 
-\item{path}{By default the function assumes the current working directory is
-within the project. If this is not true, you'll need to provide the path to
-the project directory.}
+\item{republish}{logical (default: FALSE). Build all published R Markdown
+files. Useful for site-wide changes like updating the theme, navigation
+bar, or any other setting in \code{_site.yml}.}
 
-\item{...}{Additional arguments that can be passed to
-\code{rmarkdown::render_site}. Should only be needed for testing potential
-changes. Any permanent settings should be specified in
-\code{analysis/_site.yml}.}
+\item{seed}{numeric (default: 12345). The seed to set before building each
+file. Passed to \code{\link{set.seed}}.}
+
+\item{log_dir}{character (default: NULL). The directory to save log files
+from building files. It will be created if necessary and ignored if
+\code{local = TRUE}. The default is to create a directory in \code{/tmp}.}
+
+\item{local}{logical (default: FALSE). Build files locally in the R console.
+This should only be used for debugging purposes. The default is to build
+each file in its own separate fresh R process to ensure each file is
+reproducible in isolation.}
+
+\item{dry_run}{logical (default: FALSE). Preview the files to be built, but
+do not actually build them.}
+
+\item{project}{character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.}
 }
 \value{
-If \code{dry_run = TRUE}, returns the character vector of R Markdown
-  files that would be rendered. Otherwise invisibly returns this vector.
+An object of class \code{wflow_publish}.
 }
 \description{
-\code{wflow_build} builds the website by rendering the R Markdown files in
-the analysis directory and saving them to \code{docs/}. By default it only
-renders the R Markdown files that have been modified more recently than their
-corresponding HTML file (similar to a Makefile). To render every single page
-(e.g. to change the theme across the entire site), set \code{all = TRUE}. To
-render specific R Markdown files, pass them as a vector to the argument
-\code{files}.
+\code{wflow_build} builds the website from the files in the analysis
+directory. This is intended to be used when developing your code to preview
+the changes. When you are ready to commit the files, use
+\code{\link{wflow_publish}}.
 }
 \details{
-Under the hood, this runs \code{rmarkdown::render_site} on each updated file
-individually. This provides all the website styling specified in
-\code{_site.yml} (which you would lose if you ran \code{rmarkdown::render})
-without re-building the entire site (which would happen if you ran
-\code{rmarkdown::render_site with no arguments}).
+\code{wflow_build} has multiple, non-mutually exclusive options for deciding
+which files to build:
 
-To include R Markdown files in your workflowr project that are not included
-as part of the website, you have multiple options: 1) Prepend an underscore
-to the filename, 2) move them to a subdirectory within the analysis
-directory, or 3) move them to another directory at the root of your project.
+\itemize{
+
+\item Files specified via the argument \code{files} are always built.
+
+\item If \code{make = TRUE}, all files which have been modified more recently
+than their corresponding HTML files will be built.
+
+\item If \code{update = TRUE}, all files which have been committed more
+recently than their corresponding HTML files will be built. However, files
+which currently have staged or unstaged changes will be ignored.
+
+\item If \code{republish = TRUE}, all published files will be rebuilt.
+
+}
+
+Under the hood, \code{wflow_build} is a wrapper for
+\code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
 }
 \examples{
 \dontrun{
-# View the files that would be rendered
-wflow_build(dry_run = TRUE)
-# Render all modified files
-wflow_build()
-# Render all files
-wflow_build(all = TRUE)
-# Render specific files
-wflow_build(files = c("one.Rmd", "two.Rmd"))
+
+# Build all files
+wflow_build() # equivalent to wflow_build(make = TRUE)
+# Build a single file
+wflow_build("file.Rmd")
+# Build multiple files
+wflow_build(c("file1.Rmd", "file2.Rmd"))
+# Build every file
+wflow_build(republish = TRUE)
 }
+
+}
+\seealso{
+\code{\link{wflow_publish}}
 }

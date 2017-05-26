@@ -19,7 +19,7 @@
 #' # single file
 #' wflow_publish("analysis/file.Rmd")
 #' # All tracked files that have been updated
-#' wflow_publish()
+#' wflow_publish(all = TRUE)
 #' # A new file plus all tracked files that have been updated
 #' wflow_publish("analysis/file.Rmd", all = TRUE)
 #' # Multiple files
@@ -30,12 +30,12 @@
 #' }
 #'
 #' @import rmarkdown
-#'
+#' @export
 wflow_publish <- function(
   # args to wflow_commit
   files = NULL,
   message = NULL,
-  all = is.null(files),
+  all = FALSE,
   force = FALSE,
   # args to wflow_build
   update = FALSE,
@@ -57,11 +57,12 @@ wflow_publish <- function(
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
+    # Change filepaths to relative paths
+    files <- sapply(files, relpath)
   }
 
   if (is.null(message)) {
-    function_call <- sys.call()
-    message <- utils::capture.output(function_call)
+    message <- deparse(sys.call())
   } else if (is.character(message)) {
     message <- wrap(paste(message, collapse = " "))
   } else {
@@ -93,14 +94,41 @@ wflow_publish <- function(
     stop("project must be a one-element character vector")
   }
 
+  # Assess project status ------------------------------------------------------
+
+  s <- wflow_status(project = project)
+  r <- git2r::repository(path = s$git)
+  commit_current <- git2r::commits(r, n = 1)[[1]]
+
   # Step 1: Commit analysis files ----------------------------------------------
 
-  if (dry_run)
-    message("Stage 1: Commit analysis files")
+  # Decide if wflow_commit should be run. At least one of the following
+  # conditions must be true:
+  #
+  # 1) Rmd files were specified and at least one has unstaged/staged changes
+  #
+  # 2) `all == TRUE` and at least one tracked file as unstaged/staged changes
+  #
+  # 3) At least one non-Rmd file was specified
+  scenario1 <- !is.null(files) &&
+    any(unlist(s$status[files, c("mod_unstaged", "mod_staged")]),
+        na.rm = TRUE)
+  scenario2 <- all &&
+    any(unlist(s$status[s$status$tracked, c("mod_unstaged", "mod_staged")]),
+        na.rm = TRUE)
+  scenario3 <- !is.null(files) &&
+    any(!(files %in% rownames(s$status)))
 
-  f_committed <- wflow_commit_(files = files, message = message,
-                               all = all, force = force,
-                               dry_run = dry_run, project = project)
+  if (scenario1 || scenario2 || scenario3) {
+    step1 <- wflow_commit(files = files, message = message,
+                          all = all, force = force,
+                          dry_run = dry_run, project = project)
+    # If subsequent steps fail, undo this action by resetting the Git repo to
+    # its initial state.
+    on.exit(git2r::reset(commit_current, reset_type = "mixed"), add = TRUE)
+  } else {
+    step1 <- NULL
+  }
 
   # Step 2: Build HTML files----------------------------------------------------
 
@@ -121,5 +149,26 @@ wflow_publish <- function(
                                     dry_run = dry_run, project = project)
   f_committed_all <- sort(c(f_committed, f_committed_site))
 
-  return(invisible(f_committed_all))
+  o <- list(step1)
+  class(o) <- "wflow_publish"
+
+  # If everything worked, erase the on.exit code that would have reset
+  # everything.
+  on.exit()
+
+  return(o)
+}
+
+#' @export
+print.wflow_publish <- function(x, ...) {
+  cat("wflow_publish\n\n")
+
+  cat("Step 1: Commit files\n\n")
+  if (is.null(x$step1)) {
+    cat("No files to commit\n\n")
+  } else {
+    print(x$step1)
+  }
+
+  return(invisible(x))
 }

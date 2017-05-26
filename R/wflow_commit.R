@@ -41,7 +41,7 @@
 #' @return An object of class \code{wflow_commit}, which is a list with the
 #'   following elements:
 #'
-#' \itemize {
+#' \itemize{
 #'
 #' \item \bold{files}: The input argument \code{files}.
 #'
@@ -85,6 +85,8 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
+    # Change filepaths to relative paths
+    files <- sapply(files, relpath)
   }
 
   if (is.null(message)) {

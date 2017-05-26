@@ -30,7 +30,7 @@ you'll need to provide the path to the project directory.}
 An object of class \code{wflow_commit}, which is a list with the
   following elements:
 
-\itemize {
+\itemize{
 
 \item \bold{files}: The input argument \code{files}.
 

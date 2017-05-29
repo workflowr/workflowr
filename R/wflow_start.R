@@ -112,6 +112,16 @@ wflow_start <- function(directory,
   file.copy(from = paste0(infrastructure_path, "/."), to = directory,
             overwrite = overwrite, recursive = TRUE)
 
+  # Create docs/ directory
+  dir.create(file.path(directory, "docs"), showWarnings = FALSE)
+
+  # Create .nojekyll files in analysis/ and docs/ directories
+  nojekyll_analysis <- file.path(directory, "analysis", ".nojekyll")
+  file.create(nojekyll_analysis)
+  nojekyll_docs <- file.path(directory, "docs", ".nojekyll")
+  file.create(nojekyll_docs)
+  project_files <- c(project_files, nojekyll_analysis, nojekyll_docs)
+
   # Add project name to YAML file
   yml_template <- readLines(file.path(directory, "analysis/_site.yml"))
   writeLines(whisker::whisker.render(yml_template, list(name = name)),

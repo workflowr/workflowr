@@ -100,7 +100,7 @@ ls_files <- function (tree) {
   return(out)
 }
 
-# Get the files that have been committed to the repsitory more recently than
+# Get the files that have been committed to the repository more recently than
 # their corresponding HTML files.
 #
 # repo: git_repository object

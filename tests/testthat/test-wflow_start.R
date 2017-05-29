@@ -61,7 +61,31 @@ test_that("wflow_start accepts custom name", {
   unlink(site_dir, recursive = TRUE)
 })
 
-test_that("wflow_start git = FALSE removes all Git files", {
+test_that("wflow_start creates docs/ directories and .nojekyll files", {
+
+  # start project in a tempdir
+  site_dir <- tempfile()
+  capture.output(wflow_start(site_dir, change_wd = FALSE))
+
+  expect_true(dir.exists(file.path(site_dir, "docs")))
+  expect_true(file.exists(file.path(site_dir, "docs", ".nojekyll")))
+  expect_true(file.exists(file.path(site_dir, "analysis", ".nojekyll")))
+
+  unlink(site_dir, recursive = TRUE)
+})
+
+test_that("wflow_start creates Git infrastructure by default", {
+
+  # start project in a tempdir
+  site_dir <- tempfile()
+  capture.output(wflow_start(site_dir, change_wd = FALSE))
+  for (f in git_files) {
+    expect_true(file.exists(file.path(site_dir, f)))
+  }
+  unlink(site_dir, recursive = TRUE)
+})
+
+test_that("wflow_start git = FALSE removes only the Git files", {
 
   # start project in a tempdir
   site_dir <- tempfile()
@@ -77,6 +101,28 @@ test_that("wflow_start git = FALSE removes all Git files", {
   for (f in git_files) {
     expect_false(file.exists(file.path(site_dir, f)))
   }
+  unlink(site_dir, recursive = TRUE)
+})
+
+test_that("wflow_start commits all the project files", {
+
+  # start project in a tempdir
+  site_dir <- tempfile()
+  capture.output(wflow_start(site_dir, change_wd = FALSE))
+
+  r <- git2r::repository(site_dir)
+  committed <- get_committed_files(r)
+
+  for (f in project_files) {
+    expect_true(f %in% committed)
+  }
+  # Rproj file
+  expect_true(paste0(basename(site_dir), ".Rproj") %in% committed)
+  # hidden files
+  expect_true(".gitignore" %in% committed)
+  expect_true("analysis/.nojekyll" %in% committed)
+  expect_true("docs/.nojekyll" %in% committed)
+
   unlink(site_dir, recursive = TRUE)
 })
 

@@ -188,7 +188,11 @@ wflow_publish <- function(
     dir_figure <- file.path(s2$docs, "figure", basename(step2$built))
     files_to_commit <- c(step2$html, dir_figure, site_libs)
 
-    step3 <- wflow_commit(files = files_to_commit, message = "Build site.",
+    # Call directly to internal function `wflow_commit_` to bypass input checks.
+    # In a dry run, some files may not actually exist yet. Also, not every Rmd
+    # file creates figures, but it's easier to just attempt to add figures for
+    # every file.
+    step3 <- wflow_commit_(files = files_to_commit, message = "Build site.",
                           all = FALSE, force = force,
                           dry_run = dry_run, project = project)
   } else {

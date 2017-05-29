@@ -133,6 +133,21 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
       commandline if you really want to commit these files."))
   }
 
+  wflow_commit_(files = files, message = message, all = all,
+                force = force, dry_run = dry_run, project = project)
+}
+
+# Internal function that performs add/commit. Called by wflow_commit.
+#
+# The primary motivation for having a separate internal function that is called
+# by the user facing `wflow_commit` is so that `wflow_publish` can bypass the
+# input checks in order to run Step 3 to publish the website files. In a dry
+# run, some of the files may not yet be built (which would cause an error).
+# Also, not every Rmd file will create output figures, but it's easier to just
+# attempt to add figures for every file.
+wflow_commit_ <- function(files = files, message = message, all = all,
+                          force = force, dry_run = dry_run, project = project) {
+
   # Obtain workflowr paths
   p <- wflow_paths(error_git = TRUE, project = project)
 
@@ -153,7 +168,7 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
         } else {
           reason <- "Commit failed for unknown reason."
         }
-        stop(wrap(reason, "Any untracked files must manually specified even if
+        stop(wrap(reason, " Any untracked files must manually specified even if
                   `all = TRUE`.\n\n"), call. = FALSE)
       }
     )

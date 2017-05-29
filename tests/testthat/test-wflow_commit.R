@@ -1,129 +1,94 @@
 context("wflow_commit")
 
-# Test wflow_commit when used to for all commit actions, i.e. both source and
-# website files.
+# Setup -----------------------------------------------------------------------
 
 library("git2r")
-
 # start project in a tempdir
-site_dir <- tempfile("test-commit-auto-git-")
+site_dir <- tempfile("test-wflow_commit-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+on.exit(unlink(site_dir, recursive = TRUE))
 r <- repository(path = site_dir)
 
-# Commit the site so that original Rmd files are already built
-suppressMessages(wflow_commit(path = site_dir))
+# Test wflow_commit ------------------------------------------------------------
 
-# Test that commit_site can commit a file and then commit site
-
-# Create some fake R Markdown files
-# Unfortunately cannot use wflow_open here b/c of devtools
-test_rmd <- file.path(site_dir, paste0("analysis/", 1:3, ".Rmd"))
-for (i in 1:3) {
-  file.copy("files/workflowr-template.Rmd", test_rmd[i])
-}
-# Expected html files
-test_html <- stringr::str_replace(test_rmd, "Rmd$", "html")
-test_html <- stringr::str_replace(test_html, "/analysis/", "/docs/")
-
-test_that("commit_site can commit one file and then commit site", {
-  expect_message(dry_run_files <- wflow_commit(commit_files = test_rmd[1],
-                                               dry_run = TRUE, path = site_dir),
-                 "You are planning to commit the following files before building the site:")
-  expect_identical(dry_run_files, character(0))
-  output <- capture_messages(built_files <- wflow_commit(
-    commit_files = test_rmd[1],
-    path = site_dir))
-  expect_identical(test_rmd[1], built_files)
-  expect_identical(basename(test_rmd[1]),
-                   stringr::str_split(output[output != ""], " ",
-                                      simplify = TRUE)[, 2] %>%
-    stringr::str_replace_all(., "\n", ""))
-  expect_true(all(file.exists(test_html[1])))
-  log <- commits(r)
-  expect_identical(log[[1]]@message, "Build site.")
-  expect_identical(log[[2]]@message, "Files commited by wflow_commit.")
+test_that("wflow_commit can commit one new file", {
+  f1 <- file.path(site_dir, "f1.txt")
+  file.create(f1)
+  expect_silent(actual <- wflow_commit(f1, project = site_dir))
+  expect_true(f1 %in% normalizePath(actual$commit_files))
+  recent <- commits(r, n = 1)[[1]]
+  expect_identical(actual$commit@sha, recent@sha)
 })
 
-test_that("commit_site can commit multiple files and then commit site", {
-  expect_message(dry_run_files <- wflow_commit(commit_files = test_rmd[2:3],
-                                               dry_run = TRUE, path = site_dir),
-                 "You are planning to commit the following files before building the site:")
-  expect_identical(dry_run_files, character(0))
-  output <- capture_messages(built_files <- wflow_commit(
-    commit_files = test_rmd[2:3],
-    path = site_dir))
-  expect_identical(test_rmd[2:3], built_files)
-  expect_identical(basename(test_rmd[2:3]),
-                   stringr::str_split(output[output != ""], " ",
-                                      simplify = TRUE)[, 2] %>%
-                   stringr::str_replace_all(., "\n", ""))
-  expect_true(all(file.exists(test_html[2:3])))
-  log <- commits(r)
-  expect_identical(log[[1]]@message, "Build site.")
-  expect_identical(log[[2]]@message, "Files commited by wflow_commit.")
+test_that("wflow_commit can commit multiple new files", {
+  f2 <- file.path(site_dir, "f2.txt")
+  f3 <- file.path(site_dir, "f3.txt")
+  file.create(f2, f3)
+  expect_silent(actual <- wflow_commit(c(f2, f3), project = site_dir))
+  expect_identical(normalizePath(actual$commit_files), c(f2, f3))
+  recent <- commits(r, n = 1)[[1]]
+  expect_identical(actual$commit@sha, recent@sha)
 })
 
-test_that("commit_site does not commit files that have not changed", {
-  expect_message(dry_run_files <- wflow_commit(commit_files = test_rmd[2:3],
-                                               dry_run = TRUE, path = site_dir),
-                 "You are planning to commit the following files before building the site:")
-  expect_identical(dry_run_files, character(0))
-  last_commit_pre <- commits(r)[[1]]@sha
-  expect_warning(output <- capture_messages(
-    built_files <- wflow_commit(commit_files = test_rmd[2:3], path = site_dir)),
-    "None of the commit_files provided were committed, presumably because they have not been updated.")
-  expect_identical(character(0), built_files)
-  expect_identical(output, "Everything up-to-date\n")
-  last_commit_post <- commits(r)[[1]]@sha
-  expect_identical(last_commit_pre, last_commit_post)
+test_that("wflow_commit creates a commit message", {
+  o <- wflow_commit(all = TRUE, dry_run = TRUE, project = site_dir)
+  expect_identical(o$message,
+                   "wflow_commit(all = TRUE, dry_run = TRUE, project = site_dir)")
+
+  o <- wflow_commit(message = c("a", "b", "c"),
+                    all = TRUE, dry_run = TRUE, project = site_dir)
+  expect_identical(o$message, "a b c")
+
+  o <- wflow_commit(message = "Example commit message",
+                    all = TRUE, dry_run = TRUE, project = site_dir)
+  expect_identical(o$message, "Example commit message")
 })
 
-# Test `all = TRUE`
+# This currently fails. `git2r::commit` with `all = TRUE` only commits the
+# the first tracked file.
 #
-# Create a file and commit it. This will change the most recent commit SHA1.
-# Then run wflow_commit(all = TRUE). All the HTML files should be re-built, and
-# they should all be committed because they'll have a new SHA1 at the top.
-new_file <- file.path(site_dir, "code", "script.R")
-file.create(new_file)
-all_rmd <- list.files(path = file.path(site_dir, "analysis"),
-                      pattern = "^[^_].*Rmd$",
-                      full.names = TRUE)
-all_html <- stringr::str_replace(all_rmd, "Rmd$", "html")
-all_html <- stringr::str_replace(all_html, "/analysis/", "/docs/")
-
-test_that("commit_site can re-build all files and then commit site", {
-  expect_message(dry_run_files <- wflow_commit(all = TRUE,
-                                               commit_files = new_file,
-                                               dry_run = TRUE, path = site_dir),
-                 "You are planning to commit the following files before building the site:")
-  expect_identical(dry_run_files, all_rmd)
-  output <- capture_messages(
-    built_files <-
-      wflow_commit(all = TRUE, commit_files = new_file, path = site_dir))
-  expect_identical(built_files, all_rmd)
-  expect_identical(basename(all_rmd),
-                   stringr::str_split(output[output != ""], " ",
-                                      simplify = TRUE)[, 2] %>%
-                     stringr::str_replace_all(., "\n", ""))
-  expect_true(all(file.exists(all_html)))
-  log <- commits(r)
-  expect_identical(log[[1]]@message, "Build site.")
-  expect_identical(log[[2]]@message, "Files commited by wflow_commit.")
-  # Only the specified file should be in penultimate commit
-  files_penultimate <- workflowr:::obtain_files_in_commit(r, log[[2]])
-  files_penultimate <- file.path(site_dir, files_penultimate)
-  expect_identical(new_file, files_penultimate)
-  # Only the analysis HTML (which have the SHA1) should be in ultimate commit,
-  # not pages like about.html.
-  files_ultimate <- workflowr:::obtain_files_in_commit(r, log[[1]])
-  files_ultimate <- file.path(site_dir, files_ultimate)
-  expect_identical(test_html, files_ultimate)
-  # All these files should have the penultimate commit ID inserted
-  commit_penultimate <- extract_commit(path = site_dir, num = 2)$sha1
-  for (html in test_html) {
-    lines <- readLines(html)
-    expect_true(any(grepl(commit_penultimate, lines)))
-  }
+# https://github.com/ropensci/git2r/pull/283
+test_that("wflow_commit can commit all tracked files", {
+  tracked <- file.path(site_dir, "analysis",
+                       c("about.Rmd", "index.Rmd", "license.Rmd"))
+  for (f in tracked)
+    cat("edit", file = f, append = TRUE)
+  expect_silent(actual <- wflow_commit(all = TRUE, project = site_dir))
+  expect_identical(normalizePath(actual$commit_files), tracked)
+  recent <- commits(r, n = 1)[[1]]
+  expect_identical(actual$commit@sha, recent@sha)
 })
 
-unlink(site_dir, recursive = TRUE)
+test_that("wflow_commit does not affect Git repo if `dry_run = TRUE`", {
+  before <- commits(r, n = 1)[[1]]
+  tmp_file <- file.path(site_dir, "tmp.txt")
+  file.create(tmp_file)
+  on.exit(file.remove(tmp_file))
+  expect_silent(wflow_commit(files = tmp_file, dry_run = TRUE,
+                             project = site_dir))
+  after <- commits(r, n = 1)[[1]]
+  expect_identical(after, before)
+})
+
+# Test error handling ----------------------------------------------------------
+
+test_that("wflow_commit fails with invalid argument for files", {
+  expect_error(wflow_commit(files = 1, project = site_dir),
+               "files must be NULL or a character vector of filenames")
+  expect_error(wflow_commit(files = "nonexistent.Rmd", project = site_dir),
+               "Not all files exist. Check the paths to the files")
+})
+
+test_that("wflow_commit fails if no files and `all = FALSE`", {
+  expect_error(wflow_commit(files = NULL, all = FALSE, project = site_dir),
+               "Must specify files to commit, set `all = TRUE`, or both")
+  # And that should be the default
+  expect_error(wflow_commit(project = site_dir),
+               "Must specify files to commit, set `all = TRUE`, or both")
+})
+
+test_that("wflow_commit provides interpretable error message if commit fails", {
+  expect_error(wflow_commit(files = file.path(site_dir, "analysis", "about.Rmd"),
+                            project = site_dir),
+               "Commit failed because no files were added.")
+})

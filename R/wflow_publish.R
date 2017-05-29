@@ -63,6 +63,7 @@ wflow_publish <- function(
 
   if (is.null(message)) {
     message <- deparse(sys.call())
+    message <- paste(message, collapse = "\n")
   } else if (is.character(message)) {
     message <- wrap(paste(message, collapse = " "))
   } else {

@@ -91,6 +91,7 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
 
   if (is.null(message)) {
     message <- deparse(sys.call())
+    message <- paste(message, collapse = "\n")
   } else if (is.character(message)) {
     message <- wrap(paste(message, collapse = " "))
   } else {
@@ -169,7 +170,7 @@ wflow_commit_ <- function(files = files, message = message, all = all,
           reason <- "Commit failed for unknown reason."
         }
         stop(wrap(reason, " Any untracked files must manually specified even if
-                  `all = TRUE`.\n\n"), call. = FALSE)
+                  `all = TRUE`."), call. = FALSE)
       }
     )
   }

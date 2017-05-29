@@ -164,14 +164,16 @@ wflow_publish <- function(
                                               format(Sys.time(),
                                                      "%Y-%m-%d-%Hh-%Mm-%Ss")))
     dir.create(docs_backup)
-    file.copy(from = s1$docs, to = docs_backup, recursive = TRUE)
+    file.copy(from = file.path(s1$docs, "."), to = docs_backup,
+              recursive = TRUE, copy.date = TRUE)
     step2 <- wflow_build(files = files_to_build, make = FALSE,
                           update = update, republish = republish,
                           local = FALSE, dry_run = dry_run, project = project)
     # If something fails in subsequent steps, delete docs/ and restore backup
     on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
-    on.exit(file.copy(from = docs_backup, to = s1$docs, recursive = TRUE),
-            add = TRUE)
+    on.exit(dir.create(s1$docs), add = TRUE)
+    on.exit(file.copy(from = file.path(docs_backup, "."), to = s1$docs,
+                      recursive = TRUE, copy.date = TRUE), add = TRUE)
     s2 <- wflow_status(project = project)
   } else {
     step2 <- NULL

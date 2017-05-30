@@ -10,7 +10,7 @@
 #' @inheritParams wflow_commit
 #' @inheritParams wflow_build
 #'
-#' @return Invisibly returns the full path to the R Markdown file(s).
+#' @return Returns an object of class \code{wflow_publish}.
 #'
 #' @seealso \code{\link{wflow_commit}}, \code{\link{wflow_build}}
 #'
@@ -18,9 +18,9 @@
 #' \dontrun{
 #' # single file
 #' wflow_publish("analysis/file.Rmd")
-#' # All tracked files that have been updated
+#' # All tracked files that have been edited
 #' wflow_publish(all = TRUE)
-#' # A new file plus all tracked files that have been updated
+#' # A new file plus all tracked files that have been edited
 #' wflow_publish("analysis/file.Rmd", all = TRUE)
 #' # Multiple files
 #' wflow_publish(c("analysis/file.Rmd", "analysis/another.Rmd"))

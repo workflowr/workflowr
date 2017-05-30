@@ -12,7 +12,7 @@ on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
 suppressMessages(wflow_start(tmp_dir, change_wd = FALSE))
 
 # Copy test files
-file.copy("files/test-wflow_build_/.", analysis_dir, recursive = TRUE)
+file.copy("files/test-wflow_build/.", analysis_dir, recursive = TRUE)
 
 setwd(analysis_dir)
 

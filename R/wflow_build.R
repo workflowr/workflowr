@@ -171,7 +171,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   files_to_build <- files
   if (make) {
-    files_make <- return_modified_rmd(files_all)
+    files_make <- return_modified_rmd(files_all, p$docs)
     files_to_build <- union(files_to_build, files_make)
   }
 
@@ -224,6 +224,12 @@ print.wflow_build <- function(x, ...) {
   if (x$update) cat(", update: TRUE")
   if (x$republish) cat(", republish: TRUE")
   cat("\n\n")
+
+  if (length(x$built) == 0) {
+    cat(wrap("No files to build"))
+    return(invisible(x))
+  }
+
   if (x$dry_run & x$local) {
     cat(wrap("The following would be built locally in the current R session:"),
         "\n\n")
@@ -247,14 +253,13 @@ print.wflow_build <- function(x, ...) {
 }
 
 # Return the R Markdown files which have been modified more recently than their
-# corresponding HTML files in docs/.
+# corresponding HTML files.
 #
 # Input: character. path to R Markdown files in analysis directory
-return_modified_rmd <- function(rmd_files) {
+return_modified_rmd <- function(rmd_files, docs) {
 
   # Expected html files
-  html_files <- stringr::str_replace(rmd_files, "Rmd$", "html")
-  html_files <- stringr::str_replace(html_files, "/analysis/", "/docs/")
+  html_files <- to_html(rmd_files, outdir = docs)
 
   # Determine which R Markdown files have been updated and need to be rendered
   files_to_update <- character()
@@ -272,13 +277,13 @@ return_modified_rmd <- function(rmd_files) {
 }
 
 build_rmd_external <- function(rmd, seed, log_dir) {
-  if (!is.character(rmd) | length(rmd) != 1)
+  if (!(is.character(rmd) && length(rmd) == 1))
     stop("rmd must be a one element character vector")
   if (!file.exists(rmd))
     stop("rmd does not exist: ", rmd)
-  if (!is.numeric(seed) | length(seed) != 1)
+  if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
-  if (!is.character(log_dir) | length(log_dir) != 1)
+  if (!(is.character(log_dir) && length(log_dir) == 1))
     stop("log_dir must be a one element character vector")
   if (!dir.exists(log_dir)) {
     dir.create(log_dir, recursive = TRUE)
@@ -296,15 +301,24 @@ build_rmd_external <- function(rmd, seed, log_dir) {
                   args = list(rmd, seed),
                   stdout = stdout_file,
                   stderr = stderr_file),
-    error = function(e) return(FALSE)
+    error = function(e) {
+      message(wrap("Build failed. See log files for full details."))
+      message("stdout: ", stdout_file)
+      message("stderr: ", stderr_file)
+      stdout_lines <- readLines(stdout_file)
+      n <- length(stdout_lines)
+      # Print the final 10 lines of standard out to give context to error
+      cat(stdout_lines[pmax(1, n - 10):n], sep = "\n")
+      stop(e$message, call. = FALSE)
+    }
   )
-  return(result)
+  return(invisible(rmd))
 }
 
 build_rmd <- function(rmd, seed, ...) {
-  if (!is.character(rmd) || length(rmd) != 1)
+  if (!(is.character(rmd) && length(rmd) == 1))
     stop("rmd must be a one element character vector")
-  if (!is.numeric(seed) | length(seed) != 1)
+  if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
   if (!file.exists(rmd))
     stop("rmd must exist")

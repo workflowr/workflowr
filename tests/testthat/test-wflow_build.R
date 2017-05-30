@@ -45,7 +45,7 @@ test_that("wflow_build builds the specified files", {
 
 test_that("wflow_build can run in 'make' mode", {
   # Reset modifications of rmd files
-  file.create(rmd)
+  system2("touch", args = rmd)
   expect_silent(actual <- wflow_build(dry_run = TRUE, project = site_dir))
   expect_identical(actual$built, rmd)
   expect_true(actual$make)
@@ -55,9 +55,33 @@ test_that("wflow_build can run in 'make' mode", {
   expect_silent(actual <- wflow_build(project = site_dir))
   expect_identical(actual$built, character(0))
   # Reset modification of file 1 only
-  file.create(rmd[1])
+  system2("touch", args = rmd[1])
   expect_message(actual <- wflow_build(project = site_dir), rmd[1])
   expect_identical(actual$built, rmd[1])
+})
+
+# Fixed error in which 'make' didn't work with relative paths from the root
+# directory. This set of tests ensures that this won't happen again.
+test_that("wflow_build can run in 'make' mode from within project", {
+  cwd <- getwd()
+  setwd(site_dir)
+  on.exit(setwd(cwd))
+  rmd_local <- Sys.glob("analysis/*Rmd")
+  html_local <- to_html(rmd_local, outdir = "docs")
+  # Reset modifications of rmd files
+  system2("touch", args = rmd_local)
+  expect_silent(actual <- wflow_build(dry_run = TRUE))
+  expect_identical(actual$built, rmd_local)
+  expect_true(actual$make)
+  expect_message(actual <- wflow_build(), rmd_local[1])
+  expect_identical(actual$built, rmd_local)
+  # No file should be built now
+  expect_silent(actual <- wflow_build())
+  expect_identical(actual$built, character(0))
+  # Reset modification of file 1 only
+  system2("touch", args = rmd_local[1])
+  expect_message(actual <- wflow_build(), rmd_local[1])
+  expect_identical(actual$built, rmd_local[1])
 })
 
 # Publish the files

@@ -12,7 +12,7 @@ on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
 suppressMessages(wflow_start(tmp_dir, change_wd = FALSE))
 
 # Copy test files
-file.copy("files/test-wflow_build_/.", analysis_dir, recursive = TRUE)
+file.copy("files/test-wflow_build/.", analysis_dir, recursive = TRUE)
 
 # Directory to write log files
 l <- "../log"
@@ -50,14 +50,15 @@ test_that("seed is set when file is built", {
   }
 })
 
-test_that("An error returns FALSE, does not create file,
-          and logs error in error file", {
+test_that("An error stops execution, does not create file,
+          and provides informative error message", {
   on.exit(unlink(l, recursive = TRUE))
-  return_value <- build_rmd_external("error.Rmd", seed = 1, log_dir = l)
-  expect_identical(return_value, FALSE)
+  expect_error(utils::capture.output(
+    build_rmd_external("error.Rmd", seed = 1, log_dir = l)),
+               "There was an error")
   expect_false(file.exists(file.path(docs_dir, "error.html")))
-  expect_true(any(grepl("There was an error",
-              readLines(Sys.glob(file.path(l, "error.Rmd-*-err.txt"))))))
+  stderr_lines <- readLines(Sys.glob(file.path(l, "error.Rmd-*-err.txt")))
+  expect_true(any(grepl("There was an error", stderr_lines)))
 })
 
 test_that("A warning does not cause any problem", {

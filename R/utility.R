@@ -67,6 +67,31 @@ to_html <- function(files, outdir = NULL) {
   return(html)
 }
 
+# A vectorized form of relpath.
+#
+# path - a vector of paths
+#
+# start - a single starting path to be relative to
+#
+# Both path and start will be passed through normalizePath to resolve relative
+# paths to existing directories.
+relpath_vec <- function(path, start = NULL) {
+  if (!(is.character(path) & length(path) >= 1))
+    stop("path must be a character vector")
+  if (!(is.null(start) | is.character(start) & length(start) == 1))
+    stop("start must be NULL or a 1-element character vector")
+
+  p <- normalizePath(path, mustWork = FALSE)
+  if (!is.null(start)) {
+    start <- normalizePath(start, mustWork = FALSE)
+  }
+  o <- character(length = length(p))
+  for (i in seq_along(path)) {
+    o[i] <- relpath(path = p[i], start = start)
+  }
+  return(o)
+}
+
 # Return a relative version of a path
 #
 # This is a port of the Python function os.path.relpath. I couldn't find an

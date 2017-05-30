@@ -7,10 +7,8 @@ site_dir <- tempfile("test-wflow_status-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE))
-# Build site
-suppressMessages(utils::capture.output(wflow_build(path = site_dir)))
 
-# Test wflow_status --------------------------------------------------------------
+# Test wflow_status ------------------------------------------------------------
 
 s <- wflow_status(project = site_dir)
 

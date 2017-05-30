@@ -7,19 +7,19 @@ site_dir <- tempfile("test-wflow_view-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE))
+p <- wflow_paths(project = site_dir)
 
 # Create some fake R Markdown files
 # Unfortunately cannot use wflow_open here b/c of devtools
-test_rmd <- file.path(site_dir, paste0("analysis/", 1:3, ".Rmd"))
+rmd <- file.path(p$analysis, paste0(1:3, ".Rmd"))
 for (i in 1:3) {
-  file.copy("files/workflowr-template.Rmd", test_rmd[i])
+  file.copy("files/workflowr-template.Rmd", rmd[i])
 }
 # Expected html files
-test_html <- stringr::str_replace(test_rmd, "Rmd$", "html")
-test_html <- stringr::str_replace(test_html, "/analysis/", "/docs/")
+html <- to_html(rmd, outdir = p$docs)
 
 # Build the site
-capture.output(wflow_build(path = site_dir, quiet = TRUE))
+suppressMessages(wflow_build(project = site_dir))
 
 # Test wflow_view --------------------------------------------------------------
 
@@ -30,8 +30,8 @@ test_that("wflow_view opens docs/index.html by default.", {
 })
 
 test_that("wflow_view can open most recently built HTML file.", {
-  capture.output(wflow_build(files = "about.Rmd", path = site_dir, quiet = TRUE))
-  expected <- file.path(site_dir, "docs/about.html")
+  suppressMessages(wflow_build(rmd[1], project = site_dir))
+  expected <- normalizePath(html[1])
   actual <- wflow_view(recent = TRUE, dry_run = TRUE, path = site_dir)
   expect_identical(actual, expected)
 })

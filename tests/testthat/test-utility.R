@@ -146,3 +146,31 @@ test_that("relpath thows error for tilde", {
   expect_error(relpath("/path", "~/path"),
                "No tilde allowed in path or start")
 })
+
+# Test relpath_vec -------------------------------------------------------------
+
+test_that("relpath_vec works on vector input", {
+  path = c("/test", "/test/location/subdir")
+  start = "/test/location"
+  expected <- c("..", "subdir")
+  actual <- relpath_vec(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relpath_vec works on relative paths to existing files", {
+  dir.create("x/y/z", recursive = TRUE)
+  on.exit(unlink("x", recursive = TRUE))
+  path = c("x", "x/y/z")
+  start = "./x/y"
+  expected <- c("..", "z")
+  actual <- relpath_vec(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relpath_vec is backwards compatible with relpath", {
+  path = "/test"
+  start = "/test/location"
+  expected <- ".."
+  actual <- relpath_vec(path, start)
+  expect_identical(actual, expected)
+})

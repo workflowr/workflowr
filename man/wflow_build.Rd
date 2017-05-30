@@ -48,7 +48,32 @@ current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
 }
 \value{
-An object of class \code{wflow_publish}.
+An object of class \code{wflow_build}, which is a list with the
+  following elements:
+
+ \itemize{
+
+   \item \bold{files}: The input argument \code{files}
+
+   \item \bold{make}: The input argument \code{make}
+
+   \item \bold{update}: The input argument \code{update}
+
+   \item \bold{republish}: The input argument \code{republish}
+
+   \item \bold{seed}: The input argument \code{seed}
+
+   \item \bold{log_dir}: The directory where the log files were saved
+
+   \item \bold{local}: The input argument \code{files}
+
+   \item \bold{dry_run}: The input argument \code{files}
+
+   \item \bold{built}: The relative paths to the built R Markdown files
+
+   \item \bold{html}: The relative paths to the corresponding HTML files
+
+ }
 }
 \description{
 \code{wflow_build} builds the website from the files in the analysis

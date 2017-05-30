@@ -54,7 +54,32 @@
 #'   do not actually build them.
 #' @inheritParams wflow_commit
 #'
-#' @return An object of class \code{wflow_publish}.
+#' @return An object of class \code{wflow_build}, which is a list with the
+#'   following elements:
+#'
+#'  \itemize{
+#'
+#'    \item \bold{files}: The input argument \code{files}
+#'
+#'    \item \bold{make}: The input argument \code{make}
+#'
+#'    \item \bold{update}: The input argument \code{update}
+#'
+#'    \item \bold{republish}: The input argument \code{republish}
+#'
+#'    \item \bold{seed}: The input argument \code{seed}
+#'
+#'    \item \bold{log_dir}: The directory where the log files were saved
+#'
+#'    \item \bold{local}: The input argument \code{files}
+#'
+#'    \item \bold{dry_run}: The input argument \code{files}
+#'
+#'    \item \bold{built}: The relative paths to the built R Markdown files
+#'
+#'    \item \bold{html}: The relative paths to the corresponding HTML files
+#'
+#'  }
 #'
 #' @seealso \code{\link{wflow_publish}}
 #'
@@ -87,7 +112,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
       stop("Not all files exist. Check the paths to the files")
     }
     # Change filepaths to relative paths
-    files <- sapply(normalizePath(files), relpath)
+    files <- relpath_vec(files)
   }
   ext <- tools::file_ext(files)
   ext_wrong <- !(ext %in% c("Rmd", "rmd"))
@@ -136,7 +161,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # All files to consider
   files_all <- list.files(path = p$analysis, pattern = "^.*\\.[Rr]md$",
                           full.names = TRUE)
-  files_all <- sapply(normalizePath(files_all), relpath)
+  files_all <- relpath_vec(files_all)
   if (!all(files %in% files_all))
     stop(wrap(
       "Only files in the analysis directory can be built with wflow_build. Use
@@ -168,7 +193,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!dry_run) {
     for (f in files_to_build) {
-      cat(sprintf("\n\nRendering %s\n\n", f))
+      message("Rendering ", f)
       if (local) {
         build_rmd(f, seed = seed, envir = new.env())
       } else {

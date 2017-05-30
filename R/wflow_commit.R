@@ -149,16 +149,22 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
 wflow_commit_ <- function(files = files, message = message, all = all,
                           force = force, dry_run = dry_run, project = project) {
 
-  # Obtain workflowr paths
-  p <- wflow_paths(error_git = TRUE, project = project)
+  # Obtain workflowr status
+  s <- wflow_status(project = project)
 
   # Establish connection to Git repository
-  r <- git2r::repository(p$git)
+  r <- git2r::repository(s$git)
 
   if (!dry_run) {
     # Add the specified files
     if (!is.null(files)) {
       git2r::add(r, files, force = force)
+    }
+    if (all) {
+      # Temporary fix until git2r::commit can do `git commit -a`
+      # https://github.com/ropensci/git2r/pull/283
+      tracked <- rownames(s$status)[s$status$tracked]
+      git2r::add(r, tracked)
     }
     # Commit
     tryCatch(

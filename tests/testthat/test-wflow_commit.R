@@ -44,13 +44,13 @@ test_that("wflow_commit creates a commit message", {
   expect_identical(o$message, "Example commit message")
 })
 
-# This currently fails. `git2r::commit` with `all = TRUE` only commits the
-# the first tracked file.
-#
-# https://github.com/ropensci/git2r/pull/283
 test_that("wflow_commit can commit all tracked files", {
   tracked <- file.path(site_dir, "analysis",
                        c("about.Rmd", "index.Rmd", "license.Rmd"))
+  # Create a temporary untracked file that should not be committed
+  untracked <- file.path(site_dir, "analysis", "untracked.Rmd")
+  file.create(untracked)
+  on.exit(file.remove(untracked))
   for (f in tracked)
     cat("edit", file = f, append = TRUE)
   expect_silent(actual <- wflow_commit(all = TRUE, project = site_dir))

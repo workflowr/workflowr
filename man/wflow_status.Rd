@@ -67,7 +67,8 @@ last published (i.e. \code{mod_unstaged} or \code{mod_staged} or
 \item \bold{unpublished}: The R Markdown file is tracked by Git but not
 published (i.e. the HTML has not been committed).
 
-\item \bold{new}: The R Markdown file is untracked by Git.
+\item \bold{scratch}: The R Markdown file is untracked by Git, i.e. it is
+considered a scratch file until it is committed.
 
 }
 }
@@ -86,7 +87,7 @@ since the last time the HTML was published.
 \item \bold{Unp}: Unpublished file. Any tracked file whose corresponding HTML
 is not tracked. May or may not have staged or unstaged changes.
 
-\item \bold{New}: New file. Any untracked file that is not specifically
+\item \bold{Scr}: Scratch file. Any untracked file that is not specifically
 ignored.
 
 }

@@ -110,14 +110,14 @@ wflow_publish <- function(
   # Decide if wflow_commit should be run. At least one of the following
   # scenarios must be true:
   #
-  # 1) Rmd files were specified and at least one is new (untracked) or has
+  # 1) Rmd files were specified and at least one is scratch (untracked) or has
   # unstaged/staged changes
   #
   # 2) `all == TRUE` and at least one tracked file has unstaged/staged changes
   #
   # 3) At least one non-Rmd file was specified
   scenario1 <- !is.null(files) &&
-    any(unlist(s0$status[files, c("mod_unstaged", "mod_staged", "new")]),
+    any(unlist(s0$status[files, c("mod_unstaged", "mod_staged", "scratch")]),
         na.rm = TRUE)
   scenario2 <- all &&
     any(unlist(s0$status[s0$status$tracked, c("mod_unstaged", "mod_staged")]),

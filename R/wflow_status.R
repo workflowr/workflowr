@@ -13,7 +13,7 @@
 #' \item \bold{Unp}: Unpublished file. Any tracked file whose corresponding HTML
 #' is not tracked. May or may not have staged or unstaged changes.
 #'
-#' \item \bold{New}: New file. Any untracked file that is not specifically
+#' \item \bold{Scr}: Scratch file. Any untracked file that is not specifically
 #' ignored.
 #'
 #' }
@@ -78,7 +78,8 @@
 #' \item \bold{unpublished}: The R Markdown file is tracked by Git but not
 #' published (i.e. the HTML has not been committed).
 #'
-#' \item \bold{new}: The R Markdown file is untracked by Git.
+#' \item \bold{scratch}: The R Markdown file is untracked by Git, i.e. it is
+#' considered a scratch file until it is committed.
 #'
 #' }
 #'
@@ -155,14 +156,14 @@ wflow_status <- function(files = NULL, project = ".") {
   # Unpublished file. Any tracked file whose corresponding HTML is not tracked.
   # May or may not have staged or unstaged changes.
   unpublished <- tracked & !published
-  # Status New
+  # Status Scr
   #
-  # New file. Any untracked file that is not specifically ignored.
-  new <- !tracked & !ignored
+  # Scratch file. Any untracked file that is not specifically ignored.
+  scratch <- !tracked & !ignored
 
   o$status <- data.frame(ignored, mod_unstaged, mod_staged, tracked,
                          committed, published, mod_committed, modified,
-                         unpublished, new,
+                         unpublished, scratch,
                          row.names = files_analysis)
 
   class(o) <- "wflow_status"
@@ -176,40 +177,40 @@ print.wflow_status <- function(x, ...) {
   key <- character()
 
   # Report totals
-  message(sprintf("Status of %d files\n\nTotals:", nrow(x$status)))
+  cat(sprintf("Status of %d files\n\nTotals:\n", nrow(x$status)))
   if (sum(x$status$published) > 0 & sum(x$status$modified) > 0) {
-    message(sprintf(" %d Published (%d Modified)",
-            sum(x$status$published), sum(x$status$modified)))
+    cat(sprintf(" %d Published (%d Modified)\n",
+                sum(x$status$published), sum(x$status$modified)))
     key <- c(key, "Mod = Modified")
   } else if (sum(x$status$published) > 0) {
-    message(sprintf(" %d Published", sum(x$status$published)))
+    cat(sprintf(" %d Published\n", sum(x$status$published)))
   }
   if (sum(x$status$unpublished) > 0) {
-    message(sprintf(" %d Unpublished", sum(x$status$unpublished)))
+    cat(sprintf(" %d Unpublished\n", sum(x$status$unpublished)))
     key <- c(key, "Unp = Unpublished")
   }
-  if (sum(x$status$new) > 0) {
-    message(sprintf(" %d New", sum(x$status$new)))
-    key <- c(key, "New = Untracked")
+  if (sum(x$status$scratch) > 0) {
+    cat(sprintf(" %d Scratch\n", sum(x$status$scratch)))
+    key <- c(key, "Scr = Scratch (Untracked)")
   }
 
   f <- c(rownames(x$status)[x$status$modified],
          rownames(x$status)[x$status$unpublished],
-         rownames(x$status)[x$status$new])
-  names(f) <- rep(c("Mod", "Unp", "New"),
+         rownames(x$status)[x$status$scratch])
+  names(f) <- rep(c("Mod", "Unp", "Scr"),
                   times = c(sum(x$status$modified),
                             sum(x$status$unpublished),
-                            sum(x$status$new)))
+                            sum(x$status$scratch)))
 
   if (length(f) > 0) {
-    message("\nThe following files require attention:")
+    cat("\nThe following files require attention:\n\n")
   }
   for (i in seq_along(f)) {
     o <- sprintf("%s %s\n", names(f)[i], f[i])
     cat(o)
   }
   if (length(f) == 0) {
-    message("\nFiles are up-to-date")
+    cat("\nFiles are up-to-date")
   } else {
     m <- sprintf("Key: %s
 
@@ -217,7 +218,8 @@ To publish your changes as part of your website, use `wflow_publish()`.
 
 To commit your changes without publishing them yet, use `wflow_commit()`.",
     paste(key, collapse = ", "))
-    message(wrap(m))
+    cat("\n")
+    cat(wrap(m))
   }
 
   # It's a convention for S3 print methods to invisibly return the original

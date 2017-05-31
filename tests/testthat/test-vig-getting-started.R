@@ -50,7 +50,7 @@ test_that("wflow_open sets correct working directory", {
   on.exit(setwd(cwd))
   wflow_open(files = basename(test_rmd), change_wd = TRUE,
              open_file = FALSE, path = site_dir)
-  expect_identical(getwd(), normalizePath(dirname(test_rmd)))
+  expect_identical(getwd(), file.path(site_dir, "analysis"))
 })
 
 test_that("wflow_build only builds new file", {

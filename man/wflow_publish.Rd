@@ -5,7 +5,8 @@
 \title{Publish the site}
 \usage{
 wflow_publish(files = NULL, message = NULL, all = FALSE, force = FALSE,
-  update = FALSE, republish = FALSE, dry_run = FALSE, project = ".")
+  update = FALSE, republish = FALSE, seed = 12345, dry_run = FALSE,
+  project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to be added and committed with
@@ -28,6 +29,9 @@ file that was used to produce it.}
 \item{republish}{logical (default: FALSE). Build all published R Markdown
 files. Useful for site-wide changes like updating the theme, navigation
 bar, or any other setting in \code{_site.yml}.}
+
+\item{seed}{numeric (default: 12345). The seed to set before building each
+file. Passed to \code{\link{set.seed}}.}
 
 \item{dry_run}{logical (default: FALSE). Preview the proposed action but do
 not actually add or commit any files.}

@@ -196,7 +196,7 @@ wflow_commit_ <- function(files = files, message = message, all = all,
 
 #' @export
 print.wflow_commit <- function(x, ...) {
-  cat("wflow_commit\n\n")
+  cat("Summary from wflow_commit\n\n")
   if (x$dry_run) {
     cat(wrap("The following would be attempted:"), "\n\n")
   } else {

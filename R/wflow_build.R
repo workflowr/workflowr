@@ -193,7 +193,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!dry_run) {
     for (f in files_to_build) {
-      message("Rendering ", f)
+      message("Building ", f)
       if (local) {
         build_rmd(f, seed = seed, envir = new.env())
       } else {
@@ -217,7 +217,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
 #' @export
 print.wflow_build <- function(x, ...) {
-  cat("wflow_build\n\n")
+  cat("Summary from wflow_build\n\n")
   cat("Settings:\n")
   cat("  seed:", x$seed)
   if (x$make) cat(", make: TRUE")
@@ -247,6 +247,7 @@ print.wflow_build <- function(x, ...) {
   if (!x$dry_run & !x$local) {
     cat("\n")
     cat(wrap(sprintf("Log files saved in %s", x$log_dir)))
+    cat("\n")
   }
 
   return(invisible(x))

@@ -40,6 +40,7 @@ wflow_publish <- function(
   # args to wflow_build
   update = FALSE,
   republish = FALSE,
+  seed = 12345,
   # general
   dry_run = FALSE,
   project = "."
@@ -81,6 +82,9 @@ wflow_publish <- function(
 
   if (!(is.logical(republish) && length(republish) == 1))
     stop("republish must be a one-element logical vector")
+
+  if (!(is.numeric(seed) && length(seed) == 1))
+    stop("seed must be a one element numeric vector")
 
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
@@ -168,7 +172,7 @@ wflow_publish <- function(
     file.copy(from = file.path(s1$docs, "."), to = docs_backup,
               recursive = TRUE, copy.date = TRUE)
     step2 <- wflow_build(files = files_to_build, make = FALSE,
-                          update = update, republish = republish,
+                          update = update, republish = republish, seed = seed,
                           local = FALSE, dry_run = dry_run, project = project)
     # If something fails in subsequent steps, delete docs/ and restore backup
     on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
@@ -214,7 +218,7 @@ wflow_publish <- function(
 
 #' @export
 print.wflow_publish <- function(x, ...) {
-  cat("wflow_publish\n\n")
+  cat("Summary from wflow_publish\n\n")
 
   cat("**Step 1: Commit analysis files**\n\n")
   if (is.null(x$step1)) {

@@ -7,9 +7,6 @@ site_dir <- tempfile("test-build-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 on.exit(unlink(site_dir, recursive = TRUE))
 s <- wflow_status(project = site_dir)
-# cwd <- getwd()
-# on.exit(setwd(cwd), add = TRUE)
-# setwd(s$analysis)
 
 rmd <- rownames(s$status)
 stopifnot(length(rmd) > 0)
@@ -121,4 +118,33 @@ test_that("wflow_build republish builds all published files", {
   expect_identical(actual$built, rmd)
   html_mtime_post <- file.mtime(html)
   expect_true(all(html_mtime_post > html_mtime_pre))
+})
+
+# The default is to build a file in its own separate R session to avoid
+# conflicts in the variable names and loaded packages between files. However, it
+# may be useful for debugging to build the file directly in the R console. To
+# test the difference, the file `local.Rmd` has an undefined variable, and it
+# should only be able to access it from the global environment when built
+# locally.
+test_that("wflow_build can build a file locally in the R console", {
+  file.copy(from = "files/test-wflow_build/local.Rmd",
+            to = s$analysis)
+  rmd_local <- file.path(s$analysis, "local.Rmd")
+  html_local <- to_html(rmd_local, outdir = s$docs)
+  on.exit(file.remove(rmd_local, html_local))
+  # Create a variable in the global environment
+  # https://stackoverflow.com/a/25096276/2483477
+  env <- globalenv()
+  env$global_variable <- 1
+  stopifnot(exists("global_variable", envir = env))
+  expect_error(utils::capture.output(wflow_build(rmd_local,
+                                                 project = site_dir)),
+               "object 'global_variable' not found")
+  expect_false(file.exists(html_local))
+  utils::capture.output(wflow_build(rmd_local, local = TRUE,
+                                    project = site_dir))
+  expect_true(file.exists(html_local))
+  # Remove the global variable
+  rm("global_variable", envir = env)
+  stopifnot(!exists("global_variable", envir = env))
 })

@@ -1,0 +1,10 @@
+---
+title: "Untitled"
+author: "First Last"
+date: YYYY-MM-DD
+output: html_document
+---
+
+```{r}
+global_variable
+```

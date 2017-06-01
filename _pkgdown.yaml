@@ -7,7 +7,7 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "Getting started"
-      href: articles/getting-started.html
+      href: articles/wflow-01-getting-started.html
     - text: "Vignettes"
       href: articles/index.html
     - text: "Functions"

@@ -28,6 +28,8 @@ and Git.
   \item \code{\link{wflow_publish}} - Publish analyses to include in the
   website
 
+  \item \code{\link{wflow_status}} - Report status of analysis files
+
   }
 }
 

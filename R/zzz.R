@@ -2,10 +2,11 @@
 # .onAttach & zzz.R explained: http://r-pkgs.had.co.nz/r.html#r-differences
 
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage(sprintf("This is workflowr version %s",
-                                utils::packageVersion("workflowr")))
-  packageStartupMessage("Please send bug reports and feature requests to:")
-  packageStartupMessage("https://github.com/jdblischak/workflowr/issues")
+  m <- c(sprintf("This is workflowr version %s",
+                 utils::packageVersion("workflowr")),
+         "Please send bug reports and feature requests to:",
+         "https://github.com/jdblischak/workflowr/issues")
+  packageStartupMessage(paste(m, collapse = "\n"))
 }
 
 #' workflowr: A workflow template for creating a research website
@@ -28,6 +29,8 @@
 #'
 #'   \item \code{\link{wflow_publish}} - Publish analyses to include in the
 #'   website
+#'
+#'   \item \code{\link{wflow_status}} - Report status of analysis files
 #'
 #'   }
 #'

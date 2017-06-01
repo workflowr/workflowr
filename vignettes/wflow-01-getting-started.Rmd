@@ -12,11 +12,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r chunk-options, include=FALSE}
+```{r chunk-options, cache=FALSE, include=FALSE}
 library("knitr")
-opts_chunk$set(eval = FALSE)
+.tmp <- tempfile("wflow-01-getting-started-")
+.project <- file.path(.tmp, "new-project")
+dir.create(.project, recursive = TRUE)
+opts_knit$set(root.dir = .project)
 ```
-
 
 The goal of the workflowr package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like [this][demo01].
 
@@ -62,9 +64,11 @@ the function `wflow_start`. The code below creates a directory called
 It also changes the working directory to `~/new-project` and initializes a Git
 repository with the initial commit already made.
 
-```{r start-project}
+```{r start-project, echo=3:4}
+setwd(.tmp)
+unlink(.project, recursive = TRUE)
 library("workflowr")
-wflow_start("~/new-project")
+wflow_start("new-project")
 ```
 
 If you're using RStudio, you can choose `Open Project...` and select the file 
@@ -95,7 +99,7 @@ This commands builds all the R Markdown files located in `analysis/` and saves
 the corresponding HTML files in `docs/`. To view the site, run `wflow_view`,
 which by default opens the file `docs/index.html` in your browser:
 
-```{r wflow-view}
+```{r wflow-view, eval=FALSE}
 wflow_view()
 ```
 
@@ -104,7 +108,8 @@ project. `wflow_build` only builds new or updated R Markdown files. Confirm that
 the only file to be updated is `analysis/about.Rmd` by invoking `wflow_build` as
 a dry run.
 
-```{r wflow-build-dry-run}
+```{r wflow-build-dry-run, echo=2}
+cat("describe new project\n", file = "analysis/about.Rmd", append = TRUE)
 wflow_build(dry_run = TRUE)
 ```
 
@@ -112,8 +117,17 @@ wflow_build(dry_run = TRUE)
 
 To start a new analysis, run the following command:
 
-```{r open-rmd}
+```{r create-file, include=FALSE}
+# Because devtools_shims overrides system.file, wflow_open can't work when
+# building documentation with devtools::document. Thus create a blank file so
+# that it doesn't try to copy the template via rmarkdown::draft.
+file.create("analysis/first-analysis.Rmd")
+```
+
+
+```{r open-rmd, echo=1}
 wflow_open("first-analysis.Rmd")
+setwd("..")
 ```
 
 This performs multiple actions:
@@ -177,9 +191,11 @@ top of the file to be useful, it needs to refer to the exact state of the R
 Markdown files when the HTML was rendered. To achieve this, use the command
 `wflow_commit`:
 
-```{r wflow_commit}
+```{r wflow_publish, echo=2:3}
+setwd("analysis")
 # Assuming working directory is `analysis/`. Run getwd() to confirm
-wflow_commit(commit_files = c("about.Rmd", "index.Rmd", "first-analysis.Rmd"))
+wflow_publish(c("about.Rmd", "index.Rmd", "first-analysis.Rmd"))
+setwd("..")
 ```
 
 You must provide the path to the files to be committed in your are not currently
@@ -199,8 +215,8 @@ This is the general workflow:
 The only exception to this workflow is if you are updating the aesthetics of
 your website (e.g. anytime you make edits to `_analysis/_site.yml`). In this case you'll want to update all the HTML files, regardless of whether or not their corresponding R Markdown files have been updated. To update every HTML page, run the following:
 
-```{r wflow-commit-all}
-wflow_commit(all = TRUE)
+```{r republish}
+wflow_publish(republish = TRUE, dry_run = TRUE)
 ```
 
 ## Deploy the website

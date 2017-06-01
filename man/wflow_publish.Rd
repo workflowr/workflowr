@@ -41,7 +41,21 @@ current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
 }
 \value{
-Returns an object of class \code{wflow_publish}.
+Returns an object of class \code{wflow_publish}, which is a list with
+  the following elements:
+
+  \itemize{
+
+  \item \bold{step1}: An object of class \code{wflow_commit} from the first
+  step of committing the analysis files.
+
+  \item \bold{step2}: An object of class \code{wflow_build} from the second
+  step of building the HTML files.
+
+  \item \bold{step3}: An object of class \code{wflow_commit} from the third
+  step of committing the HTML files.
+
+  }
 }
 \description{
 \code{wflow_publish} is the main workflowr function. Use it when you are
@@ -54,15 +68,20 @@ critical for reproducibility.
 \examples{
 \dontrun{
 # single file
-wflow_publish("analysis/file.Rmd")
+wflow_publish("analysis/file.Rmd", "Informative commit message")
 # All tracked files that have been edited
-wflow_publish(all = TRUE)
+wflow_publish(all = TRUE, message = "Informative commit message")
 # A new file plus all tracked files that have been edited
-wflow_publish("analysis/file.Rmd", all = TRUE)
+wflow_publish("analysis/file.Rmd", "Informative commit message", all = TRUE)
 # Multiple files
-wflow_publish(c("analysis/file.Rmd", "analysis/another.Rmd"))
+wflow_publish(c("analysis/file.Rmd", "analysis/another.Rmd"),
+              "Informative commit message")
 # All R Markdown files that start with the pattern "new_"
-wflow_publish(Sys.glob("analysis/new_*Rmd"))
+wflow_publish(Sys.glob("analysis/new_*Rmd"), "Informative commit message")
+# Republish all published files regardless of whether they have been
+# modified. Useful for changing some universal aspect of the site,
+# e.g. the theme.
+wflow_publish(republish = TRUE, message = "Informative commit message")
 
 }
 

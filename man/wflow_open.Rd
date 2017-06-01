@@ -5,16 +5,16 @@
 \title{Open R Markdown analysis file(s)}
 \usage{
 wflow_open(files, change_wd = TRUE, open_file = TRUE, standalone = FALSE,
-  path = ".")
+  project = ".")
 }
 \arguments{
-\item{files}{character. The name of the R Markdown file(s). If \code{path}
+\item{files}{character. The name of the R Markdown file(s). If \code{project}
 points to a workflowr project (or any subdirectory) the file(s) will be
-saved in the \code{analysis/} directory. Set \code{path = NULL} to override
+saved in the \code{analysis/} directory. Set \code{project = NULL} to override
 this default behavior. Files must have the extension Rmd or rmd.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
-\code{analysis/} subdirectory. If \code{path = NULL}, change working
+\code{analysis/} subdirectory. If \code{project = NULL}, change working
 directory to destination of first file in \code{files}.}
 
 \item{open_file}{logical (default: TRUE). Open the file in the RStudio
@@ -24,9 +24,9 @@ editor.}
 directly in the document to create a standalone file. Should only need to
 be used when creating files outside the context of a workflowr project.}
 
-\item{path}{character (or NULL). By default the function assumes the current
+\item{project}{character (or NULL). By default the function assumes the current
 working directory is within the project. If this is not true, you'll need
-to provide the path to the project directory. Set \code{path = NULL} if
+to provide the path to the project directory. Set \code{project = NULL} if
 running this command to create a file for a non-workflowr project.}
 }
 \value{
@@ -47,7 +47,7 @@ effects can be turned off if desired.
 If you would like to create a file using the workflowr template for an
 analysis that is not part of a workflowr project, set \code{standalone =
 TRUE} to directly embed the shared configuration chunks into the document and
-set \code{path = NULL} to prevent \code{wflow_open} from searching for an
+set \code{project = NULL} to prevent \code{wflow_open} from searching for an
 \code{analysis/} subdirectory.
 
 If you are not using RStudio and are comfortable with relative paths and
@@ -68,6 +68,6 @@ wflow_open("analysis/model-data.Rmd")
 # Multiple files
 wflow_open(c("model-data.Rmd", "another-analysis.Rmd"))
 # Use the workflowr template in a non-worklowr project
-wflow_open("model-data.Rmd", standalone = TRUE, path = NULL)
+wflow_open("model-data.Rmd", standalone = TRUE, project = NULL)
 }
 }

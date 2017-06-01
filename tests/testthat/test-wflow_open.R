@@ -45,11 +45,11 @@ test_that("wflow_open creates a new file, but does not overwrite", {
     skip("Must be run manually.")
 
   full_file_path <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
-                             path = site_dir)
+                             project = site_dir)
   expect_true(file.exists(full_file_path))
   modification_time_pre <- file.mtime(full_file_path)
   full_file_path_2 <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
-                               path = site_dir)
+                               project = site_dir)
   expect_identical(full_file_path_2, full_file_path)
   modification_time_post <- file.mtime(full_file_path)
   expect_identical(modification_time_post, modification_time_pre)
@@ -62,11 +62,11 @@ test_that("wflow_open changes the working directory", {
 
   wd_pre <- getwd()
   wflow_open("do-not-change-wd.Rmd", change_wd = FALSE, open_file = FALSE,
-           path = site_dir)
+           project = site_dir)
   wd_same <- getwd()
   expect_identical(wd_pre, wd_same)
   wflow_open("do-change-wd.Rmd", change_wd = TRUE, open_file = FALSE,
-           path = site_dir)
+           project = site_dir)
   wd_change <- getwd()
   expect_identical(wd_change, file.path(site_dir, "analysis"))
   # Cleanup
@@ -80,11 +80,11 @@ test_that("wflow_open can accept multiple files", {
 
   rmd_multi <- paste0(1:3, ".Rmd")
   full_file_path <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
-                               path = site_dir)
+                               project = site_dir)
   expect_true(all(file.exists(full_file_path)))
   modification_time_pre <- file.mtime(full_file_path)
   full_file_path_2 <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
-                                 path = site_dir)
+                                 project = site_dir)
   expect_identical(full_file_path_2, full_file_path)
   modification_time_post <- file.mtime(full_file_path)
   expect_identical(modification_time_post, modification_time_pre)
@@ -100,23 +100,23 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
                  file.path(site_dir, "code", "wrong.Rmd"))
   expect_warning(full_file_path <-
                    wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
-                               path = site_dir),
+                               project = site_dir),
                  "Input file had invalid subdirectory specified.")
   expect_true(all(file.exists(full_file_path)))
   modification_time_pre <- file.mtime(full_file_path)
   full_file_path_2 <- wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
-                                 path = site_dir)
+                                 project = site_dir)
   expect_identical(full_file_path_2, full_file_path)
   modification_time_post <- file.mtime(full_file_path)
   expect_identical(modification_time_post, modification_time_pre)
 })
 
-test_that("wflow_open can save outside of analysis/ when path = NULL", {
+test_that("wflow_open can save outside of analysis/ when project = NULL", {
 
   if (skipping)
     skip("Must be run manually.")
 
-  # When path = NULL, wflow_open will create output directories if needed, and
+  # When project = NULL, wflow_open will create output directories if needed, and
   # switches the working directory to the path of the first input file.
   cwd <- getwd()
   on.exit(setwd(cwd))
@@ -130,7 +130,7 @@ test_that("wflow_open can save outside of analysis/ when path = NULL", {
 
   expect_message(outfile <- wflow_open(c(testfile1, testfile2),
                                        change_wd = TRUE,
-                                       open_file = FALSE, path = NULL),
+                                       open_file = FALSE, project = NULL),
                  "Creating output directory ", location_nonexist,
                  "Current working directory changed to:", location_exist)
   expect_identical(outfile, c(testfile1, testfile2))
@@ -143,13 +143,13 @@ test_that("wflow_open can create a standalone version of the template", {
 
   file_standalone <- wflow_open("standalone.Rmd", change_wd = FALSE,
                                 open_file = FALSE, standalone = TRUE,
-                                path = site_dir)
+                                project = site_dir)
   lines_standalone <- readLines(file_standalone)
   expect_true("sessionInfo()" %in% lines_standalone)
 
   file_default <- wflow_open("default.Rmd", change_wd = FALSE,
                              open_file = FALSE, standalone = FALSE,
-                             path = site_dir)
+                             project = site_dir)
   lines_default <- readLines(file_default)
   expect_false("sessionInfo()" %in% lines_default)
 })
@@ -162,13 +162,13 @@ test_that("wflow_open rejects filenames without Rmd or rmd extension", {
     skip("Must be run manually.")
 
   expect_error(wflow_open("invalid-ext.md", change_wd = FALSE, open_file = FALSE,
-                          path = site_dir),
+                          project = site_dir),
                  "R Markdown files must have the extension Rmd or rmd.")
   expect_error(wflow_open("no-ext", change_wd = FALSE, open_file = FALSE,
-                            path = site_dir),
+                            project = site_dir),
                  "R Markdown files must have the extension Rmd or rmd.")
   expect_silent(wflow_open("valid-ext.Rmd", change_wd = FALSE, open_file = FALSE,
-                           path = site_dir))
+                           project = site_dir))
   expect_silent(wflow_open("valid-ext.rmd", change_wd = FALSE, open_file = FALSE,
-                           path = site_dir))
+                           project = site_dir))
 })

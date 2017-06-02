@@ -49,7 +49,7 @@ test_that("wflow_open sets correct working directory", {
   cwd <- getwd()
   on.exit(setwd(cwd))
   wflow_open(files = basename(test_rmd), change_wd = TRUE,
-             open_file = FALSE, path = site_dir)
+             open_file = FALSE, project = site_dir)
   expect_identical(getwd(), file.path(site_dir, "analysis"))
 })
 

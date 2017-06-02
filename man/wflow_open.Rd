@@ -10,11 +10,11 @@ wflow_open(files, change_wd = TRUE, open_file = TRUE, standalone = FALSE,
 \arguments{
 \item{files}{character. The name of the R Markdown file(s). If \code{project}
 points to a workflowr project (or any subdirectory) the file(s) will be
-saved in the \code{analysis/} directory. Set \code{project = NULL} to override
-this default behavior. Files must have the extension Rmd or rmd.}
+saved in the analysis directory. Set \code{project = NULL} to
+override this default behavior. Files must have the extension Rmd or rmd.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
-\code{analysis/} subdirectory. If \code{project = NULL}, change working
+analysis directory. If \code{project = NULL}, change working
 directory to destination of first file in \code{files}.}
 
 \item{open_file}{logical (default: TRUE). Open the file in the RStudio
@@ -24,36 +24,37 @@ editor.}
 directly in the document to create a standalone file. Should only need to
 be used when creating files outside the context of a workflowr project.}
 
-\item{project}{character (or NULL). By default the function assumes the current
-working directory is within the project. If this is not true, you'll need
-to provide the path to the project directory. Set \code{project = NULL} if
-running this command to create a file for a non-workflowr project.}
+\item{project}{character (or NULL). By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory. Set \code{project
+= NULL} if running this command to create a file for a non-workflowr
+project.}
 }
 \value{
-Invisibly returns the full path to the R Markdown file(s).
+Invisibly returns the relative path(s) to the R Markdown file(s).
 }
 \description{
 \code{wflow_open} opens R Markdown files in RStudio and sets the working
-directory to \code{analysis/}. If a file does not exist, it is created using
-the workflowr R Markdown template.
+directory to the analysis directory. If a file does not exist, it is created
+using the workflowr R Markdown template.
 }
 \details{
 \code{wflow_open} is a convenience function to make it easier to begin
 working, especially when starting a new analysis. It will create a new file
 if necessary using the workflowr template, set the working directory to
-\code{analysis/}, and open the file(s) in RStudio. The latter two side
+the analysis directory, and open the file(s) in RStudio. The latter two side
 effects can be turned off if desired.
 
 If you would like to create a file using the workflowr template for an
 analysis that is not part of a workflowr project, set \code{standalone =
 TRUE} to directly embed the shared configuration chunks into the document and
 set \code{project = NULL} to prevent \code{wflow_open} from searching for an
-\code{analysis/} subdirectory.
+analysis directory.
 
 If you are not using RStudio and are comfortable with relative paths and
 managing your working directory, you could instead directly use the
-underlying commands. First set the working directory to the \code{analysis/}
-subdirectory of your workflowr project. Second create the new file with
+underlying commands. First set the working directory to the analysis
+directory of your workflowr project. Second create the new file with
 \code{draft("model-data.Rmd", template = "analysis", package = "workflowr",
 edit = FALSE)}. Third open the file in your text editor.
 }

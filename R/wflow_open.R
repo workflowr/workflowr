@@ -1,46 +1,47 @@
 #' Open R Markdown analysis file(s)
 #'
 #' \code{wflow_open} opens R Markdown files in RStudio and sets the working
-#' directory to \code{analysis/}. If a file does not exist, it is created using
-#' the workflowr R Markdown template.
+#' directory to the analysis directory. If a file does not exist, it is created
+#' using the workflowr R Markdown template.
 #'
 #' \code{wflow_open} is a convenience function to make it easier to begin
 #' working, especially when starting a new analysis. It will create a new file
 #' if necessary using the workflowr template, set the working directory to
-#' \code{analysis/}, and open the file(s) in RStudio. The latter two side
+#' the analysis directory, and open the file(s) in RStudio. The latter two side
 #' effects can be turned off if desired.
 #'
 #' If you would like to create a file using the workflowr template for an
 #' analysis that is not part of a workflowr project, set \code{standalone =
 #' TRUE} to directly embed the shared configuration chunks into the document and
 #' set \code{project = NULL} to prevent \code{wflow_open} from searching for an
-#' \code{analysis/} subdirectory.
+#' analysis directory.
 #'
 #' If you are not using RStudio and are comfortable with relative paths and
 #' managing your working directory, you could instead directly use the
-#' underlying commands. First set the working directory to the \code{analysis/}
-#' subdirectory of your workflowr project. Second create the new file with
+#' underlying commands. First set the working directory to the analysis
+#' directory of your workflowr project. Second create the new file with
 #' \code{draft("model-data.Rmd", template = "analysis", package = "workflowr",
 #' edit = FALSE)}. Third open the file in your text editor.
 #'
 #' @param files character. The name of the R Markdown file(s). If \code{project}
 #'   points to a workflowr project (or any subdirectory) the file(s) will be
-#'   saved in the \code{analysis/} directory. Set \code{project = NULL} to override
-#'   this default behavior. Files must have the extension Rmd or rmd.
+#'   saved in the analysis directory. Set \code{project = NULL} to
+#'   override this default behavior. Files must have the extension Rmd or rmd.
 #' @param change_wd logical (default: TRUE). Change the working directory to the
-#'   \code{analysis/} subdirectory. If \code{project = NULL}, change working
+#'   analysis directory. If \code{project = NULL}, change working
 #'   directory to destination of first file in \code{files}.
 #' @param open_file logical (default: TRUE). Open the file in the RStudio
 #'   editor.
 #' @param standalone logical (default: FALSE). Embed the configuration chunks
 #'   directly in the document to create a standalone file. Should only need to
 #'   be used when creating files outside the context of a workflowr project.
-#' @param project character (or NULL). By default the function assumes the current
-#'   working directory is within the project. If this is not true, you'll need
-#'   to provide the path to the project directory. Set \code{project = NULL} if
-#'   running this command to create a file for a non-workflowr project.
+#' @param project character (or NULL). By default the function assumes the
+#'   current working directory is within the project. If this is not true,
+#'   you'll need to provide the path to the project directory. Set \code{project
+#'   = NULL} if running this command to create a file for a non-workflowr
+#'   project.
 #'
-#' @return Invisibly returns the full path to the R Markdown file(s).
+#' @return Invisibly returns the relative path(s) to the R Markdown file(s).
 #'
 #' @examples
 #' \dontrun{
@@ -93,7 +94,7 @@ wflow_open <- function(files,
         dir.create(fdir, recursive = TRUE)
       }
     }
-    analysis_dir <- tools::file_path_as_absolute(files_dir[1])
+    analysis_dir <- relpath_vec(files_dir[1])
   } else {
     # Confirm that project exists
     if (!dir.exists(project)) {
@@ -102,17 +103,8 @@ wflow_open <- function(files,
       project <- normalizePath(project)
     }
     # Find analysis/ subdirectory
-    root_dir <-  tryCatch(rprojroot::find_rstudio_root_file(path = project),
-                          error = function(e) return(NA))
-    if (is.na(root_dir))
-      stop("Unable to locate an Rproj file in root of the workflowr project.\n",
-           "Set `project = NULL` if this is a non-workflowr project.\n",
-           "Input path: ", project)
-    analysis_dir <- file.path(root_dir, "analysis")
-    if (!dir.exists(analysis_dir))
-      stop("Unable to locate the analysis/ subdirectory.\n",
-           "Set `project = NULL` if this is a non-workflowr project.\n",
-           "Input path: ", project)
+    p <- wflow_paths(project = project)
+    analysis_dir <- p$analysis
     # Set path to analysis/ for all files
     files_base <- basename(files)
     rmd_files <- file.path(analysis_dir, files_base)
@@ -144,13 +136,10 @@ wflow_open <- function(files,
 
   # Change the working directory
   current_wd <- getwd()
-  if (change_wd & current_wd == analysis_dir) {
-    message("Current working directory not changed. Already set to:")
-    message(analysis_dir)
-  } else if (change_wd) {
+  if (change_wd & current_wd != normalizePath(analysis_dir)) {
+    rmd_files <- relpath_vec(rmd_files, start = analysis_dir)
     setwd(analysis_dir)
-    message("Current working directory changed to:")
-    message(analysis_dir)
+    message(wrap("Current working directory changed to: ", analysis_dir))
   }
 
   # Open in RStudio

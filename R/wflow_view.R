@@ -2,39 +2,40 @@
 #'
 #' \code{wflow_view} displays the website locally in your browser.
 #'
-#' \code{wflow_view} by default opens the file \code{docs/index.html}. To view
-#' the most recently modified HTML file, set \code{recent = TRUE}. To specify
-#' which file(s) to open, specify either the name(s) of the R Markdown or HTML
+#' \code{wflow_view} by default opens the file \code{index.html}. To view the
+#' most recently modified HTML file, set \code{recent = TRUE}. To specify which
+#' file(s) to open, specify either the name(s) of the R Markdown or HTML
 #' file(s). The path(s) to the file(s) will be discarded, thus only HTML files
-#' in \code{docs/} can be viewed with this function.
+#' in docs directory can be viewed with this function.
 #'
-#' \code{wflow_view} uses \code{utils::browseURL} to open the HTML files in the
+#' \code{wflow_view} uses \code{\link{browseURL}} to open the HTML files in the
 #' browser. If you wish to do something non-traditional like open an HTML file
-#' that is not in \code{docs/} or not part of a workflowr project, you can use
-#' that function directly.
+#' that is not in the docs directory or not part of a workflowr project, you can
+#' use that function directly.
 #'
-#' @param files character (default: NULL). Name(s) of the specific file(s) to open
-#'   in the browser. These can be either the name(s) of the R Markdown file(s)
-#'   in \code{analysis/} or the HTML file(s) in \code{docs/}. Also, the full
-#'   path(s) to the file(s) can be input or just the basename(s) of the file(s).
-#' @param recent logical (default: FALSE). If \code{files = NULL}, display the R
-#'   Markdown file in \code{analysis/} with the most recent modification time.
-#'   If \code{files = NULL} and \code{recent = FALSE}, then
-#'   \code{docs/index.html} is opened.
+#' @param files character (default: NULL). Name(s) of the specific file(s) to
+#'   open in the browser. These can be either the name(s) of the R Markdown
+#'   file(s) in the analysis directory or the HTML file(s) in the docs
+#'   directory. Also, the full path(s) to the file(s) can be input or just the
+#'   basename(s) of the file(s).
+#' @param recent logical (default: FALSE). If \code{files = NULL}, display the
+#'   HTML file with the most recent modification time. If \code{files = NULL}
+#'   and \code{recent = FALSE}, then \code{index.html} is opened.
 #' @param dry_run logical (default: FALSE). Do not actually open file(s) in
 #'   browser. Mainly useful for testing.
-#' @param path character (default: ".") By default the function assumes the
+#' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return Invisibly returns a character vector of the HTML files to be opened.
+#' @return Invisibly returns a character vector of the relative paths to the
+#'   HTML files to be opened.
 #'
 #' @seealso \code{\link{browseURL}}
 #'
 #' @examples
 #' \dontrun{
 #'
-#' # View docs/index.html
+#' # View index.html
 #' wflow_view()
 #'
 #' # View the most recently modified HTML file
@@ -54,20 +55,21 @@
 #' wflow_view(c("fname1.Rmd", "fname2.Rmd"))
 #' }
 #' @export
-wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE, path = ".") {
-  if (!(is.null(files) | (is.character(files) & length(files) >= 1)))
-    stop("files must be a character vector.")
-  if (!is.logical(recent) | length(recent) != 1)
+wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
+                       project = ".") {
+  if (!(is.null(files) || (is.character(files) && length(files) >= 1)))
+    stop("files must be NULL or a character vector.")
+  if (!(is.logical(recent) && length(recent) == 1))
     stop("recent must be a one element logical vector. You entered: ", recent)
-  if (!is.logical(dry_run) | length(dry_run) != 1)
+  if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one element logical vector. You entered: ", dry_run)
-  if (!is.character(path) | length(path) != 1)
-    stop("path must be a one element character vector. You entered: ", path)
-  if (!dir.exists(path))
-    stop("path does not exist. You entered: ", path)
+  if (!(is.character(project) && length(project) == 1))
+    stop("project must be a one element character vector. You entered: ", project)
+  if (!dir.exists(project))
+    stop("project does not exist. You entered: ", project)
 
-  root_path <- rprojroot::find_rstudio_root_file(path = path)
-  docs_dir <- file.path(root_path, "docs")
+  p <- wflow_paths(project = project)
+  docs_dir <- p$docs
 
   # 3 options:
   #
@@ -112,7 +114,8 @@ wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE, path = "."
   html <- html[!html_missing]
 
   if (length(html) == 0) {
-    stop("No HTML files were able to viewed. Try running `wflow_build()` first.")
+    stop(wrap("No HTML files were able to viewed.
+              Try running `wflow_build()` first."))
   }
 
   if (!dry_run) {

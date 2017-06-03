@@ -34,8 +34,8 @@ test_that("wflow_build builds the website, but only once", {
 })
 
 test_that("wflow_view opens website.", {
-  expected <- file.path(site_dir, "docs/index.html")
-  actual <- wflow_view(dry_run = TRUE, path = site_dir)
+  expected <- file.path(s$docs, "index.html")
+  actual <- wflow_view(dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
 })
 
@@ -64,8 +64,8 @@ test_that("wflow_build only builds new file", {
 })
 
 test_that("wflow_view can open specific file with Rmd extension & without path.", {
-  expected <- file.path(site_dir, "docs/first-analysis.html")
-  actual <- wflow_view("first-analysis.Rmd", dry_run = TRUE, path = site_dir)
+  expected <- file.path(s$docs, "first-analysis.html")
+  actual <- wflow_view("first-analysis.Rmd", dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
 })
 

@@ -72,8 +72,7 @@ test_that("wflow_publish can `update`", {
   expect_false(html_decoy %in% o$step3$commit_files)
 })
 
-test_that("wflow_publish can be used to commit non-Rmd files
-          instead of wflow_commit", {
+test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_commit", {
   f_test <- file.path(s$root, "test.txt")
   file.create(f_test)
   expect_silent(o <- wflow_publish(f_test, project = site_dir))

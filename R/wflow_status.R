@@ -116,7 +116,7 @@ wflow_status <- function(files = NULL, project = ".") {
     # Don't know if file paths are relative or absolute, so ensure they are
     # relative
     files <- relpath_vec(files)
-    files_analysis <- files_analysis[files_analysis %in% files]
+    files_analysis <- files_analysis[match(files, files_analysis)]
   }
   if (length(files_analysis) == 0)
     stop("files did not include any analysis files")

@@ -62,7 +62,12 @@ to_html <- function(files, outdir = NULL) {
     if (stringr::str_sub(outdir, nchar(outdir), nchar(outdir)) == "/") {
       outdir <- stringr::str_sub(outdir, 1, nchar(outdir) - 1)
     }
-    html <- file.path(outdir, basename(html))
+    # Only prepend outdir if it's not "." for current working directory
+    if (outdir == ".") {
+      html <- basename(html)
+    } else {
+      html <- file.path(outdir, basename(html))
+    }
   }
   return(html)
 }

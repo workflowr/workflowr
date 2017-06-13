@@ -34,6 +34,13 @@ test_that("to_html converts simple relative path", {
   expect_identical(actual, expected)
 })
 
+test_that("to_html does not prepend ./", {
+  docs <- "."
+  expected <- "file.html"
+  actual <- to_html("analysis/file.Rmd", outdir = docs)
+  expect_identical(actual, expected)
+})
+
 test_that("to_html is vectorized", {
   docs <- "/home/user/project/docs"
   expected <- file.path(docs, c("1.html", "2.html", "3.html"))
@@ -54,7 +61,6 @@ test_that("to_html throws errors for invalid extensions", {
   expect_error(to_html("file.z"), "Invalid file extension")
   expect_error(to_html("file"), "Invalid file extension")
 })
-
 
 # Test commonprefix ------------------------------------------------------------
 

@@ -17,7 +17,7 @@
 #' @param sort_method The method for sorting the files. Options include
 #'   "filename" (default), "title", "date", and "date reverse" (see Details for
 #'   explanation).
-#' @param path By default the function assumes the current working directory is
+#' @param project By default the function assumes the current working directory is
 #'   within the project. If this is not true, you'll need to provide the path to
 #'   the project directory.
 #' @param exclude_rmd character vector of R Markdown files (basename only) to
@@ -36,13 +36,15 @@
 #' @export
 create_links_page <- function(output = "results.Rmd",
                            sort_method = "filename",
-                           path = ".",
+                           project = ".",
                            exclude_rmd = NULL,
                            datatable = FALSE) {
-  analysis_dir <- rprojroot::find_rstudio_root_file("analysis", path = path)
+  p <- wflow_paths(project = project)
+  analysis_dir <- p$analysis
   # Gather Rmd files, only need basename
   rmd_files <- list.files(path = analysis_dir,
-                          pattern = utils::glob2rx("*Rmd"))
+                          pattern = "^[^_].*\\.[Rr]md$")
+
   # Files to exclude
   excluded <- c("index.Rmd", "about.Rmd", "license.Rmd", "results.Rmd")
   if (!is.null(exclude_rmd)) {
@@ -80,7 +82,7 @@ create_links_page <- function(output = "results.Rmd",
                            stringsAsFactors = FALSE)
 
   # Change file extension to html
-  file_table$html <- stringr::str_replace(file_table$rmd, "Rmd$", "html")
+  file_table$html <- to_html(file_table$rmd)
 
   if (sort_method == "title") {
     file_table <- file_table[order(file_table$title,

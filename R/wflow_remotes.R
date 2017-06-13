@@ -27,7 +27,7 @@
 #'   ignored if \code{remote = NULL}.
 #' @param verbose logical (default: TRUE). Display the current remotes.
 #'   Analogous to \code{git remote -v}.
-#' @param path character (default: ".") By default the function assumes the
+#' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
@@ -50,7 +50,7 @@
 #' @export
 wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
                           protocol = "https", action = "add",
-                          verbose = TRUE, path = ".") {
+                          verbose = TRUE, project = ".") {
   if (!(is.null(remote) | (is.character(remote) & length(remote) == 1)))
     stop("remote must be a one element character vector. You entered: ", remote)
   if (any(stringr::str_detect(remote, c("[:blank:]", "[:punct:]"))))
@@ -66,15 +66,16 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
     stop("action must be add, remove, or set_url. You entered: ", action)
   if (!is.logical(verbose) | length(verbose) != 1)
     stop("verbose must be a one element logical vector. You entered: ", verbose)
-  if (!is.character(path) | length(path) != 1)
-    stop("path must be a one element character vector. You entered: ", path)
-  if (!dir.exists(path))
-    stop("path does not exist. You entered: ", path)
+  if (!is.character(project) | length(project) != 1)
+    stop("project must be a one element character vector. You entered: ", project)
+  if (!dir.exists(project))
+    stop("project does not exist. You entered: ", project)
 
-  if (git2r::in_repository(path)) {
-    r <- git2r::repository(path, discover = TRUE)
+  if (git2r::in_repository(project)) {
+    r <- git2r::repository(project, discover = TRUE)
   } else{
-    stop("The specified path is not in a Git repository: ", path)
+    stop("The specified path to the project is not in a Git repository: ",
+         project)
   }
 
   remotes_current <- git2r::remotes(r)

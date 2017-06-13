@@ -219,8 +219,29 @@ print.wflow_commit <- function(x, ...) {
         wrap("The following file(s) were included in commit ",
              stringr::str_sub(x$commit@sha, start = 1, end = 7)),
         ":\n")
-    cat(x$commit_files, sep = "\n")
+    cat(shorten_site_libs(x$commit_files), sep = "\n")
   }
 
   return(invisible(x))
+}
+
+# When printing the files included in a commit, only list the first subdirectory
+# within `site_libs/`.
+shorten_site_libs <- function(files) {
+  is_site_libs <- stringr::str_detect(files, "site_libs")
+  f_split <- stringr::str_split(files, .Platform$file.sep,
+                                simplify = TRUE)
+  out <- files
+  for (i in seq_along(files)) {
+    if (is_site_libs[i]) {
+      col_site_libs <- which(f_split[i, ] == "site_libs")
+      out[i] <- paste(f_split[i, seq(col_site_libs + 1)],
+                      collapse = .Platform$file.sep)
+      # Add final / so that it is clear it's a directory
+      if (dir.exists(out[i])) {
+        out[i] <- paste0(out[i], .Platform$file.sep)
+      }
+    }
+  }
+  return(unique(out))
 }

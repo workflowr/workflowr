@@ -78,7 +78,7 @@ wflow_publish <- function(
       stop("Not all files exist. Check the paths to the files")
     }
     # Change filepaths to relative paths
-    files <- sapply(normalizePath(files), relpath)
+    files <- relpath_vec(files)
   }
 
   if (is.null(message)) {

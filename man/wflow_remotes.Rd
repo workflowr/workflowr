@@ -5,7 +5,7 @@
 \title{Manage remote Git repositories.}
 \usage{
 wflow_remotes(remote = NULL, user = NULL, repo = NULL,
-  protocol = "https", action = "add", verbose = TRUE, path = ".")
+  protocol = "https", action = "add", verbose = TRUE, project = ".")
 }
 \arguments{
 \item{remote}{character (default: NULL). The name of the remote.}
@@ -26,7 +26,7 @@ ignored if \code{remote = NULL}.}
 \item{verbose}{logical (default: TRUE). Display the current remotes.
 Analogous to \code{git remote -v}.}
 
-\item{path}{character (default: ".") By default the function assumes the
+\item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
 }

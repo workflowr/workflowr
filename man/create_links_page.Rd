@@ -5,7 +5,7 @@
 \title{Create a results page with links to analysis files}
 \usage{
 create_links_page(output = "results.Rmd", sort_method = "filename",
-  path = ".", exclude_rmd = NULL, datatable = FALSE)
+  project = ".", exclude_rmd = NULL, datatable = FALSE)
 }
 \arguments{
 \item{output}{The basename of the results file (default: "results.Rmd")}
@@ -14,7 +14,7 @@ create_links_page(output = "results.Rmd", sort_method = "filename",
 "filename" (default), "title", "date", and "date reverse" (see Details for
 explanation).}
 
-\item{path}{By default the function assumes the current working directory is
+\item{project}{By default the function assumes the current working directory is
 within the project. If this is not true, you'll need to provide the path to
 the project directory.}
 

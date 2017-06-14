@@ -81,6 +81,23 @@ wflow_update <- function(dry_run = TRUE,
     message("Running wflow_update")
   }
 
+  # Setup and safety checks ----------------------------------------------------
+
+  p <- wflow_paths(project = project)
+  # Keep track of updated files
+  files_updated <- character()
+
+  # Access Git repo and fail early if files in staging area
+  if (!is.na(p$git) && commit) {
+    r <- git2r::repository(p$git)
+    status <- git2r::status(r)
+    if (length(status$staged) > 0) {
+      stop(call. = FALSE, wrap(
+        "You have added files to the Git staging area. Commit or unstage these
+        files prior to running wflow_update."))
+    }
+  }
+
   # Start log file -------------------------------------------------------------
 
   if (is.null(log_file)) {
@@ -106,12 +123,6 @@ wflow_update <- function(dry_run = TRUE,
   if (log_open && rstudioapi::isAvailable()) {
     on.exit(rstudioapi::navigateToFile(log_file))
   }
-
-  # Setup ----------------------------------------------------------------------
-
-  p <- wflow_paths(project = project)
-  # Keep track of updated files
-  files_updated <- character()
 
   # Update chunks.R ------------------------------------------------------------
 
@@ -214,16 +225,15 @@ changes and then re-run `wflow_update`:"
 
   # Commit updated files (tracked files only) ----------------------------------
 
-  if (!dry_run & commit & length(files_updated) > 0 & !is.na(p$git)) {
+  if (!dry_run && commit && length(files_updated) > 0 && !is.na(p$git)) {
     cat("\nAttempting to commit changes\n",
         file = log_file, append = TRUE)
-    r <- git2r::repository(p$git)
-    status <- git2r::status(r)
-    if (length(status$staged) > 0) {
-      warning("\nFiles already in staging area were included in commit:\n",
-              paste(unlist(status$staged), collapse = "\n"))
-    }
-    git2r::add(r, path = files_updated)
+    # Remove any untracked Rmd files
+    s <- wflow_status(project = project)
+    files_untracked <- rownames(s$status[!s$status[, "tracked"], ])
+    files_to_commit <- setdiff(files_updated, files_untracked)
+
+    git2r::add(r, path = files_to_commit)
     status <- git2r::status(r)
     if (length(unlist(status$staged)) > 0) {
       git2r::commit(r, message = sprintf(

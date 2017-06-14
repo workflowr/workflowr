@@ -158,14 +158,21 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # Obtain files to consider ---------------------------------------------------
 
   p <- wflow_paths(project = project)
-  # All files to consider
-  files_all <- list.files(path = p$analysis, pattern = "^.*\\.[Rr]md$",
+  # All files to consider (ignore files that start with an underscore)
+  files_all <- list.files(path = p$analysis, pattern = "^[^_].*\\.[Rr]md$",
                           full.names = TRUE)
   files_all <- relpath_vec(files_all)
-  if (!all(files %in% files_all))
-    stop(wrap(
+
+  # All files must be in the analysis subdirectory. Since it's possible to
+  # directly pass a file that starts with an underscore, the file may not be in
+  # files_all.
+  if (!is.null(files)) {
+    if (!all(dirname(files) == p$analysis)) {
+      stop(wrap(
       "Only files in the analysis directory can be built with wflow_build. Use
       `rmarkdown::render` to build non-workflowr files."))
+    }
+  }
 
   # Determine which files to build ---------------------------------------------
 

@@ -3,7 +3,7 @@ context("wflow_build")
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-site_dir <- tempfile("test-build-")
+site_dir <- tempfile("test-wflow_build-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 on.exit(unlink(site_dir, recursive = TRUE))
 s <- wflow_status(project = site_dir)
@@ -96,19 +96,6 @@ test_that("wflow_build update builds published files with modifications", {
   expect_identical(actual$built, rmd[1])
 })
 
-test_that("wflow_build update builds published files with modifications", {
-  cat("edit", file = rmd[1], append = TRUE)
-  wflow_build(project = site_dir)
-  wflow_commit(rmd[1], project = site_dir)
-  expect_silent(actual <- wflow_build(update = TRUE, dry_run = TRUE,
-                                      project = site_dir))
-  expect_identical(actual$built, rmd[1])
-  expect_true(actual$update)
-  expect_message(actual <- wflow_build(update = TRUE, project = site_dir),
-                 rmd[1])
-  expect_identical(actual$built, rmd[1])
-})
-
 test_that("wflow_build republish builds all published files", {
   wflow_build(project = site_dir)
   html_mtime_pre <- file.mtime(html)
@@ -147,4 +134,32 @@ test_that("wflow_build can build a file locally in the R console", {
   # Remove the global variable
   rm("global_variable", envir = env)
   stopifnot(!exists("global_variable", envir = env))
+})
+
+test_that("wflow_build only builds files starting with _ when specified", {
+  rmd_ignore <- file.path(s$analysis, "_ignore.Rmd")
+  file.create(rmd_ignore)
+  html_ignore <- to_html(rmd_ignore, outdir = s$docs)
+  # Ignored by default "make"-mode
+  expect_silent(actual <- wflow_build(project = site_dir))
+  expect_false(file.exists(html_ignore))
+  expect_equal(length(actual$built), 0)
+  # Built when directly specified
+  expect_message(actual <- wflow_build(rmd_ignore, project = site_dir),
+                 rmd_ignore)
+  expect_true(file.exists(html_ignore))
+  expect_identical(actual$built, rmd_ignore)
+})
+
+# Test error handling ----------------------------------------------------------
+
+test_that("wflow_build fails if file outside of analysis/", {
+  rmd_outside <- file.path(s$root, "outside.Rmd")
+  file.create(rmd_outside)
+  # When passing one invalid file
+  expect_error(wflow_build(rmd_outside, project = site_dir),
+               "Only files in the analysis directory can be built with wflow_build.")
+  # When passing one invalid file with other valid files
+  expect_error(wflow_build(c(rmd, rmd_outside), project = site_dir),
+               "Only files in the analysis directory can be built with wflow_build.")
 })

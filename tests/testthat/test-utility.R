@@ -153,6 +153,14 @@ test_that("relpath thows error for tilde", {
                "No tilde allowed in path or start")
 })
 
+test_that("relpath returns NULL for NULL", {
+  expect_identical(relpath(NULL), NULL)
+})
+
+test_that("relpath returns NA for NA", {
+  expect_identical(relpath(NA), NA)
+})
+
 # Test relpath_vec -------------------------------------------------------------
 
 test_that("relpath_vec works on vector input", {
@@ -177,6 +185,16 @@ test_that("relpath_vec is backwards compatible with relpath", {
   path = "/test"
   start = "/test/location"
   expected <- ".."
+  actual <- relpath_vec(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relpath_vec accepts NA and NULL only if some valid input included", {
+  expect_error(relpath_vec(NULL), "path must be a character vector")
+  expect_error(relpath_vec(NA), "path must be a character vector")
+  path = c("/test", NA, NULL, "/test/location/subdir")
+  start = "/test/location"
+  expected <- c("..", NA, NULL, "subdir")
   actual <- relpath_vec(path, start)
   expect_identical(actual, expected)
 })

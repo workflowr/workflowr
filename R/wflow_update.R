@@ -27,14 +27,15 @@
 #' }
 #'
 #' @param dry_run logical (default: TRUE). Preview the proposed updates.
-#' @param commit logical (default: TRUE). Commit the updated files. Only
-#'   executed if \code{dry_run = FALSE}.
+#' @param commit logical (default: TRUE). Commit the updated files (only files
+#'   tracked by Git are included in commit). Only executed if \code{dry_run =
+#'   FALSE}.
 #' @param log_file character (default: NULL). A file to save the log messages.
 #'   If NULL, a temporary file is created.
 #' @param log_open logical (default: \code{interactive()}). Should the log file
 #'   be opened in RStudio? This argument is ignored if the function is not run
 #'   from within RStudio.
-#' @param path character (default: ".") By default the function assumes the
+#' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
@@ -56,25 +57,31 @@ wflow_update <- function(dry_run = TRUE,
                          commit = TRUE,
                          log_file = NULL,
                          log_open = interactive(),
-                         path = ".") {
-  if (!is.logical(dry_run) | length(dry_run) != 1)
+                         project = ".") {
+
+  # Check input arguments ------------------------------------------------------
+
+  if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one element logical vector. You entered: ", dry_run)
-  if (!is.logical(commit) | length(commit) != 1)
+  if (!(is.logical(commit) && length(commit) == 1))
     stop("commit must be a one element logical vector. You entered: ", commit)
-  if (!(is.null(log_file) | (is.character(log_file) & length(log_file) == 1)))
-    stop("log_file must be NULL or a one element character vector. You entered: ", log_file)
-  if (!is.logical(log_open) | length(log_open) != 1)
+  if (!(is.null(log_file) || (is.character(log_file) && length(log_file) == 1)))
+    stop("log_file must be NULL or a one element character vector. You entered: ",
+         log_file)
+  if (!(is.logical(log_open) && length(log_open) == 1))
     stop("log_open must be a one element logical vector. You entered: ", log_open)
-  if (!is.character(path) | length(path) != 1)
-    stop("path must be a one element character vector. You entered: ", path)
-  if (!dir.exists(path))
-    stop("path does not exist. You entered: ", path)
+  if (!(is.character(project) && length(project) == 1))
+    stop("project must be a one element character vector. You entered: ", project)
+  if (!dir.exists(project))
+    stop("project does not exist. You entered: ", project)
 
   if (dry_run) {
     message("Running wflow_update in dry run mode")
   } else {
     message("Running wflow_update")
   }
+
+  # Start log file -------------------------------------------------------------
 
   if (is.null(log_file)) {
     log_file <- tempfile("log-wflow-update-", fileext = ".txt")
@@ -96,19 +103,21 @@ wflow_update <- function(dry_run = TRUE,
   # Output explanation of diff
   cat(diff_explained, file = log_file, append = TRUE)
 
-  if (log_open & rstudioapi::isAvailable()) {
+  if (log_open && rstudioapi::isAvailable()) {
     on.exit(rstudioapi::navigateToFile(log_file))
   }
 
-  root_path <- rprojroot::find_rstudio_root_file(path = path)
-  analysis_dir <- file.path(root_path, "analysis")
+  # Setup ----------------------------------------------------------------------
 
+  p <- wflow_paths(project = project)
   # Keep track of updated files
   files_updated <- character()
 
-  # Is there a difference between between the analysis/chunks.R in this project
+  # Update chunks.R ------------------------------------------------------------
+
+  # Is there a difference between between the chunks.R in this project
   # and that which is currently available in the package?
-  chunks_current <- file.path(analysis_dir, "chunks.R")
+  chunks_current <- file.path(p$analysis, "chunks.R")
   chunks_pkg <- system.file("infrastructure/analysis/chunks.R",
                             package = "workflowr")
   diffs <- diff_file(from = chunks_current, to = chunks_pkg)
@@ -125,8 +134,10 @@ wflow_update <- function(dry_run = TRUE,
         file = log_file, append = TRUE)
   }
 
-  # Update Rproj file. Remove BuildType
-  rproj_file <- list.files(path = root_path, pattern = "Rproj$",
+  # Update Rproj file ----------------------------------------------------------
+
+  # Remove BuildType
+  rproj_file <- list.files(path = p$root, pattern = "Rproj$",
                            full.names = TRUE)
   if (length(rproj_file) != 1) {
     cat("\nUnable to locate a single Rproj file\n")
@@ -150,16 +161,17 @@ wflow_update <- function(dry_run = TRUE,
     }
   }
 
-  # Gather all R Markdown analysis files
-  rmd_all <- list.files(path = analysis_dir, pattern = "[Rr]md$",
+  # Gather all R Markdown analysis files ---------------------------------------
+
+  rmd_all <- list.files(path = p$analysis, pattern = "^[^_].*\\.[Rr]md$",
                         full.names = TRUE)
   # Remove index.Rmd, about.Rmd, and license.Rmd
-  rmd_remove <- file.path(analysis_dir,
+  rmd_remove <- file.path(p$analysis,
                           c("index.Rmd", "about.Rmd", "license.Rmd"))
   rmd_to_convert <- setdiff(rmd_all, rmd_remove)
   # Remove any files which are untracked or have staged (or staged) changes
-  if (git2r::in_repository(path)) {
-    r <- git2r::repository(path, discover = TRUE)
+  if (!is.na(p$git)) {
+    r <- git2r::repository(p$git)
     status <- git2r::status(r, ignored = TRUE)
     git_all <- unlist(status)
     git_rmd <- git_all[grepl("[Rd]md$", git_all)]
@@ -173,7 +185,9 @@ changes and then re-run `wflow_update`:"
     }
   }
 
-  ## Attempt conversion one-by-one so that errors do not break it.
+  # Convert Rmd files ----------------------------------------------------------
+
+  # Attempt conversion one-by-one so that errors do not break it.
   for (rmd in rmd_to_convert) {
     rmd_result <- tryCatch(
       rmd_diffs <- wflow_convert(rmd, dry_run = dry_run, verbose = FALSE),
@@ -198,11 +212,12 @@ changes and then re-run `wflow_update`:"
         file = log_file, append = TRUE)
   }
 
-  if (!dry_run & commit & length(files_updated) > 0 &
-      git2r::in_repository(path)) {
+  # Commit updated files (tracked files only) ----------------------------------
+
+  if (!dry_run & commit & length(files_updated) > 0 & !is.na(p$git)) {
     cat("\nAttempting to commit changes\n",
         file = log_file, append = TRUE)
-    r <- git2r::repository(path, discover = TRUE)
+    r <- git2r::repository(p$git)
     status <- git2r::status(r)
     if (length(status$staged) > 0) {
       warning("\nFiles already in staging area were included in commit:\n",

@@ -5,13 +5,14 @@
 \title{Update a workflowr project.}
 \usage{
 wflow_update(dry_run = TRUE, commit = TRUE, log_file = NULL,
-  log_open = interactive(), path = ".")
+  log_open = interactive(), project = ".")
 }
 \arguments{
 \item{dry_run}{logical (default: TRUE). Preview the proposed updates.}
 
-\item{commit}{logical (default: TRUE). Commit the updated files. Only
-executed if \code{dry_run = FALSE}.}
+\item{commit}{logical (default: TRUE). Commit the updated files (only files
+tracked by Git are included in commit). Only executed if \code{dry_run =
+FALSE}.}
 
 \item{log_file}{character (default: NULL). A file to save the log messages.
 If NULL, a temporary file is created.}
@@ -20,7 +21,7 @@ If NULL, a temporary file is created.}
 be opened in RStudio? This argument is ignored if the function is not run
 from within RStudio.}
 
-\item{path}{character (default: ".") By default the function assumes the
+\item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
 }

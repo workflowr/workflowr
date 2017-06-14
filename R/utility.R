@@ -81,9 +81,9 @@ to_html <- function(files, outdir = NULL) {
 # Both path and start will be passed through normalizePath to resolve relative
 # paths to existing directories.
 relpath_vec <- function(path, start = NULL) {
-  if (!(is.character(path) & length(path) >= 1))
+  if (!(is.character(path) && length(path) >= 1))
     stop("path must be a character vector")
-  if (!(is.null(start) | is.character(start) & length(start) == 1))
+  if (!(is.null(start) || (is.character(start) && length(start) == 1)))
     stop("start must be NULL or a 1-element character vector")
 
   p <- normalizePath(path, mustWork = FALSE)
@@ -116,9 +116,11 @@ relpath_vec <- function(path, start = NULL) {
 # https://github.com/python/cpython/blob/3.5/Lib/posixpath.py#L431
 # https://github.com/python/cpython/blob/3.5/Lib/test/test_posixpath.py#L483
 relpath <- function(path, start = NULL) {
-  if (!(is.character(path) & length(path) == 1))
+  if (is.null(path)) return(NULL)
+  if (is.na(path)) return(NA)
+  if (!(is.character(path) && length(path) == 1))
     stop("path must be a character vector")
-  if (!(is.null(start) | is.character(start) & length(start) == 1))
+  if (!(is.null(start) || (is.character(start) && length(start) == 1)))
     stop("start must be NULL or a 1-element character vector")
   if (any(stringr::str_detect(c(path, start), "~")))
     stop("No tilde allowed in path or start")

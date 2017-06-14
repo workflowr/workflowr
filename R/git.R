@@ -75,6 +75,10 @@ create_gitignore <- function(path, overwrite = FALSE) {
 #
 # The default is to use the head commit.
 get_committed_files <- function(repo, commit = NULL) {
+  n_commits <- length(git2r::commits(repo))
+  if (n_commits == 0) {
+    stop(wrap("The Git repository has no commits yet."))
+  }
   if (is.null(commit)) {
     commit <- git2r::lookup(repo, git2r::branch_target(git2r::head(repo)))
   }

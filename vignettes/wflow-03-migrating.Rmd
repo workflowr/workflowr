@@ -23,7 +23,7 @@ This vignette is for those users that already have an existing project and wish
 to incorporate workflowr to create a research website. Migrating an existing 
 project to use workflowr varies from straightforward to difficult depending on 
 the scenario and your comfort level with Git. This vignette assumes that you
-have the background knowledge of workflowr explained in the Getting Started
+have the background knowledge of workflowr explained in the [Getting started][vig-start]
 vignette. Even if you have no need for a new workflowr project, please run
 through that vignette first as an exercise to familiarize yourself with the
 workflowr philosophy and functions.
@@ -31,6 +31,8 @@ workflowr philosophy and functions.
 ```{r getting-started}
 vignette("wflow-01-getting-started", "workflowr")
 ```
+
+[vig-start]: wflow-01-getting-started.html
 
 ## Scenario: I have a collection of R Markdown files
 
@@ -43,24 +45,23 @@ be created in the new directory `~/projects/new-project/`.
 
 ```{r}
 library("workflowr")
+# Create project directory and change working directory to this location
 wflow_start("~/projects/new-project")
-file.copy(from = glob2rx("~/projects/misc/*Rmd"),
-          to = "~/projects/new-project/analysis")
+# Copy the files to the analysis subdirectory of the workflowr project
+file.copy(from = Sys.glob("~/projects/misc/*Rmd"), to = "analysis")
 ```
 
-Next add and commit your R Markdown files using Git at the command-line:
-
-```bash
-git add analysis/*Rmd
-```
-
-Finally, update your R Markdown files to use the workflowr template (you can
-first run `wflow_update` with no arguments to preview the potential changes).
-Afterwards, build and commit the website using `wflow_commit`:
+Next update your R Markdown files to use the workflowr template (you can
+first run `wflow_update()` with no arguments to preview the potential changes).
 
 ```{r}
 wflow_update(dry_run = FALSE)
-wflow_commit()
+```
+
+Lastly, build and commit the website using `wflow_publish()`:
+
+```{r}
+wflow_publish(Sys.glob("analysis/*Rmd"), "Publish analysis files")
 ```
 
 ## Scenario: I have a collection of R Markdown files and other project infrastructure
@@ -82,24 +83,26 @@ you'd prefer to commit the workflowr files yourself manually, you can set `git =
 FALSE` (this is also useful if you want to first test to see what would happen
 without committing the results).
 
-By default `wflow_start` will not overwrite your existing files (e.g. if
+By default `wflow_start()` will not overwrite your existing files (e.g. if
 you already have a `README.md`). If you'd prefer to overwrite your files with
 the default workflowr files, set `overwrite = TRUE`.
 
 To add your R Markdown files to the research website, you can move them to the 
 subdirectory `analysis/` (note you can do this before or after running 
-`wflow_start`).
+`wflow_start()`).
 
-If you are using version control, first commit your R Markdown files in 
-`analysis/` and then run `wflow_update` to convert the R Markdown files to use
-the workflowr template:
+Next run `wflow_update()` to convert the R Markdown files to use the workflowr
+template:
 
 ```{r}
 wflow_update(dry_run = FALSE)
 ```
 
-If you are not using Git, then you'll have to specify the files to update using
-the function `wflow_convert`.
+Lastly, build and commit the website using `wflow_publish()`:
+
+```{r}
+wflow_publish(Sys.glob("analysis/*Rmd"), "Publish analysis files")
+```
 
 ## Scenario: I have an R package
 
@@ -140,7 +143,13 @@ demonstrate results you obtained using the package, use workflowr.
 
 ## Scenario: I have an ashlar project
 
-First, make sure you are in the "master" branch. Also, you should run the following Git commands from the base of the project directory.
+If your project uses the [ashlar][] template, you'll need to follow multiple
+steps to convert it to a valid workflowr setup.
+
+[ashlar]: https://github.com/jhsiao999/ashlar
+
+First, make sure you are in the "master" branch. Also, you should run the
+following Git commands from the base of the project directory.
 
 ```bash
 git checkout master
@@ -194,7 +203,7 @@ contains a `.git` directory and a `.gitignore` file. These can be safely ignored
 because ashlar projects are expected to be using Git for version control.
 
 Lastly, you'll need to update your R Markdown files to use the workflowr
-template, which you can do using the function `wflow_update`:
+template, which you can do using the function `wflow_update()`:
 
 ```{r convert-ashlar}
 wflow_update()
@@ -207,13 +216,15 @@ This will update every R Markdown file, with the exception of `index.Rmd`,
 ashlar files that do not follow the template (e.g. they do not have the
 `sessionInfo()` chunk), so you will have to manually update these files. Also,
 workflowr no longer includes the date and SHA1 in the organizational files like
-`index.Rmd`, so you can remove this if you like.
+`index.Rmd`, so you can remove this manually if you like.
 
-Now you should have a functioning workflowr project! From here you should be able to make a few more small edits and then follow the workflowr steps to create your website:
+Now you should have a functioning workflowr project! From here you should be
+able to make a few more small edits and then follow the workflowr steps to
+create your website:
 
 * Edit the navbar in `analysis/_site.yml` so that the GitHub URL points to your repository (and commit the change)
 * Edit the README (and potentially other places, including on GitHub) so that the URL to the website no longer contains the trailing "analysis" in the name (and commit the change(s))
-* Run `wflow_commit` to build and commit the website files
+* Run `wflow_publish(Sys.glob("analysis/*Rmd"), "Publish files using workflowr"))` to build and commit the website files
 * Push the changes to GitHub
 * Change the Settings so that the website is served from "master branch /docs folder"
 * Optionally remove the gh-pages branch ([GitHub instructions][gh-remove-branch])

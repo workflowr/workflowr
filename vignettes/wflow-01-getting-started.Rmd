@@ -24,37 +24,10 @@ The goal of the workflowr package is to make it easier for researchers to organi
 
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 
-## Setup
-
-This tutorial assumes you have already R and Git installed, have a global
-user.name and user.email set (you can run `git config -l` in the shell to
-confirm), and have an account on GitHub. Rstudio is also convenient, especially
-if you have a version greater than 1.0, but is not required. If you need
-instructions to install these, [Software Carpentry][swc] maintains high-quality
-installation instructions for use in its workshops. Follow the instructions for
-your particular operating system to [install R][swc-r], [install Git][swc-git], and [configure Git][swc-git-config]. You can
-obtain a GitHub account at https://github.com/.
-
-workflowr is hosted in a [GitHub repository][repo]. Install the most recent
-stable release with devtools.
-
-```{r install, eval=FALSE}
-# install.packages("devtools")
-devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
-```
-
-[swc]: https://software-carpentry.org
-[swc-r]: https://swcarpentry.github.io/workshop-template/#r
-[swc-git]: https://swcarpentry.github.io/workshop-template/#git
-[swc-git-config]: http://swcarpentry.github.io/git-novice/02-setup/
-[repo]: https://github.com/jdblischak/workflowr
-
-To see the available vignettes, run `browseVignettes("workflowr")`. This will
-open a webpage with a link to each vignette.
-
-As you use workflowr, if you find any unexpected behavior or think of an additional feature that would be nice to have, please open an Issue [here][issues]. When writing your bug report or feature request, please note the version of workflowr you are using (which you can obtain by running `packageVersion("workflowr")`).
-
-[issues]: https://github.com/jdblischak/workflowr/issues
+This tutorial assumes you have already followed the "Quick start" instructions
+in the README. Specifically, you should have already installed R, Git, and
+workflowr; set the Git variables user.name and user.email (you can run `git
+config -l` in the shell to confirm); and created an account on GitHub.
 
 ## Start the project
 

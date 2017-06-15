@@ -6,6 +6,7 @@
 * [Quick start](#quick-start)
 * [Upgrading workflowr](#upgrading-workflowr)
 * [License](#license)
+* [Citation](#citation)
 * [Pronunciation](#pronunciation)
 
 The goal of the [workflowr][] package is to make it easier for researchers to 
@@ -125,6 +126,25 @@ with [covr][] and [Codecov][].
 ## License
 
 workflowr is available under the [MIT][] license.
+
+## Citation
+
+To cite workflowr in publications use:
+
+  John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for
+  creating a research website. R package version 0.4.0. https://github.com/jdblischak/workflowr
+
+A BibTeX entry for LaTeX users is
+
+```
+  @Manual{,
+    title = {workflowr: A workflow template for creating a research website},
+    author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
+    note = {R package version 0.4.0},
+    year = {2017},
+    url = {https://github.com/jdblischak/workflowr},
+  }
+```
 
 ## Pronunciation
 

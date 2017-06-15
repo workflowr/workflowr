@@ -5,7 +5,8 @@ Version: 0.4.0
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu"),
-    person("Peter", "Carbonetto", role = c("aut")))
+    person("Peter", "Carbonetto", role = c("aut")),
+    person("Matthew", "Stephens", role = c("aut")))
 Description: workflowr provides helper functions to get started using R Markdown
     to create a research website.
 URL: https://github.com/jdblischak/workflowr

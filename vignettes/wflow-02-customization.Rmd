@@ -47,12 +47,12 @@ quick-running file like `index.Rmd` when testing aesthetic changes).
 
 Once you have chosen a theme, update the website by running the following:
 
-```{r wflow-commit-theme}
-wflow_commit(commit_files = "analysis/_site.yml", all = TRUE)
+```{r wflow-publish-theme}
+wflow_publish("analysis/_site.yml", "Change the theme", republish = TRUE)
 ```
 
-This commits `analysis/_site.yml`, re-builds every HTML file using the new
-theme, and commits all the updated HTML pages.
+This commits `analysis/_site.yml`, re-builds every previously published HTML
+file using the new theme, and commits all the republished HTML pages.
 
 [rmd-themes]: http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style
 
@@ -80,8 +80,9 @@ Similar to changing the theme above, you will need to re-render each page of the
 website (the navbar is embedded within each individual HTML file). Thus you
 could run the same command as above:
 
-```{r wflow-commit-navbar}
-wflow_commit(commit_files = "analysis/_site.yml", all = TRUE)
+```{r wflow-publish-navbar}
+wflow_publish("analysis/_site.yml", "Add main result page to navbar",
+              republish = TRUE)
 ```
 
 [navbar]: http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation
@@ -106,9 +107,10 @@ easily accessible.
 
 Lastly, since the navigation bar was changed, re-build the website using the following command:
 
-```{r wflow-commit-links}
-wflow_commit(commit_files = c("analysis/_site.yml", "analysis/results.Rmd"),
-             all = TRUE)
+```{r wflow-publish-links}
+wflow_publish(c("analysis/_site.yml", "analysis/results.Rmd"),
+              "Create links page and add to navbar",
+              republish = TRUE)
 ```
 
 Future updates of `results.Rmd` will not require re-building the entire website
@@ -116,8 +118,10 @@ since it is an independent page (as opposed to the navigation bar).
 
 ## Customize the footer
 
-By default your workflowr website has the footer "This site was created with R
-Markdown" added to the end of each page. This is specified in the file `analysis/include/footer.html` and this file is specified in `analysis/_site.yml`. To remove the footer entirely, delete the following lines:
+By default your workflowr website has the footer "This R Markdown site was
+created with workflowr" added to the end of each page. This is specified in the
+file `analysis/include/footer.html` and this file is specified in
+`analysis/_site.yml`. To remove the footer entirely, delete the following lines:
 
 ```
     include:
@@ -136,8 +140,9 @@ your website pages. To enable comments, follow these steps:
 
 To change the footer for every page of the website, run the following:
 
-```{r wflow-commit-footer}
-wflow_commit(commit_files = "analysis/include/footer.html", all = TRUE)
+```{r wflow-publish-footer}
+wflow_publish("analysis/include/footer.html", "Customize the footer",
+              republish = TRUE)
 ```
 
 ## Setup SSH keys
@@ -153,7 +158,7 @@ After you create your SSH keys and add them to your GitHub account, you'll need
 to instruct your local Git repository to use the SSH protocol. For a
 hypothetical GitHub username of "myname" and GitHub repository of "myproject",
 you would change the remote "origin" (the default name by convention) using the
-function `wflow_remotes`:
+function `wflow_remotes()`:
 
 ```{r https-to-ssh}
 wflow_remotes(remote = "origin", user = "myname", repo = "myproject",

@@ -6,3 +6,4 @@
 ^\.travis\.yml$
 ^_pkgdown\.yaml$
 ^document\.R$
+^LICENSE\.md$

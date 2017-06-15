@@ -153,6 +153,41 @@ test_that("wflow_update only commits tracked files", {
   expect_false(rmd_untracked %in% files_committed)
 })
 
+test_that("wflow_update does nothing if everything is up-to-date", {
+
+  if (skipping)
+    skip("Must be run manually.")
+
+  # Create a temporary directory with v0.3.0 files
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-")
+  dir.create(tmp_dir_v0.3.0, recursive = TRUE)
+  on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
+  file.copy(from = "files/test-wflow_update/v0.3.0/.",
+            to = tmp_dir_v0.3.0, recursive = TRUE)
+
+  # Initilize Git repo and commit everything
+  git2r::init(tmp_dir_v0.3.0)
+  r <- git2r::repository(tmp_dir_v0.3.0)
+  git2r::add(r, Sys.glob(file.path(tmp_dir_v0.3.0, "*")))
+  git2r::commit(r, "commit project")
+  commit_last <- git2r::commits(r)[[1]]
+
+  # Update
+  expect_message(files_updated <- wflow_update(dry_run = FALSE, log_open = FALSE,
+                                               project = tmp_dir_v0.3.0),
+                 "Running wflow_update")
+  commit_update <- git2r::commits(r)[[1]]
+  expect_false(commit_update@sha == commit_last@sha)
+
+  # Run a second time
+  expect_message(files_updated <- wflow_update(dry_run = FALSE, log_open = FALSE,
+                                               project = tmp_dir_v0.3.0),
+                 "Running wflow_update")
+  commit_update_2 <- git2r::commits(r)[[1]]
+  expect_true(commit_update@sha == commit_update_2@sha)
+  expect_true(length(files_updated) == 0)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_update fails early if files in staging area", {

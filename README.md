@@ -4,7 +4,10 @@
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
 * [Quick start](#quick-start)
-* [Upgrading workflowr](#upgrading-workflowr)
+* [Upgrading](#upgrading)
+* [This repository](#this-repository)
+* [Background and related work](#background-and-related-work)
+* [Credits](#credits)
 * [License](#license)
 * [Citation](#citation)
 * [Pronunciation](#pronunciation)
@@ -81,11 +84,11 @@ would be nice to have, please open an Issue [here][issues]. When writing your
 bug report or feature request, please note the version of workflowr you are
 using (which you can obtain by running `packageVersion("workflowr")`).
 
-## Upgrading workflowr
+## Upgrading
 
 To upgrade workflowr to the most recent stable release, follow these steps:
 
-* Install from [GitHub][gh] with [devtools][]:
+* Re-install from [GitHub][gh] with [devtools][]:
 
 ```r
 devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
@@ -104,6 +107,87 @@ wflow_update()
 wflow_update(dry_run = FALSE)
 ```
 
+## This repository
+
+This repository contains the workflowr R package. If your goal is to create a 
+workflowr project, you do **not** need to fork this repository. Instead, 
+following the [Quick start](#quick-start) instructions above.
+
+For the most part, I try to follow the guidelines from [R packages][r-pkg] by 
+[Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the 
+documentation is built with [roxygen2][], the online package documentation is 
+created with [pkgdown][], continuous integration testing is performed by [Travis
+CI][travis], and code coverage is calculated with [covr][] and [Codecov][].
+
+If you are interested in contributing to this project, please see these
+[instructions][contributing].
+
+## Background and related work
+
+There is lots of interest and development around reproducble research with R. 
+Projects like workflowr are possible due to two key developments. First, the R 
+packages [knitr][] and [rmarkdown][] have made it easy for any R programmer to 
+generate reports that combine text, code, output, and figures. Second, the 
+version control software [Git][], the Git hosting site [GitHub][gh], and the 
+static website hosting service [GitHub Pages][] have made it easy to share not 
+only source code but also static HTML files (i.e. no need to purchase a domain
+name, setup a server, etc).
+
+My first attempt at sharing a reproducible project online was [singleCellSeq][].
+Basically, I started by copying the documentation website of [rmarkdown][] and 
+added some customizations to organize the generated figures and to insert the 
+status of the Git repository directly into the HTML pages. The workflowr R 
+package is my attempt to simplify my previous workflow and provide helper 
+functions so that any researcher can take advantage of this workflow.
+
+workflowr encompasses multiple functions: 1) provides a project template, 2) 
+version controls the R Markdown and HTML files, and 3) builds a website. 
+Furthermore, it provides R functions to perform each of these steps. There are 
+many other related works that provide similar functionality. Some are templates 
+to be copied, some are R packages, and some involve more complex software (e.g. 
+static blog software). Depending on your use case, one of the related works
+listed below may better suit your needs. Please check them out!
+
+* **Project template hosted on GitHub:**
+    * [analysis_framework][]
+    * [cboettig/template][]
+    * [knitr-jekyll][]
+    * [Pakillo/template][]
+    * [researchcompendium][]
+    * [rmd-notebook][]
+    * [rr-init][]
+
+* **Project template created via R package:**
+    * [makeProject][]
+    * [manuscriptPackage][]
+    * [prodigenr][]
+    * [pRojects][]
+    * [ProjectTemplate][]
+
+* **Create websites from R Markdown files:**
+    * [blogdown][]
+    * [blogR][]
+    * [bookdown][]
+    * [knowledge-repo][]
+    * [lnraw][]
+    * [pkgdown][]
+    * [poirot][]
+    * [rmarkdown][]
+    * [rsmith][]
+    * [samantha][]
+
+* **Guides for reproducible research with R:**
+    * [CRAN Task View: Reproducible Research][cran-rr]
+    * [rmflight][]: [Analyses as Packages][rmflight-post]
+    * [rOpenSci Guide to Reproducible Research][rOpenSci]
+
+* **Other**:
+    * [exreport][]
+
+If you know of other related works I should include, please send a pull request
+to the "dev" branch.
+
+
 ## Credits
 
 workflowr was developed, and is maintained, by John Blischak, a postdoctoral 
@@ -111,17 +195,10 @@ researcher in the laboratory of [Matthew Stephens][stephens] at [The University
 of Chicago][uchicago]. He is funded by a grant from the [Gordon and Betty Moore 
 Foundation][moore] to MS.
 
-The workflowr package uses many great open source packages. Most importantly it 
-depends on the R packages [rmarkdown][], which is responsible for providing the 
-infrastructure to convert a collection of R Markdown files into a static 
-website, and [git2r][], which enables running Git commands from R. Furthermore 
-it relies on the [GitHub Pages][] service for hosting the websites for free. See
-the file DESCRIPTION for the full list of R packages used and the 
-[vignette][vig-details] that describes the details of how workflowr works.
-
-The package documentation is created with [pkgdown][], continuous integration 
-testing is performed by [Travis CI][travis], and code coverage is calculated
-with [covr][] and [Codecov][].
+The workflowr package uses many great open source packages. Especially critical 
+for this project are the R packages [git2r][], [knitr][], and [rmarkdown][].
+Please see the vignette [How the workflowr package works][vig-details] to learn
+about the software that makes workflowr possible.
 
 ## License
 
@@ -153,27 +230,59 @@ if it was "er" because I personally find this the easiest. Thus I pronounce the
 package "workflow + er". Other equally as good options are "workflow + R" or
 "work + flower".
 
+[analysis_framework]: https://github.com/jimhester/analysis_framework
+[blogdown]: https://github.com/rstudio/blogdown
+[blogR]: https://github.com/rmflight/blogR
+[bookdown]: https://github.com/rstudio/bookdown
+[cboettig/template]: https://github.com/cboettig/template
 [Codecov]: https://codecov.io/
+[contributing]: https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.md
 [covr]: https://github.com/jimhester/covr
+[cran-rr]: https://cran.r-project.org/web/views/ReproducibleResearch.html
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 [devtools]: https://github.com/hadley/devtools
+[exreport]: https://github.com/jacintoArias/exreport
 [gh]: https://github.com
 [git]: https://git-scm.com/
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
+[hadley]: http://hadley.nz/
 [htmlwidgets]: http://www.htmlwidgets.org/
 [issues]: https://github.com/jdblischak/workflowr/issues
+[knitr]: https://github.com/yihui/knitr
+[knitr-jekyll]: https://github.com/yihui/knitr-jekyll
+[knowledge-repo]: https://github.com/airbnb/knowledge-repo
+[lnraw]: https://github.com/mmadsen/lnraw
+[makeProject]: https://cran.r-project.org/web/packages/makeProject/index.html
+[manuscriptPackage]: https://github.com/jhollist/manuscriptPackage
 [MIT]: https://opensource.org/licenses/mit-license.php
 [moore]: https://www.moore.org/
+[Pakillo/template]: https://github.com/Pakillo/template
 [pkgdown]: http://hadley.github.io/pkgdown/
+[poirot]: https://github.com/ramnathv/poirot
+[prodigenr]: https://github.com/lwjohnst86/prodigenr
+[pRojects]: https://github.com/lockedata/pRojects
+[ProjectTemplate]: https://github.com/johnmyleswhite/ProjectTemplate
 [r]: http://cran.r-project.org
+[r-pkg]: http://r-pkgs.had.co.nz/
+[researchcompendium]: https://github.com/benmarwick/researchcompendium
 [rmarkdown]: http://rmarkdown.rstudio.com/
+[rmd-notebook]: https://github.com/lmullen/rmd-notebook
+[rmflight]: https://github.com/rmflight
+[rmflight-post]: https://rmflight.github.io/posts/2014/07/analyses_as_packages.html
+[rOpenSci]: https://ropensci.github.io/reproducibility-guide/
+[roxygen2]: https://github.com/klutometis/roxygen
+[rr-init]: https://github.com/Reproducible-Science-Curriculum/rr-init
+[rsmith]: https://github.com/hadley/rsmith
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
+[samantha]: https://github.com/DASpringate/samatha
+[singleCellSeq]: https://jdblischak.github.io/singleCellSeq/analysis/
 [stephens]: http://stephenslab.uchicago.edu/
 [swc]: https://software-carpentry.org
 [swc-git]: https://swcarpentry.github.io/workshop-template/#git
 [swc-git-config]: http://swcarpentry.github.io/git-novice/02-setup/
 [swc-r]: https://swcarpentry.github.io/workshop-template/#r
+[testthat]: https://github.com/hadley/testthat
 [travis]: https://travis-ci.org/
 [uchicago]: http://www.uchicago.edu/
 [vig-custom]: https://jdblischak.github.io/workflowr/docs/articles/wflow-02-customization.html

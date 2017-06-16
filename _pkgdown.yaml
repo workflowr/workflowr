@@ -26,6 +26,7 @@ articles:
     - "`wflow-02-customization`"
     - "`wflow-03-migrating`"
     - "`wflow-04-how-it-works`"
+    - "`wflow-05-faq`"
 
 reference:
   - title: "Starting a workflowr project"

@@ -19,8 +19,8 @@ you can start taking advantage of workflowr immediately. In a matter of minutes,
 you can create a research website like [this][demo01].
 
 **WARNING:** workflowr is still in the early stages of development, so there 
-will potentially be major changes between versions. Thus make sure to upgrade if
-necessary and look over the documentation. The good news is that any site you 
+will potentially be major changes between versions. Thus make sure to [upgrade](#upgrading) if
+necessary and look over the [documentation][workflowr]. The good news is that any site you 
 create will not be affected by these changes and will continue to function with 
 new versions of the workflowr functions. If you find any problems, or would like
 to suggest new features, please open an [Issue][issues].

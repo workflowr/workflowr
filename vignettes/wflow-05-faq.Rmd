@@ -1,0 +1,51 @@
+---
+title: "Frequenty asked questions"
+subtitle: "workflowr version `r packageVersion('workflowr')`"
+author: "John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Frequently asked questions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Can I make my workflowr website private?
+
+Short answer: No.
+
+Long answer: Even if you create a private GitHub repository, the website it
+creates is still public. If you're not ready to publish your results online, you
+can always wait and activate GitHub Pages later. In the meantime, you'll still
+have a version-controlled, organized set of results for your project. However,
+the risk that someone that doesn't have the link to your website is able to find
+it is very low. Search engines prioritize the results by how many other sites
+link to a site, so your website will not be high in the results even if you
+search for very specific terms. Thus if you only share the URL to your results
+with your close collaborators, and request that they not share it widely, your
+website is effectively private. That being said, being truly scooped in science
+is rare (at best) and openly sharing your work will help establish your
+expertise in the field (and furthermore establishes your priority), so you
+should consider keeping both your code and website public.
+
+## Can I include Shiny apps in my website?
+
+No, at least not in the standard setup. The website is hosted with GitHub pages,
+which only supports static web pages. Shiny apps are dynamic, i.e. a user can
+interact with them to change the content. The easiest way to share your Shiny
+app would be to host it at [shinyapps.io](http://www.shinyapps.io/) and add a
+link to your app on your workflowr website. Alternatively you could host your
+workflowr website on your own server, but that would require much more knowledge
+and resources to accomplish.
+
+## Can I change "X" on my website?
+
+Almost certainly yes, but some things are easier to customize than others. The
+vignette [Customize your research website](wflow-02-customization.html) provides
+some ideas that are simple to implement. Check out the documentation for
+[rmarkdown][] and [Twitter Bootstrap][Bootstrap] for inspiration.
+
+[rmarkdown]: http://rmarkdown.rstudio.com/
+[Bootstrap]: http://getbootstrap.com/

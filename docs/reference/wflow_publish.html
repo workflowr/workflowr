@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build the site — wflow_build • workflowr</title>
+<title>Publish the site — wflow_publish • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -85,35 +85,43 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build the site</h1>
+    <h1>Publish the site</h1>
     </div>
 
     
-    <p><code>wflow_build</code> builds the website from the files in the analysis
-directory. This is intended to be used when developing your code to preview
-the changes. When you are ready to commit the files, use
-<code><a href='wflow_publish.html'>wflow_publish</a></code>.</p>
+    <p><code>wflow_publish</code> is the main workflowr function. Use it when you are
+ready to publish an analysis to your site. <code>wflow_publish</code> performs
+three steps: 1) commit the file(s), 2) rebuild the file(s), 3) commit the
+generated website file(s). These steps ensure that the version of the HTML
+file is created by the latest version of the R Markdown file, which is
+critical for reproducibility.</p>
     
 
-    <pre class="usage"><span class='fu'>wflow_build</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fu'>is.null</span>(<span class='no'>files</span>), <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>, <span class='kw'>log_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_publish</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>files</th>
-      <td><p>character (default: NULL). Files to build. Supports file
-extensions Rmd, rmd, and md. Only files in the analysis directory are
-allowed (and therefore any path to a file is ignored).</p></td>
+      <td><p>character (default: NULL). Files to be added and committed with
+Git.</p></td>
     </tr>
     <tr>
-      <th>make</th>
-      <td><p>logical (default: <code>is.null(files)</code>). Use Make-like behavior,
-i.e. build the files that have been updated more recently than their
-corresponding HTML files. This is the default action if no files are
-specified.</p></td>
+      <th>message</th>
+      <td><p>character (default: NULL). A commit message.</p></td>
+    </tr>
+    <tr>
+      <th>all</th>
+      <td><p>logical (default: FALSE). Automatically stage files that have been
+modified and deleted. Equivalent to: <code>git commit -a</code></p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>logical (default: FALSE). Allow adding otherwise ignored files.
+Equivalent to: <code>git add -f</code></p></td>
     </tr>
     <tr>
       <th>update</th>
@@ -135,22 +143,9 @@ bar, or any other setting in <code>_site.yml</code>.</p></td>
 file. Passed to <code>set.seed</code>.</p></td>
     </tr>
     <tr>
-      <th>log_dir</th>
-      <td><p>character (default: NULL). The directory to save log files
-from building files. It will be created if necessary and ignored if
-<code>local = TRUE</code>. The default is to create a directory in <code>/tmp</code>.</p></td>
-    </tr>
-    <tr>
-      <th>local</th>
-      <td><p>logical (default: FALSE). Build files locally in the R console.
-This should only be used for debugging purposes. The default is to build
-each file in its own separate fresh R process to ensure each file is
-reproducible in isolation.</p></td>
-    </tr>
-    <tr>
       <th>dry_run</th>
-      <td><p>logical (default: FALSE). Preview the files to be built, but
-do not actually build them.</p></td>
+      <td><p>logical (default: FALSE). Preview the proposed action but do
+not actually add or commit any files.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -162,53 +157,41 @@ you'll need to provide the path to the project directory.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>wflow_build</code>, which is a list with the
-  following elements:</p>
+    <p>Returns an object of class <code>wflow_publish</code>, which is a list with
+  the following elements:</p>
 <p></p><ul>
-<li><p><b>files</b>: The input argument <code>files</code></p></li>
-<li><p><b>make</b>: The input argument <code>make</code></p></li>
-<li><p><b>update</b>: The input argument <code>update</code></p></li>
-<li><p><b>republish</b>: The input argument <code>republish</code></p></li>
-<li><p><b>seed</b>: The input argument <code>seed</code></p></li>
-<li><p><b>log_dir</b>: The directory where the log files were saved</p></li>
-<li><p><b>local</b>: The input argument <code>files</code></p></li>
-<li><p><b>dry_run</b>: The input argument <code>files</code></p></li>
-<li><p><b>built</b>: The relative paths to the built R Markdown files</p></li>
-<li><p><b>html</b>: The relative paths to the corresponding HTML files</p></li>
+<li><p><b>step1</b>: An object of class <code>wflow_commit</code> from the first
+  step of committing the analysis files.</p></li>
+<li><p><b>step2</b>: An object of class <code>wflow_build</code> from the second
+  step of building the HTML files.</p></li>
+<li><p><b>step3</b>: An object of class <code>wflow_commit</code> from the third
+  step of committing the HTML files.</p></li>
 </ul>
 
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>wflow_build</code> has multiple, non-mutually exclusive options for deciding
-which files to build:</p><ul>
-<li><p>Files specified via the argument <code>files</code> are always built.</p></li>
-<li><p>If <code>make = TRUE</code>, all files which have been modified more recently
-than their corresponding HTML files will be built.</p></li>
-<li><p>If <code>update = TRUE</code>, all files which have been committed more
-recently than their corresponding HTML files will be built. However, files
-which currently have staged or unstaged changes will be ignored.</p></li>
-<li><p>If <code>republish = TRUE</code>, all published files will be rebuilt.</p></li>
-</ul>
-    <p>Under the hood, <code>wflow_build</code> is a wrapper for
-<code><a href='http://www.rdocumentation.org/packages/rmarkdown/topics/render_site'>render_site</a></code> from the package rmarkdown.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='wflow_publish.html'>wflow_publish</a></code></p>
+    <p><code><a href='wflow_commit.html'>wflow_commit</a></code>, <code><a href='wflow_build.html'>wflow_build</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='co'># single file</span>
+  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>)
+  <span class='co'># All tracked files that have been edited</span>
+  <span class='fu'>wflow_publish</span>(<span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
+  <span class='co'># A new file plus all tracked files that have been edited</span>
+  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Multiple files</span>
+  <span class='fu'>wflow_publish</span>(<span class='fu'>c</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"analysis/another.Rmd"</span>),
+                <span class='st'>"Informative commit message"</span>)
+  <span class='co'># All R Markdown files that start with the pattern "new_"</span>
+  <span class='fu'>wflow_publish</span>(<span class='fu'>Sys.glob</span>(<span class='st'>"analysis/new_*Rmd"</span>), <span class='st'>"Informative commit message"</span>)
+  <span class='co'># Republish all published files regardless of whether they have been</span>
+  <span class='co'># modified. Useful for changing some universal aspect of the site,</span>
+  <span class='co'># e.g. the theme.</span>
+  <span class='fu'>wflow_publish</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
 
-  <span class='co'># Build all files</span>
-  <span class='fu'>wflow_build</span>() <span class='co'># equivalent to wflow_build(make = TRUE)</span>
-  <span class='co'># Build a single file</span>
-  <span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>)
-  <span class='co'># Build multiple files</span>
-  <span class='fu'>wflow_build</span>(<span class='fu'>c</span>(<span class='st'>"file1.Rmd"</span>, <span class='st'>"file2.Rmd"</span>))
-  <span class='co'># Build every file</span>
-  <span class='fu'>wflow_build</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -217,8 +200,6 @@ which currently have staged or unstaged changes will be ignored.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

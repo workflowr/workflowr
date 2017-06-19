@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Start a new workflowr project. — wflow_start • workflowr</title>
+<title>Report status of workflowr project. — wflow_status • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -85,86 +85,91 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Start a new workflowr project.</h1>
+    <h1>Report status of workflowr project.</h1>
     </div>
 
     
-    <p><code>wflow_start</code> adds the necesary files for a workflowr project. The
-default is to create a new directory, but it is also possible to add the
-files to an already existing project. By default it also changes the working
-directory to the workflowr project.</p>
+    <p><code>wflow_status</code> reports the analysis files that require user action.</p>
     
 
-    <pre class="usage"><span class='fu'>wflow_start</span>(<span class='no'>directory</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_status</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>directory</th>
-      <td><p>character. The directory for the project, e.g.
-"~/new-project". By default the directory will be created (<code>existing =
-FALSE</code>.</p></td>
+      <th>files</th>
+      <td><p>character (default: NULL) The analysis file(s) to report the
+status. By default checks the status of all analysis files.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>character (default: NULL). Project name, e.g. "My Project". By
-default <code>name</code> is the same as <code>directory</code>. It is displayed on the
-site's navigation bar and the README.md.</p></td>
-    </tr>
-    <tr>
-      <th>git</th>
-      <td><p>logical (default: TRUE). Should Git be used for version control?
-If <code>directory</code> is a new Git repository, <code>wflow_start</code> will
-initialize the repository and make an initial commit. If <code>directory</code>
-is already a Git repository, <code>wflow_start</code> will make an additional
-commit. In both cases, only files needed for the workflowr project will be
-included in the commit.</p></td>
-    </tr>
-    <tr>
-      <th>existing</th>
-      <td><p>logical (default: FALSE). Indicate if the specified
-<code>directory</code> already exists. The default prevents injecting the
-workflowr files into an unwanted location. Only set to TRUE if you wish to
-add the workflowr files to an existing project.</p></td>
-    </tr>
-    <tr>
-      <th>overwrite</th>
-      <td><p>logical (default: FALSE). Control whether to overwrite
-existing files. Only relevant if <code>existing = TRUE</code>. Passed to
-<code>file.copy</code>.</p></td>
-    </tr>
-    <tr>
-      <th>change_wd</th>
-      <td><p>logical (default: TRUE). Change the working directory to the
-<code>directory</code>.</p></td>
+      <th>project</th>
+      <td><p>character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns absolute path to workflowr project.</p>
+    <p>Returns an object of class <code>wflow_status</code>, which is a list with
+  the following elements:</p><ul>
+<li><p><b>root</b>: The relative path to the root directory of the workflowr
+project (i.e. contains the RStudio .Rproj file).</p></li>
+<li><p><b>analysis</b>: The relative path to the directory that contains
+<code>_site.yml</code> and the R Markdown files.</p></li>
+<li><p><b>docs</b>: The relative path to the directory that contains the HTML
+files and figures.</p></li>
+<li><p><b>git</b>: The relative path to the <code>.git</code> directory that
+contains the history of the Git repository.</p></li>
+<li><p><b>status</b>: A data frame with detailed information on the status of
+each file (see below).</p></li>
+</ul>
+
+<p>The data frame <code>status</code> contains the following non-mutually exclusive
+columns (all logical vectors):</p><ul>
+<li><p><b>ignored</b>: The R Markdown file has been ignored by Git according
+to the patterns in the file <code>.gitignore</code>.</p></li>
+<li><p><b>mod_unstaged</b>: The R Markdown file has unstaged modifications.</p></li>
+<li><p><b>mod_staged</b>: The R Markdown file has staged modifications.</p></li>
+<li><p><b>tracked</b>: The R Markdown file is tracked by Git.</p></li>
+<li><p><b>committed</b>: The R Markdown file has been previously committed to
+the Git repository.</p></li>
+<li><p><b>published</b>: The corresponding HTML file has been previously
+committed.</p></li>
+<li><p><b>mod_committed</b>: The R Markdown file has modifications that have
+been committed since the last time the HTML was built and committed.</p></li>
+<li><p><b>modified</b>: The R Markdown file has been modified since it was
+last published (i.e. <code>mod_unstaged</code> or <code>mod_staged</code> or
+<code>mod_committed</code>).</p></li>
+<li><p><b>unpublished</b>: The R Markdown file is tracked by Git but not
+published (i.e. the HTML has not been committed).</p></li>
+<li><p><b>scratch</b>: The R Markdown file is untracked by Git, i.e. it is
+considered a scratch file until it is committed.</p></li>
+</ul>
+
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is the initial function that organizes the infrastructure to create a
-research website for your project. Note that while you do not need to use
-RStudio with workflowr, do not delete the Rproj file because it is required
-by other functions.</p>
+    <p><code>wflow_status</code> reports analysis files with one of the following
+statuses:</p><ul>
+<li><p><b>Mod</b>: Modified file. Any published file that has been modified
+since the last time the HTML was published.</p></li>
+<li><p><b>Unp</b>: Unpublished file. Any tracked file whose corresponding HTML
+is not tracked. May or may not have staged or unstaged changes.</p></li>
+<li><p><b>Scr</b>: Scratch file. Any untracked file that is not specifically
+ignored.</p></li>
+</ul><p><code>wflow_status</code> only works for workflowr projects that use Git.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
 
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>)
-  <span class='co'># Provide a custom name for the project</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"My Project"</span>)
-  <span class='co'># Add workflowr files to an existing project</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='co'># Add workflowr files to an existing project, but do not automatically</span>
-  <span class='co'># commit them</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='fu'>wflow_status</span>()
+  <span class='co'># Get status of specific file(s)</span>
+  <span class='fu'>wflow_status</span>(<span class='st'>"analysis/file.Rmd"</span>)
+  <span class='co'># Save the results</span>
+  <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'>wflow_status</span>()
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

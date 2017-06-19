@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -52,7 +54,7 @@
   <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="../articles/getting-started.html">Getting started</a>
+  <a href="../articles/wflow-01-getting-started.html">Getting started</a>
 </li>
 <li>
   <a href="../articles/index.html">Vignettes</a>
@@ -91,28 +93,39 @@
 project.</p>
     
 
-    <pre><span class='fu'>create_links_page</span>(<span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"results.Rmd"</span>, <span class='kw'>sort_method</span> <span class='kw'>=</span> <span class='st'>"filename"</span>,
-  <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>exclude_rmd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>datatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>create_links_page</span>(<span class='kw'>output</span> <span class='kw'>=</span> <span class='st'>"results.Rmd"</span>, <span class='kw'>sort_method</span> <span class='kw'>=</span> <span class='st'>"filename"</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>exclude_rmd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>datatable</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>output</dt>
-      <dd>The basename of the results file (default: &quot;results.Rmd&quot;)</dd>
-      <dt>sort_method</dt>
-      <dd>The method for sorting the files. Options include
-&quot;filename&quot; (default), &quot;title&quot;, &quot;date&quot;, and &quot;date reverse&quot; (see Details for
-explanation).</dd>
-      <dt>path</dt>
-      <dd>By default the function assumes the current working directory is
-within the project. If this is not true, you&#39;ll need to provide the path to
-the project directory.</dd>
-      <dt>exclude_rmd</dt>
-      <dd>character vector of R Markdown files (basename only) to
-exclude from the results page</dd>
-      <dt>datatable</dt>
-      <dd>Display the list of results using DT::datatable (not yet
-implemented)</dd>
-    </dl>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>output</th>
+      <td><p>The basename of the results file (default: "results.Rmd")</p></td>
+    </tr>
+    <tr>
+      <th>sort_method</th>
+      <td><p>The method for sorting the files. Options include
+"filename" (default), "title", "date", and "date reverse" (see Details for
+explanation).</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>By default the function assumes the current working directory is
+within the project. If this is not true, you'll need to provide the path to
+the project directory.</p></td>
+    </tr>
+    <tr>
+      <th>exclude_rmd</th>
+      <td><p>character vector of R Markdown files (basename only) to
+exclude from the results page</p></td>
+    </tr>
+    <tr>
+      <th>datatable</th>
+      <td><p>Display the list of results using DT::datatable (not yet
+implemented)</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -121,20 +134,20 @@ implemented)</dd>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>By default, this creates the file &quot;results.Rmd&quot; in the analysis/
+    <p>By default, this creates the file "results.Rmd" in the analysis/
 subdirectory. If you decide to change this name, be sure to update the
 navigation bar settings in _site.yml.</p>
-    <p>There are currently 4 methods available for sorting the files. &quot;filename&quot;
-(the default) sorts by filename, &quot;title&quot; sorts by title (if the R Markdown
-file does not contain a title in the YAML, the filename is used), &quot;date&quot;
-sorts in chronological order, and &quot;date reverse&quot; sorts in reverse
+<p>There are currently 4 methods available for sorting the files. "filename"
+(the default) sorts by filename, "title" sorts by title (if the R Markdown
+file does not contain a title in the YAML, the filename is used), "date"
+sorts in chronological order, and "date reverse" sorts in reverse
 chronological order.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># create_links_page()</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='fu'>create_links_page</span>()
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -153,7 +166,7 @@ chronological order.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by John Blischak.</p>
+  <p>Developed by John Blischak, Peter Carbonetto, Matthew Stephens.</p>
 </div>
 
 <div class="pkgdown">

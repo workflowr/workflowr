@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -52,7 +54,7 @@
   <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="../articles/getting-started.html">Getting started</a>
+  <a href="../articles/wflow-01-getting-started.html">Getting started</a>
 </li>
 <li>
   <a href="../articles/index.html">Vignettes</a>
@@ -88,12 +90,72 @@
     </div>
 
     <div class="contents">
+    <div id="workflowr-0-5-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflowr-0-5-0" class="anchor"></a>workflowr 0.5.0</h1>
+<p>This release changes the interface of some of the main workflowr functions. The functions <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> are introduced, and the previous functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code><a href="../reference/wflow_commit.html">wflow_commit()</a></code> are re-designed.</p>
+<div id="wflow_status" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_status" class="anchor"></a>wflow_status</h2>
+<ul>
+<li><p>New function <code><a href="../reference/wflow_status.html">wflow_status()</a></code> reports which analysis files require user attention (inspired by <code>git status</code>)</p></li>
+<li><p>Defines R Markdown files whose HTML has been committed as part of the Git repo as “Published”, R Markdown files which have been committed to the Git repo but not their HTML as “Unpublished”, and R Markdown files that are untracked by Git as “Scratch”. Furthermore, previously published files that have been subsequently edited are classified as “Modified”. See the man page <code><a href="../reference/wflow_status.html">?wflow_status</a></code> for more details.</p></li>
+</ul>
+</div>
+<div id="wflow_publish" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_publish" class="anchor"></a>wflow_publish</h2>
+<ul>
+<li><p>This new function replaces the previous functionality of <code><a href="../reference/wflow_commit.html">wflow_commit()</a></code>. The basic interface is much simpler.</p></li>
+<li><p><code><a href="../reference/wflow_publish.html">wflow_publish("analysis/file.Rmd")</a></code> will 1) commit <code>analysis/file.Rmd</code>, 2) build <code>analysis/file.Rmd</code> in its own separate R session with <code>set.seed(12345)</code>, and 3) commit <code>docs/file.html</code> and any generated figures. These 3 steps are referred to as “publishing a file”.</p></li>
+<li><p><code><a href="../reference/wflow_publish.html">wflow_publish(all = TRUE)</a></code> will publish all tracked analysis files, analogous to <code>git commit -a</code>.</p></li>
+<li><p>To change the theme or make some other change to the entire site, run <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/_site.yml", republish = TRUE)</a></code>, which will 1) commit the configuration file <code>analysis/_site.yml</code>, 2) re-build all the previously published analysis files using the new configuration options, and 3) commit the re-built HTML files.</p></li>
+</ul>
+</div>
+<div id="wflow_build" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_build" class="anchor"></a>wflow_build</h2>
+<ul>
+<li><p>By default, <code><a href="../reference/wflow_build.html">wflow_build()</a></code> runs in “Make”-mode, only building R Markdown files that have been updated more recently than their corresponding HTML files. If instead files are specfically stated, those files will be built.</p></li>
+<li><p>By default, R Markdown files are now built each in their own separate R session (similar in function to the “Knit HTML” button in RStudio). This prevents undesirable behavior like sharing variables and loaded packages across separate files. Set <code>local = TRUE</code> to build the files in the local R console (useful for debugging, but otherwise discouraged).</p></li>
+<li><p>By default, the seed for random number generation is set to the arbitrary number <code>12345</code> (using <code>set.seed()</code>). This ensures that any code that produces random numbers will be reproducible.</p></li>
+</ul>
+</div>
+<div id="wflow_commit" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_commit" class="anchor"></a>wflow_commit</h2>
+<ul>
+<li><p><code><a href="../reference/wflow_commit.html">wflow_commit()</a></code> has been demoted to only being a wrapper for the equivalent functionality of <code>git add</code> and <code>git commit</code>. This can be useful for committing non-analysis files or R Markdown files that you aren’t ready to publish yet. However, you should use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> for the standard workflow.</p></li>
+<li><p>Set <code>all = TRUE</code> to run the equivalent of <code>git commit -a</code>.</p></li>
+</ul>
+</div>
+<div id="wflow_update" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_update" class="anchor"></a>wflow_update</h2>
+<ul>
+<li>Improved documentation of <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to better explain its functionality. It will attempt to convert all R Markdown files present to use the latest version of the workflowr R Markdown template; however, it will only commit R Markdown files that are tracked by Git.</li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<ul>
+<li><p>All workflowr functions should now accept the file extesion <code>.rmd</code> in addition to <code>.Rmd</code> (Issue #10)</p></li>
+<li><p>Replaced the shared argument <code>path</code> with <code>project</code> to clarify that this argument specifies the path to a directory in the workflowr project</p></li>
+<li><p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> now includes <code>docs/.nojekyll</code></p></li>
+<li><p>Change dependency to R &gt;= 3.2.5 (Issue #32)</p></li>
+<li><p>Change stringr dependency (&gt;= 1.1.0)</p></li>
+<li><p>Started a vignette with Frequently Asked Questions</p></li>
+<li><p>Added sections to README (Quick start, Upgrading, Related work, and Citation)</p></li>
+</ul>
+</div>
+</div>
     <div id="workflowr-0-4-0" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflowr-0-4-0" class="anchor"> </a>workflowr 0.4.0</h1>
+<a href="#workflowr-0-4-0" class="anchor"></a>workflowr 0.4.0</h1>
 <div id="wflow_start" class="section level2">
 <h2 class="hasAnchor">
-<a href="#wflow_start" class="anchor"> </a>wflow_start</h2>
+<a href="#wflow_start" class="anchor"></a>wflow_start</h2>
 <ul>
 <li>The <code><a href="../reference/wflow_start.html">wflow_start()</a></code> API has been simplified. Now the first (and only required) argument is the directory to be created. By default, the name of the project will be determined from the directory name. For example, <code><a href="../reference/wflow_start.html">wflow_start("~/projects/proj-x")</a></code> will create a workflowr project with the name “proj-x”. To specify a different name, provide the argument <code>name</code>
 </li>
@@ -106,7 +168,7 @@
 </div>
 <div id="workflowr-r-markdown-template" class="section level2">
 <h2 class="hasAnchor">
-<a href="#workflowr-r-markdown-template" class="anchor"> </a>workflowr R Markdown template</h2>
+<a href="#workflowr-r-markdown-template" class="anchor"></a>workflowr R Markdown template</h2>
 <ul>
 <li>Updated workflowr R Markdown template can be built even if the user does not have workflowr installed</li>
 <li>Use new function <code><a href="../reference/wflow_convert.html">wflow_convert()</a></code> to convert an R Markdown file based on the previous template to use the latest version</li>
@@ -117,7 +179,7 @@
 </div>
 <div id="migrating-an-existing-project-to-use-workflowr" class="section level2">
 <h2 class="hasAnchor">
-<a href="#migrating-an-existing-project-to-use-workflowr" class="anchor"> </a>Migrating an existing project to use workflowr</h2>
+<a href="#migrating-an-existing-project-to-use-workflowr" class="anchor"></a>Migrating an existing project to use workflowr</h2>
 <ul>
 <li>New vignette on “Migrating an existing project to use workflowr”</li>
 <li>
@@ -128,7 +190,7 @@
 </div>
 <div id="other-new-functions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-new-functions" class="anchor"> </a>Other new functions</h2>
+<a href="#other-new-functions" class="anchor"></a>Other new functions</h2>
 <ul>
 <li>
 <code><a href="../reference/wflow_view.html">wflow_view()</a></code> opens the website in the browser</li>
@@ -138,7 +200,7 @@
 </div>
 <div id="improvements-to-the-workflowr-r-package-itself" class="section level2">
 <h2 class="hasAnchor">
-<a href="#improvements-to-the-workflowr-r-package-itself" class="anchor"> </a>Improvements to the workflowr R package itself</h2>
+<a href="#improvements-to-the-workflowr-r-package-itself" class="anchor"></a>Improvements to the workflowr R package itself</h2>
 <ul>
 <li>Continuous integration testing with <a href="https://travis-ci.org/">Travis CI</a>
 </li>
@@ -151,7 +213,7 @@
 </div>
     <div id="workflowr-0-3-0" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflowr-0-3-0" class="anchor"> </a>workflowr 0.3.0</h1>
+<a href="#workflowr-0-3-0" class="anchor"></a>workflowr 0.3.0</h1>
 <ul>
 <li><p>Second alpha release. Major API overhaul.</p></li>
 <li><p>Improved naming of functions: <code>start_project</code> -&gt; <code>wflow_start</code>, <code>open_rmd</code> -&gt; <code>wflow_open</code>, <code>build_site</code> -&gt; <code>wflow_build</code>, <code>commit_site</code> -&gt; <code>wflow_commit</code>, <code>create_results</code> -&gt; <code>create_links_page</code></p></li>
@@ -162,7 +224,7 @@
 </div>
     <div id="workflowr-0-2-0" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflowr-0-2-0" class="anchor"> </a>workflowr 0.2.0</h1>
+<a href="#workflowr-0-2-0" class="anchor"></a>workflowr 0.2.0</h1>
 <ul>
 <li><p>First alpha release. Contains enough functions to create workflowr project from scratch.</p></li>
 <li><p>Main functions: <code>start_project</code>, <code>open_rmd</code>, <code>build_site</code>, <code>commit_site</code>, <code>create_results</code></p></li>
@@ -170,7 +232,7 @@
 </div>
     <div id="workflowr-0-1-0" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflowr-0-1-0" class="anchor"> </a>workflowr 0.1.0</h1>
+<a href="#workflowr-0-1-0" class="anchor"></a>workflowr 0.1.0</h1>
 <ul>
 <li>Initial demonstration of idea.</li>
 </ul>
@@ -182,6 +244,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-0-5-0">0.5.0</a></li>
         <li><a href="#workflowr-0-4-0">0.4.0</a></li>
         <li><a href="#workflowr-0-3-0">0.3.0</a></li>
         <li><a href="#workflowr-0-2-0">0.2.0</a></li>
@@ -194,7 +257,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by John Blischak.</p>
+  <p>Developed by John Blischak, Peter Carbonetto, Matthew Stephens.</p>
 </div>
 
 <div class="pkgdown">

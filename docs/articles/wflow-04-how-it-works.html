@@ -9,7 +9,7 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -32,7 +32,7 @@
   <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="../articles/getting-started.html">Getting started</a>
+  <a href="../articles/wflow-01-getting-started.html">Getting started</a>
 </li>
 <li>
   <a href="../articles/index.html">Vignettes</a>
@@ -64,10 +64,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>How the workflowr package works</h1>
-            <h3 class="subtitle">workflowr version 0.3.0</h3>
+            <h3 class="subtitle">workflowr version 0.5.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-03-04</h4>
+            <h4 class="date">2017-06-19</h4>
           </div>
 
     
@@ -76,19 +76,19 @@
 <p>The workflowr package combines many powerful tools in order to produce a research website. It is absolutely <strong>not</strong> necessary to understand all the underlying tools to take advantage of workflowr, and in fact that is one of the primary goals of workflowr: to allow researchers to focus on their analyses without having to worry too much about the technical details. However, if you are interested in implementing advanced customization options, contributing to workflowr, or simply want to learn more about these tools, the sections below provide some explanations of how workflowr works.</p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#overview" class="anchor"> </a></body></html>Overview</h2>
+<a href="#overview" class="anchor"></a>Overview</h2>
 <p><a href="https://cran.r-project.org/">R</a> is the computer programming language used to perform the analysis. <a href="http://yihui.name/knitr/">knitr</a> is an R package that executes code chunks in an R Markdown file to create a Markdown file. <a href="http://daringfireball.net/projects/markdown/">Markdown</a> is a lightweight markup language that is easier to read and write than HTML. <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> is an R package that combines the functionality of <a href="http://yihui.name/knitr/">knitr</a> and the document converter <a href="http://pandoc.org/">Pandoc</a>. <a href="http://pandoc.org/">Pandoc</a> powers the conversion of <a href="http://yihui.name/knitr/">knitr</a>-produced Markdown files into HTML, Word, or PDF documents. Additionally, newer versions of <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> contain functions for building websites. The styling of the websites is performed by the web framework <a href="http://getbootstrap.com/">Bootstrap</a>. <a href="http://getbootstrap.com/">Bootstrap</a> implements the navigation bar at the top of the website, has many available themes to customize the look of the site, and dynamically adjusts the website so it can be viewed on a desktop, tablet, or mobile device. The <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> website configuration file <code>_site.yml</code> allows convenient customization of the <a href="http://getbootstrap.com/">Bootstrap</a> navigation bar and theme. <a href="http://git-scm.com/">Git</a> is a distributed version control system (VCS) that tracks code development. It has many powerful features, but only a handful of the main functions are required to use workflowr. To aid reproducibility, workflowr provides an R Markdown template that automatically inserts the latest version number (its technical name is a <a href="https://en.wikipedia.org/wiki/SHA-1">SHA-1</a> hash) into the top of the rendered HTML, so you always know which version of the code produced the results contained in that particular file. <a href="https://github.com/">GitHub</a> is a website that hosts <a href="http://git-scm.com/">Git</a> repositories and additionally provides collaboration tools for developing software. <a href="https://pages.github.com/">GitHub Pages</a> is a <a href="https://github.com/">GitHub</a> service that offers free hosting of <a href="https://en.wikipedia.org/wiki/Static_web_page">static websites</a>. By placing the HTML files for the website in the subdirectory <code>docs/</code>, <a href="https://pages.github.com/">GitHub Pages</a> serves them online.</p>
 </div>
 <div id="where-are-the-figures" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#where-are-the-figures" class="anchor"> </a></body></html>Where are the figures?</h2>
+<a href="#where-are-the-figures" class="anchor"></a>Where are the figures?</h2>
 <p>workflowr saves the figures into an organized, hierarchical directory structure within <code>analysis/</code>. For example, the first figure generated by the chunk named <code>plot-data</code> in the file <code>filename.Rmd</code> will be saved as <code>analysis/figure/filename.Rmd/plot-data-1.png</code>. Furthermore, the figure files are copied to <code>docs/</code> when <code>render_site</code> is run (this is the rmarkdown package function called by <code>wflow_build</code>, <code>wflow_commit</code>, and the RStudio “Build Website” command).</p>
 <p>The naming of the figure files is controlled by the knitr chunk options set in <code>analysis/chunks.R</code>, specifically the option <code>fig.path</code>. It is not recommended to edit the <code>fig.path</code> because the workflowr function <code>wflow_commit</code> expects the website figures to be named according to this scheme.</p>
 <p>The figures have to be committed to the Git repository in <code>docs/</code> in order to be displayed properly on the website. Thus to reduce duplication, only commit the figures in <code>docs/figure/</code>. workflowr helps with this. <code>wflow_commit</code> automatically commits the figures in <code>docs</code> corresponding to new or updated R Markdown files, and <code>analysis/figure/</code> is in the <code>.gitignore</code> file to prevent accidentally committing duplicate files.</p>
 </div>
 <div id="additional-tools" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#additional-tools" class="anchor"> </a></body></html>Additional tools</h2>
+<a href="#additional-tools" class="anchor"></a>Additional tools</h2>
 <p><a href="https://www.rstudio.com/">RStudio, Inc.</a> is a company that develops open source software for R users. They are the principal developers of <a href="https://www.rstudio.com/products/rstudio/">RStudio</a>, an integrated development environment (IDE) for R, and the <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> package. Because of this tight integration, new developments in the <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> package are quickly incorporated into the <a href="https://www.rstudio.com/products/rstudio/">RStudio</a> IDE. While not strictly required for using workflowr, using <a href="https://www.rstudio.com/products/rstudio/">RStudio</a> provides many benefits, including:</p>
 <ul>
 <li><p>RStudio projects make it easier to setup your R environment, e.g. set the correct working directory, and quickly switch between different projects</p></li>
@@ -105,7 +105,7 @@
 </div>
 <div id="further-reading" class="section level2">
 <h2 class="hasAnchor">
-<html><body><a href="#further-reading" class="anchor"> </a></body></html>Further reading</h2>
+<a href="#further-reading" class="anchor"></a>Further reading</h2>
 <ul>
 <li><p>How the code, results, and figures are executed and displayed can be customized using <a href="http://yihui.name/knitr/options/">knitr chunk and package options</a></p></li>
 <li><p>How <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">R Markdown websites</a> are configured</p></li>
@@ -132,7 +132,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by John Blischak.</p>
+  <p>Developed by John Blischak, Peter Carbonetto, Matthew Stephens.</p>
 </div>
 
 <div class="pkgdown">

@@ -25,12 +25,14 @@
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
   </head>
 
   <body>
@@ -52,7 +54,7 @@
   <a href="../index.html">Home</a>
 </li>
 <li>
-  <a href="../articles/getting-started.html">Getting started</a>
+  <a href="../articles/wflow-01-getting-started.html">Getting started</a>
 </li>
 <li>
   <a href="../articles/index.html">Vignettes</a>
@@ -92,28 +94,40 @@ coordinated across multiple files. After upgrading workflowr, run
 <code>wflow_update</code> to make all the necessary changes.</p>
     
 
-    <pre><span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>commit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>log_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>log_open</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>commit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>log_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>log_open</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>dry_run</dt>
-      <dd>logical (default: TRUE). Preview the proposed updates.</dd>
-      <dt>commit</dt>
-      <dd>logical (default: TRUE). Commit the updated files. Only
-executed if <code>dry_run = FALSE</code>.</dd>
-      <dt>log_file</dt>
-      <dd>character (default: NULL). A file to save the log messages.
-If NULL, a temporary file is created.</dd>
-      <dt>log_open</dt>
-      <dd>logical (default: <code>interactive()</code>). Should the log file
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>dry_run</th>
+      <td><p>logical (default: TRUE). Preview the proposed updates.</p></td>
+    </tr>
+    <tr>
+      <th>commit</th>
+      <td><p>logical (default: TRUE). Commit the updated files (only files
+tracked by Git are included in commit). Only executed if <code>dry_run =
+FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>log_file</th>
+      <td><p>character (default: NULL). A file to save the log messages.
+If NULL, a temporary file is created.</p></td>
+    </tr>
+    <tr>
+      <th>log_open</th>
+      <td><p>logical (default: <code>interactive()</code>). Should the log file
 be opened in RStudio? This argument is ignored if the function is not run
-from within RStudio.</dd>
-      <dt>path</dt>
-      <dd>character (default: &quot;.&quot;) By default the function assumes the
+from within RStudio.</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
-you&#39;ll need to provide the path to the project directory.</dd>
-    </dl>
+you'll need to provide the path to the project directory.</p></td>
+    </tr>
+    </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
@@ -124,21 +138,17 @@ you&#39;ll need to provide the path to the project directory.</dd>
     <p>By default, <code>wflow_update</code> is run in <code>dry_run</code> mode so that no
 unwanted changes are made. The log file contains the changes to each file,
 represented with the syntax from the
-<a href = 'Unix diff utility'>https://en.wikipedia.org/wiki/Diff_utility#Usage</a>.
+<a href = 'https://en.wikipedia.org/wiki/Diff_utility#Usage'>Unix diff utility</a>.
 After reviewing the log file for the proposed changes, re-run the function
 with <code>dry_run = FALSE</code> to implement them.</p>
-    <p>Currently <code>wflow_update</code> checks for the following items:</p>
-    <p><ul>
-<li> Updates the shared chunks in <code>analysis/chunks.R</code>.</p>
-    <p></li>
-<li> Updates each R Markdown file in <code>analysis/</code> to use the shared
-chunks. This is implemented with <code><a href='wflow_convert.html'>wflow_convert</a></code>.</p>
-    <p></li>
-<li> Removes the &quot;BuildType: Website&quot; from the Rproj file. This re-builds
+<p>Currently <code>wflow_update</code> checks for the following items:</p><ul>
+<li><p>Updates the shared chunks in <code>analysis/chunks.R</code>.</p></li>
+<li><p>Updates each R Markdown file in <code>analysis/</code> to use the shared
+chunks. This is implemented with <code><a href='wflow_convert.html'>wflow_convert</a></code>.</p></li>
+<li><p>Removes the "BuildType: Website" from the Rproj file. This re-builds
 every R Markdown file everytime, so it is safer to always use
-<code><a href='wflow_build.html'>wflow_build</a></code>.</p>
-    <p></li>
-</ul></p>
+<code><a href='wflow_build.html'>wflow_build</a></code>.</p></li>
+</ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -146,13 +156,13 @@ every R Markdown file everytime, so it is safer to always use
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Not run: ------------------------------------</span>
-<span class='co'># </span>
-<span class='co'># # Preview the potential changes</span>
-<span class='co'># wflow_update()</span>
-<span class='co'># # Incorporate the changes</span>
-<span class='co'># wflow_update(dry_run = FALSE)</span>
-<span class='co'>## ---------------------------------------------</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+
+  <span class='co'># Preview the potential changes</span>
+  <span class='fu'>wflow_update</span>()
+  <span class='co'># Incorporate the changes</span>
+  <span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,7 +183,7 @@ every R Markdown file everytime, so it is safer to always use
 
       <footer>
       <div class="copyright">
-  <p>Developed by John Blischak.</p>
+  <p>Developed by John Blischak, Peter Carbonetto, Matthew Stephens.</p>
 </div>
 
 <div class="pkgdown">

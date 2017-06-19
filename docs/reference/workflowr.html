@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract a commit from a Git repository — extract_commit • workflowr</title>
+<title>workflowr: A workflow template for creating a research website — workflowr • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -85,56 +85,42 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract a commit from a Git repository</h1>
+    <h1>workflowr: A workflow template for creating a research website</h1>
     </div>
 
     
-    <p><code>extract_commit</code> extracts the 7-digit SHA1 identifier and message for a
-specified commit.</p>
+    <p>The workflowr package helps you create a research website using R Markdown
+and Git.</p>
     
 
-    <pre class="usage"><span class='fu'>extract_commit</span>(<span class='no'>path</span>, <span class='no'>num</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>path</th>
-      <td><p>character. Specify the path to a directory that is a Git
-repository (or any subdirectory of the Git repository).</p></td>
-    </tr>
-    <tr>
-      <th>num</th>
-      <td><p>numeric. The number of the commit to extract in reverse
-chronological order. In other words, 1 is the most recent commit, 2 is the
-second most recent commit, etc.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+        
+    <h2 class="hasAnchor" id="vignettes"><a class="anchor" href="#vignettes"></a>Vignettes</h2>
 
-    <p>A list with the named elements <code>sha1</code> and <code>message</code> (both
-  characters). If a Git repository is not found at <code>path</code>, both are
-  <code>NA</code>.</p>
+    
+    <p>Run <code>browseVignettes("workflowr")</code> to see the package vignettes.</p>
+    
+    <h2 class="hasAnchor" id="main-workflowr-functions"><a class="anchor" href="#main-workflowr-functions"></a>Main workflowr functions</h2>
+
+    
+    <p></p><ul>
+<li><p><code><a href='wflow_start.html'>wflow_start</a></code> - Start workflowr project</p></li>
+<li><p><code><a href='wflow_open.html'>wflow_open</a></code> - Open a new R Markdown file based on the
+  workflowr template</p></li>
+<li><p><code><a href='wflow_publish.html'>wflow_publish</a></code> - Publish analyses to include in the
+  website</p></li>
+<li><p><code><a href='wflow_status.html'>wflow_status</a></code> - Report status of analysis files</p></li>
+</ul>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='co'># Most recent commit</span>
-  <span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>1</span>)
-  <span class='co'># Penultimate commit</span>
-  <span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>2</span>)
-})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#vignettes">Vignettes</a></li>
+
+      <li><a href="#main-workflowr-functions">Main workflowr functions</a></li>
+          </ul>
 
   </div>
 </div>

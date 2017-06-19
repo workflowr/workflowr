@@ -3,6 +3,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
+* [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
 * [Upgrading](#upgrading)
 * [This repository](#this-repository)
@@ -208,7 +209,7 @@ workflowr is available under the [MIT][] license.
 To cite workflowr in publications use:
 
   John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for
-  creating a research website. R package version 0.4.0. https://github.com/jdblischak/workflowr
+  creating a research website. R package version 0.5.0. https://github.com/jdblischak/workflowr
 
 A BibTeX entry for LaTeX users is
 
@@ -216,7 +217,7 @@ A BibTeX entry for LaTeX users is
   @Manual{,
     title = {workflowr: A workflow template for creating a research website},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
-    note = {R package version 0.4.0},
+    note = {R package version 0.5.0},
     year = {2017},
     url = {https://github.com/jdblischak/workflowr},
   }

@@ -4,8 +4,8 @@
 .onAttach <- function(libname, pkgname) {
   m <- c(sprintf("This is workflowr version %s",
                  utils::packageVersion("workflowr")),
-         "Please send bug reports and feature requests to:",
-         "https://github.com/jdblischak/workflowr/issues")
+         "**Major interface change:**",
+         "  Use `wflow_publish()` instead of `wflow_commit()`")
   packageStartupMessage(paste(m, collapse = "\n"))
 }
 

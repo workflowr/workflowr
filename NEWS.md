@@ -1,3 +1,90 @@
+# workflowr 0.5.0
+
+This release changes the interface of some of the main workflowr functions. The 
+functions `wflow_publish()` and `wflow_status()` are introduced, and the 
+previous functions `wflow_build()` and `wflow_commit()` are re-designed.
+
+## wflow_status
+
+* New function `wflow_status()` reports which analysis files require user
+attention (inspired by `git status`)
+
+* Defines R Markdown files whose HTML has been committed as part of the Git repo
+as "Published", R Markdown files which have been committed to the Git repo but 
+not their HTML as "Unpublished", and R Markdown files that are untracked by Git 
+as "Scratch". Furthermore, previously published files that have been 
+subsequently edited are classified as "Modified". See the man page
+`?wflow_status` for more details.
+
+## wflow_publish
+
+* This new function replaces the previous functionality of `wflow_commit()`. The
+basic interface is much simpler.
+
+* `wflow_publish("analysis/file.Rmd")` will 1) commit `analysis/file.Rmd`, 2) 
+build `analysis/file.Rmd` in its own separate R session with `set.seed(12345)`, 
+and 3) commit `docs/file.html` and any generated figures. These 3 steps are
+referred to as "publishing a file".
+
+* `wflow_publish(all = TRUE)` will publish all tracked analysis files, analogous
+to `git commit -a`.
+
+* To change the theme or make some other change to the entire site, run 
+`wflow_publish("analysis/_site.yml", republish = TRUE)`, which will 1) commit 
+the configuration file `analysis/_site.yml`, 2) re-build all the previously 
+published analysis files using the new configuration options, and 3) commit the 
+re-built HTML files.
+
+## wflow_build
+
+* By default, `wflow_build()` runs in "Make"-mode, only building R Markdown 
+files that have been updated more recently than their corresponding HTML files. 
+If instead files are specfically stated, those files will be built.
+
+* By default, R Markdown files are now built each in their own separate R 
+session (similar in function to the "Knit HTML" button in RStudio). This
+prevents undesirable behavior like sharing variables and loaded packages across
+separate files. Set `local = TRUE` to build the files in the local R console
+(useful for debugging, but otherwise discouraged).
+
+* By default, the seed for random number generation is set to the arbitrary 
+number `12345` (using `set.seed()`). This ensures that any code that produces 
+random numbers will be reproducible.
+
+## wflow_commit
+
+* `wflow_commit()` has been demoted to only being a wrapper for the equivalent 
+functionality of `git add` and `git commit`. This can be useful for committing 
+non-analysis files or R Markdown files that you aren't ready to publish yet. 
+However, you should use `wflow_publish()` for the standard workflow.
+
+* Set `all = TRUE` to run the equivalent of `git commit -a`.
+
+## wflow_update
+
+* Improved documentation of `wflow_update()` to better explain its 
+functionality. It will attempt to convert all R Markdown files present to use 
+the latest version of the workflowr R Markdown template; however, it will only 
+commit R Markdown files that are tracked by Git.
+
+## Miscellaneous
+
+* All workflowr functions should now accept the file extesion `.rmd` in addition
+to `.Rmd` (Issue #10)
+
+* Replaced the shared argument `path` with `project` to clarify that this
+argument specifies the path to a directory in the workflowr project
+
+* `wflow_start()` now includes `docs/.nojekyll`
+
+* Change dependency to R >= 3.2.5 (Issue #32)
+
+* Change stringr dependency (>= 1.1.0)
+
+* Started a vignette with Frequently Asked Questions
+
+* Added sections to README (Quick start, Upgrading, Related work, and Citation)
+
 # workflowr 0.4.0
 
 ## wflow_start

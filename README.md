@@ -39,8 +39,7 @@ a researcher to maintain a version-controlled R Markdown website:
 * A function to start a project with all the necessary files (see `?wflow_start`)
 * Includes an R Markdown template that will automatically insert the date and most recent Git commit ID (i.e. SHA1) at the top of the file to aid reproducibility (see `?wflow_open`)
 * Saves generated figures into an organized directory structure
-* A function to only build new and updated files (analogous to a Makefile) so that long-running files do not have to be constantly re-run every time the site is built (or rely on caching, which can easily cause reproducibility headaches especially as a project grows) (see `?wflow_build`)
-* A function to commit the website files to Git, ensuring that they are in sync with the latest committed version of the corresponding R Markdown files (see `?wflow_commit`)
+* A function that handles all the version control operations to track code development and also ensures all the R Markdown files are built in a reproducible manner (see `?wflow_publish`)
 
 ## Quick start
 

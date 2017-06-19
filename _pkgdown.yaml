@@ -39,6 +39,12 @@ reference:
     contents:
       - wflow_build
       - wflow_view
+  - title: "Assessing project status"
+    contents:
+      - wflow_status
+  - title: "Publishing the research website"
+    contents:
+      - wflow_publish
   - title: "Managing Git and GitHub"
     desc: "Functions to perform local Git commands"
     contents:

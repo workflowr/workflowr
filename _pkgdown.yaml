@@ -50,6 +50,7 @@ reference:
     contents:
       - wflow_commit
       - wflow_remotes
+      - wflow_remove
   - title: "Updating projects"
     desc: "Functions to update workflowr projects or convert existing projects to use workflowr"
     contents:

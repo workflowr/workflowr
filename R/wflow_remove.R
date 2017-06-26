@@ -30,7 +30,7 @@
 #'
 #'   }
 #'
-#' @seealso \code{\link{wflow_clean}}, \code{\link{wflow_commit}}
+#' @seealso \code{\link{wflow_commit}}
 #'
 #' @examples
 #' \dontrun{

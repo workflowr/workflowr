@@ -59,5 +59,5 @@ wflow_remove(c("analysis/file.Rmd", "output/small-data.txt"),
 
 }
 \seealso{
-\code{\link{wflow_clean}}, \code{\link{wflow_commit}}
+\code{\link{wflow_commit}}
 }

@@ -4,7 +4,7 @@ context("wflow_remove")
 
 library("git2r")
 cwd <- getwd()
-tdir <- tempfile("test-wflow_commit")
+tdir <- tempfile("test-wflow_commit-")
 on.exit(setwd(cwd))
 on.exit(unlink(tdir, recursive = TRUE), add = TRUE)
 suppressMessages(wflow_start(tdir))
@@ -55,7 +55,7 @@ test_that("wflow_remove removes an unpublished Rmd file and its associated files
                    "wflow_remove(c(rmd_unpublished, data_unpublished), dry_run = TRUE)")
   expect_identical(actual$dry_run, TRUE)
   expect_identical(actual$commit, NA)
-  expect_false(all(c(rmd_unpublished, data_unpublished) %in% actual$files_git))
+  expect_identical(actual$files_git, character())
   expect_true(all(file.exists(rmd_unpublished, data_unpublished),
                   dir.exists(c(cache_unpublished, fig_analysis_unpublished,
                              fig_docs_unpublished))))
@@ -92,6 +92,23 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
   # Confirm the files were removed from the Git directory
   files_committed <- workflowr:::get_committed_files(r)
   expect_false(any(c(rmd_published, data_published) %in% files_committed))
+})
+
+test_that("wflow_remove can remove files with no Git repo present", {
+  # Temporarily move .git directory
+  tgit <- tempfile("git-")
+  on.exit(file.rename(from = tgit, to = p$git), add = TRUE)
+  file.rename(from = p$git, to = tgit)
+  # The test will remove README, so restore it afterwards
+  f <- "README.md"
+  on.exit(checkout(r, path = f), add = TRUE)
+  expect_true(file.exists(f))
+  # Remove README.md
+  expect_silent(actual <- wflow_remove(f))
+  expect_false(file.exists(f))
+  expect_identical(actual$files, f)
+  expect_identical(actual$commit, NA)
+  expect_identical(actual$files_git, NA)
 })
 
 # Test error handling ----------------------------------------------------------

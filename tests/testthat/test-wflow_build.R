@@ -41,24 +41,24 @@ test_that("wflow_build builds the specified files", {
 })
 
 test_that("wflow_build can run in 'make' mode", {
-    
+
   # Reset modifications of rmd files. It is important to wait a couple
   # seconds so that the modification times are different.
-  Sys.sleep(2)  
+  Sys.sleep(2)
   system2("touch", args = rmd)
   expect_silent(actual <- wflow_build(dry_run = TRUE, project = site_dir))
   expect_identical(actual$built, rmd)
   expect_true(actual$make)
   expect_message(actual <- wflow_build(project = site_dir), rmd[1])
   expect_identical(actual$built, rmd)
-  
+
   # No file should be built now.
   expect_silent(actual <- wflow_build(project = site_dir))
   expect_identical(actual$built, character(0))
-  
+
   # Reset modification of file 1 only. It is important to wait a couple
   # seconds so that the modification times are different.
-  Sys.sleep(2)  
+  Sys.sleep(2)
   system2("touch", args = rmd[1])
   expect_message(actual <- wflow_build(project = site_dir), rmd[1])
   expect_identical(actual$built, rmd[1])
@@ -72,7 +72,7 @@ test_that("wflow_build can run in 'make' mode from within project", {
   on.exit(setwd(cwd))
   rmd_local <- Sys.glob("analysis/*Rmd")
   html_local <- to_html(rmd_local, outdir = "docs")
-  
+
   # Reset modifications of rmd files. It is important to wait a couple
   # seconds so that the modification times are different.
   Sys.sleep(2)
@@ -82,11 +82,11 @@ test_that("wflow_build can run in 'make' mode from within project", {
   expect_true(actual$make)
   expect_message(actual <- wflow_build(), rmd_local[1])
   expect_identical(actual$built, rmd_local)
-  
+
   # No file should be built now.
   expect_silent(actual <- wflow_build())
   expect_identical(actual$built, character(0))
-  
+
   # Reset modification of file 1 only. It is important to wait a couple
   # seconds so that the modification times are different.
   Sys.sleep(2)
@@ -113,6 +113,7 @@ test_that("wflow_build update builds published files with modifications", {
 test_that("wflow_build republish builds all published files", {
   wflow_build(project = site_dir)
   html_mtime_pre <- file.mtime(html)
+  Sys.sleep(2)
   expect_message(actual <- wflow_build(republish = TRUE, project = site_dir),
                  rmd[1])
   expect_true(actual$republish)

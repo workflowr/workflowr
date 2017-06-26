@@ -55,6 +55,7 @@ test_that("wflow_open sets correct working directory", {
 
 test_that("wflow_build only builds new file", {
   html_mtime_pre <- file.mtime(html)
+  Sys.sleep(2)
   suppressMessages(o <- wflow_build(project = site_dir))
   expect_identical(o$built, test_rmd)
   expect_true(file.exists(test_html))
@@ -73,6 +74,7 @@ all_rmd <- rownames(s$status)
 all_html <- to_html(all_rmd, outdir = s$docs)
 test_that("wflow_publish can commit new file and website", {
   html_mtime_pre <- file.mtime(all_html)
+  Sys.sleep(2)
   expect_message(o <- wflow_publish(all_rmd,
                                     message = "first analysis",
                                     project = site_dir))

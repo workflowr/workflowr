@@ -67,6 +67,7 @@ test_that(".gitignore file was created", {
 
 test_that(".gitignore is not overwritten by default", {
   mod_time_pre <- file.mtime(fname_expected)
+  Sys.sleep(2)
   expect_warning(workflowr:::create_gitignore(tmp_dir))
   mod_time_post <- file.mtime(fname_expected)
   expect_true(mod_time_post == mod_time_pre)
@@ -74,9 +75,6 @@ test_that(".gitignore is not overwritten by default", {
 
 test_that(".gitignore is overwritten if forced", {
   mod_time_pre <- file.mtime(fname_expected)
-    
-  # Wait two seconds to ensure that the file modification times will
-  # be different.
   Sys.sleep(2)
   expect_silent(workflowr:::create_gitignore(tmp_dir,overwrite = TRUE))
   mod_time_post <- file.mtime(fname_expected)

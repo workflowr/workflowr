@@ -36,6 +36,7 @@ html_decoy <- to_html(rmd_decoy, outdir = s$docs)
 
 test_that("wflow_publish can `republish`", {
   mtime_pre <- file.mtime(html)
+  Sys.sleep(2)
   # Change the theme
   config <- file.path(s$analysis, "_site.yml")
   config_lines <- readLines(config)
@@ -95,6 +96,7 @@ test_that("wflow_publish resets Git repo to previous commit if build fails", {
 test_that("wflow_publish restores previous docs/ if build fails", {
   md5sum_pre <- tools::md5sum(rmd)
   mtime_pre <- file.mtime(rmd)
+  Sys.sleep(2)
   expect_error(utils::capture.output(
     wflow_publish(c(rmd, rmd_to_fail), project = site_dir)),
     "There was an error")

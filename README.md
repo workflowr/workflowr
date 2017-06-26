@@ -285,8 +285,8 @@ package "workflow + er". Other equally as good options are "workflow + R" or
 [testthat]: https://github.com/hadley/testthat
 [travis]: https://travis-ci.org/
 [uchicago]: http://www.uchicago.edu/
-[vig-custom]: https://jdblischak.github.io/workflowr/docs/articles/wflow-02-customization.html
-[vig-details]: https://jdblischak.github.io/workflowr/docs/articles/wflow-04-how-it-works.html
-[vig-migrating]: https://jdblischak.github.io/workflowr/docs/articles/wflow-03-migrating.html
-[vig-start]: https://jdblischak.github.io/workflowr/docs/articles/wflow-01-getting-started.html
+[vig-custom]: https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html
+[vig-details]: https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html
+[vig-migrating]: https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html
+[vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
 [workflowr]: https://jdblischak.github.io/workflowr/

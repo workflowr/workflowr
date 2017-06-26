@@ -13,7 +13,7 @@ s <- wflow_status(project = site_dir)
 r <- repository(s$root)
 
 rmd <- file.path(s$analysis, c("about.Rmd", "index.Rmd", "license.Rmd"))
-html <- to_html(rmd, outdir = s$docs)
+html <- workflowr:::to_html(rmd, outdir = s$docs)
 
 rmd_to_fail <- file.path(s$analysis, "error.Rmd")
 file.copy(from = "files/test-wflow_build/error.Rmd",
@@ -32,7 +32,7 @@ test_that("wflow_publish works in a simple case", {
 # Create decoy file that should not be built since it is unpublished
 rmd_decoy <- file.path(s$analysis, "decoy.Rmd")
 file.create(rmd_decoy)
-html_decoy <- to_html(rmd_decoy, outdir = s$docs)
+html_decoy <- workflowr:::to_html(rmd_decoy, outdir = s$docs)
 
 test_that("wflow_publish can `republish`", {
   mtime_pre <- file.mtime(html)

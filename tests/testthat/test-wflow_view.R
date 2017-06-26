@@ -16,7 +16,7 @@ for (i in 1:3) {
   file.copy("files/workflowr-template.Rmd", rmd[i])
 }
 # Expected html files
-html <- to_html(rmd, outdir = p$docs)
+html <- workflowr:::to_html(rmd, outdir = p$docs)
 
 # Build the site
 suppressMessages(wflow_build(project = site_dir))

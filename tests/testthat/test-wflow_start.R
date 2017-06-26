@@ -111,7 +111,7 @@ test_that("wflow_start commits all the project files", {
   capture.output(wflow_start(site_dir, change_wd = FALSE))
 
   r <- git2r::repository(site_dir)
-  committed <- get_committed_files(r)
+  committed <- workflowr:::get_committed_files(r)
 
   for (f in project_files) {
     expect_true(f %in% committed)

@@ -11,7 +11,7 @@ git2r::init(dir_git)
 r <- git2r::repository(dir_git)
 
 test_that("get_committed_files fails if no files have been committed", {
-  expect_error(actual <- get_committed_files(r),
+  expect_error(actual <- workflowr:::get_committed_files(r),
                "The Git repository has no commits yet.")
 })
 
@@ -23,7 +23,7 @@ git2r::commit(r, message = "root commit")
 
 test_that("get_committed_files works on root commit", {
   expected <- basename(f)
-  actual <- get_committed_files(r)
+  actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
 
@@ -35,7 +35,7 @@ git2r::commit(r, message = "another commit")
 
 test_that("get_committed_files works on multiple commits", {
   expected <- basename(c(f, f2))
-  actual <- get_committed_files(r)
+  actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
 
@@ -45,7 +45,7 @@ git2r::commit(r, message = "remove a file")
 
 test_that("get_committed_files stops reporting files after they are removed", {
   expected <- basename(c(f[2], f2))
-  actual <- get_committed_files(r)
+  actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
 

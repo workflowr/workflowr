@@ -1,5 +1,4 @@
-# workflowr: organized + reproducible + sharable workflow for data
-  analysis in R
+# workflowr: organized + reproducible + sharable workflow for data analysis in R
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)

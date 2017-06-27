@@ -208,7 +208,7 @@ console:
 wflow_build()
 ```
 
-This commands builds all the R Markdown files in `analysis/` and saves
+This command builds all the R Markdown files in `analysis/` and saves
 the corresponding HTML files in `docs/`. It sets the same seed before
 running every file so that any function that generates random data
 (e.g. permutations) is reproducible. Furthermore, each file is built

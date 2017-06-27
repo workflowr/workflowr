@@ -1,27 +1,49 @@
 #' Start a new workflowr project.
 #'
-#' \code{wflow_start} adds the necesary files for a workflowr project. The
-#' default is to create a new directory, but it is also possible to add the
-#' files to an already existing project. By default it also changes the working
-#' directory to the workflowr project.
+#' \code{wflow_start} creates a minimal workflowr project. The default
+#' behaviour is to add these files to a new directory, but it is also
+#' possible to populate an already existing project. By default, it
+#' also changes the working directory to the workflowr project.
 #'
-#' This is the initial function that organizes the infrastructure to create a
-#' research website for your project. Note that while you do not need to use
-#' RStudio with workflowr, do not delete the Rproj file because it is required
-#' by other functions.
+#' This is the initial function that organizes the infrastructure to
+#' create a research website for your project. Note that while you do
+#' not need to use RStudio with workflowr, do not delete the Rproj
+#' file because it is required by other functions.
+#'
+#' pc-comment-17: At some point it would be great to have a more
+#' comprehensive description of the files that are created and what
+#' they are for, starting with the description you give in the
+#' "Getting Started" vignette. In "seealso" or "examples" you could
+#' point to the vignettes.
 #'
 #' @param directory character. The directory for the project, e.g.
-#'   "~/new-project". By default the directory will be created (\code{existing =
-#'   FALSE}.
-#' @param name character (default: NULL). Project name, e.g. "My Project". By
-#'   default \code{name} is the same as \code{directory}. It is displayed on the
-#'   site's navigation bar and the README.md.
-#' @param git logical (default: TRUE). Should Git be used for version control?
-#'   If \code{directory} is a new Git repository, \code{wflow_start} will
-#'   initialize the repository and make an initial commit. If \code{directory}
-#'   is already a Git repository, \code{wflow_start} will make an additional
-#'   commit. In both cases, only files needed for the workflowr project will be
-#'   included in the commit.
+#'   "~/new-project". When \code{existing = FALSE}, the directory will
+#'   be created.
+#' 
+#' @param name character (default: NULL). Project name, e.g. "My
+#'   Project". When \code{name = NULL}, the project name is
+#'   automatically set to the same as \code{directory}. It is displayed
+#'   on the site's navigation bar and the README.md.
+#'
+#' pc-comment-18: But what is "name" set to when
+#'   directory="~/Desktop/myproject"?
+#' 
+#' @param git logical (default: TRUE). Should Git be used for version
+#'   control? If \code{directory} is a new Git repository and \code{git
+#'   = TRUE}, \code{wflow_start} will initialize the repository and make
+#'   an initial commit. If \code{git = TRUE} and \code{directory} is
+#'   already a Git repository, \code{wflow_start} will make an
+#'   additional commit. In both cases, only files needed for the
+#'   workflowr project will be included in the commit.
+#'
+#' pc-comment-19: "Make an initial commit" is pretty vague. What is
+#' committed?
+#' 
+#' pc-comment-20: What happens when git=TRUE and directory is an
+#' existing Git repository? Please clarify. What happens when the
+#' directory exists already, but is not a git project? Which files are
+#' commited/tracked? 
+#' 
 #' @param existing logical (default: FALSE). Indicate if the specified
 #'   \code{directory} already exists. The default prevents injecting the
 #'   workflowr files into an unwanted location. Only set to TRUE if you wish to
@@ -38,12 +60,15 @@
 #' \dontrun{
 #'
 #' wflow_start("path/to/new-project")
-#' # Provide a custom name for the project
+#' 
+#' # Provide a custom name for the project.
 #' wflow_start("path/to/new-project", name = "My Project")
-#' # Add workflowr files to an existing project
+#' 
+#' # Add workflowr files to an existing project.
 #' wflow_start("path/to/current-project", existing = TRUE)
+#' 
 #' # Add workflowr files to an existing project, but do not automatically
-#' # commit them
+#' # commit them.
 #' wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
 #' }
 #' @export

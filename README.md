@@ -13,7 +13,7 @@ Install the latest release (v0.5.0) by running this command in R or
 RStudio:
 
 ```R
-devtools::install_github("jdblischak/workflowr@v0.5.0",build_vignettes = TRUE)
+devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
 ```
 
 If you are already writing R code to analyze data, and know the basics
@@ -37,7 +37,7 @@ please open an [Issue][issues].
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
 * [Upgrading](#upgrading)
-* [This repository](#this-repository)
+* [More about this repository](#this-repository)
 * [Background and related work](#background-and-related-work)
 * [Credits](#credits)
 * [License](#license)
@@ -107,10 +107,10 @@ git config --global user.email "youremail@domain"
 6. Install the latest stable release of [workflowr][] from
 [GitHub][gh] using [devtools][]:
 
-```r
-# install.packages("devtools")
-devtools::install_github("jdblischak/workflowr@v0.5.0", build_vignettes = TRUE)
-```
+   ```r
+   # install.packages("devtools")
+   devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
+   ```
 
 7. Work through the vignette,
 ["Getting started with workflowr"][vig-start], to learn how to set up
@@ -153,7 +153,7 @@ wflow_update()
 wflow_update(dry_run = FALSE)
 ```
 
-## This repository
+## More about this repository
 
 This repository contains the workflowr R package. If your goal is to create a 
 workflowr project, you do **not** need to fork this repository. Instead, 
@@ -248,7 +248,7 @@ about the software that makes workflowr possible.
 
 ## License
 
-workflowr is available under the [MIT][] license.
+workflowr is available under the [MIT license][].
 
 ## Citation
 

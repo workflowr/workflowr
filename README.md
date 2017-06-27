@@ -3,6 +3,11 @@
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
+*Organize your R data analysis project into a research website.*
+
+> **pc-comment-2:** I would put the summary above the table of content
+> ("The workflowr R package...").
+
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
 * [Upgrading](#upgrading)
@@ -13,22 +18,26 @@
 * [Citation](#citation)
 * [Pronunciation](#pronunciation)
 
-The goal of the [workflowr][] package is to make it easier for
-researchers to organize their projects and share their results with
-colleagues. If you are already writing R code to analyze data, and
-know the basics of Git and GitHub, you can start taking advantage of
-workflowr immediately. In a matter of minutes, you can create a
-research website like [this][demo01].
+The [workflowr][] R package makes it easier for researchers to
+organize their projects and share their results with colleagues.
 
-> **pc-comment-1:** It would be nice to have a more compelling
-> demo---I'm working on it.
+If you are already writing R code to analyze data, and know the basics
+of Git and GitHub, you can start taking advantage of workflowr
+immediately. In a matter of minutes, you can create a research website
+like [this][demo01].
 
-**WARNING:** workflowr is still in the early stages of development, so there 
-will potentially be major changes between versions. Thus make sure to [upgrade](#upgrading) if
-necessary and look over the [documentation][workflowr]. The good news is that any site you 
-create will not be affected by these changes and will continue to function with 
-new versions of the workflowr functions. If you find any problems, or would like
-to suggest new features, please open an [Issue][issues].
+> **pc-comment-1:** It would be nice to have a more intersting
+> demo. I'm working on it.
+
+**WARNING:** workflowr is still in the early stages of development, so
+there will potentially be major changes between versions. Thus make
+sure to [upgrade](#upgrading) if necessary and look over the
+[documentation][workflowr]. The good news is that any site you create
+will not be affected by these changes and will continue to function
+with new versions of the workflowr functions.
+
+If you find any problems, or would like to suggest new features,
+please open an [Issue][issues].
 
 ## Why use workflowr?
 

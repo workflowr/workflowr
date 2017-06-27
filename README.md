@@ -20,6 +20,9 @@ know the basics of Git and GitHub, you can start taking advantage of
 workflowr immediately. In a matter of minutes, you can create a
 research website like [this][demo01].
 
+> **pc-comment-1:** It would be nice to have a more compelling
+> demo---I'm working on it.
+
 **WARNING:** workflowr is still in the early stages of development, so there 
 will potentially be major changes between versions. Thus make sure to [upgrade](#upgrading) if
 necessary and look over the [documentation][workflowr]. The good news is that any site you 

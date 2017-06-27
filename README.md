@@ -5,8 +5,16 @@
 
 *Organize your R data analysis project into a research website.*
 
-> **pc-comment-2:** I would put the summary above the table of content
-> ("The workflowr R package...").
+The [workflowr][] R package makes it easier for researchers to
+organize their projects and share their results with colleagues.
+
+If you are already writing R code to analyze data, and know the basics
+of Git and GitHub, you can start taking advantage of workflowr
+immediately. In a matter of minutes, you can create a research website
+like [this][demo01].
+
+> **pc-comment-1:** It would be nice to have a more interesting
+> demo. I'm working on it.
 
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
@@ -17,17 +25,6 @@
 * [License](#license)
 * [Citation](#citation)
 * [Pronunciation](#pronunciation)
-
-The [workflowr][] R package makes it easier for researchers to
-organize their projects and share their results with colleagues.
-
-If you are already writing R code to analyze data, and know the basics
-of Git and GitHub, you can start taking advantage of workflowr
-immediately. In a matter of minutes, you can create a research website
-like [this][demo01].
-
-> **pc-comment-1:** It would be nice to have a more intersting
-> demo. I'm working on it.
 
 **WARNING:** workflowr is still in the early stages of development, so
 there will potentially be major changes between versions. Thus make

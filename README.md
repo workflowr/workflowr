@@ -1,4 +1,4 @@
-# workflowr: organized + reproducible + sharable workflow for data analysis in R
+# workflowr: organized + reproducible + sharable data analysis in R
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
@@ -9,7 +9,7 @@
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 
 
-Install the latest release (0.5.0) by running this command in R or
+Install the latest release (v0.5.0) by running this command in R or
 RStudio:
 
 ```R
@@ -63,6 +63,13 @@ website:
 * A function that handles all the version control operations to track code development and also ensures all the R Markdown files are built in a reproducible manner (see `?wflow_publish`)
 
 ## Quick start
+
+workflowr builds on several software tools including
+[git](http://cran.r-project.org), [pandoc](http://pandoc.org) and
+[knitr](yihui.name/knitr), but importantly *you do not need to use any
+of these tools to get started with workflowr.* You only need to know
+how to code in [R](http://cran.r-project.org) and be familiar with
+[R Markdown](http://r4ds.had.co.nz/r-markdown.html).
 
 1. Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc]).
 

@@ -128,11 +128,19 @@ myproject/
 └── README.md
 ```
 
+> **pc-comment-8:** At this point I suggest saything something like
+> this: "At this point, you have a minimal but complete workflowr
+> project; that is, you have all the files needed to use the main
+> workflowr commands andpublish a research website (admittedly, this
+> research website is not very interesting!). Later on, as you get
+> more comfortable with the basic setup, you can modify and add to
+> the initial file structure."
+
 The two **required** subdirectories are `analysis/` and `docs/`. These
 directories should never be removed from the workflowr project.
 
 > **pc-comment-7:** What about removing the files within these
-> directories? Is it okay to remove them?
+> directories? Is it okay to remove them? 
 
 * `analysis/`: This directory contains all the source R Markdown files
 for your website. The most important R Markdown file is `index.Rmd`,
@@ -160,6 +168,10 @@ data or long-running code).
 * `output/`: This directory is for processed data files. For example,
 scripts in `code` that pre-process raw data files from `data/` can
 save the processed data files in `output/`.
+
+> **pc-comment-9:** You didn't say anything about the other files
+> (e.g., `myproject.Rproj`, `CITATION`). Which are essential, and
+> which can be deleted?
 
 ## Build the website
 

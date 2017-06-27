@@ -86,6 +86,10 @@ wflow_start("myproject")
 > RStudio. You should also suggest running `getwd` to make sure that
 > we are in the correct directory before running `wflow_start`.
 
+> **pc-comment-16:** You didn't mention that this command
+> automatically changes the working directory; another good
+> opportunity to check this with `getwd`.
+
 If you're using RStudio, you can choose `Open Project...` and select
 the file `myproject.Rproj`. This will set the correct working
 directory in the R console, switch the file navigator to the project,
@@ -190,6 +194,13 @@ processed data files in `output/`.
 
 ## Build the website
 
+You will notice that the `docs/` directory is currently empty. That is
+because we have not yet generated the website from the `analysis/`
+files. This is what we will do next.
+
+> **pc-comment-13**: This is a good opportunity to make sure that the
+> user is in the correct working directory.
+
 To build the website, run the function `wflow_build()` in the R
 console:
 
@@ -197,18 +208,29 @@ console:
 wflow_build()
 ```
 
-This commands builds all the R Markdown files located in `analysis/`
-and saves the corresponding HTML files in `docs/`. It sets the same
-seed before running every file so that any function that generates
-random data (e.g. permutations) is reproducible. Furthermore, each
-file is built in its own external R session to avoid any potential
-conflicts between analyses (e.g. accidentally sharing a variable with
-the same name across files).
+This commands builds all the R Markdown files in `analysis/` and saves
+the corresponding HTML files in `docs/`. It sets the same seed before
+running every file so that any function that generates random data
+(e.g. permutations) is reproducible. Furthermore, each file is built
+in its own external R session to avoid any potential conflicts between
+analyses (e.g. accidentally sharing a variable with the same name
+across files).
+
+> **pc-comment-14:** Do you "build an R Markdown file" or "build an
+> HTML file from an R Markdown file"? What is the correct usage here?
 
 The default action of `wflow_build()` is to behave similar to a
-Makefile (`make = TRUE`), i.e. it only builds R Markdown files that
-have been modified more recently than their corresponding HTML
-files. Thus if you run it again, no files are built.
+[Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE`
+is the default), i.e. it only builds R Markdown files that have been
+modified more recently than their corresponding HTML files. Thus if
+you run it again, no files are built.
+
+> **pc-comment-15:** I think it is useful to mention Makefiles here,
+> but it would be good to give an explanation for people that are
+> unfamiliar with the idea; e.g., "`wflow_build()` only does the work
+> that is necessary; it will automatically compare the modification
+> dates of the analysis and HTML files, and only re-build an HTML file
+> when the corresponding analysis file has changed.
 
 ```{r wflow-build-no-action}
 wflow_build()

@@ -6,7 +6,7 @@
 *Organize your R data analysis project into a research website.*
 
 The [workflowr][] R package makes it easier for researchers to
-organize their projects and share their results with colleagues.
+organize their projects and share their results with colleagues. 
 
 If you are already writing R code to analyze data, and know the basics
 of Git and GitHub, you can start taking advantage of workflowr

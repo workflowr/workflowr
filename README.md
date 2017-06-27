@@ -66,29 +66,43 @@ website:
 
 workflowr builds on several software tools including
 [git](http://cran.r-project.org), [pandoc](http://pandoc.org) and
-[knitr](yihui.name/knitr), but importantly *you do not need to use any
-of these tools to get started with workflowr.* You only need to know
-how to code in [R](http://cran.r-project.org) and be familiar with
-[R Markdown](http://r4ds.had.co.nz/r-markdown.html).
+[knitr](yihui.name/knitr), **but you do not need to use any of these
+tools to get started with workflowr.** You only need to know how to
+code in [R](http://cran.r-project.org) and be familiar with
+[R Markdown](http://r4ds.had.co.nz/r-markdown.html). A [basic
+understanding of git](https://doi.org/10.1371/journal.pcbi.1004668)
+is not required, but helpful.
+
+Here is a minimal set of steps to get you started with `workflowr`. If
+you are already using R and git, you may be able to skip some of these
+steps.
 
 1. Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc]).
 
-* (Optional) Install [RStudio][rstudio] (workflowr takes advantages of some
+2. (Optional) Install [RStudio][rstudio] (workflowr takes advantages of some
 RStudio features, but RStudio is not required to use workflowr)
 
-* Install [Git][git] ([instructions][swc-git] from [Software Carpentry][swc])
+3. Install [Git][git] ([instructions][swc-git] from [Software Carpentry][swc])
 
-* Create an account on [GitHub][gh]
+4. Create an account on [GitHub][gh], or another git-based source code
+site such as [GitLab](http://gitlab.com). (In the instructions below
+we mostly assume Github, but workflowr should also work on other
+similar platforms such as [Gitlab](http://gitlab.com) and
+[Bitbucket](bitbucket.org).)
 
-* Configure [Git][git] ([instructions][swc-git-config] from [Software
-Carpentry][swc]). Run the following in the Terminal, inserting your information:
+   **pc-comment-3:** I think there may be some additional setup steps
+     to take here. Maybe refer to a Getting Started guide on Github?
+
+5. Configure [Git][git] ([instructions][swc-git-config] from
+[Software Carpentry][swc]). Run the following commands in the shell
+command-line, inserting your account information:
 
 ```bash
 git config --global user.name "Your Name"
 git config --global user.email "youremail@domain"
 ```
 
-* Install the latest stable release of [workflowr][] from [GitHub][gh] using
+6. Install the latest stable release of [workflowr][] from [GitHub][gh] using
 [devtools][]:
 
 ```r

@@ -93,16 +93,21 @@ similar platforms such as [Gitlab](http://gitlab.com) and
    **pc-comment-3:** I think there may be some additional setup steps
      to take here, some of which may not be strictly necessary, but
      helpful (e.g., SSH keys). Maybe refer to a Getting Started guide
-     on Github?
+     on Github? Also, I think Github has a short guide for creating a
+     repo which I think could be useful to follow to make sure that
+     everything is set up correctly before using workflowr. Perhaps
+     you could ammend this step to something like this: "Create an
+     account on Github and make sure that you can clone and push to a
+     git repository."
 
 5. Configure [Git][git] ([instructions][swc-git-config] from
 [Software Carpentry][swc]). Run the following commands in the shell
 command-line, inserting your account information:
 
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "youremail@domain"
-```
+   ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "youremail@domain"
+   ```
 
 6. Install the latest stable release of [workflowr][] from
 [GitHub][gh] using [devtools][]:

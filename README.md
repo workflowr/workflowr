@@ -71,7 +71,8 @@ tools to get started with workflowr.** You only need to know how to
 code in [R](http://cran.r-project.org) and be familiar with
 [R Markdown](http://r4ds.had.co.nz/r-markdown.html). A [basic
 understanding of git](https://doi.org/10.1371/journal.pcbi.1004668)
-is not required, but helpful.
+as well as the [UNIX command line](https://swcarpentry.github.io/shell-novice)
+is not essential, but helpful.
 
 Here is a minimal set of steps to get you started with `workflowr`. If
 you are already using R and git, you may be able to skip some of these

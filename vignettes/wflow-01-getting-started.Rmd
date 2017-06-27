@@ -79,15 +79,24 @@ wflow_start("myproject")
 
 > **pc-comment-5:** One important step that is missing here: where is
 > directory `myproject` being created? The concept of the "working
-> directory" in R is missing from many novice R programmers. Make sure
-> that the user first sets the working directory appropriately, either
-> using `setwd` or using the menu options in RStudio.
+> directory" in R is missing from many novice R programmers, and I
+> guarantee that many people will be wondering: where was my project
+> created? Make sure that the user first sets the working directory
+> appropriately, either using `setwd` or using the menu options in
+> RStudio. You should also suggest running `getwd` to make sure that
+> we are in the correct directory before running `wflow_start`.
 
 If you're using RStudio, you can choose `Open Project...` and select
 the file `myproject.Rproj`. This will set the correct working
 directory in the R console, switch the file navigator to the project,
 and configure the Git and Build panes. It will also reset the R
 environment, so you'll need to re-run `library("workflowr")`.
+
+> **pc-comment-6:** This part about RStudio is confusing. Is this
+> instead of running `wflow_start`, or after running it? Does it do
+> anything useful? What happens if you don't do this? I would suggest
+> giving this info after first explaining the result of running
+> `wflow_start`.
 
 `wflow_start()` creates the following directory structure in
 `myproject/`:
@@ -119,7 +128,11 @@ myproject/
 └── README.md
 ```
 
-The two **required** subdirectories are `analysis/` and `docs/`:
+The two **required** subdirectories are `analysis/` and `docs/`. These
+directories should never be removed from the workflowr project.
+
+> **pc-comment-7:** What about removing the files within these
+> directories? Is it okay to remove them?
 
 * `analysis/`: This directory contains all the source R Markdown files
 for your website. The most important R Markdown file is `index.Rmd`,

@@ -135,6 +135,10 @@ myproject/
 > research website is not very interesting!). Later on, as you get
 > more comfortable with the basic setup, you can modify and add to
 > the initial file structure."
+>
+> You might also want to comment on the overall rationale for this
+> structure; that is, it is intended to help organize the files that
+> will be commonly included in a data analysis project.
 
 The two **required** subdirectories are `analysis/` and `docs/`. These
 directories should never be removed from the workflowr project.
@@ -143,31 +147,42 @@ directories should never be removed from the workflowr project.
 > directories? Is it okay to remove them? 
 
 * `analysis/`: This directory contains all the source R Markdown files
-for your website. The most important R Markdown file is `index.Rmd`,
-which will create `index.html`, the homepage for your website. In
-addition, this directory contains important configurations files like
-`_site.yml` and `chunks.R`.
+for implementing the data analyses for your project. It also contains
+a special R Markdown file, `index.Rmd`, that does not contain any R
+code, but will be used to generate `index.html`, the homepage for your
+website. In addition, this directory contains important configurations
+files like `_site.yml` and `chunks.R`.
+
+> **pc-comment-10:** If `index.Rmd` is important, I suppose we
+> shouldn't delete it?
 
 * `docs/`: This directory contains all the HTML files for your
-website. The HTML files are built from the R Markdown files in
+website. Some of the HTML files are built from the R Markdown files in
 `analysis/`. Furthermore, any figures created by the R Markdown files
-are saved here. Each figure is saved according to the following
-pattern: `docs/figure/<insert Rmd filename>/<insert chunk
+are saved here. Each of these figures is saved according to the
+following pattern: `docs/figure/<insert Rmd filename>/<insert chunk
 name>-#.png`, where `#` corresponds to which of the plots the chunk
 generated (since one chunk can produce an arbitrary number of plots).
 
-The **optional** directories are `data/`, `code/`, and
-`output/`. These directories are suggestions for organizing your
-project, but can be removed if you do not find them helpful.
+> **pc-comment-12:** Does it *only* contain HTML files built from R
+> Markdown files? See my change above.
+
+The **optional** directories are `data/`, `code/`, and `output/`.
+These directories are suggestions for organizing your data analysis
+project, but can be removed if you do not find them useful.
 
 * `data/`: This directory is for raw data files.
 
-* `code/`: This directory is for scripts (e.g. for pre-processing the
-data or long-running code).
+> **pc-comment-11:** Why only "raw"? 
 
-* `output/`: This directory is for processed data files. For example,
-scripts in `code` that pre-process raw data files from `data/` can
-save the processed data files in `output/`.
+* `code/`: This directory is for code and scripts that might not be
+appropriate as R Markdown notebooks (e.g. for pre-processing the data, or
+for long-running code).
+
+* `output/`: This directory is for processed data files and other
+outputs generated from the code and data. For example, scripts in
+`code` that pre-process raw data files from `data/` should save the
+processed data files in `output/`.
 
 > **pc-comment-9:** You didn't say anything about the other files
 > (e.g., `myproject.Rproj`, `CITATION`). Which are essential, and
@@ -175,7 +190,8 @@ save the processed data files in `output/`.
 
 ## Build the website
 
-To build the website, run the function `wflow_build()` in the R console:
+To build the website, run the function `wflow_build()` in the R
+console:
 
 ```{r wflow-build}
 wflow_build()

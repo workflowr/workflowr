@@ -8,6 +8,13 @@
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 
 
+Install the latest release (0.5.0) by running this command in R or
+RStudio:
+
+```R
+devtools::install_github("jdblischak/workflowr@v0.5.0",build_vignettes = TRUE)
+```
+
 If you are already writing R code to analyze data, and know the basics
 of Git and GitHub, you can start taking advantage of workflowr
 immediately. In a matter of minutes, you can create a research website
@@ -38,14 +45,16 @@ please open an [Issue][issues].
 
 ## Why use workflowr?
 
-First, hopefully you don't need much convincing to write your analyses in R 
-Markdown. It allows you to combine your R code, text, and figures in the same 
-document! See the [website][rmarkdown] to learn about all the cool features. 
-Second, building a website with the rmarkdown package (as opposed to using knitr
-to produce Markdown files and passing these to a static site generator) enables
-you to use all the latest R packages (e.g. [htmlwidgets][]) directly in your
-analyses. Third, the workflowr package provides functions to make it easier for
-a researcher to maintain a version-controlled R Markdown website:
+First, hopefully you don't need much convincing to write your analyses
+in R Markdown. It allows you to combine your R code, text, and figures
+in the same document! See the [website][rmarkdown] to learn about all
+the cool features.  Second, building a website with the rmarkdown
+package (as opposed to using knitr to produce Markdown files and
+passing these to a static site generator) enables you to use all the
+latest R packages (e.g. [htmlwidgets][]) directly in your
+analyses. Third, the workflowr package provides functions to make it
+easier for a researcher to maintain a version-controlled R Markdown
+website:
 
 * A function to start a project with all the necessary files (see `?wflow_start`)
 * Includes an R Markdown template that will automatically insert the date and most recent Git commit ID (i.e. SHA1) at the top of the file to aid reproducibility (see `?wflow_open`)
@@ -54,7 +63,7 @@ a researcher to maintain a version-controlled R Markdown website:
 
 ## Quick start
 
-* Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc])
+1. Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc]).
 
 * (Optional) Install [RStudio][rstudio] (workflowr takes advantages of some
 RStudio features, but RStudio is not required to use workflowr)
@@ -235,10 +244,10 @@ A BibTeX entry for LaTeX users is
 
 ## Pronunciation
 
-It is common for R packages to end with an "r", and I tend to pronounce this as 
-if it was "er" because I personally find this the easiest. Thus I pronounce the 
-package "workflow + er". Other equally as good options are "workflow + R" or
-"work + flower".
+It is common for R packages to end with an "r", and I tend to
+pronounce this as if it was "er" because I personally find this the
+easiest. Thus I pronounce the package "workflow + er". Other equally
+good options are "workflow + R" or "work + flower".
 
 [analysis_framework]: https://github.com/jimhester/analysis_framework
 [blogdown]: https://github.com/rstudio/blogdown

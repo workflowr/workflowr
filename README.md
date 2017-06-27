@@ -13,8 +13,18 @@ of Git and GitHub, you can start taking advantage of workflowr
 immediately. In a matter of minutes, you can create a research website
 like [this][demo01].
 
+**NOTE:** workflowr is still in the early stages of development, so
+there will potentially be major changes between versions. Thus make
+sure to [upgrade](#upgrading) if necessary and look over the
+[documentation][workflowr]. The good news is that any site you create
+will not be affected by these changes and will continue to function
+with new versions of the workflowr functions.
+
+If you find any problems, or would like to suggest new features,
+please open an [Issue][issues].
+
 > **pc-comment-1:** It would be nice to have a more interesting
-> demo. I'm working on it.
+> demo. I'm working on it!
 
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
@@ -25,16 +35,6 @@ like [this][demo01].
 * [License](#license)
 * [Citation](#citation)
 * [Pronunciation](#pronunciation)
-
-**WARNING:** workflowr is still in the early stages of development, so
-there will potentially be major changes between versions. Thus make
-sure to [upgrade](#upgrading) if necessary and look over the
-[documentation][workflowr]. The good news is that any site you create
-will not be affected by these changes and will continue to function
-with new versions of the workflowr functions.
-
-If you find any problems, or would like to suggest new features,
-please open an [Issue][issues].
 
 ## Why use workflowr?
 

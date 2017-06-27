@@ -91,7 +91,9 @@ similar platforms such as [Gitlab](http://gitlab.com) and
 [Bitbucket](bitbucket.org).)
 
    **pc-comment-3:** I think there may be some additional setup steps
-     to take here. Maybe refer to a Getting Started guide on Github?
+     to take here, some of which may not be strictly necessary, but
+     helpful (e.g., SSH keys). Maybe refer to a Getting Started guide
+     on Github?
 
 5. Configure [Git][git] ([instructions][swc-git-config] from
 [Software Carpentry][swc]). Run the following commands in the shell
@@ -102,28 +104,31 @@ git config --global user.name "Your Name"
 git config --global user.email "youremail@domain"
 ```
 
-6. Install the latest stable release of [workflowr][] from [GitHub][gh] using
-[devtools][]:
+6. Install the latest stable release of [workflowr][] from
+[GitHub][gh] using [devtools][]:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
+devtools::install_github("jdblischak/workflowr@v0.5.0", build_vignettes = TRUE)
 ```
 
-* Work through the vignette [Getting started with workflowr][vig-start] to learn
-the basic design and functionality of a workflowr project (you can view all the
-available vignettes locally with `browseVignettes("workflowr")`)
+7. Work through the vignette,
+["Getting started with workflowr"][vig-start], to learn how to set up
+a workflowr project. (You can view all the available vignettes locally
+with `browseVignettes("workflowr")`.)
 
-* Start your project with `wflow_start()` (if you have already started your
-project, please read the vignette [Migrating an existing project to use
-workflowr][vig-migrating] for advice on how to proceed)
+8. Alternatively, if you have already started your project, read the
+vignette
+["Migrating an existing project to use workflowr"][vig-migrating] for
+how to convert your project to a workflowr project.
 
-* Read through the vignette [Customize your research website][vig-custom]
+9. Learn more about how to [Customize your research website][vig-custom].
 
-* If you find any unexpected behavior or think of an additional feature that
-would be nice to have, please open an Issue [here][issues]. When writing your
-bug report or feature request, please note the version of workflowr you are
-using (which you can obtain by running `packageVersion("workflowr")`).
+10. If you find any unexpected behavior or think of an additional
+feature that would be nice to have, please open an Issue
+[here][issues]. When writing your bug report or feature request,
+please note the version of workflowr you are using (which you can
+obtain by running `packageVersion("workflowr")`).
 
 ## Upgrading
 

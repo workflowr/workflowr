@@ -90,15 +90,15 @@ we mostly assume Github, but workflowr should also work on other
 similar platforms such as [Gitlab](http://gitlab.com) and
 [Bitbucket](bitbucket.org).)
 
-   **pc-comment-3:** I think there may be some additional setup steps
-     to take here, some of which may not be strictly necessary, but
-     helpful (e.g., SSH keys). Maybe refer to a Getting Started guide
-     on Github? Also, I think Github has a short guide for creating a
-     repo which I think could be useful to follow to make sure that
-     everything is set up correctly before using workflowr. Perhaps
-     you could ammend this step to something like this: "Create an
-     account on Github and make sure that you can clone and push to a
-     git repository."
+    > **pc-comment-3:** I think there may be some additional setup
+    > steps to take here, some of which may not be strictly necessary,
+    > but helpful (e.g., SSH keys). Maybe refer to a Getting Started
+    > guide on Github? Also, I think Github has a short guide for
+    > creating a repo which I think could be useful to follow to make
+    > sure that everything is set up correctly before using
+    > workflowr. Perhaps you could ammend this step to something like
+    > this: "Create an account on Github and make sure that you can
+    > clone and push to a git repository."
 
 5. Configure [Git][git] ([instructions][swc-git-config] from
 [Software Carpentry][swc]). Run the following commands in the shell
@@ -113,7 +113,7 @@ command-line, inserting your account information:
 [GitHub][gh] using [devtools][]:
 
    ```r
-   # install.packages("devtools")
+   install.packages("devtools")
    devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
    ```
 
@@ -124,8 +124,8 @@ with `browseVignettes("workflowr")`.)
 
 8. Alternatively, if you have already started your project, read the
 vignette
-["Migrating an existing project to use workflowr"][vig-migrating] for
-how to convert your project to a workflowr project.
+["Migrating an existing project to use workflowr"][vig-migrating] to
+learn how to convert your project to a workflowr project.
 
 9. Learn more about how to [Customize your research website][vig-custom].
 
@@ -163,6 +163,13 @@ wflow_update(dry_run = FALSE)
 This repository contains the workflowr R package. If your goal is to create a 
 workflowr project, you do **not** need to fork this repository. Instead, 
 following the [Quick start](#quick-start) instructions above.
+
+> **pc-comment-4:** For those that are not familiar with R packages, I
+> think it would be useful to point out that this repository (mostly)
+> follows the standard R package structure, and point to [here]() and
+> [here](). Then, optionally, you could point out some of the files
+> that are not part of a typical package, and what they are for (e.g.,
+> the files in [inst](inst)).
 
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by 
 [Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the 

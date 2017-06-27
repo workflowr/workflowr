@@ -13,11 +13,12 @@
 * [Citation](#citation)
 * [Pronunciation](#pronunciation)
 
-The goal of the [workflowr][] package is to make it easier for researchers to 
-organize their projects and share their results with colleagues. If you are 
-already writing R code to analyze data, and know the basics of Git and GitHub, 
-you can start taking advantage of workflowr immediately. In a matter of minutes,
-you can create a research website like [this][demo01].
+The goal of the [workflowr][] package is to make it easier for
+researchers to organize their projects and share their results with
+colleagues. If you are already writing R code to analyze data, and
+know the basics of Git and GitHub, you can start taking advantage of
+workflowr immediately. In a matter of minutes, you can create a
+research website like [this][demo01].
 
 **WARNING:** workflowr is still in the early stages of development, so there 
 will potentially be major changes between versions. Thus make sure to [upgrade](#upgrading) if

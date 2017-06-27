@@ -1,9 +1,11 @@
-# workflowr
+# workflowr: organized + reproducible + sharable workflow for data
+  analysis in R
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
-*Organize your R data analysis project into a research website.*
+> **pc-comment-2:** Trying to come up with a cool catch-phrase (e.g.,
+> [D3: data-driven documents](https://github.com/d3/d3)).
 
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 

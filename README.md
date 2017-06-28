@@ -37,7 +37,7 @@ please open an [Issue][issues].
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
 * [Upgrading](#upgrading)
-* [More about this repository](#this-repository)
+* [More about this repository](#more-about-this-repository)
 * [Background and related work](#background-and-related-work)
 * [Credits](#credits)
 * [License](#license)

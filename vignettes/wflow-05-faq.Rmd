@@ -49,3 +49,18 @@ some ideas that are simple to implement. Check out the documentation for
 
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [Bootstrap]: http://getbootstrap.com/
+
+## Why am I not getting the same result with `wflow_build()` as with the RStudio Knit HTML button?
+
+`wflow_build()` is designed to have the same functionality as the Knit HTML
+button in RStudio, namely that it knits the HTML file in a separate R session to
+avoid any clashes with variables or pacakges in use in the current R session.
+However, the technical implementations are not identical, and thus informally we
+have noticed the behavior of the two options occassionally differs. At the
+moment, we believe that if the file results in an error when using
+`wflow_build()`, the file needs to be fixed, regardless of whether the file is
+able to be built with the RStudio button. If you have a use case that you think
+should be supported by `wflow_build()`, please open an [Issue][issues] and
+provide a small reproducible example.
+
+[issues]: https://github.com/jdblischak/workflowr/issues

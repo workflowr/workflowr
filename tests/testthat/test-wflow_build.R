@@ -11,7 +11,7 @@ s <- wflow_status(project = site_dir)
 rmd <- rownames(s$status)
 stopifnot(length(rmd) > 0)
 # Expected html files
-html <- to_html(rmd, outdir = s$docs)
+html <- workflowr:::to_html(rmd, outdir = s$docs)
 
 # Test wflow_build -------------------------------------------------------------
 
@@ -41,17 +41,24 @@ test_that("wflow_build builds the specified files", {
 })
 
 test_that("wflow_build can run in 'make' mode", {
-  # Reset modifications of rmd files
+
+  # Reset modifications of rmd files. It is important to wait a couple
+  # seconds so that the modification times are different.
+  Sys.sleep(2)
   system2("touch", args = rmd)
   expect_silent(actual <- wflow_build(dry_run = TRUE, project = site_dir))
   expect_identical(actual$built, rmd)
   expect_true(actual$make)
   expect_message(actual <- wflow_build(project = site_dir), rmd[1])
   expect_identical(actual$built, rmd)
-  # No file should be built now
+
+  # No file should be built now.
   expect_silent(actual <- wflow_build(project = site_dir))
   expect_identical(actual$built, character(0))
-  # Reset modification of file 1 only
+
+  # Reset modification of file 1 only. It is important to wait a couple
+  # seconds so that the modification times are different.
+  Sys.sleep(2)
   system2("touch", args = rmd[1])
   expect_message(actual <- wflow_build(project = site_dir), rmd[1])
   expect_identical(actual$built, rmd[1])
@@ -64,18 +71,25 @@ test_that("wflow_build can run in 'make' mode from within project", {
   setwd(site_dir)
   on.exit(setwd(cwd))
   rmd_local <- Sys.glob("analysis/*Rmd")
-  html_local <- to_html(rmd_local, outdir = "docs")
-  # Reset modifications of rmd files
+  html_local <- workflowr:::to_html(rmd_local, outdir = "docs")
+
+  # Reset modifications of rmd files. It is important to wait a couple
+  # seconds so that the modification times are different.
+  Sys.sleep(2)
   system2("touch", args = rmd_local)
   expect_silent(actual <- wflow_build(dry_run = TRUE))
   expect_identical(actual$built, rmd_local)
   expect_true(actual$make)
   expect_message(actual <- wflow_build(), rmd_local[1])
   expect_identical(actual$built, rmd_local)
-  # No file should be built now
+
+  # No file should be built now.
   expect_silent(actual <- wflow_build())
   expect_identical(actual$built, character(0))
-  # Reset modification of file 1 only
+
+  # Reset modification of file 1 only. It is important to wait a couple
+  # seconds so that the modification times are different.
+  Sys.sleep(2)
   system2("touch", args = rmd_local[1])
   expect_message(actual <- wflow_build(), rmd_local[1])
   expect_identical(actual$built, rmd_local[1])
@@ -99,6 +113,7 @@ test_that("wflow_build update builds published files with modifications", {
 test_that("wflow_build republish builds all published files", {
   wflow_build(project = site_dir)
   html_mtime_pre <- file.mtime(html)
+  Sys.sleep(2)
   expect_message(actual <- wflow_build(republish = TRUE, project = site_dir),
                  rmd[1])
   expect_true(actual$republish)
@@ -117,7 +132,7 @@ test_that("wflow_build can build a file locally in the R console", {
   file.copy(from = "files/test-wflow_build/local.Rmd",
             to = s$analysis)
   rmd_local <- file.path(s$analysis, "local.Rmd")
-  html_local <- to_html(rmd_local, outdir = s$docs)
+  html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
   on.exit(file.remove(rmd_local, html_local))
   # Create a variable in the global environment
   # https://stackoverflow.com/a/25096276/2483477
@@ -139,7 +154,7 @@ test_that("wflow_build can build a file locally in the R console", {
 test_that("wflow_build only builds files starting with _ when specified", {
   rmd_ignore <- file.path(s$analysis, "_ignore.Rmd")
   file.create(rmd_ignore)
-  html_ignore <- to_html(rmd_ignore, outdir = s$docs)
+  html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
   # Ignored by default "make"-mode
   expect_silent(actual <- wflow_build(project = site_dir))
   expect_false(file.exists(html_ignore))

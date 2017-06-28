@@ -15,28 +15,28 @@ s <- wflow_status(project = site_dir)
 wd <- getwd()
 
 test_that("wflow_status identifies root directory.", {
-  expected <- relpath(site_dir, start = wd)
+  expected <- workflowr:::relpath(site_dir, start = wd)
   actual <- s$root
   expect_identical(actual, expected)
 })
 
 test_that("wflow_status identifies analysis directory.", {
   expected <- file.path(site_dir, "analysis")
-  expected <- relpath(expected, start = wd)
+  expected <- workflowr:::relpath(expected, start = wd)
   actual <- s$analysis
   expect_identical(actual, expected)
 })
 
 test_that("wflow_status identifies docs directory.", {
   expected <- file.path(site_dir, "docs")
-  expected <- relpath(expected, start = wd)
+  expected <- workflowr:::relpath(expected, start = wd)
   actual <- s$docs
   expect_identical(actual, expected)
 })
 
 test_that("wflow_status identifies Git directory.", {
   expected <- file.path(site_dir, ".git")
-  expected <- relpath(expected, start = wd)
+  expected <- workflowr:::relpath(expected, start = wd)
   actual <- s$git
   expect_identical(actual, expected)
 })
@@ -65,10 +65,10 @@ test_that("wflow_status classifies files when run from outside workflowr project
 })
 
 test_that("wflow_status classifies files when run from root of workflowr project.", {
-  rmd_scr <- relpath_vec(rmd_scr, start = s$root)
-  rmd_pub <- relpath_vec(rmd_pub, start = s$root)
-  rmd_mod <- relpath_vec(rmd_mod, start = s$root)
-  rmd_unp <- relpath_vec(rmd_unp, start = s$root)
+  rmd_scr <- workflowr:::relpath_vec(rmd_scr, start = s$root)
+  rmd_pub <- workflowr:::relpath_vec(rmd_pub, start = s$root)
+  rmd_mod <- workflowr:::relpath_vec(rmd_mod, start = s$root)
+  rmd_unp <- workflowr:::relpath_vec(rmd_unp, start = s$root)
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$root)
@@ -80,10 +80,10 @@ test_that("wflow_status classifies files when run from root of workflowr project
 })
 
 test_that("wflow_status classifies files when run from analysis/.", {
-  rmd_scr <- relpath_vec(rmd_scr, start = s$analysis)
-  rmd_pub <- relpath_vec(rmd_pub, start = s$analysis)
-  rmd_mod <- relpath_vec(rmd_mod, start = s$analysis)
-  rmd_unp <- relpath_vec(rmd_unp, start = s$analysis)
+  rmd_scr <- workflowr:::relpath_vec(rmd_scr, start = s$analysis)
+  rmd_pub <- workflowr:::relpath_vec(rmd_pub, start = s$analysis)
+  rmd_mod <- workflowr:::relpath_vec(rmd_mod, start = s$analysis)
+  rmd_unp <- workflowr:::relpath_vec(rmd_unp, start = s$analysis)
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$analysis)
@@ -95,10 +95,10 @@ test_that("wflow_status classifies files when run from analysis/.", {
 })
 
 test_that("wflow_status classifies files when run from docs/.", {
-  rmd_scr <- relpath_vec(rmd_scr, start = s$docs)
-  rmd_pub <- relpath_vec(rmd_pub, start = s$docs)
-  rmd_mod <- relpath_vec(rmd_mod, start = s$docs)
-  rmd_unp <- relpath_vec(rmd_unp, start = s$docs)
+  rmd_scr <- workflowr:::relpath_vec(rmd_scr, start = s$docs)
+  rmd_pub <- workflowr:::relpath_vec(rmd_pub, start = s$docs)
+  rmd_mod <- workflowr:::relpath_vec(rmd_mod, start = s$docs)
+  rmd_unp <- workflowr:::relpath_vec(rmd_unp, start = s$docs)
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$docs)

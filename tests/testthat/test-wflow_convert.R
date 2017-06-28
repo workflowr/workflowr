@@ -126,6 +126,7 @@ test_that("dry_run does not overwrite file and produces diff", {
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   mtime_pre <- file.mtime(tmp_standard)
+  Sys.sleep(2)
   expect_message(diffs_list <- wflow_convert(tmp_standard, dry_run = TRUE),
                  "r read-chunk, include=FALSE, cache=FALSE")
   mtime_post <- file.mtime(tmp_standard)

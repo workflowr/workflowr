@@ -11,7 +11,7 @@ git2r::init(dir_git)
 r <- git2r::repository(dir_git)
 
 test_that("get_committed_files fails if no files have been committed", {
-  expect_error(actual <- get_committed_files(r),
+  expect_error(actual <- workflowr:::get_committed_files(r),
                "The Git repository has no commits yet.")
 })
 
@@ -23,7 +23,7 @@ git2r::commit(r, message = "root commit")
 
 test_that("get_committed_files works on root commit", {
   expected <- basename(f)
-  actual <- get_committed_files(r)
+  actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
 
@@ -35,7 +35,7 @@ git2r::commit(r, message = "another commit")
 
 test_that("get_committed_files works on multiple commits", {
   expected <- basename(c(f, f2))
-  actual <- get_committed_files(r)
+  actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
 
@@ -45,7 +45,7 @@ git2r::commit(r, message = "remove a file")
 
 test_that("get_committed_files stops reporting files after they are removed", {
   expected <- basename(c(f[2], f2))
-  actual <- get_committed_files(r)
+  actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
 
@@ -67,6 +67,7 @@ test_that(".gitignore file was created", {
 
 test_that(".gitignore is not overwritten by default", {
   mod_time_pre <- file.mtime(fname_expected)
+  Sys.sleep(2)
   expect_warning(workflowr:::create_gitignore(tmp_dir))
   mod_time_post <- file.mtime(fname_expected)
   expect_true(mod_time_post == mod_time_pre)
@@ -74,7 +75,8 @@ test_that(".gitignore is not overwritten by default", {
 
 test_that(".gitignore is overwritten if forced", {
   mod_time_pre <- file.mtime(fname_expected)
-  expect_silent(workflowr:::create_gitignore(tmp_dir, overwrite = TRUE))
+  Sys.sleep(2)
+  expect_silent(workflowr:::create_gitignore(tmp_dir,overwrite = TRUE))
   mod_time_post <- file.mtime(fname_expected)
   expect_true(mod_time_post > mod_time_pre)
 })

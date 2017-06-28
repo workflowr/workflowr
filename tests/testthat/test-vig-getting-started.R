@@ -24,7 +24,7 @@ test_that("wflow_start provides necessary infrastructure", {
 rmd <- rownames(s$status)
 stopifnot(length(rmd) > 0)
 # Expected html files
-html <- to_html(rmd, outdir = s$docs)
+html <- workflowr:::to_html(rmd, outdir = s$docs)
 
 test_that("wflow_build builds the website, but only once", {
   suppressMessages(o <- wflow_build(project = site_dir))
@@ -42,7 +42,7 @@ test_that("wflow_view opens website.", {
 test_rmd <- file.path(s$analysis, "first-analysis.Rmd")
 file.copy("files/workflowr-template.Rmd", test_rmd)
 # Expected html file
-test_html <- to_html(test_rmd, outdir = s$docs)
+test_html <- workflowr:::to_html(test_rmd, outdir = s$docs)
 s <- wflow_status(project = site_dir)
 
 test_that("wflow_open sets correct working directory", {
@@ -55,6 +55,7 @@ test_that("wflow_open sets correct working directory", {
 
 test_that("wflow_build only builds new file", {
   html_mtime_pre <- file.mtime(html)
+  Sys.sleep(2)
   suppressMessages(o <- wflow_build(project = site_dir))
   expect_identical(o$built, test_rmd)
   expect_true(file.exists(test_html))
@@ -70,9 +71,10 @@ test_that("wflow_view can open specific file with Rmd extension & without path."
 })
 
 all_rmd <- rownames(s$status)
-all_html <- to_html(all_rmd, outdir = s$docs)
+all_html <- workflowr:::to_html(all_rmd, outdir = s$docs)
 test_that("wflow_publish can commit new file and website", {
   html_mtime_pre <- file.mtime(all_html)
+  Sys.sleep(2)
   expect_message(o <- wflow_publish(all_rmd,
                                     message = "first analysis",
                                     project = site_dir))

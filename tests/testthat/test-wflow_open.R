@@ -45,11 +45,12 @@ test_that("wflow_open creates a new file, but does not overwrite", {
     skip("Must be run manually.")
 
   rmd <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
-                             project = site_dir)
+                    project = site_dir)
   expect_true(file.exists(rmd))
   modification_time_pre <- file.mtime(rmd)
+  Sys.sleep(2)
   rmd2 <- wflow_open("test.Rmd", change_wd = FALSE, open_file = FALSE,
-                               project = site_dir)
+                     project = site_dir)
   expect_identical(rmd2, rmd)
   modification_time_post <- file.mtime(rmd2)
   expect_identical(modification_time_post, modification_time_pre)
@@ -89,6 +90,7 @@ test_that("wflow_open can accept multiple files", {
                                project = site_dir)
   expect_true(all(file.exists(rmd)))
   modification_time_pre <- file.mtime(rmd)
+  Sys.sleep(2)
   rmd2 <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
                                  project = site_dir)
   expect_identical(rmd2, rmd)
@@ -110,6 +112,7 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
                  "Input file had invalid subdirectory specified.")
   expect_true(all(file.exists(rmd)))
   modification_time_pre <- file.mtime(rmd)
+  Sys.sleep(2)
   rmd2 <- wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
                                  project = site_dir)
   expect_identical(rmd2, rmd)

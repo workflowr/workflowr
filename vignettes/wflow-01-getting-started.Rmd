@@ -204,6 +204,9 @@ files. This is what we will do next.
 To build the website, run the function `wflow_build()` in the R
 console:
 
+> **pc-comment-21:** I find the collapse=TRUE knitr option is useful
+> for merging the output of a code chunk into a single block.
+
 ```{r wflow-build}
 wflow_build()
 ```

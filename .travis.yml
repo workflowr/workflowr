@@ -1,12 +1,29 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
-r:
-  - oldrel
-  - release
-  - devel
 sudo: false
 cache: packages
+
+# R: oldrel (3.2.5), release (3.3.0), devel
+# OS: linux (Ubuntu 12.04), osx (OS X 10.11.6 with Xcode 7.3.1)
+matrix:
+  include:
+    - os: linux
+      r: oldrel
+    - os: linux
+      r: release
+      env: R_CODECOV=cover-this-build-only
+    - os: linux
+      r: devel
+    - os: osx
+      r: oldrel
+      latex: false
+    - os: osx
+      r: release
+      latex: false
+    - os: osx
+      r: devel
+      latex: false
 
 r_github_packages:
   - jimhester/covr
@@ -22,4 +39,4 @@ before_install:
   - git config --global user.email "testing@fake.domain"
 
 after_success:
-  - test $TRAVIS_R_VERSION_STRING = "release" && Rscript -e "covr::codecov()"
+  - test $R_CODECOV && Rscript -e "covr::codecov()"

@@ -20,44 +20,55 @@ dir.create(.project, recursive = TRUE)
 opts_knit$set(root.dir = .project)
 ```
 
-The goal of the workflowr package is to make it easier for researchers to organize their projects and share their results with colleagues. If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like [this][demo01].
+The goal of the workflowr package is to make it easier for researchers
+to organize their projects and share their results with colleagues. If
+you are already writing R code to analyze data, and know the basics of
+Git and GitHub, you can start taking advantage of workflowr
+immediately. In a matter of minutes, you can create a research website
+like [this][demo01].
 
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 
-This tutorial assumes you have already followed the "Quick start" instructions
-in the README. Specifically, you should have already installed R, Git, and
-workflowr; set the Git variables user.name and user.email (you can run `git
-config -l` in the shell to confirm); and created an account on GitHub.
+This tutorial assumes you have already followed the "Quick start"
+instructions in the
+[README](https://jdblischak.github.io/workflowr/index.html). Specifically,
+you should have already installed R, Git, and workflowr; set the Git
+variables user.name and user.email (you can run `git config -l` in the
+shell to confirm); and created an account on GitHub.
 
 ## Overview
 
-A workflowr project comprises two main features. First is an R Markdown-based
-website. This consists of a configuration file (`_site.yml`), a collection of R
-Markdown files, and their corresponding HTML files. Second is a Git repository.
-Git is a [version control system][vcs] that helps track code development^[There
-are many ways to use Git: in the shell, in the RStudio Git pane, or another Git
-graphical user interface (GUI) (see
-[here](https://git-scm.com/download/gui/linux) for GUI options). When necessary,
-this vignette will display the Git commands to run in the shell (you can quickly
-open the Terminal to the correct working directory from RStudio by choosing
-"Tools" -> "Shell...").]. All the Git files are in a hidden directory `.git` at
+A workflowr project has two key components:
+
+1. An R Markdown-based website. This consists of a configuration file
+(`_site.yml`), a collection of R Markdown files, and their
+corresponding HTML files.
+
+2. A Git repository. Git is a [version control system][vcs] that
+helps track code development^[There are many ways to use Git: in the
+shell, in the RStudio Git pane, or another Git graphical user
+interface (GUI) (see [here](https://git-scm.com/download/gui/linux)
+for GUI options). When necessary, this vignette will display the Git
+commands to run in the shell (you can quickly open the Terminal to the
+correct working directory from RStudio by choosing "Tools" ->
+"Shell...").]. All the Git files are in a hidden directory `.git` at
 the root of the project.
 
 One of the main goals of workflowr is to help make your research more
 transparent and reproducible. This is achieved by including the unique
-identifier that Git assigns a snapshot of your code (or "commit" as Git calls
-it) at the top of each of your HTML files, so you always know which version of
-the code produced the results.
+identifier that Git assigns a snapshot of your code (or "commit" as
+Git calls it) at the top of each of your HTML files, so you always
+know which version of the code produced the results.
 
 [vcs]: https://en.wikipedia.org/wiki/Version_control
 
 ## Start the project
 
-To start a new project, open R (or RStudio), load the workflowr package, and run
-the function `wflow_start()`. The code below creates a directory called
-`myproject/` that contains all the files to get started.
-It also changes the working directory to `myproject/` and initializes a Git
-repository with the initial commit already made.
+To start a new project, open R (or RStudio), load the workflowr
+package, and run the function `wflow_start()`. The code below creates
+a directory called `myproject/` that contains all the files to get
+started. It also changes the working directory to `myproject/` and
+initializes a Git repository with the initial commit already made.
 
 ```{r start-project, echo=3:4}
 setwd(.tmp)
@@ -66,13 +77,33 @@ library("workflowr")
 wflow_start("myproject")
 ```
 
-If you're using RStudio, you can choose `Open Project...` and select the file
-`myproject.Rproj`. This will set the correct working directory in the R
-console, switch the file navigator to the project, and configure the Git and
-Build panes. It will also reset the R environment, so you'll need to re-run
-`library("workflowr")`.
+> **pc-comment-5:** One important step that is missing here: where is
+> directory `myproject` being created? The concept of the "working
+> directory" in R is missing from many novice R programmers, and I
+> guarantee that many people will be wondering: where was my project
+> created? Make sure that the user first sets the working directory
+> appropriately, either using `setwd` or using the menu options in
+> RStudio. You should also suggest running `getwd` to make sure that
+> we are in the correct directory before running `wflow_start`.
 
-`wflow_start()` creates the following directory structure in `myproject/`:
+> **pc-comment-16:** You didn't mention that this command
+> automatically changes the working directory; another good
+> opportunity to check this with `getwd`.
+
+If you're using RStudio, you can choose `Open Project...` and select
+the file `myproject.Rproj`. This will set the correct working
+directory in the R console, switch the file navigator to the project,
+and configure the Git and Build panes. It will also reset the R
+environment, so you'll need to re-run `library("workflowr")`.
+
+> **pc-comment-6:** This part about RStudio is confusing. Is this
+> instead of running `wflow_start`, or after running it? Does it do
+> anything useful? What happens if you don't do this? I would suggest
+> giving this info after first explaining the result of running
+> `wflow_start`.
+
+`wflow_start()` creates the following directory structure in
+`myproject/`:
 
 ```
 myproject/
@@ -101,52 +132,108 @@ myproject/
 └── README.md
 ```
 
-The two **required** subdirectories are `analysis/` and `docs/`:
+> **pc-comment-8:** At this point I suggest saything something like
+> this: "At this point, you have a minimal but complete workflowr
+> project; that is, you have all the files needed to use the main
+> workflowr commands andpublish a research website (admittedly, this
+> research website is not very interesting!). Later on, as you get
+> more comfortable with the basic setup, you can modify and add to
+> the initial file structure."
+>
+> You might also want to comment on the overall rationale for this
+> structure; that is, it is intended to help organize the files that
+> will be commonly included in a data analysis project.
 
-*  `analysis/`: This directory contains all the source R Markdown files for your
-website. The most important R Markdown file is `index.Rmd`, which will create
-`index.html`, the homepage for your website. In addition, this directory
-contains important configurations files like `_site.yml` and `chunks.R`.
+The two **required** subdirectories are `analysis/` and `docs/`. These
+directories should never be removed from the workflowr project.
 
-*  `docs/`: This directory contains all the HTML files for your website. The
-HTML files are built from the R Markdown files in `analysis/`. Furthermore, any
-figures created by the R Markdown files are saved here. Each figure is saved
-according to the following pattern: `docs/figure/<insert Rmd filename>/<insert
-chunk name>-#.png`, where `#` corresponds to which of the plots the chunk
+> **pc-comment-7:** What about removing the files within these
+> directories? Is it okay to remove them? 
+
+* `analysis/`: This directory contains all the source R Markdown files
+for implementing the data analyses for your project. It also contains
+a special R Markdown file, `index.Rmd`, that does not contain any R
+code, but will be used to generate `index.html`, the homepage for your
+website. In addition, this directory contains important configurations
+files like `_site.yml` and `chunks.R`.
+
+> **pc-comment-10:** If `index.Rmd` is important, I suppose we
+> shouldn't delete it?
+
+* `docs/`: This directory contains all the HTML files for your
+website. Some of the HTML files are built from the R Markdown files in
+`analysis/`. Furthermore, any figures created by the R Markdown files
+are saved here. Each of these figures is saved according to the
+following pattern: `docs/figure/<insert Rmd filename>/<insert chunk
+name>-#.png`, where `#` corresponds to which of the plots the chunk
 generated (since one chunk can produce an arbitrary number of plots).
 
-The **optional** directories are `data/`, `code/`, and `output/`. These
-directories are suggestions for organizing your project, but can be removed if
-you do not find them helpful.
+> **pc-comment-12:** Does it *only* contain HTML files built from R
+> Markdown files? See my change above.
+
+The **optional** directories are `data/`, `code/`, and `output/`.
+These directories are suggestions for organizing your data analysis
+project, but can be removed if you do not find them useful.
 
 * `data/`: This directory is for raw data files.
 
-* `code/`: This directory is for scripts (e.g. for pre-processing the data or
-long-running code).
+> **pc-comment-11:** Why only "raw"? 
 
-* `output/`: This directory is for processed data files. For example, scripts in
-`code` that pre-process raw data files from `data/` can save the processed data
-files in `output/`.
+* `code/`: This directory is for code and scripts that might not be
+appropriate as R Markdown notebooks (e.g. for pre-processing the data, or
+for long-running code).
+
+* `output/`: This directory is for processed data files and other
+outputs generated from the code and data. For example, scripts in
+`code` that pre-process raw data files from `data/` should save the
+processed data files in `output/`.
+
+> **pc-comment-9:** You didn't say anything about the other files
+> (e.g., `myproject.Rproj`, `CITATION`). Which are essential, and
+> which can be deleted?
 
 ## Build the website
 
-To build the website, run the function `wflow_build()` in the R console:
+You will notice that the `docs/` directory is currently empty. That is
+because we have not yet generated the website from the `analysis/`
+files. This is what we will do next.
+
+> **pc-comment-13**: This is a good opportunity to make sure that the
+> user is in the correct working directory.
+
+To build the website, run the function `wflow_build()` in the R
+console:
+
+> **pc-comment-21:** I find the collapse=TRUE knitr option is useful
+> for merging the output of a code chunk into a single block.
 
 ```{r wflow-build}
 wflow_build()
 ```
 
-This commands builds all the R Markdown files located in `analysis/` and saves
-the corresponding HTML files in `docs/`. It sets the same seed before running
-every file so that any function that generates random data (e.g. permutations)
-is reproducible. Furthermore, each file is built in its own external R session
-to avoid any potential conflicts between analyses (e.g. accidentally sharing a
-variable with the same name across files).
+This command builds all the R Markdown files in `analysis/` and saves
+the corresponding HTML files in `docs/`. It sets the same seed before
+running every file so that any function that generates random data
+(e.g. permutations) is reproducible. Furthermore, each file is built
+in its own external R session to avoid any potential conflicts between
+analyses (e.g. accidentally sharing a variable with the same name
+across files).
 
-The default action of `wflow_build()` is to behave similar to a Makefile (`make
-= TRUE`), i.e. it only builds R Markdown files that have been modified more
-recently than their corresponding HTML files. Thus if you run it again, no files
-are built.
+> **pc-comment-14:** Do you "build an R Markdown file" or "build an
+> HTML file from an R Markdown file"? What is the correct usage here?
+
+The default action of `wflow_build()` is to behave similar to a
+[Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE`
+is the default), i.e. it only builds R Markdown files that have been
+modified more recently than their corresponding HTML files. Thus if
+you run it again, no files are built.
+
+> **pc-comment-15:** I think it is useful to mention Makefiles here,
+> but it would be good to give an explanation for people that are
+> unfamiliar with the idea; e.g., "`wflow_build()` only does the work
+> that is necessary; it will automatically compare the modification
+> dates of the analysis and HTML files, and only re-build an HTML file
+> when the corresponding analysis file has changed.
 
 ```{r wflow-build-no-action}
 wflow_build()

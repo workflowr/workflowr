@@ -1,41 +1,61 @@
-# workflowr
+# workflowr: organized + reproducible + sharable data science in R
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
+> **pc-comment-2:** Trying to come up with a cool catch-phrase (e.g.,
+> [D3: data-driven documents](https://github.com/d3/d3)).
+
+The [workflowr][] R package makes it easier for researchers to
+organize their projects and share their results with colleagues. 
+
+Install the latest release (v0.5.0) by running this command in R or
+RStudio:
+
+```R
+devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
+```
+
+If you are already writing R code to analyze data, and know the basics
+of Git and GitHub, you can start taking advantage of workflowr
+immediately. In a matter of minutes, you can create a research website
+like [this][demo01].
+
+**NOTE:** workflowr is still in the early stages of development, so
+there will potentially be major changes between versions. Thus make
+sure to [upgrade](#upgrading) if necessary and look over the
+[documentation][workflowr]. The good news is that any site you create
+will not be affected by these changes and will continue to function
+with new versions of the workflowr functions.
+
+If you find any problems, or would like to suggest new features,
+please open an [Issue][issues].
+
+> **pc-comment-1:** It would be nice to have a more interesting
+> demo. I'm working on it!
+
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
 * [Upgrading](#upgrading)
-* [This repository](#this-repository)
+* [More about this repository](#more-about-this-repository)
 * [Background and related work](#background-and-related-work)
 * [Credits](#credits)
 * [License](#license)
 * [Citation](#citation)
 * [Pronunciation](#pronunciation)
 
-The goal of the [workflowr][] package is to make it easier for researchers to 
-organize their projects and share their results with colleagues. If you are 
-already writing R code to analyze data, and know the basics of Git and GitHub, 
-you can start taking advantage of workflowr immediately. In a matter of minutes,
-you can create a research website like [this][demo01].
-
-**WARNING:** workflowr is still in the early stages of development, so there 
-will potentially be major changes between versions. Thus make sure to [upgrade](#upgrading) if
-necessary and look over the [documentation][workflowr]. The good news is that any site you 
-create will not be affected by these changes and will continue to function with 
-new versions of the workflowr functions. If you find any problems, or would like
-to suggest new features, please open an [Issue][issues].
-
 ## Why use workflowr?
 
-First, hopefully you don't need much convincing to write your analyses in R 
-Markdown. It allows you to combine your R code, text, and figures in the same 
-document! See the [website][rmarkdown] to learn about all the cool features. 
-Second, building a website with the rmarkdown package (as opposed to using knitr
-to produce Markdown files and passing these to a static site generator) enables
-you to use all the latest R packages (e.g. [htmlwidgets][]) directly in your
-analyses. Third, the workflowr package provides functions to make it easier for
-a researcher to maintain a version-controlled R Markdown website:
+First, hopefully you don't need much convincing to write your analyses
+in R Markdown. It allows you to combine your R code, text, and figures
+in the same document! See the [website][rmarkdown] to learn about all
+the cool features.  Second, building a website with the rmarkdown
+package (as opposed to using knitr to produce Markdown files and
+passing these to a static site generator) enables you to use all the
+latest R packages (e.g. [htmlwidgets][]) directly in your
+analyses. Third, the workflowr package provides functions to make it
+easier for a researcher to maintain a version-controlled R Markdown
+website:
 
 * A function to start a project with all the necessary files (see `?wflow_start`)
 * Includes an R Markdown template that will automatically insert the date and most recent Git commit ID (i.e. SHA1) at the top of the file to aid reproducibility (see `?wflow_open`)
@@ -44,45 +64,77 @@ a researcher to maintain a version-controlled R Markdown website:
 
 ## Quick start
 
-* Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc])
+workflowr builds on several software tools including
+[git](http://cran.r-project.org), [pandoc](http://pandoc.org) and
+[knitr](yihui.name/knitr), **but you do not need to use any of these
+tools to get started with workflowr.** You only need to know how to
+code in [R](http://cran.r-project.org) and be familiar with
+[R Markdown](http://r4ds.had.co.nz/r-markdown.html). A [basic
+understanding of git](https://doi.org/10.1371/journal.pcbi.1004668)
+as well as the [UNIX command line](https://swcarpentry.github.io/shell-novice)
+is not essential, but helpful.
 
-* (Optional) Install [RStudio][rstudio] (workflowr takes advantages of some
+Here is a minimal set of steps to get you started with `workflowr`. If
+you are already using R and git, you may be able to skip some of these
+steps.
+
+1. Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc]).
+
+2. (Optional) Install [RStudio][rstudio] (workflowr takes advantages of some
 RStudio features, but RStudio is not required to use workflowr)
 
-* Install [Git][git] ([instructions][swc-git] from [Software Carpentry][swc])
+3. Install [Git][git] ([instructions][swc-git] from [Software Carpentry][swc])
 
-* Create an account on [GitHub][gh]
+4. Create an account on [GitHub][gh], or another git-based source code
+site such as [GitLab](http://gitlab.com). (In the instructions below
+we mostly assume Github, but workflowr should also work on other
+similar platforms such as [Gitlab](http://gitlab.com) and
+[Bitbucket](bitbucket.org).)
 
-* Configure [Git][git] ([instructions][swc-git-config] from [Software
-Carpentry][swc]). Run the following in the Terminal, inserting your information:
+    > **pc-comment-3:** I think there may be some additional setup
+    > steps to take here, some of which may not be strictly necessary,
+    > but helpful (e.g., SSH keys). Maybe refer to a Getting Started
+    > guide on Github? Also, I think Github has a short guide for
+    > creating a repo which I think could be useful to follow to make
+    > sure that everything is set up correctly before using
+    > workflowr. Perhaps you could ammend this step to something like
+    > this: "Create an account on Github and make sure that you can
+    > clone and push to a git repository."
 
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "youremail@domain"
-```
+5. Configure [Git][git] ([instructions][swc-git-config] from
+[Software Carpentry][swc]). Run the following commands in the shell
+command-line, inserting your account information:
 
-* Install the latest stable release of [workflowr][] from [GitHub][gh] using
-[devtools][]:
+   ```bash
+   git config --global user.name "Your Name"
+   git config --global user.email "youremail@domain"
+   ```
 
-```r
-# install.packages("devtools")
-devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
-```
+6. Install the latest stable release of [workflowr][] from
+[GitHub][gh] using [devtools][]:
 
-* Work through the vignette [Getting started with workflowr][vig-start] to learn
-the basic design and functionality of a workflowr project (you can view all the
-available vignettes locally with `browseVignettes("workflowr")`)
+   ```r
+   install.packages("devtools")
+   devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
+   ```
 
-* Start your project with `wflow_start()` (if you have already started your
-project, please read the vignette [Migrating an existing project to use
-workflowr][vig-migrating] for advice on how to proceed)
+7. Work through the vignette,
+["Getting started with workflowr"][vig-start], to learn how to set up
+a workflowr project. (You can view all the available vignettes locally
+with `browseVignettes("workflowr")`.)
 
-* Read through the vignette [Customize your research website][vig-custom]
+8. Alternatively, if you have already started your project, read the
+vignette
+["Migrating an existing project to use workflowr"][vig-migrating] to
+learn how to convert your project to a workflowr project.
 
-* If you find any unexpected behavior or think of an additional feature that
-would be nice to have, please open an Issue [here][issues]. When writing your
-bug report or feature request, please note the version of workflowr you are
-using (which you can obtain by running `packageVersion("workflowr")`).
+9. Learn more about how to [Customize your research website][vig-custom].
+
+10. If you find any unexpected behavior or think of an additional
+feature that would be nice to have, please open an Issue
+[here][issues]. When writing your bug report or feature request,
+please note the version of workflowr you are using (which you can
+obtain by running `packageVersion("workflowr")`).
 
 ## Upgrading
 
@@ -107,11 +159,18 @@ wflow_update()
 wflow_update(dry_run = FALSE)
 ```
 
-## This repository
+## More about this repository
 
 This repository contains the workflowr R package. If your goal is to create a 
 workflowr project, you do **not** need to fork this repository. Instead, 
 following the [Quick start](#quick-start) instructions above.
+
+> **pc-comment-4:** For those that are not familiar with R packages, I
+> think it would be useful to point out that this repository (mostly)
+> follows the standard R package structure, and point to [here]() and
+> [here](). Then, optionally, you could point out some of the files
+> that are not part of a typical package, and what they are for (e.g.,
+> the files in [inst](inst)).
 
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by 
 [Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the 
@@ -202,7 +261,7 @@ about the software that makes workflowr possible.
 
 ## License
 
-workflowr is available under the [MIT][] license.
+workflowr is available under the [MIT license][].
 
 ## Citation
 
@@ -225,10 +284,10 @@ A BibTeX entry for LaTeX users is
 
 ## Pronunciation
 
-It is common for R packages to end with an "r", and I tend to pronounce this as 
-if it was "er" because I personally find this the easiest. Thus I pronounce the 
-package "workflow + er". Other equally as good options are "workflow + R" or
-"work + flower".
+It is common for R packages to end with an "r", and I tend to
+pronounce this as if it was "er" because I personally find this the
+easiest. Thus I pronounce the package "workflow + er". Other equally
+good options are "workflow + R" or "work + flower".
 
 [analysis_framework]: https://github.com/jimhester/analysis_framework
 [blogdown]: https://github.com/rstudio/blogdown

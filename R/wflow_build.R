@@ -29,15 +29,20 @@
 #' @param files character (default: NULL). Files to build. Supports file
 #'   extensions Rmd, rmd, and md. Only files in the analysis directory are
 #'   allowed (and therefore any path to a file is ignored).
-#' @param make logical (default: \code{is.null(files)}). Use Make-like behavior,
-#'   i.e. build the files that have been updated more recently than their
-#'   corresponding HTML files. This is the default action if no files are
-#'   specified.
+#'
+#' pc-comment-22: What does files = NULL mean?
+#' 
+#' @param make logical (default: \code{is.null(files)}). When
+#'   \code{make = TRUE}, use Make-like behavior, i.e. build the files
+#'   that have been updated more recently than their corresponding HTML
+#'   files. This is the default action if no files are specified.
+#' 
 #' @param update logical (default: FALSE). Build the files that have been
 #'   committed more recently than their corresponding HTML files (and do not
 #'   have any unstaged or staged changes). This ensures that the commit version
 #'   ID inserted into the HTML corresponds to the exact version of the source
 #'   file that was used to produce it.
+#'
 #' @param republish logical (default: FALSE). Build all published R Markdown
 #'   files. Useful for site-wide changes like updating the theme, navigation
 #'   bar, or any other setting in \code{_site.yml}.
@@ -52,6 +57,12 @@
 #'   reproducible in isolation.
 #' @param dry_run logical (default: FALSE). Preview the files to be built, but
 #'   do not actually build them.
+#'
+#' pc-comment-23: This is confusing what you mean by "preview
+#' files". I think you mean preview the *file names*, not the
+#' files. It might be more clear if you say, "list the files to be
+#' built, without building them."
+#' 
 #' @inheritParams wflow_commit
 #'
 #' @return An object of class \code{wflow_build}, which is a list with the

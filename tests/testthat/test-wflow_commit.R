@@ -4,7 +4,7 @@ context("wflow_commit")
 
 library("git2r")
 # start project in a tempdir
-site_dir <- tempfile("test-wflow_commit-")
+site_dir <- tempfile("test-wflow_commit-", tmpdir = "/tmp")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 on.exit(unlink(site_dir, recursive = TRUE))
 r <- repository(path = site_dir)

@@ -3,7 +3,7 @@ context("create_links_page")
 # Setup ------------------------------------------------------------------------
 
 # Set up a temporary project
-site_dir <- tempfile("test-links-")
+site_dir <- tempfile("test-links-", tmpdir = "/tmp")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE))

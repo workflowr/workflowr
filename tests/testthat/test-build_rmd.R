@@ -3,7 +3,7 @@ context("build_rmd")
 # Setup ------------------------------------------------------------------------
 
 # Create a temporary workflowr project
-tmp_dir <- tempfile("build_rmd-")
+tmp_dir <- tempfile("build_rmd-", tmpdir = "/tmp")
 analysis_dir <- file.path(tmp_dir, "analysis")
 docs_dir <- file.path(tmp_dir, "docs")
 cwd <- getwd()

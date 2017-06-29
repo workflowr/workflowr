@@ -21,7 +21,7 @@ git_files <- c(".git", ".gitignore")
 test_that("wflow_start copies files correctly", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir, change_wd = FALSE))
 
   for (f in c(project_files, git_files)) {
@@ -34,7 +34,7 @@ test_that("wflow_start copies files correctly", {
 
 test_that("wflow_start adds name to analysis/_site.yml and README.md", {
 
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir, change_wd = FALSE))
 
   readme_contents <- readLines(file.path(site_dir, "README.md"))
@@ -49,7 +49,7 @@ test_that("wflow_start adds name to analysis/_site.yml and README.md", {
 test_that("wflow_start accepts custom name", {
 
   project_name <- "A new project"
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir, name = project_name, change_wd = FALSE))
 
   readme_contents <- readLines(file.path(site_dir, "README.md"))
@@ -64,7 +64,7 @@ test_that("wflow_start accepts custom name", {
 test_that("wflow_start creates docs/ directories and .nojekyll files", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir, change_wd = FALSE))
 
   expect_true(dir.exists(file.path(site_dir, "docs")))
@@ -77,7 +77,7 @@ test_that("wflow_start creates docs/ directories and .nojekyll files", {
 test_that("wflow_start creates Git infrastructure by default", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir, change_wd = FALSE))
   for (f in git_files) {
     expect_true(file.exists(file.path(site_dir, f)))
@@ -88,7 +88,7 @@ test_that("wflow_start creates Git infrastructure by default", {
 test_that("wflow_start git = FALSE removes only the Git files", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir,
                              git = FALSE, change_wd = FALSE))
 
@@ -107,7 +107,7 @@ test_that("wflow_start git = FALSE removes only the Git files", {
 test_that("wflow_start commits all the project files", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   capture.output(wflow_start(site_dir, change_wd = FALSE))
 
   r <- git2r::repository(site_dir)
@@ -129,7 +129,7 @@ test_that("wflow_start commits all the project files", {
 test_that("wflow_start does not overwrite files by default", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
@@ -144,7 +144,7 @@ test_that("wflow_start does not overwrite files by default", {
 test_that("wflow_start overwrites files when forced", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
@@ -160,7 +160,7 @@ test_that("wflow_start overwrites files when forced", {
 test_that("wflow_start does not overwrite an existing .git directory and does not commit existing files", {
 
   # start project in a tempdir
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   dir.create(site_dir)
   git2r::init(site_dir)
   r <- git2r::repository(site_dir)
@@ -186,7 +186,7 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
     file.rename(from = config_original, to = config_tmp)
     on.exit(file.rename(from = config_tmp, to = config_original))
   }
-  site_dir <- tempfile()
+  site_dir <- tempfile(tmpdir = "/tmp")
   expect_error(wflow_start(site_dir, change_wd = FALSE),
                "You must set your user.name and user.email for Git first\n")
   expect_false(dir.exists(site_dir))
@@ -195,7 +195,7 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
 test_that("wflow_start can handle relative path to current directory: .", {
 
   # start project in a tempdir
-  site_dir <- tempfile("test-start-")
+  site_dir <- tempfile("test-start-", tmpdir = "/tmp")
   dir.create(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -210,7 +210,7 @@ test_that("wflow_start can handle relative path to current directory: .", {
 test_that("wflow_start can handle relative path to upstream directory: ..", {
 
   # start project in a tempdir
-  site_dir <- tempfile("test-start-")
+  site_dir <- tempfile("test-start-", tmpdir = "/tmp")
   site_dir_subdir <- file.path(site_dir, "random-subdir")
   dir.create(site_dir_subdir, recursive = TRUE)
   cwd <- getwd()
@@ -226,7 +226,7 @@ test_that("wflow_start can handle relative path to upstream directory: ..", {
 test_that("wflow_start can handle relative paths to non-existent directories", {
 
   # Create and move to a temp directory
-  tmp_dir <- tempfile("test-start-relative-")
+  tmp_dir <- tempfile("test-start-relative-", tmpdir = "/tmp")
   dir.create(tmp_dir)
   cwd <- getwd()
   setwd(tmp_dir)
@@ -252,7 +252,7 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
 test_that("wflow_start can handle deeply nested paths that need to be created", {
 
   # Create and move to a temp directory
-  tmp_dir <- tempfile("test-deeply-nested-")
+  tmp_dir <- tempfile("test-deeply-nested-", tmpdir = "/tmp")
   dir.create(tmp_dir)
   cwd <- getwd()
   setwd(tmp_dir)
@@ -269,7 +269,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created", 
 test_that("wflow_start can handle deeply nested paths that need to be created and begin with ./", {
 
   # Create and move to a temp directory
-  tmp_dir <- tempfile("test-deeply-nested-plus-cwd-")
+  tmp_dir <- tempfile("test-deeply-nested-plus-cwd-", tmpdir = "/tmp")
   dir.create(tmp_dir)
   cwd <- getwd()
   setwd(tmp_dir)
@@ -287,7 +287,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
 test_that("wflow_start can handle deeply nested paths that need to be created and use relative paths", {
 
   # Create and move to a temp directory
-  tmp_dir <- tempfile("test-deeply-nested-plus-relative-")
+  tmp_dir <- tempfile("test-deeply-nested-plus-relative-", tmpdir = "/tmp")
   dir.create(tmp_dir)
   cwd <- getwd()
   setwd(tmp_dir)
@@ -310,7 +310,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
 test_that("wflow_start throws error when given a deeply nested path that needs to be created, uses relative paths, and is contained within a Git repository", {
 
   # Create and move to a temp directory
-  tmp_dir <- tempfile("test-deeply-nested-plus-relative-git-")
+  tmp_dir <- tempfile("test-deeply-nested-plus-relative-git-", tmpdir = "/tmp")
   dir.create(tmp_dir)
   cwd <- getwd()
   setwd(tmp_dir)
@@ -336,7 +336,7 @@ test_that("wflow_start throws error when given a deeply nested path that needs t
 test_that("wflow_start changes to workflowr directory by default", {
 
   # start project in a tempdir
-  site_dir <- tempfile("test-start-")
+  site_dir <- tempfile("test-start-", tmpdir = "/tmp")
   cwd <- getwd()
   on.exit(setwd(cwd))
   on.exit(unlink(site_dir, recursive = TRUE), add = TRUE)
@@ -348,7 +348,7 @@ test_that("wflow_start changes to workflowr directory by default", {
 
 test_that("wflow_start fails early if directory exists and `existing = FALSE`", {
 
-  site_dir <- tempfile("test-start-")
+  site_dir <- tempfile("test-start-", tmpdir = "/tmp")
   dir.create(site_dir)
   on.exit(unlink(site_dir, recursive = TRUE))
 
@@ -359,7 +359,7 @@ test_that("wflow_start fails early if directory exists and `existing = FALSE`", 
 
 test_that("wflow_start fails early if directory does not exist and `existing = TRUE`", {
 
-  site_dir <- tempfile("test-start-")
+  site_dir <- tempfile("test-start-", tmpdir = "/tmp")
 
   expect_error(wflow_start(site_dir, existing = TRUE, change_wd = FALSE),
                "Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")

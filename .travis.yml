@@ -3,30 +3,24 @@
 language: r
 sudo: false
 cache: packages
+latex: false
 
-# R: oldrel (3.2.5), release (3.3.0), devel
-# OS: linux (Ubuntu 12.04), osx (OS X 10.11.6 with Xcode 7.3.1)
 matrix:
   include:
     - os: linux
       r: oldrel
     - os: linux
       r: release
+      r_github_packages: jimhester/covr
       env: R_CODECOV=cover-this-build-only
     - os: linux
       r: devel
     - os: osx
       r: oldrel
-      latex: false
     - os: osx
       r: release
-      latex: false
     - os: osx
       r: devel
-      latex: false
-
-r_github_packages:
-  - jimhester/covr
 
 # safelist
 branches:

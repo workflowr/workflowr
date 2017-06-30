@@ -1,3 +1,8 @@
+# workflowr 0.5.1
+
+This minor release fixes a bug in how filepaths are resolved so that workflowr
+can run on Windows.
+
 # workflowr 0.5.0
 
 This release changes the interface of some of the main workflowr functions. The 

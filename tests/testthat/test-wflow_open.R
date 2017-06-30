@@ -33,7 +33,7 @@ context("wflow_open")
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-site_dir <- tempfile("test-wflow_open-", tmpdir = "/tmp")
+site_dir <- tempfile("test-wflow_open-", tmpdir = normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE))
 
@@ -129,11 +129,13 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   # switches the working directory to the path of the first input file.
   cwd <- getwd()
   on.exit(setwd(cwd))
-  location_exist <- tempfile("test-wflow_open-exist-", tmpdir = "/tmp")
+  location_exist <- tempfile("test-wflow_open-exist-",
+                             tmpdir = normalizePath("/tmp"))
   dir.create(location_exist)
   on.exit(unlink(location_exist, recursive = TRUE), add = TRUE)
   testfile1 <- file.path(location_exist, "exist.Rmd")
-  location_nonexist <- tempfile("test-wflow_open-nonexist-", tmpdir = "/tmp")
+  location_nonexist <- tempfile("test-wflow_open-nonexist-",
+                                tmpdir = normalizePath("/tmp"))
   on.exit(unlink(location_nonexist, recursive = TRUE), add = TRUE)
   testfile2 <- file.path(location_nonexist, "nonexist.Rmd")
 

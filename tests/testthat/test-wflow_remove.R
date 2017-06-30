@@ -4,7 +4,7 @@ context("wflow_remove")
 
 library("git2r")
 cwd <- getwd()
-tdir <- tempfile("test-wflow_commit-", tmpdir = "/tmp")
+tdir <- tempfile("test-wflow_commit-", tmpdir = normalizePath("/tmp"))
 on.exit(setwd(cwd))
 on.exit(unlink(tdir, recursive = TRUE), add = TRUE)
 suppressMessages(wflow_start(tdir))
@@ -96,7 +96,7 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
 
 test_that("wflow_remove can remove files with no Git repo present", {
   # Temporarily move .git directory
-  tgit <- tempfile("git-", tmpdir = "/tmp")
+  tgit <- tempfile("git-", tmpdir = normalizePath("/tmp"))
   on.exit(file.rename(from = tgit, to = p$git), add = TRUE)
   file.rename(from = p$git, to = tgit)
   # The test will remove README, so restore it afterwards

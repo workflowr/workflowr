@@ -3,7 +3,7 @@ context("wflow_status")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- tempfile("test-wflow_status-", tmpdir = "/tmp")
+site_dir <- tempfile("test-wflow_status-", tmpdir = normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE))

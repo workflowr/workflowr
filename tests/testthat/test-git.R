@@ -3,7 +3,7 @@ context("git")
 # Test get_committed_files -----------------------------------------------------
 
 # Create temp Git directory
-dir_git <- tempfile("test-get_committed_files-", tmpdir = "/tmp")
+dir_git <- tempfile("test-get_committed_files-", tmpdir = normalizePath("/tmp"))
 dir.create(dir_git)
 on.exit(unlink(dir_git, recursive = TRUE))
 # Initialize Git repo
@@ -52,7 +52,7 @@ test_that("get_committed_files stops reporting files after they are removed", {
 # Test create_gitignore --------------------------------------------------------
 
 # Create a temp directory
-tmp_dir <- tempfile("test-create_gitignore-", tmpdir = "/tmp")
+tmp_dir <- tempfile("test-create_gitignore-", tmpdir = normalizePath("/tmp"))
 dir.create(tmp_dir)
 # Cleanup
 on.exit(unlink(tmp_dir, recursive = TRUE))

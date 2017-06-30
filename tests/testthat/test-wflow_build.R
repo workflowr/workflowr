@@ -3,7 +3,7 @@ context("wflow_build")
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-site_dir <- tempfile("test-wflow_build-", tmpdir = "/tmp")
+site_dir <- tempfile("test-wflow_build-", tmpdir = normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 on.exit(unlink(site_dir, recursive = TRUE))
 s <- wflow_status(project = site_dir)

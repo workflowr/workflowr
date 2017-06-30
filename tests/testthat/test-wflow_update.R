@@ -21,7 +21,7 @@ test_that("wflow_update can update from v0.3.0 to v0.4.0 with no Git", {
     skip("Must be run manually.")
 
   # Create a temporary directory with v0.3.0 files
-  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = "/tmp")
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = normalizePath("/tmp"))
   dir.create(tmp_dir_v0.3.0, recursive = TRUE)
   on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
   file.copy(from = "files/test-wflow_update/v0.3.0/.",
@@ -56,7 +56,7 @@ test_that("wflow_update can update from v0.3.0 to v0.4.0 with Git", {
     skip("Must be run manually.")
 
   # Create a temporary directory with v0.3.0 files
-  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = "/tmp")
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = normalizePath("/tmp"))
   dir.create(tmp_dir_v0.3.0, recursive = TRUE)
   on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
   file.copy(from = "files/test-wflow_update/v0.3.0/.",
@@ -98,7 +98,7 @@ test_that("wflow_update ignores Rmd files starting with _", {
     skip("Must be run manually.")
 
   # Create a temporary directory with v0.3.0 files
-  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = "/tmp")
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = normalizePath("/tmp"))
   dir.create(tmp_dir_v0.3.0, recursive = TRUE)
   on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
   file.copy(from = "files/test-wflow_update/v0.3.0/.",
@@ -123,7 +123,7 @@ test_that("wflow_update only commits tracked files", {
     skip("Must be run manually.")
 
   # Create a temporary directory with v0.3.0 files
-  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = "/tmp")
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = normalizePath("/tmp"))
   dir.create(tmp_dir_v0.3.0, recursive = TRUE)
   on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
   file.copy(from = "files/test-wflow_update/v0.3.0/.",
@@ -159,7 +159,7 @@ test_that("wflow_update does nothing if everything is up-to-date", {
     skip("Must be run manually.")
 
   # Create a temporary directory with v0.3.0 files
-  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = "/tmp")
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = normalizePath("/tmp"))
   dir.create(tmp_dir_v0.3.0, recursive = TRUE)
   on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
   file.copy(from = "files/test-wflow_update/v0.3.0/.",
@@ -196,7 +196,7 @@ test_that("wflow_update fails early if files in staging area", {
     skip("Must be run manually.")
 
   # Create a temporary directory with v0.3.0 files
-  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = "/tmp")
+  tmp_dir_v0.3.0 <- tempfile("v0.3.0-", tmpdir = normalizePath("/tmp"))
   dir.create(tmp_dir_v0.3.0, recursive = TRUE)
   on.exit(unlink(tmp_dir_v0.3.0, recursive = TRUE))
   file.copy(from = "files/test-wflow_update/v0.3.0/.",

@@ -260,7 +260,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created", 
   on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
 
   dir_test <- "a/b/c/x/y/z"
-  expected <- file.path(normalizePath("."), dir_test)
+  expected <- file.path(workflowr:::normalizePath("."), dir_test)
   capture.output(actual <- wflow_start(dir_test, change_wd = FALSE))
   expect_identical(actual, expected)
   expect_true(file.exists(file.path(expected, "z.Rproj")))
@@ -277,7 +277,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
   on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
 
   dir_test <- "./a/b/c/x/y/z"
-  expected <- file.path(normalizePath("."),
+  expected <- file.path(workflowr:::normalizePath("."),
                         substr(dir_test, 3, nchar(dir_test)))
   capture.output(actual <- wflow_start(dir_test, change_wd = FALSE))
   expect_identical(actual, expected)

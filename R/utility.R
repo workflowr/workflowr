@@ -172,3 +172,8 @@ commonprefix <- function(p1, p2) {
   }
   return(incommon)
 }
+
+# Override default normalizePath options for working with filepaths on Windows
+normalizePath <- function(path, winslash = "/", mustWork = NA) {
+  base::normalizePath(path = path, winslash = winslash, mustWork = mustWork)
+}

@@ -4,6 +4,7 @@
 ^workflowr\.Rproj$
 ^docs$
 ^\.travis\.yml$
+^\.codecov\.yml$
 ^_pkgdown\.yaml$
 ^document\.R$
 ^LICENSE\.md$

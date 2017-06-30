@@ -1,0 +1,14 @@
+# Configuration file for Codecov
+# https://docs.codecov.io/docs/codecov-yaml
+
+# https://docs.codecov.io/docs/commit-status
+coverage:
+  status:
+    project: off
+    patch:
+      only_pulls: true
+
+# Only comment on PR if coverage changes
+# https://docs.codecov.io/docs/pull-request-comments
+comment:
+  require_changes: true

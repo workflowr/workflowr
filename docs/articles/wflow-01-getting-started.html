@@ -64,10 +64,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Getting started with workflowr</h1>
-            <h3 class="subtitle">workflowr version 0.5.0</h3>
+            <h3 class="subtitle">workflowr version 0.5.1</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-06-19</h4>
+            <h4 class="date">2017-06-30</h4>
           </div>
 
     
@@ -87,11 +87,11 @@
 <p>To start a new project, open R (or RStudio), load the workflowr package, and run the function <code><a href="../reference/wflow_start.html">wflow_start()</a></code>. The code below creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code> and initializes a Git repository with the initial commit already made.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)</code></pre></div>
 <pre><code>## Loading required package: rmarkdown</code></pre>
-<pre><code>## This is workflowr version 0.5.0
+<pre><code>## This is workflowr version 0.5.1
 ## **Major interface change:**
 ##   Use `wflow_publish()` instead of `wflow_commit()`</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</code></pre></div>
-<pre><code>## Project "myproject" started in /tmp/RtmpdoDGjj/wflow-01-getting-started-45cfe748ef3/myproject</code></pre>
+<pre><code>## Project "myproject" started in /tmp/RtmpajujId/wflow-01-getting-started-4c8a63e51943/myproject</code></pre>
 <pre><code>## Git repository initialized.</code></pre>
 <p>If you’re using RStudio, you can choose <code>Open Project...</code> and select the file <code>myproject.Rproj</code>. This will set the correct working directory in the R console, switch the file navigator to the project, and configure the Git and Build panes. It will also reset the R environment, so you’ll need to re-run <code>library("workflowr")</code>.</p>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> creates the following directory structure in <code>myproject/</code>:</p>
@@ -205,7 +205,7 @@
 ##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd 
 ##   $ git commit -m "Publish the initial files for myproject" 
 ## 
-## The following file(s) were included in commit 655fdcb:
+## The following file(s) were included in commit c41f2af:
 ## analysis/about.Rmd
 ## analysis/index.Rmd
 ## analysis/license.Rmd
@@ -235,7 +235,7 @@
 ##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 20d92b2:
+## The following file(s) were included in commit 9f6e9e6:
 ## docs/about.html
 ## docs/index.html
 ## docs/license.html
@@ -324,7 +324,7 @@ git push -u origin master</code></pre>
 ##   $ git add index.Rmd first-analysis.Rmd 
 ##   $ git commit -m "Add my first analysis" 
 ## 
-## The following file(s) were included in commit 2a8db53:
+## The following file(s) were included in commit a6cac7a:
 ## first-analysis.Rmd
 ## index.Rmd
 ## 
@@ -352,7 +352,7 @@ git push -u origin master</code></pre>
 ##   $ git add ../docs/index.html ../docs/first-analysis.html ../docs/figure/index.Rmd ../docs/figure/first-analysis.Rmd ../docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 0913e1f:
+## The following file(s) were included in commit 4aec305:
 ## ../docs/first-analysis.html
 ## ../docs/index.html
 ## ../docs/site_libs/jqueryui-1.11.4/

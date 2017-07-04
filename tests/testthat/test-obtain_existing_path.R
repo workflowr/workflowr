@@ -5,11 +5,11 @@ context("obtain_existing_path")
 # Setup ------------------------------------------------------------------------
 
 # Create and move to a temporary, nested directory
-tmp_dir <- tempfile("test-obtain_existing_path-", tmpdir = normalizePath("/tmp"))
+tmp_dir <- workflowr:::tempfile("test-obtain_existing_path-", tmpdir = workflowr:::normalizePath("/tmp"))
 nested_dir <- file.path(tmp_dir, "nested")
 cwd <- getwd()
 on.exit(setwd(cwd))
-on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
 dir.create(nested_dir, recursive = TRUE)
 setwd(nested_dir)
 

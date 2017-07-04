@@ -5,10 +5,10 @@ context("wflow_publish")
 library("git2r")
 
 # Setup workflowr project for testing
-site_dir <- tempfile("test-wflow_publish-", tmpdir = normalizePath("/tmp"))
+site_dir <- workflowr:::tempfile("test-wflow_publish-", tmpdir = workflowr:::normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Delete workflowr project on exit
-on.exit(unlink(site_dir, recursive = TRUE))
+on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 s <- wflow_status(project = site_dir)
 r <- repository(s$root)
 

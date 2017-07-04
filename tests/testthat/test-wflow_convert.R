@@ -21,7 +21,7 @@ gold_previous <- "files/test-wflow_convert/workflowr-previous.Rmd"
 # Test wflow_convert -----------------------------------------------------------
 
 test_that("Can convert standard Rmd to workflowr", {
-  tmp_standard <- tempfile("standard-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standard <- workflowr:::tempfile("standard-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   expected <- gold_workflowr_lines
@@ -32,7 +32,7 @@ test_that("Can convert standard Rmd to workflowr", {
 })
 
 test_that("Can convert standard Rmd to standalone workflowr", {
-  tmp_standard <- tempfile("standard-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standard <- workflowr:::tempfile("standard-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   expected <- gold_standalone_lines
@@ -43,7 +43,7 @@ test_that("Can convert standard Rmd to standalone workflowr", {
 })
 
 test_that("Can add missing yaml header", {
-  tmp_noyaml <- tempfile("noyaml-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_noyaml <- workflowr:::tempfile("noyaml-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_noyaml, tmp_noyaml)
   on.exit(unlink(tmp_noyaml))
   expected <- gold_workflowr_lines
@@ -54,7 +54,7 @@ test_that("Can add missing yaml header", {
 })
 
 test_that("Can convert ashlar file", {
-  tmp_ashlar <- tempfile("ashlar-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_ashlar <- workflowr:::tempfile("ashlar-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_ashlar, tmp_ashlar)
   on.exit(unlink(tmp_ashlar))
   expected <- gold_workflowr_lines
@@ -65,7 +65,7 @@ test_that("Can convert ashlar file", {
 })
 
 test_that("Can convert previous workflowr file", {
-  tmp_previous <- tempfile("previous-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_previous <- workflowr:::tempfile("previous-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_previous, tmp_previous)
   on.exit(unlink(tmp_previous))
   expected <- gold_workflowr_lines
@@ -76,7 +76,7 @@ test_that("Can convert previous workflowr file", {
 })
 
 test_that("Does not affect a current workflowr file if standalone = FALSE", {
-  tmp_workflowr <- tempfile("workflowr-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_workflowr <- workflowr:::tempfile("workflowr-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_workflowr, tmp_workflowr)
   on.exit(unlink(tmp_workflowr))
   expected <- gold_workflowr_lines
@@ -88,7 +88,7 @@ test_that("Does not affect a current workflowr file if standalone = FALSE", {
 })
 
 test_that("Does not affect a current standalone workflowr file if standalone = TRUE", {
-  tmp_standalone <- tempfile("standalone-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standalone <- workflowr:::tempfile("standalone-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standalone, tmp_standalone)
   on.exit(unlink(tmp_standalone))
   expected <- gold_standalone_lines
@@ -100,7 +100,7 @@ test_that("Does not affect a current standalone workflowr file if standalone = T
 })
 
 test_that("Can convert current workflowr file to standalone", {
-  tmp_workflowr <- tempfile("workflowr-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_workflowr <- workflowr:::tempfile("workflowr-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_workflowr, tmp_workflowr)
   on.exit(unlink(tmp_workflowr))
   expected <- gold_standalone_lines
@@ -111,7 +111,7 @@ test_that("Can convert current workflowr file to standalone", {
 })
 
 test_that("Can convert standalone workflowr file to non-standalone", {
-  tmp_standalone <- tempfile("standalone-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standalone <- workflowr:::tempfile("standalone-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standalone, tmp_standalone)
   on.exit(unlink(tmp_standalone))
   expected <- gold_workflowr_lines
@@ -122,7 +122,7 @@ test_that("Can convert standalone workflowr file to non-standalone", {
 })
 
 test_that("dry_run does not overwrite file and produces diff", {
-  tmp_standard <- tempfile("standard-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standard <- workflowr:::tempfile("standard-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   mtime_pre <- file.mtime(tmp_standard)
@@ -135,7 +135,7 @@ test_that("dry_run does not overwrite file and produces diff", {
 })
 
 test_that("verbose = FALSE suppresses all output", {
-  tmp_standard <- tempfile("standard-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standard <- workflowr:::tempfile("standard-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   expect_silent(diffs_list <- wflow_convert(tmp_standard, dry_run = TRUE,
@@ -149,7 +149,7 @@ test_that("verbose = FALSE suppresses all output", {
 # Warnings ---------------------------------------------------------------------
 
 test_that("wflow_convert skips missing files and continues processing", {
-  tmp_standard <- tempfile("standard-", tmpdir = normalizePath("/tmp"), fileext = ".Rmd")
+  tmp_standard <- workflowr:::tempfile("standard-", tmpdir = workflowr:::normalizePath("/tmp"), fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   expected <- gold_workflowr_lines

@@ -33,9 +33,9 @@ context("wflow_open")
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-site_dir <- tempfile("test-wflow_open-", tmpdir = normalizePath("/tmp"))
+site_dir <- workflowr:::tempfile("test-wflow_open-", tmpdir = workflowr:::normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
-if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE))
+if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
 # Test wflow_open --------------------------------------------------------------
 
@@ -129,14 +129,14 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   # switches the working directory to the path of the first input file.
   cwd <- getwd()
   on.exit(setwd(cwd))
-  location_exist <- tempfile("test-wflow_open-exist-",
-                             tmpdir = normalizePath("/tmp"))
+  location_exist <- workflowr:::tempfile("test-wflow_open-exist-",
+                             tmpdir = workflowr:::normalizePath("/tmp"))
   dir.create(location_exist)
-  on.exit(unlink(location_exist, recursive = TRUE), add = TRUE)
+  on.exit(unlink(location_exist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile1 <- file.path(location_exist, "exist.Rmd")
-  location_nonexist <- tempfile("test-wflow_open-nonexist-",
-                                tmpdir = normalizePath("/tmp"))
-  on.exit(unlink(location_nonexist, recursive = TRUE), add = TRUE)
+  location_nonexist <- workflowr:::tempfile("test-wflow_open-nonexist-",
+                                tmpdir = workflowr:::normalizePath("/tmp"))
+  on.exit(unlink(location_nonexist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile2 <- file.path(location_nonexist, "nonexist.Rmd")
 
   expect_message(outfile <- wflow_open(c(testfile1, testfile2),

@@ -175,5 +175,21 @@ commonprefix <- function(p1, p2) {
 
 # Override default normalizePath options for working with filepaths on Windows
 normalizePath <- function(path, winslash = "/", mustWork = NA) {
-  base::normalizePath(path = path, winslash = winslash, mustWork = mustWork)
+  p <- base::normalizePath(path = path, winslash = winslash, mustWork = mustWork)
+  # On Windows **only**, NA gets appended to path. Ensure that any NAs are
+  # returned as NA
+  p[is.na(path)] <- NA
+  return(p)
+}
+
+# Convert any instance of \\ in a Windows path to /
+convert_windows_paths <- function(x) {
+  stringr::str_replace_all(x, pattern = "\\\\", replacement = "/")
+}
+
+# Override default tempfile to not use \\ in paths on Windows. Unlike
+# normalizePath, there is no argument to change this default behavior.
+tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
+  tfile <- base::tempfile(pattern = pattern, tmpdir = tmpdir, fileext = fileext)
+  return(convert_windows_paths(tfile))
 }

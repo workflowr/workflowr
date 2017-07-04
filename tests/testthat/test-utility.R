@@ -174,7 +174,7 @@ test_that("relpath_vec works on vector input", {
 
 test_that("relpath_vec works on relative paths to existing files", {
   dir.create("x/y/z", recursive = TRUE)
-  on.exit(unlink("x", recursive = TRUE))
+  on.exit(unlink("x", recursive = TRUE, force = TRUE))
   path = c("x", "x/y/z")
   start = "./x/y"
   expected <- c("..", "z")

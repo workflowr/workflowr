@@ -3,10 +3,10 @@ context("wflow_view")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- tempfile("test-wflow_view-", tmpdir = normalizePath("/tmp"))
+site_dir <- workflowr:::tempfile("test-wflow_view-", tmpdir = workflowr:::normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
-on.exit(unlink(site_dir, recursive = TRUE))
+on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 p <- wflow_paths(project = site_dir)
 
 # Create some fake R Markdown files

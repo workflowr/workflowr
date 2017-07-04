@@ -3,10 +3,10 @@ context("wflow_remotes")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- tempfile("test-wflow_remotes-", tmpdir = normalizePath("/tmp"))
+site_dir <- workflowr:::tempfile("test-wflow_remotes-", tmpdir = workflowr:::normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Delete workflowr project on exit
-on.exit(unlink(site_dir, recursive = TRUE))
+on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
 # Test create_remote_url -------------------------------------------------------
 

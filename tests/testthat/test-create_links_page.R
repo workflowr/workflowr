@@ -3,10 +3,10 @@ context("create_links_page")
 # Setup ------------------------------------------------------------------------
 
 # Set up a temporary project
-site_dir <- tempfile("test-links-", tmpdir = normalizePath("/tmp"))
+site_dir <- workflowr:::tempfile("test-links-", tmpdir = workflowr:::normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
-on.exit(unlink(site_dir, recursive = TRUE))
+on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 # Add analysis files
 p <- wflow_paths(project = site_dir)
 file.copy(Sys.glob("files/test-create_links_page/[abc].Rmd"), p$analysis)

@@ -77,6 +77,8 @@ wflow_publish <- function(
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
+    # Ensure Windows paths use forward slashes
+    files <- convert_windows_paths(files)
     # Change filepaths to relative paths
     files <- relpath_vec(files)
   }
@@ -109,6 +111,8 @@ wflow_publish <- function(
     stop("dry_run must be a one-element logical vector")
 
   if (is.character(project) && length(project) == 1) {
+    # Ensure Windows paths use forward slashes
+    project <- convert_windows_paths(project)
     if (dir.exists(project)) {
       project <- normalizePath(project)
     } else {

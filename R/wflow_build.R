@@ -31,12 +31,12 @@
 #'   allowed (and therefore any path to a file is ignored).
 #'
 #' pc-comment-22: What does files = NULL mean?
-#' 
+#'
 #' @param make logical (default: \code{is.null(files)}). When
 #'   \code{make = TRUE}, use Make-like behavior, i.e. build the files
 #'   that have been updated more recently than their corresponding HTML
 #'   files. This is the default action if no files are specified.
-#' 
+#'
 #' @param update logical (default: FALSE). Build the files that have been
 #'   committed more recently than their corresponding HTML files (and do not
 #'   have any unstaged or staged changes). This ensures that the commit version
@@ -62,7 +62,7 @@
 #' files". I think you mean preview the *file names*, not the
 #' files. It might be more clear if you say, "list the files to be
 #' built, without building them."
-#' 
+#'
 #' @inheritParams wflow_commit
 #'
 #' @return An object of class \code{wflow_build}, which is a list with the
@@ -122,6 +122,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
+    # Ensure Windows paths use forward slashes
+    files <- convert_windows_paths(files)
     # Change filepaths to relative paths
     files <- relpath_vec(files)
   }
@@ -148,6 +150,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
   } else if (!(is.character(log_dir) && length(log_dir) == 1)) {
     stop("log_dir must be NULL or a one element character vector")
   }
+  # Ensure Windows paths use forward slashes
+  log_dir <- convert_windows_paths(log_dir)
   dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
 
   if (!(is.logical(local) && length(local) == 1))
@@ -157,6 +161,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
     stop("dry_run must be a one-element logical vector")
 
   if (is.character(project) && length(project) == 1) {
+    # Ensure Windows paths use forward slashes
+    project <- convert_windows_paths(project)
     if (dir.exists(project)) {
       project <- normalizePath(project)
     } else {

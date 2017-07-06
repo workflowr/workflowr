@@ -75,6 +75,9 @@ wflow_update <- function(dry_run = TRUE,
   if (!dir.exists(project))
     stop("project does not exist. You entered: ", project)
 
+  # Ensure Windows paths use forward slashes
+  project <- convert_windows_paths(project)
+
   if (dry_run) {
     message("Running wflow_update in dry run mode")
   } else {

@@ -184,6 +184,9 @@ normalizePath <- function(path, winslash = "/", mustWork = NA) {
 
 # Convert any instance of \\ in a Windows path to /
 convert_windows_paths <- function(x) {
+  if (is.null(x)) return(NULL)
+  if (is.na(x)) return(NA)
+
   stringr::str_replace_all(x, pattern = "\\\\", replacement = "/")
 }
 

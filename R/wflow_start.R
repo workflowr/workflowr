@@ -19,7 +19,7 @@
 #' @param directory character. The directory for the project, e.g.
 #'   "~/new-project". When \code{existing = FALSE}, the directory will
 #'   be created.
-#' 
+#'
 #' @param name character (default: NULL). Project name, e.g. "My
 #'   Project". When \code{name = NULL}, the project name is
 #'   automatically set to the same as \code{directory}. It is displayed
@@ -27,7 +27,7 @@
 #'
 #' pc-comment-18: But what is "name" set to when
 #'   directory="~/Desktop/myproject"?
-#' 
+#'
 #' @param git logical (default: TRUE). Should Git be used for version
 #'   control? If \code{directory} is a new Git repository and \code{git
 #'   = TRUE}, \code{wflow_start} will initialize the repository and make
@@ -38,12 +38,12 @@
 #'
 #' pc-comment-19: "Make an initial commit" is pretty vague. What is
 #' committed?
-#' 
+#'
 #' pc-comment-20: What happens when git=TRUE and directory is an
 #' existing Git repository? Please clarify. What happens when the
 #' directory exists already, but is not a git project? Which files are
-#' commited/tracked? 
-#' 
+#' commited/tracked?
+#'
 #' @param existing logical (default: FALSE). Indicate if the specified
 #'   \code{directory} already exists. The default prevents injecting the
 #'   workflowr files into an unwanted location. Only set to TRUE if you wish to
@@ -60,13 +60,13 @@
 #' \dontrun{
 #'
 #' wflow_start("path/to/new-project")
-#' 
+#'
 #' # Provide a custom name for the project.
 #' wflow_start("path/to/new-project", name = "My Project")
-#' 
+#'
 #' # Add workflowr files to an existing project.
 #' wflow_start("path/to/current-project", existing = TRUE)
-#' 
+#'
 #' # Add workflowr files to an existing project, but do not automatically
 #' # commit them.
 #' wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
@@ -96,6 +96,9 @@ wflow_start <- function(directory,
   } else if (existing & !dir.exists(directory)) {
     stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
   }
+
+  # Ensure Windows paths use forward slashes
+  directory <- convert_windows_paths(directory)
 
   # A workflowr directory cannot be created within an existing Git repository if
   # git = TRUE & existing = FALSE.

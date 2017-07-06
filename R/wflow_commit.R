@@ -77,7 +77,7 @@
 #'
 #' @export
 wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
-                          force = FALSE, dry_run = FALSE, project = ".") {
+                         force = FALSE, dry_run = FALSE, project = ".") {
 
   if (!is.null(files)) {
     if (!is.character(files)) {
@@ -85,6 +85,8 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
+    # Ensure Windows paths use forward slashes
+    files <- convert_windows_paths(files)
     # Change filepaths to relative paths
     files <- relpath_vec(files)
   }
@@ -108,6 +110,8 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
     stop("dry_run must be a one-element logical vector")
 
   if (is.character(project) && length(project) == 1) {
+    # Ensure Windows paths use forward slashes
+    project <- convert_windows_paths(project)
     if (dir.exists(project)) {
       project <- normalizePath(project)
     } else {

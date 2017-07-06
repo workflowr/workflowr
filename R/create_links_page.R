@@ -39,6 +39,10 @@ create_links_page <- function(output = "results.Rmd",
                            project = ".",
                            exclude_rmd = NULL,
                            datatable = FALSE) {
+
+  # Ensure Windows paths use forward slashes
+  project <- convert_windows_paths(project)
+
   p <- wflow_paths(project = project)
   analysis_dir <- p$analysis
   # Gather Rmd files, only need basename

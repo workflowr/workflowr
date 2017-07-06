@@ -101,6 +101,10 @@ wflow_status <- function(files = NULL, project = ".") {
   if (!dir.exists(project))
     stop("project does not exist.")
 
+  # Ensure Windows paths use forward slashes
+  files <- convert_windows_paths(files)
+  project <- convert_windows_paths(project)
+
   # Obtain list of workflowr paths. Throw error if no Git repository.
   o <- wflow_paths(error_git = TRUE, project = project)
 

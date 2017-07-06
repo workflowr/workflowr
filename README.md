@@ -3,17 +3,14 @@
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
 
-> **pc-comment-2:** Trying to come up with a cool catch-phrase (e.g.,
-> [D3: data-driven documents](https://github.com/d3/d3)).
-
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 
 
-Install the latest release (v0.5.0) by running this command in R or
+Install the latest release (v0.5.1.9000) by running this command in R or
 RStudio:
 
-```R
-devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
+```r
+devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 ```
 
 If you are already writing R code to analyze data, and know the basics
@@ -21,18 +18,8 @@ of Git and GitHub, you can start taking advantage of workflowr
 immediately. In a matter of minutes, you can create a research website
 like [this][demo01].
 
-**NOTE:** workflowr is still in the early stages of development, so
-there will potentially be major changes between versions. Thus make
-sure to [upgrade](#upgrading) if necessary and look over the
-[documentation][workflowr]. The good news is that any site you create
-will not be affected by these changes and will continue to function
-with new versions of the workflowr functions.
-
 If you find any problems, or would like to suggest new features,
 please open an [Issue][issues].
-
-> **pc-comment-1:** It would be nice to have a more interesting
-> demo. I'm working on it!
 
 * [Why use workflowr?](#why-use-workflowr)
 * [Quick start](#quick-start)
@@ -65,13 +52,13 @@ website:
 ## Quick start
 
 workflowr builds on several software tools including
-[git](http://cran.r-project.org), [pandoc](http://pandoc.org) and
-[knitr](yihui.name/knitr), **but you do not need to use any of these
+[Git][git], [pandoc][] and
+[knitr][], **but you do not need to have experience using any of these
 tools to get started with workflowr.** You only need to know how to
-code in [R](http://cran.r-project.org) and be familiar with
-[R Markdown](http://r4ds.had.co.nz/r-markdown.html). A [basic
-understanding of git](https://doi.org/10.1371/journal.pcbi.1004668)
-as well as the [UNIX command line](https://swcarpentry.github.io/shell-novice)
+code in [R][r] and be generally familiar with the
+[R Markdown][rmarkdown] format. A [basic
+understanding of git][git-for-science]
+as well as the [UNIX command line][swc-shell]
 is not essential, but helpful.
 
 Here is a minimal set of steps to get you started with `workflowr`. If
@@ -85,38 +72,24 @@ RStudio features, but RStudio is not required to use workflowr)
 
 3. Install [Git][git] ([instructions][swc-git] from [Software Carpentry][swc])
 
-4. Create an account on [GitHub][gh], or another git-based source code
-site such as [GitLab](http://gitlab.com). (In the instructions below
-we mostly assume Github, but workflowr should also work on other
-similar platforms such as [Gitlab](http://gitlab.com) and
-[Bitbucket](bitbucket.org).)
-
-    > **pc-comment-3:** I think there may be some additional setup
-    > steps to take here, some of which may not be strictly necessary,
-    > but helpful (e.g., SSH keys). Maybe refer to a Getting Started
-    > guide on Github? Also, I think Github has a short guide for
-    > creating a repo which I think could be useful to follow to make
-    > sure that everything is set up correctly before using
-    > workflowr. Perhaps you could ammend this step to something like
-    > this: "Create an account on Github and make sure that you can
-    > clone and push to a git repository."
+4. Create an account on [GitHub][gh].
 
 5. Configure [Git][git] ([instructions][swc-git-config] from
 [Software Carpentry][swc]). Run the following commands in the shell
 command-line, inserting your account information:
 
-   ```bash
-   git config --global user.name "Your Name"
-   git config --global user.email "youremail@domain"
-   ```
+    ```bash
+    git config --global user.name "Your Name"
+    git config --global user.email "youremail@domain"
+    ```
 
 6. Install the latest stable release of [workflowr][] from
 [GitHub][gh] using [devtools][]:
 
-   ```r
-   install.packages("devtools")
-   devtools::install_github("jdblischak/workflowr",build_vignettes = TRUE)
-   ```
+    ```r
+    install.packages("devtools")
+    devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
+    ```
 
 7. Work through the vignette,
 ["Getting started with workflowr"][vig-start], to learn how to set up
@@ -246,7 +219,6 @@ listed below may better suit your needs. Please check them out!
 If you know of other related works I should include, please send a pull request
 to the "dev" branch.
 
-
 ## Credits
 
 workflowr was developed, and is maintained, by John Blischak, a postdoctoral 
@@ -261,7 +233,7 @@ about the software that makes workflowr possible.
 
 ## License
 
-workflowr is available under the [MIT license][].
+workflowr is available under the [MIT license][MIT].
 
 ## Citation
 
@@ -303,6 +275,7 @@ good options are "workflow + R" or "work + flower".
 [exreport]: https://github.com/jacintoArias/exreport
 [gh]: https://github.com
 [git]: https://git-scm.com/
+[git-for-science]: https://doi.org/10.1371/journal.pcbi.1004668
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
 [hadley]: http://hadley.nz/
@@ -317,6 +290,7 @@ good options are "workflow + R" or "work + flower".
 [MIT]: https://opensource.org/licenses/mit-license.php
 [moore]: https://www.moore.org/
 [Pakillo/template]: https://github.com/Pakillo/template
+[pandoc]: http://pandoc.org
 [pkgdown]: http://hadley.github.io/pkgdown/
 [poirot]: https://github.com/ramnathv/poirot
 [prodigenr]: https://github.com/lwjohnst86/prodigenr
@@ -341,6 +315,7 @@ good options are "workflow + R" or "work + flower".
 [swc-git]: https://swcarpentry.github.io/workshop-template/#git
 [swc-git-config]: http://swcarpentry.github.io/git-novice/02-setup/
 [swc-r]: https://swcarpentry.github.io/workshop-template/#r
+[swc-shell]: https://swcarpentry.github.io/shell-novice
 [testthat]: https://github.com/hadley/testthat
 [travis]: https://travis-ci.org/
 [uchicago]: http://www.uchicago.edu/

@@ -117,3 +117,23 @@ test_that("workflowr functions can handle \ on Windows", {
   # wflow_remotes
   expect_silent(wflow_remotes(verbose = FALSE, project = tmp_back))
 })
+
+
+# Test diff utility ------------------------------------------------------------
+
+test_that("workflowr fails gracefully if `diff` utility is not available", {
+
+  if (os != "windows") skip("Only relevant on Windows")
+
+  if (Sys.which("diff") != "") skip("Only relevant if Rtools not installed")
+
+  on.exit(setwd(cwd), add = TRUE)
+  on.exit(unlink(tmp_forw, recursive = TRUE, force = TRUE), add = TRUE)
+
+  wflow_start(tmp_forw)
+
+  expect_error(wflow_update(),
+               "https://cran.r-project.org/bin/windows/Rtools/")
+  expect_error(wflow_convert(rmd_forw),
+               "https://cran.r-project.org/bin/windows/Rtools/")
+})

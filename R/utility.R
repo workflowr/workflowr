@@ -36,6 +36,18 @@ obtain_existing_path <- function(path) {
 # This is a simple wrapper that returns the results as a character vector.
 #
 diff_file <- function(from, to) {
+  # Fail gracefully if `diff` not available on Windows
+  if (.Platform$OS.type == "windows") {
+    if (Sys.which("diff") == "") {
+      stop(call. = FALSE,
+           wrap(
+             "In order to use this workflowr function on Windows, you need to
+             download and install Rtools available at the link below:
+
+             https://cran.r-project.org/bin/windows/Rtools/"
+             ))
+    }
+  }
   ignore <- utils::capture.output(
     diffs <- tools::Rdiff(from = from, to = to, Log = TRUE))
   return(diffs$out)

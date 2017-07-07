@@ -13,10 +13,11 @@ RStudio:
 devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 ```
 
-If you are already writing R code to analyze data, and know the basics
-of Git and GitHub, you can start taking advantage of workflowr
-immediately. In a matter of minutes, you can create a research website
-like [this][demo01].
+If you are already writing R code to analyze data, and know the basics of Git
+and GitHub, you can start taking advantage of workflowr immediately. In a matter
+of minutes, you can create a research website like [this][demo01] (see this
+[analysis of the Divvy bike share system in Chicago][divvy] for a more complete
+example of a workflowr project).
 
 If you find any problems, or would like to suggest new features,
 please open an [Issue][issues].
@@ -273,6 +274,7 @@ good options are "workflow + R" or "work + flower".
 [covr]: https://github.com/jimhester/covr
 [cran-rr]: https://cran.r-project.org/web/views/ReproducibleResearch.html
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
+[divvy]: https://pcarbo.github.io/wflow-divvy/
 [devtools]: https://github.com/hadley/devtools
 [exreport]: https://github.com/jacintoArias/exreport
 [gh]: https://github.com

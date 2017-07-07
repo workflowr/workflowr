@@ -16,8 +16,8 @@ devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
 If you are already writing R code to analyze data, and know the basics
 of Git and GitHub, you can start taking advantage of workflowr
 immediately. In a matter of minutes, you can create a research website
-like [this][demo01]. See also the [Divvy data exploration project][divvy]
-for a more elaborate example of a workflowr project.
+like [this][demo01]. (See also the [Divvy data exploration project][divvy]
+for a more elaborate example of a workflowr project.)
 
 If you find any problems, or would like to suggest new features,
 please open an [Issue][issues].

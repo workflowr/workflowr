@@ -1,4 +1,4 @@
-# workflowr: organized + reproducible + sharable data science in R
+# workflowr: organized + reproducible + shareable data science in R
 
 [![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
 [![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
@@ -138,18 +138,21 @@ This repository contains the workflowr R package. If your goal is to create a
 workflowr project, you do **not** need to fork this repository. Instead, 
 following the [Quick start](#quick-start) instructions above.
 
-> **pc-comment-4:** For those that are not familiar with R packages, I
-> think it would be useful to point out that this repository (mostly)
-> follows the standard R package structure, and point to [here]() and
-> [here](). Then, optionally, you could point out some of the files
-> that are not part of a typical package, and what they are for (e.g.,
-> the files in [inst](inst)).
-
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by 
 [Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the 
 documentation is built with [roxygen2][], the online package documentation is 
 created with [pkgdown][], continuous integration testing is performed by [Travis
 CI][travis], and code coverage is calculated with [covr][] and [Codecov][].
+
+The template files used by `wflow_start()` to populate a new project are located
+in `inst/infrastructure/`. The R Markdown templates used by `wflow_open()` are 
+located in `inst/rmarkdown/templates/`. The repository contains the files 
+`LICENSE` and `LICENSE.md` to both adhere to [R package conventions for defining
+the license][r-exts-licensing] and also to make the license clear in a more 
+convential manner (suggestions for improvement welcome). `document.R` is a 
+convenience script for regenerating the documentation. The remaining directories
+are standard for R packages as described in the manual [Writing R 
+Extensions][r-exts].
 
 If you are interested in contributing to this project, please see these
 [instructions][contributing].
@@ -297,6 +300,8 @@ good options are "workflow + R" or "work + flower".
 [pRojects]: https://github.com/lockedata/pRojects
 [ProjectTemplate]: https://github.com/johnmyleswhite/ProjectTemplate
 [r]: http://cran.r-project.org
+[r-exts]: https://cran.r-project.org/doc/manuals/R-exts.html
+[r-exts-licensing]: https://cran.r-project.org/doc/manuals/R-exts.html#Licensing
 [r-pkg]: http://r-pkgs.had.co.nz/
 [researchcompendium]: https://github.com/benmarwick/researchcompendium
 [rmarkdown]: http://rmarkdown.rstudio.com/

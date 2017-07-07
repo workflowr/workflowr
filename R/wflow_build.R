@@ -27,10 +27,10 @@
 #' \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
 #'
 #' @param files character (default: NULL). Files to build. Supports file
-#'   extensions Rmd, rmd, and md. Only files in the analysis directory are
-#'   allowed (and therefore any path to a file is ignored).
-#'
-#' pc-comment-22: What does files = NULL mean?
+#'   extensions Rmd and rmd. Only files in the analysis directory are allowed
+#'   (and therefore any path to a file is ignored). If \code{files} is
+#'   \code{NULL}, the default behavior is to build all outdated files (see
+#'   argument \code{make} below).
 #'
 #' @param make logical (default: \code{is.null(files)}). When
 #'   \code{make = TRUE}, use Make-like behavior, i.e. build the files
@@ -55,13 +55,8 @@
 #'   This should only be used for debugging purposes. The default is to build
 #'   each file in its own separate fresh R process to ensure each file is
 #'   reproducible in isolation.
-#' @param dry_run logical (default: FALSE). Preview the files to be built, but
-#'   do not actually build them.
-#'
-#' pc-comment-23: This is confusing what you mean by "preview
-#' files". I think you mean preview the *file names*, not the
-#' files. It might be more clear if you say, "list the files to be
-#' built, without building them."
+#' @param dry_run logical (default: FALSE). List the files to be built, without
+#'   building them.
 #'
 #' @inheritParams wflow_commit
 #'

@@ -10,23 +10,15 @@
 #' not need to use RStudio with workflowr, do not delete the Rproj
 #' file because it is required by other functions.
 #'
-#' pc-comment-17: At some point it would be great to have a more
-#' comprehensive description of the files that are created and what
-#' they are for, starting with the description you give in the
-#' "Getting Started" vignette. In "seealso" or "examples" you could
-#' point to the vignettes.
-#'
 #' @param directory character. The directory for the project, e.g.
 #'   "~/new-project". When \code{existing = FALSE}, the directory will
 #'   be created.
 #'
-#' @param name character (default: NULL). Project name, e.g. "My
-#'   Project". When \code{name = NULL}, the project name is
-#'   automatically set to the same as \code{directory}. It is displayed
-#'   on the site's navigation bar and the README.md.
-#'
-#' pc-comment-18: But what is "name" set to when
-#'   directory="~/Desktop/myproject"?
+#' @param name character (default: NULL). Project name, e.g. "My Project". When
+#'   \code{name = NULL}, the project name is automatically set based on the
+#'   argument \code{directory}. For example, if \code{directory =
+#'   "~/Desktop/myproject"}, then \code{name} is set to \code{"myproject"}.
+#'   \code{name} is displayed on the site's navigation bar and the README.md.
 #'
 #' @param git logical (default: TRUE). Should Git be used for version
 #'   control? If \code{directory} is a new Git repository and \code{git
@@ -35,14 +27,6 @@
 #'   already a Git repository, \code{wflow_start} will make an
 #'   additional commit. In both cases, only files needed for the
 #'   workflowr project will be included in the commit.
-#'
-#' pc-comment-19: "Make an initial commit" is pretty vague. What is
-#' committed?
-#'
-#' pc-comment-20: What happens when git=TRUE and directory is an
-#' existing Git repository? Please clarify. What happens when the
-#' directory exists already, but is not a git project? Which files are
-#' commited/tracked?
 #'
 #' @param existing logical (default: FALSE). Indicate if the specified
 #'   \code{directory} already exists. The default prevents injecting the
@@ -55,6 +39,8 @@
 #'   \code{directory}.
 #'
 #' @return Invisibly returns absolute path to workflowr project.
+#'
+#' @seealso vignette("wflow-01-getting-started")
 #'
 #' @examples
 #' \dontrun{

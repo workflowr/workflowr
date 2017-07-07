@@ -10,13 +10,15 @@ wflow_build(files = NULL, make = is.null(files), update = FALSE,
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Supports file
-extensions Rmd, rmd, and md. Only files in the analysis directory are
-allowed (and therefore any path to a file is ignored).}
+extensions Rmd and rmd. Only files in the analysis directory are allowed
+(and therefore any path to a file is ignored). If \code{files} is
+\code{NULL}, the default behavior is to build all outdated files (see
+argument \code{make} below).}
 
-\item{make}{logical (default: \code{is.null(files)}). Use Make-like behavior,
-i.e. build the files that have been updated more recently than their
-corresponding HTML files. This is the default action if no files are
-specified.}
+\item{make}{logical (default: \code{is.null(files)}). When
+\code{make = TRUE}, use Make-like behavior, i.e. build the files
+that have been updated more recently than their corresponding HTML
+files. This is the default action if no files are specified.}
 
 \item{update}{logical (default: FALSE). Build the files that have been
 committed more recently than their corresponding HTML files (and do not
@@ -40,8 +42,8 @@ This should only be used for debugging purposes. The default is to build
 each file in its own separate fresh R process to ensure each file is
 reproducible in isolation.}
 
-\item{dry_run}{logical (default: FALSE). Preview the files to be built, but
-do not actually build them.}
+\item{dry_run}{logical (default: FALSE). List the files to be built, without
+building them.}
 
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,

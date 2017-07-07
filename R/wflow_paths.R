@@ -68,7 +68,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
       o$git <- NA
     }
   } else {
-    o$git <- normalizePath(r@path) # remove trailing slash
+    o$git <- remove_trailing_slash(r@path)
   }
 
   # Make paths relative to working directory

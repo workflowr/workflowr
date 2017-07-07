@@ -71,9 +71,7 @@ to_html <- function(files, outdir = NULL) {
   html <- stringr::str_replace(files, "[Rr]md$", "html")
   if (!is.null(outdir)) {
     # Remove trailing slash if present
-    if (stringr::str_sub(outdir, nchar(outdir), nchar(outdir)) == "/") {
-      outdir <- stringr::str_sub(outdir, 1, nchar(outdir) - 1)
-    }
+    outdir <- remove_trailing_slash(outdir)
     # Only prepend outdir if it's not "." for current working directory
     if (outdir == ".") {
       html <- basename(html)
@@ -144,8 +142,15 @@ relpath <- function(path, start = NULL) {
   if (is.null(start))
     start <- getwd()
 
-  start_list <- unlist(stringr::str_split(start, sep))[-1]
-  path_list <- unlist(stringr::str_split(path, sep))[-1]
+  if (.Platform$OS.type == "windows") {
+    start <- remove_trailing_slash(start)
+    start_list <- unlist(stringr::str_split(start, sep))
+    path <- remove_trailing_slash(path)
+    path_list <- unlist(stringr::str_split(path, sep))
+  } else {
+    start_list <- unlist(stringr::str_split(start, sep))[-1]
+    path_list <- unlist(stringr::str_split(path, sep))[-1]
+  }
   # Work out how much of the filepath is shared by start and path.
   i <- length(commonprefix(start_list, path_list))
 
@@ -192,6 +197,19 @@ normalizePath <- function(path, winslash = "/", mustWork = NA) {
   # returned as NA
   p[is.na(path)] <- NA
   return(p)
+}
+
+# On Windows **only**, normalizePath doesn't strip trailing slash, so need a
+# dedicated function.
+remove_trailing_slash <- function(x) {
+  stopifnot(is.character(x))
+  for (i in seq_along(x)) {
+    len <- nchar(x[i])
+    if (stringr::str_sub(x[i], len, len) == "/") {
+      x[i] <- stringr::str_sub(x[i], 1, len - 1)
+    }
+  }
+  return(x)
 }
 
 # Convert any instance of \\ in a Windows path to /

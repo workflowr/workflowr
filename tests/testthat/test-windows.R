@@ -132,8 +132,34 @@ test_that("workflowr fails gracefully if `diff` utility is not available", {
 
   wflow_start(tmp_forw)
 
-  expect_error(wflow_update(),
+  expect_error(wflow_update(log_open = FALSE),
                "https://cran.r-project.org/bin/windows/Rtools/")
   expect_error(wflow_convert(rmd_forw),
                "https://cran.r-project.org/bin/windows/Rtools/")
+})
+
+# Test relpath -----------------------------------------------------------------
+
+test_that("relpath works on Windows paths with trailing slashes", {
+  path <- "C:/Users/home/myproject/analysis/"
+  start <- "C:/Users/home/myproject/"
+  expected <- "analysis"
+  actual <- workflowr:::relpath(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relpath works on Windows paths without trailing slashes", {
+  path <- "C:/Users/home/myproject/analysis"
+  start <- "C:/Users/home/myproject"
+  expected <- "analysis"
+  actual <- workflowr:::relpath(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relpath works on Windows paths with mixmatched trailing slashes", {
+  path <- "C:/Users/home/myproject/analysis"
+  start <- "C:/Users/home/myproject/"
+  expected <- "analysis"
+  actual <- workflowr:::relpath(path, start)
+  expect_identical(actual, expected)
 })

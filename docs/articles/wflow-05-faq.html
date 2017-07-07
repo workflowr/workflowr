@@ -64,10 +64,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Frequenty asked questions</h1>
-            <h3 class="subtitle">workflowr version 0.5.1</h3>
+            <h3 class="subtitle">workflowr version 0.6.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-06-30</h4>
+            <h4 class="date">2017-07-06</h4>
           </div>
 
     
@@ -89,6 +89,11 @@
 <a href="#can-i-change-x-on-my-website" class="anchor"></a>Can I change “X” on my website?</h2>
 <p>Almost certainly yes, but some things are easier to customize than others. The vignette <a href="wflow-02-customization.html">Customize your research website</a> provides some ideas that are simple to implement. Check out the documentation for <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> and <a href="http://getbootstrap.com/">Twitter Bootstrap</a> for inspiration.</p>
 </div>
+<div id="why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="section level2">
+<h2 class="hasAnchor">
+<a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="anchor"></a>Why am I not getting the same result with <code><a href="../reference/wflow_build.html">wflow_build()</a></code> as with the RStudio Knit HTML button?</h2>
+<p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> is designed to have the same functionality as the Knit HTML button in RStudio, namely that it knits the HTML file in a separate R session to avoid any clashes with variables or pacakges in use in the current R session. However, the technical implementations are not identical, and thus informally we have noticed the behavior of the two options occassionally differs. At the moment, we believe that if the file results in an error when using <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, the file needs to be fixed, regardless of whether the file is able to be built with the RStudio button. If you have a use case that you think should be supported by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a> and provide a small reproducible example.</p>
+</div>
 </div>
   </div>
 
@@ -99,6 +104,7 @@
 <li><a href="#can-i-make-my-workflowr-website-private">Can I make my workflowr website private?</a></li>
       <li><a href="#can-i-include-shiny-apps-in-my-website">Can I include Shiny apps in my website?</a></li>
       <li><a href="#can-i-change-x-on-my-website">Can I change “X” on my website?</a></li>
+      <li><a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button">Why am I not getting the same result with <code><a href="../reference/wflow_build.html">wflow_build()</a></code> as with the RStudio Knit HTML button?</a></li>
       </ul>
 </div>
       </div>

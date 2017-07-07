@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Start a new workflowr project. — wflow_start • workflowr</title>
+<title>Remove files — wflow_remove • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -85,96 +85,75 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Start a new workflowr project.</h1>
+    <h1>Remove files</h1>
     </div>
 
     
-    <p><code>wflow_start</code> creates a minimal workflowr project. The default
-behaviour is to add these files to a new directory, but it is also
-possible to populate an already existing project. By default, it
-also changes the working directory to the workflowr project.</p>
+    <p><code>wflow_remove</code> removes files. If the file to be removed is an R Markdown
+file, the corresponding HTML and other related files are also removed. If the
+workflowr project uses Git, <code>wflow_remove</code> commits the changes.</p>
     
 
-    <pre class="usage"><span class='fu'>wflow_start</span>(<span class='no'>directory</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_remove</span>(<span class='no'>files</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>directory</th>
-      <td><p>character. The directory for the project, e.g.
-"~/new-project". When <code>existing = FALSE</code>, the directory will
-be created.</p></td>
+      <th>files</th>
+      <td><p>character. Files to be removed.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>character (default: NULL). Project name, e.g. "My Project". When
-<code>name = NULL</code>, the project name is automatically set based on the
-argument <code>directory</code>. For example, if <code>directory =
-"~/Desktop/myproject"</code>, then <code>name</code> is set to <code>"myproject"</code>.
-<code>name</code> is displayed on the site's navigation bar and the README.md.</p></td>
+      <th>message</th>
+      <td><p>character (default: NULL). A commit message.</p></td>
     </tr>
     <tr>
       <th>git</th>
-      <td><p>logical (default: TRUE). Should Git be used for version
-control? If <code>directory</code> is a new Git repository and <code>git
-= TRUE</code>, <code>wflow_start</code> will initialize the repository and make
-an initial commit. If <code>git = TRUE</code> and <code>directory</code> is
-already a Git repository, <code>wflow_start</code> will make an
-additional commit. In both cases, only files needed for the
-workflowr project will be included in the commit.</p></td>
+      <td><p>logical (default: TRUE). Commit the changes (only applicable if
+Git repository is present).</p></td>
     </tr>
     <tr>
-      <th>existing</th>
-      <td><p>logical (default: FALSE). Indicate if the specified
-<code>directory</code> already exists. The default prevents injecting the
-workflowr files into an unwanted location. Only set to TRUE if you wish to
-add the workflowr files to an existing project.</p></td>
+      <th>dry_run</th>
+      <td><p>logical (default: FALSE). Preview the files to be removed but
+do not actually remove them.</p></td>
     </tr>
     <tr>
-      <th>overwrite</th>
-      <td><p>logical (default: FALSE). Control whether to overwrite
-existing files. Only relevant if <code>existing = TRUE</code>. Passed to
-<code>file.copy</code>.</p></td>
-    </tr>
-    <tr>
-      <th>change_wd</th>
-      <td><p>logical (default: TRUE). Change the working directory to the
-<code>directory</code>.</p></td>
+      <th>project</th>
+      <td><p>character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns absolute path to workflowr project.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <p>An object of class <code>wflow_remove</code>, which is a list with the
+  following elements:</p>
+<p></p><ul>
+<li><p><b>files</b>: The relative path(s) to the removed file(s).</p></li>
+<li><p><b>message</b>: The message describing the commit (if applicable).</p></li>
+<li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
+<li><p><b>commit</b>: The <code><a href='http://www.rdocumentation.org/packages/git2r/topics/git_commit-class'>git_commit-class</a></code> object
+  returned by git2r (only included if <code>dry_run == FALSE</code>).</p></li>
+<li><p><b>files_git</b>: The relative path(s) to the file(s) removed from
+  the Git repository.</p></li>
+</ul>
 
-    <p>This is the initial function that organizes the infrastructure to
-create a research website for your project. Note that while you do
-not need to use RStudio with workflowr, do not delete the Rproj
-file because it is required by other functions.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>vignette("wflow-01-getting-started")</p>
+    <p><code><a href='wflow_commit.html'>wflow_commit</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
 
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>)
-
-  <span class='co'># Provide a custom name for the project.</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"My Project"</span>)
-
-  <span class='co'># Add workflowr files to an existing project.</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-  <span class='co'># Add workflowr files to an existing project, but do not automatically</span>
-  <span class='co'># commit them.</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Remove a single file</span>
+  <span class='fu'>wflow_remove</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Remove old analysis."</span>)
+  <span class='co'># Remove multiple files</span>
+  <span class='fu'>wflow_remove</span>(<span class='fu'>c</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"output/small-data.txt"</span>),
+               <span class='st'>"Remove old analysis and its associated data."</span>)
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -183,8 +162,6 @@ file because it is required by other functions.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

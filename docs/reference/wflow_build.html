@@ -105,15 +105,17 @@ the changes. When you are ready to commit the files, use
     <tr>
       <th>files</th>
       <td><p>character (default: NULL). Files to build. Supports file
-extensions Rmd, rmd, and md. Only files in the analysis directory are
-allowed (and therefore any path to a file is ignored).</p></td>
+extensions Rmd and rmd. Only files in the analysis directory are allowed
+(and therefore any path to a file is ignored). If <code>files</code> is
+<code>NULL</code>, the default behavior is to build all outdated files (see
+argument <code>make</code> below).</p></td>
     </tr>
     <tr>
       <th>make</th>
-      <td><p>logical (default: <code>is.null(files)</code>). Use Make-like behavior,
-i.e. build the files that have been updated more recently than their
-corresponding HTML files. This is the default action if no files are
-specified.</p></td>
+      <td><p>logical (default: <code>is.null(files)</code>). When
+<code>make = TRUE</code>, use Make-like behavior, i.e. build the files
+that have been updated more recently than their corresponding HTML
+files. This is the default action if no files are specified.</p></td>
     </tr>
     <tr>
       <th>update</th>
@@ -149,8 +151,8 @@ reproducible in isolation.</p></td>
     </tr>
     <tr>
       <th>dry_run</th>
-      <td><p>logical (default: FALSE). Preview the files to be built, but
-do not actually build them.</p></td>
+      <td><p>logical (default: FALSE). List the files to be built, without
+building them.</p></td>
     </tr>
     <tr>
       <th>project</th>

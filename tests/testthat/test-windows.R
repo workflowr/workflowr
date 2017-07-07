@@ -76,7 +76,7 @@ test_that("workflowr functions can handle / on Windows", {
 
 # Test backslash -----------------------------------------------------------
 
-test_that("workflowr functions can handle \ on Windows", {
+test_that("workflowr functions can handle \\ on Windows", {
 
   if (os != "windows") skip("Only relevant on Windows")
 

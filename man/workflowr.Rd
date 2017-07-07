@@ -12,7 +12,9 @@ and Git.
 \section{Vignettes}{
 
 
-  Run \code{browseVignettes("workflowr")} to see the package vignettes.
+  Run \code{browseVignettes("workflowr")} to read the package vignettes
+  locally. Alternatively you can read the documentation online at
+  \url{https://jdblischak.github.io/workflowr}.
 }
 
 \section{Main workflowr functions}{

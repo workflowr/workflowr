@@ -6,7 +6,7 @@
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 
 
-Install the latest release (v0.5.1.9000) by running this command in R or
+Install the latest release (v0.6.0) by running this command in R or
 RStudio:
 
 ```r
@@ -61,9 +61,8 @@ understanding of git][git-for-science]
 as well as the [UNIX command line][swc-shell]
 is not essential, but helpful.
 
-Here is a minimal set of steps to get you started with `workflowr`. If
-you are already using R and git, you may be able to skip some of these
-steps.
+Here is a minimal set of steps to get you started with workflowr. If you are
+already using R and git, you may be able to skip some of these steps.
 
 1. Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc]).
 
@@ -243,7 +242,7 @@ workflowr is available under the [MIT license][MIT].
 To cite workflowr in publications use:
 
   John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for
-  creating a research website. R package version 0.5.1.9000. https://github.com/jdblischak/workflowr
+  creating a research website. R package version 0.6.0. https://github.com/jdblischak/workflowr
 
 A BibTeX entry for LaTeX users is
 
@@ -251,7 +250,7 @@ A BibTeX entry for LaTeX users is
   @Manual{,
     title = {workflowr: A workflow template for creating a research website},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
-    note = {R package version 0.5.1.9000},
+    note = {R package version 0.6.0},
     year = {2017},
     url = {https://github.com/jdblischak/workflowr},
   }

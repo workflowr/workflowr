@@ -1,3 +1,25 @@
+# workflowr 0.6.0
+
+## New function wflow_remove
+
+* `wflow_remove()` removes R Markdown files and all their associated files (e.g.
+HTML and figures)
+* If the files to be removed had been committed to the Git repository, the files
+are also removed from the Git repository (analogous to `git rm`)
+* `wflow_remove()` also works on non-Rmd files
+
+## Improved support for Windows
+
+* workflowr functions can now handle backslashes in filepaths
+* `wflow_update()` and `wflow_convert()` fail gracefully if the `diff` utility is not available and inform the user to install [Rtools][]
+
+## Miscellaneous
+
+* Added continuous integration testing with [Travis CI][travis] for macOS
+* Updated documentation in README, "Getting started" vignette, and FAQ
+
+[Rtools]: https://cran.r-project.org/bin/windows/Rtools/
+
 # workflowr 0.5.1
 
 This minor release fixes a bug in how filepaths are resolved so that workflowr

@@ -141,6 +141,9 @@ test_that("workflowr fails gracefully if `diff` utility is not available", {
 # Test relpath -----------------------------------------------------------------
 
 test_that("relpath works on Windows paths with trailing slashes", {
+
+  if (os != "windows") skip("Only relevant on Windows")
+
   path <- "C:/Users/home/myproject/analysis/"
   start <- "C:/Users/home/myproject/"
   expected <- "analysis"
@@ -149,6 +152,9 @@ test_that("relpath works on Windows paths with trailing slashes", {
 })
 
 test_that("relpath works on Windows paths without trailing slashes", {
+
+  if (os != "windows") skip("Only relevant on Windows")
+
   path <- "C:/Users/home/myproject/analysis"
   start <- "C:/Users/home/myproject"
   expected <- "analysis"
@@ -157,6 +163,9 @@ test_that("relpath works on Windows paths without trailing slashes", {
 })
 
 test_that("relpath works on Windows paths with mixmatched trailing slashes", {
+
+  if (os != "windows") skip("Only relevant on Windows")
+
   path <- "C:/Users/home/myproject/analysis"
   start <- "C:/Users/home/myproject/"
   expected <- "analysis"

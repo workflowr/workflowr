@@ -159,7 +159,7 @@ If you are interested in contributing to this project, please see these
 
 ## Background and related work
 
-There is lots of interest and development around reproducble research with R. 
+There is lots of interest and development around reproducible research with R. 
 Projects like workflowr are possible due to two key developments. First, the R 
 packages [knitr][] and [rmarkdown][] have made it easy for any R programmer to 
 generate reports that combine text, code, output, and figures. Second, the 

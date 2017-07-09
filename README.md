@@ -149,7 +149,7 @@ in `inst/infrastructure/`. The R Markdown templates used by `wflow_open()` are
 located in `inst/rmarkdown/templates/`. The repository contains the files 
 `LICENSE` and `LICENSE.md` to both adhere to [R package conventions for defining
 the license][r-exts-licensing] and also to make the license clear in a more 
-convential manner (suggestions for improvement welcome). `document.R` is a 
+conventional manner (suggestions for improvement welcome). `document.R` is a 
 convenience script for regenerating the documentation. The remaining directories
 are standard for R packages as described in the manual [Writing R 
 Extensions][r-exts].

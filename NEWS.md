@@ -1,3 +1,5 @@
+# workflowr 0.6.0.9000
+
 # workflowr 0.6.0
 
 ## New function wflow_remove

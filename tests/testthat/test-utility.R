@@ -147,11 +147,19 @@ test_that("relpath returns files in upstream directories", {
   expect_identical(actual, expected)
 })
 
-test_that("relpath thows error for tilde", {
+test_that("relpath thows error for relative path with tilde", {
   expect_error(workflowr:::relpath("~/path", "/path"),
-               "No tilde allowed in path or start")
+               "arguments path and start cannot begin with a tilde")
   expect_error(workflowr:::relpath("/path", "~/path"),
-               "No tilde allowed in path or start")
+               "arguments path and start cannot begin with a tilde")
+})
+
+test_that("relpath can handle a tilde in an absolute path", {
+  path = "/test/location/project/sub1/file~"
+  start = "/test/location/project/sub2"
+  expected <- "../sub1/file~"
+  actual <- workflowr:::relpath(path, start)
+  expect_identical(actual, expected)
 })
 
 test_that("relpath returns NULL for NULL", {

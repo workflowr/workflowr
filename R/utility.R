@@ -132,8 +132,8 @@ relpath <- function(path, start = NULL) {
     stop("path must be a character vector")
   if (!(is.null(start) || (is.character(start) && length(start) == 1)))
     stop("start must be NULL or a 1-element character vector")
-  if (any(stringr::str_detect(c(path, start), "~")))
-    stop("No tilde allowed in path or start")
+  if (any(stringr::str_sub(c(path, start), 1, 1) == "~"))
+    stop("arguments path and start cannot begin with a tilde")
 
   curdir <- "."
   sep <- .Platform$file.sep

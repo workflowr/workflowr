@@ -1,5 +1,9 @@
 # workflowr 0.6.0.9000
 
+## Miscellaneous
+
+* Bug fix so workflowr can process Emacs backup files that contain a tilde (#47)
+
 # workflowr 0.6.0
 
 ## New function wflow_remove

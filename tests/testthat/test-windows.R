@@ -47,7 +47,8 @@ test_that("workflowr functions can handle / on Windows", {
   return_open <- wflow_open(rmd_forw, change_wd = FALSE, open_file = FALSE)
   expect_identical(return_open, rmd_forw)
   # wflow_build
-  utils::capture.output(return_build <- wflow_build(rmd_forw, log_dir = log_forw))
+  utils::capture.output(return_build <- wflow_build(rmd_forw, view = FALSE,
+                                                    log_dir = log_forw))
   expect_identical(return_build$files, rmd_forw)
   # wflow_commit
   return_commit <- wflow_commit(rmd_forw, dry_run = TRUE)
@@ -91,7 +92,8 @@ test_that("workflowr functions can handle \\ on Windows", {
   return_open <- wflow_open(rmd_back, change_wd = FALSE, open_file = FALSE)
   expect_identical(return_open, rmd_forw)
   # wflow_build
-  utils::capture.output(return_build <- wflow_build(rmd_back, log_dir = log_back))
+  utils::capture.output(return_build <- wflow_build(rmd_back, view = FALSE,
+                                                    log_dir = log_back))
   expect_identical(return_build$files, rmd_forw)
   # wflow_commit
   return_commit <- wflow_commit(rmd_back, dry_run = TRUE)

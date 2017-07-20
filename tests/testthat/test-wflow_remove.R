@@ -37,7 +37,7 @@ rmd_unpublished <- file.path(p$analysis, "unpublished.Rmd")
 file.copy(from = rmd_published, to = rmd_unpublished)
 data_unpublished <- file.path("data", "unpublished.txt")
 file.create(data_unpublished)
-suppressMessages(x <- wflow_build(rmd_unpublished))
+suppressMessages(x <- wflow_build(rmd_unpublished, view = FALSE))
 cache_unpublished <- file.path(p$analysis,
                                paste0(tools::file_path_sans_ext(
                                  basename(rmd_unpublished)), "_cache"))

@@ -31,21 +31,22 @@
 #'   (and therefore any path to a file is ignored). If \code{files} is
 #'   \code{NULL}, the default behavior is to build all outdated files (see
 #'   argument \code{make} below).
-#'
-#' @param make logical (default: \code{is.null(files)}). When
-#'   \code{make = TRUE}, use Make-like behavior, i.e. build the files
-#'   that have been updated more recently than their corresponding HTML
-#'   files. This is the default action if no files are specified.
-#'
+#' @param make logical (default: \code{is.null(files)}). When \code{make =
+#'   TRUE}, use Make-like behavior, i.e. build the files that have been updated
+#'   more recently than their corresponding HTML files. This is the default
+#'   action if no files are specified.
 #' @param update logical (default: FALSE). Build the files that have been
 #'   committed more recently than their corresponding HTML files (and do not
 #'   have any unstaged or staged changes). This ensures that the commit version
 #'   ID inserted into the HTML corresponds to the exact version of the source
 #'   file that was used to produce it.
-#'
 #' @param republish logical (default: FALSE). Build all published R Markdown
 #'   files. Useful for site-wide changes like updating the theme, navigation
 #'   bar, or any other setting in \code{_site.yml}.
+#' @param view logical (default: \code{\link{interactive}}). View the website
+#'   after building files. If only one file is built, it is opened. If more than
+#'   one file is built, the main index page is opened. Not applicable if no
+#'   files are built or if \code{dry_run = TRUE}.
 #' @param seed numeric (default: 12345). The seed to set before building each
 #'   file. Passed to \code{\link{set.seed}}.
 #' @param log_dir character (default: NULL). The directory to save log files
@@ -72,6 +73,8 @@
 #'    \item \bold{update}: The input argument \code{update}
 #'
 #'    \item \bold{republish}: The input argument \code{republish}
+#'
+#'    \item \bold{view}: The input argument \code{view}
 #'
 #'    \item \bold{seed}: The input argument \code{seed}
 #'
@@ -105,9 +108,9 @@
 #' @import rmarkdown
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
-                         update = FALSE, republish = FALSE,
-                         seed = 12345, log_dir = NULL,
-                         local = FALSE, dry_run = FALSE, project = ".") {
+                        update = FALSE, republish = FALSE, view = interactive(),
+                        seed = 12345, log_dir = NULL,
+                        local = FALSE, dry_run = FALSE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
@@ -136,6 +139,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!(is.logical(republish) && length(republish) == 1))
     stop("republish must be a one-element logical vector")
+
+  if (!(is.logical(view) && length(view) == 1))
+    stop("view must be a one-element logical vector")
 
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
@@ -221,10 +227,27 @@ wflow_build <- function(files = NULL, make = is.null(files),
     }
   }
 
+  # View files -----------------------------------------------------------------
+
+  # When 0 files are built, wflow_build() will do nothing.
+  #
+  # When 1 file is built, wflow_build() will open that file.
+  #
+  # When 1+ files are built, wflow_build() will open index.html.
+  if (!dry_run && view) {
+    n_files_to_build <- length(files_to_build)
+    if (n_files_to_build == 1) {
+      wflow_view(files_to_build, project = project)
+    } else if (n_files_to_build > 1) {
+      index <- file.path(p$analysis, "index.Rmd")
+      wflow_view(index, project = project)
+    }
+  }
+
   # Prepare output -------------------------------------------------------------
 
   o <- list(files = files, make = make,
-            update = update, republish = republish,
+            update = update, republish = republish, view = view,
             seed = seed, log_dir = log_dir,
             local = local, dry_run = dry_run,
             built = files_to_build,

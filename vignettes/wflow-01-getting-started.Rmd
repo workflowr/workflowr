@@ -169,8 +169,13 @@ files. This is what we will do next.
 To build the website, run the function `wflow_build()` in the R
 console:
 
-```{r wflow-build}
+```{r wflow-build, eval=FALSE}
 wflow_build()
+```
+
+```{r wflow-build-hidden, echo=FALSE}
+# Don't want to actually open the website when building the vignette
+wflow_build(view = FALSE)
 ```
 
 This command builds all the R Markdown files in `analysis/` and saves
@@ -179,29 +184,29 @@ running every file so that any function that generates random data
 (e.g. permutations) is reproducible. Furthermore, each file is built
 in its own external R session to avoid any potential conflicts between
 analyses (e.g. accidentally sharing a variable with the same name
-across files).
+across files). Lastly, it opens the website in the browser for viewing.
 
 The default action of `wflow_build()` is to behave similar to a
 [Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE`
 is the default), i.e. it only builds R Markdown files that have been
 modified more recently than their corresponding HTML files. Thus if
-you run it again, no files are built.
+you run it again, no files are built (and no files are opened in the browser).
 
 ```{r wflow-build-no-action}
 wflow_build()
 ```
 
-To view the site, run `wflow_view()`, which by default opens the file
-`docs/index.html` in your browser:
+To view the site without first building any files, run `wflow_view()`, which by
+default opens the file `docs/index.html` in your browser:
 
 ```{r wflow-view, eval=FALSE}
 wflow_view()
 ```
 
-This is how you can preview any changes you make right on your local machine. Go
-ahead and edit the files `index.Rmd`, `about.Rmd`, and `license.Rmd` to describe
-your project. Run `wflow_build()` to re-build the HTML files and `wflow_view()`
-to preview the changes (alternatively refresh the page in your browser).
+This is how you can view your site right on your local machine. Go ahead and
+edit the files `index.Rmd`, `about.Rmd`, and `license.Rmd` to describe your
+project. Then run `wflow_build()` to re-build the HTML files and view them in
+your browser.
 
 ```{r edit-files, include=FALSE}
 for (f in file.path("analysis", c("index.Rmd", "about.Rmd", "license.Rmd"))) {
@@ -324,9 +329,8 @@ Now you are ready to start writing! At the top of the file, edit the author,
 title, and date. Where it says "Add your analysis here", add some code chunks to
 experiment. If you are using RStudio, press the Knit button to build the file
 and see a preview in the Viewer pane. Alternatively from the R console, you can
-run `wflow_build()` again and `wflow_view("first-analysis.Rmd")` (these
-functions can be run from the base directory of your project or any
-subdirectory).
+run `wflow_build()` again (this function can be run from the base directory of
+your project or any subdirectory).
 
 Check out your new file `first-analysis.html`. Near the top you will see a line
 that says "Code version:" followed by an alphanumeric character string. This
@@ -392,7 +396,7 @@ This is the general workflow:
 develop the code I recommend executing the code in the R console via Ctrl-Enter
 to send one line or Ctrl-Alt-C to execute the entire code chunk)
 
-1. Run `wflow_build()` and `wflow_view()` to view the results as they will
+1. Run `wflow_build()` to view the results as they will
 appear on the website (alternatively press the Knit button in RStudio)
 
 1. Go back to step 2 until you are satisfied with the result

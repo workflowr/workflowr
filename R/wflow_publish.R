@@ -7,6 +7,8 @@
 #' file is created by the latest version of the R Markdown file, which is
 #' critical for reproducibility.
 #'
+#' @param view logical (default: FALSE). View the website after publishing
+#'   files. See \code{\link{wflow_build}} for more details.
 #' @inheritParams wflow_commit
 #' @inheritParams wflow_build
 #'
@@ -59,6 +61,7 @@ wflow_publish <- function(
   # args to wflow_build
   update = FALSE,
   republish = FALSE,
+  view = FALSE,
   seed = 12345,
   # general
   dry_run = FALSE,
@@ -103,6 +106,9 @@ wflow_publish <- function(
 
   if (!(is.logical(republish) && length(republish) == 1))
     stop("republish must be a one-element logical vector")
+
+  if (!(is.logical(view) && length(view) == 1))
+    stop("view must be a one-element logical vector")
 
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
@@ -195,8 +201,9 @@ wflow_publish <- function(
     file.copy(from = file.path(s1$docs, "."), to = docs_backup,
               recursive = TRUE, copy.date = TRUE)
     step2 <- wflow_build(files = files_to_build, make = FALSE,
-                          update = update, republish = republish, seed = seed,
-                          local = FALSE, dry_run = dry_run, project = project)
+                         update = update, republish = republish,
+                         view = view, seed = seed,
+                         local = FALSE, dry_run = dry_run, project = project)
     # If something fails in subsequent steps, delete docs/ and restore backup
     on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
     on.exit(dir.create(s1$docs), add = TRUE)

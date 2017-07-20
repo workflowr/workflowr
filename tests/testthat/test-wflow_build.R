@@ -22,7 +22,7 @@ test_that("wflow_build builds the specified files", {
   expect_identical(actual$built, rmd[1])
   expect_false(file.exists(html[1]))
   # Build file 1
-  expect_message(actual <- wflow_build(rmd[1], dry_run = FALSE,
+  expect_message(actual <- wflow_build(rmd[1], view = FALSE, dry_run = FALSE,
                                        project = site_dir),
                  rmd[1])
   expect_identical(actual$built, rmd[1])
@@ -33,7 +33,7 @@ test_that("wflow_build builds the specified files", {
   expect_identical(actual$built, rmd[2:3])
   expect_false(any(file.exists(html[2:3])))
   # Build files 2 & 3
-  expect_message(actual <- wflow_build(rmd[2:3], dry_run = FALSE,
+  expect_message(actual <- wflow_build(rmd[2:3], view = FALSE, dry_run = FALSE,
                                        project = site_dir),
                  rmd[2])
   expect_identical(actual$built, rmd[2:3])
@@ -49,18 +49,20 @@ test_that("wflow_build can run in 'make' mode", {
   expect_silent(actual <- wflow_build(dry_run = TRUE, project = site_dir))
   expect_identical(actual$built, rmd)
   expect_true(actual$make)
-  expect_message(actual <- wflow_build(project = site_dir), rmd[1])
+  expect_message(actual <- wflow_build(view = FALSE, project = site_dir),
+                 rmd[1])
   expect_identical(actual$built, rmd)
 
   # No file should be built now.
-  expect_silent(actual <- wflow_build(project = site_dir))
+  expect_silent(actual <- wflow_build(view = FALSE, project = site_dir))
   expect_identical(actual$built, character(0))
 
   # Reset modification of file 1 only. It is important to wait a couple
   # seconds so that the modification times are different.
   Sys.sleep(2)
   system2("touch", args = rmd[1])
-  expect_message(actual <- wflow_build(project = site_dir), rmd[1])
+  expect_message(actual <- wflow_build(view = FALSE, project = site_dir),
+                 rmd[1])
   expect_identical(actual$built, rmd[1])
 })
 
@@ -80,7 +82,7 @@ test_that("wflow_build can run in 'make' mode from within project", {
   expect_silent(actual <- wflow_build(dry_run = TRUE))
   expect_identical(actual$built, rmd_local)
   expect_true(actual$make)
-  expect_message(actual <- wflow_build(), rmd_local[1])
+  expect_message(actual <- wflow_build(view = FALSE), rmd_local[1])
   expect_identical(actual$built, rmd_local)
 
   # No file should be built now.
@@ -91,7 +93,7 @@ test_that("wflow_build can run in 'make' mode from within project", {
   # seconds so that the modification times are different.
   Sys.sleep(2)
   system2("touch", args = rmd_local[1])
-  expect_message(actual <- wflow_build(), rmd_local[1])
+  expect_message(actual <- wflow_build(view = FALSE), rmd_local[1])
   expect_identical(actual$built, rmd_local[1])
 })
 
@@ -105,16 +107,18 @@ test_that("wflow_build update builds published files with modifications", {
                                       project = site_dir))
   expect_identical(actual$built, rmd[1])
   expect_true(actual$update)
-  expect_message(actual <- wflow_build(update = TRUE, project = site_dir),
+  expect_message(actual <- wflow_build(update = TRUE, view = FALSE,
+                                       project = site_dir),
                  rmd[1])
   expect_identical(actual$built, rmd[1])
 })
 
 test_that("wflow_build republish builds all published files", {
-  wflow_build(project = site_dir)
+  wflow_build(view = FALSE, project = site_dir)
   html_mtime_pre <- file.mtime(html)
   Sys.sleep(2)
-  expect_message(actual <- wflow_build(republish = TRUE, project = site_dir),
+  expect_message(actual <- wflow_build(view = FALSE, republish = TRUE,
+                                       project = site_dir),
                  rmd[1])
   expect_true(actual$republish)
   expect_identical(actual$built, rmd)
@@ -139,11 +143,11 @@ test_that("Only locally built files can access variables in the global environme
   env <- globalenv()
   env$global_variable <- 1
   stopifnot(exists("global_variable", envir = env))
-  expect_error(utils::capture.output(wflow_build(rmd_local,
+  expect_error(utils::capture.output(wflow_build(rmd_local, view = FALSE,
                                                  project = site_dir)),
                "object 'global_variable' not found")
   expect_false(file.exists(html_local))
-  utils::capture.output(wflow_build(rmd_local, local = TRUE,
+  utils::capture.output(wflow_build(rmd_local, local = TRUE, view = FALSE,
                                     project = site_dir))
   expect_true(file.exists(html_local))
   # Remove the global variable
@@ -161,11 +165,12 @@ test_that("Only locally built files add packages/variables to global environment
   on.exit(file.remove(rmd_local, html_local))
   on.exit(detach("package:tools"), add = TRUE)
   # Build file externally
-  utils::capture.output(wflow_build(rmd_local, project = site_dir))
+  utils::capture.output(wflow_build(rmd_local, view = FALSE,
+                                    project = site_dir))
   expect_false("package:tools" %in% search())
   expect_false(exists("local_variable", envir = .GlobalEnv))
   # Build file locally
-  utils::capture.output(wflow_build(rmd_local, local = TRUE,
+  utils::capture.output(wflow_build(rmd_local, local = TRUE, view = FALSE,
                                     project = site_dir))
   expect_true("package:tools" %in% search())
   expect_true(exists("local_variable", envir = .GlobalEnv))
@@ -179,11 +184,12 @@ test_that("wflow_build only builds files starting with _ when specified", {
   file.create(rmd_ignore)
   html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
   # Ignored by default "make"-mode
-  expect_silent(actual <- wflow_build(project = site_dir))
+  expect_silent(actual <- wflow_build(view = FALSE, project = site_dir))
   expect_false(file.exists(html_ignore))
   expect_equal(length(actual$built), 0)
   # Built when directly specified
-  expect_message(actual <- wflow_build(rmd_ignore, project = site_dir),
+  expect_message(actual <- wflow_build(rmd_ignore, view = FALSE,
+                                       project = site_dir),
                  rmd_ignore)
   expect_true(file.exists(html_ignore))
   expect_identical(actual$built, rmd_ignore)

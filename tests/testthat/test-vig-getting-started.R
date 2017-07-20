@@ -27,10 +27,10 @@ stopifnot(length(rmd) > 0)
 html <- workflowr:::to_html(rmd, outdir = s$docs)
 
 test_that("wflow_build builds the website, but only once", {
-  suppressMessages(o <- wflow_build(project = site_dir))
+  suppressMessages(o <- wflow_build(view = FALSE, project = site_dir))
   expect_identical(o$built, rmd)
   expect_true(all(file.exists(html)))
-  expect_silent(o <- wflow_build(project = site_dir))
+  expect_silent(o <- wflow_build(view = FALSE, project = site_dir))
 })
 
 test_that("wflow_view opens website.", {
@@ -56,12 +56,12 @@ test_that("wflow_open sets correct working directory", {
 test_that("wflow_build only builds new file", {
   html_mtime_pre <- file.mtime(html)
   Sys.sleep(2)
-  suppressMessages(o <- wflow_build(project = site_dir))
+  suppressMessages(o <- wflow_build(view = FALSE, project = site_dir))
   expect_identical(o$built, test_rmd)
   expect_true(file.exists(test_html))
   html_mtime_post <- file.mtime(html)
   expect_identical(html_mtime_pre, html_mtime_post)
-  expect_silent(wflow_build(project = site_dir))
+  expect_silent(wflow_build(view = FALSE, project = site_dir))
 })
 
 test_that("wflow_view can open specific file with Rmd extension & without path.", {
@@ -87,5 +87,6 @@ test_that("wflow_publish can commit new file and website", {
   expect_true(length(log) == 3)
   expect_identical(log[[1]]@message, "Build site.")
   expect_identical(log[[2]]@message, "first analysis")
-  expect_silent(wflow_build(make = TRUE, update = TRUE, project = site_dir))
+  expect_silent(wflow_build(make = TRUE, update = TRUE, view = FALSE,
+                            project = site_dir))
 })

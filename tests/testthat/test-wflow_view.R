@@ -19,7 +19,7 @@ for (i in 1:3) {
 html <- workflowr:::to_html(rmd, outdir = p$docs)
 
 # Build the site
-suppressMessages(wflow_build(project = site_dir))
+suppressMessages(wflow_build(view = FALSE, project = site_dir))
 
 # Test wflow_view --------------------------------------------------------------
 
@@ -30,7 +30,7 @@ test_that("wflow_view opens docs/index.html by default.", {
 })
 
 test_that("wflow_view can open most recently built HTML file.", {
-  suppressMessages(wflow_build(rmd[1], project = site_dir))
+  suppressMessages(wflow_build(rmd[1], view = FALSE, project = site_dir))
   expected <- html[1]
   actual <- wflow_view(recent = TRUE, dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)

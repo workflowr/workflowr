@@ -5,8 +5,8 @@
 \title{Build the site}
 \usage{
 wflow_build(files = NULL, make = is.null(files), update = FALSE,
-  republish = FALSE, seed = 12345, log_dir = NULL, local = FALSE,
-  dry_run = FALSE, project = ".")
+  republish = FALSE, view = interactive(), seed = 12345, log_dir = NULL,
+  local = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Supports file
@@ -15,10 +15,10 @@ extensions Rmd and rmd. Only files in the analysis directory are allowed
 \code{NULL}, the default behavior is to build all outdated files (see
 argument \code{make} below).}
 
-\item{make}{logical (default: \code{is.null(files)}). When
-\code{make = TRUE}, use Make-like behavior, i.e. build the files
-that have been updated more recently than their corresponding HTML
-files. This is the default action if no files are specified.}
+\item{make}{logical (default: \code{is.null(files)}). When \code{make =
+TRUE}, use Make-like behavior, i.e. build the files that have been updated
+more recently than their corresponding HTML files. This is the default
+action if no files are specified.}
 
 \item{update}{logical (default: FALSE). Build the files that have been
 committed more recently than their corresponding HTML files (and do not
@@ -29,6 +29,11 @@ file that was used to produce it.}
 \item{republish}{logical (default: FALSE). Build all published R Markdown
 files. Useful for site-wide changes like updating the theme, navigation
 bar, or any other setting in \code{_site.yml}.}
+
+\item{view}{logical (default: \code{\link{interactive}}). View the website
+after building files. If only one file is built, it is opened. If more than
+one file is built, the main index page is opened. Not applicable if no
+files are built or if \code{dry_run = TRUE}.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
 file. Passed to \code{\link{set.seed}}.}
@@ -62,6 +67,8 @@ An object of class \code{wflow_build}, which is a list with the
    \item \bold{update}: The input argument \code{update}
 
    \item \bold{republish}: The input argument \code{republish}
+
+   \item \bold{view}: The input argument \code{view}
 
    \item \bold{seed}: The input argument \code{seed}
 

@@ -6,6 +6,5 @@ output: html_document
 ---
 
 ```{r}
-library("tools")
-local_variable <- 1
+global_variable
 ```

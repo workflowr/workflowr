@@ -128,10 +128,10 @@ test_that("wflow_build republish builds all published files", {
 # test the difference, the file `local.Rmd` has an undefined variable, and it
 # should only be able to access it from the global environment when built
 # locally.
-test_that("wflow_build can build a file locally in the R console", {
-  file.copy(from = "files/test-wflow_build/local.Rmd",
+test_that("Only locally built files can access variables in the global environment", {
+  file.copy(from = "files/test-wflow_build/global-variable.Rmd",
             to = s$analysis)
-  rmd_local <- file.path(s$analysis, "local.Rmd")
+  rmd_local <- file.path(s$analysis, "global-variable.Rmd")
   html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
   on.exit(file.remove(rmd_local, html_local))
   # Create a variable in the global environment
@@ -149,6 +149,29 @@ test_that("wflow_build can build a file locally in the R console", {
   # Remove the global variable
   rm("global_variable", envir = env)
   stopifnot(!exists("global_variable", envir = env))
+})
+
+# The test file local.Rmd loads the package "tools" and defines the variable
+# `local_variable`.
+test_that("Only locally built files add packages/variables to global environment", {
+  file.copy(from = "files/test-wflow_build/local.Rmd",
+            to = s$analysis)
+  rmd_local <- file.path(s$analysis, "local.Rmd")
+  html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
+  on.exit(file.remove(rmd_local, html_local))
+  on.exit(detach("package:tools"), add = TRUE)
+  # Build file externally
+  utils::capture.output(wflow_build(rmd_local, project = site_dir))
+  expect_false("package:tools" %in% search())
+  expect_false(exists("local_variable", envir = .GlobalEnv))
+  # Build file locally
+  utils::capture.output(wflow_build(rmd_local, local = TRUE,
+                                    project = site_dir))
+  expect_true("package:tools" %in% search())
+  expect_true(exists("local_variable", envir = .GlobalEnv))
+  # Remove `local_variable`
+  rm("local_variable", envir = .GlobalEnv)
+  stopifnot(!exists("global_variable", envir = .GlobalEnv))
 })
 
 test_that("wflow_build only builds files starting with _ when specified", {

@@ -77,9 +77,9 @@
 #'
 #'    \item \bold{log_dir}: The directory where the log files were saved
 #'
-#'    \item \bold{local}: The input argument \code{files}
+#'    \item \bold{local}: The input argument \code{local}
 #'
-#'    \item \bold{dry_run}: The input argument \code{files}
+#'    \item \bold{dry_run}: The input argument \code{dry_run}
 #'
 #'    \item \bold{built}: The relative paths to the built R Markdown files
 #'
@@ -214,7 +214,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
     for (f in files_to_build) {
       message("Building ", f)
       if (local) {
-        build_rmd(f, seed = seed, envir = new.env())
+        build_rmd(f, seed = seed, envir = .GlobalEnv)
       } else {
         build_rmd_external(f, seed = seed, log_dir = log_dir)
       }

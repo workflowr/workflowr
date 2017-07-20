@@ -67,9 +67,9 @@ An object of class \code{wflow_build}, which is a list with the
 
    \item \bold{log_dir}: The directory where the log files were saved
 
-   \item \bold{local}: The input argument \code{files}
+   \item \bold{local}: The input argument \code{local}
 
-   \item \bold{dry_run}: The input argument \code{files}
+   \item \bold{dry_run}: The input argument \code{dry_run}
 
    \item \bold{built}: The relative paths to the built R Markdown files
 

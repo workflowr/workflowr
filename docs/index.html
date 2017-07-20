@@ -67,8 +67,8 @@
 <a href="#workflowr-organized-reproducible-shareable-data-science-in-r" class="anchor"></a>workflowr: organized + reproducible + shareable data science in R</h1></div>
 
 <p>The <a href="https://jdblischak.github.io/workflowr/">workflowr</a> R package makes it easier for researchers to organize their projects and share their results with colleagues.</p>
-<p>Install the latest release (v0.6.0) by running this command in R or RStudio:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Install the latest release (v0.7.0) by running this command in R or RStudio:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like <a href="https://jdblischak.github.io/workflowr-demo01/">this</a>. (See also the <a href="https://pcarbo.github.io/wflow-divvy/">Divvy data exploration project</a> for a more elaborate example of a workflowr project.)</p>
 <p>If you find any problems, or would like to suggest new features, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
 <ul>
@@ -105,13 +105,13 @@
 <li><p>Create an account on <a href="https://github.com">GitHub</a>.</p></li>
 <li>
 <p>Configure <a href="https://git-scm.com/">Git</a> (<a href="http://swcarpentry.github.io/git-novice/02-setup/">instructions</a> from <a href="https://software-carpentry.org">Software Carpentry</a>). Run the following commands in the shell command-line, inserting your account information:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> config --global user.name <span class="st">"Your Name"</span>
-<span class="kw">git</span> config --global user.email <span class="st">"youremail@domain"</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> config --global user.name <span class="st">"Your Name"</span>
+<span class="fu">git</span> config --global user.email <span class="st">"youremail@domain"</span></code></pre></div>
 </li>
 <li>
 <p>Install the latest stable release of <a href="https://jdblischak.github.io/workflowr/">workflowr</a> from <a href="https://github.com">GitHub</a> using <a href="https://github.com/hadley/devtools">devtools</a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </li>
 <li><p>Work through the vignette, <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html">“Getting started with workflowr”</a>, to learn how to set up a workflowr project. (You can view all the available vignettes locally with <code>browseVignettes("workflowr")</code>.)</p></li>
 <li><p>Alternatively, if you have already started your project, read the vignette <a href="https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html">“Migrating an existing project to use workflowr”</a> to learn how to convert your project to a workflowr project.</p></li>
@@ -126,7 +126,7 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <ul>
 <li>Re-install from <a href="https://github.com">GitHub</a> with <a href="https://github.com/hadley/devtools">devtools</a>:</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <ul>
 <li>Preview potential changes to your project files with <code><a href="reference/wflow_update.html">wflow_update()</a></code>:</li>
 </ul>
@@ -223,12 +223,12 @@ devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/wo
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>To cite workflowr in publications use:</p>
-<p>John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for creating a research website. R package version 0.6.0. <a href="https://github.com/jdblischak/workflowr" class="uri">https://github.com/jdblischak/workflowr</a></p>
+<p>John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for creating a research website. R package version 0.7.0. <a href="https://github.com/jdblischak/workflowr" class="uri">https://github.com/jdblischak/workflowr</a></p>
 <p>A BibTeX entry for LaTeX users is</p>
 <pre><code>  @Manual{,
     title = {workflowr: A workflow template for creating a research website},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
-    note = {R package version 0.6.0},
+    note = {R package version 0.7.0},
     year = {2017},
     url = {https://github.com/jdblischak/workflowr},
   }</code></pre>

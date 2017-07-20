@@ -64,10 +64,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Migrating an existing project to use workflowr</h1>
-            <h3 class="subtitle">workflowr version 0.6.0</h3>
+            <h3 class="subtitle">workflowr version 0.7.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-07-06</h4>
+            <h4 class="date">2017-07-20</h4>
           </div>
 
     
@@ -127,19 +127,19 @@
 <a href="#scenario-i-have-an-ashlar-project" class="anchor"></a>Scenario: I have an ashlar project</h2>
 <p>If your project uses the <a href="https://github.com/jhsiao999/ashlar">ashlar</a> template, you’ll need to follow multiple steps to convert it to a valid workflowr setup.</p>
 <p>First, make sure you are in the “master” branch. Also, you should run the following Git commands from the base of the project directory.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> checkout master</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> checkout master</code></pre></div>
 <p>If you have any HTML files in <code>analysis/</code> remove them using Git at the command line.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> rm analysis/*html</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> rm analysis/*html</code></pre></div>
 <p>Next remove the other ashlar infrastructure files.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> rm analysis/chunk-options.R analysis/Makefile analysis/_output.yaml
-<span class="kw">git</span> rm -r analysis/libs analysis/include analysis/figure</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> rm analysis/chunk-options.R analysis/Makefile analysis/_output.yaml
+<span class="fu">git</span> rm -r analysis/libs analysis/include analysis/figure</code></pre></div>
 <p>Modify <code>.gitignore</code> so that it ignores HTML and figure files in <code>analysis/</code> only by changing <code>*html</code> to <code>analysis/*html</code> and <code>*png</code> to <code>analysis/figure</code>. Afterwards add the file.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">nano</span> .gitignore
-<span class="kw">git</span> add .gitignore</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">nano</span> .gitignore
+<span class="fu">git</span> add .gitignore</code></pre></div>
 <p>And move the RStudio project file from <code>analysis/</code> to the base of the project.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> mv analysis/*Rproj .</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> mv analysis/*Rproj .</code></pre></div>
 <p>Commit these changes.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> commit -m <span class="st">"Removed ashlar infrastructure."</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> commit -m <span class="st">"Removed ashlar infrastructure."</span></code></pre></div>
 <p>Next open R to add the workflowr files. In the hypothetical example below, the existing package is located at <code>~/projects/ashlar-project/</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)
 <span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/ashlar-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>

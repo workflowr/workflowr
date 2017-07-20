@@ -1,8 +1,19 @@
-# workflowr 0.6.0.9000
+# workflowr 0.7.0
+
+## wflow_build
+
+* `wflow_build()` automatically opens the website after building files, thus
+it's not necessary to always run `wflow_view()` manually afterwards. If one file
+is built, then that file is opened. If more than one file is built, then the
+index page is opened. (#41)
+* `wflow_build()` adds objects to the global environment when building files
+locally in the R console (i.e. `local = TRUE`) (#53)
 
 ## Miscellaneous
 
 * Bug fix so workflowr can process Emacs backup files that contain a tilde (#47)
+* Bug fix so print methods display properly in the R console (some did not end
+with a newline character)
 
 # workflowr 0.6.0
 

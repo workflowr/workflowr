@@ -98,8 +98,8 @@ critical for reproducibility.</p>
     
 
     <pre class="usage"><span class='fu'>wflow_publish</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>,
+  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -136,6 +136,11 @@ file that was used to produce it.</p></td>
       <td><p>logical (default: FALSE). Build all published R Markdown
 files. Useful for site-wide changes like updating the theme, navigation
 bar, or any other setting in <code>_site.yml</code>.</p></td>
+    </tr>
+    <tr>
+      <th>view</th>
+      <td><p>logical (default: FALSE). View the website after publishing
+files. See <code><a href='wflow_build.html'>wflow_build</a></code> for more details.</p></td>
     </tr>
     <tr>
       <th>seed</th>

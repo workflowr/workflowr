@@ -96,8 +96,8 @@ the changes. When you are ready to commit the files, use
     
 
     <pre class="usage"><span class='fu'>wflow_build</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fu'>is.null</span>(<span class='no'>files</span>), <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>, <span class='kw'>log_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+  <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>, <span class='kw'>log_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -112,10 +112,10 @@ argument <code>make</code> below).</p></td>
     </tr>
     <tr>
       <th>make</th>
-      <td><p>logical (default: <code>is.null(files)</code>). When
-<code>make = TRUE</code>, use Make-like behavior, i.e. build the files
-that have been updated more recently than their corresponding HTML
-files. This is the default action if no files are specified.</p></td>
+      <td><p>logical (default: <code>is.null(files)</code>). When <code>make =
+TRUE</code>, use Make-like behavior, i.e. build the files that have been updated
+more recently than their corresponding HTML files. This is the default
+action if no files are specified.</p></td>
     </tr>
     <tr>
       <th>update</th>
@@ -130,6 +130,13 @@ file that was used to produce it.</p></td>
       <td><p>logical (default: FALSE). Build all published R Markdown
 files. Useful for site-wide changes like updating the theme, navigation
 bar, or any other setting in <code>_site.yml</code>.</p></td>
+    </tr>
+    <tr>
+      <th>view</th>
+      <td><p>logical (default: <code>interactive</code>). View the website
+after building files. If only one file is built, it is opened. If more than
+one file is built, the main index page is opened. Not applicable if no
+files are built or if <code>dry_run = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -171,10 +178,11 @@ you'll need to provide the path to the project directory.</p></td>
 <li><p><b>make</b>: The input argument <code>make</code></p></li>
 <li><p><b>update</b>: The input argument <code>update</code></p></li>
 <li><p><b>republish</b>: The input argument <code>republish</code></p></li>
+<li><p><b>view</b>: The input argument <code>view</code></p></li>
 <li><p><b>seed</b>: The input argument <code>seed</code></p></li>
 <li><p><b>log_dir</b>: The directory where the log files were saved</p></li>
-<li><p><b>local</b>: The input argument <code>files</code></p></li>
-<li><p><b>dry_run</b>: The input argument <code>files</code></p></li>
+<li><p><b>local</b>: The input argument <code>local</code></p></li>
+<li><p><b>dry_run</b>: The input argument <code>dry_run</code></p></li>
 <li><p><b>built</b>: The relative paths to the built R Markdown files</p></li>
 <li><p><b>html</b>: The relative paths to the corresponding HTML files</p></li>
 </ul>

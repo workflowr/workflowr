@@ -64,10 +64,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Getting started with workflowr</h1>
-            <h3 class="subtitle">workflowr version 0.6.0</h3>
+            <h3 class="subtitle">workflowr version 0.7.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-07-06</h4>
+            <h4 class="date">2017-07-20</h4>
           </div>
 
     
@@ -91,10 +91,10 @@
 <p>To start a new project, open R (or RStudio), load the workflowr package, and run the function <code><a href="../reference/wflow_start.html">wflow_start()</a></code>. The code below creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and initializes a Git repository with the initial commit already made.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)</code></pre></div>
 <pre><code>## Loading required package: rmarkdown</code></pre>
-<pre><code>## This is workflowr version 0.6.0
+<pre><code>## This is workflowr version 0.7.0
 ## Run ?workflowr for help getting started</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</code></pre></div>
-<pre><code>## Project "myproject" started in /tmp/RtmpbniEP1/wflow-01-getting-started-1fb9644bac19/myproject</code></pre>
+<pre><code>## Project "myproject" started in /tmp/RtmpXrUCaD/wflow-01-getting-started-310425833a8f/myproject</code></pre>
 <pre><code>## Git repository initialized.</code></pre>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> creates the following directory structure in <code>myproject/</code>:</p>
 <pre><code>myproject/
@@ -158,8 +158,8 @@
 ## docs/license.html
 ## 
 ## Log files saved in /tmp/workflowr</code></pre>
-<p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files).</p>
-<p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice">Makefile</a> (<code>make = TRUE</code> is the default), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built.</p>
+<p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files). Lastly, it opens the website in the browser for viewing.</p>
+<p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice">Makefile</a> (<code>make = TRUE</code> is the default), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built (and no files are opened in the browser).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</code></pre></div>
 <pre><code>## Summary from wflow_build
 ## 
@@ -167,9 +167,9 @@
 ##   seed: 12345, make: TRUE
 ## 
 ## No files to build</code></pre>
-<p>To view the site, run <code><a href="../reference/wflow_view.html">wflow_view()</a></code>, which by default opens the file <code>docs/index.html</code> in your browser:</p>
+<p>To view the site without first building any files, run <code><a href="../reference/wflow_view.html">wflow_view()</a></code>, which by default opens the file <code>docs/index.html</code> in your browser:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_view.html">wflow_view</a></span>()</code></pre></div>
-<p>This is how you can preview any changes you make right on your local machine. Go ahead and edit the files <code>index.Rmd</code>, <code>about.Rmd</code>, and <code>license.Rmd</code> to describe your project. Run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to re-build the HTML files and <code><a href="../reference/wflow_view.html">wflow_view()</a></code> to preview the changes (alternatively refresh the page in your browser).</p>
+<p>This is how you can view your site right on your local machine. Go ahead and edit the files <code>index.Rmd</code>, <code>about.Rmd</code>, and <code>license.Rmd</code> to describe your project. Then run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to re-build the HTML files and view them in your browser.</p>
 </div>
 <div id="publish-the-website" class="section level2">
 <h2 class="hasAnchor">
@@ -211,7 +211,7 @@
 ##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd 
 ##   $ git commit -m "Publish the initial files for myproject" 
 ## 
-## The following file(s) were included in commit d50dae3:
+## The following file(s) were included in commit 8d53078:
 ## analysis/about.Rmd
 ## analysis/index.Rmd
 ## analysis/license.Rmd
@@ -241,7 +241,7 @@
 ##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 2c7b21a:
+## The following file(s) were included in commit 9197c3a:
 ## docs/about.html
 ## docs/index.html
 ## docs/license.html
@@ -288,7 +288,7 @@ git push -u origin master</code></pre>
 <li>Sets the working directory to the <code>analysis/</code> directory</li>
 <li>If you are using RStudio, opens the file for editing</li>
 </ol>
-<p>Now you are ready to start writing! At the top of the file, edit the author, title, and date. Where it says “Add your analysis here”, add some code chunks to experiment. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> again and <code><a href="../reference/wflow_view.html">wflow_view("first-analysis.Rmd")</a></code> (these functions can be run from the base directory of your project or any subdirectory).</p>
+<p>Now you are ready to start writing! At the top of the file, edit the author, title, and date. Where it says “Add your analysis here”, add some code chunks to experiment. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> again (this function can be run from the base directory of your project or any subdirectory).</p>
 <p>Check out your new file <code>first-analysis.html</code>. Near the top you will see a line that says “Code version:” followed by an alphanumeric character string. This informs you which version of the code was used to create the file. It also automatically inserts the date when the HTML was built.</p>
 <p>In order to make it easier to navigate to your new file, you can include a link to it on the main index page. First open <code>analysis/index.Rmd</code> (you can use your filesystem navigator or <code><a href="../reference/wflow_open.html">wflow_open("index.Rmd")</a></code>). Second paste the following line into <code>index.Rmd</code>:</p>
 <pre><code>Click on this [link](first-analysis.html) to see my results.</code></pre>
@@ -330,7 +330,7 @@ git push -u origin master</code></pre>
 ##   $ git add index.Rmd first-analysis.Rmd 
 ##   $ git commit -m "Add my first analysis" 
 ## 
-## The following file(s) were included in commit 5b73567:
+## The following file(s) were included in commit eafd0a6:
 ## first-analysis.Rmd
 ## index.Rmd
 ## 
@@ -358,7 +358,7 @@ git push -u origin master</code></pre>
 ##   $ git add ../docs/index.html ../docs/first-analysis.html ../docs/figure/index.Rmd ../docs/figure/first-analysis.Rmd ../docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit d9d71d0:
+## The following file(s) were included in commit c6b1d1c:
 ## ../docs/first-analysis.html
 ## ../docs/index.html
 ## ../docs/site_libs/jqueryui-1.11.4/
@@ -374,7 +374,7 @@ git push origin master</code></pre>
 <ol style="list-style-type: decimal">
 <li><p>Open a new or existing file with <code><a href="../reference/wflow_open.html">wflow_open()</a></code></p></li>
 <li><p>Perform your analysis in the R Markdown file (For RStudio users: to quickly develop the code I recommend executing the code in the R console via Ctrl-Enter to send one line or Ctrl-Alt-C to execute the entire code chunk)</p></li>
-<li><p>Run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code><a href="../reference/wflow_view.html">wflow_view()</a></code> to view the results as they will appear on the website (alternatively press the Knit button in RStudio)</p></li>
+<li><p>Run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to view the results as they will appear on the website (alternatively press the Knit button in RStudio)</p></li>
 <li><p>Go back to step 2 until you are satisfied with the result</p></li>
 <li><p>Run <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> to commit the source files (R Markdown files or other files in <code>code/</code>, <code>data/</code>, and <code>output/</code>), build the HTML files, and commit the HTML files</p></li>
 <li><p>Push the changes to GitHub with <code>git push origin master</code></p></li>

@@ -90,6 +90,28 @@
     </div>
 
     <div class="contents">
+    <div id="workflowr-0-7-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflowr-0-7-0" class="anchor"></a>workflowr 0.7.0</h1>
+<div id="wflow_build" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wflow_build" class="anchor"></a>wflow_build</h2>
+<ul>
+<li>
+<code><a href="../reference/wflow_build.html">wflow_build()</a></code> automatically opens the website after building files, thus it’s not necessary to always run <code><a href="../reference/wflow_view.html">wflow_view()</a></code> manually afterwards. If one file is built, then that file is opened. If more than one file is built, then the index page is opened. (#41)</li>
+<li>
+<code><a href="../reference/wflow_build.html">wflow_build()</a></code> adds objects to the global environment when building files locally in the R console (i.e. <code>local = TRUE</code>) (#53)</li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<ul>
+<li>Bug fix so workflowr can process Emacs backup files that contain a tilde (#47)</li>
+<li>Bug fix so print methods display properly in the R console (some did not end with a newline character)</li>
+</ul>
+</div>
+</div>
     <div id="workflowr-0-6-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-6-0" class="anchor"></a>workflowr 0.6.0</h1>
@@ -114,9 +136,9 @@
 </li>
 </ul>
 </div>
-<div id="miscellaneous" class="section level2">
+<div id="miscellaneous-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Added continuous integration testing with <a href="https://travis-ci.org/">Travis CI</a> for macOS</li>
 <li>Updated documentation in README, “Getting started” vignette, and FAQ</li>
@@ -150,9 +172,9 @@
 <li><p>To change the theme or make some other change to the entire site, run <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/_site.yml", republish = TRUE)</a></code>, which will 1) commit the configuration file <code>analysis/_site.yml</code>, 2) re-build all the previously published analysis files using the new configuration options, and 3) commit the re-built HTML files.</p></li>
 </ul>
 </div>
-<div id="wflow_build" class="section level2">
+<div id="wflow_build-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#wflow_build" class="anchor"></a>wflow_build</h2>
+<a href="#wflow_build-1" class="anchor"></a>wflow_build</h2>
 <ul>
 <li><p>By default, <code><a href="../reference/wflow_build.html">wflow_build()</a></code> runs in “Make”-mode, only building R Markdown files that have been updated more recently than their corresponding HTML files. If instead files are specfically stated, those files will be built.</p></li>
 <li><p>By default, R Markdown files are now built each in their own separate R session (similar in function to the “Knit HTML” button in RStudio). This prevents undesirable behavior like sharing variables and loaded packages across separate files. Set <code>local = TRUE</code> to build the files in the local R console (useful for debugging, but otherwise discouraged).</p></li>
@@ -174,9 +196,9 @@
 <li>Improved documentation of <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to better explain its functionality. It will attempt to convert all R Markdown files present to use the latest version of the workflowr R Markdown template; however, it will only commit R Markdown files that are tracked by Git.</li>
 </ul>
 </div>
-<div id="miscellaneous-1" class="section level2">
+<div id="miscellaneous-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li><p>All workflowr functions should now accept the file extesion <code>.rmd</code> in addition to <code>.Rmd</code> (Issue #10)</p></li>
 <li><p>Replaced the shared argument <code>path</code> with <code>project</code> to clarify that this argument specifies the path to a directory in the workflowr project</p></li>
@@ -282,6 +304,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-0-7-0">0.7.0</a></li>
         <li><a href="#workflowr-0-6-0">0.6.0</a></li>
         <li><a href="#workflowr-0-5-1">0.5.1</a></li>
         <li><a href="#workflowr-0-5-0">0.5.0</a></li>

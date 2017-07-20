@@ -269,6 +269,7 @@ print.wflow_build <- function(x, ...) {
 
   if (length(x$built) == 0) {
     cat(wrap("No files to build"))
+    cat("\n")
     return(invisible(x))
   }
 

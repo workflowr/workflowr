@@ -213,7 +213,7 @@ print.wflow_remove <- function(x, ...) {
   }
   cat(x$files, sep = "\n")
 
-  if (length(x$files_git) > 0) {
+  if (length(x$files_git) > 0 && !is.na(x$files_git)) {
     if (x$dry_run) {
       cat("\n", wrap("The following would be removed from the Git repo:"),
           "\n\n", sep = "")
@@ -225,6 +225,7 @@ print.wflow_remove <- function(x, ...) {
     cat(x$files_git, sep = "\n")
     cat("\ncommit message:\n")
     cat(x$message)
+    cat("\n")
   }
 
   return(invisible(x))

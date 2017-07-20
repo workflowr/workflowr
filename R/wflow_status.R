@@ -224,6 +224,7 @@ To commit your changes without publishing them yet, use `wflow_commit()`.",
     cat("\n")
     cat(wrap(m))
   }
+  cat("\n")
 
   # It's a convention for S3 print methods to invisibly return the original
   # object, e.g. base::print.summaryDefault and stats:::print.lm. I don't

@@ -274,7 +274,7 @@ good options are "workflow + R" or "work + flower".
 [covr]: https://github.com/jimhester/covr
 [cran-rr]: https://cran.r-project.org/web/views/ReproducibleResearch.html
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
-[divvy]: https://pcarbo.github.io/wflow-divvy/
+[divvy]: https://stephenslab.github.io/wflow-divvy/
 [devtools]: https://github.com/hadley/devtools
 [exreport]: https://github.com/jacintoArias/exreport
 [gh]: https://github.com

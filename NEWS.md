@@ -1,5 +1,7 @@
 # workflowr 0.7.0.9000
 
+* Added new function `wflow_push()` that performs the equivalent of `git push`
+directly from the R console.
 
 # workflowr 0.7.0
 

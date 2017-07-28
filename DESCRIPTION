@@ -19,6 +19,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     callr,
+    getPass,
     git2r,
     methods,
     rprojroot,

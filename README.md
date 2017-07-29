@@ -224,15 +224,20 @@ to the "dev" branch.
 
 ## Credits
 
-workflowr was developed, and is maintained, by John Blischak, a postdoctoral 
-researcher in the laboratory of [Matthew Stephens][stephens] at [The University 
-of Chicago][uchicago]. He is funded by a grant from the [Gordon and Betty Moore 
-Foundation][moore] to MS.
+workflowr was developed, and is maintained, by John Blischak, a
+postdoctoral researcher in the laboratory of
+[Matthew Stephens][stephens] at
+[The University of Chicago][uchicago]. He is funded by a grant from
+the [Gordon and Betty Moore Foundation][moore] to MS.  Many others
+have contributed to workflowr by testing the package and providing
+feedback---thanks especially to Lei Sun, Xiang Zhou and other members 
+(past and present) of the Stephens lab.
 
-The workflowr package uses many great open source packages. Especially critical 
-for this project are the R packages [git2r][], [knitr][], and [rmarkdown][].
-Please see the vignette [How the workflowr package works][vig-details] to learn
-about the software that makes workflowr possible.
+The workflowr package uses many great open source packages. Especially
+critical for this project are the R packages [git2r][], [knitr][], and
+[rmarkdown][]. Please see the vignette
+[How the workflowr package works][vig-details] to learn about the
+software that makes workflowr possible.
 
 ## License
 

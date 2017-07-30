@@ -1,5 +1,10 @@
 # workflowr 0.7.0.9000
 
+* Added tag to footer.html to adjust MathJax settings so that all math
+formulae are shown using TeX fonts only. This will make the
+presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load.
+
 * Added new function `wflow_push()` that performs the equivalent of `git push`
 directly from the R console.
 

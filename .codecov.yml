@@ -6,7 +6,8 @@ coverage:
   status:
     project: off
     patch:
-      only_pulls: true
+      default:
+        only_pulls: true
 
 # Only comment on PR if coverage changes
 # https://docs.codecov.io/docs/pull-request-comments

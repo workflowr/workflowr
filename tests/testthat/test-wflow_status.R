@@ -3,7 +3,8 @@ context("wflow_status")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- workflowr:::tempfile("test-wflow_status-", tmpdir = workflowr:::normalizePath("/tmp"))
+site_dir <- workflowr:::tempfile("test-wflow_status-",
+                                 tmpdir = workflowr:::normalizePath("/tmp"))
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
@@ -117,6 +118,35 @@ test_that("wflow_status reports only specified files", {
 })
 
 # Warnings and Errors ----------------------------------------------------------
+
+test_that("wflow_status throws error if not in workflowr project.", {
+  non_project <- workflowr:::tempfile("non-project-",
+                                      tmpdir = workflowr:::normalizePath("/tmp"))
+  dir.create(non_project, recursive = TRUE)
+  on.exit(unlink(non_project, recursive = TRUE))
+  expect_silent(s <- wflow_status(project = site_dir))
+  expect_error(s <- wflow_status(project = non_project),
+               "Unable to detect a workflowr project.")
+})
+
+test_that("wflow_status throws error if no RStudio .Rproj file.", {
+  project_name <- basename(site_dir)
+  rproj_original <- file.path(site_dir, paste0(project_name, ".Rproj"))
+  rproj_replace <-  file.path(site_dir, paste0(project_name, ".txt"))
+  on.exit(file.rename(rproj_replace, rproj_original))
+  file.rename(rproj_original, rproj_replace)
+  expect_error(s <- wflow_status(project = site_dir),
+               "Unable to detect a workflowr project.")
+})
+
+test_that("wflow_status throws error if no _site.yml file.", {
+  yml_original <- file.path(site_dir, "analysis/_site.yml")
+  yml_replace <-  file.path(site_dir, "analysis/_site.txt")
+  on.exit(file.rename(yml_replace, yml_original))
+  file.rename(yml_original, yml_replace)
+  expect_error(s <- wflow_status(project = site_dir),
+               "Unable to find the file _site.yml in the analysis directory.")
+})
 
 test_that("wflow_status throws error if no Git repository.", {
   git_original <- file.path(site_dir, ".git")

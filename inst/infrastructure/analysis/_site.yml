@@ -21,4 +21,5 @@ output:
     theme: cosmo
     highlight: textmate
     include:
+      before_body: include/header.html
       after_body: include/footer.html

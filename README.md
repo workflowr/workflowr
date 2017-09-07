@@ -6,7 +6,7 @@
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 
 
-Install the latest release (v0.7.0) by running this command in R or
+Install the latest release (v0.7.0.9000) by running this command in R or
 RStudio:
 
 ```r
@@ -224,15 +224,20 @@ to the "dev" branch.
 
 ## Credits
 
-workflowr was developed, and is maintained, by John Blischak, a postdoctoral 
-researcher in the laboratory of [Matthew Stephens][stephens] at [The University 
-of Chicago][uchicago]. He is funded by a grant from the [Gordon and Betty Moore 
-Foundation][moore] to MS.
+workflowr was developed, and is maintained, by John Blischak, a
+postdoctoral researcher in the laboratory of
+[Matthew Stephens][stephens] at
+[The University of Chicago][uchicago]. He is funded by a grant from
+the [Gordon and Betty Moore Foundation][moore] to MS.  Many others
+have contributed to workflowr by testing the package and providing
+feedback---thanks especially to Lei Sun, Xiang Zhou and other members 
+(past and present) of the Stephens lab.
 
-The workflowr package uses many great open source packages. Especially critical 
-for this project are the R packages [git2r][], [knitr][], and [rmarkdown][].
-Please see the vignette [How the workflowr package works][vig-details] to learn
-about the software that makes workflowr possible.
+The workflowr package uses many great open source packages. Especially
+critical for this project are the R packages [git2r][], [knitr][], and
+[rmarkdown][]. Please see the vignette
+[How the workflowr package works][vig-details] to learn about the
+software that makes workflowr possible.
 
 ## License
 
@@ -243,7 +248,7 @@ workflowr is available under the [MIT license][MIT].
 To cite workflowr in publications use:
 
   John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for
-  creating a research website. R package version 0.7.0. https://github.com/jdblischak/workflowr
+  creating a research website. R package version 0.7.0.9000. https://github.com/jdblischak/workflowr
 
 A BibTeX entry for LaTeX users is
 
@@ -251,7 +256,7 @@ A BibTeX entry for LaTeX users is
   @Manual{,
     title = {workflowr: A workflow template for creating a research website},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
-    note = {R package version 0.7.0},
+    note = {R package version 0.7.0.9000},
     year = {2017},
     url = {https://github.com/jdblischak/workflowr},
   }

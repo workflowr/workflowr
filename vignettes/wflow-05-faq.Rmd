@@ -14,7 +14,11 @@ vignette: >
 
 ## Can I make my workflowr website private?
 
-Short answer: Not if you host it on GitHub Pages. For an alternative, see "Can I share workflowr websites directly with collaborators in a secure fashion?" below.
+Short answer: No, not if you use the default setup that hosts the site on GitHub
+Pages. For an alternative setup, see the FAQ below that describes an [option for
+securely sharing your workflowr site][faq-beaker].
+
+[faq-beaker]: #can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion
 
 Long answer: Even if you create a private GitHub repository, the website it
 creates is still public. If you're not ready to publish your results online, you
@@ -50,7 +54,7 @@ some ideas that are simple to implement. Check out the documentation for
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [Bootstrap]: http://getbootstrap.com/
 
-## Why am I not getting the same result with `wflow_build()` as with the RStudio Knit HTML button?
+## Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?
 
 `wflow_build()` is designed to have the same functionality as the Knit HTML
 button in RStudio, namely that it knits the HTML file in a separate R session to
@@ -67,49 +71,92 @@ provide a small reproducible example.
 
 ## Can I share workflowr websites directly with collaborators in a secure fashion?
 
-Yes! After some background framing the problem, see ACTIONS below for a method using [Beaker Browser](https://beakerbrowser.com/) developed in response to [Issue 59](https://github.com/jdblischak/workflowr/issues/59):
+If your project contains senstive data that prevents you from publicly sharing
+the results, one alternative option is to self-host your workflowr website using
+[Beaker Browser][beaker]. This solution was contributed by [Josh
+Johnson][johnsonlab]. For more details, please read his [blog
+post][johnsonlab-blog] and the discussion in Issue [#59][].
 
-### Sharing **entire** workflowr sites
-
-Hosting scientific data externally (e.g., on cloud hosts, including GitHub), can be fraught with problems. Academic institutions frown on the practice (for example, for intellectual property reasons), and internal solutions can start and stop with shared drives and Dropbox/Dropbox-like alternatives.
-
-Workflowr is truly revelatory for generating *organized* .html output for Rmarkdown projects. However, the easiest way to share individual compiled .Rmd documents with collaborators was still by using *render* in the console *a la*
-
-    render("analysis/file.Rmd", pdf_document()).
-for .PDF output, or,
-
-    render("analysis/file.Rmd", word_document()).
-for Word output (per @jdblischak). However, sharing the entire Workflowr-generated site, including what can be invaluable information in associated Index.Rmd and License.Rmd files is highly desirable.
-
-### Direct sharing of entire workflowr-generated Sites using Beaker Browser
-
-[Beaker Browser](https://beakerbrowser.com/) allows website creation, cloning, modification, and publishing locally. After the site is ready, hitting "share" produces a unique [Dat project dat://](https://datproject.org/) hyperlink, for example:
+[Beaker Browser][beaker] allows website creation, cloning, modification, and
+publishing locally. After the site is ready, hitting "share" produces a unique
+[Dat project dat://][dat] hyperlink, for example:
 
     dat://adef21aa8bbac5e93b0c20a97c6f57f93150cf4e7f5eb1eb522eb88e682309bc
 
-This dat:// link can then be shared and the site opened *all the while being hosted locally on the site producer's machine.* The particular example above is a site, produced in Rstudio using Workflowr, with placeholder content and R code chunks, compiled as usual.
+This dat:// link can then be shared and the site opened *all the while being
+hosted locally on the site producer's machine.* The particular example above is
+a site, produced in RStudio using workflowr, with placeholder content and R code
+chunks, compiled as usual.
 
-Security for your site is achieved with site encryption inherent in the Dat protocol (see "Security" on the [datproject docs page](https://docs.datproject.org/)), as well as the obscurity of the unique link.
+Security for your site is achieved with site encryption inherent in the Dat
+protocol (see "Security" on the [datproject docs page][dat-docs]), as well as
+the obscurity of the unique link. Beaker Browser saves your individual project
+sites in the folder `~/Sites`.
 
-Beaker Browser saves your individual project sites in a folder, /Sites, that is found in the home directory by default.
+To create a Beaker Browser version of your workflowr site:
 
-### ACTIONS 
+1. [Install][beaker-install] Beaker Browser and run it.
+1. Select "New Site" in the three-bar dropdown menu found to the right of the
+"omnibar" for web link entry, and enter its Title and (optional) a Description
+of the site. This creates a folder in the Beaker Browser `~/Sites` directory
+named for your Title, for example, "placeholder_workflowr", and populates the
+folder with a `dat.json` file.
+1. In the main Beaker Browser pane, use "Add Files" or "Open Folder" to copy the
+entire contents of the workflowr `docs/` folder to your new Beaker Browser site
+folder (see Symlink Synchronization, below).
+1. Once copied, the new site is ready to go. Pressing "Share" in the main Beaker
+Browser pane reveals the unique dat:// link generated for your Beaker Browser
+site. Sharing this link with anyone running Beaker Browser will allow them to
+access your workflowr HTML files...*directly from your computer*.
 
-To create a Beaker Browser version of your Workflowr site:
-
-1. Select "New Site" in the three-bar dropdown menu found to the right of the "omnibar" for web link entry, and enter its Title and (optional) a Description of the site. This creates a folder in the Beaker Browser /Sites directory named for your Title, for example, "placeholder_workflowr", and populates the folder with a dat.json file.
-
-    ~/Users/joshua/Sites/placeholder_workflowr
-
-1. In the main Beaker Browser pane, use "Add Files" or "Open Folder" to copy the entire contents of the Workflowr /docs folder (the location of the project's compiled .html output) to your new Beaker Browser site folder (see Symlink Synchronization, below).
-1. Once copied, the new site is ready to go. Pressing "Share" in the main Beaker Browser pane reveals the unique dat:// link generated for your Beaker Browser site. Sharing this link with anyone running Beaker Browser will allow them to access your Workflowr .html content...*directly from your computer*.
-
-### Symlink Synchronization Between Workflowr /analysis and Beaker Browser Site
-
-Per @jdblischak: To keep your Beaker Browser site up to date with freshly compiled Workflowr content, [you can] create a symlink from your workflowr docs/ directory to the Beaker Browser site directory. The line below links the docs/ directory of a hypothetical "workflowr-project" saved in ~/github/ to the hypothetical Beaker placeholder_workflowr Sites subdirectory:
+Instead of having to manually copy your workflowr `docs/` directory to your
+Beaker Browser site directory, you can create a symlink from your workflowr
+`docs/` directory to the Beaker Browser site directory. The line below links the
+`docs/` directory of a hypothetical "workflowr-project" saved in `~/github/` to
+the hypothetical Beaker `placeholder_workflowr` subdirectory:
 
     ln -s ~/github/workflowr-project/docs ~/Users/joshua/Sites/placeholder_workflowr
 
-### Hosting Beaker Browser Sites
+The direct-sharing nature of the above workflow means that the host computer
+needs to be running for site access. Two alternative recommended by Beaker
+Browser developer [Paul Frazee][pfrazee] are [hashbase.io][] and the Beaker
+Browser subproject [dathttpd][]. While hosting Beaker Browser sites is outside
+of the scope of this direct sharing paradigm, each of these options has
+strengths. The former, hashbase.io (free account required), is a web-hosted
+central location for dat:// -linked content, removing the need for the host
+computer to be running. The latter dathttpd example is an additional
+server/self-hosting option that can be used if desired.
 
-The direct-sharing nature of the above workflow means that the host computer needs to be running for site access. Beaker Browser developer @pfrazee pointed to [hashbase.io](https://hashbase.io) and the Beaker Browser subproject [dathttpd](https://github.com/beakerbrowser/dathttpd). While hosting Beaker Browser sites is outside of the scope of this direct sharing paradigm, each of these options has strengths. The former, hashbase.io (free account required), is a web-hosted central location for dat:// -linked content, removing the need for the host computer to be running. The latter dathttpd example is an additional server/self-hosting option that can be used if desired.
+## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
+
+Yes! If you'd like to create a single HTML or PDF file to distribute an isolated
+analysis from your project, you can directly run the [rmarkdown][] function
+`render`.
+
+```{r render-single-page, eval=FALSE}
+library("rmarkdown")
+# Create analysis/file.html
+render("analysis/file.Rmd", html_document())
+# Create analysis/file.pdf
+render("analysis/file.Rmd", pdf_document())
+```
+
+There are two main caveats to this:
+
+1. Internal links to other HTML pages in your workflowr site will be broken
+since they are not being distributed with the single file.
+1. An R Markdown file that can be converted to HTML is not guaranteed to be
+converted to PDF. You'll need to ensure that you have LaTeX installed on your
+computer and avoid complicated characters and/or syntax.
+
+[#59]: https://github.com/jdblischak/workflowr/issues/59
+[beaker]: https://beakerbrowser.com/
+[beaker-install]: https://beakerbrowser.com/docs/install/
+[dat]: https://datproject.org/
+[dat-docs]: https://docs.datproject.org/
+[dathttpd]: https://github.com/beakerbrowser/dathttpd
+[hashbase.io]: https://hashbase.io
+[johnsonlab]: https://github.com/johnsonlab
+[johnsonlab-blog]: https://johnsonlab.github.io/blog-post-22/
+[pfrazee]: https://github.com/pfrazee
+[rmarkdown]: http://rmarkdown.rstudio.com/

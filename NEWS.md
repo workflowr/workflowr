@@ -1,5 +1,7 @@
 # workflowr 0.7.0.9000
 
+* FAQ on sharing workflowr sites securely using Beaker Browswer (@johnsonlab in #59 & #65)
+
 * Minor changes to improve error messages and documentation.
 
 * Added tag to footer.html to adjust MathJax settings so that all math

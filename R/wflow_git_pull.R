@@ -1,18 +1,19 @@
-#' Push files to remote repository
+#' Pull files from remote repository
 #'
-#' \code{wflow_push} pushes the local files on your machine to your remote
-#' repository on GitHub. This is a convenience function to run Git commands from
-#' the R console instead of the Terminal. The same functionality can be acheived
-#' by running \code{git push} in the Terminal.
+#' \code{wflow_git_pull} pulls the remote files from your remote repository on
+#' GitHub into your repository on your local machine. This is a convenience
+#' function to run Git commands from the R console instead of the Terminal. The
+#' same functionality can be acheived by running \code{git pull} in the
+#' Terminal.
 #'
-#' \code{wflow_push} tries to choose sensible defaults if the user does not
+#' \code{wflow_git_pull} tries to choose sensible defaults if the user does not
 #' explicitly specify the remote repository and/or the remote branch:
 #'
 #' \itemize{
 #'
 #' \item If both \code{remote} and \code{branch} are \code{NULL},
-#' \code{wflow_push} checks to see if the current local branch is tracking a
-#' remote branch. If yes, it pushes to this tracked remote branch.
+#' \code{wflow_git_pull} checks to see if the current local branch is tracking a
+#' remote branch. If yes, it pulls to this tracked remote branch.
 #'
 #' \item If the argument \code{remote} is left as \code{NULL} and there is only
 #' one remote, it is used.  If there is more than one remote, the one named
@@ -23,28 +24,25 @@
 #'
 #' }
 #'
-#' Under the hood, \code{wflow_push} is a wrapper for \code{\link[git2r]{push}}
+#' Under the hood, \code{wflow_git_pull} is a wrapper for \code{\link[git2r]{pull}}
 #' from the package \link{git2r}.
 #'
 #' @param remote character (default: NULL). The name of the remote repository.
 #'   See Details for the default behavior.
-#' @param branch character (default: NULL). The name of the branch to push to in
-#'   the remote repository. If \code{NULL}, the name of the current local branch
-#'   is used.
+#' @param branch character (default: NULL). The name of the branch in the remote
+#'   repository to pull from. If \code{NULL}, the name of the current local
+#'   branch is used.
 #' @param username character (default: NULL). GitHub username. The user is
 #'   prompted if necessary.
 #' @param password character (default: NULL). GitHub password. The user is
 #'   prompted if necessary.
-#' @param force logical (default: FALSE). Force the push to the remote
-#'   repository. Do not use this if you are not 100\% sure of what it is doing.
-#'   Equivalent to: \code{git push -f}
 #' @param dry_run logical (default: FALSE). Preview the proposed action but do
-#'   not actually push to the remote repository.
+#'   not actually pull from the remote repository.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return An object of class \code{wflow_push}, which is a list with the
+#' @return An object of class \code{wflow_git_pull}, which is a list with the
 #'   following elements:
 #'
 #' \itemize{
@@ -55,7 +53,8 @@
 #'
 #' \item \bold{username}: GitHub username.
 #'
-#' \item \bold{force}: The input argument \code{force}.
+#' \item \bold{merge_result}: The \code{\link[git2r]{git_merge_result-class}}
+#' object returned by \link{git2r} (only included if \code{dry_run == FALSE}).
 #'
 #' \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
@@ -64,16 +63,15 @@
 #' @examples
 #' \dontrun{
 #'
-#' # Push to remote repository
-#' wflow_push()
+#' # Pull from remote repository
+#' wflow_git_pull()
 #' # Preview by running in dry run mode
-#' wflow_push(dry_run = TRUE)
+#' wflow_git_pull(dry_run = TRUE)
 #' }
 #'
 #' @export
-wflow_push <- function(remote = NULL, branch = NULL,
-                       username = NULL, password = NULL,
-                       force = FALSE, dry_run = FALSE, project = ".") {
+wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
+                           password = NULL, dry_run = FALSE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
@@ -88,9 +86,6 @@ wflow_push <- function(remote = NULL, branch = NULL,
 
   if (!(is.null(password) || (is.character(password) && length(password) == 1)))
     stop("password must be NULL or a one-element character vector")
-
-  if (!(is.logical(force) && length(force) == 1))
-    stop("force must be a one-element logical vector")
 
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
@@ -122,7 +117,7 @@ wflow_push <- function(remote = NULL, branch = NULL,
       state. workflowr doesn't support such advanced Git options. If you
       didn't mean to do this, try running `git checkout master` in the
       Terminal. If you did mean to do this, please use Git directly from the
-      Terminal to push your commits."
+      Terminal to pull your commits."
     stop(wrap(m))
   }
 
@@ -220,39 +215,44 @@ wflow_push <- function(remote = NULL, branch = NULL,
     credentials <- git2r::cred_ssh_key()
   }
 
-  # Push! ----------------------------------------------------------------------
+  # Pull! ----------------------------------------------------------------------
 
+  # Do the pull in 2 steps: fetch+merge, b/c git2r::pull only allows pulling
+  # from the tracked branch.
   if (!dry_run) {
-    tryCatch(git2r::push(r, name = remote,
-                         refspec = paste0("refs/heads/", branch),
-                         force = force, credentials = credentials),
+    tryCatch(git2r::fetch(r, name = remote,
+                          refspec = paste0("refs/heads/", branch),
+                          credentials = credentials),
              error = function(e) {
                if (stringr::str_detect(e$message, "unsupported URL protocol") &&
                    protocol == "ssh") {
                  reason <- "workflowr was unable to use your SSH keys. Run `git
-                           push` in the Terminal instead."
+                           pull` in the Terminal instead."
                } else {
-                 reason <- "Push failed for unknown reason."
+                 reason <- "Pull failed for unknown reason."
                }
                stop(wrap(reason), call. = FALSE)
              }
     )
+    merge_result <- git2r::merge(r, paste(remote, branch, sep = "/"))
+  } else {
+    merge_result <- NULL
   }
 
   # Prepare output -------------------------------------------------------------
 
   o <- list(remote = remote, branch = branch, username = username,
-            force = force, dry_run = dry_run)
-  class(o) <- "wflow_push"
+            merge_result = merge_result, dry_run = dry_run)
+  class(o) <- "wflow_git_pull"
   return(o)
 }
 
 #' @export
-print.wflow_push <- function(x, ...) {
-  cat("Summary from wflow_push\n\n")
+print.wflow_git_pull <- function(x, ...) {
+  cat("Summary from wflow_git_pull\n\n")
 
   cat(wrap(sprintf(
-    "Pushing to the branch \"%s\" of the remote repository \"%s\"",
+    "Pulling from the branch \"%s\" of the remote repository \"%s\"",
     x$branch, x$remote)), "\n\n")
 
   if (x$dry_run) {
@@ -260,64 +260,38 @@ print.wflow_push <- function(x, ...) {
   } else {
     cat("The following Git command was run:\n\n")
   }
-  if (x$force) {
-    git_cmd <- "  $ git push -f"
-  } else {
-    git_cmd <- "  $ git push"
-  }
+
+  git_cmd <- "  $ git pull"
   git_cmd <- paste(git_cmd, x$remote, x$branch)
-  cat(git_cmd)
+  cat(git_cmd, "\n")
+
+  if (!is.null(x$merge_result)) {
+    if (x$merge_result@up_to_date) {
+      cat("\n", wrap(
+        "No changes were made because your local and remote repositories are
+        in sync."
+        ), "\n", sep = "")
+    } else if (x$merge_result@fast_forward && length(x$merge_result@sha) == 0) {
+      cat("\n", wrap(
+        "The latest changes in the remote repository were successfully pulled
+        into your local repository."
+      ), "\n", sep = "")
+    } else if (x$merge_result@fast_forward) {
+      cat("\n", wrap(sprintf(
+        "The latest changes in the remote repository were successfully pulled
+        into your local repository. To combine the changes that differed
+        between the two repositories, the merge commit %s was created.",
+      x$merge_result@sha)), "\n", sep = "")
+    } else if (x$merge_result@conflicts) {
+      cat("\n", wrap(
+        "There were conflicts that Git could not resolve automatically when
+        trying to pull changes from the remote repository. You will need to
+        use Git from the Terminal to resolve these conflicts manually. Run
+        `git status` in the Terminal to get started."
+      ), "\n", sep = "")
+    }
+  }
 
   cat("\n")
   return(invisible(x))
-}
-
-# Determine which remote and branch to push or pull.
-#
-# This function assumes error handling has already happened upstream.
-determine_remote_and_branch <- function(repo, remote, branch) {
-  stopifnot(class(repo) == "git_repository")
-  git_head <- git2r::head(repo)
-  tracking <- git2r::branch_get_upstream(git_head)
-  # If both remote and branch are NULL and the current branch is tracking a
-  # remote branch, use this remote and branch.
-  if (is.null(remote) && is.null(branch) && !is.null(tracking)) {
-    remote <- git2r::branch_remote_name(tracking)
-    branch <- stringr::str_split_fixed(tracking@name, "/", n = 2)[, 2]
-  }
-  # If remote is NULL, take an educated guess at what the user would want.
-  if (is.null(remote)) {
-    remote <- guess_remote(repo)
-  }
-  # If branch is NULL, use the same name as the current branch.
-  if (is.null(branch)) {
-    branch <- git_head@name
-  }
-
-  return(list(remote = remote, branch = branch))
-}
-
-# Take an educated guess of which remote to use if the user didn't specify one
-# and the current branch is not tracking a remote branch.
-#
-# 1. If there is only 1 remote available, use it.
-# 2. If there are multiple remotes available and one is called "origin", use it.
-# 3. If there are multiple remotes available and none is "origin", throw error.
-guess_remote <- function(repo) {
-  stopifnot(class(repo) == "git_repository")
-  remotes <- git2r::remotes(repo)
-
-  if (length(remotes) == 1) {
-    guess <- remotes
-  } else if ("origin" %in% remotes) {
-    guess <- "origin"
-  } else {
-    m <-
-      "Unable to guess which remote repository to use. Please specify the
-      argument `remote`. To see all the remotes available, you can run
-      `wflow_remotes()`."
-    stop(wrap(m), call. = FALSE)
-  }
-
-  return(guess)
 }

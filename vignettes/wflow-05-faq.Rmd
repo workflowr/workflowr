@@ -12,6 +12,22 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## Why isn't my website displaying online?
+
+If you've followed the setup instructions from the [Getting started
+vignette](wflow-01-getting-started.html), and especially if the website
+displayed in the past, it's _very unlikely_ that you caused the problem. The
+hosting is provided by GitHub Pages, and it sometimes is delayed or down.
+Overall for a free service, it is very reliable. If you wait 5 minutes (or 30
+minutes at most), your website will likely be back to normal.
+
+If you are anxious to know if there is a problem and when it will be resolved,
+you can check the status of the Twitter account [GitHub Status][gh-status] for
+the most up-to-date reports from GitHub. If you suspect that the problem may
+have been caused by your recent changes to your website (again, this is
+unlikely), you can view the GitHub help page [Troubleshooting GitHub Pages
+builds][gh-troubleshooting].
+
 ## Can I make my workflowr website private?
 
 Short answer: No, not if you use the default setup that hosts the site on GitHub
@@ -155,6 +171,8 @@ computer and avoid complicated characters and/or syntax.
 [dat]: https://datproject.org/
 [dat-docs]: https://docs.datproject.org/
 [dathttpd]: https://github.com/beakerbrowser/dathttpd
+[gh-status]: https://twitter.com/githubstatus
+[gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
 [hashbase.io]: https://hashbase.io
 [johnsonlab]: https://github.com/johnsonlab
 [johnsonlab-blog]: https://johnsonlab.github.io/blog-post-22/

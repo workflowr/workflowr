@@ -14,12 +14,26 @@ vignette: >
 
 ## Why isn't my website displaying online?
 
+Occasionally your website may not display (or recent updates will not
+immediately appear), and you may even receive an email from GitHub with the
+following message:
+
+> The page build failed for the `master` branch with the following error:
+>
+> unable to build page. Please try again later.
+>
+> For information on troubleshooting Jekyll see:
+>
+>   https://help.github.com/articles/troubleshooting-jekyll-builds
+>
+> If you have any questions you can contact us by replying to this email.
+
 If you've followed the setup instructions from the [Getting started
 vignette](wflow-01-getting-started.html), and especially if the website
-displayed in the past, it's _very unlikely_ that you caused the problem. The
-hosting is provided by GitHub Pages, and it sometimes is delayed or down.
-Overall for a free service, it is very reliable. If you wait 5 minutes (or 30
-minutes at most), your website will likely be back to normal.
+displayed in the past, it's _very unlikely_ that you caused the problem. The 
+hosting is provided by [GitHub Pages][gh-pages], and it sometimes is delayed or
+down. Overall for a free service, it is very reliable. If you wait 5 minutes (or
+30 minutes at most), your website will likely be back to normal.
 
 If you are anxious to know if there is a problem and when it will be resolved,
 you can check the status of the Twitter account [GitHub Status][gh-status] for
@@ -171,6 +185,7 @@ computer and avoid complicated characters and/or syntax.
 [dat]: https://datproject.org/
 [dat-docs]: https://docs.datproject.org/
 [dathttpd]: https://github.com/beakerbrowser/dathttpd
+[gh-pages]: https://pages.github.com/
 [gh-status]: https://twitter.com/githubstatus
 [gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
 [hashbase.io]: https://hashbase.io

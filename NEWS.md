@@ -1,5 +1,7 @@
 # workflowr 0.7.0.9000
 
+* FAQ about website not displaying
+
 * FAQ on sharing workflowr sites securely using Beaker Browswer (@johnsonlab in #59 & #65)
 
 * Minor changes to improve error messages and documentation.

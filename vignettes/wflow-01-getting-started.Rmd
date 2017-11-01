@@ -87,6 +87,7 @@ wflow_start("myproject")
 
 ```
 myproject/
+├── .Rprofile
 ├── analysis/
 │   ├── about.Rmd
 │   ├── chunks.R
@@ -140,7 +141,7 @@ generated (since one chunk can produce an arbitrary number of plots).
 
 Also required is the RStudio project file, in this example `myproject.Rproj`. 
 Even if you are not using RStudio, do not delete this file because the workflowr
-functions rely on it to determine the root directory of the project.
+functions rely on it to determine the root directory of the project. 
 
 The **optional** directories are `data/`, `code/`, and `output/`.
 These directories are suggestions for organizing your data analysis
@@ -160,7 +161,10 @@ processed data files in `output/`.
 Other optional files included are `CITATION`, `LICENSE`, and `README.md`, which
 are to encourage you to include information on how to cite your work, the
 license that determines how others can reuse your work, and usage details,
-respectively.
+respectively. The `.Rprofile` file is a regular R-script that is run once when 
+the project is opened. It contains the call `library(workflowr)`, ensuring that 
+`workflowr` is loaded automatically each time a workflowr-project is opened.
+
 
 ## Build the website
 

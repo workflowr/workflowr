@@ -13,6 +13,8 @@ project_files <- list.files(path = infrastructure_path, all.files = TRUE,
                             recursive = TRUE)
 # Remove Rproj file since that is dynamically renamed
 project_files <- project_files[!grepl("Rproj", project_files)]
+# Add .Rprofile
+project_files <- c(project_files, ".Rprofile")
 
 git_files <- c(".git", ".gitignore")
 
@@ -133,11 +135,16 @@ test_that("wflow_start does not overwrite files by default", {
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
-  capture.output(wflow_start(site_dir, existing = TRUE,
-                             change_wd = FALSE))
+  rprofile_file <- file.path(site_dir, ".Rprofile")
+  writeLines("x <- 1", con = rprofile_file)
+  expect_warning(wflow_start(site_dir, existing = TRUE,
+                             change_wd = FALSE),
+                 "Set overwrite = TRUE to replace")
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents == "original")
+  rprofile_contents <- readLines(rprofile_file)
+  expect_true(rprofile_contents == "x <- 1")
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
@@ -148,12 +155,16 @@ test_that("wflow_start overwrites files when forced", {
   dir.create(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
+  rprofile_file <- file.path(site_dir, ".Rprofile")
+  writeLines("x <- 1", con = rprofile_file)
   capture.output(wflow_start(site_dir,
                              existing = TRUE, overwrite = TRUE,
                              change_wd = FALSE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents[1] == sprintf("# %s", basename(site_dir)))
+  rprofile_contents <- readLines(rprofile_file)
+  expect_false(any(rprofile_contents == "x <- 1"))
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 

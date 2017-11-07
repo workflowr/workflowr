@@ -126,27 +126,9 @@ wflow_start <- function(directory,
   file.copy(from = paste0(infrastructure_path, "/."), to = directory,
             overwrite = overwrite, recursive = TRUE)
 
-  # Create a default .Rprofile file
-  create_rprofile <- function(path, overwrite = FALSE) {
-    lines <-  c(
-      "## This makes sure that R loads the workflowr package",
-      "## automatically, everytime the project is loaded",
-      "if (require(\"workflowr\", quietly = T)) {",
-      "  message(\"Loading .Rprofile for the current workflowr project\")",
-      "  library(workflowr)", "} else {", "  message(\"workflowr package not installed, please run devtools::install_github('jdblischak/workflowr') to use the workflowr functions\")",
-      "}")
-
-    fname <- file.path(path, ".Rprofile")
-    exists <- file.exists(fname)
-    if (exists & !overwrite) {
-      warning(sprintf("File %s already exists. Set overwrite = TRUE to replace",
-                      fname))
-    } else {
-      writeLines(lines, con = fname)
-    }
-    return(invisible(fname))
-  }
-  create_rprofile(directory, overwrite = overwrite)
+  # Add .Rprofile which loads workflowr
+  rprofile <- create_rprofile(directory, overwrite = overwrite)
+  project_files <- c(project_files, rprofile)
 
   # Create docs/ directory
   dir.create(file.path(directory, "docs"), showWarnings = FALSE)
@@ -266,4 +248,27 @@ check_git_config <- function(path) {
         'git2r::config(global = TRUE, user.name = "Your Name", user.email = "youremailaddress")',
         call. = FALSE)
   }
+}
+
+# Create a default .Rprofile file
+create_rprofile <- function(path, overwrite = FALSE) {
+  lines <-  c(
+    "## This makes sure that R loads the workflowr package",
+    "## automatically, everytime the project is loaded",
+    "if (requireNamespace(\"workflowr\", quietly = TRUE)) {",
+    "  message(\"Loading .Rprofile for the current workflowr project\")",
+    "  library(\"workflowr\")",
+    "} else {",
+    "  message(\"workflowr package not installed, please run devtools::install_github('jdblischak/workflowr') to use the workflowr functions\")",
+    "}")
+
+  fname <- file.path(path, ".Rprofile")
+  exists <- file.exists(fname)
+  if (exists & !overwrite) {
+    warning(sprintf("File %s already exists. Set overwrite = TRUE to replace",
+                    fname))
+  } else {
+    writeLines(lines, con = fname)
+  }
+  return(invisible(fname))
 }

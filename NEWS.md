@@ -14,6 +14,8 @@ taking slightly longer to load.
 * Added new function `wflow_push()` that performs the equivalent of `git push`
 directly from the R console.
 
+* Added .Rprofile to automatically load workflowr (@vanAmsterdam in #73)
+
 # workflowr 0.7.0
 
 ## wflow_build

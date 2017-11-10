@@ -1,17 +1,17 @@
 #' Push files to remote repository
 #'
-#' \code{wflow_push} pushes the local files on your machine to your remote
+#' \code{wflow_git_push} pushes the local files on your machine to your remote
 #' repository on GitHub. This is a convenience function to run Git commands from
 #' the R console instead of the Terminal. The same functionality can be acheived
 #' by running \code{git push} in the Terminal.
 #'
-#' \code{wflow_push} tries to choose sensible defaults if the user does not
+#' \code{wflow_git_push} tries to choose sensible defaults if the user does not
 #' explicitly specify the remote repository and/or the remote branch:
 #'
 #' \itemize{
 #'
 #' \item If both \code{remote} and \code{branch} are \code{NULL},
-#' \code{wflow_push} checks to see if the current local branch is tracking a
+#' \code{wflow_git_push} checks to see if the current local branch is tracking a
 #' remote branch. If yes, it pushes to this tracked remote branch.
 #'
 #' \item If the argument \code{remote} is left as \code{NULL} and there is only
@@ -23,7 +23,7 @@
 #'
 #' }
 #'
-#' Under the hood, \code{wflow_push} is a wrapper for \code{\link[git2r]{push}}
+#' Under the hood, \code{wflow_git_push} is a wrapper for \code{\link[git2r]{push}}
 #' from the package \link{git2r}.
 #'
 #' @param remote character (default: NULL). The name of the remote repository.
@@ -44,7 +44,7 @@
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return An object of class \code{wflow_push}, which is a list with the
+#' @return An object of class \code{wflow_git_push}, which is a list with the
 #'   following elements:
 #'
 #' \itemize{
@@ -65,13 +65,13 @@
 #' \dontrun{
 #'
 #' # Push to remote repository
-#' wflow_push()
+#' wflow_git_push()
 #' # Preview by running in dry run mode
-#' wflow_push(dry_run = TRUE)
+#' wflow_git_push(dry_run = TRUE)
 #' }
 #'
 #' @export
-wflow_push <- function(remote = NULL, branch = NULL,
+wflow_git_push <- function(remote = NULL, branch = NULL,
                        username = NULL, password = NULL,
                        force = FALSE, dry_run = FALSE, project = ".") {
 
@@ -140,7 +140,7 @@ wflow_push <- function(remote = NULL, branch = NULL,
       warning(wrap(m))
     } else {
       m <-
-        "You have specifed a remote, but this remote repository has not
+        "You have specifed a remote, but this remote repository has no
         remotes set. Run ?wflow_remotes to learn how to configure this."
       stop(wrap(m))
     }
@@ -243,13 +243,13 @@ wflow_push <- function(remote = NULL, branch = NULL,
 
   o <- list(remote = remote, branch = branch, username = username,
             force = force, dry_run = dry_run)
-  class(o) <- "wflow_push"
+  class(o) <- "wflow_git_push"
   return(o)
 }
 
 #' @export
-print.wflow_push <- function(x, ...) {
-  cat("Summary from wflow_push\n\n")
+print.wflow_git_push <- function(x, ...) {
+  cat("Summary from wflow_git_push\n\n")
 
   cat(wrap(sprintf(
     "Pushing to the branch \"%s\" of the remote repository \"%s\"",

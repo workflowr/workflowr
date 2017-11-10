@@ -24,8 +24,8 @@
 #'
 #' }
 #'
-#' Under the hood, \code{wflow_git_pull} is a wrapper for \code{\link[git2r]{pull}}
-#' from the package \link{git2r}.
+#' Under the hood, \code{wflow_git_pull} is a wrapper for
+#' \code{\link[git2r]{pull}} from the package \link{git2r}.
 #'
 #' @param remote character (default: NULL). The name of the remote repository.
 #'   See Details for the default behavior.

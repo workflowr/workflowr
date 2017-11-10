@@ -11,8 +11,8 @@ formulae are shown using TeX fonts only. This will make the
 presentation more consistent at the cost of the webpage sometimes
 taking slightly longer to load.
 
-* Added new function `wflow_push()` that performs the equivalent of `git push`
-directly from the R console.
+* Added new function `wflow_git_push()` that performs the equivalent of `git
+push` directly from the R console.
 
 * Added .Rprofile to automatically load workflowr (@vanAmsterdam in #73)
 

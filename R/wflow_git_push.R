@@ -116,43 +116,10 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   remote_avail <- wflow_remotes(verbose = FALSE, project = project)
 
   # Fail early if HEAD does not point to a branch
-  if (!git2r::is_branch(git_head)) {
-    m <-
-      "You are not currently on any branch. Instead you are in 'detached HEAD'
-      state. workflowr doesn't support such advanced Git options. If you
-      didn't mean to do this, try running `git checkout master` in the
-      Terminal. If you did mean to do this, please use Git directly from the
-      Terminal to push your commits."
-    stop(wrap(m))
-  }
+  check_branch(git_head)
 
-  # Fail early if no remotes (and the remote argument isn't a URL)
-  if (length(remote_avail) == 0) {
-    if (is.null(remote)) {
-      m <-
-        "No remote repositories are available. Run ?wflow_remotes to learn how
-        to configure this."
-      stop(wrap(m))
-    } else if ("https" %in% remote || "git@" %in% remote) {
-      m <-
-        "Instead of specifying the URL to the remote repository, you can save
-        it as a remote. Run ?wflow_remotes for details."
-      warning(wrap(m))
-    } else {
-      m <-
-        "You have specifed a remote, but this remote repository has no
-        remotes set. Run ?wflow_remotes to learn how to configure this."
-      stop(wrap(m))
-    }
-  }
-
-  # Fail early if remote is specified but doesn't exist
-  if (!is.null(remote) && !(remote %in% names(remote_avail))) {
-    m <-
-      "The remote you specified is not one of the remotes available. Run
-      ?wflow_remotes to learn how to add this remote."
-    stop(wrap(m))
-  }
+  # Fail early if remote not specified properly
+  check_remote(remote = remote, remote_avail = remote_avail)
 
   # Determine remote and branch ------------------------------------------------
 
@@ -161,63 +128,16 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   branch <- remote_and_branch$branch
 
   # Send warning if the remote branch is not the same one as local branch (HEAD)
-  if (branch != git_head@name) {
-    m <- sprintf(
-      "The remote branch is \"%s\", but the current local branch is \"%s\".
-      This is a valid option, but it is non-conventional. Is this what you
-      intended?",
-      branch, git_head@name)
-    warning(wrap(m))
-  }
+  warn_branch_mismatch(remote_branch = branch, local_branch = git_head@name)
 
   # Obtain authentication ------------------------------------------------------
 
-  # Determine if using HTTPS or SSH protocol
-  if (remote %in% names(remote_avail)) {
-    url <- remote_avail[remote]
-  } else {
-    url <- remote
-  }
-  if (stringr::str_sub(url, 1, 5) == "https") {
-    protocol <- "https"
-  } else if (stringr::str_sub(url, 1, 4) == "git@") {
+  credentials <- authenticate_git(remote = remote, remote_avail = remote_avail,
+                                  username = username, password = password)
+  if (class(credentials) == "cred_ssh_key") {
     protocol <- "ssh"
   } else {
-    m <- "The URL to the remote repository is using an unknown protocol. It
-         should start with https if you are using your username and password
-         for authentication, or with git@ if you are using your SSH keys. If
-         you are trying to acheive something non-standard, please use Git
-         via the command line interface."
-    stop(wrap(m))
-  }
-
-  if (protocol == "https" && !dry_run) {
-    if (is.null(username)) {
-      if (interactive()) {
-        username <- readline("Please enter your GitHub username: ")
-      } else {
-       m <-
-         "No username was specified. Either include the username in the
-         function call or run the command in an interactive R session to be
-         prompted to enter it."
-       stop(wrap(m))
-      }
-    }
-    if (is.null(password)) {
-      if (interactive()) {
-        password <- getPass::getPass("Please enter your GitHub password: ")
-      } else {
-        m <-
-         "No password was specified. Either include the password in the
-         function call (not recommended) or run the command in an interactive
-         R session to be prompted to enter it in a secure manner."
-        stop(wrap(m))
-      }
-    }
-    credentials <- git2r::cred_user_pass(username = username,
-                                         password = password)
-  } else if (protocol == "ssh") {
-    credentials <- git2r::cred_ssh_key()
+    protocol <- "https"
   }
 
   # Push! ----------------------------------------------------------------------
@@ -270,54 +190,4 @@ print.wflow_git_push <- function(x, ...) {
 
   cat("\n")
   return(invisible(x))
-}
-
-# Determine which remote and branch to push or pull.
-#
-# This function assumes error handling has already happened upstream.
-determine_remote_and_branch <- function(repo, remote, branch) {
-  stopifnot(class(repo) == "git_repository")
-  git_head <- git2r::head(repo)
-  tracking <- git2r::branch_get_upstream(git_head)
-  # If both remote and branch are NULL and the current branch is tracking a
-  # remote branch, use this remote and branch.
-  if (is.null(remote) && is.null(branch) && !is.null(tracking)) {
-    remote <- git2r::branch_remote_name(tracking)
-    branch <- stringr::str_split_fixed(tracking@name, "/", n = 2)[, 2]
-  }
-  # If remote is NULL, take an educated guess at what the user would want.
-  if (is.null(remote)) {
-    remote <- guess_remote(repo)
-  }
-  # If branch is NULL, use the same name as the current branch.
-  if (is.null(branch)) {
-    branch <- git_head@name
-  }
-
-  return(list(remote = remote, branch = branch))
-}
-
-# Take an educated guess of which remote to use if the user didn't specify one
-# and the current branch is not tracking a remote branch.
-#
-# 1. If there is only 1 remote available, use it.
-# 2. If there are multiple remotes available and one is called "origin", use it.
-# 3. If there are multiple remotes available and none is "origin", throw error.
-guess_remote <- function(repo) {
-  stopifnot(class(repo) == "git_repository")
-  remotes <- git2r::remotes(repo)
-
-  if (length(remotes) == 1) {
-    guess <- remotes
-  } else if ("origin" %in% remotes) {
-    guess <- "origin"
-  } else {
-    m <-
-      "Unable to guess which remote repository to use. Please specify the
-      argument `remote`. To see all the remotes available, you can run
-      `wflow_remotes()`."
-    stop(wrap(m), call. = FALSE)
-  }
-
-  return(guess)
 }

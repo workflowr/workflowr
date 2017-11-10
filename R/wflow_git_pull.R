@@ -128,7 +128,8 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   # Obtain authentication ------------------------------------------------------
 
   credentials <- authenticate_git(remote = remote, remote_avail = remote_avail,
-                                  username = username, password = password)
+                                  username = username, password = password,
+                                  dry_run = dry_run)
   if (class(credentials) == "cred_ssh_key") {
     protocol <- "ssh"
   } else {
@@ -144,10 +145,20 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
                           refspec = paste0("refs/heads/", branch),
                           credentials = credentials),
              error = function(e) {
-               if (stringr::str_detect(e$message, "unsupported URL protocol") &&
-                   protocol == "ssh") {
-                 reason <- "workflowr was unable to use your SSH keys. Run `git
-                           pull` in the Terminal instead."
+               if (protocol == "ssh" &&
+                   stringr::str_detect(e$message, "unsupported URL protocol")) {
+                 reason <-
+                   "workflowr was unable to use your SSH keys because your
+                   computer does not have the required software installed. For
+                   a quick fix, run `git push` in the Terminal instead. If you
+                   want to be able to push directly from R, re-install the
+                   package git2r and follow its advice for how to enable SSH
+                   for your operating system."
+               } else if (protocol == "ssh" &&
+                          stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
+                 reason <-
+                   "workflowr was unable to use your SSH keys for an unknown
+                   reason. Run `git push` in the Terminal instead."
                } else {
                  reason <- "Pull failed for unknown reason."
                }

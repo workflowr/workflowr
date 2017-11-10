@@ -133,7 +133,8 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   # Obtain authentication ------------------------------------------------------
 
   credentials <- authenticate_git(remote = remote, remote_avail = remote_avail,
-                                  username = username, password = password)
+                                  username = username, password = password,
+                                  dry_run = dry_run)
   if (class(credentials) == "cred_ssh_key") {
     protocol <- "ssh"
   } else {
@@ -147,10 +148,26 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
                          refspec = paste0("refs/heads/", branch),
                          force = force, credentials = credentials),
              error = function(e) {
-               if (stringr::str_detect(e$message, "unsupported URL protocol") &&
-                   protocol == "ssh") {
-                 reason <- "workflowr was unable to use your SSH keys. Run `git
-                           push` in the Terminal instead."
+               if (protocol == "ssh" &&
+                   stringr::str_detect(e$message, "unsupported URL protocol")) {
+                 reason <-
+                   "workflowr was unable to use your SSH keys because your
+                   computer does not have the required software installed. For
+                   a quick fix, run `git push` in the Terminal instead. If you
+                   want to be able to push directly from R, re-install the
+                   package git2r and follow its advice for how to enable SSH
+                   for your operating system."
+               } else if (protocol == "ssh" &&
+                          stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
+                 reason <-
+                   "workflowr was unable to use your SSH keys for an unknown
+                   reason. Run `git push` in the Terminal instead."
+               } else if (stringr::str_detect(e$message, "remote contains commits that are not present locally")) {
+                 reason <-
+                   "workflowr was unable to push because the remote repository
+                   contains changes that are not present in your local
+                   repository. Run wflow_git_pull() first to pull down these
+                   changes to your local computer."
                } else {
                  reason <- "Push failed for unknown reason."
                }

@@ -283,10 +283,6 @@ obtain_files_in_commit_root <- function(repo, commit) {
 
 # Stop if HEAD does not point to a branch
 check_branch <- function(git_head) {
-  if (!class(git_head) == "git_commit") {
-    m <- "Invalid input to check_branch. Requires class git_commit."
-    stop(wrap(m))
-  }
   if (!git2r::is_branch(git_head)) {
     m <-
       "You are not currently on any branch. Instead you are in 'detached HEAD'
@@ -412,7 +408,8 @@ warn_branch_mismatch <- function(remote_branch, local_branch) {
 # remote_avail - a named character vector of remote URLs
 # username - GitHub username or NULL
 # password - GitHub password or NULL
-authenticate_git <- function(remote, remote_avail, username, password) {
+# dry_run - logical
+authenticate_git <- function(remote, remote_avail, username, password, dry_run) {
   if (!(is.character(remote) && is.character(remote_avail)))
     stop("remote and remote_avail must be character vectors")
   if (!(is.null(username) || (is.character(username) && length(username) == 1)))
@@ -464,6 +461,8 @@ authenticate_git <- function(remote, remote_avail, username, password) {
     }
     credentials <- git2r::cred_user_pass(username = username,
                                          password = password)
+  } else if (protocol == "https" && dry_run) {
+    credentials <- NULL
   } else if (protocol == "ssh") {
     credentials <- git2r::cred_ssh_key()
   }

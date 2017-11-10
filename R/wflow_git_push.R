@@ -160,8 +160,10 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
                } else if (protocol == "ssh" &&
                           stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
                  reason <-
-                   "workflowr was unable to use your SSH keys for an unknown
-                   reason. Run `git push` in the Terminal instead."
+                   "workflowr was unable to use your SSH keys because it has a
+                   passphrase. You'll need to activate ssh-agent and add your
+                   keys. Alternatively, run `git push` in the Terminal
+                   instead."
                } else if (stringr::str_detect(e$message, "remote contains commits that are not present locally")) {
                  reason <-
                    "workflowr was unable to push because the remote repository

@@ -461,10 +461,16 @@ authenticate_git <- function(remote, remote_avail, username, password, dry_run) 
     }
     credentials <- git2r::cred_user_pass(username = username,
                                          password = password)
-  } else if (protocol == "https" && dry_run) {
+  } else {
+    # If dry run, credentials aren't needed.
+    #
+    # If using SSH, can't run cred_ssh_key() here if using a passphrase.
+    # credentials has to be entered as NULL when calling push or pull in order
+    # for it to work.
+    #
+    # https://github.com/hadley/devtools/issues/642#issuecomment-139357055
+    # https://github.com/ropensci/git2r/issues/284#issuecomment-306103004
     credentials <- NULL
-  } else if (protocol == "ssh") {
-    credentials <- git2r::cred_ssh_key()
   }
   return(credentials)
 }

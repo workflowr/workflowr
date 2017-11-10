@@ -150,15 +150,17 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
                  reason <-
                    "workflowr was unable to use your SSH keys because your
                    computer does not have the required software installed. For
-                   a quick fix, run `git push` in the Terminal instead. If you
-                   want to be able to push directly from R, re-install the
+                   a quick fix, run `git pull` in the Terminal instead. If you
+                   want to be able to pull directly from R, re-install the
                    package git2r and follow its advice for how to enable SSH
                    for your operating system."
                } else if (protocol == "ssh" &&
                           stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
                  reason <-
-                   "workflowr was unable to use your SSH keys for an unknown
-                   reason. Run `git push` in the Terminal instead."
+                   "workflowr was unable to use your SSH keys because it has a
+                   passphrase. You'll need to activate ssh-agent and add your
+                   keys. Alternatively, run `git pull` in the Terminal
+                   instead."
                } else {
                  reason <- "Pull failed for unknown reason."
                }

@@ -315,11 +315,12 @@ check_remote <- function(remote, remote_avail) {
         "No remote repositories are available. Run ?wflow_remotes to learn how
         to configure this."
       stop(wrap(m), call. = FALSE)
-    } else if ("https" %in% remote || "git@" %in% remote) {
+    } else if (any(stringr::str_detect(remote, c("https", "git@")))) {
       m <-
         "Instead of specifying the URL to the remote repository, you can save
         it as a remote. Run ?wflow_remotes for details."
       warning(wrap(m), call. = FALSE)
+      return()
     } else {
       m <-
         "You have specifed a remote, but this remote repository has not
@@ -340,6 +341,11 @@ check_remote <- function(remote, remote_avail) {
 # Determine which remote and branch to push or pull.
 #
 # This function assumes error handling has already happened upstream.
+#
+# See the documentation for wflow_git_push or wflow_git_pull for the explanation
+# of this function.
+#
+# Returns a list of length two.
 determine_remote_and_branch <- function(repo, remote, branch) {
   stopifnot(class(repo) == "git_repository")
   git_head <- git2r::head(repo)

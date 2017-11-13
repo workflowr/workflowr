@@ -224,20 +224,22 @@ to the "dev" branch.
 
 ## Credits
 
-workflowr was developed, and is maintained, by John Blischak, a
-postdoctoral researcher in the laboratory of
-[Matthew Stephens][stephens] at
-[The University of Chicago][uchicago]. He is funded by a grant from
-the [Gordon and Betty Moore Foundation][moore] to MS.  Many others
-have contributed to workflowr by testing the package and providing
-feedback---thanks especially to Lei Sun, Xiang Zhou and other members 
-(past and present) of the Stephens lab.
+workflowr was developed, and is maintained, by John Blischak, a postdoctoral
+researcher in the laboratory of [Matthew Stephens][stephens] at [The University
+of Chicago][uchicago]. He is funded by a grant from the [Gordon and Betty Moore
+Foundation][moore] to MS. [Peter Carbonetto][pcarbo] and [Matthew
+Stephens][stephens] are co-authors.
 
-The workflowr package uses many great open source packages. Especially
-critical for this project are the R packages [git2r][], [knitr][], and
-[rmarkdown][]. Please see the vignette
-[How the workflowr package works][vig-details] to learn about the
-software that makes workflowr possible.
+We are very thankful to workflowr [contributors][] for helping improve the
+package. We are also grateful for workflowr users for testing the package and
+providing feedback---thanks especially to [Lei Sun][lsun], [Xiang
+Zhou][xiangzhu], [Wei Wang][nkweiwang], and other members (past and present) of
+the Stephens lab.
+
+The workflowr package uses many great open source packages. Especially critical
+for this project are the R packages [git2r][], [knitr][], and [rmarkdown][].
+Please see the vignette [How the workflowr package works][vig-details] to learn
+about the software that makes workflowr possible.
 
 ## License
 
@@ -276,6 +278,7 @@ good options are "workflow + R" or "work + flower".
 [cboettig/template]: https://github.com/cboettig/template
 [Codecov]: https://codecov.io/
 [contributing]: https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.md
+[contributors]: https://github.com/jdblischak/workflowr/graphs/contributors
 [covr]: https://github.com/jimhester/covr
 [cran-rr]: https://cran.r-project.org/web/views/ReproducibleResearch.html
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
@@ -294,12 +297,15 @@ good options are "workflow + R" or "work + flower".
 [knitr-jekyll]: https://github.com/yihui/knitr-jekyll
 [knowledge-repo]: https://github.com/airbnb/knowledge-repo
 [lnraw]: https://github.com/mmadsen/lnraw
+[lsun]: https://github.com/LSun
 [makeProject]: https://cran.r-project.org/web/packages/makeProject/index.html
 [manuscriptPackage]: https://github.com/jhollist/manuscriptPackage
 [MIT]: https://opensource.org/licenses/mit-license.php
 [moore]: https://www.moore.org/
+[nkweiwang]: https://github.com/NKweiwang
 [Pakillo/template]: https://github.com/Pakillo/template
 [pandoc]: http://pandoc.org
+[pcarbo]: https://pcarbo.github.io/
 [pkgdown]: http://hadley.github.io/pkgdown/
 [poirot]: https://github.com/ramnathv/poirot
 [prodigenr]: https://github.com/lwjohnst86/prodigenr
@@ -335,3 +341,4 @@ good options are "workflow + R" or "work + flower".
 [vig-migrating]: https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html
 [vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
 [workflowr]: https://jdblischak.github.io/workflowr/
+[xiangzhu]: https://github.com/xiangzhu

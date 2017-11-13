@@ -415,7 +415,8 @@ warn_branch_mismatch <- function(remote_branch, local_branch) {
 # username - GitHub username or NULL
 # password - GitHub password or NULL
 # dry_run - logical
-authenticate_git <- function(remote, remote_avail, username, password, dry_run) {
+authenticate_git <- function(remote, remote_avail, username = NULL,
+                             password = NULL, dry_run = FALSE) {
   if (!(is.character(remote) && is.character(remote_avail)))
     stop("remote and remote_avail must be character vectors")
   if (!(is.null(username) || (is.character(username) && length(username) == 1)))

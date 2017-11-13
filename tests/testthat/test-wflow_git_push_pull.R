@@ -134,3 +134,25 @@ test_that("warn_branch_mismatch warns if local and remote branch do *not* match"
   expect_warning(warn_branch_mismatch("a", "b"),
                "The remote branch is \"a\", but the current local branch is \"b\".")
 })
+
+# Test authenticate_git --------------------------------------------------------
+
+test_that("authenticate_git can create HTTPS credentials", {
+  cred <- authenticate_git(remote = "upstream", remote_avail = remote_avail,
+                           username = "fakeuser", password = "fakepass")
+  expect_true(class(cred) == "cred_user_pass")
+  expect_true(cred@username == "fakeuser")
+  expect_true(cred@password == "fakepass")
+})
+
+test_that("authenticate_git returns NULL for SSH remotes", {
+  cred <- authenticate_git(remote = "git@github.com:user/repo.git",
+                           remote_avail = remote_avail)
+  expect_true(is.null(cred))
+})
+
+test_that("authenticate_git fails for unknown protocol", {
+  expect_error(authenticate_git(remote = "xyz:user/repo.git",
+                                remote_avail = remote_avail),
+               "The URL to the remote repository is using an unknown protocol")
+})

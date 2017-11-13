@@ -161,10 +161,9 @@ processed data files in `output/`.
 Other optional files included are `CITATION`, `LICENSE`, and `README.md`, which
 are to encourage you to include information on how to cite your work, the
 license that determines how others can reuse your work, and usage details,
-respectively. The `.Rprofile` file is a regular R-script that is run once when 
-the project is opened. It contains the call `library(workflowr)`, ensuring that 
-`workflowr` is loaded automatically each time a workflowr-project is opened.
-
+respectively. The `.Rprofile` file is a regular R script that is run once when
+the project is opened. It contains the call `library("workflowr")`, ensuring
+that workflowr is loaded automatically each time a workflowr-project is opened.
 
 ## Build the website
 

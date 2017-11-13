@@ -275,27 +275,43 @@ local computer. The next step is to put your code on GitHub so that it can serve
 your website online. To do this, login to your account on GitHub and create a
 new repository following these [instructions][new-repo]. Make sure you do not
 add an automatically-generated README, .gitignore, or license (these are
-important, but workflowr already creates them for you). Next you will copy the
-Git commands under the heading "…or push an existing repository from the command
-line". Using the hypothetical GitHub username "myname" and hypothetical
-repository name "myproject"^[The name of the repository on GitHub does not need
-to be identical to the directory name of your local Git repo; however, it is
-convenient to have them match since this is the default behavior of `git clone`
-when copying your repo to a another computer], the two lines will look like the
-following:
+important, but workflowr already creates them for you). For the purposes of this
+tutorial, the code below assumes that the GitHub repository also has the name
+"myproject." This isn't strictly neccesary (you can name your GitHub repository
+whatever you like), but it's generally good organizational practice to use the
+same name for both your GitHub repository and the local directory on your
+computer.
 
-```
-# Run in the shell
-git remote add origin https://github.com/myname/myproject.git
-git push -u origin master
+Next you need to tell your local Git repository about this new GitHub
+repository. Run the `wflow_remotes()` command below in the R console, replacing
+"myname" with your GitHub username:
+
+```{r wflow-remotes}
+wflow_remotes("origin", "myname", "myproject")
 ```
 
-The first line creates the alias "origin" that points to your remote repository
-on GitHub^["origin" is the conventional name, but could be anything you wanted].
-The second pushes your current commit history to GitHub. You will be prompted to
-enter your GitHub username and password for authentication after you run `git
-push`. To view or update your remote repositories, use the function
-`wflow_remotes()`.
+This creates the alias "origin" that points to your remote repository on
+GitHub^["origin" is the conventional name, but could be anything you wanted].
+The associated URL is https://github.com/myname/myproject.git^[The name of the
+repository on GitHub does not need to be identical to the directory name of your
+local Git repo; however, it is convenient to have them match since this is the
+default behavior of `git clone` when copying your repo to a another computer].
+You only need to run this command once to add the remote repository.
+
+Now you can push your files to GitHub with the function `wflow_git_push().` Run
+the following in the R console:
+
+```{r wflow-git-push}
+wflow_git_push(dry_run = TRUE)
+```
+
+Using `dry_run = TRUE` previews what the function will do. Remove this argument
+to actually push to GitHub. You will be prompted to enter your GitHub username
+and password for authentication^[If you'd prefer to use SSH keys for
+authentication, please see the section [Setup SSH
+keys](wflow-02-customization.html#setup-ssh-keys)]. Each time you make changes
+to your project, e.g. run `wflow_publish()`, you will need to run
+`wflow_git_push()` to send the changes to GitHub.
 
 Now that your code is on GitHub, you need to tell GitHub that you want the files
 in `docs/` to be published as a website. Go to Settings -> GitHub Pages and
@@ -385,12 +401,8 @@ wflow_publish(c("index.Rmd", "first-analysis.Rmd"),
 setwd("..")
 ```
 
-Lastly, push the changes to GitHub to deploy these latest changes to the website.
-
-```
-# Run in the shell
-git push origin master
-```
+Lastly, push the changes to GitHub with `wflow_git_push()` to deploy these
+latest changes to the website.
 
 ## The workflow
 
@@ -411,7 +423,7 @@ appear on the website (alternatively press the Knit button in RStudio)
 files in `code/`, `data/`, and `output/`), build the HTML files, and commit the
 HTML files
 
-1. Push the changes to GitHub with `git push origin master`
+1. Push the changes to GitHub with `wflow_git_push()`
 
 This ensures that the "Code version:" inserted into each HTML file corresponds
 to the state of the Git repository at the time the HTML was built.

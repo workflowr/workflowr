@@ -199,8 +199,44 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
   }
   site_dir <- workflowr:::tempfile(tmpdir = workflowr:::normalizePath("/tmp"))
   expect_error(wflow_start(site_dir, change_wd = FALSE),
-               "You must set your user.name and user.email for Git first\n")
+               "You must set the option git_name")
   expect_false(dir.exists(site_dir))
+  expect_error(wflow_start(site_dir, git_name = "A Name", change_wd = FALSE),
+               "You must set the option git_email")
+  expect_false(dir.exists(site_dir))
+})
+
+test_that("wflow_start does not overwrite and gives warning if user.name and user.email are supplied but already exist", {
+  site_dir <- workflowr:::tempfile(tmpdir = workflowr:::normalizePath("/tmp"))
+  expect_warning(wflow_start(site_dir, git_name = "A Name", change_wd = FALSE),
+               "You supplied git_name. However,")
+  expect_true(dir.exists(site_dir))
+  expect_false(config()$global$user.name == "A Name")
+  unlink(site_dir, recursive = TRUE, force = TRUE)
+  expect_warning(wflow_start(site_dir, git_email = "email@domain", change_wd = FALSE),
+                 "You supplied git_email. However,")
+  expect_true(dir.exists(site_dir))
+  expect_false(config()$global$user.email == "email@domain")
+  unlink(site_dir, recursive = TRUE, force = TRUE)
+})
+
+test_that("wflow_start can set user.name and user.email", {
+  config_original <- "~/.gitconfig"
+  if (file.exists(config_original)) {
+    config_tmp <- "~/.gitconfig-workflowr"
+    file.rename(from = config_original, to = config_tmp)
+    on.exit(file.rename(from = config_tmp, to = config_original))
+  }
+  site_dir <- workflowr:::tempfile(tmpdir = workflowr:::normalizePath("/tmp"))
+  wflow_start(site_dir, git_name = "A Name", git_email = "email@domain",
+              change_wd = FALSE)
+  expect_true(dir.exists(site_dir))
+  expect_true(config()$global$user.name == "A Name")
+  expect_true(config()$global$user.email == "email@domain")
+  initial_commit <- commits(repository(site_dir))[[1]]
+  expect_true(initial_commit@author@name == "A Name")
+  expect_true(initial_commit@author@email == "email@domain")
+  unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
 test_that("wflow_start can handle relative path to current directory: .", {

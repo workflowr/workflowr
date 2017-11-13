@@ -28,6 +28,14 @@
 #'   additional commit. In both cases, only files needed for the
 #'   workflowr project will be included in the commit.
 #'
+#' @param git_name character (default: NULL). Git user name. Git assigns an
+#'   author when committing (i.e. saving) changes. If you have never used Git
+#'   before on your computer, make sure to set this.
+#'
+#' @param git_email character (default: NULL). Git user email. Git assigns an
+#'   email when committing (i.e. saving) changes. If you have never used Git
+#'   before on your computer, make sure to set this.
+#'
 #' @param existing logical (default: FALSE). Indicate if the specified
 #'   \code{directory} already exists. The default prevents injecting the
 #'   workflowr files into an unwanted location. Only set to TRUE if you wish to
@@ -50,6 +58,9 @@
 #' # Provide a custom name for the project.
 #' wflow_start("path/to/new-project", name = "My Project")
 #'
+#' # Configure name and email associated with Git
+#' wflow_start("path/to/new-project", git_name = "My Name", git_email = "email@domain")
+#'
 #' # Add workflowr files to an existing project.
 #' wflow_start("path/to/current-project", existing = TRUE)
 #'
@@ -61,6 +72,8 @@
 wflow_start <- function(directory,
                         name = NULL,
                         git = TRUE,
+                        git_name = NULL,
+                        git_email = NULL,
                         existing = FALSE,
                         overwrite = FALSE,
                         change_wd = TRUE) {
@@ -70,6 +83,10 @@ wflow_start <- function(directory,
     stop("name must be NULL or a one element character vector: ", name)
   if (!is.logical(git) | length(git) != 1)
     stop("git must be a one element logical vector: ", git)
+  if (!(is.null(git_name) | (is.character(git_name) | length(git_name) != 1)))
+    stop("git_name must be NULL or a one element character vector: ", git_name)
+  if (!(is.null(git_email) | (is.character(git_email) | length(git_email) != 1)))
+    stop("git_email must be NULL or a one element character vector: ", git_email)
   if (!is.logical(existing) | length(existing) != 1)
     stop("existing must be a one element logical vector: ", existing)
   if (!is.logical(overwrite) | length(overwrite) != 1)
@@ -100,7 +117,7 @@ wflow_start <- function(directory,
 
   # Require that user.name and user.email be set locally or globally
   if (git) {
-    check_git_config(path = directory)
+    set_git_config(git_name = git_name, git_email = git_email, path = directory)
   }
 
   # Create directory if it doesn't already exist
@@ -208,12 +225,14 @@ check_rstudio_version <- function() {
   return(rs_version)
 }
 
-# Check for user.name and user.email in .gitconfig
+# Set user.name and user.email in .gitconfig
 #
-# path character. Path to repository
+# git_name - NULL or character vector
+# git_email - NULL or character vector
+# path - character. Path to repository
 #
 # If unable to find user.name and user.email, stops the program.
-check_git_config <- function(path) {
+set_git_config <- function(git_name = NULL, git_email = NULL, path) {
   stopifnot(is.character(path))
   # Only look for local configuration file if the directory exists and it is a
   # Git repo
@@ -237,16 +256,44 @@ check_git_config <- function(path) {
     config_name_set <- "user.name" %in% names(git_config$global)
   }
 
-  if (config_email_set & config_name_set) {
-    return(invisible())
-  } else {
-   stop("You must set your user.name and user.email for Git first\n",
-        "to be able to run `wflow_start` with `git = TRUE`.\n",
-        "Run the following command in R, replacing the arguments\n",
-        "with your name and email address, and then re-run `wflow_start`:\n",
-        "\n",
-        'git2r::config(global = TRUE, user.name = "Your Name", user.email = "youremailaddress")',
-        call. = FALSE)
+  if (!config_name_set && !is.null(git_name)) {
+    # If name has not been set and a new one supplied, add the new one
+    git2r::config(global = TRUE, user.name = git_name)
+  } else if (config_name_set && !is.null(git_name)) {
+    # If name has been set and a new one supplied, send a warning that previous
+    # name will *not* be overwritten.
+    m <-
+      "You supplied git_name. However, a Git user.name has already been
+      configured for your computer. To avoid breaking anything, workflowr is
+      not changing the Git user.name. If you want to change this, please run
+      `git config` manually in the Terminal."
+    warning(wrap(m), call. = FALSE)
+  } else if (!config_name_set && is.null(git_name)) {
+    m <-
+      "You must set the option git_name if this is the first Git repository
+      you have created on this computer. This is the name that Git will use to
+      label the changes you make to the code."
+    stop(wrap(m), call. = FALSE)
+  }
+
+  if (!config_email_set && !is.null(git_email)) {
+    # If email has not been set and a new one supplied, add the new one
+    git2r::config(global = TRUE, user.email = git_email)
+  } else if (config_email_set && !is.null(git_email)) {
+    # If email has been set and a new one supplied, send a warning that previous
+    # email will *not* be overwritten.
+    m <-
+      "You supplied git_email. However, a Git user.email has already been
+      configured for your computer. To avoid breaking anything, workflowr is
+      not changing the Git user.email. If you want to change this, please run
+      `git config` manually in the Terminal."
+    warning(wrap(m), call. = FALSE)
+  } else if (!config_email_set && is.null(git_email)) {
+    m <-
+      "You must set the option git_email if this is the first Git repository
+      you have created on this computer. This is the email that Git will use to
+      label the changes you make to the code."
+    stop(wrap(m), call. = FALSE)
   }
 }
 

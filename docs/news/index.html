@@ -90,6 +90,36 @@
     </div>
 
     <div class="contents">
+    <div id="workflowr-0-8-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflowr-0-8-0" class="anchor"></a>workflowr 0.8.0</h1>
+<div id="git-installation-is-now-optional" class="section level2">
+<h2 class="hasAnchor">
+<a href="#git-installation-is-now-optional" class="anchor"></a>Git installation is now optional</h2>
+<ul>
+<li>It is no longer required to install Git prior to using workflowr. Git can be installed at a later time if more advanced operations are needed. The Quick Start and Getting Started vignette have been updated to reflect this.</li>
+<li>
+<code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code> sets the Git options <code>user.name</code> and <code>user.email</code>
+</li>
+<li>
+<code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> pushes changes from the local computer to GitHub</li>
+<li>
+<code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> pulls the changes from GitHub to the local computer</li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<ul>
+<li>Added FAQ on sharing workflowr sites securely using Beaker Browswer (@johnsonlab in #59 &amp; #65)</li>
+<li>Added .Rprofile to automatically load workflowr (@vanAmsterdam in #73)</li>
+<li>Added FAQ about website not displaying (#70)</li>
+<li>Added tag to footer.html to adjust MathJax settings so that all math formulae are shown using TeX fonts only. This will make the presentation more consistent at the cost of the webpage sometimes taking slightly longer to load. (@pcarbo in #57)</li>
+<li>Minor changes to improve error messages (#61)</li>
+<li>Minor updates to documentation</li>
+</ul>
+</div>
+</div>
     <div id="workflowr-0-7-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-7-0" class="anchor"></a>workflowr 0.7.0</h1>
@@ -103,9 +133,9 @@
 <code><a href="../reference/wflow_build.html">wflow_build()</a></code> adds objects to the global environment when building files locally in the R console (i.e. <code>local = TRUE</code>) (#53)</li>
 </ul>
 </div>
-<div id="miscellaneous" class="section level2">
+<div id="miscellaneous-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Bug fix so workflowr can process Emacs backup files that contain a tilde (#47)</li>
 <li>Bug fix so print methods display properly in the R console (some did not end with a newline character)</li>
@@ -136,9 +166,9 @@
 </li>
 </ul>
 </div>
-<div id="miscellaneous-1" class="section level2">
+<div id="miscellaneous-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Added continuous integration testing with <a href="https://travis-ci.org/">Travis CI</a> for macOS</li>
 <li>Updated documentation in README, “Getting started” vignette, and FAQ</li>
@@ -196,9 +226,9 @@
 <li>Improved documentation of <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to better explain its functionality. It will attempt to convert all R Markdown files present to use the latest version of the workflowr R Markdown template; however, it will only commit R Markdown files that are tracked by Git.</li>
 </ul>
 </div>
-<div id="miscellaneous-2" class="section level2">
+<div id="miscellaneous-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-3" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li><p>All workflowr functions should now accept the file extesion <code>.rmd</code> in addition to <code>.Rmd</code> (Issue #10)</p></li>
 <li><p>Replaced the shared argument <code>path</code> with <code>project</code> to clarify that this argument specifies the path to a directory in the workflowr project</p></li>
@@ -304,6 +334,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-0-8-0">0.8.0</a></li>
         <li><a href="#workflowr-0-7-0">0.7.0</a></li>
         <li><a href="#workflowr-0-6-0">0.6.0</a></li>
         <li><a href="#workflowr-0-5-1">0.5.1</a></li>

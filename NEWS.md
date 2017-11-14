@@ -18,7 +18,7 @@ Start and Getting Started vignette have been updated to reflect this.
 * Added tag to footer.html to adjust MathJax settings so that all math formulae
 are shown using TeX fonts only. This will make the presentation more consistent
 at the cost of the webpage sometimes taking slightly longer to load. (@pcarbo in
-#57)
+\#57)
 * Minor changes to improve error messages (#61)
 * Minor updates to documentation
 

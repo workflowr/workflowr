@@ -67,8 +67,8 @@
 <a href="#workflowr-organized-reproducible-shareable-data-science-in-r" class="anchor"></a>workflowr: organized + reproducible + shareable data science in R</h1></div>
 
 <p>The <a href="https://jdblischak.github.io/workflowr/">workflowr</a> R package makes it easier for researchers to organize their projects and share their results with colleagues.</p>
-<p>Install the latest release (v0.7.0) by running this command in R or RStudio:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools::<span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Install the latest release (v0.8.0) by running this command in R or RStudio:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>, <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>If you are already writing R code to analyze data, and know the basics of Git and GitHub, you can start taking advantage of workflowr immediately. In a matter of minutes, you can create a research website like <a href="https://jdblischak.github.io/workflowr-demo01/">this</a>. (See also the <a href="https://stephenslab.github.io/wflow-divvy/">Divvy data exploration project</a> for a more elaborate example of a workflowr project.)</p>
 <p>If you find any problems, or would like to suggest new features, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
 <ul>
@@ -80,7 +80,7 @@
 <li><a href="#credits">Credits</a></li>
 <li><a href="#license">License</a></li>
 <li><a href="#citation">Citation</a></li>
-<li><a href="#pronunciation">Pronunciation</a></li>
+<li><a href="#pronunciation-and-spelling">Pronunciation and spelling</a></li>
 </ul>
 <div id="why-use-workflowr" class="section level2">
 <h2 class="hasAnchor">
@@ -96,18 +96,17 @@
 <div id="quick-start" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start" class="anchor"></a>Quick start</h2>
-<p>workflowr builds on several software tools including <a href="https://git-scm.com/">Git</a>, <a href="http://pandoc.org">pandoc</a> and <a href="https://github.com/yihui/knitr">knitr</a>, <strong>but you do not need to have experience using any of these tools to get started with workflowr.</strong> You only need to know how to code in <a href="http://cran.r-project.org">R</a> and be generally familiar with the <a href="http://rmarkdown.rstudio.com/">R Markdown</a> format. A <a href="https://doi.org/10.1371/journal.pcbi.1004668">basic understanding of git</a> as well as the <a href="https://swcarpentry.github.io/shell-novice">UNIX command line</a> is not essential, but helpful.</p>
-<p>Here is a minimal set of steps to get you started with workflowr. If you are already using R and git, you may be able to skip some of these steps.</p>
+<p>Workflowr builds on several software tools including <a href="https://git-scm.com/">Git</a>, <a href="http://pandoc.org">pandoc</a> and <a href="https://github.com/yihui/knitr">knitr</a>, <strong>but you do not need to have experience using any of these tools to get started with workflowr.</strong> You only need to know how to code in <a href="http://cran.r-project.org">R</a> and be generally familiar with the <a href="http://rmarkdown.rstudio.com/">R Markdown</a> format. A <a href="https://doi.org/10.1371/journal.pcbi.1004668">basic understanding of git</a> as well as the <a href="https://swcarpentry.github.io/shell-novice">UNIX command line</a> is not essential, but helpful.</p>
+<p>Here is a minimal set of steps to get you started with workflowr. If you are already using R and/or Git, you may be able to skip some of these steps.</p>
 <ol>
 <li><p>Install <a href="http://cran.r-project.org">R</a> (<a href="https://swcarpentry.github.io/workshop-template/#r">instructions</a> from <a href="https://software-carpentry.org">Software Carpentry</a>).</p></li>
-<li><p>(Optional) Install <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> (workflowr takes advantages of some RStudio features, but RStudio is not required to use workflowr)</p></li>
-<li><p>Install <a href="https://git-scm.com/">Git</a> (<a href="https://swcarpentry.github.io/workshop-template/#git">instructions</a> from <a href="https://software-carpentry.org">Software Carpentry</a>)</p></li>
-<li><p>Create an account on <a href="https://github.com">GitHub</a>.</p></li>
 <li>
-<p>Configure <a href="https://git-scm.com/">Git</a> (<a href="http://swcarpentry.github.io/git-novice/02-setup/">instructions</a> from <a href="https://software-carpentry.org">Software Carpentry</a>). Run the following commands in the shell command-line, inserting your account information:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> config --global user.name <span class="st">"Your Name"</span>
-<span class="fu">git</span> config --global user.email <span class="st">"youremail@domain"</span></code></pre></div>
+<p>Install <a href="http://pandoc.org">pandoc</a> using one of the following methods:</p>
+<p>a. (Recommended) Install <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a>. RStudio includes an installation of pandoc. Furthermore, workflowr takes advantage of some RStudio features (however RStudio is not required to use workflowr).</p>
+<p>b. Install only pandoc following these <a href="https://github.com/rstudio/rmarkdown/blob/master/PANDOC.md">instructions</a>.</p>
 </li>
+<li><p><strong>(Optional)</strong> Install <a href="https://git-scm.com/">Git</a> (<a href="https://swcarpentry.github.io/workshop-template/#git">instructions</a> from <a href="https://software-carpentry.org">Software Carpentry</a>). You do <strong>not</strong> need to install Git to start using workflowr. You only need to install Git if you want to perform more advanced Git operations, which you are unlikely to need at the beginning of your project.</p></li>
+<li><p>Create an account on <a href="https://github.com">GitHub</a>.</p></li>
 <li>
 <p>Install the latest stable release of <a href="https://jdblischak.github.io/workflowr/">workflowr</a> from <a href="https://github.com">GitHub</a> using <a href="https://github.com/hadley/devtools">devtools</a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
@@ -140,7 +139,7 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <div id="more-about-this-repository" class="section level2">
 <h2 class="hasAnchor">
 <a href="#more-about-this-repository" class="anchor"></a>More about this repository</h2>
-<p>This repository contains the workflowr R package. If your goal is to create a workflowr project, you do <strong>not</strong> need to fork this repository. Instead, following the <a href="#quick-start">Quick start</a> instructions above.</p>
+<p>This repository contains the workflowr R package. If your goal is to create a workflowr project, you do <strong>not</strong> need to fork this repository. Instead, follow the <a href="#quick-start">Quick start</a> instructions above.</p>
 <p>For the most part, I try to follow the guidelines from <a href="http://r-pkgs.had.co.nz/">R packages</a> by <a href="http://hadley.nz/">Hadley Wickham</a>. The unit tests are performed with <a href="https://github.com/hadley/testthat">testthat</a>, the documentation is built with <a href="https://github.com/klutometis/roxygen">roxygen2</a>, the online package documentation is created with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>, continuous integration testing is performed by <a href="https://travis-ci.org/">Travis CI</a>, and code coverage is calculated with <a href="https://github.com/jimhester/covr">covr</a> and <a href="https://codecov.io/">Codecov</a>.</p>
 <p>The template files used by <code><a href="reference/wflow_start.html">wflow_start()</a></code> to populate a new project are located in <code>inst/infrastructure/</code>. The R Markdown templates used by <code><a href="reference/wflow_open.html">wflow_open()</a></code> are located in <code>inst/rmarkdown/templates/</code>. The repository contains the files <code>LICENSE</code> and <code>LICENSE.md</code> to both adhere to <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Licensing">R package conventions for defining the license</a> and also to make the license clear in a more conventional manner (suggestions for improvement welcome). <code>document.R</code> is a convenience script for regenerating the documentation. The remaining directories are standard for R packages as described in the manual <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>.</p>
 <p>If you are interested in contributing to this project, please see these <a href="https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.md">instructions</a>.</p>
@@ -150,7 +149,7 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <a href="#background-and-related-work" class="anchor"></a>Background and related work</h2>
 <p>There is lots of interest and development around reproducible research with R. Projects like workflowr are possible due to two key developments. First, the R packages <a href="https://github.com/yihui/knitr">knitr</a> and <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> have made it easy for any R programmer to generate reports that combine text, code, output, and figures. Second, the version control software <a href="https://git-scm.com/">Git</a>, the Git hosting site <a href="https://github.com">GitHub</a>, and the static website hosting service <a href="https://pages.github.com/">GitHub Pages</a> have made it easy to share not only source code but also static HTML files (i.e. no need to purchase a domain name, setup a server, etc).</p>
 <p>My first attempt at sharing a reproducible project online was <a href="https://jdblischak.github.io/singleCellSeq/analysis/">singleCellSeq</a>. Basically, I started by copying the documentation website of <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> and added some customizations to organize the generated figures and to insert the status of the Git repository directly into the HTML pages. The workflowr R package is my attempt to simplify my previous workflow and provide helper functions so that any researcher can take advantage of this workflow.</p>
-<p>workflowr encompasses multiple functions: 1) provides a project template, 2) version controls the R Markdown and HTML files, and 3) builds a website. Furthermore, it provides R functions to perform each of these steps. There are many other related works that provide similar functionality. Some are templates to be copied, some are R packages, and some involve more complex software (e.g. static blog software). Depending on your use case, one of the related works listed below may better suit your needs. Please check them out!</p>
+<p>Workflowr encompasses multiple functions: 1) provides a project template, 2) version controls the R Markdown and HTML files, and 3) builds a website. Furthermore, it provides R functions to perform each of these steps. There are many other related works that provide similar functionality. Some are templates to be copied, some are R packages, and some involve more complex software (e.g. static blog software). Depending on your use case, one of the related works listed below may better suit your needs. Please check them out!</p>
 <ul>
 <li>
 <strong>Project template hosted on GitHub:</strong>
@@ -211,32 +210,34 @@ devtools<span class="op">::</span><span class="kw">install_github</span>(<span c
 <div id="credits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#credits" class="anchor"></a>Credits</h2>
-<p>workflowr was developed, and is maintained, by John Blischak, a postdoctoral researcher in the laboratory of <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a> at <a href="http://www.uchicago.edu/">The University of Chicago</a>. He is funded by a grant from the <a href="https://www.moore.org/">Gordon and Betty Moore Foundation</a> to MS.</p>
+<p>Workflowr was developed, and is maintained, by John Blischak, a postdoctoral researcher in the laboratory of <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a> at <a href="http://www.uchicago.edu/">The University of Chicago</a>. He is funded by a grant from the <a href="https://www.moore.org/">Gordon and Betty Moore Foundation</a> to MS. <a href="https://pcarbo.github.io/">Peter Carbonetto</a> and <a href="http://stephenslab.uchicago.edu/">Matthew Stephens</a> are co-authors.</p>
+<p>We are very thankful to workflowr <a href="https://github.com/jdblischak/workflowr/graphs/contributors">contributors</a> for helping improve the package. We are also grateful for workflowr users for testing the package and providing feedback—thanks especially to <a href="https://github.com/LSun">Lei Sun</a>, <a href="https://github.com/xiangzhu">Xiang Zhou</a>, <a href="https://github.com/NKweiwang">Wei Wang</a>, and other members (past and present) of the Stephens lab.</p>
 <p>The workflowr package uses many great open source packages. Especially critical for this project are the R packages <a href="https://cran.r-project.org/web/packages/git2r/index.html">git2r</a>, <a href="https://github.com/yihui/knitr">knitr</a>, and <a href="http://rmarkdown.rstudio.com/">rmarkdown</a>. Please see the vignette <a href="https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html">How the workflowr package works</a> to learn about the software that makes workflowr possible.</p>
 </div>
 <div id="license" class="section level2">
 <h2 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h2>
-<p>workflowr is available under the <a href="https://opensource.org/licenses/mit-license.php">MIT license</a>.</p>
+<p>Workflowr is available under the <a href="https://opensource.org/licenses/mit-license.php">MIT license</a>.</p>
 </div>
 <div id="citation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h2>
 <p>To cite workflowr in publications use:</p>
-<p>John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for creating a research website. R package version 0.7.0. <a href="https://github.com/jdblischak/workflowr" class="uri">https://github.com/jdblischak/workflowr</a></p>
+<p>John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). The workflowr R package: a framework for reproducible and collaborative data science. R package version 0.8.0. <a href="https://github.com/jdblischak/workflowr" class="uri">https://github.com/jdblischak/workflowr</a></p>
 <p>A BibTeX entry for LaTeX users is</p>
 <pre><code>  @Manual{,
-    title = {workflowr: A workflow template for creating a research website},
+    title = {The workflowr R package: a framework for reproducible and collaborative data science},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
-    note = {R package version 0.7.0},
+    note = {R package version 0.8.0},
     year = {2017},
     url = {https://github.com/jdblischak/workflowr},
   }</code></pre>
 </div>
-<div id="pronunciation" class="section level2">
+<div id="pronunciation-and-spelling" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pronunciation" class="anchor"></a>Pronunciation</h2>
+<a href="#pronunciation-and-spelling" class="anchor"></a>Pronunciation and spelling</h2>
 <p>It is common for R packages to end with an “r”, and I tend to pronounce this as if it was “er” because I personally find this the easiest. Thus I pronounce the package “workflow + er”. Other equally good options are “workflow + R” or “work + flower”.</p>
+<p>Workflowr should be capitalized at the beginning of a sentence, but otherwise the lowercase workflowr should be the preferred option.</p>
 </div>
 </div>
   </div>

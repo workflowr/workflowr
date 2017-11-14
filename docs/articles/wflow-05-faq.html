@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frequenty asked questions • workflowr</title>
+<title>Frequently asked questions • workflowr</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -63,20 +63,34 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Frequenty asked questions</h1>
-            <h3 class="subtitle">workflowr version 0.7.0</h3>
+      <h1>Frequently asked questions</h1>
+            <h3 class="subtitle">workflowr version 0.8.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2017-07-20</h4>
+            <h4 class="date">2017-11-14</h4>
           </div>
 
     
     
 <div class="contents">
+<div id="why-isnt-my-website-displaying-online" class="section level2">
+<h2 class="hasAnchor">
+<a href="#why-isnt-my-website-displaying-online" class="anchor"></a>Why isn’t my website displaying online?</h2>
+<p>Occasionally your website may not display (or recent updates will not immediately appear), and you may even receive an email from GitHub with the following message:</p>
+<blockquote>
+<p>The page build failed for the <code>master</code> branch with the following error:</p>
+<p>unable to build page. Please try again later.</p>
+<p>For information on troubleshooting Jekyll see:</p>
+<p><a href="https://help.github.com/articles/troubleshooting-jekyll-builds" class="uri">https://help.github.com/articles/troubleshooting-jekyll-builds</a></p>
+<p>If you have any questions you can contact us by replying to this email.</p>
+</blockquote>
+<p>If you’ve followed the setup instructions from the <a href="wflow-01-getting-started.html">Getting started vignette</a>, and especially if the website displayed in the past, it’s <em>very unlikely</em> that you caused the problem. The hosting is provided by <a href="https://pages.github.com/">GitHub Pages</a>, and it sometimes is delayed or down. Overall for a free service, it is very reliable. If you wait 5 minutes (or 30 minutes at most), your website will likely be back to normal.</p>
+<p>If you are anxious to know if there is a problem and when it will be resolved, you can check the status of the Twitter account <a href="https://twitter.com/githubstatus">GitHub Status</a> for the most up-to-date reports from GitHub. If you suspect that the problem may have been caused by your recent changes to your website (again, this is unlikely), you can view the GitHub help page <a href="https://help.github.com/articles/troubleshooting-github-pages-builds/">Troubleshooting GitHub Pages builds</a>.</p>
+</div>
 <div id="can-i-make-my-workflowr-website-private" class="section level2">
 <h2 class="hasAnchor">
 <a href="#can-i-make-my-workflowr-website-private" class="anchor"></a>Can I make my workflowr website private?</h2>
-<p>Short answer: No.</p>
+<p>Short answer: No, not if you use the default setup that hosts the site on GitHub Pages. For an alternative setup, see the FAQ below that describes an <a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion">option for securely sharing your workflowr site</a>.</p>
 <p>Long answer: Even if you create a private GitHub repository, the website it creates is still public. If you’re not ready to publish your results online, you can always wait and activate GitHub Pages later. In the meantime, you’ll still have a version-controlled, organized set of results for your project. However, the risk that someone that doesn’t have the link to your website is able to find it is very low. Search engines prioritize the results by how many other sites link to a site, so your website will not be high in the results even if you search for very specific terms. Thus if you only share the URL to your results with your close collaborators, and request that they not share it widely, your website is effectively private. That being said, being truly scooped in science is rare (at best) and openly sharing your work will help establish your expertise in the field (and furthermore establishes your priority), so you should consider keeping both your code and website public.</p>
 </div>
 <div id="can-i-include-shiny-apps-in-my-website" class="section level2">
@@ -91,8 +105,43 @@
 </div>
 <div id="why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="section level2">
 <h2 class="hasAnchor">
-<a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="anchor"></a>Why am I not getting the same result with <code><a href="../reference/wflow_build.html">wflow_build()</a></code> as with the RStudio Knit HTML button?</h2>
+<a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="anchor"></a>Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</h2>
 <p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> is designed to have the same functionality as the Knit HTML button in RStudio, namely that it knits the HTML file in a separate R session to avoid any clashes with variables or pacakges in use in the current R session. However, the technical implementations are not identical, and thus informally we have noticed the behavior of the two options occassionally differs. At the moment, we believe that if the file results in an error when using <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, the file needs to be fixed, regardless of whether the file is able to be built with the RStudio button. If you have a use case that you think should be supported by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a> and provide a small reproducible example.</p>
+</div>
+<div id="can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion" class="section level2">
+<h2 class="hasAnchor">
+<a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion" class="anchor"></a>Can I share workflowr websites directly with collaborators in a secure fashion?</h2>
+<p>If your project contains senstive data that prevents you from publicly sharing the results, one alternative option is to self-host your workflowr website using <a href="https://beakerbrowser.com/">Beaker Browser</a>. This solution was contributed by <a href="https://github.com/johnsonlab">Josh Johnson</a>. For more details, please read his <a href="https://johnsonlab.github.io/blog-post-22/">blog post</a> and the discussion in Issue <a href="https://github.com/jdblischak/workflowr/issues/59">#59</a>.</p>
+<p><a href="https://beakerbrowser.com/">Beaker Browser</a> allows website creation, cloning, modification, and publishing locally. After the site is ready, hitting “share” produces a unique <a href="https://datproject.org/">Dat project dat://</a> hyperlink, for example:</p>
+<pre><code>dat://adef21aa8bbac5e93b0c20a97c6f57f93150cf4e7f5eb1eb522eb88e682309bc</code></pre>
+<p>This dat:// link can then be shared and the site opened <em>all the while being hosted locally on the site producer’s machine.</em> The particular example above is a site, produced in RStudio using workflowr, with placeholder content and R code chunks, compiled as usual.</p>
+<p>Security for your site is achieved with site encryption inherent in the Dat protocol (see “Security” on the <a href="https://docs.datproject.org/">datproject docs page</a>), as well as the obscurity of the unique link. Beaker Browser saves your individual project sites in the folder <code>~/Sites</code>.</p>
+<p>To create a Beaker Browser version of your workflowr site:</p>
+<ol style="list-style-type: decimal">
+<li>
+<a href="https://beakerbrowser.com/docs/install/">Install</a> Beaker Browser and run it.</li>
+<li>Select “New Site” in the three-bar dropdown menu found to the right of the “omnibar” for web link entry, and enter its Title and (optional) a Description of the site. This creates a folder in the Beaker Browser <code>~/Sites</code> directory named for your Title, for example, “placeholder_workflowr”, and populates the folder with a <code>dat.json</code> file.</li>
+<li>In the main Beaker Browser pane, use “Add Files” or “Open Folder” to copy the entire contents of the workflowr <code>docs/</code> folder to your new Beaker Browser site folder (see Symlink Synchronization, below).</li>
+<li>Once copied, the new site is ready to go. Pressing “Share” in the main Beaker Browser pane reveals the unique dat:// link generated for your Beaker Browser site. Sharing this link with anyone running Beaker Browser will allow them to access your workflowr HTML files…<em>directly from your computer</em>.</li>
+</ol>
+<p>Instead of having to manually copy your workflowr <code>docs/</code> directory to your Beaker Browser site directory, you can create a symlink from your workflowr <code>docs/</code> directory to the Beaker Browser site directory. The line below links the <code>docs/</code> directory of a hypothetical “workflowr-project” saved in <code>~/github/</code> to the hypothetical Beaker <code>placeholder_workflowr</code> subdirectory:</p>
+<pre><code>ln -s ~/github/workflowr-project/docs ~/Users/joshua/Sites/placeholder_workflowr</code></pre>
+<p>The direct-sharing nature of the above workflow means that the host computer needs to be running for site access. Two alternative recommended by Beaker Browser developer <a href="https://github.com/pfrazee">Paul Frazee</a> are <a href="https://hashbase.io">hashbase.io</a> and the Beaker Browser subproject <a href="https://github.com/beakerbrowser/dathttpd">dathttpd</a>. While hosting Beaker Browser sites is outside of the scope of this direct sharing paradigm, each of these options has strengths. The former, hashbase.io (free account required), is a web-hosted central location for dat:// -linked content, removing the need for the host computer to be running. The latter dathttpd example is an additional server/self-hosting option that can be used if desired.</p>
+</div>
+<div id="can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files" class="section level2">
+<h2 class="hasAnchor">
+<a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files" class="anchor"></a>Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</h2>
+<p>Yes! If you’d like to create a single HTML or PDF file to distribute an isolated analysis from your project, you can directly run the <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> function <code>render</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"rmarkdown"</span>)
+<span class="co"># Create analysis/file.html</span>
+<span class="kw">render</span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw">html_document</span>())
+<span class="co"># Create analysis/file.pdf</span>
+<span class="kw">render</span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw">pdf_document</span>())</code></pre></div>
+<p>There are two main caveats to this:</p>
+<ol style="list-style-type: decimal">
+<li>Internal links to other HTML pages in your workflowr site will be broken since they are not being distributed with the single file.</li>
+<li>An R Markdown file that can be converted to HTML is not guaranteed to be converted to PDF. You’ll need to ensure that you have LaTeX installed on your computer and avoid complicated characters and/or syntax.</li>
+</ol>
 </div>
 </div>
   </div>
@@ -101,10 +150,13 @@
         <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#can-i-make-my-workflowr-website-private">Can I make my workflowr website private?</a></li>
+<li><a href="#why-isnt-my-website-displaying-online">Why isn’t my website displaying online?</a></li>
+      <li><a href="#can-i-make-my-workflowr-website-private">Can I make my workflowr website private?</a></li>
       <li><a href="#can-i-include-shiny-apps-in-my-website">Can I include Shiny apps in my website?</a></li>
       <li><a href="#can-i-change-x-on-my-website">Can I change “X” on my website?</a></li>
-      <li><a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button">Why am I not getting the same result with <code><a href="../reference/wflow_build.html">wflow_build()</a></code> as with the RStudio Knit HTML button?</a></li>
+      <li><a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button">Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</a></li>
+      <li><a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion">Can I share workflowr websites directly with collaborators in a secure fashion?</a></li>
+      <li><a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files">Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</a></li>
       </ul>
 </div>
       </div>

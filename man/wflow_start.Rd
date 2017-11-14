@@ -4,9 +4,8 @@
 \alias{wflow_start}
 \title{Start a new workflowr project.}
 \usage{
-wflow_start(directory, name = NULL, git = TRUE, git_name = NULL,
-  git_email = NULL, existing = FALSE, overwrite = FALSE,
-  change_wd = TRUE)
+wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
+  overwrite = FALSE, change_wd = TRUE)
 }
 \arguments{
 \item{directory}{character. The directory for the project, e.g.
@@ -26,14 +25,6 @@ an initial commit. If \code{git = TRUE} and \code{directory} is
 already a Git repository, \code{wflow_start} will make an
 additional commit. In both cases, only files needed for the
 workflowr project will be included in the commit.}
-
-\item{git_name}{character (default: NULL). Git user name. Git assigns an
-author when committing (i.e. saving) changes. If you have never used Git
-before on your computer, make sure to set this.}
-
-\item{git_email}{character (default: NULL). Git user email. Git assigns an
-email when committing (i.e. saving) changes. If you have never used Git
-before on your computer, make sure to set this.}
 
 \item{existing}{logical (default: FALSE). Indicate if the specified
 \code{directory} already exists. The default prevents injecting the
@@ -69,9 +60,6 @@ wflow_start("path/to/new-project")
 
 # Provide a custom name for the project.
 wflow_start("path/to/new-project", name = "My Project")
-
-# Configure name and email associated with Git
-wflow_start("path/to/new-project", git_name = "My Name", git_email = "email@domain")
 
 # Add workflowr files to an existing project.
 wflow_start("path/to/current-project", existing = TRUE)

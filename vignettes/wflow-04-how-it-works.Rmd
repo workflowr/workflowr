@@ -26,7 +26,7 @@ provide some explanations of how workflowr works.
 [R][] is the computer programming language used to perform the analysis.
 [knitr][] is an R package that executes code chunks in an R Markdown file to create a Markdown file.
 [Markdown][] is a lightweight markup language that is easier to read and write than HTML.
-[rmarkdown][] is an R package that combines the functionality of [knitr][] and the document converter [Pandoc][].
+[rmarkdown][] is an R package that combines the functionality of [knitr][] and the document converter [pandoc][].
 [Pandoc][] powers the conversion of [knitr][]-produced Markdown files into HTML, Word, or PDF documents.
 Additionally, newer versions of [rmarkdown][] contain functions for building websites.
 The styling of the websites is performed by the web framework [Bootstrap][].
@@ -43,7 +43,7 @@ By placing the HTML files for the website in the subdirectory `docs/`, [GitHub P
 [knitr]: http://yihui.name/knitr/
 [Markdown]: http://daringfireball.net/projects/markdown/
 [rmarkdown]: http://rmarkdown.rstudio.com/
-[Pandoc]: http://pandoc.org/
+[pandoc]: http://pandoc.org/
 [Bootstrap]: http://getbootstrap.com/
 [Git]: http://git-scm.com/
 [SHA-1]: https://en.wikipedia.org/wiki/SHA-1
@@ -92,7 +92,7 @@ While not strictly required for using workflowr, using [RStudio][] provides many
 
 * Clicking the `Knit` button automatically uses the [Bootstrap][] options specified in `_site.yml` and moves the rendered HTML to the website subdirectory `docs/` (requires version 1.0 or greater)
 
-* Includes an up-to-date copy of [Pandoc][] so you don't have to install or update it
+* Includes an up-to-date copy of [pandoc][] so you don't have to install or update it
 
 * Tons of other cool [features][rstudio-features] like debugging and source code inspection
 

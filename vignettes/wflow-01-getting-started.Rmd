@@ -29,12 +29,10 @@ like [this][demo01].
 
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 
-This tutorial assumes you have already followed the "Quick start"
-instructions in the
-[README](https://jdblischak.github.io/workflowr/index.html). Specifically,
-you should have already installed R, Git, and workflowr; set the Git
-variables user.name and user.email (you can run `git config -l` in the
-shell to confirm); and created an account on GitHub.
+This tutorial assumes you have already followed the "Quick start" instructions
+in the [README](https://jdblischak.github.io/workflowr/index.html).
+Specifically, you need to have R, pandoc (or RStudio), and workflowr installed
+on your computer. Furthermore, you need a GitHub account.
 
 ## Overview
 
@@ -44,15 +42,12 @@ A workflowr project has two key components:
 (`_site.yml`), a collection of R Markdown files, and their
 corresponding HTML files.
 
-2. A Git repository. Git is a [version control system][vcs] that
-helps track code development^[There are many ways to use Git: in the
-shell, in the RStudio Git pane, or another Git graphical user
-interface (GUI) (see [here](https://git-scm.com/download/gui/linux)
-for GUI options). When necessary, this vignette will display the Git
-commands to run in the shell (you can quickly open the Terminal to the
-correct working directory from RStudio by choosing "Tools" ->
-"Shell...").]. All the Git files are in a hidden directory `.git` at
-the root of the project.
+2. A Git repository. Git is a [version control system][vcs] that helps track
+code development^[There are many ways to use Git: in the Terminal, in the RStudio
+Git pane, or another Git graphical user interface (GUI) (see
+[here](https://git-scm.com/download/gui/linux) for GUI options).]. Workflowr is
+able to run the basic Git commands, so there is no need to install Git prior to
+using workflowr.
 
 One of the main goals of workflowr is to help make your research more
 transparent and reproducible. This is achieved by including the unique
@@ -64,26 +59,44 @@ know which version of the code produced the results.
 
 ## Start the project
 
-To start a new project, open R (or RStudio), load the workflowr package, and run
-the code below (note that all the code in this vignette should be run directly
-in the R console, i.e. do try to run workflowr functions inside of R Markdown
-documents). `wflow_start()` creates a directory called `myproject/` that
-contains all the files to get started. It also changes the working directory to
+To start a new project, open R (or RStudio) and load the workflowr package (note
+that all the code in this vignette should be run directly in the R console, i.e.
+do try to run workflowr functions inside of R Markdown documents).
+
+```{r load-workflowr}
+library("workflowr")
+```
+
+If you have never created a Git repository on your computer before, you need to
+run the following command to tell Git your name and email. Git uses this
+information to assign the changes you make to the code to you (analogous to how
+Track Changes in a Microsoft Office Word document assigns your changes to you).
+You do not need to use the exact same name and email as you used for your GitHub
+account. Also, you only need to run this command once per computer, and all
+subsequent workflowr projects will use this information (you can also update it
+at any time by re-running the command with different input).
+
+```{r wflow-git-config, eval=FALSE}
+# Replace the example text with your information
+wflow_git_config(user.name = "Your Name", user.email = "email@domain")
+```
+
+Now you are ready to start your first workflowr project!
+`wflow_start("myproject")` creates a directory called `myproject/` that contains
+all the files to get started. It also changes the working directory to
 `myproject/`^[If you're using RStudio, in the future you can choose `Open
 Project...` and select the file `myproject.Rproj` to quickly continue working on
 your project. This will set the correct working directory in the R console,
 switch the file navigator to the project, and configure the Git pane.] and
 initializes a Git repository with the initial commit already made.
 
-```{r start-project, echo=3:4}
+```{r start-project, echo=3}
 setwd(.tmp)
 unlink(.project, recursive = TRUE)
-library("workflowr")
 wflow_start("myproject")
 ```
 
-`wflow_start()` creates the following directory structure in
-`myproject/`:
+`wflow_start()` created the following directory structure in `myproject/`:
 
 ```
 myproject/

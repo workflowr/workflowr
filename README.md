@@ -30,7 +30,7 @@ please open an [Issue][issues].
 * [Credits](#credits)
 * [License](#license)
 * [Citation](#citation)
-* [Pronunciation](#pronunciation)
+* [Pronunciation and spelling](#pronunciation-and-spelling)
 
 ## Why use workflowr?
 
@@ -52,7 +52,7 @@ website:
 
 ## Quick start
 
-workflowr builds on several software tools including
+Workflowr builds on several software tools including
 [Git][git], [pandoc][] and
 [knitr][], **but you do not need to have experience using any of these
 tools to get started with workflowr.** You only need to know how to
@@ -63,27 +63,26 @@ as well as the [UNIX command line][swc-shell]
 is not essential, but helpful.
 
 Here is a minimal set of steps to get you started with workflowr. If you are
-already using R and git, you may be able to skip some of these steps.
+already using R and/or Git, you may be able to skip some of these steps.
 
 1. Install [R][r] ([instructions][swc-r] from [Software Carpentry][swc]).
 
-2. (Optional) Install [RStudio][rstudio] (workflowr takes advantages of some
-RStudio features, but RStudio is not required to use workflowr)
+1. Install [pandoc][] using one of the following methods:
 
-3. Install [Git][git] ([instructions][swc-git] from [Software Carpentry][swc])
+    a. (Recommended) Install [RStudio][rstudio]. RStudio includes an
+    installation of pandoc. Furthermore, workflowr takes advantage of some
+    RStudio features (however RStudio is not required to use workflowr).
 
-4. Create an account on [GitHub][gh].
+    b. Install only pandoc following these [instructions][pandoc-install].
 
-5. Configure [Git][git] ([instructions][swc-git-config] from
-[Software Carpentry][swc]). Run the following commands in the shell
-command-line, inserting your account information:
+1. **(Optional)** Install [Git][git] ([instructions][swc-git] from [Software
+Carpentry][swc]). You do **not** need to install Git to start using workflowr.
+You only need to install Git if you want to perform more advanced Git
+operations, which you are unlikely to need at the beginning of your project.
 
-    ```bash
-    git config --global user.name "Your Name"
-    git config --global user.email "youremail@domain"
-    ```
+1. Create an account on [GitHub][gh].
 
-6. Install the latest stable release of [workflowr][] from
+1. Install the latest stable release of [workflowr][] from
 [GitHub][gh] using [devtools][]:
 
     ```r
@@ -91,19 +90,19 @@ command-line, inserting your account information:
     devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
     ```
 
-7. Work through the vignette,
+1. Work through the vignette,
 ["Getting started with workflowr"][vig-start], to learn how to set up
 a workflowr project. (You can view all the available vignettes locally
 with `browseVignettes("workflowr")`.)
 
-8. Alternatively, if you have already started your project, read the
+1. Alternatively, if you have already started your project, read the
 vignette
 ["Migrating an existing project to use workflowr"][vig-migrating] to
 learn how to convert your project to a workflowr project.
 
-9. Learn more about how to [Customize your research website][vig-custom].
+1. Learn more about how to [Customize your research website][vig-custom].
 
-10. If you find any unexpected behavior or think of an additional
+1. If you find any unexpected behavior or think of an additional
 feature that would be nice to have, please open an Issue
 [here][issues]. When writing your bug report or feature request,
 please note the version of workflowr you are using (which you can
@@ -136,7 +135,7 @@ wflow_update(dry_run = FALSE)
 
 This repository contains the workflowr R package. If your goal is to create a 
 workflowr project, you do **not** need to fork this repository. Instead, 
-following the [Quick start](#quick-start) instructions above.
+follow the [Quick start](#quick-start) instructions above.
 
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by 
 [Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the 
@@ -175,7 +174,7 @@ status of the Git repository directly into the HTML pages. The workflowr R
 package is my attempt to simplify my previous workflow and provide helper 
 functions so that any researcher can take advantage of this workflow.
 
-workflowr encompasses multiple functions: 1) provides a project template, 2) 
+Workflowr encompasses multiple functions: 1) provides a project template, 2)
 version controls the R Markdown and HTML files, and 3) builds a website. 
 Furthermore, it provides R functions to perform each of these steps. There are 
 many other related works that provide similar functionality. Some are templates 
@@ -224,7 +223,7 @@ to the "dev" branch.
 
 ## Credits
 
-workflowr was developed, and is maintained, by John Blischak, a postdoctoral
+Workflowr was developed, and is maintained, by John Blischak, a postdoctoral
 researcher in the laboratory of [Matthew Stephens][stephens] at [The University
 of Chicago][uchicago]. He is funded by a grant from the [Gordon and Betty Moore
 Foundation][moore] to MS. [Peter Carbonetto][pcarbo] and [Matthew
@@ -243,20 +242,21 @@ about the software that makes workflowr possible.
 
 ## License
 
-workflowr is available under the [MIT license][MIT].
+Workflowr is available under the [MIT license][MIT].
 
 ## Citation
 
 To cite workflowr in publications use:
 
-  John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). workflowr: A workflow template for
-  creating a research website. R package version 0.7.0.9000. https://github.com/jdblischak/workflowr
+  John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). The workflowr
+  R package: a framework for reproducible and collaborative data science. R
+  package version 0.7.0.9000. https://github.com/jdblischak/workflowr
 
 A BibTeX entry for LaTeX users is
 
 ```
   @Manual{,
-    title = {workflowr: A workflow template for creating a research website},
+    title = {The workflowr R package: a framework for reproducible and collaborative data science},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
     note = {R package version 0.7.0.9000},
     year = {2017},
@@ -264,12 +264,15 @@ A BibTeX entry for LaTeX users is
   }
 ```
 
-## Pronunciation
+## Pronunciation and spelling
 
 It is common for R packages to end with an "r", and I tend to
 pronounce this as if it was "er" because I personally find this the
 easiest. Thus I pronounce the package "workflow + er". Other equally
 good options are "workflow + R" or "work + flower".
+
+Workflowr should be capitalized at the beginning of a sentence, but otherwise
+the lowercase workflowr should be the preferred option.
 
 [analysis_framework]: https://github.com/jimhester/analysis_framework
 [blogdown]: https://github.com/rstudio/blogdown
@@ -305,6 +308,7 @@ good options are "workflow + R" or "work + flower".
 [nkweiwang]: https://github.com/NKweiwang
 [Pakillo/template]: https://github.com/Pakillo/template
 [pandoc]: http://pandoc.org
+[pandoc-install]: https://github.com/rstudio/rmarkdown/blob/master/PANDOC.md
 [pcarbo]: https://pcarbo.github.io/
 [pkgdown]: http://hadley.github.io/pkgdown/
 [poirot]: https://github.com/ramnathv/poirot
@@ -330,7 +334,6 @@ good options are "workflow + R" or "work + flower".
 [stephens]: http://stephenslab.uchicago.edu/
 [swc]: https://software-carpentry.org
 [swc-git]: https://swcarpentry.github.io/workshop-template/#git
-[swc-git-config]: http://swcarpentry.github.io/git-novice/02-setup/
 [swc-r]: https://swcarpentry.github.io/workshop-template/#r
 [swc-shell]: https://swcarpentry.github.io/shell-novice
 [testthat]: https://github.com/hadley/testthat

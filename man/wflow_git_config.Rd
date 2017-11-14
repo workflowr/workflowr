@@ -53,6 +53,9 @@ settings, but not delete them. To perform either of these actions, please use
 
 Under the hood, \code{wflow_git_config} is a wrapper for
 \code{\link[git2r]{config}} from the package \link{git2r}.
+
+To learn more about how to configure Git, see the Software Carpentry lesson
+\href{http://swcarpentry.github.io/git-novice/02-setup/}{Setting Up Git}.
 }
 \examples{
 \dontrun{

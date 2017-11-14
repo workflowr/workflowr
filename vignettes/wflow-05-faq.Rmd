@@ -81,9 +81,6 @@ vignette [Customize your research website](wflow-02-customization.html) provides
 some ideas that are simple to implement. Check out the documentation for
 [rmarkdown][] and [Twitter Bootstrap][Bootstrap] for inspiration.
 
-[rmarkdown]: http://rmarkdown.rstudio.com/
-[Bootstrap]: http://getbootstrap.com/
-
 ## Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?
 
 `wflow_build()` is designed to have the same functionality as the Knit HTML
@@ -96,8 +93,6 @@ moment, we believe that if the file results in an error when using
 able to be built with the RStudio button. If you have a use case that you think
 should be supported by `wflow_build()`, please open an [Issue][issues] and
 provide a small reproducible example.
-
-[issues]: https://github.com/jdblischak/workflowr/issues
 
 ## Can I share workflowr websites directly with collaborators in a secure fashion?
 
@@ -182,6 +177,7 @@ computer and avoid complicated characters and/or syntax.
 [#59]: https://github.com/jdblischak/workflowr/issues/59
 [beaker]: https://beakerbrowser.com/
 [beaker-install]: https://beakerbrowser.com/docs/install/
+[Bootstrap]: http://getbootstrap.com/
 [dat]: https://datproject.org/
 [dat-docs]: https://docs.datproject.org/
 [dathttpd]: https://github.com/beakerbrowser/dathttpd
@@ -189,6 +185,7 @@ computer and avoid complicated characters and/or syntax.
 [gh-status]: https://twitter.com/githubstatus
 [gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
 [hashbase.io]: https://hashbase.io
+[issues]: https://github.com/jdblischak/workflowr/issues
 [johnsonlab]: https://github.com/johnsonlab
 [johnsonlab-blog]: https://johnsonlab.github.io/blog-post-22/
 [pfrazee]: https://github.com/pfrazee

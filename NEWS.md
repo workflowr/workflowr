@@ -1,20 +1,26 @@
-# workflowr 0.7.0.9000
+# workflowr 0.8.0
 
-* FAQ about website not displaying
+## Git installation is now optional
 
-* FAQ on sharing workflowr sites securely using Beaker Browswer (@johnsonlab in #59 & #65)
+* It is no longer required to install Git prior to using workflowr. Git can be
+installed at a later time if more advanced operations are needed. The Quick
+Start and Getting Started vignette have been updated to reflect this.
+* `wflow_git_config()` sets the Git options `user.name` and `user.email`
+* `wflow_git_push()` pushes changes from the local computer to GitHub
+* `wflow_git_pull()` pulls the changes from GitHub to the local computer
 
-* Minor changes to improve error messages and documentation.
+## Miscellaneous
 
-* Added tag to footer.html to adjust MathJax settings so that all math
-formulae are shown using TeX fonts only. This will make the
-presentation more consistent at the cost of the webpage sometimes
-taking slightly longer to load.
-
-* Added new function `wflow_git_push()` that performs the equivalent of `git
-push` directly from the R console.
-
+* Added FAQ on sharing workflowr sites securely using Beaker Browswer
+(@johnsonlab in #59 & #65)
 * Added .Rprofile to automatically load workflowr (@vanAmsterdam in #73)
+* Added FAQ about website not displaying (#70)
+* Added tag to footer.html to adjust MathJax settings so that all math formulae
+are shown using TeX fonts only. This will make the presentation more consistent
+at the cost of the webpage sometimes taking slightly longer to load. (@pcarbo in
+#57)
+* Minor changes to improve error messages (#61)
+* Minor updates to documentation
 
 # workflowr 0.7.0
 

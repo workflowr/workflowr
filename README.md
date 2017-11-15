@@ -232,7 +232,7 @@ Stephens][stephens] are co-authors.
 We are very thankful to workflowr [contributors][] for helping improve the
 package. We are also grateful for workflowr users for testing the package and
 providing feedback---thanks especially to [Lei Sun][lsun], [Xiang
-Zhou][xiangzhu], [Wei Wang][nkweiwang], and other members (past and present) of
+Zhu][xiangzhu], [Wei Wang][nkweiwang], and other members (past and present) of
 the Stephens lab.
 
 The workflowr package uses many great open source packages. Especially critical

@@ -222,7 +222,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
       if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)
       } else {
-        build_rmd_external(f, seed = seed, log_dir = log_dir)
+        build_rmd_external(f, seed = seed, log_dir = log_dir, envir = .GlobalEnv)
       }
     }
   }
@@ -320,7 +320,7 @@ return_modified_rmd <- function(rmd_files, docs) {
   return(files_to_update)
 }
 
-build_rmd_external <- function(rmd, seed, log_dir) {
+build_rmd_external <- function(rmd, seed, log_dir, ...) {
   if (!(is.character(rmd) && length(rmd) == 1))
     stop("rmd must be a one element character vector")
   if (!file.exists(rmd))
@@ -342,7 +342,7 @@ build_rmd_external <- function(rmd, seed, log_dir) {
                            paste(rmd_base, date_current, "err.txt", sep = "-"))
   result <- tryCatch(
     callr::r_safe(build_rmd,
-                  args = list(rmd, seed),
+                  args = list(rmd, seed, ...),
                   stdout = stdout_file,
                   stderr = stderr_file),
     error = function(e) {

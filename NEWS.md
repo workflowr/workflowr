@@ -1,5 +1,11 @@
 # workflowr 0.8.0.9000
 
+## Miscellaneous
+
+* Bug fix: When using `wflow_build()` to build the R Markdown files in an
+external R process, it now runs `render_site` in the global environment of the
+external R process. This better mimics the results of the RStudio "Knit" button.
+
 # workflowr 0.8.0
 
 ## Git installation is now optional

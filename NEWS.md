@@ -1,3 +1,5 @@
+# workflowr 0.8.0.9000
+
 # workflowr 0.8.0
 
 ## Git installation is now optional

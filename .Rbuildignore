@@ -8,3 +8,4 @@
 ^_pkgdown\.yaml$
 ^document\.R$
 ^LICENSE\.md$
+^appveyor\.yml$

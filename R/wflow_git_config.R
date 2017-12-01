@@ -70,6 +70,26 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
   if (!(is.null(user.email) || (is.character(user.email) && length(user.email) == 1)))
     stop("user.email must be NULL or a one-element character vector")
 
+  # Create .gitconfig on Windows -----------------------------------------------
+
+  # If ~/.gitconfig does not exist, it is created in ~/Documents on Windows. If
+  # the user has supplied values to be set and the file doesn't exist, create an
+  # empty .gitconfig in ~ first.
+  if (.Platform$OS.type == "windows") {
+    values_to_be_set <- !is.null(user.name) || !is.null(user.email) ||
+                        length(list(...)) > 0
+    if (values_to_be_set) {
+      # Can't use ~ because the default on Windows is the user's Documents
+      # directory.
+      # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
+      user_home <- file.path("C:/Users", Sys.info()["login"])
+      config_file <- file.path(user_home, ".gitconfig")
+      if (!file.exists(config_file)) {
+        file.create(config_file)
+      }
+    }
+  }
+
   # Configure ------------------------------------------------------------------
 
   # user.name

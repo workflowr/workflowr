@@ -191,9 +191,18 @@ test_that("wflow_start does not overwrite an existing .git directory and does no
 })
 
 test_that("wflow_start throws an error if user.name and user.email are not set", {
-  config_original <- "~/.gitconfig"
+  # Temporarily move global .gitconfig file
+  if (.Platform$OS.type == "windows") {
+    # Can't use ~ because the default on Windows is the user's Documents
+    # directory.
+    # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
+    user_home <- file.path("C:/Users", Sys.info()["login"])
+    config_original <- file.path(user_home, ".gitconfig")
+  } else {
+    config_original <- "~/.gitconfig"
+  }
   if (file.exists(config_original)) {
-    config_tmp <- "~/.gitconfig-workflowr"
+    config_tmp <- paste0(config_original, "-workflowr")
     file.rename(from = config_original, to = config_tmp)
     on.exit(file.rename(from = config_tmp, to = config_original))
   }

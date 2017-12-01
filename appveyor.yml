@@ -2,10 +2,12 @@
 
 # Download script file from GitHub
 init:
-  ps: |
-        $ErrorActionPreference = "Stop"
-        Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
-        Import-Module '..\appveyor-tool.ps1'
+  - git config --global user.name "Travis CI"
+  - git config --global user.email "testing@fake.domain"
+  - ps: |
+          $ErrorActionPreference = "Stop"
+          Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
+          Import-Module '..\appveyor-tool.ps1'
 
 install:
   ps: Bootstrap
@@ -14,6 +16,30 @@ cache:
   - C:\RLibrary
 
 # Adapt as necessary starting from here
+
+branches:
+  only:
+    - master
+    - dev
+
+skip_commits:
+  message: ci skip
+
+environment:
+  global:
+    USE_RTOOLS: true
+
+  matrix:
+  # 64-bit
+  - R_VERSION: release
+    platform: x64
+    R_ARCH: x64
+
+  # 32-bit
+  - R_VERSION: release
+    platform: x86
+    R_ARCH: i386
+
 
 build_script:
   - travis-tool.sh install_deps

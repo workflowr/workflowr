@@ -8,6 +8,8 @@ navbar:
       href: index.html
     - text: "Getting started"
       href: articles/wflow-01-getting-started.html
+    - text: "FAQ"
+      href: articles/wflow-05-faq.html
     - text: "Vignettes"
       href: articles/index.html
     - text: "Functions"

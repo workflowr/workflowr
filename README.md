@@ -188,6 +188,7 @@ listed below may better suit your needs. Please check them out!
     * [cboettig/template][]
     * [knitr-jekyll][]
     * [Pakillo/template][]
+    * [rddj-template][]
     * [researchcompendium][]
     * [rmd-notebook][]
     * [rr-init][]
@@ -198,6 +199,7 @@ listed below may better suit your needs. Please check them out!
     * [prodigenr][]
     * [pRojects][]
     * [ProjectTemplate][]
+    * [rrtools][]
 
 * **Create websites from R Markdown files:**
     * [blogdown][]
@@ -320,6 +322,7 @@ the lowercase workflowr should be the preferred option.
 [r-exts]: https://cran.r-project.org/doc/manuals/R-exts.html
 [r-exts-licensing]: https://cran.r-project.org/doc/manuals/R-exts.html#Licensing
 [r-pkg]: http://r-pkgs.had.co.nz/
+[rddj-template]: https://github.com/grssnbchr/rddj-template
 [researchcompendium]: https://github.com/benmarwick/researchcompendium
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [rmd-notebook]: https://github.com/lmullen/rmd-notebook
@@ -328,6 +331,7 @@ the lowercase workflowr should be the preferred option.
 [rOpenSci]: https://ropensci.github.io/reproducibility-guide/
 [roxygen2]: https://github.com/klutometis/roxygen
 [rr-init]: https://github.com/Reproducible-Science-Curriculum/rr-init
+[rrtools]: https://github.com/benmarwick/rrtools
 [rsmith]: https://github.com/hadley/rsmith
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
 [samantha]: https://github.com/DASpringate/samatha

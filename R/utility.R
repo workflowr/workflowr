@@ -48,8 +48,13 @@ diff_file <- function(from, to) {
              ))
     }
   }
-  ignore <- utils::capture.output(
-    diffs <- tools::Rdiff(from = from, to = to, Log = TRUE))
+  # diff returns exit status 1 if any differences are found. No problem on
+  # Unix-alike, but Windows sends a warning message that the command exited with
+  # status 1.
+  suppressWarnings(
+    ignore <- utils::capture.output(
+      diffs <- tools::Rdiff(from = from, to = to, Log = TRUE))
+  )
   return(diffs$out)
 }
 

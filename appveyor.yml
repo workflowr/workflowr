@@ -25,6 +25,11 @@ branches:
 skip_commits:
   message: ci skip
 
+# The default is to clone the repo to C:\projects\workflowr, and then
+# wflow_start fails in unit tests because the workflowr Git repo is upstream.
+# https://www.appveyor.com/docs/build-configuration/#clone-directory
+clone_folder: C:\Users\appveyor\workflowr
+
 environment:
   global:
     USE_RTOOLS: true

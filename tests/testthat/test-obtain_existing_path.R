@@ -54,3 +54,11 @@ expect_identical(obtain_existing_path("~/x/y"), workflowr:::normalizePath("~"))
 expect_identical(obtain_existing_path("~/x/y/"), workflowr:::normalizePath("~"))
 expect_identical(obtain_existing_path("~/x/y/z"), workflowr:::normalizePath("~"))
 })
+
+test_that("obtain_existing_paths works when the root is the upstream existing directory", {
+  expect_identical(obtain_existing_path("/x"), workflowr:::normalizePath("/"))
+  expect_identical(obtain_existing_path("/x/"), workflowr:::normalizePath("/"))
+  expect_identical(obtain_existing_path("/x/y"), workflowr:::normalizePath("/"))
+  expect_identical(obtain_existing_path("/x/y/"), workflowr:::normalizePath("/"))
+  expect_identical(obtain_existing_path("/x/y/z"), workflowr:::normalizePath("/"))
+})

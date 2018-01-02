@@ -16,16 +16,10 @@
 # non-existing.
 #
 obtain_existing_path <- function(path) {
-  if (path == "") {
-    return(normalizePath("."))
-  } else if (dir.exists(path)) {
+  if (dir.exists(path)) {
     return(normalizePath(path))
   } else {
-    parts <- stringr::str_split(path, pattern = .Platform$file.sep)[[1]]
-    newpath <- paste(parts[-length(parts)],
-                     collapse = .Platform$file.sep)
-    # print(newpath)
-    return(obtain_existing_path(newpath))
+    return(obtain_existing_path(dirname(path)))
   }
 }
 

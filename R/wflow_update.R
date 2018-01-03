@@ -141,7 +141,9 @@ wflow_update <- function(dry_run = TRUE,
         diffs, sep = "\n",
         file = log_file, append = TRUE)
     if (!dry_run) {
-      file.copy(from = chunks_pkg, to = chunks_current, overwrite = TRUE)
+      # Don't use file.copy to avoid line ending issues on Windows
+      chunks_pkg_lines <- readLines(chunks_pkg)
+      writeLines(chunks_pkg_lines, con = chunks_current)
     }
   } else {
     cat("\nNo changes to analysis/chunks.R\n", sep = "\n",

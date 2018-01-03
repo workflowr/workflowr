@@ -45,6 +45,9 @@ test_that("wflow_update can update from v0.3.0 to v0.4.0 with no Git", {
                                full.names = TRUE, recursive = TRUE)
   files_actual <- list.files(tmp_dir_v0.3.0,
                              full.names = TRUE, recursive = TRUE)
+  files_expected_lines <- unlist(Map(readLines, files_expected))
+  files_actual_lines <- unlist(Map(readLines, files_actual))
+  expect_true(all(files_actual_lines == files_expected_lines))
   files_expected_md5 <- tools::md5sum(files_expected)
   files_actual_md5 <- tools::md5sum(files_actual)
   expect_true(all(files_actual_md5 == files_expected_md5))

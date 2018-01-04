@@ -226,37 +226,39 @@ tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
   return(convert_windows_paths(tfile))
 }
 
-fp <- function(path, relative = NULL) {
+absolute <- function(path) {
   if (!(is.null(path) || is.character(path)))
     stop("path must be NULL or a character vector")
-  if (!(is.null(relative) || is.character(relative) && length(relative) == 1))
-    stop("relative must be NULL or a character vector of length 1")
 
   if (is.null(path)) return(path)
 
-  path <- clean_path(path)
+  # Using normalizePath is frustrating because of its differences on Windows,
+  # but it is the easiest way to resolve symlinks. Note that it only resolves
+  # symlinks if the file or directory exists.
+  newpath <- normalizePath(path, winslash = "/", mustWork = FALSE)
 
-  if (!is.null(relative)) {
-    relative <- clean_path(relative)
-    newpath <- R.utils::getRelativePath(path, relativeTo = relative)
-  } else {
-    newpath <- R.utils::getAbsolutePath(path)
-  }
+  # On Windows **only**, NA gets appended to path. Ensure that any NAs are
+  # returned as NA
+  newpath[is.na(path)] <- NA
+
+  # On Windows **only**, normalizePath doesn't strip trailing slash.
+  newpath <- stringr::str_replace(newpath, "/$", "")
+
   return(newpath)
 }
 
-clean_path <- function(path) {
-  newpath <- path
-  # Deduplicate forward slash
-  newpath <- stringr::str_replace_all(newpath, pattern = "/+", replacement = "/")
-  # Deduplicate back slash
-  newpath <- stringr::str_replace_all(newpath, pattern = "\\\\+", replacement = "\\\\")
-  # Convert any instance of \\ in a Windows path to /
-  newpath <- stringr::str_replace_all(newpath, pattern = "\\\\", replacement = "/")
-  # If the Path starts with / on Windows, prepend the homedrive
-  if (.Platform$OS.type == "windows") {
-    homedrive <- paste0(Sys.getenv("HOMEDRIVE"), "/")
-    newpath <- stringr::str_replace(newpath, "^/", homedrive)
-  }
+relative <- function(path, start = getwd()) {
+  if (!(is.null(path) || is.character(path)))
+    stop("path must be NULL or a character vector")
+  if (!(is.character(start) && length(start) == 1))
+    stop("start must be a character vector of length 1")
+
+  if (is.null(path)) return(path)
+
+  newpath <- R.utils::getRelativePath(absolute(path),
+                                      relativeTo = absolute(start))
+  # The original filepaths are added as the "names" attribute. Remove them.
+  attributes(newpath) <- NULL
+
   return(newpath)
 }

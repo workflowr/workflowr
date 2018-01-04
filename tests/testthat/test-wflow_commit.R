@@ -4,8 +4,9 @@ context("wflow_commit")
 
 library("git2r")
 # start project in a tempdir
-site_dir <- workflowr:::tempfile("test-wflow_commit-", tmpdir = workflowr:::normalizePath("/tmp"))
+site_dir <- base::tempfile("test-wflow_commit-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+site_dir <- workflowr:::relative(site_dir)
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 r <- repository(path = site_dir)
 
@@ -15,7 +16,7 @@ test_that("wflow_commit can commit one new file", {
   f1 <- file.path(site_dir, "f1.txt")
   file.create(f1)
   expect_silent(actual <- wflow_commit(f1, project = site_dir))
-  expect_true(f1 %in% workflowr:::normalizePath(actual$commit_files))
+  expect_true(f1 %in% actual$commit_files)
   recent <- commits(r, n = 1)[[1]]
   expect_identical(actual$commit@sha, recent@sha)
 })
@@ -25,7 +26,7 @@ test_that("wflow_commit can commit multiple new files", {
   f3 <- file.path(site_dir, "f3.txt")
   file.create(f2, f3)
   expect_silent(actual <- wflow_commit(c(f2, f3), project = site_dir))
-  expect_identical(workflowr:::normalizePath(actual$commit_files), c(f2, f3))
+  expect_identical(actual$commit_files, c(f2, f3))
   recent <- commits(r, n = 1)[[1]]
   expect_identical(actual$commit@sha, recent@sha)
 })
@@ -54,7 +55,7 @@ test_that("wflow_commit can commit all tracked files", {
   for (f in tracked)
     cat("edit", file = f, append = TRUE)
   expect_silent(actual <- wflow_commit(all = TRUE, project = site_dir))
-  expect_identical(workflowr:::normalizePath(actual$commit_files), tracked)
+  expect_identical(actual$commit_files, tracked)
   recent <- commits(r, n = 1)[[1]]
   expect_identical(actual$commit@sha, recent@sha)
 })

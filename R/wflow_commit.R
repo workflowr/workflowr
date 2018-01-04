@@ -85,7 +85,7 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
-    files <- fp(files, relative = getwd())
+    files <- relative(files)
   }
 
   if (is.null(message)) {
@@ -109,7 +109,7 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  project <- fp(project)
+  project <- absolute(project)
   if (!dir.exists(project)) {
     stop("project directory does not exist.")
   }

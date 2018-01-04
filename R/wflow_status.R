@@ -101,8 +101,8 @@ wflow_status <- function(files = NULL, project = ".") {
   if (!dir.exists(project))
     stop("project does not exist.")
 
-  files <- fp(files)
-  project <- fp(project)
+  files <- absolute(files)
+  project <- absolute(project)
 
   # Obtain list of workflowr paths. Throw error if no Git repository.
   o <- wflow_paths(error_git = TRUE, project = project)
@@ -118,7 +118,7 @@ wflow_status <- function(files = NULL, project = ".") {
   if (!is.null(files)) {
     # Don't know if file paths are relative or absolute, so ensure they are
     # relative
-    files <- fp(files, relative = getwd())
+    files <- relative(files)
     files_analysis <- files_analysis[match(files, files_analysis)]
   }
   if (length(files_analysis) == 0)
@@ -131,7 +131,7 @@ wflow_status <- function(files = NULL, project = ".") {
   # list of character vectors of absolute paths
   s <- lapply(s, function(x) paste0(git2r::workdir(r), as.character(x)))
   # Convert from absolute paths to paths relative to working directory
-  s <- lapply(s, fp, relative = getwd())
+  s <- lapply(s, relative)
   # Determine status of each analysis file in the Git repository. Each status
   # is a logical vector.
   ignored <- files_analysis %in% s$ignored
@@ -140,7 +140,7 @@ wflow_status <- function(files = NULL, project = ".") {
   tracked <- files_analysis %in% setdiff(files_analysis,
                                          c(s$untracked, s$ignored))
   files_committed <- paste0(git2r::workdir(r), get_committed_files(r))
-  files_committed <- fp(files_committed, relative = getwd())
+  files_committed <- relative(files_committed)
   committed <- files_analysis %in% files_committed
   files_html <- to_html(files_analysis, outdir = o$docs)
   published <- files_html %in% files_committed
@@ -148,7 +148,7 @@ wflow_status <- function(files = NULL, project = ".") {
   files_outdated <- get_outdated_files(r,
                                        normalizePath(files_analysis[published]),
                                        outdir = normalizePath(o$docs))
-  files_outdated <- fp(files_outdated, relative = getwd())
+  files_outdated <- relative(files_outdated)
   mod_committed <- files_analysis %in% files_outdated
 
   # Highlevel designations

@@ -3,9 +3,9 @@ context("wflow_status")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- workflowr:::tempfile("test-wflow_status-",
-                                 tmpdir = workflowr:::normalizePath("/tmp"))
+site_dir <- base::tempfile("test-wflow_status-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+site_dir <- workflowr:::relative(site_dir)
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
@@ -13,33 +13,32 @@ on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
 s <- wflow_status(project = site_dir)
 
-wd <- getwd()
-
 test_that("wflow_status identifies root directory.", {
-  expected <- workflowr:::relpath(site_dir, start = wd)
+  expected <- site_dir
   actual <- s$root
   expect_identical(actual, expected)
+  expect_true(dir.exists(expected))
 })
 
 test_that("wflow_status identifies analysis directory.", {
   expected <- file.path(site_dir, "analysis")
-  expected <- workflowr:::relpath(expected, start = wd)
   actual <- s$analysis
   expect_identical(actual, expected)
+  expect_true(dir.exists(expected))
 })
 
 test_that("wflow_status identifies docs directory.", {
   expected <- file.path(site_dir, "docs")
-  expected <- workflowr:::relpath(expected, start = wd)
   actual <- s$docs
   expect_identical(actual, expected)
+  expect_true(dir.exists(expected))
 })
 
 test_that("wflow_status identifies Git directory.", {
   expected <- file.path(site_dir, ".git")
-  expected <- workflowr:::relpath(expected, start = wd)
   actual <- s$git
   expect_identical(actual, expected)
+  expect_true(dir.exists(expected))
 })
 
 # Create a new untracked file that will have status Scr for Scratch
@@ -66,10 +65,10 @@ test_that("wflow_status classifies files when run from outside workflowr project
 })
 
 test_that("wflow_status classifies files when run from root of workflowr project.", {
-  rmd_scr <- workflowr:::relpath_vec(rmd_scr, start = s$root)
-  rmd_pub <- workflowr:::relpath_vec(rmd_pub, start = s$root)
-  rmd_mod <- workflowr:::relpath_vec(rmd_mod, start = s$root)
-  rmd_unp <- workflowr:::relpath_vec(rmd_unp, start = s$root)
+  rmd_scr <- workflowr:::relative(rmd_scr, start = s$root)
+  rmd_pub <- workflowr:::relative(rmd_pub, start = s$root)
+  rmd_mod <- workflowr:::relative(rmd_mod, start = s$root)
+  rmd_unp <- workflowr:::relative(rmd_unp, start = s$root)
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$root)
@@ -81,10 +80,10 @@ test_that("wflow_status classifies files when run from root of workflowr project
 })
 
 test_that("wflow_status classifies files when run from analysis/.", {
-  rmd_scr <- workflowr:::relpath_vec(rmd_scr, start = s$analysis)
-  rmd_pub <- workflowr:::relpath_vec(rmd_pub, start = s$analysis)
-  rmd_mod <- workflowr:::relpath_vec(rmd_mod, start = s$analysis)
-  rmd_unp <- workflowr:::relpath_vec(rmd_unp, start = s$analysis)
+  rmd_scr <- workflowr:::relative(rmd_scr, start = s$analysis)
+  rmd_pub <- workflowr:::relative(rmd_pub, start = s$analysis)
+  rmd_mod <- workflowr:::relative(rmd_mod, start = s$analysis)
+  rmd_unp <- workflowr:::relative(rmd_unp, start = s$analysis)
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$analysis)
@@ -96,10 +95,10 @@ test_that("wflow_status classifies files when run from analysis/.", {
 })
 
 test_that("wflow_status classifies files when run from docs/.", {
-  rmd_scr <- workflowr:::relpath_vec(rmd_scr, start = s$docs)
-  rmd_pub <- workflowr:::relpath_vec(rmd_pub, start = s$docs)
-  rmd_mod <- workflowr:::relpath_vec(rmd_mod, start = s$docs)
-  rmd_unp <- workflowr:::relpath_vec(rmd_unp, start = s$docs)
+  rmd_scr <- workflowr:::relative(rmd_scr, start = s$docs)
+  rmd_pub <- workflowr:::relative(rmd_pub, start = s$docs)
+  rmd_mod <- workflowr:::relative(rmd_mod, start = s$docs)
+  rmd_unp <- workflowr:::relative(rmd_unp, start = s$docs)
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$docs)
@@ -120,9 +119,9 @@ test_that("wflow_status reports only specified files", {
 # Warnings and Errors ----------------------------------------------------------
 
 test_that("wflow_status throws error if not in workflowr project.", {
-  non_project <- workflowr:::tempfile("non-project-",
-                                      tmpdir = workflowr:::normalizePath("/tmp"))
+  non_project <- base::tempfile("non-project-")
   dir.create(non_project, recursive = TRUE)
+  non_project <- workflowr:::absolute(non_project)
   on.exit(unlink(non_project, recursive = TRUE))
   expect_silent(s <- wflow_status(project = site_dir))
   expect_error(s <- wflow_status(project = non_project),

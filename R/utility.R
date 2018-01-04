@@ -225,3 +225,38 @@ tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
   tfile <- base::tempfile(pattern = pattern, tmpdir = tmpdir, fileext = fileext)
   return(convert_windows_paths(tfile))
 }
+
+fp <- function(path, relative = NULL) {
+  if (!(is.null(path) || is.character(path)))
+    stop("path must be NULL or a character vector")
+  if (!(is.null(relative) || is.character(relative) && length(relative) == 1))
+    stop("relative must be NULL or a character vector of length 1")
+
+  if (is.null(path)) return(path)
+
+  path <- clean_path(path)
+
+  if (!is.null(relative)) {
+    relative <- clean_path(relative)
+    newpath <- R.utils::getRelativePath(path, relativeTo = relative)
+  } else {
+    newpath <- R.utils::getAbsolutePath(path)
+  }
+  return(newpath)
+}
+
+clean_path <- function(path) {
+  newpath <- path
+  # Deduplicate forward slash
+  newpath <- stringr::str_replace_all(newpath, pattern = "/+", replacement = "/")
+  # Deduplicate back slash
+  newpath <- stringr::str_replace_all(newpath, pattern = "\\\\+", replacement = "\\\\")
+  # Convert any instance of \\ in a Windows path to /
+  newpath <- stringr::str_replace_all(newpath, pattern = "\\\\", replacement = "/")
+  # If the Path starts with / on Windows, prepend the homedrive
+  if (.Platform$OS.type == "windows") {
+    homedrive <- paste0(Sys.getenv("HOMEDRIVE"), "/")
+    newpath <- stringr::str_replace(newpath, "^/", homedrive)
+  }
+  return(newpath)
+}

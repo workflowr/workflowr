@@ -22,7 +22,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
   o <- list()
 
   # workflowr root
-  project <- normalizePath(project)
+  project <- fp(project)
   o$root <- try(rprojroot::find_rstudio_root_file(path = project),
                 silent = TRUE)
   if (class(o$root) == "try-error")
@@ -60,7 +60,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
     stop(wrap("Unable to locate the website directory. Make sure to set the
               variable output_dir in the file _site.yml"),
          call. = FALSE)
-  o$docs <- normalizePath(file.path(o$analysis, output_dir), mustWork = FALSE)
+  o$docs <- fp(file.path(o$analysis, output_dir))
   if (!dir.exists(o$docs)) {
     warning("Unable to locate docs directory. Run wflow_build() to create it.")
   }
@@ -79,7 +79,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
   }
 
   # Make paths relative to working directory
-  o <- lapply(o, relpath)
+  o <- lapply(o, fp, relative = getwd())
 
   return(o)
 }

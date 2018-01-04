@@ -232,6 +232,13 @@ absolute <- function(path) {
   # On Windows **only**, normalizePath doesn't strip trailing slash.
   newpath <- stringr::str_replace(newpath, "/$", "")
 
+  # normalizePath does not return an absolute path for a non-existent file or
+  # directory, e.g. `normalizePath("a")` returns `"a"`.
+  newpath <- R.utils::getAbsolutePath(newpath)
+  # The original filepaths are added as the "names" attribute when there is more
+  # than one filepath. Remove them.
+  attributes(newpath) <- NULL
+
   return(newpath)
 }
 
@@ -246,7 +253,8 @@ relative <- function(path, start = getwd()) {
 
   newpath <- R.utils::getRelativePath(absolute(path),
                                       relativeTo = absolute(start))
-  # The original filepaths are added as the "names" attribute. Remove them.
+  # The original filepaths are added as the "names" attribute when there is more
+  # than one filepath. Remove them.
   attributes(newpath) <- NULL
 
   return(newpath)

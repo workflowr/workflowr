@@ -23,7 +23,8 @@ test_that("to_html converts file extension even if it also appears in filename",
 test_that("to_html converts simple absolute path", {
   docs <- "/home/user/project/docs"
   expected <- file.path(docs, "file.html")
-  actual <- workflowr:::to_html("/home/user/project/analysis/file.Rmd", outdir = docs)
+  actual <- workflowr:::to_html("/home/user/project/analysis/file.Rmd",
+                                outdir = docs)
   expect_identical(actual, expected)
 })
 
@@ -61,6 +62,69 @@ test_that("to_html throws errors for invalid extensions", {
   expect_error(workflowr:::to_html("file.md"), "Invalid file extension")
   expect_error(workflowr:::to_html("file.z"), "Invalid file extension")
   expect_error(workflowr:::to_html("file"), "Invalid file extension")
+})
+
+# Test absolute ----------------------------------------------------------------
+
+test_that("absolute expands existing file", {
+  path_rel <- "test-utility.R"
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_true(R.utils::isAbsolutePath(path_abs))
+})
+
+test_that("absolute expands existing directory", {
+  path_rel <- "."
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_true(R.utils::isAbsolutePath(path_abs))
+})
+
+test_that("absolute expands non-existent file", {
+  path_rel <- "non-existent-file"
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_true(R.utils::isAbsolutePath(path_abs))
+})
+
+test_that("absolute expands non-existent directory", {
+  path_rel <- "a/b/c"
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_true(R.utils::isAbsolutePath(path_abs))
+})
+
+test_that("absolute removes duplicated forward slashes", {
+  path_rel <- "a//b/c"
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_false(stringr::str_detect(path_abs, "//"))
+})
+
+test_that("absolute removes duplicated back slashes", {
+  path_rel <- "a\\\\b/c"
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_false(stringr::str_detect(path_abs, "\\\\"))
+})
+
+test_that("absolute removes trailing forward slash(es)", {
+  path_rel <- c("a/b/c/", "a/b/c//")
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_false(all(stringr::str_detect(path_abs, "/$")))
+})
+
+test_that("absolute removes trailing back slash(es)", {
+  path_rel <- c("a\\b\\c\\", "a\\b\\c\\\\")
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_false(all(stringr::str_detect(path_abs, "\\$")))
+})
+
+test_that("absolute converts back slashes to forward slashes", {
+  path_rel <- c("a\\b\\c\\", "a\\\\b\\\\c\\\\")
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_false(all(stringr::str_detect(path_abs, "\\\\")))
+})
+
+test_that("absolute does not add any attributes to the character vector", {
+  path_rel <- c("a/b/c", "x/y/z")
+  path_abs <- workflowr:::absolute(path_rel)
+  expect_true(is.character(path_abs))
+  expect_true(is.null(attributes(path_abs)))
 })
 
 # Test commonprefix ------------------------------------------------------------

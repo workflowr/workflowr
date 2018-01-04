@@ -70,7 +70,7 @@ to_html <- function(files, outdir = NULL) {
   html <- stringr::str_replace(files, "[Rr]md$", "html")
   if (!is.null(outdir)) {
     # Remove trailing slash if present
-    outdir <- remove_trailing_slash(outdir)
+    outdir <- stringr::str_replace(outdir, "/$", "")
     # Only prepend outdir if it's not "." for current working directory
     if (outdir == ".") {
       html <- basename(html)
@@ -142,9 +142,9 @@ relpath <- function(path, start = NULL) {
     start <- getwd()
 
   if (.Platform$OS.type == "windows") {
-    start <- remove_trailing_slash(start)
+    start <- stringr::str_replace(start, "/$", "")
     start_list <- unlist(stringr::str_split(start, sep))
-    path <- remove_trailing_slash(path)
+    path <- stringr::str_replace(path, "/$", "")
     path_list <- unlist(stringr::str_split(path, sep))
   } else {
     start_list <- unlist(stringr::str_split(start, sep))[-1]
@@ -196,19 +196,6 @@ normalizePath <- function(path, winslash = "/", mustWork = NA) {
   # returned as NA
   p[is.na(path)] <- NA
   return(p)
-}
-
-# On Windows **only**, normalizePath doesn't strip trailing slash, so need a
-# dedicated function.
-remove_trailing_slash <- function(x) {
-  stopifnot(is.character(x))
-  for (i in seq_along(x)) {
-    len <- nchar(x[i])
-    if (stringr::str_sub(x[i], len, len) == "/") {
-      x[i] <- stringr::str_sub(x[i], 1, len - 1)
-    }
-  }
-  return(x)
 }
 
 # Convert any instance of \\ in a Windows path to /

@@ -227,10 +227,11 @@ tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
 }
 
 absolute <- function(path) {
-  if (!(is.null(path) || is.character(path)))
-    stop("path must be NULL or a character vector")
-
   if (is.null(path)) return(path)
+  if (all(is.na(path))) return(path)
+
+  if (!is.character(path))
+    stop("path must be NULL or a character vector")
 
   # Using normalizePath is frustrating because of its differences on Windows,
   # but it is the easiest way to resolve symlinks. Note that it only resolves
@@ -248,12 +249,13 @@ absolute <- function(path) {
 }
 
 relative <- function(path, start = getwd()) {
-  if (!(is.null(path) || is.character(path)))
+  if (is.null(path)) return(path)
+  if (all(is.na(path))) return(path)
+
+  if (!is.character(path))
     stop("path must be NULL or a character vector")
   if (!(is.character(start) && length(start) == 1))
     stop("start must be a character vector of length 1")
-
-  if (is.null(path)) return(path)
 
   newpath <- R.utils::getRelativePath(absolute(path),
                                       relativeTo = absolute(start))

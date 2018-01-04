@@ -24,6 +24,7 @@ Imports:
     methods,
     rprojroot,
     rstudioapi,
+    R.utils,
     stringr (>= 1.1.0),
     tools,
     utils,

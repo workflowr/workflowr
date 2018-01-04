@@ -33,8 +33,9 @@ context("wflow_open")
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-site_dir <- workflowr:::tempfile("test-wflow_open-", tmpdir = workflowr:::normalizePath("/tmp"))
+site_dir <- base::tempfile("test-wflow_open-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+site_dir <- workflowr:::relative(site_dir)
 if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
 # Test wflow_open --------------------------------------------------------------
@@ -70,9 +71,9 @@ test_that("wflow_open changes the working directory", {
   expect_identical(wd_pre, wd_same)
   expect_message(rmd <- wflow_open("do-change-wd.Rmd", change_wd = TRUE,
                             open_file = FALSE, project = site_dir),
-                 "Current working directory changed to:")
+                 "Working directory was changed.")
   expect_true(file.exists(rmd))
-  wd_change <- getwd()
+  wd_change <- workflowr:::relative(getwd(), start = wd_pre)
   expect_identical(wd_change, file.path(site_dir, "analysis"))
   expect_silent(rmd <- wflow_open("no-need-to-change-wd.Rmd",
                     change_wd = TRUE, open_file = FALSE,
@@ -106,10 +107,8 @@ test_that("wflow_open can accept basename, full paths, and wrong paths", {
   rmd_paths <- c("basename.Rmd",
                  file.path(site_dir, "analysis", "full.Rmd"),
                  file.path(site_dir, "code", "wrong.Rmd"))
-  expect_warning(rmd <-
-                   wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
-                               project = site_dir),
-                 "Input file had invalid subdirectory specified.")
+  rmd <- wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
+                    project = site_dir)
   expect_true(all(file.exists(rmd)))
   modification_time_pre <- file.mtime(rmd)
   Sys.sleep(2)
@@ -129,22 +128,19 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   # switches the working directory to the path of the first input file.
   cwd <- getwd()
   on.exit(setwd(cwd))
-  location_exist <- workflowr:::tempfile("test-wflow_open-exist-",
-                             tmpdir = workflowr:::normalizePath("/tmp"))
+  location_exist <- base::tempfile("test-wflow_open-exist-")
   dir.create(location_exist)
+  location_exist <- workflowr:::relative(location_exist)
   on.exit(unlink(location_exist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile1 <- file.path(location_exist, "exist.Rmd")
-  location_nonexist <- workflowr:::tempfile("test-wflow_open-nonexist-",
-                                tmpdir = workflowr:::normalizePath("/tmp"))
+  location_nonexist <- base::tempfile("test-wflow_open-nonexist-")
   on.exit(unlink(location_nonexist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile2 <- file.path(location_nonexist, "nonexist.Rmd")
 
-  expect_message(outfile <- wflow_open(c(testfile1, testfile2),
-                                       change_wd = TRUE,
-                                       open_file = FALSE, project = NULL),
-                 paste0("Creating output directory ", location_nonexist))
+  outfile <- wflow_open(c(testfile1, testfile2), change_wd = TRUE,
+                        open_file = FALSE, project = NULL)
   expect_true(all(file.exists(outfile)))
-  expect_identical(outfile, workflowr:::relpath_vec(c(testfile1, testfile2)))
+  expect_identical(outfile, workflowr:::relative(c(testfile1, testfile2)))
 })
 
 test_that("wflow_open can create a standalone version of the template", {

@@ -74,7 +74,7 @@ wflow_open <- function(files,
   if (!(is.null(project) || (is.character(project) && length(project) == 1)))
     stop("project must be NULL or a one element character vector")
 
-  files <- relative(files)
+  files <- absolute(files)
   project <- absolute(project)
 
   # Check file extensions
@@ -83,45 +83,28 @@ wflow_open <- function(files,
   if (any(non_standard))
     stop("R Markdown files must have the extension Rmd or rmd.")
 
-  # If project is NULL, create destination directories if they do not exist. Also
-  # set `analysis_dir` to the directory of the first file for `change_wd`.
-  #
-  # If project is set, find the analysis/ subdirectory. Provide warning
-  # if user included a path to a location other than analysis/
+  # If project is NULL, create upstream directories (rmarkdown::draft first
+  # copies the file to the directory and then renames it). Set `analysis_dir` to
+  # the directory of the first file for `change_wd`.
   if (is.null(project)) {
     rmd_files <- files
-    files_dir <- dirname(rmd_files)
-    for (fdir in files_dir) {
-      if (!dir.exists(fdir)) {
-        message("Creating output directory ", fdir)
-        dir.create(fdir, recursive = TRUE)
-      }
+    for (rmd_dir in dirname(files)) {
+      dir.create(rmd_dir, showWarnings = FALSE, recursive = TRUE)
     }
-    analysis_dir <- relpath_vec(files_dir[1])
+    analysis_dir <- dirname(rmd_files)[1]
   } else {
+    # If project is set, find the analysis/ subdirectory.
+
     # Confirm that project exists
     if (!dir.exists(project)) {
       stop("project does not exist: ", project)
-    } else {
-      project <- normalizePath(project)
     }
     # Find analysis/ subdirectory
     p <- wflow_paths(project = project)
-    analysis_dir <- p$analysis
+    analysis_dir <- absolute(p$analysis)
     # Set path to analysis/ for all files
     files_base <- basename(files)
     rmd_files <- file.path(analysis_dir, files_base)
-    # Provide warning if user provided a path to a directory other than analysis
-    files_dir <- dirname(files)
-    files_path <- stringr::str_split(files_dir, .Platform$file.sep)
-    files_subdir <- sapply(files_path, function(x) x[length(x)])
-    for (i in seq_along(rmd_files)) {
-      if (!(files_subdir[i] == "analysis" | files_subdir[i] == ".")) {
-        warning("Input file had invalid subdirectory specified.\n",
-                sprintf("Input filename: %s\nOutput filename: %s",
-                        files[i], rmd_files[i]))
-      }
-    }
   }
 
   # Create the file(s) if non-existent
@@ -139,10 +122,11 @@ wflow_open <- function(files,
 
   # Change the working directory
   current_wd <- getwd()
-  if (change_wd & current_wd != normalizePath(analysis_dir)) {
-    rmd_files <- relpath_vec(rmd_files, start = analysis_dir)
+  if (change_wd & current_wd != analysis_dir) {
     setwd(analysis_dir)
-    message(wrap("Current working directory changed to: ", analysis_dir))
+    message("Working directory was changed.",
+            "\nPrevious:\t", absolute(current_wd),
+            "\nCurrent:\t", absolute(analysis_dir))
   }
 
   # Open in RStudio
@@ -152,5 +136,5 @@ wflow_open <- function(files,
     }
   }
 
-  return(invisible(rmd_files))
+  return(invisible(relative(rmd_files)))
 }

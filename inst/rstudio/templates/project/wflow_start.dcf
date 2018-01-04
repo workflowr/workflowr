@@ -1,0 +1,13 @@
+Binding: wflow_start
+Title: workflowr project
+
+Parameter: name
+Widget: TextInput
+Label: Project name
+Position: left
+
+Parameter: git
+Widget: CheckboxInput
+Label: Use Git for version control
+Default: On
+Position: right

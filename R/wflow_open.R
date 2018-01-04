@@ -74,9 +74,8 @@ wflow_open <- function(files,
   if (!(is.null(project) || (is.character(project) && length(project) == 1)))
     stop("project must be NULL or a one element character vector")
 
-  # Ensure Windows paths use forward slashes
-  files <- convert_windows_paths(files)
-  project <- convert_windows_paths(project)
+  files <- relative(files)
+  project <- absolute(project)
 
   # Check file extensions
   extensions <- tools::file_ext(files)

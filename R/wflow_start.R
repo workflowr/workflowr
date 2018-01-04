@@ -83,8 +83,7 @@ wflow_start <- function(directory,
     stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
   }
 
-  # Ensure Windows paths use forward slashes
-  directory <- convert_windows_paths(directory)
+  directory <- absolute(directory)
 
   # A workflowr directory cannot be created within an existing Git repository if
   # git = TRUE & existing = FALSE.

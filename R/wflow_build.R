@@ -120,10 +120,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
     } else if (!all(file.exists(files))) {
       stop("Not all files exist. Check the paths to the files")
     }
-    # Ensure Windows paths use forward slashes
-    files <- convert_windows_paths(files)
     # Change filepaths to relative paths
-    files <- relpath_vec(files)
+    files <- relative(files)
   }
   ext <- tools::file_ext(files)
   ext_wrong <- !(ext %in% c("Rmd", "rmd"))
@@ -151,8 +149,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   } else if (!(is.character(log_dir) && length(log_dir) == 1)) {
     stop("log_dir must be NULL or a one element character vector")
   }
-  # Ensure Windows paths use forward slashes
-  log_dir <- convert_windows_paths(log_dir)
+  log_dir <- absolute(log_dir)
   dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
 
   if (!(is.logical(local) && length(local) == 1))
@@ -161,17 +158,14 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
 
-  if (is.character(project) && length(project) == 1) {
-    # Ensure Windows paths use forward slashes
-    project <- convert_windows_paths(project)
-    if (dir.exists(project)) {
-      project <- normalizePath(project)
-    } else {
-      stop("project directory does not exist.")
-    }
-  } else {
+  if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
+
+  if (!dir.exists(project)) {
+    stop("project directory does not exist.")
   }
+
+  project <- absolute(project)
 
   # Obtain files to consider ---------------------------------------------------
 

@@ -26,8 +26,7 @@ extract_commit <- function(path, num) {
             is.numeric(num),
             num == trunc(num),
             num > 0)
-  # Ensure Windows paths use forward slashes
-  path <- convert_windows_paths(path)
+  path <- absolute(path)
   if (!git2r::in_repository(path)) {
     return(list(sha1 = "NA", message = "NA"))
   }

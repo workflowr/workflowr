@@ -68,9 +68,8 @@ wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
   if (!dir.exists(project))
     stop("project does not exist. You entered: ", project)
 
-  # Ensure Windows paths use forward slashes
-  files <- convert_windows_paths(files)
-  project <- convert_windows_paths(project)
+  files <- absolute(files)
+  project <- absolute(project)
 
   p <- wflow_paths(project = project)
   docs_dir <- p$docs

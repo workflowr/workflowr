@@ -78,8 +78,7 @@ wflow_convert <- function(files,
   if (!is.logical(verbose) | length(verbose) != 1)
     stop("verbose must be a one element logical vector")
 
-  # Ensure Windows paths use forward slashes
-  files <- convert_windows_paths(files)
+  files <- relative(files)
 
   # Check file extensions
   extensions <- tools::file_ext(files)

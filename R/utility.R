@@ -198,19 +198,11 @@ normalizePath <- function(path, winslash = "/", mustWork = NA) {
   return(p)
 }
 
-# Convert any instance of \\ in a Windows path to /
-convert_windows_paths <- function(x) {
-  if (is.null(x)) return(x)
-  if (all(is.na(x))) return(x)
-
-  stringr::str_replace_all(x, pattern = "\\\\", replacement = "/")
-}
-
 # Override default tempfile to not use \\ in paths on Windows. Unlike
 # normalizePath, there is no argument to change this default behavior.
 tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
   tfile <- base::tempfile(pattern = pattern, tmpdir = tmpdir, fileext = fileext)
-  return(convert_windows_paths(tfile))
+  return(absolute(tfile))
 }
 
 absolute <- function(path) {

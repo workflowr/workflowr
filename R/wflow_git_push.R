@@ -95,17 +95,14 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
 
-  if (is.character(project) && length(project) == 1) {
-    # Ensure Windows paths use forward slashes
-    project <- convert_windows_paths(project)
-    if (dir.exists(project)) {
-      project <- normalizePath(project)
-    } else {
-      stop("project directory does not exist.")
-    }
-  } else {
+  if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
+
+  if (!dir.exists(project)) {
+    stop("project directory does not exist.")
   }
+
+  project <- absolute(project)
 
   # Assess status of repository ------------------------------------------------
 

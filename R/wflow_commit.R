@@ -109,10 +109,11 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  project <- absolute(project)
   if (!dir.exists(project)) {
     stop("project directory does not exist.")
   }
+
+  project <- absolute(project)
 
   if (is.null(files) && !all)
     stop("Must specify files to commit, set `all = TRUE`, or both",

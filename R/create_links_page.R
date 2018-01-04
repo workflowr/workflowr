@@ -40,8 +40,14 @@ create_links_page <- function(output = "results.Rmd",
                            exclude_rmd = NULL,
                            datatable = FALSE) {
 
-  # Ensure Windows paths use forward slashes
-  project <- convert_windows_paths(project)
+  if (!(is.character(project) && length(project) == 1))
+    stop("project must be a one-element character vector")
+
+  if (!dir.exists(project)) {
+    stop("project directory does not exist.")
+  }
+
+  project <- absolute(project)
 
   p <- wflow_paths(project = project)
   analysis_dir <- p$analysis

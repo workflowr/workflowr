@@ -71,8 +71,7 @@ wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
   if (!dir.exists(project))
     stop("project does not exist. You entered: ", project)
 
-  # Ensure Windows paths use forward slashes
-  project <- convert_windows_paths(project)
+  project <- absolute(project)
 
   if (git2r::in_repository(project)) {
     r <- git2r::repository(project, discover = TRUE)

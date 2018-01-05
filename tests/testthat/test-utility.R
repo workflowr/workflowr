@@ -127,147 +127,112 @@ test_that("absolute does not add any attributes to the character vector", {
   expect_true(is.null(attributes(path_abs)))
 })
 
-# Test commonprefix ------------------------------------------------------------
-
-# Warning: The implementation of commonprefix is substantially different from
-# its Python version
-test_that("commonprefix finds common ", {
-  expect_identical(
-    workflowr:::commonprefix(c("a", "b", "c"), c("a", "b", "c")),
-    c("a", "b", "c")
-  )
-  expect_identical(
-    workflowr:::commonprefix(c("a", "b", "c"), c("a", "b", "z")),
-    c("a", "b")
-  )
-  expect_identical(
-    workflowr:::commonprefix(c("a", "b", "c"), c("a", "y", "z")),
-    "a"
-  )
-  expect_identical(
-    workflowr:::commonprefix(c("a", "b", "c"), c("x", "y", "z")),
-    character()
-  )
+test_that("absolute returns NULL for NULL", {
+  expect_identical(workflowr:::absolute(NULL), NULL)
 })
 
-test_that("commonprefix handles edge cases", {
-  expect_identical(workflowr:::commonprefix("a", "a"), "a")
-  expect_identical(workflowr:::commonprefix("a", "b"), character())
-  expect_identical(workflowr:::commonprefix(character(), "a"), character())
-  expect_identical(workflowr:::commonprefix("a", character()), character())
-  expect_identical(workflowr:::commonprefix(character(), character()), character())
-  expect_identical(workflowr:::commonprefix("", "a"), character())
-  expect_identical(workflowr:::commonprefix("a", ""), character())
-  expect_identical(workflowr:::commonprefix("", ""), "")
+test_that("absolute returns NA for NA", {
+  expect_identical(workflowr:::absolute(NA), NA)
 })
 
-# Test relpath -----------------------------------------------------------------
+# Test relative -----------------------------------------------------------------
 
-test_that("relpath returns subdirectory", {
+test_that("relative returns subdirectory", {
   path = "/test/location/project"
   start = "/test/location"
   expected <- "project"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath returns nested subdirectories", {
+test_that("relative returns nested subdirectories", {
   path = "/test/location/project/sub1/sub2"
   start = "/test/location"
   expected <- "project/sub1/sub2"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath returns upstream directory", {
+test_that("relative returns upstream directory", {
   path = "/test"
   start = "/test/location"
   expected <- ".."
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath returns multiple upstream directories", {
+test_that("relative returns multiple upstream directories", {
   path = "/test"
   start = "/test/location/project"
   expected <- "../.."
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath returns . when directories are the same", {
+test_that("relative returns . when directories are the same", {
   path = "/test/location/project"
   start = "/test/location/project"
   expected <- "."
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath returns files in upstream directories", {
+test_that("relative returns files in upstream directories", {
   path = "/test/location/project/sub1/file"
   start = "/test/location/project/sub2"
   expected <- "../sub1/file"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath thows error for relative path with tilde", {
-  expect_error(workflowr:::relpath("~/path", "/path"),
-               "arguments path and start cannot begin with a tilde")
-  expect_error(workflowr:::relpath("/path", "~/path"),
-               "arguments path and start cannot begin with a tilde")
+test_that("relative can handle tilde for home directory", {
+  path = "~/test/location/project/sub1/file"
+  start = "~/test/location/project/sub2"
+  expected <- "../sub1/file"
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
 })
 
-test_that("relpath can handle a tilde in an absolute path", {
+test_that("relative can handle a tilde in an absolute path", {
   path = "/test/location/project/sub1/file~"
   start = "/test/location/project/sub2"
   expected <- "../sub1/file~"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath returns NULL for NULL", {
-  expect_identical(workflowr:::relpath(NULL), NULL)
+test_that("relative returns NULL for NULL", {
+  expect_identical(workflowr:::relative(NULL), NULL)
 })
 
-test_that("relpath returns NA for NA", {
-  expect_identical(workflowr:::relpath(NA), NA)
+test_that("relative returns NA for NA", {
+  expect_identical(workflowr:::relative(NA), NA)
 })
 
-# Test relpath_vec -------------------------------------------------------------
-
-test_that("relpath_vec works on vector input", {
+test_that("relative works on vector input", {
   path = c("/test", "/test/location/subdir")
   start = "/test/location"
   expected <- c("..", "subdir")
-  actual <- workflowr:::relpath_vec(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath_vec works on relative paths to existing files", {
+test_that("relative works on relative paths to existing files", {
   dir.create("x/y/z", recursive = TRUE)
   on.exit(unlink("x", recursive = TRUE, force = TRUE))
   path = c("x", "x/y/z")
   start = "./x/y"
   expected <- c("..", "z")
-  actual <- workflowr:::relpath_vec(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath_vec is backwards compatible with relpath", {
-  path = "/test"
-  start = "/test/location"
-  expected <- ".."
-  actual <- workflowr:::relpath_vec(path, start)
-  expect_identical(actual, expected)
-})
-
-test_that("relpath_vec accepts NA and NULL only if some valid input included", {
-  expect_error(workflowr:::relpath_vec(NULL), "path must be a character vector")
-  expect_error(workflowr:::relpath_vec(NA), "path must be a character vector")
+test_that("relative handles NA and NULL", {
+  expect_null(workflowr:::relative(NULL))
+  expect_identical(NA, workflowr:::relative(NA))
   path = c("/test", NA, NULL, "/test/location/subdir")
   start = "/test/location"
   expected <- c("..", NA, NULL, "subdir")
-  actual <- workflowr:::relpath_vec(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })

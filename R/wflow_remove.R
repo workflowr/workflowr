@@ -152,8 +152,8 @@ wflow_remove <- function(files,
 
   if (use_git) {
     # Need to make the files relative to Git directory
-    files_to_remove_rel <- relpath_vec(files_to_remove,
-                                       start = git2r::workdir(r))
+    files_to_remove_rel <- relative(files_to_remove,
+                                    start = git2r::workdir(r))
     # Obtain committed files (relative to Git directory)
     files_committed <- get_committed_files(r)
 

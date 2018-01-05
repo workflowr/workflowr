@@ -81,114 +81,6 @@ to_html <- function(files, outdir = NULL) {
   return(html)
 }
 
-# A vectorized form of relpath.
-#
-# path - a vector of paths
-#
-# start - a single starting path to be relative to
-#
-# Both path and start will be passed through normalizePath to resolve relative
-# paths to existing directories.
-relpath_vec <- function(path, start = NULL) {
-  if (!(is.character(path) && length(path) >= 1))
-    stop("path must be a character vector")
-  if (!(is.null(start) || (is.character(start) && length(start) == 1)))
-    stop("start must be NULL or a 1-element character vector")
-
-  p <- normalizePath(path, mustWork = FALSE)
-  if (!is.null(start)) {
-    start <- normalizePath(start, mustWork = FALSE)
-  }
-  o <- character(length = length(p))
-  for (i in seq_along(path)) {
-    o[i] <- relpath(path = p[i], start = start)
-  }
-  return(o)
-}
-
-# Return a relative version of a path
-#
-# This is a port of the Python function os.path.relpath. I couldn't find an
-# equivalent. If you know of an available function in a lightweight dependency,
-# please let me know.
-#
-# Description from Python docs: Return a relative filepath to path either from
-# the current directory or from an optional start directory. This is a path
-# computation: the filesystem is not accessed to confirm the existence or nature
-# of path or start.
-#
-# Note on this implementation:
-#  * Not vectorized.
-#  * Expects absolute paths with no tilde.
-#
-# https://docs.python.org/3.5/library/os.path.html#os.path.relpath
-# https://github.com/python/cpython/blob/3.5/Lib/posixpath.py#L431
-# https://github.com/python/cpython/blob/3.5/Lib/test/test_posixpath.py#L483
-relpath <- function(path, start = NULL) {
-  if (is.null(path)) return(NULL)
-  if (is.na(path)) return(NA)
-  if (!(is.character(path) && length(path) == 1))
-    stop("path must be a character vector")
-  if (!(is.null(start) || (is.character(start) && length(start) == 1)))
-    stop("start must be NULL or a 1-element character vector")
-  if (any(stringr::str_sub(c(path, start), 1, 1) == "~"))
-    stop("arguments path and start cannot begin with a tilde")
-
-  curdir <- "."
-  sep <- .Platform$file.sep
-  pardir <- ".."
-
-  if (is.null(start))
-    start <- getwd()
-
-  if (.Platform$OS.type == "windows") {
-    start <- stringr::str_replace(start, "/$", "")
-    start_list <- unlist(stringr::str_split(start, sep))
-    path <- stringr::str_replace(path, "/$", "")
-    path_list <- unlist(stringr::str_split(path, sep))
-  } else {
-    start_list <- unlist(stringr::str_split(start, sep))[-1]
-    path_list <- unlist(stringr::str_split(path, sep))[-1]
-  }
-  # Work out how much of the filepath is shared by start and path.
-  i <- length(commonprefix(start_list, path_list))
-
-  rel_list <- rep(pardir, length(start_list) - i)
-  if (length(path_list) > i)
-    rel_list <- c(rel_list, path_list[(i + 1):length(path_list)])
-  if (length(rel_list) == 0)
-    return(curdir)
-  return(paste(rel_list, collapse = sep))
-}
-
-# "Given a list of pathnames, returns the longest common leading component"
-#
-# Note: This version is only inspired by the original Python one. The Python
-# version can handle a list of strings or a list of lists of strings because the
-# enumerate function works on either. The unit tests are for a list of strings,
-# but relpath uses a list of lists of strings. Since it is awkward to try and do
-# both in R, this only works on a list of character vectors. Also, it is
-# modified for the specific use case of comparing exactly two character vectors.
-#
-# https://docs.python.org/3.5/library/os.path.html#os.path.commonprefix
-# https://github.com/python/cpython/blob/3.5/Lib/genericpath.py#L68
-# https://github.com/python/cpython/blob/3.5/Lib/test/test_genericpath.py#L32
-commonprefix <- function(p1, p2) {
-  stopifnot(is.character(p1), is.character(p2))
-  if (length(p1) == 0 || length(p2) == 0)
-    return(character())
-  len_min <- pmin(length(p1), length(p2))
-  incommon <- character()
-  for (i in seq(len_min)) {
-    if (p1[i] == p2[i]) {
-      incommon <- c(incommon, p1[i])
-    } else {
-      break
-    }
-  }
-  return(incommon)
-}
-
 # Override default normalizePath options for working with filepaths on Windows
 normalizePath <- function(path, winslash = "/", mustWork = NA) {
   p <- base::normalizePath(path = path, winslash = winslash, mustWork = mustWork)
@@ -205,6 +97,9 @@ tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
   return(absolute(tfile))
 }
 
+# Get an absolute path while handling cross-platform filepath issues
+#
+# path - a vector of paths
 absolute <- function(path) {
   if (is.null(path)) return(path)
   if (all(is.na(path))) return(path)
@@ -239,6 +134,11 @@ absolute <- function(path) {
   return(newpath)
 }
 
+# Get a relative path while handling cross-platform filepath issues
+#
+# path - a vector of paths
+#
+# start - a single starting path to be relative to
 relative <- function(path, start = getwd()) {
   if (is.null(path)) return(path)
   if (all(is.na(path))) return(path)

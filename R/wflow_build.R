@@ -173,7 +173,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # All files to consider (ignore files that start with an underscore)
   files_all <- list.files(path = p$analysis, pattern = "^[^_].*\\.[Rr]md$",
                           full.names = TRUE)
-  files_all <- relpath_vec(files_all)
+  files_all <- relative(files_all)
 
   # All files must be in the analysis subdirectory. Since it's possible to
   # directly pass a file that starts with an underscore, the file may not be in

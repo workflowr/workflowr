@@ -186,7 +186,7 @@ wflow_commit_ <- function(files = files, message = message, all = all,
     commit_files <- obtain_files_in_commit(r, commit)
     commit_files <- paste0(git2r::workdir(r), commit_files)
     o$commit <- commit
-    o$commit_files <- relpath_vec(commit_files)
+    o$commit_files <- relative(commit_files)
   }
 
   return(o)

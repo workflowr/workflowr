@@ -154,38 +154,38 @@ test_that("absolute can handle the Windows drive", {
   expect_identical(drive_forw, workflowr:::absolute(drive_forw))
 })
 
-# Test relpath -----------------------------------------------------------------
+# Test relative -----------------------------------------------------------------
 
-test_that("relpath works on Windows paths with trailing slashes", {
+test_that("relative works on Windows paths with trailing slashes", {
 
   if (os != "windows") skip("Only relevant on Windows")
 
   path <- "C:/Users/home/myproject/analysis/"
   start <- "C:/Users/home/myproject/"
   expected <- "analysis"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath works on Windows paths without trailing slashes", {
+test_that("relative works on Windows paths without trailing slashes", {
 
   if (os != "windows") skip("Only relevant on Windows")
 
   path <- "C:/Users/home/myproject/analysis"
   start <- "C:/Users/home/myproject"
   expected <- "analysis"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
-test_that("relpath works on Windows paths with mixmatched trailing slashes", {
+test_that("relative works on Windows paths with mixmatched trailing slashes", {
 
   if (os != "windows") skip("Only relevant on Windows")
 
   path <- "C:/Users/home/myproject/analysis"
   start <- "C:/Users/home/myproject/"
   expected <- "analysis"
-  actual <- workflowr:::relpath(path, start)
+  actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 

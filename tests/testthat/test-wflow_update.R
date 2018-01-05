@@ -35,7 +35,7 @@ test_that("wflow_update can update from v0.3.0 to v0.4.0 with no Git", {
   files_expected <- c(file.path(tmp_dir_v0.3.0, "v0.3.0.Rproj"),
                       file.path(tmp_dir_v0.3.0, "analysis",
                                 c("chunks.R", "ex1.Rmd", "ex2.Rmd")))
-  files_expected <- workflowr:::relpath_vec(files_expected)
+  files_expected <- workflowr:::relative(files_expected)
   expect_identical(sort(files_updated), sort(files_expected))
 
   # dry_run = FALSE
@@ -94,7 +94,7 @@ test_that("wflow_update can update from v0.3.0 to v0.4.0 with Git", {
                            as.character(utils::packageVersion("workflowr"))))
   files_expected <- workflowr:::obtain_files_in_commit(r, commit_update)
   files_expected <- file.path(tmp_dir_v0.3.0, files_expected)
-  files_expected <- workflowr:::relpath_vec(files_expected)
+  files_expected <- workflowr:::relative(files_expected)
 
   expect_false(commit_update@sha == commit_last@sha)
   expect_identical(sort(files_updated),
@@ -117,7 +117,7 @@ test_that("wflow_update ignores Rmd files starting with _", {
   # Add an Rmd file starting with an underscore
   rmd_ignore <- file.path(tmp_dir_v0.3.0, "analysis", "_ignore.Rmd")
   file.create(rmd_ignore)
-  rmd_ignore <- workflowr:::relpath(rmd_ignore)
+  rmd_ignore <- workflowr:::relative(rmd_ignore)
 
   expect_message(files_updated <- wflow_update(dry_run = FALSE, log_open = FALSE,
                                                project = tmp_dir_v0.3.0),
@@ -150,7 +150,7 @@ test_that("wflow_update only commits tracked files", {
   rmd_untracked <- file.path(tmp_dir_v0.3.0, "analysis", "untracked.Rmd")
   file.copy(file.path(tmp_dir_v0.3.0, "analysis", "ex1.Rmd"),
             rmd_untracked)
-  rmd_untracked <- workflowr:::relpath(rmd_untracked)
+  rmd_untracked <- workflowr:::relative(rmd_untracked)
 
   expect_message(files_updated <- wflow_update(dry_run = FALSE, log_open = FALSE,
                                                project = tmp_dir_v0.3.0),
@@ -158,7 +158,7 @@ test_that("wflow_update only commits tracked files", {
   commit_update <- git2r::commits(r)[[1]]
   files_committed <- workflowr:::obtain_files_in_commit(r, commit_update)
   files_committed <- file.path(tmp_dir_v0.3.0, files_committed)
-  files_committed <- workflowr:::relpath_vec(files_committed)
+  files_committed <- workflowr:::relative(files_committed)
 
   expect_true(rmd_untracked %in% files_updated)
   expect_false(rmd_untracked %in% files_committed)

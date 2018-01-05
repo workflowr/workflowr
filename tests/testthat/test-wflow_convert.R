@@ -150,8 +150,8 @@ test_that("verbose = FALSE suppresses all output", {
 
 test_that("wflow_convert skips missing files and continues processing", {
   tmp_standard <- base::tempfile("standard-", fileext = ".Rmd")
-  tmp_standard <- workflowr:::relative(tmp_standard)
   file.copy(gold_standard, tmp_standard)
+  tmp_standard <- workflowr:::relative(tmp_standard)
   on.exit(unlink(tmp_standard))
   expected <- gold_workflowr_lines
   expect_warning(success <- wflow_convert(c("missing.Rmd", tmp_standard)),

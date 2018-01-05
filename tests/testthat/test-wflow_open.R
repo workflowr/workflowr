@@ -77,7 +77,7 @@ test_that("wflow_open changes the working directory", {
   expect_identical(wd_change, file.path(site_dir, "analysis"))
   expect_silent(rmd <- wflow_open("no-need-to-change-wd.Rmd",
                     change_wd = TRUE, open_file = FALSE,
-                    project = site_dir))
+                    project = "."))
   expect_true(file.exists(rmd))
 })
 
@@ -130,7 +130,7 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   on.exit(setwd(cwd))
   location_exist <- base::tempfile("test-wflow_open-exist-")
   dir.create(location_exist)
-  location_exist <- workflowr:::relative(location_exist)
+  location_exist <- workflowr:::absolute(location_exist)
   on.exit(unlink(location_exist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile1 <- file.path(location_exist, "exist.Rmd")
   location_nonexist <- base::tempfile("test-wflow_open-nonexist-")

@@ -193,6 +193,7 @@ wflow_publish <- function(
                                               format(Sys.time(),
                                                      "%Y-%m-%d-%Hh-%Mm-%Ss")))
     dir.create(docs_backup)
+    docs_backup <- absolute(docs_backup)
     file.copy(from = file.path(s1$docs, "."), to = docs_backup,
               recursive = TRUE, copy.date = TRUE)
     step2 <- wflow_build(files = files_to_build, make = FALSE,

@@ -3,7 +3,7 @@ context("build_rmd_external")
 # Setup ------------------------------------------------------------------------
 
 # Create a temporary workflowr project
-tmp_dir <- base::tempfile("build_rmd_external-")
+tmp_dir <- tempfile("build_rmd_external-")
 cwd <- getwd()
 on.exit(setwd(cwd))
 on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)

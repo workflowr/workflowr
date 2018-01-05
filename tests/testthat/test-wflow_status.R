@@ -3,7 +3,7 @@ context("wflow_status")
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing
-site_dir <- base::tempfile("test-wflow_status-")
+site_dir <- tempfile("test-wflow_status-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 site_dir <- workflowr:::relative(site_dir)
 # Cleanup
@@ -119,7 +119,7 @@ test_that("wflow_status reports only specified files", {
 # Warnings and Errors ----------------------------------------------------------
 
 test_that("wflow_status throws error if not in workflowr project.", {
-  non_project <- base::tempfile("non-project-")
+  non_project <- tempfile("non-project-")
   dir.create(non_project, recursive = TRUE)
   non_project <- workflowr:::absolute(non_project)
   on.exit(unlink(non_project, recursive = TRUE))

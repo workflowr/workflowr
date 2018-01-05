@@ -3,7 +3,7 @@ context("windows")
 # Setup ------------------------------------------------------------------------
 
 os <- .Platform$OS.type
-tmp_forw <- base::tempfile("windows-")
+tmp_forw <- tempfile("windows-")
 tmp_forw <- workflowr:::absolute(tmp_forw)
 tmp_back <- stringr::str_replace_all(tmp_forw, "/", "\\\\")
 rmd_forw <- "analysis/index.Rmd"

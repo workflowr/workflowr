@@ -81,13 +81,6 @@ to_html <- function(files, outdir = NULL) {
   return(html)
 }
 
-# Override default tempfile to not use \\ in paths on Windows. Unlike
-# normalizePath, there is no argument to change this default behavior.
-tempfile <- function(pattern = "file", tmpdir = tempdir(), fileext = "") {
-  tfile <- base::tempfile(pattern = pattern, tmpdir = tmpdir, fileext = fileext)
-  return(absolute(tfile))
-}
-
 # Get an absolute path while handling cross-platform filepath issues
 #
 # path - a vector of paths

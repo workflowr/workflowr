@@ -100,6 +100,7 @@ wflow_convert <- function(files,
     f_tmp <- tempfile(paste(basename(f), sep = "-"), fileext = ".Rmd")
     cat(lines_converted, file = f_tmp, sep = "\n")
     on.exit(unlink(f_tmp))
+    f_tmp <- absolute(f_tmp)
     diffs <- diff_file(from = f, to = f_tmp)
     success[[f]] <- diffs
     if (dry_run) {

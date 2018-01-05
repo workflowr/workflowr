@@ -21,7 +21,7 @@ gold_previous <- "files/test-wflow_convert/workflowr-previous.Rmd"
 # Test wflow_convert -----------------------------------------------------------
 
 test_that("Can convert standard Rmd to workflowr", {
-  tmp_standard <- base::tempfile("standard-", fileext = ".Rmd")
+  tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   tmp_standard <- workflowr:::absolute(tmp_standard)
@@ -33,7 +33,7 @@ test_that("Can convert standard Rmd to workflowr", {
 })
 
 test_that("Can convert standard Rmd to standalone workflowr", {
-  tmp_standard <- base::tempfile("standard-", fileext = ".Rmd")
+  tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   tmp_standard <- workflowr:::absolute(tmp_standard)
@@ -45,7 +45,7 @@ test_that("Can convert standard Rmd to standalone workflowr", {
 })
 
 test_that("Can add missing yaml header", {
-  tmp_noyaml <- base::tempfile("noyaml-", fileext = ".Rmd")
+  tmp_noyaml <- tempfile("noyaml-", fileext = ".Rmd")
   file.copy(gold_noyaml, tmp_noyaml)
   on.exit(unlink(tmp_noyaml))
   tmp_noyaml <- workflowr:::absolute(tmp_noyaml)
@@ -57,7 +57,7 @@ test_that("Can add missing yaml header", {
 })
 
 test_that("Can convert ashlar file", {
-  tmp_ashlar <- base::tempfile("ashlar-", fileext = ".Rmd")
+  tmp_ashlar <- tempfile("ashlar-", fileext = ".Rmd")
   file.copy(gold_ashlar, tmp_ashlar)
   on.exit(unlink(tmp_ashlar))
   tmp_ashlar <- workflowr:::absolute(tmp_ashlar)
@@ -69,7 +69,7 @@ test_that("Can convert ashlar file", {
 })
 
 test_that("Can convert previous workflowr file", {
-  tmp_previous <- base::tempfile("previous-", fileext = ".Rmd")
+  tmp_previous <- tempfile("previous-", fileext = ".Rmd")
   file.copy(gold_previous, tmp_previous)
   on.exit(unlink(tmp_previous))
   tmp_previous <- workflowr:::absolute(tmp_previous)
@@ -81,7 +81,7 @@ test_that("Can convert previous workflowr file", {
 })
 
 test_that("Does not affect a current workflowr file if standalone = FALSE", {
-  tmp_workflowr <- base::tempfile("workflowr-", fileext = ".Rmd")
+  tmp_workflowr <- tempfile("workflowr-", fileext = ".Rmd")
   file.copy(gold_workflowr, tmp_workflowr)
   on.exit(unlink(tmp_workflowr))
   tmp_workflowr <- workflowr:::absolute(tmp_workflowr)
@@ -94,7 +94,7 @@ test_that("Does not affect a current workflowr file if standalone = FALSE", {
 })
 
 test_that("Does not affect a current standalone workflowr file if standalone = TRUE", {
-  tmp_standalone <- base::tempfile("standalone-", fileext = ".Rmd")
+  tmp_standalone <- tempfile("standalone-", fileext = ".Rmd")
   file.copy(gold_standalone, tmp_standalone)
   on.exit(unlink(tmp_standalone))
   tmp_standalone <- workflowr:::absolute(tmp_standalone)
@@ -107,7 +107,7 @@ test_that("Does not affect a current standalone workflowr file if standalone = T
 })
 
 test_that("Can convert current workflowr file to standalone", {
-  tmp_workflowr <- base::tempfile("workflowr-", fileext = ".Rmd")
+  tmp_workflowr <- tempfile("workflowr-", fileext = ".Rmd")
   file.copy(gold_workflowr, tmp_workflowr)
   on.exit(unlink(tmp_workflowr))
   tmp_workflowr <- workflowr:::absolute(tmp_workflowr)
@@ -119,7 +119,7 @@ test_that("Can convert current workflowr file to standalone", {
 })
 
 test_that("Can convert standalone workflowr file to non-standalone", {
-  tmp_standalone <- base::tempfile("standalone-", fileext = ".Rmd")
+  tmp_standalone <- tempfile("standalone-", fileext = ".Rmd")
   file.copy(gold_standalone, tmp_standalone)
   on.exit(unlink(tmp_standalone))
   tmp_standalone <- workflowr:::absolute(tmp_standalone)
@@ -131,7 +131,7 @@ test_that("Can convert standalone workflowr file to non-standalone", {
 })
 
 test_that("dry_run does not overwrite file and produces diff", {
-  tmp_standard <- base::tempfile("standard-", fileext = ".Rmd")
+  tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   tmp_standard <- workflowr:::absolute(tmp_standard)
@@ -145,7 +145,7 @@ test_that("dry_run does not overwrite file and produces diff", {
 })
 
 test_that("verbose = FALSE suppresses all output", {
-  tmp_standard <- base::tempfile("standard-", fileext = ".Rmd")
+  tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   on.exit(unlink(tmp_standard))
   tmp_standard <- workflowr:::absolute(tmp_standard)
@@ -160,7 +160,7 @@ test_that("verbose = FALSE suppresses all output", {
 # Warnings ---------------------------------------------------------------------
 
 test_that("wflow_convert skips missing files and continues processing", {
-  tmp_standard <- base::tempfile("standard-", fileext = ".Rmd")
+  tmp_standard <- tempfile("standard-", fileext = ".Rmd")
   file.copy(gold_standard, tmp_standard)
   # This one is a relative filepath b/c the test below checks that it matches
   # the output filepath (which is relative).

@@ -5,7 +5,7 @@ context("vig-getting-started")
 library("git2r")
 
 # start project in a tempdir
-site_dir <- base::tempfile("new-")
+site_dir <- tempfile("new-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)

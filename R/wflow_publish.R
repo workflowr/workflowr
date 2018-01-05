@@ -188,7 +188,7 @@ wflow_publish <- function(
   files_to_build <- files_to_build[!s1$status[files_to_build, "mod_staged"]]
 
   if (length(files_to_build) > 0) {
-    # As a backup, copy the docs/ directory to /tmp
+    # Create a backup copy of the docs/ directory
     docs_backup <- tempfile(pattern = sprintf("docs-backup-%s-",
                                               format(Sys.time(),
                                                      "%Y-%m-%d-%Hh-%Mm-%Ss")))

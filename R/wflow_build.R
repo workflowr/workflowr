@@ -51,7 +51,8 @@
 #'   file. Passed to \code{\link{set.seed}}.
 #' @param log_dir character (default: NULL). The directory to save log files
 #'   from building files. It will be created if necessary and ignored if
-#'   \code{local = TRUE}. The default is to create a directory in \code{/tmp}.
+#'   \code{local = TRUE}. The default is to use a directory named
+#'   \code{workflowr} in \code{\link{tempdir}}.
 #' @param local logical (default: FALSE). Build files locally in the R console.
 #'   This should only be used for debugging purposes. The default is to build
 #'   each file in its own separate fresh R process to ensure each file is
@@ -145,7 +146,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
     stop("seed must be a one element numeric vector")
 
   if (is.null(log_dir)) {
-    log_dir <- "/tmp/workflowr"
+    log_dir <- file.path(tempdir(), "workflowr")
   } else if (!(is.character(log_dir) && length(log_dir) == 1)) {
     stop("log_dir must be NULL or a one element character vector")
   }

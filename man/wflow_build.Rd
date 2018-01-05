@@ -40,7 +40,8 @@ file. Passed to \code{\link{set.seed}}.}
 
 \item{log_dir}{character (default: NULL). The directory to save log files
 from building files. It will be created if necessary and ignored if
-\code{local = TRUE}. The default is to create a directory in \code{/tmp}.}
+\code{local = TRUE}. The default is to use a directory named
+\code{workflowr} in \code{\link{tempdir}}.}
 
 \item{local}{logical (default: FALSE). Build files locally in the R console.
 This should only be used for debugging purposes. The default is to build

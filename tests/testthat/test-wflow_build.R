@@ -196,6 +196,20 @@ test_that("wflow_build only builds files starting with _ when specified", {
   expect_identical(actual$built, rmd_ignore)
 })
 
+test_that("wflow_build uses tempdir() to save log files by default", {
+  expected <- workflowr:::absolute(file.path(tempdir(), "workflowr"))
+  actual <- wflow_build(rmd[1], view = FALSE, project = site_dir)
+  expect_identical(expected, actual$log_dir)
+})
+
+test_that("wflow_build accepts custom directory to save log files", {
+  expected <- workflowr:::absolute(file.path(site_dir, "log"))
+  actual <- wflow_build(rmd[1], view = FALSE, log_dir = expected,
+                        project = site_dir)
+  expect_true(dir.exists(expected))
+  expect_identical(expected, actual$log_dir)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_build fails if file outside of analysis/", {

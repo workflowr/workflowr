@@ -101,8 +101,8 @@ wflow_remove <- function(files,
   # Are any of the specified files R Markdown files in the analysis directory?
   files_ext <- tools::file_ext(files)
   files_rmd <- files[files_ext %in% c("Rmd", "rmd")]
-  files_rmd <- files_rmd[normalizePath(files_rmd) ==
-                         normalizePath(file.path(p$analysis, basename(files_rmd)))]
+  files_rmd <- files_rmd[absolute(files_rmd) ==
+                         absolute(file.path(p$analysis, basename(files_rmd)))]
 
   files_to_remove <- files
   dirs_to_remove <- character()

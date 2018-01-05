@@ -17,7 +17,7 @@
 #
 obtain_existing_path <- function(path) {
   if (dir.exists(path)) {
-    return(normalizePath(path))
+    return(absolute(path))
   } else {
     return(obtain_existing_path(dirname(path)))
   }
@@ -79,15 +79,6 @@ to_html <- function(files, outdir = NULL) {
     }
   }
   return(html)
-}
-
-# Override default normalizePath options for working with filepaths on Windows
-normalizePath <- function(path, winslash = "/", mustWork = NA) {
-  p <- base::normalizePath(path = path, winslash = winslash, mustWork = mustWork)
-  # On Windows **only**, NA gets appended to path. Ensure that any NAs are
-  # returned as NA
-  p[is.na(path)] <- NA
-  return(p)
 }
 
 # Override default tempfile to not use \\ in paths on Windows. Unlike

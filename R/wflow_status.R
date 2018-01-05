@@ -146,8 +146,8 @@ wflow_status <- function(files = NULL, project = ".") {
   published <- files_html %in% files_committed
   # Do published files have subsequently committed changes?
   files_outdated <- get_outdated_files(r,
-                                       normalizePath(files_analysis[published]),
-                                       outdir = normalizePath(o$docs))
+                                       absolute(files_analysis[published]),
+                                       outdir = absolute(o$docs))
   files_outdated <- relative(files_outdated)
   mod_committed <- files_analysis %in% files_outdated
 

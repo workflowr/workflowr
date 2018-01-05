@@ -12,9 +12,44 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r chunk-options, cache=FALSE, include=FALSE}
+```{r decide-to-execute, cache=FALSE, echo=FALSE}
 library("knitr")
+
+# The code in this vignette requires a functional Git setup. If a workflowr user
+# does not already have this setup (which is reasonable since it's not
+# required), the code is not evaluated and a warning is sent to consult the
+# online documentation.
+
+# If Git user.name and user.email not set, set eval=FALSE.
+git_config <- git2r::config(global = TRUE)
+user.name <- git_config$global$user.name
+user.email <- git_config$global$user.email
+if (is.null(user.name) || is.null(user.email)) {
+  opts_chunk$set(eval = FALSE)
+  warning(workflowr:::wrap(
+    "Because you do not have Git configured on this machine, none of the code
+    below was executed. Please refer to the online documentation to see the
+    output: https://jdblischak.github.io/workflowr/"))
+}
+rm(git_config, user.name, user.email)
+# If ~/.git exists, set eval=FALSE
+home <- workflowr:::get_home()
+home_git <- file.path(home, ".git")
+if (dir.exists(home_git)) {
+  opts_chunk$set(eval = FALSE)
+  warning(workflowr:::wrap(
+    "Because you have a Git repository in your home directory, none of the
+    code below was executed. Please refer to the online documentation to see
+    the output: https://jdblischak.github.io/workflowr/ \n\nYou should
+    consider removing the directory since it was likely created in error: ",
+    home_git))
+}
+rm(home, home_git)
+```
+
+```{r chunk-options, cache=FALSE, include=FALSE}
 .tmp <- tempfile("wflow-01-getting-started-")
+.tmp <- workflowr:::absolute(.tmp)
 .project <- file.path(.tmp, "myproject")
 dir.create(.project, recursive = TRUE)
 opts_knit$set(root.dir = .project)

@@ -23,9 +23,6 @@ branches:
     - master
     - dev
 
-skip_commits:
-  message: ci skip
-
 # Install Pandoc
 # source: https://github.com/krlmlr/r-appveyor/issues/82#issuecomment-261695154
 before_test:

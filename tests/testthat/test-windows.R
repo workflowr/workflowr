@@ -174,3 +174,11 @@ test_that("relpath works on Windows paths with mixmatched trailing slashes", {
   actual <- workflowr:::relpath(path, start)
   expect_identical(actual, expected)
 })
+
+# Test get_home ----------------------------------------------------------------
+
+test_that("get_home obtains a valid home directory", {
+  home <- workflowr:::get_home()
+  expect_true(dir.exists(home))
+  expect_false(stringr::str_detect(home, "Documents"))
+})

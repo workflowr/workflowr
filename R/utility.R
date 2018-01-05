@@ -251,3 +251,18 @@ relative <- function(path, start = getwd()) {
 
   return(newpath)
 }
+
+# Because ~ maps to ~/Documents on Windows, need a reliable way to determine the
+# user's home directory on Windows.
+# https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
+# https://stat.ethz.ch/pipermail/r-help/2007-March/128221.html
+get_home <- function() {
+  if (.Platform$OS.type == "windows") {
+    homedrive <- Sys.getenv("HOMEDRIVE")
+    homepath <- Sys.getenv("HOMEPATH")
+    home <- paste0(homedrive, homepath)
+  } else {
+    home <- "~"
+  }
+  return(absolute(home))
+}

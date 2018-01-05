@@ -82,7 +82,7 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
       # Can't use ~ because the default on Windows is the user's Documents
       # directory.
       # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
-      user_home <- file.path("C:/Users", Sys.info()["login"])
+      user_home <- get_home()
       config_file <- file.path(user_home, ".gitconfig")
       if (!file.exists(config_file)) {
         file.create(config_file)

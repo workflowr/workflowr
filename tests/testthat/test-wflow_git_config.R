@@ -7,7 +7,7 @@ if (.Platform$OS.type == "windows") {
   # Can't use ~ because the default on Windows is the user's Documents
   # directory.
   # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
-  user_home <- file.path("C:/Users", Sys.info()["login"])
+  user_home <- workflowr:::get_home()
   config_original <- file.path(user_home, ".gitconfig")
 } else {
   config_original <- "~/.gitconfig"

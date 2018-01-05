@@ -140,6 +140,20 @@ test_that("workflowr fails gracefully if `diff` utility is not available", {
                "https://cran.r-project.org/bin/windows/Rtools/")
 })
 
+# Test absolute ----------------------------------------------------------------
+
+
+test_that("absolute can handle the Windows drive", {
+
+  if (os != "windows") skip("Only relevant on Windows")
+
+  drive <- Sys.getenv("HOMEDRIVE")
+  drive_back <- paste0(drive, "\\")
+  drive_forw <- paste0(drive, "/")
+  expect_identical(drive_forw, workflowr:::absolute(drive_back))
+  expect_identical(drive_forw, workflowr:::absolute(drive_forw))
+})
+
 # Test relpath -----------------------------------------------------------------
 
 test_that("relpath works on Windows paths with trailing slashes", {

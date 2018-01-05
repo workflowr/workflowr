@@ -96,7 +96,7 @@ know which version of the code produced the results.
 
 To start a new project, open R (or RStudio) and load the workflowr package (note
 that all the code in this vignette should be run directly in the R console, i.e.
-do try to run workflowr functions inside of R Markdown documents).
+do **not** try to run workflowr functions inside of R Markdown documents).
 
 ```{r load-workflowr}
 library("workflowr")
@@ -383,8 +383,12 @@ data! To start a new analysis called `first-analysis.Rmd`, use `wflow_open()`:
 file.create("analysis/first-analysis.Rmd")
 ```
 
-```{r open-rmd, echo=1}
+```{r open-rmd, eval=FALSE}
 wflow_open("first-analysis.Rmd")
+```
+
+```{r open-rmd-hidden, echo=FALSE}
+wflow_open("first-analysis.Rmd", open_file = FALSE)
 setwd("..")
 ```
 

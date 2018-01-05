@@ -17,7 +17,7 @@
 #' @param name character (default: NULL). Project name, e.g. "My Project". When
 #'   \code{name = NULL}, the project name is automatically set based on the
 #'   argument \code{directory}. For example, if \code{directory =
-#'   "~/Desktop/myproject"}, then \code{name} is set to \code{"myproject"}.
+#'   "~/projects/myproject"}, then \code{name} is set to \code{"myproject"}.
 #'   \code{name} is displayed on the site's navigation bar and the README.md.
 #'
 #' @param git logical (default: TRUE). Should Git be used for version

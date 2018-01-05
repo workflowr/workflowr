@@ -3,13 +3,14 @@ context("build_rmd")
 # Setup ------------------------------------------------------------------------
 
 # Create a temporary workflowr project
-tmp_dir <- workflowr:::tempfile("build_rmd-", tmpdir = workflowr:::normalizePath("/tmp"))
-analysis_dir <- file.path(tmp_dir, "analysis")
-docs_dir <- file.path(tmp_dir, "docs")
+tmp_dir <- base::tempfile("build_rmd-")
 cwd <- getwd()
 on.exit(setwd(cwd))
 on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
 suppressMessages(wflow_start(tmp_dir, change_wd = FALSE))
+tmp_dir <- workflowr:::absolute(tmp_dir)
+analysis_dir <- file.path(tmp_dir, "analysis")
+docs_dir <- file.path(tmp_dir, "docs")
 
 # Copy test files
 file.copy("files/test-wflow_build/.", analysis_dir, recursive = TRUE)

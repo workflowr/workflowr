@@ -3,10 +3,10 @@ context("wflow_build")
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir
-#site_dir <- workflowr:::tempfile("test-wflow_build-", tmpdir = workflowr:::normalizePath("/tmp"))
 site_dir <- base::tempfile("test-wflow_build-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+site_dir <- workflowr:::absolute(site_dir)
 s <- wflow_status(project = site_dir)
 
 rmd <- rownames(s$status)

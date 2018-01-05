@@ -3,8 +3,9 @@ context("git")
 # Test get_committed_files -----------------------------------------------------
 
 # Create temp Git directory
-dir_git <- workflowr:::tempfile("test-get_committed_files-", tmpdir = workflowr:::normalizePath("/tmp"))
+dir_git <- base::tempfile("test-get_committed_files-")
 dir.create(dir_git)
+dir_git <- workflowr:::absolute(dir_git)
 on.exit(unlink(dir_git, recursive = TRUE, force = TRUE))
 # Initialize Git repo
 git2r::init(dir_git)
@@ -52,8 +53,9 @@ test_that("get_committed_files stops reporting files after they are removed", {
 # Test create_gitignore --------------------------------------------------------
 
 # Create a temp directory
-tmp_dir <- workflowr:::tempfile("test-create_gitignore-", tmpdir = workflowr:::normalizePath("/tmp"))
+tmp_dir <- base::tempfile("test-create_gitignore-")
 dir.create(tmp_dir)
+tmp_dir <- workflowr:::absolute(tmp_dir)
 # Cleanup
 on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE))
 

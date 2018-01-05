@@ -5,11 +5,11 @@ context("wflow_git_push_pull")
 library("git2r")
 
 # Setup workflowr project for testing
-site_dir <- workflowr:::tempfile("test-wflow_git_push_pull-",
-                                 tmpdir = workflowr:::normalizePath("/tmp"))
+site_dir <- base::tempfile("test-wflow_git_push_pull-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
 # Delete workflowr project on exit
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+site_dir <- workflowr:::absolute(site_dir)
 p <- wflow_paths(project = site_dir)
 r <- repository(p$root)
 

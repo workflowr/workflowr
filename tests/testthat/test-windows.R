@@ -196,39 +196,3 @@ test_that("get_home obtains a valid home directory", {
   expect_true(dir.exists(home))
   expect_false(stringr::str_detect(home, "Documents"))
 })
-
-# AppVeyor debugging
-
-test_that("What is home here? Where is .gitconfig written?", {
-  expected <- "C:/Users/appveyor"
-
-  homedrive <- Sys.getenv("HOMEDRIVE")
-  homepath <- Sys.getenv("HOMEPATH")
-  home <- paste0(homedrive, homepath)
-  home <- workflowr:::absolute(home)
-  expect_identical(expected, home)
-  expect_true(file.exists(file.path(home, ".gitconfig")))
-
-  home <- file.path("C:/Users", Sys.info()["login"])
-  home <- workflowr:::absolute(home)
-  expect_identical(expected, home)
-  expect_true(file.exists(file.path(home, ".gitconfig")))
-
-  home <- dirname(absolute("~"))
-  home <- workflowr:::absolute(home)
-  expect_identical(expected, home)
-  expect_true(file.exists(file.path(home, ".gitconfig")))
-
-  # Spit out the relevant environment variables
-  expect_identical("a", Sys.getenv("HOMEDRIVE"))
-  expect_identical("a", Sys.getenv("HOMEPATH"))
-  expect_identical("a", Sys.getenv("HOME"))
-  expect_identical("a", Sys.getenv("R_USER"))
-  expect_identical("a", getwd())
-  expect_identical("a", normalizePath("~"))
-  login <- Sys.info()["login"]
-  attributes(login) <- NULL
-  expect_identical("a", login)
-  expect_identical("a", workflowr:::absolute("~"))
-  expect_identical("a", dirname(workflowr:::absolute("~")))
-})

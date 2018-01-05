@@ -266,37 +266,14 @@ get_home <- function() {
   if (.Platform$OS.type != "windows") {
     home <- "~"
     return(absolute(home))
-  }
-
-  # Attempt 1: Use Environment variables HOMEDRIVE and HOMEPATH
-  #
-  # Pro: Don't have to make any assumptions about which drive the user is on
-  # Con: Does not work on AppVeyor for some reason
-  homedrive <- Sys.getenv("HOMEDRIVE")
-  homepath <- Sys.getenv("HOMEPATH")
-  home <- paste0(homedrive, homepath)
-  if (homedrive != "" && homepath != "" && dir.exists(home)) {
-    return(absolute(home))
-  }
-
-  # Attempt #2: Use their login info
-  #
-  # Pro: Does not require Environment variables to be set
-  # Con: Have to assume they are on C drive
-  home <- file.path("C:/Users", Sys.info()["login"])
-  if (dir.exists(home)) {
-    return(absolute(home))
-  }
-
-  # Attempt #3: Use ~ and remove Documents
-  #
-  # Pro: Easy
-  # Con: Have to assume they haven't customized the Environment variables R_USER
-  # or HOME
-  home <- dirname(absolute("~"))
-  if (dir.exists(home) && basename(home) != "Documents") {
+  } else {
+    drive <- Sys.getenv("HOMEDRIVE")
+    login <- Sys.info()["login"]
+    home <- file.path(drive, "Users", login)
+    home <- absolute(home)
+    if (!dir.exists(home)) {
+      stop(wrap("Unable to determine user's home directory on Windows: ", home))
+    }
     return(home)
   }
-
-  stop("Unable to determine user's home directory on Windows.", call. = FALSE)
- }
+}

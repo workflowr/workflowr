@@ -1,10 +1,33 @@
-# workflowr 0.8.0.9000
+# workflowr 0.9.0
+
+## New RStudio project template
+
+* New workflowr projects can now be created directly in RStudio using the
+workflowr [project template][pt] (requires RStudio v1.1.28 or greater)
+
+## Improved support for Windows
+
+* Implemented continuous integration testing for Windows with
+[AppVeyor][appveyor]
+* Fixed unit test failures due to edge cases in Windows (#76)
+* Skip evaluation of vignette code during installation if the machine does not
+have the necessary configuration (#87, #88)
+
+## Log files
+
+* The log files by default are now written to the directory returned by
+`tempdir()` instead of to `/tmp/workflowr`. This prevents failures due to
+permission issues when mutliple workflowr users try to use the same machine
+(e.g. a compute node on a HPC cluster) (#86)
 
 ## Miscellaneous
 
 * Bug fix: When using `wflow_build()` to build the R Markdown files in an
-external R process, it now runs `render_site` in the global environment of the
+external R process, it now runs `render_site()` in the global environment of the
 external R process. This better mimics the results of the RStudio "Knit" button.
+
+[appveyor]: https://ci.appveyor.com
+[pt]: https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html
 
 # workflowr 0.8.0
 

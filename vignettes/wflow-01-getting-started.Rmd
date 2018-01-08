@@ -117,11 +117,14 @@ wflow_git_config(user.name = "Your Name", user.email = "email@domain")
 Now you are ready to start your first workflowr project!
 `wflow_start("myproject")` creates a directory called `myproject/` that contains
 all the files to get started. It also changes the working directory to
-`myproject/`^[If you're using RStudio, in the future you can choose `Open
-Project...` and select the file `myproject.Rproj` to quickly continue working on
-your project. This will set the correct working directory in the R console,
-switch the file navigator to the project, and configure the Git pane.] and
-initializes a Git repository with the initial commit already made.
+`myproject/`^[If you're using RStudio, you can alternatively create a new
+workflowr project using the RStudio project template. Go to `File` -> `New
+Project...` and select `workflowr project` from the list of project types. In
+the future you can return to your project by choosing `Open Project...` and
+selecting the file `myproject.Rproj`. This will set the correct working
+directory in the R console, switch the file navigator to the project, and
+configure the Git pane.] and initializes a Git repository with the initial
+commit already made.
 
 ```{r start-project, echo=3}
 setwd(.tmp)

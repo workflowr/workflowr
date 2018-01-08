@@ -138,21 +138,23 @@ This repository contains the workflowr R package. If your goal is to create a
 workflowr project, you do **not** need to fork this repository. Instead, 
 follow the [Quick start](#quick-start) instructions above.
 
-For the most part, I try to follow the guidelines from [R packages][r-pkg] by 
-[Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the 
-documentation is built with [roxygen2][], the online package documentation is 
-created with [pkgdown][], continuous integration testing is performed by [Travis
-CI][travis], and code coverage is calculated with [covr][] and [Codecov][].
+For the most part, I try to follow the guidelines from [R packages][r-pkg] by
+[Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the
+documentation is built with [roxygen2][], the online package documentation is
+created with [pkgdown][], continuous integration testing is performed for Linux
+and macOS by [Travis CI][travis] and for Windows by [AppVeyor][appveyor], and
+code coverage is calculated with [covr][] and [Codecov][].
 
 The template files used by `wflow_start()` to populate a new project are located
-in `inst/infrastructure/`. The R Markdown templates used by `wflow_open()` are 
-located in `inst/rmarkdown/templates/`. The repository contains the files 
-`LICENSE` and `LICENSE.md` to both adhere to [R package conventions for defining
-the license][r-exts-licensing] and also to make the license clear in a more 
-conventional manner (suggestions for improvement welcome). `document.R` is a 
-convenience script for regenerating the documentation. The remaining directories
-are standard for R packages as described in the manual [Writing R 
-Extensions][r-exts].
+in `inst/infrastructure/`. The R Markdown templates used by `wflow_open()` are
+located in `inst/rmarkdown/templates/`. The [RStudio project template][pt] is
+configured by `inst/rstudio/templates/project/wflow_start.dcf`. The repository
+contains the files `LICENSE` and `LICENSE.md` to both adhere to [R package
+conventions for defining the license][r-exts-licensing] and also to make the
+license clear in a more conventional manner (suggestions for improvement
+welcome). `document.R` is a convenience script for regenerating the
+documentation. The remaining directories are standard for R packages as
+described in the manual [Writing R Extensions][r-exts].
 
 If you are interested in contributing to this project, please see these
 [instructions][contributing].
@@ -278,6 +280,7 @@ Workflowr should be capitalized at the beginning of a sentence, but otherwise
 the lowercase workflowr should be the preferred option.
 
 [analysis_framework]: https://github.com/jimhester/analysis_framework
+[appveyor]: https://ci.appveyor.com
 [blogdown]: https://github.com/rstudio/blogdown
 [blogR]: https://github.com/rmflight/blogR
 [bookdown]: https://github.com/rstudio/bookdown
@@ -318,6 +321,7 @@ the lowercase workflowr should be the preferred option.
 [prodigenr]: https://github.com/lwjohnst86/prodigenr
 [pRojects]: https://github.com/lockedata/pRojects
 [ProjectTemplate]: https://github.com/johnmyleswhite/ProjectTemplate
+[pt]: https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html
 [r]: http://cran.r-project.org
 [r-exts]: https://cran.r-project.org/doc/manuals/R-exts.html
 [r-exts-licensing]: https://cran.r-project.org/doc/manuals/R-exts.html#Licensing

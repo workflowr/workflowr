@@ -244,7 +244,7 @@ check_git_config <- function(path) {
         "Run the following command in R, replacing the arguments\n",
         "with your name and email address, and then re-run `wflow_start`:\n",
         "\n",
-        'git2r::config(global = TRUE, user.name = "Your Name", user.email = "youremailaddress")',
+        'wflow_git_config(user.name = "Your Name", user.email = "email@domain")',
         call. = FALSE)
   }
 }

@@ -21,17 +21,15 @@ library("knitr")
 # online documentation.
 
 # If Git user.name and user.email not set, set eval=FALSE.
-git_config <- git2r::config(global = TRUE)
-user.name <- git_config$global$user.name
-user.email <- git_config$global$user.email
-if (is.null(user.name) || is.null(user.email)) {
+git_config <- workflowr::wflow_git_config()
+if (is.null(git_config$user.name) || is.null(git_config$user.email)) {
   opts_chunk$set(eval = FALSE)
   warning(workflowr:::wrap(
     "Because you do not have Git configured on this machine, none of the code
     below was executed. Please refer to the online documentation to see the
     output: https://jdblischak.github.io/workflowr/"))
 }
-rm(git_config, user.name, user.email)
+rm(git_config)
 # If ~/.git exists, set eval=FALSE
 home <- workflowr:::get_home()
 home_git <- file.path(home, ".git")

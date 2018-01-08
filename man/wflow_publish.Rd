@@ -30,8 +30,9 @@ file that was used to produce it.}
 files. Useful for site-wide changes like updating the theme, navigation
 bar, or any other setting in \code{_site.yml}.}
 
-\item{view}{logical (default: FALSE). View the website after publishing
-files. See \code{\link{wflow_build}} for more details.}
+\item{view}{logical (default: FALSE). View the website with
+\code{\link{wflow_view}} after publishing files. See
+\code{\link{wflow_build}} for more details.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
 file. Passed to \code{\link{set.seed}}.}

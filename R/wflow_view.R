@@ -1,34 +1,40 @@
 #' View research website locally.
 #'
-#' \code{wflow_view} displays the website locally in your browser.
+#' \code{wflow_view} displays the website locally in your browser or the RStudio
+#' Viewer pane.
 #'
-#' \code{wflow_view} by default opens the file \code{index.html}. To view the
+#' \code{wflow_view} by default displays the file \code{index.html}. To view the
 #' most recently modified HTML file, set \code{recent = TRUE}. To specify which
-#' file(s) to open, specify either the name(s) of the R Markdown or HTML
+#' file(s) to view, specify either the name(s) of the R Markdown or HTML
 #' file(s). The path(s) to the file(s) will be discarded, thus only HTML files
 #' in docs directory can be viewed with this function.
 #'
-#' \code{wflow_view} uses \code{\link{browseURL}} to open the HTML files in the
-#' browser. If you wish to do something non-traditional like open an HTML file
+#' \code{wflow_view} uses \code{\link{browseURL}} to view the HTML files in the
+#' browser. If you wish to do something non-traditional like view an HTML file
 #' that is not in the docs directory or not part of a workflowr project, you can
 #' use that function directly.
 #'
+#' If \code{wflow_view} is run in the RStudio IDE and only one file has been
+#' requested to be viewed, the file is displayed in the
+#' \href{https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html}{RStudio
+#' Viewer}.
+#'
 #' @param files character (default: NULL). Name(s) of the specific file(s) to
-#'   open in the browser. These can be either the name(s) of the R Markdown
-#'   file(s) in the analysis directory or the HTML file(s) in the docs
-#'   directory. Also, the full path(s) to the file(s) can be input or just the
-#'   basename(s) of the file(s).
+#'   view. These can be either the name(s) of the R Markdown file(s) in the
+#'   analysis directory or the HTML file(s) in the docs directory. Also, the
+#'   full path(s) to the file(s) can be input or just the basename(s) of the
+#'   file(s).
 #' @param recent logical (default: FALSE). If \code{files = NULL}, display the
 #'   HTML file with the most recent modification time. If \code{files = NULL}
-#'   and \code{recent = FALSE}, then \code{index.html} is opened.
-#' @param dry_run logical (default: FALSE). Do not actually open file(s) in
-#'   browser. Mainly useful for testing.
+#'   and \code{recent = FALSE}, then \code{index.html} is viewed.
+#' @param dry_run logical (default: FALSE). Do not actually view file(s). Mainly
+#'   useful for testing.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
 #' @return Invisibly returns a character vector of the relative paths to the
-#'   HTML files to be opened.
+#'   HTML files to be viewed.
 #'
 #' @seealso \code{\link{browseURL}}
 #'
@@ -122,8 +128,19 @@ wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
   }
 
   if (!dry_run) {
-    for (h in html) {
-      utils::browseURL(h)
+    # If run in RStudio and only 1 file to be viewed, use the RStudio Viewer
+    viewer <- getOption("viewer")
+    if (!is.null(viewer) && length(html) == 1) {
+      # RStudio Viewer only displays files saved in the R temporary directory
+      # (and it isn't fooled by symlinks).
+      tmp_dir <- absolute(tempdir())
+      file.copy(docs_dir, tmp_dir, recursive = TRUE)
+      html_tmp <- file.path(tmp_dir, basename(docs_dir), basename(html))
+      viewer(html_tmp)
+    } else { # Use the default browser
+      for (h in html) {
+        utils::browseURL(h)
+      }
     }
   }
 

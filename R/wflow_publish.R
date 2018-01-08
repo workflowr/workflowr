@@ -7,8 +7,9 @@
 #' file is created by the latest version of the R Markdown file, which is
 #' critical for reproducibility.
 #'
-#' @param view logical (default: FALSE). View the website after publishing
-#'   files. See \code{\link{wflow_build}} for more details.
+#' @param view logical (default: FALSE). View the website with
+#'   \code{\link{wflow_view}} after publishing files. See
+#'   \code{\link{wflow_build}} for more details.
 #' @inheritParams wflow_commit
 #' @inheritParams wflow_build
 #'

@@ -8,17 +8,17 @@ wflow_view(files = NULL, recent = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Name(s) of the specific file(s) to
-open in the browser. These can be either the name(s) of the R Markdown
-file(s) in the analysis directory or the HTML file(s) in the docs
-directory. Also, the full path(s) to the file(s) can be input or just the
-basename(s) of the file(s).}
+view. These can be either the name(s) of the R Markdown file(s) in the
+analysis directory or the HTML file(s) in the docs directory. Also, the
+full path(s) to the file(s) can be input or just the basename(s) of the
+file(s).}
 
 \item{recent}{logical (default: FALSE). If \code{files = NULL}, display the
 HTML file with the most recent modification time. If \code{files = NULL}
-and \code{recent = FALSE}, then \code{index.html} is opened.}
+and \code{recent = FALSE}, then \code{index.html} is viewed.}
 
-\item{dry_run}{logical (default: FALSE). Do not actually open file(s) in
-browser. Mainly useful for testing.}
+\item{dry_run}{logical (default: FALSE). Do not actually view file(s). Mainly
+useful for testing.}
 
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
@@ -26,22 +26,28 @@ you'll need to provide the path to the project directory.}
 }
 \value{
 Invisibly returns a character vector of the relative paths to the
-  HTML files to be opened.
+  HTML files to be viewed.
 }
 \description{
-\code{wflow_view} displays the website locally in your browser.
+\code{wflow_view} displays the website locally in your browser or the RStudio
+Viewer pane.
 }
 \details{
-\code{wflow_view} by default opens the file \code{index.html}. To view the
+\code{wflow_view} by default displays the file \code{index.html}. To view the
 most recently modified HTML file, set \code{recent = TRUE}. To specify which
-file(s) to open, specify either the name(s) of the R Markdown or HTML
+file(s) to view, specify either the name(s) of the R Markdown or HTML
 file(s). The path(s) to the file(s) will be discarded, thus only HTML files
 in docs directory can be viewed with this function.
 
-\code{wflow_view} uses \code{\link{browseURL}} to open the HTML files in the
-browser. If you wish to do something non-traditional like open an HTML file
+\code{wflow_view} uses \code{\link{browseURL}} to view the HTML files in the
+browser. If you wish to do something non-traditional like view an HTML file
 that is not in the docs directory or not part of a workflowr project, you can
 use that function directly.
+
+If \code{wflow_view} is run in the RStudio IDE and only one file has been
+requested to be viewed, the file is displayed in the
+\href{https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html}{RStudio
+Viewer}.
 }
 \examples{
 \dontrun{

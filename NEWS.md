@@ -1,5 +1,9 @@
 # workflowr 0.9.0.9000
 
+* `wflow_view()` can now open a webpage in the [RStudio Viewer][]
+
+[rstudio-viewer]: https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html
+
 # workflowr 0.9.0
 
 ## New RStudio project template

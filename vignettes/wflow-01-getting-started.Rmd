@@ -237,21 +237,21 @@ the corresponding HTML files in `docs/`. It sets the same seed before
 running every file so that any function that generates random data
 (e.g. permutations) is reproducible. Furthermore, each file is built
 in its own external R session to avoid any potential conflicts between
-analyses (e.g. accidentally sharing a variable with the same name
-across files). Lastly, it opens the website in the browser for viewing.
+analyses (e.g. accidentally sharing a variable with the same name across files).
+Lastly, it displays the website in the RStudio Viewer or default web browser.
 
 The default action of `wflow_build()` is to behave similar to a
 [Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE`
 is the default), i.e. it only builds R Markdown files that have been
 modified more recently than their corresponding HTML files. Thus if
-you run it again, no files are built (and no files are opened in the browser).
+you run it again, no files are built (and no files are displayed).
 
 ```{r wflow-build-no-action}
 wflow_build()
 ```
 
 To view the site without first building any files, run `wflow_view()`, which by
-default opens the file `docs/index.html` in your browser:
+default displays the file `docs/index.html`:
 
 ```{r wflow-view, eval=FALSE}
 wflow_view()
@@ -259,8 +259,8 @@ wflow_view()
 
 This is how you can view your site right on your local machine. Go ahead and
 edit the files `index.Rmd`, `about.Rmd`, and `license.Rmd` to describe your
-project. Then run `wflow_build()` to re-build the HTML files and view them in
-your browser.
+project. Then run `wflow_build()` to re-build the HTML files and display them in
+the RStudio Viewer or your browser.
 
 ```{r edit-files, include=FALSE}
 for (f in file.path("analysis", c("index.Rmd", "about.Rmd", "license.Rmd"))) {

@@ -196,6 +196,7 @@ listed below may better suit your needs. Please check them out!
     * [rr-init][]
 
 * **Project template created via R package:**
+    * [adapr][]
     * [makeProject][]
     * [manuscriptPackage][]
     * [prodigenr][]
@@ -220,8 +221,9 @@ listed below may better suit your needs. Please check them out!
     * [rmflight][]: [Analyses as Packages][rmflight-post]
     * [rOpenSci Guide to Reproducible Research][rOpenSci]
 
-* **Other**:
+* **More specialized frameworks**:
     * [exreport][]
+    * [zoon][]
 
 If you know of other related works I should include, please send a pull request
 to the "dev" branch.
@@ -279,6 +281,7 @@ good options are "workflow + R" or "work + flower".
 Workflowr should be capitalized at the beginning of a sentence, but otherwise
 the lowercase workflowr should be the preferred option.
 
+[adapr]: https://github.com/gelfondjal/adapr
 [analysis_framework]: https://github.com/jimhester/analysis_framework
 [appveyor]: https://ci.appveyor.com
 [blogdown]: https://github.com/rstudio/blogdown
@@ -354,3 +357,4 @@ the lowercase workflowr should be the preferred option.
 [vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
 [workflowr]: https://jdblischak.github.io/workflowr/
 [xiangzhu]: https://github.com/xiangzhu
+[zoon]: https://github.com/zoonproject/zoon

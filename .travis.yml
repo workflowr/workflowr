@@ -15,6 +15,7 @@ matrix:
       env: R_CODECOV=cover-this-build-only
     - os: linux
       r: devel
+      warnings_are_errors: false
     - os: osx
       r: oldrel
     - os: osx

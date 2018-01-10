@@ -95,3 +95,11 @@ test_that("wflow_view throws error if no files to view.", {
   expect_error(suppressWarnings(wflow_view(dry_run = TRUE, project = site_dir)),
                "No HTML files were able to viewed.")
 })
+
+test_that("wflow_view throws error if given directory input.", {
+  d <- file.path(site_dir, "toplevel")
+  dir.create(d)
+  on.exit(unlink(d, recursive = TRUE, force = TRUE))
+  expect_error(wflow_view(d, project = site_dir),
+               "files cannot include a path to a directory")
+})

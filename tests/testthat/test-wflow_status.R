@@ -155,3 +155,17 @@ test_that("wflow_status throws error if no Git repository.", {
   expect_error(s <- wflow_status(project = site_dir),
                "A Git repository is required for this functionality.")
 })
+
+test_that("wflow_status throws error if given directory input.", {
+  d <- file.path(site_dir, "toplevel")
+  dir.create(d)
+  on.exit(unlink(d, recursive = TRUE, force = TRUE))
+  expect_error(wflow_status(d, project = site_dir),
+               "files cannot include a path to a directory")
+})
+
+test_that("wflow_status throws error if given non-[Rr]md extension.", {
+  readme <- file.path(site_dir, "README.md")
+  expect_error(wflow_status(readme, project = site_dir),
+               "File extensions must be either Rmd or rmd.")
+})

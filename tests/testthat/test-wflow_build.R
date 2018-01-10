@@ -222,3 +222,15 @@ test_that("wflow_build fails if file outside of analysis/", {
   expect_error(wflow_build(c(rmd, rmd_outside), project = site_dir),
                "Only files in the analysis directory can be built with wflow_build.")
 })
+
+test_that("wflow_build fails early for bad files", {
+  expect_error(wflow_build(character(), project = site_dir),
+               "files must be NULL or a character vector of filenames")
+  expect_error(wflow_build(s$analysis, project = site_dir),
+               "files cannot include a path to a directory")
+  # "" gets expanded to current working directory by workflowr:::absolute
+  expect_error(wflow_build("", project = site_dir),
+               "files cannot include a path to a directory")
+  expect_error(wflow_build(file.path(s$analysis, "chunks.R"), project = site_dir),
+               "File extensions must be either Rmd or rmd.")
+})

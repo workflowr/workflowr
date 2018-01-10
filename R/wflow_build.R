@@ -116,18 +116,22 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # Check input arguments ------------------------------------------------------
 
   if (!is.null(files)) {
-    if (!is.character(files)) {
+    if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
-    } else if (!all(file.exists(files))) {
+    files <- absolute(files)
+    if (any(dir.exists(files)))
+      stop("files cannot include a path to a directory")
+    if (any(!file.exists(files)))
+      files <- Sys.glob(files)
+    if (!all(file.exists(files)) || length(files) == 0)
       stop("Not all files exist. Check the paths to the files")
-    }
     # Change filepaths to relative paths
     files <- relative(files)
-  }
-  ext <- tools::file_ext(files)
-  ext_wrong <- !(ext %in% c("Rmd", "rmd"))
-  if (any(ext_wrong)) {
-    stop(wrap("File extensions must be either Rmd or rmd."))
+    # Check for valid file extensions
+    ext <- tools::file_ext(files)
+    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
+    if (any(ext_wrong))
+      stop(wrap("File extensions must be either Rmd or rmd."))
   }
 
   if (!(is.logical(make) && length(make) == 1))

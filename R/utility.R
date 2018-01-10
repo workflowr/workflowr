@@ -161,3 +161,28 @@ get_home <- function() {
     return(home)
   }
 }
+
+# Detect if a filepath contains any globbing characters: *, ?, [...]
+detect_glob <- function(paths) {
+  stringr::str_detect(paths, pattern = "\\*") |
+    stringr::str_detect(paths, pattern = "\\?") |
+    stringr::str_detect(paths, pattern = "\\[.+\\]")
+}
+
+# Perform file globbing
+#
+# Sys.glob works great on filepaths with globbing characters, but it's behavior
+# for non-globs depends on 1) if the filepath exists, 2) if the path is to a
+# file or a directory (with or without a trailing slash), and 3) which OS the
+# command is run on. To avoid these edge cases, this function only runs Sys.glob
+# on filepaths that contain globbing characters.
+glob <- function(paths) {
+  is_glob <- detect_glob(paths)
+  expanded <- Map(Sys.glob, paths)
+  invalid_glob <- is_glob & vapply(expanded, length, numeric(1)) == 0
+  if (any(invalid_glob))
+    stop("Invalid file glob: ", paths[invalid_glob][1], call. = FALSE)
+  result <- ifelse(is_glob, expanded, paths)
+  result <- unique(unlist(result))
+  return(result)
+}

@@ -228,9 +228,8 @@ test_that("wflow_build fails early for bad files", {
                "files must be NULL or a character vector of filenames")
   expect_error(wflow_build(s$analysis, project = site_dir),
                "files cannot include a path to a directory")
-  # "" gets expanded to current working directory by workflowr:::absolute
   expect_error(wflow_build("", project = site_dir),
-               "files cannot include a path to a directory")
+               "Not all files exist. Check the paths to the files")
   expect_error(wflow_build(file.path(s$analysis, "chunks.R"), project = site_dir),
                "File extensions must be either Rmd or rmd.")
 })

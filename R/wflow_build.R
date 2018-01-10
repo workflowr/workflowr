@@ -118,12 +118,10 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if (!is.null(files)) {
     if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
-    files <- absolute(files)
     if (any(dir.exists(files)))
       stop("files cannot include a path to a directory")
-    if (any(!file.exists(files)))
-      files <- Sys.glob(files)
-    if (!all(file.exists(files)) || length(files) == 0)
+    files <- glob(files)
+    if (!all(file.exists(files)))
       stop("Not all files exist. Check the paths to the files")
     # Change filepaths to relative paths
     files <- relative(files)

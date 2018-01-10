@@ -8,7 +8,8 @@ wflow_convert(files, standalone = FALSE, dry_run = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{files}{character. The R Markdown file(s) to be converted. Must have
-file extension Rmd or rmd.}
+file extension Rmd or rmd. Supports file
+\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{standalone}{logical (default: FALSE). Embed the configuration chunks
 directly in the document to create a standalone file. Should only need to

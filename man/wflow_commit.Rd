@@ -9,7 +9,8 @@ wflow_commit(files = NULL, message = NULL, all = FALSE, force = FALSE,
 }
 \arguments{
 \item{files}{character (default: NULL). Files to be added and committed with
-Git.}
+Git. Supports file
+\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{message}{character (default: NULL). A commit message.}
 

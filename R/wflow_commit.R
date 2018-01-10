@@ -26,7 +26,8 @@
 #' and \code{\link[git2r]{commit}} from the package \link{git2r}.
 #'
 #' @param files character (default: NULL). Files to be added and committed with
-#'   Git.
+#'   Git. Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @param message character (default: NULL). A commit message.
 #' @param all logical (default: FALSE). Automatically stage files that have been
 #'   modified and deleted. Equivalent to: \code{git commit -a}

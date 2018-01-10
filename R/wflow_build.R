@@ -26,11 +26,11 @@
 #' Under the hood, \code{wflow_build} is a wrapper for
 #' \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
 #'
-#' @param files character (default: NULL). Files to build. Supports file
-#'   extensions Rmd and rmd. Only files in the analysis directory are allowed
-#'   (and therefore any path to a file is ignored). If \code{files} is
+#' @param files character (default: NULL). Files to build. Only allows files in
+#'   the analysis directory with the extension Rmd or rmd. If \code{files} is
 #'   \code{NULL}, the default behavior is to build all outdated files (see
-#'   argument \code{make} below).
+#'   argument \code{make} below). Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @param make logical (default: \code{is.null(files)}). When \code{make =
 #'   TRUE}, use Make-like behavior, i.e. build the files that have been updated
 #'   more recently than their corresponding HTML files. This is the default

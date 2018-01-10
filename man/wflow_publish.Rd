@@ -10,7 +10,9 @@ wflow_publish(files = NULL, message = NULL, all = FALSE, force = FALSE,
 }
 \arguments{
 \item{files}{character (default: NULL). Files to be added and committed with
-Git.}
+Git (step 1). Any R Markdown files will also be built (step 2) and their
+output HTML and figures will be subsequently committed (step 3). Supports
+file \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{message}{character (default: NULL). A commit message.}
 

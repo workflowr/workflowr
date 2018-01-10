@@ -34,7 +34,8 @@
 #' @section Warning: \code{wflow_convert} overwrites the original files.
 #'
 #' @param files character. The R Markdown file(s) to be converted. Must have
-#'   file extension Rmd or rmd.
+#'   file extension Rmd or rmd. Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @inheritParams wflow_open
 #' @param dry_run logical (default: FALSE). Preview the changes to the files.
 #'   Show the output of \code{diff} between the original and the proposed

@@ -25,8 +25,9 @@
 #'
 #' @param files character. The name of the R Markdown file(s). If \code{project}
 #'   points to a workflowr project (or any subdirectory) the file(s) will be
-#'   saved in the analysis directory. Set \code{project = NULL} to
-#'   override this default behavior. Files must have the extension Rmd or rmd.
+#'   saved in the analysis directory. Set \code{project = NULL} to override this
+#'   default behavior. Files must have the extension Rmd or rmd. Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @param change_wd logical (default: TRUE). Change the working directory to the
 #'   analysis directory. If \code{project = NULL}, change working
 #'   directory to destination of first file in \code{files}.

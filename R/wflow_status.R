@@ -21,7 +21,8 @@
 #' \code{wflow_status} only works for workflowr projects that use Git.
 #'
 #' @param files character (default: NULL) The analysis file(s) to report the
-#'   status. By default checks the status of all analysis files.
+#'   status. By default checks the status of all analysis files. Supports
+#'   file \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.

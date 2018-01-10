@@ -10,8 +10,9 @@ wflow_open(files, change_wd = TRUE, open_file = TRUE, standalone = FALSE,
 \arguments{
 \item{files}{character. The name of the R Markdown file(s). If \code{project}
 points to a workflowr project (or any subdirectory) the file(s) will be
-saved in the analysis directory. Set \code{project = NULL} to
-override this default behavior. Files must have the extension Rmd or rmd.}
+saved in the analysis directory. Set \code{project = NULL} to override this
+default behavior. Files must have the extension Rmd or rmd. Supports file
+\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
 analysis directory. If \code{project = NULL}, change working

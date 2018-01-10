@@ -23,7 +23,8 @@
 #'   view. These can be either the name(s) of the R Markdown file(s) in the
 #'   analysis directory or the HTML file(s) in the docs directory. Also, the
 #'   full path(s) to the file(s) can be input or just the basename(s) of the
-#'   file(s).
+#'   file(s). Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @param recent logical (default: FALSE). If \code{files = NULL}, display the
 #'   HTML file with the most recent modification time. If \code{files = NULL}
 #'   and \code{recent = FALSE}, then \code{index.html} is viewed.

@@ -8,7 +8,8 @@ wflow_remove(files, message = NULL, git = TRUE, dry_run = FALSE,
   project = ".")
 }
 \arguments{
-\item{files}{character. Files to be removed.}
+\item{files}{character. Files to be removed. Supports file
+\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{message}{character (default: NULL). A commit message.}
 

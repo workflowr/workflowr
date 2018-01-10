@@ -4,7 +4,8 @@
 #' file, the corresponding HTML and other related files are also removed. If the
 #' workflowr project uses Git, \code{wflow_remove} commits the changes.
 #'
-#' @param files character. Files to be removed.
+#' @param files character. Files to be removed. Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @param git logical (default: TRUE). Commit the changes (only applicable if
 #'   Git repository is present).
 #' @param dry_run logical (default: FALSE). Preview the files to be removed but

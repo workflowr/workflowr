@@ -8,7 +8,8 @@ wflow_status(files = NULL, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL) The analysis file(s) to report the
-status. By default checks the status of all analysis files.}
+status. By default checks the status of all analysis files. Supports
+file \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,

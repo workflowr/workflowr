@@ -9,11 +9,11 @@ wflow_build(files = NULL, make = is.null(files), update = FALSE,
   local = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
-\item{files}{character (default: NULL). Files to build. Supports file
-extensions Rmd and rmd. Only files in the analysis directory are allowed
-(and therefore any path to a file is ignored). If \code{files} is
+\item{files}{character (default: NULL). Files to build. Only allows files in
+the analysis directory with the extension Rmd or rmd. If \code{files} is
 \code{NULL}, the default behavior is to build all outdated files (see
-argument \code{make} below).}
+argument \code{make} below). Supports file
+\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{make}{logical (default: \code{is.null(files)}). When \code{make =
 TRUE}, use Make-like behavior, i.e. build the files that have been updated

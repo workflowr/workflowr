@@ -70,14 +70,11 @@ test_that("wflow_view ignores paths to files.", {
 
 # Warnings and errors ----------------------------------------------------------
 
-test_that("wflow_view sends warning for wrong file extension.", {
-  expected <- file.path(p$docs, "about.html")
-  expect_warning(actual <- wflow_view(files = c("about.html", "license.x"),
-                       dry_run = TRUE, project = site_dir),
-                 "The following files had invalid extensions and cannot be viewed:")
-  expect_identical(actual, expected)
+test_that("wflow_view throws error for wrong file extension.", {
+  expect_error(wflow_view(files = c("about.html", "license.x"),
+                          dry_run = TRUE, project = site_dir),
+               "File extensions must be either Rmd, rmd, or html.")
 })
-
 
 test_that("wflow_view sends warning for missing file.", {
   expected <- file.path(p$docs, "about.html")
@@ -93,7 +90,7 @@ test_that("wflow_view throws error if no files to view.", {
                "No HTML files were able to viewed.")
   expect_error(suppressWarnings(wflow_view(files = "missing.x",
                                            dry_run = TRUE, project = site_dir)),
-               "None of the files had valid extensions.")
+               "File extensions must be either Rmd, rmd, or html.")
   unlink(file.path(p$docs, "index.html"))
   expect_error(suppressWarnings(wflow_view(dry_run = TRUE, project = site_dir)),
                "No HTML files were able to viewed.")

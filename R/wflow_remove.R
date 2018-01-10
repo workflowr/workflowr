@@ -51,14 +51,13 @@ wflow_remove <- function(files,
 
   # Check input arguments ------------------------------------------------------
 
-  if (!(is.character(files) && length(files) > 0)) {
+  if (!(is.character(files) && length(files) > 0))
     stop("files must be a character vector of filenames")
-  } else if (!all(file.exists(files))) {
-    stop("files must exist")
-  } else {
-    # Change filepaths to relative paths
-    files <- relative(files)
-  }
+  files <- glob(files)
+  if (!all(file.exists(files)))
+    stop("Not all files exist. Check the paths to the files")
+  # Change filepaths to relative paths
+  files <- relative(files)
 
   if (is.null(message)) {
     message <- deparse(sys.call())
@@ -104,8 +103,9 @@ wflow_remove <- function(files,
   files_rmd <- files_rmd[absolute(files_rmd) ==
                          absolute(file.path(p$analysis, basename(files_rmd)))]
 
-  files_to_remove <- files
-  dirs_to_remove <- character()
+  is_dir <- dir.exists(files)
+  files_to_remove <- files[!is_dir]
+  dirs_to_remove <- files[is_dir]
 
   for (rmd in files_rmd) {
     # Corresponding HTML?

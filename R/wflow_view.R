@@ -63,8 +63,22 @@
 #' @export
 wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
                        project = ".") {
-  if (!(is.null(files) || (is.character(files) && length(files) >= 1)))
-    stop("files must be NULL or a character vector.")
+
+  if (!is.null(files)) {
+    if (!(is.character(files) && length(files) > 0))
+      stop("files must be NULL or a character vector of filenames")
+    if (any(dir.exists(files)))
+      stop("files cannot include a path to a directory")
+    files <- glob(files)
+    # Change filepaths to relative paths
+    files <- relative(files)
+    # Check for valid file extensions
+    ext <- tools::file_ext(files)
+    ext_wrong <- !(ext %in% c("Rmd", "rmd", "html"))
+    if (any(ext_wrong))
+      stop(wrap("File extensions must be either Rmd, rmd, or html."))
+  }
+
   if (!(is.logical(recent) && length(recent) == 1))
     stop("recent must be a one element logical vector. You entered: ", recent)
   if (!(is.logical(dry_run) && length(dry_run) == 1))
@@ -74,7 +88,6 @@ wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
   if (!dir.exists(project))
     stop("project does not exist. You entered: ", project)
 
-  files <- absolute(files)
   project <- absolute(project)
 
   p <- wflow_paths(project = project)

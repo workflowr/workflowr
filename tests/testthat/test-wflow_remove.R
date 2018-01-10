@@ -125,7 +125,7 @@ test_that("wflow_remove requires valid argument: files", {
   expect_error(wflow_remove(TRUE),
                "files must be a character vector of filenames")
   expect_error(wflow_remove("nonexistent.Rmd"),
-               "files must exist")
+               "Not all files exist. Check the paths to the files")
 })
 
 test_that("wflow_remove requires valid argument: message", {

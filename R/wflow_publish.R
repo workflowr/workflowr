@@ -76,11 +76,11 @@ wflow_publish <- function(
   # Check input arguments ------------------------------------------------------
 
   if (!is.null(files)) {
-    if (!is.character(files)) {
+    if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
-    } else if (!all(file.exists(files))) {
+    files <- glob(files)
+    if (!all(file.exists(files)))
       stop("Not all files exist. Check the paths to the files")
-    }
     # Change filepaths to relative paths
     files <- relative(files)
   }

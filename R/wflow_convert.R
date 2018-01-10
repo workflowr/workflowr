@@ -78,6 +78,7 @@ wflow_convert <- function(files,
   if (!is.logical(verbose) | length(verbose) != 1)
     stop("verbose must be a one element logical vector")
 
+  files <- glob(files)
   files <- relative(files)
 
   # Check file extensions

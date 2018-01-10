@@ -5,14 +5,10 @@ context("glob")
 # start project in a tempdir
 site_dir <- tempfile("test-glob-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE))
-on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+if (!interactive()) on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)
 s <- wflow_status(project = site_dir)
-
-rmd <- rownames(s$status)
-stopifnot(length(rmd) > 0)
-# Expected html files
-html <- workflowr:::to_html(rmd, outdir = s$docs)
+rmd_glob <- file.path(s$analysis, "*Rmd")
 
 # Test detect_glob -------------------------------------------------------------
 
@@ -68,25 +64,22 @@ test_that("glob does nothing if no globbing detected", {
 })
 
 test_that("glob obtains the same results as Sys.glob for file globs", {
-  glob_str <- file.path(s$analysis, "*Rmd")
-  expected <- Sys.glob(glob_str)
-  actual <- workflowr:::glob(glob_str)
+  expected <- Sys.glob(rmd_glob)
+  actual <- workflowr:::glob(rmd_glob)
   expect_identical(actual, expected)
   expect_true(length(actual) > 0)
 })
 
 test_that("glob can process paths with and without globs", {
-  glob_str <- file.path(s$analysis, "*Rmd")
-  paths <- c(s$root, "a", glob_str, file.path(s$root, "README.md"))
-  expected <- c(s$root, "a", Sys.glob(glob_str), file.path(s$root, "README.md"))
+  paths <- c(s$root, "a", rmd_glob, file.path(s$root, "README.md"))
+  expected <- c(s$root, "a", Sys.glob(rmd_glob), file.path(s$root, "README.md"))
   actual <- workflowr:::glob(paths)
   expect_identical(actual, expected)
 })
 
 test_that("glob does not return duplicates", {
-  glob_str <- file.path(s$analysis, "*Rmd")
-  expected <- Sys.glob(glob_str)
-  actual <- workflowr:::glob(c(glob_str, glob_str))
+  expected <- Sys.glob(rmd_glob)
+  actual <- workflowr:::glob(c(rmd_glob, rmd_glob))
   expect_identical(actual, expected)
 })
 
@@ -101,10 +94,84 @@ test_that("glob throws error for invalid glob", {
 
 # Test file globbing -----------------------------------------------------------
 
+expected <- Sys.glob(rmd_glob)
+
 test_that("wflow_build accepts file globs", {
-  rmd_glob <- file.path(s$analysis, "*Rmd")
-  build_w_glob <- wflow_build(rmd_glob, project = site_dir)
-  expect_identical(Sys.glob(rmd_glob), build_w_glob$built)
-  expect_error(wflow_build(file.path(s$analysis, "bad*blob.Rmd"), project = site_dir),
+  actual <- wflow_build(rmd_glob, dry_run = TRUE, project = site_dir)
+  expect_identical(actual$files, expected)
+  expect_error(wflow_build(file.path(s$analysis, "bad*blob.Rmd"),
+                            dry_run = TRUE, project = site_dir),
+               "Invalid file glob:")
+})
+
+test_that("wflow_commit accepts file globs", {
+  actual <- wflow_commit(rmd_glob, dry_run = TRUE, project = site_dir)
+  expect_identical(actual$files, expected)
+  expect_error(wflow_commit(file.path(s$analysis, "bad*blob.Rmd"),
+                            dry_run = TRUE, project = site_dir),
+               "Invalid file glob:")
+})
+
+test_that("wflow_convert accepts file globs", {
+  actual <- wflow_convert(rmd_glob, dry_run = TRUE)
+  expect_identical(names(actual), expected)
+  expect_error(wflow_convert(file.path(s$analysis, "bad*blob.Rmd"),
+                            dry_run = TRUE),
+               "Invalid file glob:")
+})
+
+
+test_that("wflow_open accepts file globs", {
+  rmd_glob_expanded <- Sys.glob(rmd_glob)
+  open_w_glob <- wflow_open(rmd_glob, change_wd = FALSE, open_file = FALSE,
+                            project = site_dir)
+  expect_identical(open_w_glob, rmd_glob_expanded)
+
+  expect_error(wflow_open(file.path(s$analysis, "bad*blob.Rmd"), project = site_dir),
+               "Invalid file glob:")
+
+  if ("devtools_shims" %in% search())
+    skip("Must be run manually.")
+
+  rmd_new <- file.path(s$analysis, "new.Rmd")
+  on.exit(file.remove(rmd_new))
+  open_w_glob_new <- wflow_open(c(rmd_glob, rmd_new), change_wd = FALSE,
+                                open_file = FALSE, project = site_dir)
+  expect_identical(open_w_glob_new, c(rmd_glob_expanded, rmd_new))
+  expect_true(file.exists(rmd_new))
+})
+
+test_that("wflow_publish accepts file globs", {
+  actual <- wflow_publish(rmd_glob, dry_run = TRUE, project = site_dir)
+  expect_identical(actual$step2$files, expected)
+  expect_error(wflow_publish(file.path(s$analysis, "bad*blob.Rmd"),
+                             dry_run = TRUE, project = site_dir),
+               "Invalid file glob:")
+})
+
+test_that("wflow_remove accepts file globs", {
+  actual <- wflow_remove(rmd_glob, dry_run = TRUE, project = site_dir)
+  expect_identical(actual$files, expected)
+  expect_error(wflow_remove(file.path(s$analysis, "bad*blob.Rmd"),
+                            dry_run = TRUE, project = site_dir),
+               "Invalid file glob:")
+})
+
+test_that("wflow_status accepts file globs", {
+  actual <- wflow_status(rmd_glob, project = site_dir)
+  expect_identical(rownames(actual$status), expected)
+  expect_error(wflow_status(file.path(s$analysis, "bad*blob.Rmd"),
+                            project = site_dir),
+               "Invalid file glob:")
+})
+
+test_that("wflow_view accepts file globs", {
+  html <- workflowr:::to_html(expected, outdir = s$docs)
+  file.create(html)
+  on.exit(file.remove(html))
+  actual <- wflow_view(rmd_glob, dry_run = TRUE, project = site_dir)
+  expect_identical(actual, html)
+  expect_error(wflow_view(file.path(s$analysis, "bad*blob.Rmd"),
+                            dry_run = TRUE, project = site_dir),
                "Invalid file glob:")
 })

@@ -94,14 +94,28 @@
 #' }
 #' @export
 wflow_status <- function(files = NULL, project = ".") {
-  if (!(is.null(files) | is.character(files)))
-      stop("files must be NULL or a character vector")
-  if (!is.character(project) | length(project) != 1)
+
+  if (!is.null(files)) {
+    if (!(is.character(files) && length(files) > 0))
+      stop("files must be NULL or a character vector of filenames")
+    if (any(dir.exists(files)))
+      stop("files cannot include a path to a directory")
+    files <- glob(files)
+    if (!all(file.exists(files)))
+      stop("Not all files exist. Check the paths to the files")
+    # Change filepaths to relative paths
+    files <- relative(files)
+    # Check for valid file extensions
+    ext <- tools::file_ext(files)
+    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
+    if (any(ext_wrong))
+      stop(wrap("File extensions must be either Rmd or rmd."))
+  }
+
+  if (!(is.character(project) && length(project) == 1))
     stop("project must be a one element character vector")
   if (!dir.exists(project))
     stop("project does not exist.")
-
-  files <- absolute(files)
   project <- absolute(project)
 
   # Obtain list of workflowr paths. Throw error if no Git repository.
@@ -109,16 +123,11 @@ wflow_status <- function(files = NULL, project = ".") {
 
   # Gather analysis files
   # (files that start with an underscore are ignored)
-  files_all <- list.files(path = o$analysis, pattern = "^[^_]")
-  if (o$analysis != ".")
-    files_all <- file.path(o$analysis, files_all)
-  files_all_ext <- tools::file_ext(files_all)
-  files_analysis <- files_all[files_all_ext %in% c("Rmd", "rmd")]
+  files_analysis <- list.files(path = o$analysis, pattern = "^[^_].+Rmd$",
+                          full.names = TRUE)
+  files_analysis <- relative(files_analysis)
 
   if (!is.null(files)) {
-    # Don't know if file paths are relative or absolute, so ensure they are
-    # relative
-    files <- relative(files)
     files_analysis <- files_analysis[match(files, files_analysis)]
   }
   if (length(files_analysis) == 0)

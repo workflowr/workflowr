@@ -113,6 +113,20 @@ test_that("wflow_remove can remove files with no Git repo present", {
   expect_identical(actual$files_git, NA)
 })
 
+test_that("wflow_remove can remove a directory", {
+  d <- "toplevel"
+  dir.create(d)
+  on.exit(unlink(d, recursive = TRUE, force = TRUE))
+  f <- file.path(d, "file")
+  file.create(f)
+  add(r, f)
+  commit(r, "new file")
+  actual <- wflow_remove(d)
+  expect_identical(actual$files_git, f)
+  expect_false(dir.exists(d))
+  expect_false(file.exists(f))
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_remove requires valid argument: files", {

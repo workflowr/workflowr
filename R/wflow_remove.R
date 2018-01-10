@@ -103,9 +103,15 @@ wflow_remove <- function(files,
   files_rmd <- files_rmd[absolute(files_rmd) ==
                          absolute(file.path(p$analysis, basename(files_rmd)))]
 
+  # If the user inputs a directory, obtain all the files in those directories so
+  # that they can be removed from the Git repo if applicable.
   is_dir <- dir.exists(files)
   files_to_remove <- files[!is_dir]
   dirs_to_remove <- files[is_dir]
+  for (d in dirs_to_remove) {
+    d_files <- list.files(path = d, full.names = TRUE)
+    files_to_remove <- c(files_to_remove, d_files)
+  }
 
   for (rmd in files_rmd) {
     # Corresponding HTML?

@@ -153,8 +153,9 @@ contains the files `LICENSE` and `LICENSE.md` to both adhere to [R package
 conventions for defining the license][r-exts-licensing] and also to make the
 license clear in a more conventional manner (suggestions for improvement
 welcome). `document.R` is a convenience script for regenerating the
-documentation. The remaining directories are standard for R packages as
-described in the manual [Writing R Extensions][r-exts].
+documentation. `build.sh` is a convenience script for running `R CMD check`. The
+remaining directories are standard for R packages as described in the manual
+[Writing R Extensions][r-exts].
 
 If you are interested in contributing to this project, please see these
 [instructions][contributing].

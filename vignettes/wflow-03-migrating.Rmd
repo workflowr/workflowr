@@ -61,7 +61,7 @@ wflow_update(dry_run = FALSE)
 Lastly, build and commit the website using `wflow_publish()`:
 
 ```{r}
-wflow_publish(Sys.glob("analysis/*Rmd"), "Publish analysis files")
+wflow_publish("analysis/*Rmd", "Publish analysis files")
 ```
 
 ## Scenario: I have a collection of R Markdown files and other project infrastructure
@@ -101,7 +101,7 @@ wflow_update(dry_run = FALSE)
 Lastly, build and commit the website using `wflow_publish()`:
 
 ```{r}
-wflow_publish(Sys.glob("analysis/*Rmd"), "Publish analysis files")
+wflow_publish("analysis/*Rmd", "Publish analysis files")
 ```
 
 ## Scenario: I have an R package
@@ -224,7 +224,7 @@ create your website:
 
 * Edit the navbar in `analysis/_site.yml` so that the GitHub URL points to your repository (and commit the change)
 * Edit the README (and potentially other places, including on GitHub) so that the URL to the website no longer contains the trailing "analysis" in the name (and commit the change(s))
-* Run `wflow_publish(Sys.glob("analysis/*Rmd"), "Publish files using workflowr"))` to build and commit the website files
+* Run `wflow_publish("analysis/*Rmd", "Publish files using workflowr"))` to build and commit the website files
 * Push the changes to GitHub
 * Change the Settings so that the website is served from "master branch /docs folder"
 * Optionally remove the gh-pages branch ([GitHub instructions][gh-remove-branch])

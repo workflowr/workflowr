@@ -284,10 +284,13 @@ wflow_status()
 This alerts us that our project has 3 R Markdown files, and they are all
 unpublished ("Unp"). Furthermore, it instructs how to publish them: use
 `wflow_publish()`. The first argument to `wflow_publish()` is a character vector
-of the R Markdown files to publish. The second is a message that will recorded
-by the version control system Git when it commits (i.e. saves a snapshot of)
-these files. The more informative the commit message the better (so that future
-you knows what you were trying to accomplish).
+of the R Markdown files to publish ^[Instead of listing each file individually,
+you can also pass [file globs](https://en.wikipedia.org/wiki/Glob_(programming))
+as input to any workflowr function, e.g. `wflow_publish("analysis/*Rmd",
+"Publish the initial files for myproject")`]. The second is a message that will
+recorded by the version control system Git when it commits (i.e. saves a
+snapshot of) these files. The more informative the commit message the better (so
+that future you knows what you were trying to accomplish).
 
 ```{r wflow-publish}
 wflow_publish(c("analysis/index.Rmd", "analysis/about.Rmd", "analysis/license.Rmd"),
@@ -307,7 +310,7 @@ Performing these 3 steps ensures that the HTML files are always in sync with the
 latest versions of the R Markdown files. Performing these steps manually would
 be tedious and error-prone (e.g. an HTML file may have been built with an
 outdated version of an R Markdown file). However, `wflow_publish()` makes it
-trivial to keep the pages of your site in sync.
+easy to keep the pages of your site in sync.
 
 Now when you run `wflow_status()`, it reports that all the files are published
 and up-to-date.

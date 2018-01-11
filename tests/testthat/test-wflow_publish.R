@@ -83,6 +83,47 @@ test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_co
   expect_true(is.null(o$step3))
 })
 
+test_that("wflow_build automatically removes unused figure files", {
+  # Build a file that has 2 plots from 2 unnamed chunks
+  file_w_figs <- file.path(s$analysis, "fig.Rmd")
+  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  publish_v01 <- wflow_publish(file_w_figs, project = site_dir)
+  figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
+                                 c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
+  expect_true(all(file.exists(figs_analysis_v01)))
+  figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
+                             c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
+  expect_true(all(file.exists(figs_docs_v01)))
+  expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
+  # Update the file such that the previous 2 chunks are now named, plus add a
+  # 3rd plot chunk
+  file.copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
+  publish_v02 <- wflow_publish(file_w_figs, project = site_dir)
+  expect_false(all(file.exists(figs_analysis_v01)))
+  expect_false(all(file.exists(figs_docs_v01)))
+  figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
+                                 c("named1-1.png", "named2-1.png", "named3-1.png"))
+  expect_true(all(file.exists(figs_analysis_v02)))
+  figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
+                             c("named1-1.png", "named2-1.png", "named3-1.png"))
+  expect_true(all(file.exists(figs_docs_v02)))
+  expect_true(all(figs_docs_v02 %in% publish_v02$step3$commit_files))
+  # The v01 files should also be listed in the commit_files b/c they are removed
+  # in this commit
+  expect_true(all(figs_docs_v01 %in% publish_v02$step3$commit_files))
+  # The Git status should have no staged or unstaged changes, which would occur
+  # if the files were deleted but not committed
+  current_status <- status(r)
+  expect_false(length(current_status$staged) > 0)
+  expect_false(length(current_status$unstaged) > 0)
+  # Cleanup
+  file.remove(file_w_figs)
+  unlink(file.path(s$analysis, "figure", basename(file_w_figs)),
+         recursive = TRUE, force = TRUE)
+  unlink(file.path(s$docs, "figure", basename(file_w_figs)),
+         recursive = TRUE, force = TRUE)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_publish resets Git repo to previous commit if build fails", {

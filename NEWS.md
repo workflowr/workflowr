@@ -2,6 +2,7 @@
 
 * `wflow_view()` can now open a webpage in the [RStudio Viewer][]
 * Main workflowr functions now accept [file globs][glob] as input (#84)
+* `wflow_build()` automatically removes unused figure files
 
 [glob]: https://en.wikipedia.org/wiki/Glob_(programming)
 [rstudio-viewer]: https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html

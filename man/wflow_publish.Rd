@@ -22,7 +22,7 @@ modified and deleted. Equivalent to: \code{git commit -a}}
 \item{force}{logical (default: FALSE). Allow adding otherwise ignored files.
 Equivalent to: \code{git add -f}}
 
-\item{update}{logical (default: FALSE). Build the files that have been
+\item{update}{logical (default: FALSE). Build any files that have been
 committed more recently than their corresponding HTML files (and do not
 have any unstaged or staged changes). This ensures that the commit version
 ID inserted into the HTML corresponds to the exact version of the source
@@ -66,10 +66,10 @@ Returns an object of class \code{wflow_publish}, which is a list with
 \description{
 \code{wflow_publish} is the main workflowr function. Use it when you are
 ready to publish an analysis to your site. \code{wflow_publish} performs
-three steps: 1) commit the file(s), 2) rebuild the file(s), 3) commit the
-generated website file(s). These steps ensure that the version of the HTML
-file is created by the latest version of the R Markdown file, which is
-critical for reproducibility.
+three steps: 1) commit the file(s), 2) rebuild the R Markdown file(s), 3)
+commit the generated website file(s). These steps ensure that the version of
+the HTML file is created by the latest version of the R Markdown file, which
+is critical for reproducibility.
 }
 \examples{
 \dontrun{

@@ -16,11 +16,12 @@ argument \code{make} below). Supports file
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{make}{logical (default: \code{is.null(files)}). When \code{make =
-TRUE}, use Make-like behavior, i.e. build the files that have been updated
-more recently than their corresponding HTML files. This is the default
+TRUE}, build any files that have been modified more recently than their
+corresponding HTML files (inspired by
+\href{https://www.gnu.org/software/make/}{GNU Make}). This is the default
 action if no files are specified.}
 
-\item{update}{logical (default: FALSE). Build the files that have been
+\item{update}{logical (default: FALSE). Build any files that have been
 committed more recently than their corresponding HTML files (and do not
 have any unstaged or staged changes). This ensures that the commit version
 ID inserted into the HTML corresponds to the exact version of the source
@@ -93,7 +94,8 @@ the changes. When you are ready to commit the files, use
 }
 \details{
 \code{wflow_build} has multiple, non-mutually exclusive options for deciding
-which files to build:
+which files to build. In other words, if multiple options are set to
+\code{TRUE}, the union of all files will be built:
 
 \itemize{
 
@@ -116,14 +118,18 @@ Under the hood, \code{wflow_build} is a wrapper for
 \examples{
 \dontrun{
 
-# Build all files
+# Build any files which have modified
 wflow_build() # equivalent to wflow_build(make = TRUE)
 # Build a single file
 wflow_build("file.Rmd")
 # Build multiple files
 wflow_build(c("file1.Rmd", "file2.Rmd"))
-# Build every file
+# Build multiple files using a file glob
+wflow_build("file*.Rmd")
+# Build every published file
 wflow_build(republish = TRUE)
+# Build file.Rmd and any files which have been modified
+wflow_build("file.Rmd", make = TRUE)
 }
 
 }

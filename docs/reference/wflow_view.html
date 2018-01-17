@@ -93,7 +93,8 @@
     </div>
 
     
-    <p><code>wflow_view</code> displays the website locally in your browser.</p>
+    <p><code>wflow_view</code> displays the website locally in your browser or the RStudio
+Viewer pane.</p>
     
 
     <pre class="usage"><span class='fu'>wflow_view</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
@@ -104,21 +105,22 @@
     <tr>
       <th>files</th>
       <td><p>character (default: NULL). Name(s) of the specific file(s) to
-open in the browser. These can be either the name(s) of the R Markdown
-file(s) in the analysis directory or the HTML file(s) in the docs
-directory. Also, the full path(s) to the file(s) can be input or just the
-basename(s) of the file(s).</p></td>
+view. These can be either the name(s) of the R Markdown file(s) in the
+analysis directory or the HTML file(s) in the docs directory. Also, the
+full path(s) to the file(s) can be input or just the basename(s) of the
+file(s). Supports file
+<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>recent</th>
       <td><p>logical (default: FALSE). If <code>files = NULL</code>, display the
 HTML file with the most recent modification time. If <code>files = NULL</code>
-and <code>recent = FALSE</code>, then <code>index.html</code> is opened.</p></td>
+and <code>recent = FALSE</code>, then <code>index.html</code> is viewed.</p></td>
     </tr>
     <tr>
       <th>dry_run</th>
-      <td><p>logical (default: FALSE). Do not actually open file(s) in
-browser. Mainly useful for testing.</p></td>
+      <td><p>logical (default: FALSE). Do not actually view file(s). Mainly
+useful for testing.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -131,19 +133,23 @@ you'll need to provide the path to the project directory.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Invisibly returns a character vector of the relative paths to the
-  HTML files to be opened.</p>
+  HTML files to be viewed.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>wflow_view</code> by default opens the file <code>index.html</code>. To view the
+    <p><code>wflow_view</code> by default displays the file <code>index.html</code>. To view the
 most recently modified HTML file, set <code>recent = TRUE</code>. To specify which
-file(s) to open, specify either the name(s) of the R Markdown or HTML
+file(s) to view, specify either the name(s) of the R Markdown or HTML
 file(s). The path(s) to the file(s) will be discarded, thus only HTML files
 in docs directory can be viewed with this function.
-    <code>wflow_view</code> uses <code>browseURL</code> to open the HTML files in the
-browser. If you wish to do something non-traditional like open an HTML file
+    <code>wflow_view</code> uses <code>browseURL</code> to view the HTML files in the
+browser. If you wish to do something non-traditional like view an HTML file
 that is not in the docs directory or not part of a workflowr project, you can
 use that function directly.</p>
+<p>If <code>wflow_view</code> is run in the RStudio IDE and only one file has been
+requested to be viewed, the file is displayed in the
+<a href='https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html'>RStudio
+Viewer</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -151,27 +157,26 @@ use that function directly.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># View index.html</span>
+<span class='fu'>wflow_view</span>()
 
-  <span class='co'># View index.html</span>
-  <span class='fu'>wflow_view</span>()
+<span class='co'># View the most recently modified HTML file</span>
+<span class='fu'>wflow_view</span>(<span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-  <span class='co'># View the most recently modified HTML file</span>
-  <span class='fu'>wflow_view</span>(<span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># View a file by specifying the R Markdown file</span>
+<span class='co'># (the following two are equivalent)</span>
+<span class='fu'>wflow_view</span>(<span class='st'>"fname.Rmd"</span>)
+<span class='fu'>wflow_view</span>(<span class='st'>"analysis/fname.Rmd"</span>)
 
-  <span class='co'># View a file by specifying the R Markdown file</span>
-  <span class='co'># (the following two are equivalent)</span>
-  <span class='fu'>wflow_view</span>(<span class='st'>"fname.Rmd"</span>)
-  <span class='fu'>wflow_view</span>(<span class='st'>"analysis/fname.Rmd"</span>)
+<span class='co'># View a file by specifying the HTML file</span>
+<span class='co'># (the following two are equivalent)</span>
+<span class='fu'>wflow_view</span>(<span class='st'>"fname.html"</span>)
+<span class='fu'>wflow_view</span>(<span class='st'>"docs/fname.html"</span>)
 
-  <span class='co'># View a file by specifying the HTML file</span>
-  <span class='co'># (the following two are equivalent)</span>
-  <span class='fu'>wflow_view</span>(<span class='st'>"fname.html"</span>)
-  <span class='fu'>wflow_view</span>(<span class='st'>"docs/fname.html"</span>)
-
-  <span class='co'># View multiple files</span>
-  <span class='fu'>wflow_view</span>(<span class='fu'>c</span>(<span class='st'>"fname1.Rmd"</span>, <span class='st'>"fname2.Rmd"</span>))
-})</div></pre>
+<span class='co'># View multiple files</span>
+<span class='fu'>wflow_view</span>(<span class='fu'>c</span>(<span class='st'>"fname1.Rmd"</span>, <span class='st'>"fname2.Rmd"</span>))
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -196,7 +201,7 @@ use that function directly.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

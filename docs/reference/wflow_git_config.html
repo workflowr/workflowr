@@ -148,20 +148,20 @@ settings, but not delete them. To perform either of these actions, please use
 <p>Under the hood, <code>wflow_git_config</code> is a wrapper for
 <code><a href='http://www.rdocumentation.org/packages/git2r/topics/config'>config</a></code> from the package git2r.</p>
 <p>To learn more about how to configure Git, see the Software Carpentry lesson
-<a href = 'http://swcarpentry.github.io/git-novice/02-setup/'>Setting Up Git</a>.</p>
+<a href='http://swcarpentry.github.io/git-novice/02-setup/'>Setting Up Git</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># View current Git settings</span>
+<span class='fu'>wflow_git_config</span>()
+<span class='co'># Set user.name and user.email</span>
+<span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='st'>"A Name"</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='st'>"email@domain"</span>)
+<span class='co'># Set core.editor (the text editor that Git opens to write commit messages)</span>
+<span class='fu'>wflow_git_config</span>(<span class='kw'>core.editor</span> <span class='kw'>=</span> <span class='st'>"nano"</span>)
 
-  <span class='co'># View current Git settings</span>
-  <span class='fu'>wflow_git_config</span>()
-  <span class='co'># Set user.name and user.email</span>
-  <span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='st'>"A Name"</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='st'>"email@domain"</span>)
-  <span class='co'># Set core.editor (the text editor that Git opens to write commit messages)</span>
-  <span class='fu'>wflow_git_config</span>(<span class='kw'>core.editor</span> <span class='kw'>=</span> <span class='st'>"nano"</span>)
-
-})</div></pre>
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -184,7 +184,7 @@ settings, but not delete them. To perform either of these actions, please use
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

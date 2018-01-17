@@ -95,10 +95,10 @@
     
     <p><code>wflow_publish</code> is the main workflowr function. Use it when you are
 ready to publish an analysis to your site. <code>wflow_publish</code> performs
-three steps: 1) commit the file(s), 2) rebuild the file(s), 3) commit the
-generated website file(s). These steps ensure that the version of the HTML
-file is created by the latest version of the R Markdown file, which is
-critical for reproducibility.</p>
+three steps: 1) commit the file(s), 2) rebuild the R Markdown file(s), 3)
+commit the generated website file(s). These steps ensure that the version of
+the HTML file is created by the latest version of the R Markdown file, which
+is critical for reproducibility.</p>
     
 
     <pre class="usage"><span class='fu'>wflow_publish</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -111,7 +111,9 @@ critical for reproducibility.</p>
     <tr>
       <th>files</th>
       <td><p>character (default: NULL). Files to be added and committed with
-Git.</p></td>
+Git (step 1). Any R Markdown files will also be built (step 2) and their
+output HTML and figures will be subsequently committed (step 3). Supports
+file <a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>message</th>
@@ -129,7 +131,7 @@ Equivalent to: <code>git add -f</code></p></td>
     </tr>
     <tr>
       <th>update</th>
-      <td><p>logical (default: FALSE). Build the files that have been
+      <td><p>logical (default: FALSE). Build any files that have been
 committed more recently than their corresponding HTML files (and do not
 have any unstaged or staged changes). This ensures that the commit version
 ID inserted into the HTML corresponds to the exact version of the source
@@ -143,8 +145,9 @@ bar, or any other setting in <code>_site.yml</code>.</p></td>
     </tr>
     <tr>
       <th>view</th>
-      <td><p>logical (default: FALSE). View the website after publishing
-files. See <code><a href='wflow_build.html'>wflow_build</a></code> for more details.</p></td>
+      <td><p>logical (default: FALSE). View the website with
+<code><a href='wflow_view.html'>wflow_view</a></code> after publishing files. See
+<code><a href='wflow_build.html'>wflow_build</a></code> for more details.</p></td>
     </tr>
     <tr>
       <th>seed</th>
@@ -184,24 +187,26 @@ you'll need to provide the path to the project directory.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-  <span class='co'># single file</span>
-  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>)
-  <span class='co'># All tracked files that have been edited</span>
-  <span class='fu'>wflow_publish</span>(<span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
-  <span class='co'># A new file plus all tracked files that have been edited</span>
-  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='co'># Multiple files</span>
-  <span class='fu'>wflow_publish</span>(<span class='fu'>c</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"analysis/another.Rmd"</span>),
-                <span class='st'>"Informative commit message"</span>)
-  <span class='co'># All R Markdown files that start with the pattern "new_"</span>
-  <span class='fu'>wflow_publish</span>(<span class='fu'>Sys.glob</span>(<span class='st'>"analysis/new_*Rmd"</span>), <span class='st'>"Informative commit message"</span>)
-  <span class='co'># Republish all published files regardless of whether they have been</span>
-  <span class='co'># modified. Useful for changing some universal aspect of the site,</span>
-  <span class='co'># e.g. the theme.</span>
-  <span class='fu'>wflow_publish</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># single file</span>
+<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>)
+<span class='co'># All tracked files that have been edited</span>
+<span class='fu'>wflow_publish</span>(<span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
+<span class='co'># A new file plus all tracked files that have been edited</span>
+<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># Multiple files</span>
+<span class='fu'>wflow_publish</span>(<span class='fu'>c</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"analysis/another.Rmd"</span>),
+              <span class='st'>"Informative commit message"</span>)
+<span class='co'># All R Markdown files that start with the pattern "new_"</span>
+<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/new_*Rmd"</span>, <span class='st'>"Informative commit message"</span>)
+<span class='co'># Republish all published files regardless of whether they have been</span>
+<span class='co'># modified. Useful for changing some universal aspect of the site,</span>
+<span class='co'># e.g. the theme specifid in _site.yml.</span>
+<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/_site.yml"</span>, <span class='st'>"Informative commit message"</span>,
+              <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-})</div></pre>
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -224,7 +229,7 @@ you'll need to provide the path to the project directory.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -94,6 +94,34 @@
     </div>
 
     <div class="contents">
+    <div id="workflowr-0-10-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflowr-0-10-0" class="anchor"></a>workflowr 0.10.0</h1>
+<div id="integration-with-rstudio-viewer" class="section level2">
+<h2 class="hasAnchor">
+<a href="#integration-with-rstudio-viewer" class="anchor"></a>Integration with RStudio Viewer</h2>
+<ul>
+<li>
+<code><a href="../reference/wflow_view.html">wflow_view()</a></code> (or <code><a href="../reference/wflow_build.html">wflow_build()</a></code>) now opens the website in the <a href="https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html">RStudio Viewer</a> if run from within RStudio</li>
+</ul>
+</div>
+<div id="file-globbing" class="section level2">
+<h2 class="hasAnchor">
+<a href="#file-globbing" class="anchor"></a>File globbing</h2>
+<ul>
+<li>Main workflowr functions now accept <a href="https://en.wikipedia.org/wiki/Glob_(programming)">file globs</a> as input (#84)</li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level2">
+<h2 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<ul>
+<li>
+<code><a href="../reference/wflow_build.html">wflow_build()</a></code> automatically removes unused figure files</li>
+<li>Improved documentation of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> arguments</li>
+</ul>
+</div>
+</div>
     <div id="workflowr-0-9-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-9-0" class="anchor"></a>workflowr 0.9.0</h1>
@@ -121,9 +149,9 @@
 <li>The log files by default are now written to the directory returned by <code>tempdir()</code> instead of to <code>/tmp/workflowr</code>. This prevents failures due to permission issues when mutliple workflowr users try to use the same machine (e.g. a compute node on a HPC cluster) (#86)</li>
 </ul>
 </div>
-<div id="miscellaneous" class="section level2">
+<div id="miscellaneous-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Bug fix: When using <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to build the R Markdown files in an external R process, it now runs <code>render_site()</code> in the global environment of the external R process. This better mimics the results of the RStudio “Knit” button.</li>
 </ul>
@@ -146,9 +174,9 @@
 <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> pulls the changes from GitHub to the local computer</li>
 </ul>
 </div>
-<div id="miscellaneous-1" class="section level2">
+<div id="miscellaneous-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Added FAQ on sharing workflowr sites securely using Beaker Browswer (@johnsonlab in #59 &amp; #65)</li>
 <li>Added .Rprofile to automatically load workflowr (@vanAmsterdam in #73)</li>
@@ -173,9 +201,9 @@
 <code><a href="../reference/wflow_build.html">wflow_build()</a></code> adds objects to the global environment when building files locally in the R console (i.e. <code>local = TRUE</code>) (#53)</li>
 </ul>
 </div>
-<div id="miscellaneous-2" class="section level2">
+<div id="miscellaneous-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-3" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Bug fix so workflowr can process Emacs backup files that contain a tilde (#47)</li>
 <li>Bug fix so print methods display properly in the R console (some did not end with a newline character)</li>
@@ -206,9 +234,9 @@
 </li>
 </ul>
 </div>
-<div id="miscellaneous-3" class="section level2">
+<div id="miscellaneous-4" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-3" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-4" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li>Added continuous integration testing with <a href="https://travis-ci.org/">Travis CI</a> for macOS</li>
 <li>Updated documentation in README, “Getting started” vignette, and FAQ</li>
@@ -266,9 +294,9 @@
 <li>Improved documentation of <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to better explain its functionality. It will attempt to convert all R Markdown files present to use the latest version of the workflowr R Markdown template; however, it will only commit R Markdown files that are tracked by Git.</li>
 </ul>
 </div>
-<div id="miscellaneous-4" class="section level2">
+<div id="miscellaneous-5" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous-4" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous-5" class="anchor"></a>Miscellaneous</h2>
 <ul>
 <li><p>All workflowr functions should now accept the file extesion <code>.rmd</code> in addition to <code>.Rmd</code> (Issue #10)</p></li>
 <li><p>Replaced the shared argument <code>path</code> with <code>project</code> to clarify that this argument specifies the path to a directory in the workflowr project</p></li>
@@ -374,6 +402,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-0-10-0">0.10.0</a></li>
         <li><a href="#workflowr-0-9-0">0.9.0</a></li>
         <li><a href="#workflowr-0-8-0">0.8.0</a></li>
         <li><a href="#workflowr-0-7-0">0.7.0</a></li>
@@ -396,7 +425,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

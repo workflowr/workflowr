@@ -1,9 +1,18 @@
-# workflowr 0.9.0.9000
+# workflowr 0.10.0
 
-* `wflow_view()` can now open a webpage in the [RStudio Viewer][rstudio-viewer]
+## Integration with RStudio Viewer
+
+* `wflow_view()` (or `wflow_build()`) now opens the website in the [RStudio
+Viewer][rstudio-viewer] if run from within RStudio
+
+## File globbing
+
 * Main workflowr functions now accept [file globs][glob] as input (#84)
+
+## Miscellaneous
+
 * `wflow_build()` automatically removes unused figure files
-* Improve documentation of `wflow_build()` arguments
+* Improved documentation of `wflow_build()` arguments
 
 [glob]: https://en.wikipedia.org/wiki/Glob_(programming)
 [rstudio-viewer]: https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html

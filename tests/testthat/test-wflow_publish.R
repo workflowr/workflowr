@@ -83,8 +83,8 @@ test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_co
   expect_true(is.null(o$step3))
 })
 
-test_that("wflow_build automatically removes unused figure files", {
-  # Build a file that has 2 plots from 2 unnamed chunks
+test_that("wflow_publish automatically removes unused figure files", {
+  # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
   publish_v01 <- wflow_publish(file_w_figs, project = site_dir)
@@ -122,6 +122,40 @@ test_that("wflow_build automatically removes unused figure files", {
          recursive = TRUE, force = TRUE)
   unlink(file.path(s$docs, "figure", basename(file_w_figs)),
          recursive = TRUE, force = TRUE)
+})
+
+# This tests the edge case where a file had one or more figures but then gets
+# reduced to zero. While Git is able to "add" a non-existent directory to stage
+# deleted files, git2r chokes if the non-existent directory is a relative path.
+# git2r requires the non-existent directory to either be an absolute path or a
+# relative path from the root of the Git repo.
+test_that("wflow_publish removes unused figure files even if directory no longer exists", {
+  # Publish a file that has 2 plots from 2 unnamed chunks
+  file_w_figs <- file.path(s$analysis, "fig.Rmd")
+  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  publish_v01 <- wflow_publish(file_w_figs, project = site_dir)
+  figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
+                                 c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
+  expect_true(all(file.exists(figs_analysis_v01)))
+  figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
+                             c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
+  expect_true(all(file.exists(figs_docs_v01)))
+  expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
+  # Update the file to have no plots
+  file.copy("files/test-wflow_build/seed.Rmd", file_w_figs, overwrite = TRUE)
+  publish_v02 <- wflow_publish(file_w_figs, project = site_dir)
+  expect_false(all(file.exists(figs_analysis_v01)))
+  expect_false(all(file.exists(figs_docs_v01)))
+  # The old figure files should also be listed in the commit_files b/c they are
+  # removed in this commit
+  expect_true(all(figs_docs_v01 %in% publish_v02$step3$commit_files))
+  # The Git status should have no staged or unstaged changes, which would occur
+  # if the files were deleted but not committed
+  current_status <- status(r)
+  expect_false(length(current_status$staged) > 0)
+  expect_false(length(current_status$unstaged) > 0)
+  # Cleanup
+  file.remove(file_w_figs)
 })
 
 # Test error handling ----------------------------------------------------------

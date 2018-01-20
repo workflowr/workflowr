@@ -158,13 +158,13 @@ wflow_commit_ <- function(files = files, message = message, all = all,
   if (!dry_run) {
     # Add the specified files
     if (!is.null(files)) {
-      git2r::add(r, files, force = force)
+      git2r::add(r, relative(files, start = git2r::workdir(r)), force = force)
     }
     if (all) {
       # Temporary fix until git2r::commit can do `git commit -a`
       # https://github.com/ropensci/git2r/pull/283
       tracked <- rownames(s$status)[s$status$tracked]
-      git2r::add(r, tracked)
+      git2r::add(r, relative(tracked, start = git2r::workdir(r)))
     }
     # Commit
     tryCatch(

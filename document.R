@@ -11,6 +11,17 @@ stopifnot(file.exists("workflowr.Rproj"))
 
 devtools::document()
 devtools::clean_vignettes(); devtools::build_vignettes(); devtools::clean_vignettes()
+devtools::install()
 
 unlink("docs/articles/*R")
 pkgdown::build_site()
+
+# Use LICENSE.html. Backporting this feature to older version of pkgdown b/c I
+# get error from the latest version. See
+# https://github.com/r-lib/pkgdown/issues/363
+unlink("docs/LICENSE")
+index_in <- readLines("docs/index.html")
+index_out <- sub('<a href="LICENSE">LICENSE</a>',
+                 '<a href="LICENSE.html">LICENSE</a>',
+                 index_in)
+writeLines(index_out, "docs/index.html")

@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -112,14 +111,14 @@ the changes. When you are ready to commit the files, use
 the analysis directory with the extension Rmd or rmd. If <code>files</code> is
 <code>NULL</code>, the default behavior is to build all outdated files (see
 argument <code>make</code> below). Supports file
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>make</th>
       <td><p>logical (default: <code>is.null(files)</code>). When <code>make =
 TRUE</code>, build any files that have been modified more recently than their
 corresponding HTML files (inspired by
-<a href='https://www.gnu.org/software/make/'>GNU Make</a>). This is the default
+<a href = 'https://www.gnu.org/software/make/'>GNU Make</a>). This is the default
 action if no files are specified.</p></td>
     </tr>
     <tr>
@@ -216,21 +215,21 @@ which currently have staged or unstaged changes will be ignored.</p></li>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Build any files which have modified</span>
-<span class='fu'>wflow_build</span>() <span class='co'># equivalent to wflow_build(make = TRUE)</span>
-<span class='co'># Build a single file</span>
-<span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>)
-<span class='co'># Build multiple files</span>
-<span class='fu'>wflow_build</span>(<span class='fu'>c</span>(<span class='st'>"file1.Rmd"</span>, <span class='st'>"file2.Rmd"</span>))
-<span class='co'># Build multiple files using a file glob</span>
-<span class='fu'>wflow_build</span>(<span class='st'>"file*.Rmd"</span>)
-<span class='co'># Build every published file</span>
-<span class='fu'>wflow_build</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># Build file.Rmd and any files which have been modified</span>
-<span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+
+  <span class='co'># Build any files which have modified</span>
+  <span class='fu'>wflow_build</span>() <span class='co'># equivalent to wflow_build(make = TRUE)</span>
+  <span class='co'># Build a single file</span>
+  <span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>)
+  <span class='co'># Build multiple files</span>
+  <span class='fu'>wflow_build</span>(<span class='fu'>c</span>(<span class='st'>"file1.Rmd"</span>, <span class='st'>"file2.Rmd"</span>))
+  <span class='co'># Build multiple files using a file glob</span>
+  <span class='fu'>wflow_build</span>(<span class='st'>"file*.Rmd"</span>)
+  <span class='co'># Build every published file</span>
+  <span class='fu'>wflow_build</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Build file.Rmd and any files which have been modified</span>
+  <span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -255,7 +254,7 @@ which currently have staged or unstaged changes will be ignored.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

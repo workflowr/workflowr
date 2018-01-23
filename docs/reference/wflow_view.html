@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -109,7 +108,7 @@ view. These can be either the name(s) of the R Markdown file(s) in the
 analysis directory or the HTML file(s) in the docs directory. Also, the
 full path(s) to the file(s) can be input or just the basename(s) of the
 file(s). Supports file
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>recent</th>
@@ -148,7 +147,7 @@ that is not in the docs directory or not part of a workflowr project, you can
 use that function directly.</p>
 <p>If <code>wflow_view</code> is run in the RStudio IDE and only one file has been
 requested to be viewed, the file is displayed in the
-<a href='https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html'>RStudio
+<a href = 'https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html'>RStudio
 Viewer</a>.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -157,26 +156,27 @@ Viewer</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># View index.html</span>
-<span class='fu'>wflow_view</span>()
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
 
-<span class='co'># View the most recently modified HTML file</span>
-<span class='fu'>wflow_view</span>(<span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># View index.html</span>
+  <span class='fu'>wflow_view</span>()
 
-<span class='co'># View a file by specifying the R Markdown file</span>
-<span class='co'># (the following two are equivalent)</span>
-<span class='fu'>wflow_view</span>(<span class='st'>"fname.Rmd"</span>)
-<span class='fu'>wflow_view</span>(<span class='st'>"analysis/fname.Rmd"</span>)
+  <span class='co'># View the most recently modified HTML file</span>
+  <span class='fu'>wflow_view</span>(<span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># View a file by specifying the HTML file</span>
-<span class='co'># (the following two are equivalent)</span>
-<span class='fu'>wflow_view</span>(<span class='st'>"fname.html"</span>)
-<span class='fu'>wflow_view</span>(<span class='st'>"docs/fname.html"</span>)
+  <span class='co'># View a file by specifying the R Markdown file</span>
+  <span class='co'># (the following two are equivalent)</span>
+  <span class='fu'>wflow_view</span>(<span class='st'>"fname.Rmd"</span>)
+  <span class='fu'>wflow_view</span>(<span class='st'>"analysis/fname.Rmd"</span>)
 
-<span class='co'># View multiple files</span>
-<span class='fu'>wflow_view</span>(<span class='fu'>c</span>(<span class='st'>"fname1.Rmd"</span>, <span class='st'>"fname2.Rmd"</span>))
-<span class='co'># }</span></pre>
+  <span class='co'># View a file by specifying the HTML file</span>
+  <span class='co'># (the following two are equivalent)</span>
+  <span class='fu'>wflow_view</span>(<span class='st'>"fname.html"</span>)
+  <span class='fu'>wflow_view</span>(<span class='st'>"docs/fname.html"</span>)
+
+  <span class='co'># View multiple files</span>
+  <span class='fu'>wflow_view</span>(<span class='fu'>c</span>(<span class='st'>"fname1.Rmd"</span>, <span class='st'>"fname2.Rmd"</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -201,7 +201,7 @@ Viewer</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

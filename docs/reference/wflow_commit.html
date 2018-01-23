@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -110,7 +109,7 @@ website files.</p>
       <th>files</th>
       <td><p>character (default: NULL). Files to be added and committed with
 Git. Supports file
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>message</th>
@@ -175,16 +174,16 @@ and <code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-me
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Commit a single file</span>
-<span class='fu'>wflow_commit</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Add new analysis"</span>)
-<span class='co'># Commit multiple files</span>
-<span class='fu'>wflow_commit</span>(<span class='fu'>c</span>(<span class='st'>"code/process-data.sh"</span>, <span class='st'>"output/small-data.txt"</span>),
-             <span class='st'>"Process data set"</span>)
-<span class='co'># Add and commit all tracked files, similar to `git commit -a`</span>
-<span class='fu'>wflow_commit</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Lots of changes"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+
+  <span class='co'># Commit a single file</span>
+  <span class='fu'>wflow_commit</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Add new analysis"</span>)
+  <span class='co'># Commit multiple files</span>
+  <span class='fu'>wflow_commit</span>(<span class='fu'>c</span>(<span class='st'>"code/process-data.sh"</span>, <span class='st'>"output/small-data.txt"</span>),
+               <span class='st'>"Process data set"</span>)
+  <span class='co'># Add and commit all tracked files, similar to `git commit -a`</span>
+  <span class='fu'>wflow_commit</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Lots of changes"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -209,7 +208,7 @@ and <code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-me
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -113,7 +112,7 @@ is critical for reproducibility.</p>
       <td><p>character (default: NULL). Files to be added and committed with
 Git (step 1). Any R Markdown files will also be built (step 2) and their
 output HTML and figures will be subsequently committed (step 3). Supports
-file <a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+file <a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>message</th>
@@ -187,26 +186,25 @@ you'll need to provide the path to the project directory.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># single file</span>
-<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>)
-<span class='co'># All tracked files that have been edited</span>
-<span class='fu'>wflow_publish</span>(<span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
-<span class='co'># A new file plus all tracked files that have been edited</span>
-<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># Multiple files</span>
-<span class='fu'>wflow_publish</span>(<span class='fu'>c</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"analysis/another.Rmd"</span>),
-              <span class='st'>"Informative commit message"</span>)
-<span class='co'># All R Markdown files that start with the pattern "new_"</span>
-<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/new_*Rmd"</span>, <span class='st'>"Informative commit message"</span>)
-<span class='co'># Republish all published files regardless of whether they have been</span>
-<span class='co'># modified. Useful for changing some universal aspect of the site,</span>
-<span class='co'># e.g. the theme specifid in _site.yml.</span>
-<span class='fu'>wflow_publish</span>(<span class='st'>"analysis/_site.yml"</span>, <span class='st'>"Informative commit message"</span>,
-              <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='co'># single file</span>
+  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>)
+  <span class='co'># All tracked files that have been edited</span>
+  <span class='fu'>wflow_publish</span>(<span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Informative commit message"</span>)
+  <span class='co'># A new file plus all tracked files that have been edited</span>
+  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Informative commit message"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Multiple files</span>
+  <span class='fu'>wflow_publish</span>(<span class='fu'>c</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"analysis/another.Rmd"</span>),
+                <span class='st'>"Informative commit message"</span>)
+  <span class='co'># All R Markdown files that start with the pattern "new_"</span>
+  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/new_*Rmd"</span>, <span class='st'>"Informative commit message"</span>)
+  <span class='co'># Republish all published files regardless of whether they have been</span>
+  <span class='co'># modified. Useful for changing some universal aspect of the site,</span>
+  <span class='co'># e.g. the theme specifid in _site.yml.</span>
+  <span class='fu'>wflow_publish</span>(<span class='st'>"analysis/_site.yml"</span>, <span class='st'>"Informative commit message"</span>,
+                <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># }</span><div class='input'>
-</div></pre>
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -229,7 +227,7 @@ you'll need to provide the path to the project directory.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

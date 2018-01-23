@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -110,7 +109,7 @@ using the workflowr R Markdown template.</p>
 points to a workflowr project (or any subdirectory) the file(s) will be
 saved in the analysis directory. Set <code>project = NULL</code> to override this
 default behavior. Files must have the extension Rmd or rmd. Supports file
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>change_wd</th>
@@ -164,18 +163,18 @@ edit = FALSE)</code>. Third open the file in your text editor.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Any of the following are valid input. Files would be created if they did</span>
-<span class='co'># not exist.</span>
-<span class='co'># Basename of file:</span>
-<span class='fu'>wflow_open</span>(<span class='st'>"model-data.Rmd"</span>)
-<span class='co'># Path to file</span>
-<span class='fu'>wflow_open</span>(<span class='st'>"analysis/model-data.Rmd"</span>)
-<span class='co'># Multiple files</span>
-<span class='fu'>wflow_open</span>(<span class='fu'>c</span>(<span class='st'>"model-data.Rmd"</span>, <span class='st'>"another-analysis.Rmd"</span>))
-<span class='co'># Use the workflowr template in a non-worklowr project</span>
-<span class='fu'>wflow_open</span>(<span class='st'>"model-data.Rmd"</span>, <span class='kw'>standalone</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='co'># Any of the following are valid input. Files would be created if they did</span>
+  <span class='co'># not exist.</span>
+  <span class='co'># Basename of file:</span>
+  <span class='fu'>wflow_open</span>(<span class='st'>"model-data.Rmd"</span>)
+  <span class='co'># Path to file</span>
+  <span class='fu'>wflow_open</span>(<span class='st'>"analysis/model-data.Rmd"</span>)
+  <span class='co'># Multiple files</span>
+  <span class='fu'>wflow_open</span>(<span class='fu'>c</span>(<span class='st'>"model-data.Rmd"</span>, <span class='st'>"another-analysis.Rmd"</span>))
+  <span class='co'># Use the workflowr template in a non-worklowr project</span>
+  <span class='fu'>wflow_open</span>(<span class='st'>"model-data.Rmd"</span>, <span class='kw'>standalone</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -198,7 +197,7 @@ edit = FALSE)</code>. Third open the file in your text editor.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

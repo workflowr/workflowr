@@ -1,3 +1,8 @@
+# workflowr 0.10.1
+
+Fix bug that prevented deleted files from being committed with `wflow_commit()`
+or `wflow_publish()` (reported by @pcarbo)
+
 # workflowr 0.10.0
 
 ## Integration with RStudio Viewer

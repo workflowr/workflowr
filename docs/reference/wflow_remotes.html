@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -156,23 +155,23 @@ ssh). It can add a remote (<code>action = "add"</code>), remove a remote
 (<code>action = "set_url"</code>).</p>
 <p>This function cannot change the name of an existing remote. To accomplish
 this, you could run Git from the command line (<code>git remote rename &lt;old&gt;
-&lt;new&gt;</code>) or use <code><a href='http://www.rdocumentation.org/packages/git2r/topics/remote_rename-methods'>git2r::remote_rename</a></code> from R.</p>
+&lt;new&gt;</code>) or use <code>git2r::remote_rename</code> from R.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Display the current remotes</span>
-<span class='fu'>wflow_remotes</span>()
-<span class='co'># Add a remote called origin that points to the</span>
-<span class='co'># GitHub repository example_repo owned by</span>
-<span class='co'># the GitHub user example_user</span>
-<span class='fu'>wflow_remotes</span>(<span class='st'>"origin"</span>, <span class='st'>"example_user"</span>, <span class='st'>"example_repo"</span>)
-<span class='co'># Remove the remote named upstream</span>
-<span class='fu'>wflow_remotes</span>(<span class='st'>"upstream"</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"remove"</span>)
-<span class='co'># Change the protocol of the remote origin from https to ssh</span>
-<span class='fu'>wflow_remotes</span>(<span class='st'>"origin"</span>, <span class='st'>"example_user"</span>, <span class='st'>"example_repo"</span>, <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"ssh"</span>,
-              <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"set_url"</span>)
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+  <span class='co'># Display the current remotes</span>
+  <span class='fu'>wflow_remotes</span>()
+  <span class='co'># Add a remote called origin that points to the</span>
+  <span class='co'># GitHub repository example_repo owned by</span>
+  <span class='co'># the GitHub user example_user</span>
+  <span class='fu'>wflow_remotes</span>(<span class='st'>"origin"</span>, <span class='st'>"example_user"</span>, <span class='st'>"example_repo"</span>)
+  <span class='co'># Remove the remote named upstream</span>
+  <span class='fu'>wflow_remotes</span>(<span class='st'>"upstream"</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"remove"</span>)
+  <span class='co'># Change the protocol of the remote origin from https to ssh</span>
+  <span class='fu'>wflow_remotes</span>(<span class='st'>"origin"</span>, <span class='st'>"example_user"</span>, <span class='st'>"example_repo"</span>, <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"ssh"</span>,
+                <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"set_url"</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -195,7 +194,7 @@ this, you could run Git from the command line (<code>git remote rename &lt;old&g
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

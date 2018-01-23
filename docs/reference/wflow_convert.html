@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -107,7 +106,7 @@ many R Markdown files to use workflowr.</p>
       <th>files</th>
       <td><p>character. The R Markdown file(s) to be converted. Must have
 file extension Rmd or rmd. Supports file
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>standalone</th>
@@ -146,7 +145,7 @@ template</p></li>
 (if <code>standalone = TRUE</code>)</p></li>
 <li><p>Convert a standalone workflowr Rmd file to the non-standalone version
 of the template (if <code>standalone = FALSE</code>)</p></li>
-<li><p>Convert an <a href='https://github.com/jhsiao999/ashlar'>ashlar</a> R
+<li><p>Convert an <a href = 'https://github.com/jhsiao999/ashlar'>ashlar</a> R
 Markdown file to use the workflwor template</p></li>
 </ul>
     <p>If a given R Markdown file is already using the latest version of the
@@ -163,20 +162,20 @@ template, it is not changed.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Convert an R Markdown file to use workflowr template</span>
-<span class='fu'>wflow_convert</span>(<span class='st'>"existing.Rmd"</span>)
-<span class='co'># Convert an R Markdown file to use workflowr template,</span>
-<span class='co'># but embed the shared chunks to create a standalone file</span>
-<span class='fu'>wflow_convert</span>(<span class='st'>"existing.Rmd"</span>, <span class='kw'>standalone</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># Preview the changes</span>
-<span class='fu'>wflow_convert</span>(<span class='st'>"existing.Rmd"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># Convert multiple an R Markdown files</span>
-<span class='fu'>wflow_convert</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='fu'>list.files</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"analysis"</span>,
-                                 <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"Rmd$"</span>,
-                                 <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+
+  <span class='co'># Convert an R Markdown file to use workflowr template</span>
+  <span class='fu'>wflow_convert</span>(<span class='st'>"existing.Rmd"</span>)
+  <span class='co'># Convert an R Markdown file to use workflowr template,</span>
+  <span class='co'># but embed the shared chunks to create a standalone file</span>
+  <span class='fu'>wflow_convert</span>(<span class='st'>"existing.Rmd"</span>, <span class='kw'>standalone</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Preview the changes</span>
+  <span class='fu'>wflow_convert</span>(<span class='st'>"existing.Rmd"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Convert multiple an R Markdown files</span>
+  <span class='fu'>wflow_convert</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='fu'>list.files</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"analysis"</span>,
+                                   <span class='kw'>pattern</span> <span class='kw'>=</span> <span class='st'>"Rmd$"</span>,
+                                   <span class='kw'>full.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -203,7 +202,7 @@ template, it is not changed.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

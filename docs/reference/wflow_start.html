@@ -23,8 +23,7 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -166,19 +165,20 @@ file because it is required by other functions.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>)
+    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
 
-<span class='co'># Provide a custom name for the project.</span>
-<span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"My Project"</span>)
+  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>)
 
-<span class='co'># Add workflowr files to an existing project.</span>
-<span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='co'># Provide a custom name for the project.</span>
+  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"My Project"</span>)
 
-<span class='co'># Add workflowr files to an existing project, but do not automatically</span>
-<span class='co'># commit them.</span>
-<span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='co'># }</span></pre>
+  <span class='co'># Add workflowr files to an existing project.</span>
+  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+  <span class='co'># Add workflowr files to an existing project, but do not automatically</span>
+  <span class='co'># commit them.</span>
+  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+})</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -203,7 +203,7 @@ file because it is required by other functions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>

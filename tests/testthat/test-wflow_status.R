@@ -116,6 +116,14 @@ test_that("wflow_status reports only specified files", {
   expect_identical(rownames(s_tmp$status), c(rmd_scr, rmd_unp, rmd_pub))
 })
 
+test_that("wflow_status detects files with extension .rmd", {
+  lowercase <- file.path(s$analysis, "lowercase.rmd")
+  file.create(lowercase)
+  on.exit(unlink(lowercase), add = TRUE)
+  s_rmd <- wflow_status(lowercase, project = site_dir)
+  expect_identical(rownames(s_rmd$status), lowercase)
+})
+
 # Warnings and Errors ----------------------------------------------------------
 
 test_that("wflow_status throws error if not in workflowr project.", {

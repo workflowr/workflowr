@@ -124,7 +124,7 @@ wflow_status <- function(files = NULL, project = ".") {
 
   # Gather analysis files
   # (files that start with an underscore are ignored)
-  files_analysis <- list.files(path = o$analysis, pattern = "^[^_].+Rmd$",
+  files_analysis <- list.files(path = o$analysis, pattern = "^[^_].+[Rr]md$",
                           full.names = TRUE)
   files_analysis <- relative(files_analysis)
 

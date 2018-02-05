@@ -1,3 +1,11 @@
+# workflowr 0.10.2
+
+Fix bug that caused `wflow_status()` (and thus `wflow_publish()`) to ignore R
+Markdown files with the all lowercase file extension `.rmd` (reported by @LSun
+and @pcarbo). This was recently introduced in commit
+[a8ce711](https://github.com/jdblischak/workflowr/commit/a8ce711de4ea2939bf76f2c2403c1d631ec130b0#diff-08716e76a3c9aeb6ad641bb23e5e5ea6R126),
+so it only affected versions 0.10.0 and 0.10.1.
+
 # workflowr 0.10.1
 
 Fix bug that prevented deleted files from being committed with `wflow_commit()`

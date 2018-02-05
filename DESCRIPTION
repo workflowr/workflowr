@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A workflow template for creating a research website
-Version: 0.10.1
+Version: 0.10.2
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu"),

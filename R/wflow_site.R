@@ -63,18 +63,26 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
     lines_out <- c(lines_out, sessioninfo)
 
     writeLines(lines_out, con = tmp_rmd)
-    # output_file needs to be relative to the knit directory
-    tmp_html <- relative(tmp_html, start = p$analysis)
+
     suppressMessages(
       rmarkdown::render(tmp_rmd,
-                        output_file = relative(tmp_html, start = p$analysis))
+                        # These options must be set for an R Markdown website.
+                        # Force them here instead of temporarily editing the
+                        # _site.yml file.
+                        output_options = list(self_contained = FALSE,
+                                              lib_dir = "site_libs"),
+                        # output_file needs to be relative to the knit directory
+                        output_file = relative(tmp_html, start = p$analysis),
+                        knit_root_dir = NULL)
     )
-    move_safe <- function(from, to, overwrite = TRUE) {
-      file.copy(from, to, overwrite = overwrite)
-      file.remove(from)
+    move_safe <- function(from, to, overwrite = TRUE, recursive = TRUE) {
+      file.copy(from, to, overwrite = overwrite, recursive = recursive)
+      unlink(from, recursive = TRUE)
     }
     move_safe(tmp_html, p$docs)
     file.remove(tmp_rmd)
+    # Move site libraries
+    move_safe(file.path(p$analysis, "site_libs"), p$docs)
   }
   # return site generator
   list(

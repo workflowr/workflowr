@@ -18,7 +18,6 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
     # wflow_config <- yaml::yaml.load_file(wflow_yml)
 
     tmp_rmd <- stringr::str_replace(input_file, "\\.[Rr]md$", "-wflow.Rmd")
-    tmp_html <- stringr::str_replace(tmp_rmd, "-wflow\\.Rmd$", ".html")
 
     lines_in <- readLines(input_file)
     lines_out <- lines_in
@@ -64,26 +63,82 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
 
     writeLines(lines_out, con = tmp_rmd)
 
+    # For an R Markdown website, the output_options self_contained and lib_dir
+    # must be set. Force them here instead of temporarily editing the _site.yml
+    # file.
+    #
+    # However, only do this if the output is HTML (which is the default if
+    # nothing is specified). The output can be non-HTML if the output section in
+    # _site.yml lists a non-html format first. Lower precendence is if there is
+    # nothing in _site.yml, it could be listed in the YAML header. There is no
+    # need to worry about what is potentially passed to render_site because this
+    # gets ignored.
+    #
+    # The other complication is that the output format can be specified as a
+    # character vector if it has no options, or a list if it has options. The
+    # conditional statements below are complicated in order to handle these
+    # possibilities.
+    is_html <- TRUE
+    # First read the settings in _site.yml
+    site_config <- yaml::yaml.load_file(file.path(p$analysis, "_site.yml"))
+    if("output" %in% names(site_config)) {
+      # If it has an output section, check it (can't do site_config$output b/c
+      # that can expand to output_dir)
+      if ((class(site_config$output) == "list" &&
+           names(site_config$output)[1] != "html_document") ||
+          (class(site_config$output) == "character" &&
+           site_config$output[1] != "html_document")) {
+        # The format is probably the name, but it can be the value if it is the
+        # only one listed and doesn't specify "default".
+        is_html <- FALSE
+      }
+      } else {
+        # Check the first listed output format in the YAML header
+        header <- rmarkdown::yaml_front_matter(input_file)
+        if (!is.null(header$output) && !is.na(header$output) &&
+            (class(header$output) == "list" &&
+             names(header$output)[1] != "html_document") ||
+            (class(header$output) == "character" &&
+             header$output[1] != "html_document")) {
+          is_html <- FALSE
+        }
+    }
+
+    if (is_html) {
+      output_options <- list(self_contained = FALSE,
+                             lib_dir = "site_libs")
+    } else {
+      output_options <- NULL
+    }
+
     suppressMessages(
-      rmarkdown::render(tmp_rmd,
-                        # These options must be set for an R Markdown website.
-                        # Force them here instead of temporarily editing the
-                        # _site.yml file.
-                        output_options = list(self_contained = FALSE,
-                                              lib_dir = "site_libs"),
-                        # output_file needs to be relative to the knit directory
-                        output_file = relative(tmp_html, start = p$analysis),
+      tmp_output <- rmarkdown::render(tmp_rmd,
+                        output_options = output_options,
                         knit_root_dir = NULL)
     )
-    move_safe <- function(from, to, overwrite = TRUE, recursive = TRUE) {
+
+    move_safe <- function(from, to, overwrite = TRUE,
+                          recursive = dir.exists(to)) {
       file.copy(from, to, overwrite = overwrite, recursive = recursive)
       unlink(from, recursive = TRUE)
     }
-    move_safe(tmp_html, p$docs)
+    # Remove -wflow from output filename
+    output_file <- stringr::str_replace(tmp_output, "-wflow\\.", "\\.")
+    move_safe(tmp_output, output_file)
+
+    # Move the files if the output is a website
+    if (is_html) {
+      move_safe(output_file, p$docs)
+      output_file <- file.path(p$docs, basename(output_file))
+      # Move site libraries
+      move_safe(file.path(p$analysis, "site_libs"), p$docs)
+    }
     file.remove(tmp_rmd)
-    # Move site libraries
-    move_safe(file.path(p$analysis, "site_libs"), p$docs)
+    if (!quiet) {
+      message("\nOutput created: ", output_file)
+    }
   }
+
   # return site generator
   list(
     name = "not implemented",

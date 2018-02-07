@@ -83,6 +83,10 @@ test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_co
   expect_true(is.null(o$step3))
 })
 
+# wflow_publish no longer needs to remove unused figures in analysis/ because
+# wflow_site() moves them. Thus the lines confirming their original existence
+# are commented out below. However, it still needs to remove the figure files in
+# docs/ and commit the changes, which is tested below.
 test_that("wflow_publish automatically removes unused figure files", {
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
@@ -90,7 +94,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  expect_true(all(file.exists(figs_analysis_v01)))
+  # expect_true(all(file.exists(figs_analysis_v01))) # see wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(file.exists(figs_docs_v01)))
@@ -103,7 +107,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   expect_false(all(file.exists(figs_docs_v01)))
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("named1-1.png", "named2-1.png", "named3-1.png"))
-  expect_true(all(file.exists(figs_analysis_v02)))
+  # expect_true(all(file.exists(figs_analysis_v02))) # see wflow_site()
   figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(file.exists(figs_docs_v02)))
@@ -136,7 +140,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  expect_true(all(file.exists(figs_analysis_v01)))
+  # expect_true(all(file.exists(figs_analysis_v01))) # see wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(file.exists(figs_docs_v01)))

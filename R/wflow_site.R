@@ -18,6 +18,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
     # wflow_config <- yaml::yaml.load_file(wflow_yml)
 
     tmp_rmd <- stringr::str_replace(input_file, "\\.[Rr]md$", "-wflow.Rmd")
+    fig_tmp <- file.path(p$analysis, "figure", basename(tmp_rmd))
 
     lines_in <- readLines(input_file)
     lines_out <- lines_in
@@ -31,6 +32,9 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
       stop("This file does not have a valid YAML header.", call. = FALSE)
     y <- lines_delimiters[2]
 
+    # Only include some checks if the file contains at least one code chunk
+    has_code <- any(stringr::str_detect(lines_in, "^```\\{.+\\}$"))
+
     # Add the date it was last updated
     lines_last_updated <- c("",
                             sprintf("**Last updated:** %s", Sys.Date()),
@@ -40,42 +44,44 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
                    lines_out[(y + 1):length(lines_out)])
     y <- y + length(lines_last_updated)
 
-    # Add the code version
-    code_version <- extract_commit(p$root, num = 1)$sha1
-    code_version <- stringr::str_sub(code_version, 1, 7)
-    lines_code_version <- c("",
-                            sprintf("**Code version:** %s", code_version),
+
+    if (has_code) {
+      # Add the code version
+      code_version <- extract_commit(p$root, num = 1)$sha1
+      code_version <- stringr::str_sub(code_version, 1, 7)
+      lines_code_version <- c("",
+                              sprintf("**Code version:** %s", code_version),
+                              "")
+      lines_out <- c(lines_out[1:y],
+                     lines_code_version,
+                     lines_out[(y + 1):length(lines_out)])
+      y <- y + length(lines_code_version)
+
+      # Add the knitr chunk options
+      lines_opts_chunk <- c("",
+                            "```{r knitr-opts-chunk-inserted-by-workflowr, include=FALSE}",
+                            "knitr::opts_chunk$set(",
+                            "  comment = NA,",
+                            "  fig.align = \"center\",",
+                            "  fig.path = paste0(\"figure/\", knitr::current_input(), \"/\")",
+                            ")",
+                            "```",
                             "")
-    lines_out <- c(lines_out[1:y],
-                   lines_code_version,
-                   lines_out[(y + 1):length(lines_out)])
-    y <- y + length(lines_code_version)
+      lines_out <- c(lines_out[1:y],
+                     lines_opts_chunk,
+                     lines_out[(y + 1):length(lines_out)])
+      y <- y + length(lines_opts_chunk)
 
-    # Add the knitr chunk options
-    fig_path <- paste0("figure/", basename(input_file), "/")
-    lines_opts_chunk <- c("",
-                          "```{r knitr-opts-chunk-inserted-by-workflowr, include=FALSE}",
-                          "knitr::opts_chunk$set(",
-                          "  comment = NA,",
-                          "  fig.align = \"center\",",
-                          paste0("  fig.path = \"", fig_path, "\""),
-                          ")",
-                          "```",
-                          "")
-    lines_out <- c(lines_out[1:y],
-                   lines_opts_chunk,
-                   lines_out[(y + 1):length(lines_out)])
-    y <- y + length(lines_opts_chunk)
-
-    # Add session information at the end
-    sessioninfo <- c("",
-                     "## Session information",
-                     "",
-                     "```{r session-info-chunk-inserted-by-workflowr}",
-                     "sessionInfo()",
-                     "```",
-                     "")
-    lines_out <- c(lines_out, sessioninfo)
+      # Add session information at the end
+      sessioninfo <- c("",
+                       "## Session information",
+                       "",
+                       "```{r session-info-chunk-inserted-by-workflowr}",
+                       "sessionInfo()",
+                       "```",
+                       "")
+      lines_out <- c(lines_out, sessioninfo)
+    }
 
     writeLines(lines_out, con = tmp_rmd)
     on.exit(unlink(tmp_rmd), add = TRUE)
@@ -150,9 +156,19 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
       # Move site libraries
       move_safe(file.path(p$analysis, "site_libs"), p$docs)
       # Move figures
-      docs_figs <- file.path(p$docs, "figure")
-      dir.create(docs_figs, showWarnings = FALSE, recursive = TRUE)
-      move_safe(file.path(p$analysis, fig_path), docs_figs)
+      if (dir.exists(fig_tmp)) {
+        fig_docs <- file.path(p$docs, "figure")
+        dir.create(fig_docs, showWarnings = FALSE, recursive = FALSE)
+        fig_analysis <- file.path(p$analysis, "figure", basename(input_file))
+        file.rename(fig_tmp, fig_analysis)
+        move_safe(fig_analysis, fig_docs)
+        # Fix path to figures
+        html_in <- readLines(output_file)
+        html_out <- stringr::str_replace(html_in,
+                                         file.path("figure", basename(tmp_rmd)),
+                                         file.path("figure", basename(input_file)))
+        writeLines(html_out, con = output_file)
+      }
     }
     file.remove(tmp_rmd)
     if (!quiet) {

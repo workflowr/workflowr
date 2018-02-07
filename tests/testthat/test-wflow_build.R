@@ -182,7 +182,7 @@ test_that("Only locally built files add packages/variables to global environment
 
 test_that("wflow_build only builds files starting with _ when specified", {
   rmd_ignore <- file.path(s$analysis, "_ignore.Rmd")
-  file.create(rmd_ignore)
+  file.copy(from = "files/workflowr-template.Rmd", to = rmd_ignore)
   html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
   # Ignored by default "make"-mode
   expect_silent(actual <- wflow_build(view = FALSE, project = site_dir))
@@ -210,6 +210,10 @@ test_that("wflow_build accepts custom directory to save log files", {
   expect_identical(expected, actual$log_dir)
 })
 
+# This test is somewhat obsolete now that the site generator, wflow_site, moves
+# the figure files. Thus the tests to make sure the files exist are commented
+# out. However, it is still important that these figure files are removed, which
+# this still tests.
 test_that("wflow_build automatically removes unused figure files", {
   # Build a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
@@ -217,7 +221,7 @@ test_that("wflow_build automatically removes unused figure files", {
   build_v01 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  expect_true(all(file.exists(figs_analysis_v01)))
+  # expect_true(all(file.exists(figs_analysis_v01)))
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(file.exists(figs_docs_v01)))
@@ -229,7 +233,7 @@ test_that("wflow_build automatically removes unused figure files", {
   expect_false(all(file.exists(figs_docs_v01)))
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("named1-1.png", "named2-1.png", "named3-1.png"))
-  expect_true(all(file.exists(figs_analysis_v02)))
+  # expect_true(all(file.exists(figs_analysis_v02)))
   figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(file.exists(figs_docs_v02)))

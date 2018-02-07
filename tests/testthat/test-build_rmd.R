@@ -23,11 +23,10 @@ test_that("seed is set when file is built", {
   for (s in 1:3) {
     build_rmd("seed.Rmd", seed = s, quiet = TRUE)
     set.seed(s)
-    expected <- sprintf("<pre><code>## The random number is %d</code></pre>",
-                        sample(1:1000, 1))
-    observed <- grep("<pre><code>## The random number is ",
-                     readLines(file.path(docs_dir, "seed.html")),
-                     value = TRUE)
+    expected <- sprintf("The random number is %d", sample(1:1000, 1))
+    lines <- readLines(file.path(docs_dir, "seed.html"))
+    observed <- stringr::str_extract(lines, expected)
+    observed <- observed[!is.na(observed)]
     expect_identical(observed, expected)
   }
 })

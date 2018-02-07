@@ -136,8 +136,12 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
 
     suppressMessages(
       tmp_output <- rmarkdown::render(tmp_rmd,
-                        output_options = output_options,
-                        knit_root_dir = NULL)
+                                      output_format = output_format,
+                                      output_options = output_options,
+                                      knit_root_dir = NULL,
+                                      envir = envir,
+                                      quiet = quiet,
+                                      encoding = encoding)
     )
 
     move_safe <- function(from, to, overwrite = TRUE,

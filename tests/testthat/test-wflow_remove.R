@@ -58,13 +58,11 @@ test_that("wflow_remove removes an unpublished Rmd file and its associated files
   expect_identical(actual$commit, NA)
   expect_identical(actual$files_git, character())
   expect_true(all(file.exists(rmd_unpublished, data_unpublished),
-                  dir.exists(c(cache_unpublished, fig_analysis_unpublished,
-                             fig_docs_unpublished))))
+                  dir.exists(c(cache_unpublished, fig_docs_unpublished))))
   # Now remove the files
   actual <- wflow_remove(c(rmd_unpublished, data_unpublished))
   expect_false(any(file.exists(rmd_unpublished, data_unpublished),
-                  dir.exists(c(cache_unpublished, fig_analysis_unpublished,
-                             fig_docs_unpublished))))
+                  dir.exists(c(cache_unpublished, fig_docs_unpublished))))
 })
 
 test_that("wflow_remove removes a published Rmd file and its associated files", {
@@ -77,15 +75,13 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
   expect_identical(actual$commit, NA)
   expect_true(all(c(rmd_published, data_published) %in% actual$files_git))
   expect_true(all(file.exists(rmd_published, data_published),
-                  dir.exists(c(cache_published, fig_analysis_published,
-                               fig_docs_published))))
+                  dir.exists(c(cache_published, fig_docs_published))))
   files_committed <- workflowr:::get_committed_files(r)
   expect_true(all(c(rmd_published, data_published) %in% files_committed))
   # Now remove the files
   actual <- wflow_remove(c(rmd_published, data_published))
   expect_false(any(file.exists(rmd_published, data_published),
-                   dir.exists(c(cache_published, fig_analysis_published,
-                                fig_docs_published))))
+                   dir.exists(c(cache_published, fig_docs_published))))
   commit_latest <- commits(r)[[1]]
   expect_identical(actual$commit@sha, commit_latest@sha)
   expect_identical(commit_latest@message,

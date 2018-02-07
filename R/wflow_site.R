@@ -152,6 +152,14 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
     # Remove -wflow from output filename
     output_file <- stringr::str_replace(tmp_output, "-wflow\\.", "\\.")
     move_safe(tmp_output, output_file)
+    # Remove -wflow from potential cache directory
+    cache_dir_tmp <- paste0(tools::file_path_sans_ext(basename(tmp_rmd)), "_cache")
+    cache_dir_tmp <- file.path(p$analysis, cache_dir_tmp)
+    cache_dir <- paste0(tools::file_path_sans_ext(basename(input_file)), "_cache")
+    cache_dir <- file.path(p$analysis, cache_dir)
+    if (dir.exists(cache_dir_tmp)) {
+      file.rename(cache_dir_tmp, cache_dir)
+    }
 
     # Move the files if the output is a website
     if (is_html) {

@@ -51,6 +51,22 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
                    lines_out[(y + 1):length(lines_out)])
     y <- y + length(lines_code_version)
 
+    # Add the knitr chunk options
+    fig_path <- paste0("figure/", basename(input_file), "/")
+    lines_opts_chunk <- c("",
+                          "```{r knitr-opts-chunk-inserted-by-workflowr, include=FALSE}",
+                          "knitr::opts_chunk$set(",
+                          "  comment = NA,",
+                          "  fig.align = \"center\",",
+                          paste0("  fig.path = \"", fig_path, "\""),
+                          ")",
+                          "```",
+                          "")
+    lines_out <- c(lines_out[1:y],
+                   lines_opts_chunk,
+                   lines_out[(y + 1):length(lines_out)])
+    y <- y + length(lines_opts_chunk)
+
     # Add session information at the end
     sessioninfo <- c("",
                      "## Session information",
@@ -62,6 +78,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
     lines_out <- c(lines_out, sessioninfo)
 
     writeLines(lines_out, con = tmp_rmd)
+    on.exit(unlink(tmp_rmd), add = TRUE)
 
     # For an R Markdown website, the output_options self_contained and lib_dir
     # must be set. Force them here instead of temporarily editing the _site.yml
@@ -132,6 +149,10 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
       output_file <- file.path(p$docs, basename(output_file))
       # Move site libraries
       move_safe(file.path(p$analysis, "site_libs"), p$docs)
+      # Move figures
+      docs_figs <- file.path(p$docs, "figure")
+      dir.create(docs_figs, showWarnings = FALSE, recursive = TRUE)
+      move_safe(file.path(p$analysis, fig_path), docs_figs)
     }
     file.remove(tmp_rmd)
     if (!quiet) {

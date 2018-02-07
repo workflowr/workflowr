@@ -389,9 +389,13 @@ data! To start a new analysis called `first-analysis.Rmd`, use `wflow_open()`:
 
 ```{r create-file, include=FALSE}
 # Because devtools_shims overrides system.file, wflow_open can't work when
-# building documentation with devtools::document. Thus create a blank file so
+# building documentation with devtools::document. Thus create a file manually so
 # that it doesn't try to copy the template via rmarkdown::draft.
-file.create("analysis/first-analysis.Rmd")
+writeLines(c("---",
+             "site: workflowr::wflow_site",
+             "---",
+             ""),
+           con = "analysis/first-analysis.Rmd")
 ```
 
 ```{r open-rmd, eval=FALSE}

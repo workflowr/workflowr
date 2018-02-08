@@ -1,4 +1,46 @@
-
+#' Custom site generator for workflowr projects
+#'
+#' \code{wflow_site} is a
+#' \href{http://rmarkdown.rstudio.com/rmarkdown_site_generators.html}{custom
+#' site generator} that implements the reproducibility features for the R
+#' Markdown website in a workflowr project. If you receive an error when using
+#' the RStudio Knit button in a workflowr project (the error is about an unused
+#' argument), make sure the Knit Directory is set to Document Directory (you can
+#' set this with the dropdown menu next to the Knit button).
+#'
+#' Do not call the function \code{wflow_site} directly. Instead insert the line
+#' below directly into the YAML header of the file \code{index.Rmd} in the
+#' analysis directory (this is done automatically when you start the project
+#' with \code{\link{wflow_start}}):
+#'
+#' \code{site: workflowr::wflow_site}
+#'
+#' \code{wflow_site} currently implements the following reproducibility features:
+#'
+#' \itemize{
+#'
+#'  \item Inserts the date the file was last built.
+#'
+#'  \item Inserts the code version of the repository that was used to create the
+#'  results in the HTML file.
+#'
+#'  \item Inserts \code{\link{sessionInfo}} at the end of each analysis.
+#'
+#'  \item Organizes the figure files into subdirectories. For example, any
+#'  figure files created by the file \code{example.Rmd} would be saved in the
+#'  subdirectory \code{docs/figure/example.Rmd/}.
+#'
+#' }
+#'
+#' @param input character. The name of the R Markdown file to build.
+#' @param encoding character. The
+#'   \href{https://en.wikipedia.org/wiki/Character_encoding}{character encoding}
+#'   to use to read the file.
+#' @param ... Placeholder for potential future use.
+#'
+#' @seealso \code{\link{wflow_build}}, \code{\link[rmarkdown]{render_site}}
+#'
+#' @import rmarkdown
 #' @export
 wflow_site <- function(input, encoding = getOption("encoding"), ...) {
 

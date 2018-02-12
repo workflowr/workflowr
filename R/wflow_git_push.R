@@ -132,10 +132,10 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   credentials <- authenticate_git(remote = remote, remote_avail = remote_avail,
                                   username = username, password = password,
                                   dry_run = dry_run)
-  if (class(credentials) == "cred_ssh_key") {
-    protocol <- "ssh"
-  } else {
+  if (class(credentials) == "cred_user_pass") {
     protocol <- "https"
+  } else {
+    protocol <- "ssh"
   }
 
   # Push! ----------------------------------------------------------------------

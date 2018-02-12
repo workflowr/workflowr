@@ -322,8 +322,8 @@ check_remote <- function(remote, remote_avail) {
       return()
     } else {
       m <-
-        "You have specifed a remote, but this remote repository has not
-        remotes set. Run ?wflow_remotes to learn how to configure this."
+        "You have specifed a remote, but this remote repository has no remotes
+        set. Run ?wflow_remotes to learn how to configure this."
       stop(wrap(m), call. = FALSE)
     }
   }

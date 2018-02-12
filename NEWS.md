@@ -1,5 +1,8 @@
 # workflowr 0.10.2.9000
 
+* Fix minor bug that affected the error message produced for a failed push or
+pull using the SSH protocol.
+
 # workflowr 0.10.2
 
 Fix bug that caused `wflow_status()` (and thus `wflow_publish()`) to ignore R

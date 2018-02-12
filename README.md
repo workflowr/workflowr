@@ -8,7 +8,7 @@
 The [workflowr][] R package makes it easier for researchers to
 organize their projects and share their results with colleagues. 
 
-Install the latest release (v0.10.2) by running this command in R or
+Install the latest release (v0.10.2.9000) by running this command in R or
 RStudio:
 
 ```r
@@ -259,7 +259,7 @@ To cite workflowr in publications use:
 
   John D. Blischak, Peter Carbonetto and Matthew Stephens (2017). The workflowr
   R package: a framework for reproducible and collaborative data science. R
-  package version 0.10.2. https://github.com/jdblischak/workflowr
+  package version 0.10.2.9000. https://github.com/jdblischak/workflowr
 
 A BibTeX entry for LaTeX users is
 
@@ -267,7 +267,7 @@ A BibTeX entry for LaTeX users is
   @Manual{,
     title = {The workflowr R package: a framework for reproducible and collaborative data science},
     author = {John D. Blischak and Peter Carbonetto and Matthew Stephens},
-    note = {R package version 0.10.2},
+    note = {R package version 0.10.2.9000},
     year = {2017},
     url = {https://github.com/jdblischak/workflowr},
   }

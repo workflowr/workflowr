@@ -20,7 +20,7 @@ LazyData: true
 Imports:
     callr,
     getPass,
-    git2r,
+    git2r (<= 0.21.0),
     methods,
     rprojroot,
     rstudioapi,

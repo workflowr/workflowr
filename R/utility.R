@@ -145,15 +145,14 @@ relative <- function(path, start = getwd()) {
 # user's home directory on Windows.
 # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
 # https://stat.ethz.ch/pipermail/r-help/2007-March/128221.html
+# https://github.com/ropensci/git2r/pull/320#issuecomment-367038961
 get_home <- function() {
   # If non-Windows, it is straightforward
   if (.Platform$OS.type != "windows") {
     home <- "~"
     return(absolute(home))
   } else {
-    drive <- Sys.getenv("HOMEDRIVE")
-    login <- Sys.info()["login"]
-    home <- file.path(drive, "Users", login)
+    home <- Sys.getenv("USERPROFILE")
     home <- absolute(home)
     if (!dir.exists(home)) {
       stop(wrap("Unable to determine user's home directory on Windows: ", home))

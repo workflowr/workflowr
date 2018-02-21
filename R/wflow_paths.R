@@ -72,7 +72,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
       stop(wrap("A Git repository is required for this functionality."),
            call. = FALSE)
     } else {
-      o$git <- NA
+      o$git <- NA_character_
     }
   } else {
     o$git <- absolute(r@path)

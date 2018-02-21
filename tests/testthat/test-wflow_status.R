@@ -177,3 +177,18 @@ test_that("wflow_status throws error if given non-[Rr]md extension.", {
   expect_error(wflow_status(readme, project = site_dir),
                "File extensions must be either Rmd or rmd.")
 })
+
+# Test wflow_paths -------------------------------------------------------------
+
+# Most of this is redundant with wflow_status, so only testing different
+# capabilities.
+
+# wflow_status sets error_git = TRUE, so check that the default works.
+test_that("wflow_paths returns NA if no Git repository and error_git = FALSE.", {
+  git_original <- file.path(site_dir, ".git")
+  git_replace <-  file.path(site_dir, ".git2")
+  on.exit(file.rename(git_replace, git_original))
+  file.rename(git_original, git_replace)
+  expect_silent(p <- wflow_paths(project = site_dir))
+  expect_identical(p$git, NA_character_)
+})

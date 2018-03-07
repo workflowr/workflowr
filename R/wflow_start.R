@@ -107,8 +107,9 @@ wflow_start <- function(directory,
     dir.create(directory, recursive = TRUE)
   }
 
-  # Convert to absolute path
-  directory <- tools::file_path_as_absolute(directory)
+  # Convert to absolute path. Needs to be run again after creating the directory
+  # because symlinks can only resolved for existing directories.
+  directory <- absolute(directory)
 
   # Configure name of workflowr project
   if (is.null(name)) {

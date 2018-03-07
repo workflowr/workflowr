@@ -88,8 +88,15 @@ operations, which you are unlikely to need at the beginning of your project.
 [GitHub][gh] using [devtools][]:
 
     ```r
-    install.packages("devtools")
-    devtools::install_github("jdblischak/workflowr", build_vignettes = TRUE)
+    # Devtools must be installed first
+    #install.packages("devtools")
+    library("devtools")
+    # Install a compatible version of git2r
+    install_version("git2r", "0.21.0")
+    # If you receive an error on macOS or Windows, try specifying type = "binary"
+    #install_version("git2r", "0.21.0", type = "binary")
+    # Install workflowr from GitHub
+    install_github("jdblischak/workflowr", build_vignettes = TRUE)
     ```
 
 1. Work through the vignette,

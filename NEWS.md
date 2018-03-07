@@ -1,7 +1,19 @@
 # workflowr 0.10.2.9000
 
+* Pin the dependency git2r to version 0.21.0 or lower because of the
+[forthcoming breaking changes in the git2r API][git2r-api-change]. This is not a
+great solution because `install.packages()` always installs the latest version,
+which will cause an error in the installation. If you are having trouble with
+this, first install git2r with `devtools::install_version("git2r", "0.21.0")`
+and then retry installing workflowr. If your machine is running macOS or
+Windows, run `install_version("git2r", "0.21.0", type = "binary")`.
+
 * Fix minor bug that affected the error message produced for a failed push or
-pull using the SSH protocol.
+pull using the SSH protocol
+
+* Multiple other internal changes to make workflowr more robust
+
+[git2r-api-change]: https://github.com/ropensci/git2r/issues/312
 
 # workflowr 0.10.2
 

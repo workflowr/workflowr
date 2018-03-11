@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -93,6 +94,17 @@
     </div>
 
     <div class="contents">
+    <div id="workflowr-0-11-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workflowr-0-11-0" class="anchor"></a>workflowr 0.11.0</h1>
+<ul>
+<li><p><code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> now views the website by default if run interactively (<code>view = interactive()</code>) just like <code><a href="../reference/wflow_build.html">wflow_build()</a></code></p></li>
+<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code>install.packages()</code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code>devtools::install_version("git2r", "0.21.0")</code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
+<li><p>Fix minor bug that affected the error message produced for a failed push or pull using the SSH protocol</p></li>
+<li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code>git2r::push()</code> or <code>git2r::pull()</code> is reported to faciliate troubleshooting</p></li>
+<li><p>Multiple other internal changes to make workflowr more robust</p></li>
+</ul>
+</div>
     <div id="workflowr-0-10-2" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-10-2" class="anchor"></a>workflowr 0.10.2</h1>
@@ -411,6 +423,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-0-11-0">0.11.0</a></li>
         <li><a href="#workflowr-0-10-2">0.10.2</a></li>
         <li><a href="#workflowr-0-10-1">0.10.1</a></li>
         <li><a href="#workflowr-0-10-0">0.10.0</a></li>

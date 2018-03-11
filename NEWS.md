@@ -1,4 +1,4 @@
-# workflowr 0.10.2.9000
+# workflowr 0.11.0
 
 * `wflow_publish()` now views the website by default if run interactively (`view
 = interactive()`) just like `wflow_build()`
@@ -9,14 +9,14 @@ great solution because `install.packages()` always installs the latest version,
 which will cause an error in the installation. If you are having trouble with
 this, first install git2r with `devtools::install_version("git2r", "0.21.0")`
 and then retry installing workflowr. If your machine is running macOS or
-Windows, run `install_version("git2r", "0.21.0", type = "binary")`.
+Windows, you may need to run `install_version("git2r", "0.21.0", type = "binary")`.
 
 * Fix minor bug that affected the error message produced for a failed push or
 pull using the SSH protocol
 
 * When `wflow_git_push()` or `wflow_git_pull()` fails for an unknown reason, the
 exact error message from `git2r::push()` or `git2r::pull()` is reported to
-faciliate troubleshooting.
+faciliate troubleshooting
 
 * Multiple other internal changes to make workflowr more robust
 

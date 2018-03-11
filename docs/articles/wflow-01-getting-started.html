@@ -67,10 +67,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Getting started with workflowr</h1>
-            <h3 class="subtitle">workflowr version 0.10.2</h3>
+            <h3 class="subtitle">workflowr version 0.11.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2018-02-05</h4>
+            <h4 class="date">2018-03-10</h4>
           </div>
 
     
@@ -94,14 +94,14 @@
 <p>To start a new project, open R (or RStudio) and load the workflowr package (note that all the code in this vignette should be run directly in the R console, i.e. do <strong>not</strong> try to run workflowr functions inside of R Markdown documents).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)</code></pre></div>
 <pre><code>## Loading required package: rmarkdown</code></pre>
-<pre><code>## This is workflowr version 0.10.2
+<pre><code>## This is workflowr version 0.11.0
 ## Run ?workflowr for help getting started</code></pre>
 <p>If you have never created a Git repository on your computer before, you need to run the following command to tell Git your name and email. Git uses this information to assign the changes you make to the code to you (analogous to how Track Changes in a Microsoft Office Word document assigns your changes to you). You do not need to use the exact same name and email as you used for your GitHub account. Also, you only need to run this command once per computer, and all subsequent workflowr projects will use this information (you can also update it at any time by re-running the command with different input).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the example text with your information</span>
 <span class="kw"><a href="../reference/wflow_git_config.html">wflow_git_config</a></span>(<span class="dt">user.name =</span> <span class="st">"Your Name"</span>, <span class="dt">user.email =</span> <span class="st">"email@domain"</span>)</code></pre></div>
 <p>Now you are ready to start your first workflowr project! <code><a href="../reference/wflow_start.html">wflow_start("myproject")</a></code> creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and initializes a Git repository with the initial commit already made.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</code></pre></div>
-<pre><code>## Project "myproject" started in /tmp/RtmpI5Jser/wflow-01-getting-started-696378a4c6c1/myproject</code></pre>
+<pre><code>## Project "myproject" started in /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpsWxzK2/wflow-01-getting-started-1d487b6d562f/myproject</code></pre>
 <pre><code>## Git repository initialized.</code></pre>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> created the following directory structure in <code>myproject/</code>:</p>
 <pre><code>myproject/
@@ -165,7 +165,8 @@
 ## docs/index.html
 ## docs/license.html
 ## 
-## Log files saved in /tmp/RtmpI5Jser/workflowr</code></pre>
+## Log files saved in
+## /var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpsWxzK2/workflowr</code></pre>
 <p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files). Lastly, it displays the website in the RStudio Viewer or default web browser.</p>
 <p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice">Makefile</a> (<code>make = TRUE</code> is the default), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built (and no files are displayed).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</code></pre></div>
@@ -219,7 +220,7 @@
 ##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd 
 ##   $ git commit -m "Publish the initial files for myproject" 
 ## 
-## The following file(s) were included in commit 3f7de94:
+## The following file(s) were included in commit 6025320:
 ## analysis/about.Rmd
 ## analysis/index.Rmd
 ## analysis/license.Rmd
@@ -238,7 +239,8 @@
 ## docs/about.html
 ## docs/license.html
 ## 
-## Log files saved in /tmp/RtmpI5Jser/workflowr
+## Log files saved in
+## /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpsWxzK2/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -249,7 +251,7 @@
 ##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 7ac2015:
+## The following file(s) were included in commit 99ace72:
 ## docs/about.html
 ## docs/index.html
 ## docs/license.html
@@ -303,8 +305,8 @@
 <p>Now that you have a functioning website, the next step is to start analyzing data! To start a new analysis called <code>first-analysis.Rmd</code>, use <code><a href="../reference/wflow_open.html">wflow_open()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"first-analysis.Rmd"</span>)</code></pre></div>
 <pre><code>## Working directory was changed.
-## Previous:    /tmp/RtmpI5Jser/wflow-01-getting-started-696378a4c6c1/myproject
-## Current: /tmp/RtmpI5Jser/wflow-01-getting-started-696378a4c6c1/myproject/analysis</code></pre>
+## Previous:    /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpsWxzK2/wflow-01-getting-started-1d487b6d562f/myproject
+## Current: /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpsWxzK2/wflow-01-getting-started-1d487b6d562f/myproject/analysis</code></pre>
 <p>This performs multiple actions:</p>
 <ol style="list-style-type: decimal">
 <li>Creates a new file <code>analysis/first-analysis.Rmd</code> based on the workflowr R Markdown template (it doesn’t overwrite the file if it already exists)</li>
@@ -353,7 +355,7 @@
 ##   $ git add index.Rmd first-analysis.Rmd 
 ##   $ git commit -m "Add my first analysis" 
 ## 
-## The following file(s) were included in commit b347993:
+## The following file(s) were included in commit d3d370e:
 ## first-analysis.Rmd
 ## index.Rmd
 ## 
@@ -370,7 +372,8 @@
 ## ../docs/index.html
 ## ../docs/first-analysis.html
 ## 
-## Log files saved in /tmp/RtmpI5Jser/workflowr
+## Log files saved in
+## /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpsWxzK2/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -381,7 +384,7 @@
 ##   $ git add ../docs/index.html ../docs/first-analysis.html ../docs/figure/index.Rmd ../docs/figure/first-analysis.Rmd ../docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit dbdb863:
+## The following file(s) were included in commit 585e812:
 ## ../docs/first-analysis.html
 ## ../docs/index.html
 ## ../docs/site_libs/jqueryui-1.11.4/
@@ -474,7 +477,8 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
         <div id="tocnav">
-      <h2>Contents</h2>
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#overview">Overview</a></li>
       <li><a href="#start-the-project">Start the project</a></li>

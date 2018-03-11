@@ -23,7 +23,8 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
+  
+  
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -101,7 +102,7 @@ is critical for reproducibility.</p>
     
 
     <pre class="usage"><span class='fu'>wflow_publish</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>,
+  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>,
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -144,9 +145,10 @@ bar, or any other setting in <code>_site.yml</code>.</p></td>
     </tr>
     <tr>
       <th>view</th>
-      <td><p>logical (default: FALSE). View the website with
-<code><a href='wflow_view.html'>wflow_view</a></code> after publishing files. See
-<code><a href='wflow_build.html'>wflow_build</a></code> for more details.</p></td>
+      <td><p>logical (default: <code>interactive</code>). View the website
+with <code><a href='wflow_view.html'>wflow_view</a></code> after building files. If only one file is
+built, it is opened. If more than one file is built, the main index page is
+opened. Not applicable if no files are built or if <code>dry_run = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>seed</th>

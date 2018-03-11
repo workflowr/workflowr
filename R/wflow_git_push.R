@@ -168,7 +168,9 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
                    repository. Run wflow_git_pull() first to pull down these
                    changes to your local computer."
                } else {
-                 reason <- "Push failed for unknown reason."
+                 reason <- c("Push failed for unknown reason.",
+                             "\n\nThe error message from git2r::push() was:\n\n",
+                             e$message)
                }
                stop(wrap(reason), call. = FALSE)
              }

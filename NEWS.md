@@ -11,6 +11,10 @@ Windows, run `install_version("git2r", "0.21.0", type = "binary")`.
 * Fix minor bug that affected the error message produced for a failed push or
 pull using the SSH protocol
 
+* When `wflow_git_push()` or `wflow_git_pull()` fails for an unknown reason, the
+exact error message from `git2r::push()` or `git2r::pull()` is reported to
+faciliate troubleshooting.
+
 * Multiple other internal changes to make workflowr more robust
 
 [git2r-api-change]: https://github.com/ropensci/git2r/issues/312

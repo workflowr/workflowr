@@ -25,7 +25,7 @@ file.copy(from = file.path(cwd, "files", "workflowr-template.Rmd"),
 cat(chunk_w_plot, file = rmd_published, append = TRUE)
 data_published <- file.path("data", "published.txt")
 file.create(data_published)
-suppressMessages(x <- wflow_publish(c(rmd_published, data_published)))
+suppressMessages(x <- wflow_publish(c(rmd_published, data_published), view = FALSE))
 cache_published <- file.path(p$analysis,
                              paste0(tools::file_path_sans_ext(
                                basename(rmd_published)), "_cache"))

@@ -292,9 +292,16 @@ recorded by the version control system Git when it commits (i.e. saves a
 snapshot of) these files. The more informative the commit message the better (so
 that future you knows what you were trying to accomplish).
 
-```{r wflow-publish}
+```{r wflow-publish, eval=FALSE}
 wflow_publish(c("analysis/index.Rmd", "analysis/about.Rmd", "analysis/license.Rmd"),
               "Publish the initial files for myproject")
+```
+
+```{r wflow-publish-hidden, echo=FALSE}
+# Don't want to actually open the website when building the vignette
+wflow_publish(c("analysis/index.Rmd", "analysis/about.Rmd", "analysis/license.Rmd"),
+              "Publish the initial files for myproject",
+              view = FALSE)
 ```
 
 `wflow_publish()` reports the 3 steps it took:
@@ -448,11 +455,19 @@ setwd("..")
 To publish the new analysis and the updated index page, again use
 `wflow_publish()`:
 
-```{r wflow-publish-newfile, echo=2:3}
-setwd("analysis")
+```{r wflow-publish-newfile, eval=FALSE}
 # Assuming working directory is `analysis/`. Run getwd() to confirm
 wflow_publish(c("index.Rmd", "first-analysis.Rmd"),
               "Add my first analysis")
+```
+
+```{r wflow-publish-newfile-hidden, echo=FALSE}
+# Don't want to actually open the website when building the vignette
+setwd("analysis")
+# Assuming working directory is `analysis/`. Run getwd() to confirm
+wflow_publish(c("index.Rmd", "first-analysis.Rmd"),
+              "Add my first analysis",
+              view = FALSE)
 setwd("..")
 ```
 

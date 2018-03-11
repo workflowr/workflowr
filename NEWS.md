@@ -1,5 +1,8 @@
 # workflowr 0.10.2.9000
 
+* `wflow_publish()` now views the website by default if run interactively (`view
+= interactive()`) just like `wflow_build()`
+
 * Pin the dependency git2r to version 0.21.0 or lower because of the
 [forthcoming breaking changes in the git2r API][git2r-api-change]. This is not a
 great solution because `install.packages()` always installs the latest version,

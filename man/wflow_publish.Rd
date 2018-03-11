@@ -5,7 +5,7 @@
 \title{Publish the site}
 \usage{
 wflow_publish(files = NULL, message = NULL, all = FALSE, force = FALSE,
-  update = FALSE, republish = FALSE, view = FALSE, seed = 12345,
+  update = FALSE, republish = FALSE, view = interactive(), seed = 12345,
   dry_run = FALSE, project = ".")
 }
 \arguments{
@@ -32,9 +32,10 @@ file that was used to produce it.}
 files. Useful for site-wide changes like updating the theme, navigation
 bar, or any other setting in \code{_site.yml}.}
 
-\item{view}{logical (default: FALSE). View the website with
-\code{\link{wflow_view}} after publishing files. See
-\code{\link{wflow_build}} for more details.}
+\item{view}{logical (default: \code{\link{interactive}}). View the website
+with \code{\link{wflow_view}} after building files. If only one file is
+built, it is opened. If more than one file is built, the main index page is
+opened. Not applicable if no files are built or if \code{dry_run = TRUE}.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
 file. Passed to \code{\link{set.seed}}.}

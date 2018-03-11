@@ -99,7 +99,7 @@ test_that("wflow_build can run in 'make' mode from within project", {
 })
 
 # Publish the files
-suppressMessages(wflow_publish(files = rmd, project = site_dir))
+suppressMessages(wflow_publish(files = rmd, view = FALSE, project = site_dir))
 
 test_that("wflow_build update builds published files with modifications", {
   cat("edit", file = rmd[1], append = TRUE)

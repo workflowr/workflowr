@@ -11,9 +11,6 @@
 #'   Git (step 1). Any R Markdown files will also be built (step 2) and their
 #'   output HTML and figures will be subsequently committed (step 3). Supports
 #'   file \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
-#' @param view logical (default: FALSE). View the website with
-#'   \code{\link{wflow_view}} after publishing files. See
-#'   \code{\link{wflow_build}} for more details.
 #' @inheritParams wflow_commit
 #' @inheritParams wflow_build
 #'
@@ -67,7 +64,7 @@ wflow_publish <- function(
   # args to wflow_build
   update = FALSE,
   republish = FALSE,
-  view = FALSE,
+  view = interactive(),
   seed = 12345,
   # general
   dry_run = FALSE,

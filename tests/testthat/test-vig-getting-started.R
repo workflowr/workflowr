@@ -78,6 +78,7 @@ test_that("wflow_publish can commit new file and website", {
   Sys.sleep(2)
   expect_message(o <- wflow_publish(all_rmd,
                                     message = "first analysis",
+                                    view = FALSE,
                                     project = site_dir))
   expect_identical(o$step2$built, all_rmd)
   expect_true(all(file.exists(all_html)))

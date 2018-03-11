@@ -23,7 +23,7 @@ file.copy(from = "files/test-wflow_build/error.Rmd",
 # Test wflow_publish -----------------------------------------------------------
 
 test_that("wflow_publish works in a simple case", {
-  expect_message(o <- wflow_publish(rmd, project = site_dir),
+  expect_message(o <- wflow_publish(rmd, view = FALSE, project = site_dir),
                  rmd[1])
   expect_true(all(file.exists(html)))
   s <- wflow_status(project = site_dir)
@@ -46,7 +46,7 @@ test_that("wflow_publish can `republish`", {
                                        "    theme: readable")
   writeLines(config_lines, con = config)
   # Republish with new theme
-  expect_message(o <- wflow_publish(config, republish = TRUE,
+  expect_message(o <- wflow_publish(config, republish = TRUE, view = FALSE,
                                     project = site_dir),
                  rmd[1])
   mtime_post <- file.mtime(html)
@@ -66,7 +66,7 @@ test_that("wflow_publish can `update`", {
   cat("edit", file = rmd[1], append = TRUE)
   wflow_commit(rmd[1], "Draft edit", project = site_dir)
   # Update
-  expect_message(o <- wflow_publish(update = TRUE, project = site_dir),
+  expect_message(o <- wflow_publish(update = TRUE, view = FALSE, project = site_dir),
                  rmd[1])
   expect_true(is.null(o$step1))
   expect_true(html[1] == o$step3$commit_files)
@@ -77,7 +77,7 @@ test_that("wflow_publish can `update`", {
 test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_commit", {
   f_test <- file.path(s$root, "test.txt")
   file.create(f_test)
-  expect_silent(o <- wflow_publish(f_test, project = site_dir))
+  expect_silent(o <- wflow_publish(f_test, view = FALSE, project = site_dir))
   expect_true(f_test == o$step1$commit_files)
   expect_true(is.null(o$step2))
   expect_true(is.null(o$step3))
@@ -87,7 +87,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
-  publish_v01 <- wflow_publish(file_w_figs, project = site_dir)
+  publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(file.exists(figs_analysis_v01)))
@@ -98,7 +98,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   # Update the file such that the previous 2 chunks are now named, plus add a
   # 3rd plot chunk
   file.copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
-  publish_v02 <- wflow_publish(file_w_figs, project = site_dir)
+  publish_v02 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   expect_false(all(file.exists(figs_analysis_v01)))
   expect_false(all(file.exists(figs_docs_v01)))
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
@@ -133,7 +133,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
-  publish_v01 <- wflow_publish(file_w_figs, project = site_dir)
+  publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(file.exists(figs_analysis_v01)))
@@ -143,7 +143,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
   # Update the file to have no plots
   file.copy("files/test-wflow_build/seed.Rmd", file_w_figs, overwrite = TRUE)
-  publish_v02 <- wflow_publish(file_w_figs, project = site_dir)
+  publish_v02 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   expect_false(all(file.exists(figs_analysis_v01)))
   expect_false(all(file.exists(figs_docs_v01)))
   # The old figure files should also be listed in the commit_files b/c they are
@@ -163,7 +163,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
 test_that("wflow_publish resets Git repo to previous commit if build fails", {
   commit_pre <- commits(r, n = 1)[[1]]
   expect_error(utils::capture.output(
-    wflow_publish(rmd_to_fail, project = site_dir)),
+    wflow_publish(rmd_to_fail, view = FALSE, project = site_dir)),
                "There was an error")
   commit_post <- commits(r, n = 1)[[1]]
   expect_identical(commit_post, commit_pre)
@@ -174,7 +174,7 @@ test_that("wflow_publish restores previous docs/ if build fails", {
   mtime_pre <- file.mtime(rmd)
   Sys.sleep(2)
   expect_error(utils::capture.output(
-    wflow_publish(c(rmd, rmd_to_fail), project = site_dir)),
+    wflow_publish(c(rmd, rmd_to_fail), view = FALSE, project = site_dir)),
     "There was an error")
   md5sum_post <- tools::md5sum(rmd)
   mtime_post <- file.mtime(rmd)

@@ -1,29 +1,62 @@
-#' Convert workflowr analysis to HTML document
+#' Reproducible HTML document
 #'
-#' @param ...
+#' The output format \code{wflow_html} automatically 1) sets a seed with
+#' \code{\link{set.seed}}, 2) inserts version of Git repo, and 3) inserts
+#' \code{\link{sessionInfo}}.
 #'
-#' @return
+#' @param ... Arguments passed to \code{\link[rmarkdown]{html_document}}
+#'
+#' @return \code{\link[rmarkdown]{output_format}}
 #'
 #' @import rmarkdown
 #' @export
 wflow_html <- function(...) {
 
-
   # knitr options --------------------------------------------------------------
 
+  # Save the figures in "figure/<basename-of-Rmd-file>/"
   # https://yihui.name/knitr/hooks/#option-hooks
   hook_fig_path <- function(options) {
     options$fig.path <- file.path("figure", knitr::current_input(), "")
     return(options)
   }
+  plot_hook <- function(x, options) {
+    if (git2r::in_repository(".")) {
+      r <- git2r::repository(".", discover = TRUE)
+
+      input <- file.path(getwd(), x)
+
+      # Need to refactor obtaining workflowr options
+      github = get_github_from_remote(getwd())
+      output_dir <- get_output_dir(directory = getwd())
+      if (!is.null(output_dir)) {
+        input <- file.path(output_dir, x)
+      }
+
+      fig_versions <- get_versions_fig(fig = input, r = r, github = github)
+
+      if (fig_versions == "") {
+        return(sprintf("![](%s)", x))
+      } else {
+        paste(c(sprintf("![](%s)\n", x),
+                fig_versions),
+              collapse = "\n")
+      }
+    } else {
+      return(sprintf("![](%s)", x))
+    }
+  }
 
   knitr <- rmarkdown::knitr_options(opts_chunk = list(comment = NA,
                                                       fig.align = "center",
                                                       tidy = FALSE),
+                                    knit_hooks = list(plot = plot_hook),
                                     opts_hooks = list(fig.path = hook_fig_path))
 
   # pre_knit function ----------------------------------------------------------
 
+  # This function copies the R Markdown file to a temporary directory and then
+  # modifies it.
   pre_knit <- function(input, ...) {
 
     # Access parent environment. Have to go up 2 frames because of the function
@@ -34,29 +67,118 @@ wflow_html <- function(...) {
     frames <- sys.frames()
     e <- frames[[length(frames) - 2]]
 
-    # Set knit_root_dir to the location of the original file
-    e$knit_root_dir <- dirname(absolute(input))
-
     lines_in <- readLines(input)
     tmpfile <- file.path(tempdir(), basename(input))
-    lines_out <- lines_in
+    e$knit_input <- tmpfile
+
+    # Default wflow options
+    wflow_opts <- list(knit_root_dir = NULL,
+                        seed = 12345,
+                        github = get_github_from_remote(dirname(input)),
+                        sessioninfo = "sessionInfo()")
+
+    # Get options from a potential _workflowr.yml file
+    wflow_root <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),
+                                            path = dirname(input)), silent = TRUE)
+    if (class(wflow_root) != "try-error") {
+      wflow_yml <- file.path(wflow_root, "_workflowr.yml")
+      wflow_yml_opts <- yaml::yaml.load_file(wflow_yml)
+      for (opt in names(wflow_yml_opts)) {
+        wflow_opts[[opt]] <- wflow_yml_opts[[opt]]
+      }
+      # If knit_root_dir is a relative path, interpret it as relative to the
+      # location of _workflowr.yml
+      if (!is.null(wflow_opts$knit_root_dir)) {
+        if (!R.utils::isAbsolutePath(wflow_opts$knit_root_dir)) {
+          wflow_opts$knit_root_dir <- absolute(file.path(wflow_root,
+                                                          wflow_opts$knit_root_dir))
+        }
+      }
+    }
+
+    # Get potential options from YAML header. These override the options
+    # specified in _workflowr.yml.
+    header <- rmarkdown::yaml_front_matter(input)
+    header_opts <- header$wflow
+    for (opt in names(header_opts)) {
+      wflow_opts[[opt]] <- header_opts[[opt]]
+    }
+    # If knit_root_dir was specified as a relative path in the YAML header,
+    # interpret it as relative to the location of the file
+    if (!is.null(wflow_opts$knit_root_dir)) {
+      if (!R.utils::isAbsolutePath(wflow_opts$knit_root_dir)) {
+        wflow_opts$knit_root_dir <- absolute(file.path(dirname(input),
+                                                        wflow_opts$knit_root_dir))
+      }
+    }
+
+    # If knit_root_dir hasn't been configured in _workflowr.yml or the YAML header,
+    # set it to the location of the original file
+    if (is.null(wflow_opts$knit_root_dir)) {
+      wflow_opts$knit_root_dir <- dirname(normalizePath(input))
+    }
+
+    # Set the knit_root_dir option for rmarkdown::render. However, the user can
+    # override the knit_root_dir option by passing it directly to render.
+    if (is.null(e$knit_root_dir)) {
+      e$knit_root_dir <- wflow_opts$knit_root_dir
+    } else {
+      wflow_opts$knit_root_dir <- e$knit_root_dir
+    }
+
+    # Find the end of the YAML header for inserting new lines
+    header_delims <- stringr::str_which(lines_in, "^-{3}|^\\.{3}")
+    header_end <- header_delims[2]
+    insert_point <- header_end
+
+    # Get output directory if it exists
+    output_dir <- get_output_dir(directory = dirname(input))
+
+    has_code <- detect_code(input)
+
+    report <- create_report(input, output_dir, has_code, wflow_opts)
+
+    # Set seed at beginning
+    if (has_code && is.numeric(wflow_opts$seed) && length(wflow_opts$seed) == 1) {
+      seed_chunk <- c("",
+                      "```{r seed-set-by-workflowr, echo = FALSE}",
+                      sprintf("set.seed(%d)", wflow_opts$seed),
+                      "```",
+                      "")
+    } else {
+      seed_chunk <- ""
+    }
 
     # Add session information at the end
-    sessioninfo <- c("",
-                     "## Session information",
-                     "",
-                     "```{r session-info-chunk-inserted-by-workflowr}",
-                     "sessionInfo()",
-                     "```",
-                     "")
-    lines_out <- c(lines_out, sessioninfo)
+    if (has_code && wflow_opts$sessioninfo != "") {
+      sessioninfo <- c("",
+                       "## Session information",
+                       "",
+                       "```{r session-info-chunk-inserted-by-workflowr}",
+                       wflow_opts$sessioninfo,
+                       "```",
+                       "")
+    } else {
+      sessioninfo <- ""
+    }
+
+    lines_out <- c(lines_in[1:header_end],
+                   "**Last updated:** `r Sys.Date()`",
+                   report,
+                   "---",
+                   seed_chunk,
+                   lines_in[(header_end + 1):length(lines_in)],
+                   sessioninfo)
 
     writeLines(lines_out, tmpfile)
-    e$knit_input <- tmpfile
   }
 
   # post_knit function ---------------------------------------------------------
 
+  # This function adds the navigation bar for websites defined in either
+  # _navbar.html or _site.yml. Below I just fix the path to the input file that
+  # I had changed for pre_knit and then execute the post_knit from
+  # rmarkdown::html_document.
   post_knit <- function(metadata, input_file, runtime, encoding, ...) {
 
     # Change the input_file back to its original so that the post_knit defined
@@ -69,12 +191,33 @@ wflow_html <- function(...) {
                                          runtime, encoding, ...)
   }
 
+  # pre_processor function -----------------------------------------------------
+
+  # Pass additional arguments to Pandoc. I use this to add a custom footer.
+  pre_processor <- function(metadata, input_file, runtime, knit_meta,
+                            files_dir, output_dir) {
+    fname_footer <- tempfile("footer", fileext = ".html")
+    wflow_version <- utils::packageVersion("workflowr")
+    footer <- c("<hr>",
+                "<p>",
+                "This reproducible <a href=\"http://rmarkdown.rstudio.com\">R
+                Markdown</a> analysis was created with <a
+                href=\"https://github.com/jdblischak/workflowr\">workflowr</a> ",
+                as.character(wflow_version),
+                "</p>",
+                "<hr>")
+    writeLines(footer, con = fname_footer)
+    args <- c("--include-after-body", fname_footer)
+    return(args)
+  }
+
   # Return ---------------------------------------------------------------------
 
   o <- rmarkdown::output_format(knitr = knitr,
                                 pandoc = pandoc_options(to = "html"),
                                 pre_knit = pre_knit,
                                 post_knit = post_knit,
+                                pre_processor = pre_processor,
                                 base_format = rmarkdown::html_document(...))
   return(o)
 }

@@ -396,11 +396,9 @@ create_objects_table <- function(env) {
 
 format_check <- function(check) {
   if (check$pass) {
-    symbol <- sprintf("<strong style=\"color:blue;\">%s</strong>",
-                      clisymbols::symbol$tick)
+    symbol <- "<strong style=\"color:blue;\">&#10004;</strong>"
   } else {
-    symbol <- sprintf("<strong style=\"color:red;\">%s</strong>",
-                      clisymbols::symbol$cross)
+    symbol <- "<strong style=\"color:red;\">&#10006;</strong>"
   }
   template <-
     "

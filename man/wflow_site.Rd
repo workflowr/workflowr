@@ -2,12 +2,13 @@
 % Please edit documentation in R/wflow_site.R
 \name{wflow_site}
 \alias{wflow_site}
-\title{Custom site generator for workflowr projects}
+\title{Custom site generator for workflowr websites}
 \usage{
 wflow_site(input, encoding = getOption("encoding"), ...)
 }
 \arguments{
-\item{input}{character. The name of the R Markdown file to build.}
+\item{input}{character. The name of the website directory or a specific R
+Markdown file in the website directory.}
 
 \item{encoding}{character. The
 \href{https://en.wikipedia.org/wiki/Character_encoding}{character encoding}
@@ -18,37 +19,22 @@ to use to read the file.}
 \description{
 \code{wflow_site} is a
 \href{http://rmarkdown.rstudio.com/rmarkdown_site_generators.html}{custom
-site generator} that implements the reproducibility features for the R
-Markdown website in a workflowr project. If you receive an error when using
-the RStudio Knit button in a workflowr project (the error is about an unused
-argument), make sure the Knit Directory is set to Document Directory (you can
-set this with the dropdown menu next to the Knit button).
+site generator} to be used in combination with the R Markdown output format
+\code{\link{wflow_html}}.
 }
 \details{
 Do not call the function \code{wflow_site} directly. Instead insert the line
-below directly into the YAML header of the file \code{index.Rmd} in the
-analysis directory (this is done automatically when you start the project
-with \code{\link{wflow_start}}):
+below directly into the YAML header of the file \code{index.Rmd}:
 
 \code{site: workflowr::wflow_site}
 
-\code{wflow_site} currently implements the following reproducibility features:
+Then you can build the website by running \code{\link[rmarkdown]{render_site}}
+in the R console or clicking the Knit button in RStudio.
 
-\itemize{
-
-\item Inserts the date the file was last built.
-
-\item Inserts the code version of the repository that was used to create the
- results in the HTML file.
-
-\item Inserts \code{\link{sessionInfo}} at the end of each analysis.
-
-\item Organizes the figure files into subdirectories. For example, any
- figure files created by the file \code{example.Rmd} would be saved in the
- subdirectory \code{docs/figure/example.Rmd/}.
-
-}
+If you receive an error when using the RStudio Knit button (the error is
+about an unused argument), make sure the Knit Directory is set to Document
+Directory (you can set this with the dropdown menu next to the Knit button).
 }
 \seealso{
-\code{\link{wflow_build}}, \code{\link[rmarkdown]{render_site}}
+\code{\link{wflow_html}}, \code{\link[rmarkdown]{render_site}}
 }

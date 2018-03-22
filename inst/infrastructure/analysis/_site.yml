@@ -15,7 +15,7 @@ navbar:
     - icon: fa-github
       href: https://github.com/jdblischak/workflowr
 output:
-  html_document:
+  workflowr::wflow_html:
     toc: true
     toc_float: true
     theme: cosmo

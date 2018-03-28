@@ -24,9 +24,6 @@ and Git.
 
   \item \code{\link{wflow_start}} - Start workflowr project
 
-  \item \code{\link{wflow_open}} - Open a new R Markdown file based on the
-  workflowr template
-
   \item \code{\link{wflow_publish}} - Publish analyses to include in the
   website
 

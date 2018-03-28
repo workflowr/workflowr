@@ -112,35 +112,6 @@ test_that("wflow_commit accepts file globs", {
                "Invalid file glob:")
 })
 
-test_that("wflow_convert accepts file globs", {
-  actual <- wflow_convert(rmd_glob, dry_run = TRUE)
-  expect_identical(names(actual), expected)
-  expect_error(wflow_convert(file.path(s$analysis, "bad*blob.Rmd"),
-                            dry_run = TRUE),
-               "Invalid file glob:")
-})
-
-
-test_that("wflow_open accepts file globs", {
-  rmd_glob_expanded <- Sys.glob(rmd_glob)
-  open_w_glob <- wflow_open(rmd_glob, change_wd = FALSE, open_file = FALSE,
-                            project = site_dir)
-  expect_identical(open_w_glob, rmd_glob_expanded)
-
-  expect_error(wflow_open(file.path(s$analysis, "bad*blob.Rmd"), project = site_dir),
-               "Invalid file glob:")
-
-  if ("devtools_shims" %in% search())
-    skip("Must be run manually.")
-
-  rmd_new <- file.path(s$analysis, "new.Rmd")
-  on.exit(file.remove(rmd_new))
-  open_w_glob_new <- wflow_open(c(rmd_glob, rmd_new), change_wd = FALSE,
-                                open_file = FALSE, project = site_dir)
-  expect_identical(open_w_glob_new, c(rmd_glob_expanded, rmd_new))
-  expect_true(file.exists(rmd_new))
-})
-
 test_that("wflow_publish accepts file globs", {
   actual <- wflow_publish(rmd_glob, dry_run = TRUE, project = site_dir)
   expect_identical(actual$step2$files, expected)

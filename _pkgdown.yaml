@@ -34,9 +34,6 @@ reference:
   - title: "Starting a workflowr project"
     contents:
       - wflow_start
-  - title: "Creating new files"
-    contents:
-      - wflow_open
   - title: "Building the research website"
     contents:
       - wflow_build
@@ -56,8 +53,3 @@ reference:
       - wflow_git_push
       - wflow_remotes
       - wflow_remove
-  - title: "Updating projects"
-    desc: "Functions to update workflowr projects or convert existing projects to use workflowr"
-    contents:
-      - wflow_convert
-      - wflow_update

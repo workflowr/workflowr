@@ -1,2 +1,0 @@
-name: Analysis Template (standalone)
-description: Create a new workflowr analysis file that does not require external files. Useful for using the template with documents outside of a workflowr project.

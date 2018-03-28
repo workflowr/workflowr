@@ -1,8 +1,0 @@
----
-title: "About"
-output:
-  html_document:
-    toc: false
----
-
-Describe your project.

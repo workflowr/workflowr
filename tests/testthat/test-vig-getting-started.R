@@ -46,14 +46,6 @@ file.copy("files/workflowr-template.Rmd", test_rmd)
 test_html <- workflowr:::to_html(test_rmd, outdir = s$docs)
 s <- wflow_status(project = site_dir)
 
-test_that("wflow_open sets correct working directory", {
-  cwd <- getwd()
-  on.exit(setwd(cwd))
-  wflow_open(files = basename(test_rmd), change_wd = TRUE,
-             open_file = FALSE, project = site_dir)
-  expect_identical(getwd(), file.path(site_dir, "analysis"))
-})
-
 test_that("wflow_build only builds new file", {
   html_mtime_pre <- file.mtime(html)
   Sys.sleep(2)

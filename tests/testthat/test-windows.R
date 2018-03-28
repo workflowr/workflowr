@@ -15,7 +15,6 @@ cwd <- getwd()
 
 # workflowr user-facing functions:
 # wflow_start
-# wflow_open
 # wflow_build
 # wflow_commit
 # wflow_publish
@@ -24,10 +23,6 @@ cwd <- getwd()
 # extract_commit
 # wflow_remove
 # wflow_remotes
-
-# Can't test filepaths on these functions b/c they call `diff` utility:
-# wflow_convert
-# wflow_update
 
 # Test forward slash -----------------------------------------------------------
 
@@ -42,9 +37,6 @@ test_that("workflowr functions can handle / on Windows", {
   expect_message(return_start <- wflow_start(tmp_forw),
                  tmp_forw)
   expect_identical(return_start, tmp_forw)
-  # wflow_open
-  return_open <- wflow_open(rmd_forw, change_wd = FALSE, open_file = FALSE)
-  expect_identical(return_open, rmd_forw)
   # wflow_build
   utils::capture.output(return_build <- wflow_build(rmd_forw, view = FALSE,
                                                     log_dir = log_forw))
@@ -85,9 +77,6 @@ test_that("workflowr functions can handle \\ on Windows", {
   expect_message(return_start <- wflow_start(tmp_back),
                  tmp_forw)
   expect_identical(return_start, tmp_forw)
-  # wflow_open
-  return_open <- wflow_open(rmd_back, change_wd = FALSE, open_file = FALSE)
-  expect_identical(return_open, rmd_forw)
   # wflow_build
   utils::capture.output(return_build <- wflow_build(rmd_back, view = FALSE,
                                                     log_dir = log_back))
@@ -115,28 +104,7 @@ test_that("workflowr functions can handle \\ on Windows", {
   expect_silent(wflow_remotes(verbose = FALSE, project = tmp_back))
 })
 
-
-# Test diff utility ------------------------------------------------------------
-
-test_that("workflowr fails gracefully if `diff` utility is not available", {
-
-  if (os != "windows") skip("Only relevant on Windows")
-
-  if (Sys.which("diff") != "") skip("Only relevant if Rtools not installed")
-
-  on.exit(setwd(cwd), add = TRUE)
-  on.exit(unlink(tmp_forw, recursive = TRUE, force = TRUE), add = TRUE)
-
-  wflow_start(tmp_forw)
-
-  expect_error(wflow_update(log_open = FALSE),
-               "https://cran.r-project.org/bin/windows/Rtools/")
-  expect_error(wflow_convert(rmd_forw),
-               "https://cran.r-project.org/bin/windows/Rtools/")
-})
-
 # Test absolute ----------------------------------------------------------------
-
 
 test_that("absolute can handle the Windows drive", {
 

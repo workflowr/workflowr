@@ -11,7 +11,6 @@ site_dir <- workflowr:::absolute(site_dir)
 p <- wflow_paths(project = site_dir)
 
 # Create some fake R Markdown files
-# Unfortunately cannot use wflow_open here b/c of devtools
 rmd <- file.path(p$analysis, paste0(1:3, ".Rmd"))
 for (i in 1:3) {
   file.copy("files/workflowr-template.Rmd", rmd[i])

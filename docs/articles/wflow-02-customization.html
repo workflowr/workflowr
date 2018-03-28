@@ -67,10 +67,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Customize your research website</h1>
-            <h3 class="subtitle">workflowr version 0.11.0</h3>
+            <h3 class="subtitle">workflowr version 0.11.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2018-03-10</h4>
+            <h4 class="date">2018-03-27</h4>
           </div>
 
     
@@ -112,19 +112,6 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"Add main result page to navbar"</span>,
               <span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
-<div id="add-a-links-page" class="section level2">
-<h2 class="hasAnchor">
-<a href="#add-a-links-page" class="anchor"></a>Add a links page</h2>
-<p>To make it easy to navigate to the pages of your website, you can manually add links either to <code>analysis/index.Rmd</code> or to the navigation bar defined in <code>analysis/_site.yml</code>. This can become tedious as the project grows to many files. To create a file called <code>analysis/results.Rmd</code> that contains links to each analysis file, run the workflowr function <code><a href="../reference/create_links_page.html">create_links_page()</a></code>. By default it sorts the files by their filename, but there are other options (see <code><a href="../reference/create_links_page.html">?create_links_page</a></code>).</p>
-<p>Next add this page to the navigation bar in <code>analysis/_site.yml</code> to make it easily accessible.</p>
-<pre><code>    - text: "Results"
-      href: results.html</code></pre>
-<p>Lastly, since the navigation bar was changed, re-build the website using the following command:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw">c</span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"analysis/results.Rmd"</span>),
-              <span class="st">"Create links page and add to navbar"</span>,
-              <span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>Future updates of <code>results.Rmd</code> will not require re-building the entire website since it is an independent page (as opposed to the navigation bar).</p>
-</div>
 <div id="customize-the-footer" class="section level2">
 <h2 class="hasAnchor">
 <a href="#customize-the-footer" class="anchor"></a>Customize the footer</h2>
@@ -164,7 +151,6 @@
 <li><a href="#adding-project-details">Adding project details</a></li>
       <li><a href="#changing-the-theme">Changing the theme</a></li>
       <li><a href="#customize-the-navigation-bar">Customize the navigation bar</a></li>
-      <li><a href="#add-a-links-page">Add a links page</a></li>
       <li><a href="#customize-the-footer">Customize the footer</a></li>
       <li><a href="#setup-ssh-keys">Setup SSH keys</a></li>
       </ul>

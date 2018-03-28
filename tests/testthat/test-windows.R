@@ -23,7 +23,6 @@ cwd <- getwd()
 # wflow_view
 # extract_commit
 # wflow_remove
-# create_links_page
 # wflow_remotes
 
 # Can't test filepaths on these functions b/c they call `diff` utility:
@@ -69,8 +68,6 @@ test_that("workflowr functions can handle / on Windows", {
   # wflow_remove
   return_remove <- wflow_remove(rmd_forw, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
-  # create_links_page
-  expect_silent(create_links_page(project = tmp_forw))
   # wflow_remotes
   expect_silent(wflow_remotes(verbose = FALSE, project = tmp_forw))
 })
@@ -114,8 +111,6 @@ test_that("workflowr functions can handle \\ on Windows", {
   # wflow_remove
   return_remove <- wflow_remove(rmd_back, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
-  # create_links_page
-  expect_silent(create_links_page(project = tmp_back))
   # wflow_remotes
   expect_silent(wflow_remotes(verbose = FALSE, project = tmp_back))
 })

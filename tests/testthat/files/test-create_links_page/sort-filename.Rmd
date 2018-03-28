@@ -1,9 +1,0 @@
----
-title: Results
-output: html_document
----
-
-
-* [Model data](a.html)
-* [Clean data](b.html)
-* [Visualize data](c.html)

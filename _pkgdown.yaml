@@ -61,6 +61,3 @@ reference:
     contents:
       - wflow_convert
       - wflow_update
-  - title: "Miscellaneous"
-    contents:
-      - create_links_page

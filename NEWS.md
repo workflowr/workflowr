@@ -1,5 +1,6 @@
 # workflowr 0.11.0.9000
 
+* Remove `create_links_page()` (not widely used, if at all)
 
 # workflowr 0.11.0
 

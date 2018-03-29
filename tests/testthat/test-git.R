@@ -49,36 +49,3 @@ test_that("get_committed_files stops reporting files after they are removed", {
   actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
 })
-
-# Test create_gitignore --------------------------------------------------------
-
-# Create a temp directory
-tmp_dir <- tempfile("test-create_gitignore-")
-dir.create(tmp_dir)
-tmp_dir <- workflowr:::absolute(tmp_dir)
-# Cleanup
-on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE))
-
-# Create a .gitignore file
-workflowr:::create_gitignore(tmp_dir)
-fname_expected <- file.path(tmp_dir, ".gitignore")
-
-test_that(".gitignore file was created", {
-  expect_true(file.exists(fname_expected))
-})
-
-test_that(".gitignore is not overwritten by default", {
-  mod_time_pre <- file.mtime(fname_expected)
-  Sys.sleep(2)
-  expect_warning(workflowr:::create_gitignore(tmp_dir))
-  mod_time_post <- file.mtime(fname_expected)
-  expect_true(mod_time_post == mod_time_pre)
-})
-
-test_that(".gitignore is overwritten if forced", {
-  mod_time_pre <- file.mtime(fname_expected)
-  Sys.sleep(2)
-  expect_silent(workflowr:::create_gitignore(tmp_dir,overwrite = TRUE))
-  mod_time_post <- file.mtime(fname_expected)
-  expect_true(mod_time_post > mod_time_pre)
-})

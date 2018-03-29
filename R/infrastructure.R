@@ -3,6 +3,27 @@
 # These templates are used by wflow_start().
 
 templates <- list(
+  .gitignore = '
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rapp.history
+.DS_Store
+analysis/figure
+analysis/*png
+analysis/*html
+analysis/*_cache
+analysis/site_libs',
+  .Rprofile = '
+## This makes sure that R loads the workflowr package
+## automatically, everytime the project is loaded
+if (requireNamespace("workflowr", quietly = TRUE)) {{
+  message("Loading .Rprofile for the current workflowr project")
+  library("workflowr")
+}} else {{
+  message("workflowr package not installed, please run devtools::install_github(\'jdblischak/workflowr\') to use the workflowr functions")
+}}',
     `analysis/_site.yml` = "
 name: \"{name}\"
 output_dir: \"../docs\"

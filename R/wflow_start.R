@@ -135,10 +135,6 @@ wflow_start <- function(directory,
     }
   }
 
-  # Add .Rprofile which loads workflowr
-  rprofile <- create_rprofile(directory, overwrite = overwrite)
-  project_files <- c(project_files, rprofile)
-
   # Create .nojekyll files in analysis/ and docs/ directories
   nojekyll_analysis <- file.path(directory, "analysis", ".nojekyll")
   file.create(nojekyll_analysis)
@@ -163,8 +159,6 @@ wflow_start <- function(directory,
 
   # Configure Git repository
   if (git) {
-    create_gitignore(directory, overwrite = overwrite)
-    project_files <- c(project_files, file.path(directory, ".gitignore"))
     if (git2r::in_repository(directory)) {
       warning("A .git directory already exists in ", directory)
     } else {
@@ -240,27 +234,4 @@ check_git_config <- function(path) {
         'wflow_git_config(user.name = "Your Name", user.email = "email@domain")',
         call. = FALSE)
   }
-}
-
-# Create a default .Rprofile file
-create_rprofile <- function(path, overwrite = FALSE) {
-  lines <-  c(
-    "## This makes sure that R loads the workflowr package",
-    "## automatically, everytime the project is loaded",
-    "if (requireNamespace(\"workflowr\", quietly = TRUE)) {",
-    "  message(\"Loading .Rprofile for the current workflowr project\")",
-    "  library(\"workflowr\")",
-    "} else {",
-    "  message(\"workflowr package not installed, please run devtools::install_github('jdblischak/workflowr') to use the workflowr functions\")",
-    "}")
-
-  fname <- file.path(path, ".Rprofile")
-  exists <- file.exists(fname)
-  if (exists & !overwrite) {
-    warning(sprintf("File %s already exists. Set overwrite = TRUE to replace",
-                    fname))
-  } else {
-    writeLines(lines, con = fname)
-  }
-  return(invisible(fname))
 }

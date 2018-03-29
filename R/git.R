@@ -46,33 +46,6 @@ extract_commit <- function(path, num) {
   return(list(sha1 = sha1, message = commit_message))
 }
 
-# Create a default .gitignore file
-#
-# The .gitignore in inst/infrastrucure does not survive builing the R package.
-# The .nojekyll does, so it must be specific to this filename and not a
-# property of hidden files. Hadley does not include .gitignore in
-# .Rbuildignore, which further supports that it is ignored by default.
-create_gitignore <- function(path, overwrite = FALSE) {
-  lines <- c(".Rproj.user",
-             ".Rhistory",
-             ".RData",
-             ".Ruserdata",
-             ".Rapp.history",
-             ".DS_Store",
-             "analysis/figure",
-             "analysis/*html",
-             "analysis/*_cache")
-  fname <- file.path(path, ".gitignore")
-  exists <- file.exists(fname)
-  if (exists & !overwrite) {
-    warning(sprintf("File %s already exists. Set overwrite = TRUE to replace",
-                    fname))
-  } else {
-    writeLines(lines, con = fname)
-  }
-  return(invisible(fname))
-}
-
 # Obtain all the committed files in a Git repository at a given commit.
 #
 # The default is to use the head commit.

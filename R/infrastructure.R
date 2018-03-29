@@ -14,7 +14,9 @@ analysis/figure
 analysis/*png
 analysis/*html
 analysis/*_cache
-analysis/site_libs',
+analysis/site_libs
+
+',
   .Rprofile = '
 ## This makes sure that R loads the workflowr package
 ## automatically, everytime the project is loaded
@@ -23,7 +25,9 @@ if (requireNamespace("workflowr", quietly = TRUE)) {{
   library("workflowr")
 }} else {{
   message("workflowr package not installed, please run devtools::install_github(\'jdblischak/workflowr\') to use the workflowr functions")
-}}',
+}}
+
+',
     `analysis/_site.yml` = '
 name: "{name}"
 output_dir: "../docs"
@@ -58,7 +62,9 @@ output:
     toc: false
 ---
 
-Welcome to my research website.',
+Welcome to my research website.
+
+',
   `analysis/about.Rmd` = '
 ---
 title: "About"
@@ -67,7 +73,9 @@ output:
     toc: false
 ---
 
-Describe your project.',
+Describe your project.
+
+',
   `analysis/license.Rmd` = '
 ---
 title: "License"
@@ -87,25 +95,35 @@ traditional to choose a [Creative Commons][cc] license for this type of content.
 [cc]: https://creativecommons.org/choose/
 
 How should others cite your work? It\'s a convention to save a file `CITATION`
-in the root of your Git repo that contains the citation information.',
+in the root of your Git repo that contains the citation information.
+
+',
   `code/README.md` = '
 # Code
 
-Save command-line scripts and shared R code here.',
+Save command-line scripts and shared R code here.
+
+',
   `data/README.md` = '
 # Data
 
-Save raw data files here.',
+Save raw data files here.
+
+',
     `output/README.md` = '
 # Output
 
-Save processed data files here.',
+Save processed data files here.
+
+',
   README.md = '
 # {name}
 
 A [workflowr][] project.
 
-[workflowr]: https://github.com/jdblischak/workflowr',
+[workflowr]: https://github.com/jdblischak/workflowr
+
+',
   "Rproj" = '
 Version: 1.0
 
@@ -122,7 +140,9 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 AutoAppendNewline: Yes
-StripTrailingWhitespace: Yes'
+StripTrailingWhitespace: Yes
+
+'
 )
 
 # These templates are used by wflow_html() to insert HTML before and after the
@@ -135,7 +155,9 @@ includes <- list(
 div.section {
   padding-top: 12px;
 }
-</style>',
+</style>
+
+',
 # Curly brackets need to be duplicated to pass through glue::glue
 footer = '
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -156,5 +178,7 @@ footer is added to webpages before the MathJax javascript. -->
   analysis was created with
   <a href="https://github.com/jdblischak/workflowr">workflowr</a> {wflow_version}
 </p>
-<hr>'
+<hr>
+
+'
 )

@@ -24,19 +24,19 @@ if (requireNamespace("workflowr", quietly = TRUE)) {{
 }} else {{
   message("workflowr package not installed, please run devtools::install_github(\'jdblischak/workflowr\') to use the workflowr functions")
 }}',
-    `analysis/_site.yml` = "
-name: \"{name}\"
-output_dir: \"../docs\"
-include: [\".nojekyll\"]
-exclude: [\"include\"]
+    `analysis/_site.yml` = '
+name: "{name}"
+output_dir: "../docs"
+include: [".nojekyll"]
+exclude: ["include"]
 navbar:
-  title: \"{name}\"
+  title: "{name}"
   left:
-    - text: \"Home\"
+    - text: "Home"
       href: index.html
-    - text: \"About\"
+    - text: "About"
       href: about.html
-    - text: \"License\"
+    - text: "License"
       href: license.html
   right:
     - icon: fa-github
@@ -48,36 +48,36 @@ output:
     theme: cosmo
     highlight: textmate
 
-",
-  `analysis/index.Rmd` = "
+',
+  `analysis/index.Rmd` = '
 ---
-title: \"Home\"
+title: "Home"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
 ---
 
-Welcome to my research website.",
-  `analysis/about.Rmd` = "
+Welcome to my research website.',
+  `analysis/about.Rmd` = '
 ---
-title: \"About\"
+title: "About"
 output:
   workflowr::wflow_html:
     toc: false
 ---
 
-Describe your project.",
-  `analysis/license.Rmd` = "
+Describe your project.',
+  `analysis/license.Rmd` = '
 ---
-title: \"License\"
+title: "License"
 output:
   workflowr::wflow_html::
     toc: false
 ---
 
 What license are you using for your code? See [choosealicense.com][choose] for
-help deciding. It's a convention to save a file `LICENSE` in the root of your
+help deciding. It\'s a convention to save a file `LICENSE` in the root of your
 Git repo that contains the license text.
 
 What license are you using for the written content on your site? It is
@@ -86,27 +86,27 @@ traditional to choose a [Creative Commons][cc] license for this type of content.
 [choose]: http://choosealicense.com/
 [cc]: https://creativecommons.org/choose/
 
-How should others cite your work? It's a convention to save a file `CITATION`
-in the root of your Git repo that contains the citation information.",
-  `code/README.md` = "
+How should others cite your work? It\'s a convention to save a file `CITATION`
+in the root of your Git repo that contains the citation information.',
+  `code/README.md` = '
 # Code
 
-Save command-line scripts and shared R code here.",
-  `data/README.md` = "
+Save command-line scripts and shared R code here.',
+  `data/README.md` = '
 # Data
 
-Save raw data files here.",
-    `output/README.md` = "
+Save raw data files here.',
+    `output/README.md` = '
 # Output
 
-Save processed data files here.",
-  README.md = "
+Save processed data files here.',
+  README.md = '
 # {name}
 
 A [workflowr][] project.
 
-[workflowr]: https://github.com/jdblischak/workflowr",
-  "Rproj" = "
+[workflowr]: https://github.com/jdblischak/workflowr',
+  "Rproj" = '
 Version: 1.0
 
 RestoreWorkspace: No
@@ -122,7 +122,7 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 AutoAppendNewline: Yes
-StripTrailingWhitespace: Yes"
+StripTrailingWhitespace: Yes'
 )
 
 # These templates are used by wflow_html() to insert HTML before and after the
@@ -152,7 +152,7 @@ footer is added to webpages before the MathJax javascript. -->
 
 <hr>
 <p>
-  This reproducible <a href=\"http://rmarkdown.rstudio.com\">R Markdown</a>
+  This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
   analysis was created with
   <a href="https://github.com/jdblischak/workflowr">workflowr</a> {wflow_version}
 </p>

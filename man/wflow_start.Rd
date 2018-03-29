@@ -32,8 +32,7 @@ workflowr files into an unwanted location. Only set to TRUE if you wish to
 add the workflowr files to an existing project.}
 
 \item{overwrite}{logical (default: FALSE). Control whether to overwrite
-existing files. Only relevant if \code{existing = TRUE}. Passed to
-\code{file.copy}.}
+existing files. Only relevant if \code{existing = TRUE}.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
 \code{directory}.}

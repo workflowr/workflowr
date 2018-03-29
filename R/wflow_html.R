@@ -193,21 +193,24 @@ wflow_html <- function(...) {
 
   # pre_processor function -----------------------------------------------------
 
-  # Pass additional arguments to Pandoc. I use this to add a custom footer.
+  # Pass additional arguments to Pandoc. I use this to add a custom header
+  # (--include-before-body) and footer (--include-after-body). The template text
+  # for these are in the list `includes` defined in R/infrastructure.R.
   pre_processor <- function(metadata, input_file, runtime, knit_meta,
                             files_dir, output_dir) {
+    # header
+    fname_header <- tempfile("header", fileext = ".html")
+    writeLines(includes$header, con = fname_header)
+
+    # footer
     fname_footer <- tempfile("footer", fileext = ".html")
     wflow_version <- utils::packageVersion("workflowr")
-    footer <- c("<hr>",
-                "<p>",
-                "This reproducible <a href=\"http://rmarkdown.rstudio.com\">R
-                Markdown</a> analysis was created with <a
-                href=\"https://github.com/jdblischak/workflowr\">workflowr</a> ",
-                as.character(wflow_version),
-                "</p>",
-                "<hr>")
+    footer <- glue::glue(includes$footer)
     writeLines(footer, con = fname_footer)
-    args <- c("--include-after-body", fname_footer)
+
+    # Pandoc args
+    args <- c("--include-before-body", fname_header,
+              "--include-after-body", fname_footer)
     return(args)
   }
 

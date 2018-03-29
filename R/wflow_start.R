@@ -33,8 +33,7 @@
 #'   workflowr files into an unwanted location. Only set to TRUE if you wish to
 #'   add the workflowr files to an existing project.
 #' @param overwrite logical (default: FALSE). Control whether to overwrite
-#'   existing files. Only relevant if \code{existing = TRUE}. Passed to
-#'   \code{file.copy}.
+#'   existing files. Only relevant if \code{existing = TRUE}.
 #' @param change_wd logical (default: TRUE). Change the working directory to the
 #'   \code{directory}.
 #'
@@ -116,22 +115,29 @@ wflow_start <- function(directory,
     name <- basename(directory)
   }
 
-  # Copy infrastructure files to new directory
-  infrastructure_path <- system.file("infrastructure/",
-                                     package = "workflowr")
-  project_files <- list.files(path = infrastructure_path, all.files = TRUE,
-                              recursive = TRUE)
-  # Add . to end of path to copy its contents w/o creating a top-level directory
-  # source; http://superuser.com/a/367303/449452
-  file.copy(from = paste0(infrastructure_path, "/."), to = directory,
-            overwrite = overwrite, recursive = TRUE)
+  # Add files ------------------------------------------------------------------
+
+  # Use templates defined in R/templates.R
+  names(templates)[which(names(templates) == "Rproj")] <-
+    glue::glue("{basename(directory)}.Rproj")
+  names(templates) <- file.path(directory, names(templates))
+  project_files <- names(templates)
+
+  # Create subdirectories
+  dir.create.vectorized <- Vectorize(dir.create, vectorize.args = "path")
+  dir.create.vectorized(file.path(directory, c("analysis", "code", "data",
+                                               "docs", "output")),
+                        showWarnings = FALSE)
+
+  for (fname in project_files) {
+    if (!file.exists(fname) || overwrite) {
+      cat(glue::glue(templates[[fname]]), file = fname)
+    }
+  }
 
   # Add .Rprofile which loads workflowr
   rprofile <- create_rprofile(directory, overwrite = overwrite)
   project_files <- c(project_files, rprofile)
-
-  # Create docs/ directory
-  dir.create(file.path(directory, "docs"), showWarnings = FALSE)
 
   # Create .nojekyll files in analysis/ and docs/ directories
   nojekyll_analysis <- file.path(directory, "analysis", ".nojekyll")
@@ -140,26 +146,12 @@ wflow_start <- function(directory,
   file.create(nojekyll_docs)
   project_files <- c(project_files, nojekyll_analysis, nojekyll_docs)
 
-  # Add project name to YAML file
-  yml_template <- readLines(file.path(directory, "analysis/_site.yml"))
-  writeLines(whisker::whisker.render(yml_template, list(name = name)),
-             file.path(directory, "analysis/_site.yml"))
-
-  # Add project name to README.md file
-  readme_template <- readLines(file.path(directory, "README.md"))
-  writeLines(whisker::whisker.render(readme_template, list(name = name)),
-             file.path(directory, "README.md"))
+  # Configure, initialize, and commit ------------------------------------------
 
   # Configure RStudio
   rs_version <- check_rstudio_version()
 
-  # Rename RStudio Project file
-  file.rename(file.path(directory, "temp-name.Rproj"),
-              file.path(directory, paste0(basename(directory), ".Rproj")))
-  project_files <- stringr::str_replace(project_files, "temp-name",
-                                        basename(directory))
-
-  message("Project \"", name, "\" started in ", directory, "\n")
+  message(glue::glue("Project \"{name}\" started in {directory}\n"))
 
   # Change working directory to workflowr project
   if (change_wd) {

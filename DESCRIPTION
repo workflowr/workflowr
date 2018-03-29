@@ -21,6 +21,7 @@ Imports:
     callr,
     getPass,
     git2r (<= 0.21.0),
+    glue,
     methods,
     rprojroot,
     rstudioapi,

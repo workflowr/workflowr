@@ -1,5 +1,6 @@
 # workflowr 0.11.0.9000
 
+* Remove some less commonly used infrastructure files
 * Remove template infrastructure: `wflow_open()`, `wflow_convert()`, and
 `wflow_update()`
 * Remove `create_links_page()` (not widely used, if at all)

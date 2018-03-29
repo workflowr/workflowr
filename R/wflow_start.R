@@ -115,6 +115,10 @@ wflow_start <- function(directory,
     name <- basename(directory)
   }
 
+  # Get variables to interpolate into _workflowr.yml
+  wflow_version <- as.character(packageVersion("workflowr"))
+  the_seed_to_set <- as.numeric(format(Sys.Date(), "%Y%m%d")) # YYYYMMDD
+
   # Add files ------------------------------------------------------------------
 
   # Use templates defined in R/templates.R

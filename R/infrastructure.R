@@ -28,6 +28,17 @@ if (requireNamespace("workflowr", quietly = TRUE)) {{
 }}
 
 ',
+  `_workflowr.yml` = '
+# workflowr options
+# Version {wflow_version}
+
+# The seed to use for random number generation. See ?set.seed for details.
+seed: {the_seed_to_set}
+# The working directory to build the R Markdown files. The path is relative to
+# _workflowr.yml. See ?rmarkdown::render for details.
+knit_root_dir: "."
+
+',
     `analysis/_site.yml` = '
 name: "{name}"
 output_dir: "../docs"

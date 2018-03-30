@@ -1,4 +1,4 @@
-#' View research website locally.
+#' View research website locally
 #'
 #' \code{wflow_view} displays the website locally in your browser or the RStudio
 #' Viewer pane.

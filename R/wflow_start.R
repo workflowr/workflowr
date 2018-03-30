@@ -1,4 +1,4 @@
-#' Start a new workflowr project.
+#' Start a new workflowr project
 #'
 #' \code{wflow_start} creates a minimal workflowr project. The default
 #' behaviour is to add these files to a new directory, but it is also

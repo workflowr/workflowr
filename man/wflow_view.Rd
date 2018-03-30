@@ -2,7 +2,7 @@
 % Please edit documentation in R/wflow_view.R
 \name{wflow_view}
 \alias{wflow_view}
-\title{View research website locally.}
+\title{View research website locally}
 \usage{
 wflow_view(files = NULL, recent = FALSE, dry_run = FALSE, project = ".")
 }

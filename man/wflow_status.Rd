@@ -2,7 +2,7 @@
 % Please edit documentation in R/wflow_status.R
 \name{wflow_status}
 \alias{wflow_status}
-\title{Report status of workflowr project.}
+\title{Report status of workflowr project}
 \usage{
 wflow_status(files = NULL, project = ".")
 }

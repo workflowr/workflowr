@@ -1,4 +1,4 @@
-#' Report status of workflowr project.
+#' Report status of workflowr project
 #'
 #' \code{wflow_status} reports the analysis files that require user action.
 #'

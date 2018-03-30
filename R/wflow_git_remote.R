@@ -1,4 +1,4 @@
-#' Manage remote Git repositories.
+#' Manage remote Git repositories
 #'
 #' \code{wflow_git_remote} is a convenience function for managing remote
 #' repositories from R. By default is displays the current remote repositories

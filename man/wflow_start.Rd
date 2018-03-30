@@ -2,7 +2,7 @@
 % Please edit documentation in R/wflow_start.R
 \name{wflow_start}
 \alias{wflow_start}
-\title{Start a new workflowr project.}
+\title{Start a new workflowr project}
 \usage{
 wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
   overwrite = FALSE, change_wd = TRUE)

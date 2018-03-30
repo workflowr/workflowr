@@ -2,7 +2,7 @@
 % Please edit documentation in R/wflow_git_remote.R
 \name{wflow_git_remote}
 \alias{wflow_git_remote}
-\title{Manage remote Git repositories.}
+\title{Manage remote Git repositories}
 \usage{
 wflow_git_remote(remote = NULL, user = NULL, repo = NULL,
   protocol = "https", action = "add", verbose = TRUE, project = ".")

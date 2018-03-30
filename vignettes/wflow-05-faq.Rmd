@@ -1,6 +1,6 @@
 ---
 title: "Frequently asked questions"
-subtitle: "workflowr version `r packageVersion('workflowr')`"
+subtitle: "workflowr version `r utils::packageVersion('workflowr')`"
 author: "John Blischak"
 date: "`r Sys.Date()`"
 output:

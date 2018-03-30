@@ -14,6 +14,11 @@ easily adopt workflowr.
 
 For an example, see the [Divvy data exploration project][divvy].
 
+To keep up-to-date with the latest workflowr developments, please join the
+[workflowr-announce][] mailing list (low-volume, read-only).
+
+[workflowr-announce]: https://groups.google.com/forum/#!forum/workflowr-announce
+
 * [Features](#features)
 * [Quick start](#quick-start)
 * [Installation](#installation)
@@ -40,13 +45,16 @@ For an example, see the [Divvy data exploration project][divvy].
 ```
 library("workflowr")
 
+# Configure Git (only need to do once per computer)
+wflow_git_config(user.name = "Full Name", user.email = "email@domain")
+
 # Start a new workflowr project
 wflow_start("myproject")
 
 # Build the site
 wflow_build()
 
-# Customize your project!
+# Customize your site!
 #   1. Edit the R Markdown files in analysis/
 #   2. Edit the theme and layout in analysis/_site.yml
 #   3. Add new or copy existing R Markdown files to analysis/

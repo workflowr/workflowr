@@ -53,16 +53,14 @@ dir.create(.project, recursive = TRUE)
 opts_knit$set(root.dir = .project)
 ```
 
-The goal of the workflowr package is to make it easier for researchers
-to organize their projects and share their results with colleagues. If
-you are already writing R code to analyze data, and know the basics of
-Git and GitHub, you can start taking advantage of workflowr
-immediately. In a matter of minutes, you can create a research website
-like [this][demo01].
+The workflowr R package helps scientists organize their research in a way that
+promotes effective project management, reproducibility, collaboration, and
+sharing of results. Workflowr combines literate programming (knitr and
+rmarkdown) and version control (Git, via git2r) to generate a website containing
+time-stamped, versioned, and documented results. Any R user can quickly and
+easily adopt workflowr.
 
-[demo01]: https://jdblischak.github.io/workflowr-demo01/
-
-This tutorial assumes you have already followed the "Quick start" instructions
+This tutorial assumes you have already followed the installation instructions
 in the [README](https://jdblischak.github.io/workflowr/index.html).
 Specifically, you need to have R, pandoc (or RStudio), and workflowr installed
 on your computer. Furthermore, you need a GitHub account.
@@ -136,26 +134,19 @@ wflow_start("myproject")
 
 ```
 myproject/
+├── .gitignore
 ├── .Rprofile
+├── _workflowr.yml
 ├── analysis/
 │   ├── about.Rmd
-│   ├── chunks.R
-│   ├── include/
-│   │   └── footer.html
 │   ├── index.Rmd
 │   ├── license.Rmd
-│   ├── README.md
 │   └── _site.yml
-├── CITATION
 ├── code/
 │   ├── README.md
-│   ├── script.py*
-│   ├── script.R*
-│   └── script.sh*
 ├── data/
 │   └── README.md
 ├── docs/
-├── LICENSE
 ├── myproject.Rproj
 ├── output/
 │   └── README.md
@@ -177,8 +168,9 @@ directories should never be removed from the workflowr project.
 implementing the data analyses for your project. It also contains a special R
 Markdown file, `index.Rmd`, that does not contain any R code, but will be used
 to generate `index.html`, the homepage for your website. In addition, this
-directory contains important configurations files like `_site.yml` and
-`chunks.R`. Do not delete `index.Rmd`, `_site.yml`, or `chunks.R`.
+directory contains the important configuration files `_site.yml`, which you can
+use to edit the theme, navigation bar, and other website aesthetics.. Do not
+delete `index.Rmd` or `_site.yml`.
 
 * `docs/`: This directory contains all the HTML files for your
 website. The HTML files are built from the R Markdown files in
@@ -187,6 +179,9 @@ are saved here. Each of these figures is saved according to the
 following pattern: `docs/figure/<insert Rmd filename>/<insert chunk
 name>-#.png`, where `#` corresponds to which of the plots the chunk
 generated (since one chunk can produce an arbitrary number of plots).
+
+The workflowr-specific configuration file is `_workflowr.yml`. It will apply the
+workflowr reproducibility checks consistently across all your R Markdown files.
 
 Also required is the RStudio project file, in this example `myproject.Rproj`. 
 Even if you are not using RStudio, do not delete this file because the workflowr
@@ -207,12 +202,9 @@ outputs generated from the code and data. For example, scripts in
 `code` that pre-process raw data files from `data/` should save the
 processed data files in `output/`.
 
-Other optional files included are `CITATION`, `LICENSE`, and `README.md`, which
-are to encourage you to include information on how to cite your work, the
-license that determines how others can reuse your work, and usage details,
-respectively. The `.Rprofile` file is a regular R script that is run once when
-the project is opened. It contains the call `library("workflowr")`, ensuring
-that workflowr is loaded automatically each time a workflowr-project is opened.
+The `.Rprofile` file is a regular R script that is run once when the project is
+opened. It contains the call `library("workflowr")`, ensuring that workflowr is
+loaded automatically each time a workflowr-project is opened.
 
 ## Build the website
 
@@ -241,10 +233,10 @@ analyses (e.g. accidentally sharing a variable with the same name across files).
 Lastly, it displays the website in the RStudio Viewer or default web browser.
 
 The default action of `wflow_build()` is to behave similar to a
-[Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE`
-is the default), i.e. it only builds R Markdown files that have been
-modified more recently than their corresponding HTML files. Thus if
-you run it again, no files are built (and no files are displayed).
+[Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE` is the
+default when no input files are provided), i.e. it only builds R Markdown files
+that have been modified more recently than their corresponding HTML files. Thus
+if you run it again, no files are built (and no files are displayed).
 
 ```{r wflow-build-no-action}
 wflow_build()
@@ -385,49 +377,34 @@ the GitHub Pages section of the Settings page, you can click on the URL there.
 ## Add a new analysis file
 
 Now that you have a functioning website, the next step is to start analyzing
-data! To start a new analysis called `first-analysis.Rmd`, use `wflow_open()`:
+data! Create a new R Markdown file, save it as `analysis/first-analysis.Rmd`,
+and open it in your preferred text editor (e.g. RStudio). For the purpose of
+this vignette, the code below creates a minimal file that only contains a title:
 
-```{r create-file, include=FALSE}
-# Because devtools_shims overrides system.file, wflow_open can't work when
-# building documentation with devtools::document. Thus create a file manually so
-# that it doesn't try to copy the template via rmarkdown::draft.
-writeLines(c("---",
-             "site: workflowr::wflow_site",
-             "---",
-             ""),
-           con = "analysis/first-analysis.Rmd")
+```{r create-file}
+cat(file = "analysis/first-analysis.Rmd",
+"---
+title: 'First analysis'
+---")
 ```
 
-```{r open-rmd, eval=FALSE}
-wflow_open("first-analysis.Rmd")
-```
+Now you are ready to start writing! Go ahead and add some example code. If you
+are using RStudio, press the Knit button to build the file and see a preview in
+the Viewer pane. Alternatively from the R console, you can run `wflow_build()`
+again (this function can be run from the base directory of your project or any
+subdirectory).
 
-```{r open-rmd-hidden, echo=FALSE}
-wflow_open("first-analysis.Rmd", open_file = FALSE)
-setwd("..")
-```
-
-This performs multiple actions:
-
-1. Creates a new file `analysis/first-analysis.Rmd` based on the workflowr R Markdown template (it doesn't overwrite the file if it already exists)
-2. Sets the working directory to the `analysis/` directory
-3. If you are using RStudio, opens the file for editing
-
-Now you are ready to start writing! At the top of the file, edit the author,
-title, and date. Where it says "Add your analysis here", add some code chunks to
-experiment. If you are using RStudio, press the Knit button to build the file
-and see a preview in the Viewer pane. Alternatively from the R console, you can
-run `wflow_build()` again (this function can be run from the base directory of
-your project or any subdirectory).
-
-Check out your new file `first-analysis.html`. Near the top you will see a line
-that says "Code version:" followed by an alphanumeric character string. This
-informs you which version of the code was used to create the file. It also
-automatically inserts the date when the HTML was built.
+Check out your new file `first-analysis.html`. Near the top you will see the
+workflowr reproducibility report. You can click on any of the bullet points to
+learn more about the check, why it's important, and whether or not the file
+passed or failed. You'll notice that the first check failed because the R
+Markdown file had uncommitted changes. This is OK now since the file is a draft.
+Once you are ready to publish it to share with others, you can use
+`wflow_publish()` to ensure that any changes to the R Markdown file are
+committed to the Git repository prior to generating the results.
 
 In order to make it easier to navigate to your new file, you can include a link
-to it on the main index page. First open `analysis/index.Rmd` (you can use your
-filesystem navigator or `wflow_open("index.Rmd")`). Second paste
+to it on the main index page. First open `analysis/index.Rmd`. Second paste
 the following line into `index.Rmd`:
 
 ```
@@ -447,42 +424,36 @@ HTML version of the file since this is what comprises the website. Click Knit
 Now run `wflow_status()` again. As expected, two files need attention.
 `index.Rmd` has status "Mod" for modified. This means it is a published file
 that has subsequently been modified. `first-analysis.Rmd` has status "Scr" for
-Scratch. This means not only it the HTML not published, but the R Markdown file
+Scratch. This means not only is the HTML not published, but the R Markdown file
 is not yet being tracked by Git.
 
-```{r wflow-status-newfile, echo=2}
-setwd("analysis")
+```{r wflow-status-newfile}
 wflow_status()
-setwd("..")
 ```
 
 To publish the new analysis and the updated index page, again use
 `wflow_publish()`:
 
 ```{r wflow-publish-newfile, eval=FALSE}
-# Assuming working directory is `analysis/`. Run getwd() to confirm
-wflow_publish(c("index.Rmd", "first-analysis.Rmd"),
+wflow_publish(c("analysis/index.Rmd", "analysis/first-analysis.Rmd"),
               "Add my first analysis")
 ```
 
 ```{r wflow-publish-newfile-hidden, echo=FALSE}
 # Don't want to actually open the website when building the vignette
-setwd("analysis")
-# Assuming working directory is `analysis/`. Run getwd() to confirm
-wflow_publish(c("index.Rmd", "first-analysis.Rmd"),
-              "Add my first analysis",
-              view = FALSE)
-setwd("..")
+wflow_publish(c("analysis/index.Rmd", "analysis/first-analysis.Rmd"),
+              "Add my first analysis", view = FALSE)
 ```
 
-Lastly, push the changes to GitHub with `wflow_git_push()` to deploy these
+Lastly, push the changes to GitHub with `wflow_git_push()`^[Alternatively you
+can run `git push` in the Terminal or use the RStudio Git Pane.] to deploy these
 latest changes to the website.
 
 ## The workflow
 
 This is the general workflow:
 
-1. Open a new or existing file with `wflow_open()`
+1. Open a new or existing R Markdown file in `analysis/`
 
 1. Perform your analysis in the R Markdown file (For RStudio users: to quickly
 develop the code I recommend executing the code in the R console via Ctrl-Enter
@@ -497,7 +468,8 @@ appear on the website (alternatively press the Knit button in RStudio)
 files in `code/`, `data/`, and `output/`), build the HTML files, and commit the
 HTML files
 
-1. Push the changes to GitHub with `wflow_git_push()`
+1. Push the changes to GitHub with `wflow_git_push()` (or `git push` in the
+Terminal)
 
 This ensures that the "Code version:" inserted into each HTML file corresponds
 to the state of the Git repository at the time the HTML was built.
@@ -509,11 +481,8 @@ their corresponding R Markdown files have been updated. To republish every HTML
 page, run `wflow_publish()` with `republish = TRUE`. This behavior is only
 previewed below by specifying `dry_run = TRUE`.
 
-```{r republish, echo=2:3}
-setwd("analysis")
-# Assuming working directory is `analysis/`. Run getwd() to confirm
-wflow_publish("_site.yml", republish = TRUE, dry_run = TRUE)
-setwd("..")
+```{r republish}
+wflow_publish("analysis/_site.yml", republish = TRUE, dry_run = TRUE)
 ```
 
 ## Next steps

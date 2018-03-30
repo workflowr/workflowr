@@ -41,7 +41,7 @@ test_that("wflow_view opens website.", {
 })
 
 test_rmd <- file.path(s$analysis, "first-analysis.Rmd")
-file.copy("files/workflowr-template.Rmd", test_rmd)
+file.copy("files/example.Rmd", test_rmd)
 # Expected html file
 test_html <- workflowr:::to_html(test_rmd, outdir = s$docs)
 s <- wflow_status(project = site_dir)

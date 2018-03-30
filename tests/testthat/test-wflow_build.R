@@ -182,7 +182,7 @@ test_that("Only locally built files add packages/variables to global environment
 
 test_that("wflow_build only builds files starting with _ when specified", {
   rmd_ignore <- file.path(s$analysis, "_ignore.Rmd")
-  file.copy(from = "files/workflowr-template.Rmd", to = rmd_ignore)
+  file.copy(from = "files/example.Rmd", to = rmd_ignore)
   html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
   # Ignored by default "make"-mode
   expect_silent(actual <- wflow_build(view = FALSE, project = site_dir))
@@ -264,7 +264,8 @@ test_that("wflow_build fails early for bad files", {
                "files cannot include a path to a directory")
   expect_error(wflow_build("", project = site_dir),
                "Not all files exist. Check the paths to the files")
-  expect_error(wflow_build(file.path(s$analysis, "chunks.R"), project = site_dir),
+  file.create(file.path(s$analysis, "invalid.R"))
+  expect_error(wflow_build(file.path(s$analysis, "invalid.R"), project = site_dir),
                "File extensions must be either Rmd or rmd.")
 })
 

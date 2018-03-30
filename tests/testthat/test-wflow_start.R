@@ -7,16 +7,9 @@ context("wflow_start")
 
 library("git2r")
 
-infrastructure_path <- system.file("infrastructure/",
-                                   package = "workflowr")
-project_files <- list.files(path = infrastructure_path, all.files = TRUE,
-                            recursive = TRUE)
+project_files <- names(workflowr:::templates)
 # Remove Rproj file since that is dynamically renamed
-project_files <- project_files[!grepl("Rproj", project_files)]
-# Add .Rprofile
-project_files <- c(project_files, ".Rprofile")
-
-git_files <- c(".git", ".gitignore")
+project_files <- project_files[project_files != "Rproj"]
 
 # Test wflow_start -------------------------------------------------------------
 
@@ -27,7 +20,7 @@ test_that("wflow_start copies files correctly", {
   capture.output(wflow_start(site_dir, change_wd = FALSE))
   site_dir <- workflowr:::absolute(site_dir)
 
-  for (f in c(project_files, git_files)) {
+  for (f in project_files) {
     expect_true(file.exists(file.path(site_dir, f)))
   }
   expect_true(file.exists(file.path(site_dir,
@@ -45,7 +38,7 @@ test_that("wflow_start adds name to analysis/_site.yml and README.md", {
   expect_identical(readme_contents[1], paste("#", basename(site_dir)))
 
   site_yaml_contents <- readLines(file.path(site_dir, "analysis", "_site.yml"))
-  expect_identical(site_yaml_contents[1], paste("name:", basename(site_dir)))
+  expect_identical(site_yaml_contents[1], sprintf('name: "%s"', basename(site_dir)))
 
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
@@ -61,7 +54,7 @@ test_that("wflow_start accepts custom name", {
   expect_identical(readme_contents[1], paste("#", project_name))
 
   site_yaml_contents <- readLines(file.path(site_dir, "analysis", "_site.yml"))
-  expect_identical(site_yaml_contents[1], paste("name:", project_name))
+  expect_identical(site_yaml_contents[1], sprintf('name: "%s"', project_name))
 
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
@@ -80,35 +73,24 @@ test_that("wflow_start creates docs/ directories and .nojekyll files", {
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("wflow_start creates Git infrastructure by default", {
+test_that("wflow_start initializes Git repository by default", {
 
   # start project in a tempdir
   site_dir <- tempfile()
   capture.output(wflow_start(site_dir, change_wd = FALSE))
   site_dir <- workflowr:::absolute(site_dir)
-  for (f in git_files) {
-    expect_true(file.exists(file.path(site_dir, f)))
-  }
+  expect_true(git2r::in_repository(site_dir))
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
-test_that("wflow_start git = FALSE removes only the Git files", {
+test_that("wflow_start git = FALSE does not initialize a Git repository", {
 
   # start project in a tempdir
   site_dir <- tempfile()
   capture.output(wflow_start(site_dir,
                              git = FALSE, change_wd = FALSE))
   site_dir <- workflowr:::absolute(site_dir)
-
-  for (f in project_files) {
-    expect_true(file.exists(file.path(site_dir, f)))
-  }
-  expect_true(file.exists(file.path(site_dir,
-                                    paste0(basename(site_dir), ".Rproj"))))
-  # Git files do not exist
-  for (f in git_files) {
-    expect_false(file.exists(file.path(site_dir, f)))
-  }
+  expect_false(git2r::in_repository(site_dir))
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
@@ -129,6 +111,7 @@ test_that("wflow_start commits all the project files", {
   expect_true(paste0(basename(site_dir), ".Rproj") %in% committed)
   # hidden files
   expect_true(".gitignore" %in% committed)
+  expect_true(".Rprofile" %in% committed)
   expect_true("analysis/.nojekyll" %in% committed)
   expect_true("docs/.nojekyll" %in% committed)
 
@@ -145,9 +128,8 @@ test_that("wflow_start does not overwrite files by default", {
   writeLines("original", con = readme_file)
   rprofile_file <- file.path(site_dir, ".Rprofile")
   writeLines("x <- 1", con = rprofile_file)
-  expect_warning(wflow_start(site_dir, existing = TRUE,
-                             change_wd = FALSE),
-                 "Set overwrite = TRUE to replace")
+  capture.output(wflow_start(site_dir, existing = TRUE,
+                             change_wd = FALSE))
 
   readme_contents <- readLines(readme_file)
   expect_true(readme_contents == "original")

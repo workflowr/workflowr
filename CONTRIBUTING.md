@@ -50,6 +50,7 @@ remaining directories are standard for R packages as described in the manual
 
 * Bump version in [DESCRIPTION](DESCRIPTION), [README.md](README.md), and
 [NEWS.md](NEWS.md)
+* Bump date in [DESCRIPTION](DESCRIPTION)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs
 * Run [document.R](document.R) to update Rd files, install the package locally,

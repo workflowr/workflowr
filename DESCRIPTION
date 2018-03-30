@@ -1,6 +1,7 @@
 Package: workflowr
 Type: Package
-Title: A workflow template for creating a research website
+Title: A framework for reproducible and collaborative data science
+Date: 2018-03-30
 Version: 0.11.0.9000
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),

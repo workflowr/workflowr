@@ -112,8 +112,8 @@ for this project are the R packages [git2r][], [knitr][], and [rmarkdown][].
 Please see the vignette [How the workflowr package works][vig-details] to learn
 about the software that makes workflowr possible.
 
-Workflowr is available under the [MIT license][MIT]. Please see the file
-`CITATION` for proper attribution.
+Workflowr is available under the [MIT license][MIT]. Please run
+`citation("workflowr")` for proper attribution.
 
 [adapr]: https://github.com/gelfondjal/adapr
 [analysis_framework]: https://github.com/jimhester/analysis_framework

@@ -1,11 +1,11 @@
 #' Manage remote Git repositories.
 #'
-#' \code{wflow_remotes} is a convenience function for managing remote
+#' \code{wflow_git_remote} is a convenience function for managing remote
 #' repositories from R. By default is displays the current remote repositories
 #' (analogous to \code{git remote -v}). It can add a remote, remove a remote, or
 #' update the URL for an existing remote.
 #'
-#' \code{wflow_remotes} constructs a URL to a remote GitHub repository based on
+#' \code{wflow_git_remote} constructs a URL to a remote GitHub repository based on
 #' the input GitHub username, GitHub repository name, and protocol (https or
 #' ssh). It can add a remote (\code{action = "add"}), remove a remote
 #' (\code{action = "remove"}), or update the URL for an existing remote
@@ -36,19 +36,19 @@
 #' @examples
 #' \dontrun{
 #' # Display the current remotes
-#' wflow_remotes()
+#' wflow_git_remote()
 #' # Add a remote called origin that points to the
 #' # GitHub repository example_repo owned by
 #' # the GitHub user example_user
-#' wflow_remotes("origin", "example_user", "example_repo")
+#' wflow_git_remote("origin", "example_user", "example_repo")
 #' # Remove the remote named upstream
-#' wflow_remotes("upstream", action = "remove")
+#' wflow_git_remote("upstream", action = "remove")
 #' # Change the protocol of the remote origin from https to ssh
-#' wflow_remotes("origin", "example_user", "example_repo", protocol = "ssh",
+#' wflow_git_remote("origin", "example_user", "example_repo", protocol = "ssh",
 #'               action = "set_url")
 #' }
 #' @export
-wflow_remotes <- function(remote = NULL, user = NULL, repo = NULL,
+wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
                           protocol = "https", action = "add",
                           verbose = TRUE, project = ".") {
   if (!(is.null(remote) | (is.character(remote) & length(remote) == 1)))

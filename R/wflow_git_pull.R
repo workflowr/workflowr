@@ -105,7 +105,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   p <- wflow_paths(error_git = TRUE, project = project)
   r <- git2r::repository(path = p$git)
   git_head <- git2r::head(r)
-  remote_avail <- wflow_remotes(verbose = FALSE, project = project)
+  remote_avail <- wflow_git_remote(verbose = FALSE, project = project)
 
   # Fail early if HEAD does not point to a branch
   check_branch(git_head)

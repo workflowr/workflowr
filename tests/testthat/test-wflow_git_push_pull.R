@@ -51,7 +51,7 @@ test_that("check_remote fails if remote is specified and no remote repositories"
 })
 
 # Add a remote
-remote_avail <- wflow_remotes("origin", "user", "repo", verbose = FALSE,
+remote_avail <- wflow_git_remote("origin", "user", "repo", verbose = FALSE,
                               project = site_dir)
 
 test_that("check_remote fails if remote is not one of the available repositories", {
@@ -99,7 +99,7 @@ test_that("determine_remote_and_branch uses the only remote if it is not specifi
 })
 
 # Add a second remote
-remote_avail <- wflow_remotes("upstream", "user2", "repo", verbose = FALSE,
+remote_avail <- wflow_git_remote("upstream", "user2", "repo", verbose = FALSE,
                               project = site_dir)
 
 test_that("determine_remote_and_branch uses origin if it is not specified and there are more than one available", {
@@ -108,9 +108,9 @@ test_that("determine_remote_and_branch uses origin if it is not specified and th
 })
 
 # Add a third remote and remove origin
-remote_avail <- wflow_remotes("num3", "user3", "repo", verbose = FALSE,
+remote_avail <- wflow_git_remote("num3", "user3", "repo", verbose = FALSE,
                               project = site_dir)
-remote_avail <- wflow_remotes("origin", action = "remove", verbose = FALSE,
+remote_avail <- wflow_git_remote("origin", action = "remove", verbose = FALSE,
                               project = site_dir)
 
 test_that("determine_remote_and_branch throws an error if remote not specified and multiple non-origin available", {

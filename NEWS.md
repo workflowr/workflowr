@@ -1,6 +1,8 @@
 # workflowr 0.11.0.9000
 
-* Improve API consistency: `wflow_commit()` -> `wflow_git_commit()`
+* Improve API consistency:
+    * `wflow_commit()` -> `wflow_git_commit()`
+    * `wflow_remotes()` -> `wflow_git_remote()`
 * Remove some less commonly used infrastructure files
 * Remove template infrastructure: `wflow_open()`, `wflow_convert()`, and
 `wflow_update()`

@@ -284,19 +284,19 @@ check_remote <- function(remote, remote_avail) {
   if (length(remote_avail) == 0) {
     if (is.null(remote)) {
       m <-
-        "No remote repositories are available. Run ?wflow_remotes to learn how
+        "No remote repositories are available. Run ?wflow_git_remote to learn how
         to configure this."
       stop(wrap(m), call. = FALSE)
     } else if (any(stringr::str_detect(remote, c("https", "git@")))) {
       m <-
         "Instead of specifying the URL to the remote repository, you can save
-        it as a remote. Run ?wflow_remotes for details."
+        it as a remote. Run ?wflow_git_remote for details."
       warning(wrap(m), call. = FALSE)
       return()
     } else {
       m <-
         "You have specifed a remote, but this remote repository has no remotes
-        set. Run ?wflow_remotes to learn how to configure this."
+        set. Run ?wflow_git_remote to learn how to configure this."
       stop(wrap(m), call. = FALSE)
     }
   }
@@ -305,7 +305,7 @@ check_remote <- function(remote, remote_avail) {
   if (!is.null(remote) && !(remote %in% names(remote_avail))) {
     m <-
       "The remote you specified is not one of the remotes available. Run
-      ?wflow_remotes to learn how to add this remote."
+      ?wflow_git_remote to learn how to add this remote."
     stop(wrap(m), call. = FALSE)
   }
 }
@@ -358,7 +358,7 @@ guess_remote <- function(repo) {
     m <-
       "Unable to guess which remote repository to use. Please specify the
       argument `remote`. To see all the remotes available, you can run
-      `wflow_remotes()`."
+      `wflow_git_remote()`."
     stop(wrap(m), call. = FALSE)
   }
 

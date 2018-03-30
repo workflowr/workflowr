@@ -51,5 +51,5 @@ reference:
       - wflow_git_config
       - wflow_git_pull
       - wflow_git_push
-      - wflow_remotes
+      - wflow_git_remote
       - wflow_remove

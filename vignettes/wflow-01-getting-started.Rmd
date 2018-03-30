@@ -341,11 +341,11 @@ same name for both your GitHub repository and the local directory on your
 computer.
 
 Next you need to tell your local Git repository about this new GitHub
-repository. Run the `wflow_remotes()` command below in the R console, replacing
+repository. Run the `wflow_git_remote()` command below in the R console, replacing
 "myname" with your GitHub username:
 
 ```{r wflow-remotes}
-wflow_remotes("origin", "myname", "myproject")
+wflow_git_remote("origin", "myname", "myproject")
 ```
 
 This creates the alias "origin" that points to your remote repository on

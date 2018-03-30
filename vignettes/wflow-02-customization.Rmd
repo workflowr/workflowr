@@ -129,10 +129,10 @@ After you create your SSH keys and add them to your GitHub account, you'll need
 to instruct your local Git repository to use the SSH protocol. For a
 hypothetical GitHub username of "myname" and GitHub repository of "myproject",
 you would change the remote "origin" (the default name by convention) using the
-function `wflow_remotes()`:
+function `wflow_git_remote()`:
 
 ```{r https-to-ssh}
-wflow_remotes(remote = "origin", user = "myname", repo = "myproject",
+wflow_git_remote(remote = "origin", user = "myname", repo = "myproject",
               protocol = "ssh", action = "set_url")
 ```
 

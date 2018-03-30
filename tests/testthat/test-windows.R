@@ -22,7 +22,7 @@ cwd <- getwd()
 # wflow_view
 # extract_commit
 # wflow_remove
-# wflow_remotes
+# wflow_git_remote
 
 # Test forward slash -----------------------------------------------------------
 
@@ -60,8 +60,8 @@ test_that("workflowr functions can handle / on Windows", {
   # wflow_remove
   return_remove <- wflow_remove(rmd_forw, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
-  # wflow_remotes
-  expect_silent(wflow_remotes(verbose = FALSE, project = tmp_forw))
+  # wflow_git_remote
+  expect_silent(wflow_git_remote(verbose = FALSE, project = tmp_forw))
 })
 
 # Test backslash -----------------------------------------------------------
@@ -100,8 +100,8 @@ test_that("workflowr functions can handle \\ on Windows", {
   # wflow_remove
   return_remove <- wflow_remove(rmd_back, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
-  # wflow_remotes
-  expect_silent(wflow_remotes(verbose = FALSE, project = tmp_back))
+  # wflow_git_remote
+  expect_silent(wflow_git_remote(verbose = FALSE, project = tmp_back))
 })
 
 # Test absolute ----------------------------------------------------------------

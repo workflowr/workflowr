@@ -24,6 +24,28 @@ branch name   | purpose
 master        | stable branch for end users
 dev           | development branch - submit Pull Requests here
 
+
+## More about this repository
+
+For the most part, I try to follow the guidelines from [R packages][r-pkg] by
+[Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the
+documentation is built with [roxygen2][], the online package documentation is
+created with [pkgdown][], continuous integration testing is performed for Linux
+and macOS by [Travis CI][travis] and for Windows by [AppVeyor][appveyor], and
+code coverage is calculated with [covr][] and [Codecov][].
+
+The template files used by `wflow_start()` to populate a new project are located
+in `inst/infrastructure/`. The R Markdown templates used by `wflow_open()` are
+located in `inst/rmarkdown/templates/`. The [RStudio project template][pt] is
+configured by `inst/rstudio/templates/project/wflow_start.dcf`. The repository
+contains the files `LICENSE` and `LICENSE.md` to both adhere to [R package
+conventions for defining the license][r-exts-licensing] and also to make the
+license clear in a more conventional manner (suggestions for improvement
+welcome). `document.R` is a convenience script for regenerating the
+documentation. `build.sh` is a convenience script for running `R CMD check`. The
+remaining directories are standard for R packages as described in the manual
+[Writing R Extensions][r-exts].
+
 ## Release checklist
 
 * Bump version in [DESCRIPTION](DESCRIPTION), [README.md](README.md), and

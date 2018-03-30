@@ -108,6 +108,75 @@ To perform Git commands, workflowr uses the R package [git2r][], which is an API
 [libgit2]: https://libgit2.github.com/
 [rstudio-features]: https://www.rstudio.com/products/rstudio/features/
 
+## Background and related work
+
+There is lots of interest and development around reproducible research with R. 
+Projects like workflowr are possible due to two key developments. First, the R 
+packages [knitr][] and [rmarkdown][] have made it easy for any R programmer to 
+generate reports that combine text, code, output, and figures. Second, the 
+version control software [Git][], the Git hosting site [GitHub][gh], and the 
+static website hosting service [GitHub Pages][] have made it easy to share not 
+only source code but also static HTML files (i.e. no need to purchase a domain
+name, setup a server, etc).
+
+My first attempt at sharing a reproducible project online was [singleCellSeq][].
+Basically, I started by copying the documentation website of [rmarkdown][] and 
+added some customizations to organize the generated figures and to insert the 
+status of the Git repository directly into the HTML pages. The workflowr R 
+package is my attempt to simplify my previous workflow and provide helper 
+functions so that any researcher can take advantage of this workflow.
+
+Workflowr encompasses multiple functions: 1) provides a project template, 2)
+version controls the R Markdown and HTML files, and 3) builds a website. 
+Furthermore, it provides R functions to perform each of these steps. There are 
+many other related works that provide similar functionality. Some are templates 
+to be copied, some are R packages, and some involve more complex software (e.g. 
+static blog software). Depending on your use case, one of the related works
+listed below may better suit your needs. Please check them out!
+
+* **Project template hosted on GitHub:**
+    * [analysis_framework][]
+    * [cboettig/template][]
+    * [knitr-jekyll][]
+    * [Pakillo/template][]
+    * [rddj-template][]
+    * [researchcompendium][]
+    * [rmd-notebook][]
+    * [rr-init][]
+
+* **Project template created via R package:**
+    * [adapr][]
+    * [makeProject][]
+    * [manuscriptPackage][]
+    * [prodigenr][]
+    * [pRojects][]
+    * [ProjectTemplate][]
+    * [rrtools][]
+
+* **Create websites from R Markdown files:**
+    * [blogdown][]
+    * [blogR][]
+    * [bookdown][]
+    * [knowledge-repo][]
+    * [lnraw][]
+    * [pkgdown][]
+    * [poirot][]
+    * [rmarkdown][]
+    * [rsmith][]
+    * [samantha][]
+
+* **Guides for reproducible research with R:**
+    * [CRAN Task View: Reproducible Research][cran-rr]
+    * [rmflight][]: [Analyses as Packages][rmflight-post]
+    * [rOpenSci Guide to Reproducible Research][rOpenSci]
+
+* **More specialized frameworks**:
+    * [exreport][]
+    * [zoon][]
+
+If you know of other related works I should include, please send a pull request
+to the "dev" branch.
+
 ## Further reading
 
 * How the code, results, and figures are executed and displayed can be customized using [knitr chunk and package options](http://yihui.name/knitr/options/)

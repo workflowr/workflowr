@@ -228,7 +228,7 @@ print.wflow_status <- function(x, ...) {
 
 To publish your changes as part of your website, use `wflow_publish()`.
 
-To commit your changes without publishing them yet, use `wflow_commit()`.",
+To commit your changes without publishing them yet, use `wflow_git_commit()`.",
     paste(key, collapse = ", "))
     cat("\n")
     cat(wrap(m))

@@ -62,7 +62,7 @@
 #' @param dry_run logical (default: FALSE). List the files to be built, without
 #'   building them.
 #'
-#' @inheritParams wflow_commit
+#' @inheritParams wflow_git_commit
 #'
 #' @return An object of class \code{wflow_build}, which is a list with the
 #'   following elements:

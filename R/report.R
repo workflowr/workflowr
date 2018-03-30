@@ -262,7 +262,7 @@ these results were generated.
 <br><br>
 Note that you need to be careful to ensure that all relevant files for the
 analysis have been committed to Git prior to generating the results (you can
-use <code>wflow_publish</code> or <code>wflow_commit</code>). workflowr only
+use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only
 checks the R Markdown file, but you know if there are other scripts or data
 files that it depends on. Below is the status of the Git repository when the
 results were generated:

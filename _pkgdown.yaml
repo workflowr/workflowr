@@ -47,7 +47,7 @@ reference:
   - title: "Managing Git and GitHub"
     desc: "Functions to perform local Git commands"
     contents:
-      - wflow_commit
+      - wflow_git_commit
       - wflow_git_config
       - wflow_git_pull
       - wflow_git_push

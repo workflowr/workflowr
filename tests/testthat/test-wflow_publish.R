@@ -59,12 +59,12 @@ test_that("wflow_publish can `republish`", {
 
 # Commit decoy file. Should not be affected by `update = TRUE` b/c it has not
 # been published.
-wflow_commit(rmd_decoy, "Commit decoy Rmd", project = site_dir)
+wflow_git_commit(rmd_decoy, "Commit decoy Rmd", project = site_dir)
 
 test_that("wflow_publish can `update`", {
   # Edit and manually commit a published Rmd file, then use `update` to publish.
   cat("edit", file = rmd[1], append = TRUE)
-  wflow_commit(rmd[1], "Draft edit", project = site_dir)
+  wflow_git_commit(rmd[1], "Draft edit", project = site_dir)
   # Update
   expect_message(o <- wflow_publish(update = TRUE, view = FALSE, project = site_dir),
                  rmd[1])
@@ -74,7 +74,7 @@ test_that("wflow_publish can `update`", {
   expect_false(html_decoy %in% o$step3$commit_files)
 })
 
-test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_commit", {
+test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_git_commit", {
   f_test <- file.path(s$root, "test.txt")
   file.create(f_test)
   expect_silent(o <- wflow_publish(f_test, view = FALSE, project = site_dir))

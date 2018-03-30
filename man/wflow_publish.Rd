@@ -53,13 +53,13 @@ Returns an object of class \code{wflow_publish}, which is a list with
 
   \itemize{
 
-  \item \bold{step1}: An object of class \code{wflow_commit} from the first
+  \item \bold{step1}: An object of class \code{wflow_git_commit} from the first
   step of committing the analysis files.
 
   \item \bold{step2}: An object of class \code{wflow_build} from the second
   step of building the HTML files.
 
-  \item \bold{step3}: An object of class \code{wflow_commit} from the third
+  \item \bold{step3}: An object of class \code{wflow_git_commit} from the third
   step of committing the HTML files.
 
   }
@@ -95,5 +95,5 @@ wflow_publish("analysis/_site.yml", "Informative commit message",
 
 }
 \seealso{
-\code{\link{wflow_commit}}, \code{\link{wflow_build}}
+\code{\link{wflow_git_commit}}, \code{\link{wflow_build}}
 }

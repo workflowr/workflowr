@@ -60,5 +60,5 @@ wflow_remove(c("analysis/file.Rmd", "output/small-data.txt"),
 
 }
 \seealso{
-\code{\link{wflow_commit}}
+\code{\link{wflow_git_commit}}
 }

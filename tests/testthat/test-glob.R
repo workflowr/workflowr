@@ -104,10 +104,10 @@ test_that("wflow_build accepts file globs", {
                "Invalid file glob:")
 })
 
-test_that("wflow_commit accepts file globs", {
-  actual <- wflow_commit(rmd_glob, dry_run = TRUE, project = site_dir)
+test_that("wflow_git_commit accepts file globs", {
+  actual <- wflow_git_commit(rmd_glob, dry_run = TRUE, project = site_dir)
   expect_identical(actual$files, expected)
-  expect_error(wflow_commit(file.path(s$analysis, "bad*blob.Rmd"),
+  expect_error(wflow_git_commit(file.path(s$analysis, "bad*blob.Rmd"),
                             dry_run = TRUE, project = site_dir),
                "Invalid file glob:")
 })

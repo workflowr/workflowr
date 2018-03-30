@@ -139,7 +139,7 @@ get_recent_commit_time <- function(repo, f) {
 # is found first, then it is up-to-date (return FALSE).
 #
 # @seealso \code{\link{obtain_files_in_commit}},
-#   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_commit}}
+#   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_git_commit}}
 decide_to_render <- function(repo, log, rmd) {
   stopifnot(class(repo) == "git_repository",
             class(log) == "list",

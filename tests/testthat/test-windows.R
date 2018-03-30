@@ -16,7 +16,7 @@ cwd <- getwd()
 # workflowr user-facing functions:
 # wflow_start
 # wflow_build
-# wflow_commit
+# wflow_git_commit
 # wflow_publish
 # wflow_status
 # wflow_view
@@ -41,8 +41,8 @@ test_that("workflowr functions can handle / on Windows", {
   utils::capture.output(return_build <- wflow_build(rmd_forw, view = FALSE,
                                                     log_dir = log_forw))
   expect_identical(return_build$files, rmd_forw)
-  # wflow_commit
-  return_commit <- wflow_commit(rmd_forw, dry_run = TRUE)
+  # wflow_git_commit
+  return_commit <- wflow_git_commit(rmd_forw, dry_run = TRUE)
   expect_identical(return_commit$files, rmd_forw)
   # wflow_publish
   return_publish <- wflow_publish(rmd_forw, dry_run = TRUE)
@@ -81,8 +81,8 @@ test_that("workflowr functions can handle \\ on Windows", {
   utils::capture.output(return_build <- wflow_build(rmd_back, view = FALSE,
                                                     log_dir = log_back))
   expect_identical(return_build$files, rmd_forw)
-  # wflow_commit
-  return_commit <- wflow_commit(rmd_back, dry_run = TRUE)
+  # wflow_git_commit
+  return_commit <- wflow_git_commit(rmd_back, dry_run = TRUE)
   expect_identical(return_commit$files, rmd_forw)
   # wflow_publish
   return_publish <- wflow_publish(rmd_back, dry_run = TRUE)

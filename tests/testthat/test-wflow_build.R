@@ -103,7 +103,7 @@ suppressMessages(wflow_publish(files = rmd, view = FALSE, project = site_dir))
 
 test_that("wflow_build update builds published files with modifications", {
   cat("edit", file = rmd[1], append = TRUE)
-  wflow_commit(rmd[1], project = site_dir)
+  wflow_git_commit(rmd[1], project = site_dir)
   expect_silent(actual <- wflow_build(update = TRUE, dry_run = TRUE,
                                       project = site_dir))
   expect_identical(actual$built, rmd[1])

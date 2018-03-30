@@ -10,7 +10,7 @@
 #'   Git repository is present).
 #' @param dry_run logical (default: FALSE). Preview the files to be removed but
 #'   do not actually remove them.
-#' @inheritParams wflow_commit
+#' @inheritParams wflow_git_commit
 #'
 #' @return An object of class \code{wflow_remove}, which is a list with the
 #'   following elements:
@@ -31,7 +31,7 @@
 #'
 #'   }
 #'
-#' @seealso \code{\link{wflow_commit}}
+#' @seealso \code{\link{wflow_git_commit}}
 #'
 #' @examples
 #' \dontrun{

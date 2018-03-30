@@ -1,12 +1,12 @@
 #' Commit files
 #'
-#' \code{wflow_commit} adds and commits files with Git. This is a convenience
+#' \code{wflow_git_commit} adds and commits files with Git. This is a convenience
 #' function to run Git commands from the R console instead of the shell. For
 #' most use cases, you should use \code{\link{wflow_publish}} instead, which
-#' calls \code{wflow_commit} and then subsequently also builds and commits the
+#' calls \code{wflow_git_commit} and then subsequently also builds and commits the
 #' website files.
 #'
-#' Some potential use cases for \code{wflow_commit}:
+#' Some potential use cases for \code{wflow_git_commit}:
 #'
 #' \itemize{
 #'
@@ -22,7 +22,7 @@
 #'
 #' }
 #'
-#' Under the hood, \code{wflow_commit} is a wrapper for \code{\link[git2r]{add}}
+#' Under the hood, \code{wflow_git_commit} is a wrapper for \code{\link[git2r]{add}}
 #' and \code{\link[git2r]{commit}} from the package \link{git2r}.
 #'
 #' @param files character (default: NULL). Files to be added and committed with
@@ -39,7 +39,7 @@
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return An object of class \code{wflow_commit}, which is a list with the
+#' @return An object of class \code{wflow_git_commit}, which is a list with the
 #'   following elements:
 #'
 #' \itemize{
@@ -68,16 +68,16 @@
 #' \dontrun{
 #'
 #' # Commit a single file
-#' wflow_commit("analysis/file.Rmd", "Add new analysis")
+#' wflow_git_commit("analysis/file.Rmd", "Add new analysis")
 #' # Commit multiple files
-#' wflow_commit(c("code/process-data.sh", "output/small-data.txt"),
+#' wflow_git_commit(c("code/process-data.sh", "output/small-data.txt"),
 #'              "Process data set")
 #' # Add and commit all tracked files, similar to `git commit -a`
-#' wflow_commit(message = "Lots of changes", all = TRUE)
+#' wflow_git_commit(message = "Lots of changes", all = TRUE)
 #' }
 #'
 #' @export
-wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
+wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
                          force = FALSE, dry_run = FALSE, project = ".") {
 
   if (!is.null(files)) {
@@ -134,19 +134,19 @@ wflow_commit <- function(files = NULL, message = NULL, all = FALSE,
       commandline if you really want to commit these files."))
   }
 
-  wflow_commit_(files = files, message = message, all = all,
+  wflow_git_commit_(files = files, message = message, all = all,
                 force = force, dry_run = dry_run, project = project)
 }
 
-# Internal function that performs add/commit. Called by wflow_commit.
+# Internal function that performs add/commit. Called by wflow_git_commit.
 #
 # The primary motivation for having a separate internal function that is called
-# by the user facing `wflow_commit` is so that `wflow_publish` can bypass the
+# by the user facing `wflow_git_commit` is so that `wflow_publish` can bypass the
 # input checks in order to run Step 3 to publish the website files. In a dry
 # run, some of the files may not yet be built (which would cause an error).
 # Also, not every Rmd file will create output figures, but it's easier to just
 # attempt to add figures for every file.
-wflow_commit_ <- function(files = files, message = message, all = all,
+wflow_git_commit_ <- function(files = files, message = message, all = all,
                           force = force, dry_run = dry_run, project = project) {
 
   # Obtain workflowr status
@@ -183,7 +183,7 @@ wflow_commit_ <- function(files = files, message = message, all = all,
 
   o <- list(files = files, message = message, all = all, force = force,
             dry_run = dry_run)
-  class(o) <- "wflow_commit"
+  class(o) <- "wflow_git_commit"
   if (!dry_run) {
     commit_files <- obtain_files_in_commit(r, commit)
     commit_files <- paste0(git2r::workdir(r), commit_files)
@@ -195,8 +195,8 @@ wflow_commit_ <- function(files = files, message = message, all = all,
 }
 
 #' @export
-print.wflow_commit <- function(x, ...) {
-  cat("Summary from wflow_commit\n\n")
+print.wflow_git_commit <- function(x, ...) {
+  cat("Summary from wflow_git_commit\n\n")
   if (x$dry_run) {
     cat(wrap("The following would be attempted:"), "\n\n")
   } else {

@@ -103,8 +103,8 @@ To perform Git commands, workflowr uses the R package [git2r][], which is an API
 [RStudio, Inc.]: https://www.rstudio.com/
 [RStudio]: https://www.rstudio.com/products/rstudio/
 [rstudioapi]: https://github.com/rstudio/rstudioapi
-[rprojroot]: https://krlmlr.github.io/rprojroot/
-[git2r]: https://cran.r-project.org/web/packages/git2r/index.html
+[rprojroot]: https://cran.r-project.org/package=rprojroot
+[git2r]: https://cran.r-project.org/package=git2r
 [libgit2]: https://libgit2.github.com/
 [rstudio-features]: https://www.rstudio.com/products/rstudio/features/
 

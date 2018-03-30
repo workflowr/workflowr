@@ -1,6 +1,6 @@
 Package: workflowr
 Type: Package
-Title: A framework for reproducible and collaborative data science
+Title: A Framework for Reproducible and Collaborative Data Science
 Date: 2018-03-30
 Version: 0.11.0.9000
 Authors@R: c(

@@ -2,15 +2,9 @@ Binding: wflow_start
 Title: workflowr project
 Subtitle: RStudio interface to wflow_start()
 Caption: Start a workflowr project
-OpenFiles: README.md, analysis/index.Rmd, analysis/about.Rmd, analysis/license.Rmd
-
-Parameter: name
-Widget: TextInput
-Label: Project name
-Position: left
+OpenFiles: README.md, analysis/index.Rmd, _workflowr.yml, analysis/_site.yml
 
 Parameter: git
 Widget: CheckboxInput
 Label: Use Git for version control
 Default: On
-Position: right

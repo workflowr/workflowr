@@ -156,3 +156,24 @@ test_that("authenticate_git fails for unknown protocol", {
                                 remote_avail = remote_avail),
                "The URL to the remote repository is using an unknown protocol")
 })
+
+
+# Test wflow_git_push and wflow_git_pull ---------------------------------------
+
+# Add back "origin"
+wflow_git_remote("origin", "user", "repo", verbose = FALSE, project = site_dir)
+
+test_that("wflow_git_push can run in dry-run mode", {
+  expect_silent(result <- wflow_git_push(dry_run = TRUE, project = site_dir))
+  expect_identical(result$remote, "origin")
+  expect_identical(result$branch, "master")
+  expect_identical(result$force, FALSE)
+  expect_identical(result$dry_run, TRUE)
+})
+
+test_that("wflow_git_pull can run in dry-run mode", {
+  expect_silent(result <- wflow_git_pull(dry_run = TRUE, project = site_dir))
+  expect_identical(result$remote, "origin")
+  expect_identical(result$branch, "master")
+  expect_identical(result$dry_run, TRUE)
+})

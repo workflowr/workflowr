@@ -111,11 +111,15 @@ get_versions <- function(input, output_dir, blobs, r, github) {
   if (is.na(github)) {
     blobs_file$Version <- shorten_sha(blobs_file$Version)
   } else {
-    html_preview <- "https://htmlpreview.github.io/?"
+    # rawgit URL is https://cdn.rawgit.com/user/repo/commit/filepath
+    # https://github.com/rgrove/rawgit/blob/master/FAQ.md
+    rawgit <- "https://cdn.rawgit.com"
     blobs_file$Version <- ifelse(blobs_file$File == "html",
                                  # HTML preview URL
-                                 sprintf("<a href=\"%s%s/blob/%s/%s\" target=\"_blank\">%s</a>",
-                                         html_preview, github, blobs_file$Version,
+                                 sprintf("<a href=\"%s/%s/%s/%s\" target=\"_blank\">%s</a>",
+                                         rawgit,
+                                         stringr::str_replace(github, "https://github.com/", ""),
+                                         blobs_file$Version,
                                          git_html, shorten_sha(blobs_file$Version)),
                                  # R Markdown GitHub URL
                                  sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",

@@ -37,7 +37,10 @@ built, it is opened. If more than one file is built, the main index page is
 opened. Not applicable if no files are built or if \code{dry_run = TRUE}.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
-file. Passed to \code{\link{set.seed}}.}
+file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
+here has no effect if you are using \code{\link{wflow_html}} as the output
+format defined in \code{_site.yml}. This argument is for backwards
+compatibility with previous versions of workflowr.}
 
 \item{log_dir}{character (default: NULL). The directory to save log files
 from building files. It will be created if necessary and ignored if

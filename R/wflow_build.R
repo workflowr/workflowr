@@ -50,7 +50,10 @@
 #'   built, it is opened. If more than one file is built, the main index page is
 #'   opened. Not applicable if no files are built or if \code{dry_run = TRUE}.
 #' @param seed numeric (default: 12345). The seed to set before building each
-#'   file. Passed to \code{\link{set.seed}}.
+#'   file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
+#'   here has no effect if you are using \code{\link{wflow_html}} as the output
+#'   format defined in \code{_site.yml}. This argument is for backwards
+#'   compatibility with previous versions of workflowr.
 #' @param log_dir character (default: NULL). The directory to save log files
 #'   from building files. It will be created if necessary and ignored if
 #'   \code{local = TRUE}. The default is to use a directory named
@@ -269,10 +272,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
 print.wflow_build <- function(x, ...) {
   cat("Summary from wflow_build\n\n")
   cat("Settings:\n")
-  cat("  seed:", x$seed)
-  if (x$make) cat(", make: TRUE")
-  if (x$update) cat(", update: TRUE")
-  if (x$republish) cat(", republish: TRUE")
+  if (x$make) cat(" make: TRUE")
+  if (x$update) cat(" update: TRUE")
+  if (x$republish) cat(" republish: TRUE")
   cat("\n\n")
 
   if (length(x$built) == 0) {

@@ -7,6 +7,8 @@
 * Remove template infrastructure: `wflow_open()`, `wflow_convert()`, and
 `wflow_update()`
 * Remove `create_links_page()` (not widely used, if at all)
+* Note in documentation that setting the seed via `wflow_build()` or
+`wflow_publish()` is ignored if using `wflow_html()`.
 
 # workflowr 0.11.0
 

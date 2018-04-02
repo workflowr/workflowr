@@ -151,6 +151,7 @@ listed below may better suit your needs. Please check them out!
     * [prodigenr][]
     * [pRojects][]
     * [ProjectTemplate][]
+    * [represtools][]
     * [rrtools][]
 
 * **Create websites from R Markdown files:**
@@ -186,3 +187,5 @@ to the "dev" branch.
 * The many [features][rstudio-features] of the [RStudio][] IDE
 
 * [Directions](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) to publish a [GitHub Pages][] site using the `docs/` subdirectory
+
+[represtools]: https://github.com/PirateGrunt/represtools

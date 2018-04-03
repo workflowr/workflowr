@@ -4,10 +4,9 @@
 \alias{wflow_build}
 \title{Build the site}
 \usage{
-wflow_build(files = NULL, make = is.null(files), scratch = FALSE,
-  modified = FALSE, update = FALSE, republish = FALSE,
-  view = interactive(), seed = 12345, log_dir = NULL, local = FALSE,
-  dry_run = FALSE, project = ".")
+wflow_build(files = NULL, make = is.null(files), update = FALSE,
+  republish = FALSE, view = interactive(), seed = 12345, log_dir = NULL,
+  local = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in
@@ -21,13 +20,6 @@ TRUE}, build any files that have been modified more recently than their
 corresponding HTML files (inspired by
 \href{https://www.gnu.org/software/make/}{GNU Make}). This is the default
 action if no files are specified.}
-
-\item{scratch}{logical (default: FALSE). Build any files that have not been
-committed to the Git repo (labeled "Scratch" by \code{\link{wflow_status}}).}
-
-\item{modified}{logical (default: FALSE). Build any files that have been
-committed more recently than their corresponding HTML file (labeled
-"Modified" by \code{\link{wflow_status}}).}
 
 \item{update}{logical (default: FALSE). Build any files that have been
 committed more recently than their corresponding HTML files (and do not
@@ -77,10 +69,6 @@ An object of class \code{wflow_build}, which is a list with the
 
    \item \bold{make}: The input argument \code{make}
 
-   \item \bold{scratch}: The input argument \code{scratch}
-
-   \item \bold{modified}: The input argument \code{modified}
-
    \item \bold{update}: The input argument \code{update}
 
    \item \bold{republish}: The input argument \code{republish}
@@ -119,13 +107,6 @@ which files to build. In other words, if multiple options are set to
 \item If \code{make = TRUE}, all files which have been modified more recently
 than their corresponding HTML files will be built.
 
-\item If \code{scratch = TRUE}, all files that have \bold{not} been committed
-to the Git repo will be built. This option ignores the file modification
-times.
-
-\item If \code{modified = TRUE}, all files which have been committed more
-recently than their corresponding HTML file will be built.
-
 \item If \code{update = TRUE}, all files which have been committed more
 recently than their corresponding HTML files will be built. However, files
 which currently have staged or unstaged changes will be ignored.
@@ -133,12 +114,6 @@ which currently have staged or unstaged changes will be ignored.
 \item If \code{republish = TRUE}, all published files will be rebuilt.
 
 }
-
-The argument \code{make} is the most useful for interactively performing your
-analysis. The other options are more useful when you are ready to publish
-specific files with \code{\link{wflow_publish}} (which passes these arguments
-to \code{wflow_build}. Run \code{\link{wflow_status}} to see which files are
-labeled as "scratch" or "modified".
 
 Under the hood, \code{wflow_build} is a wrapper for
 \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
@@ -158,11 +133,6 @@ wflow_build("file*.Rmd")
 wflow_build(republish = TRUE)
 # Build file.Rmd and any files which have been modified
 wflow_build("file.Rmd", make = TRUE)
-# Build "scratch" files, i.e. those that have not been committed to Git
-wflow_build(make = FALSE, scratch = TRUE)
-# Build "scratch" files, i.e. those that have not been committed to Git
-wflow_build(make = FALSE, modified = TRUE)
-
 }
 
 }

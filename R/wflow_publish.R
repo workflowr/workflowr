@@ -62,8 +62,6 @@ wflow_publish <- function(
   all = FALSE,
   force = FALSE,
   # args to wflow_build
-  scratch = FALSE,
-  modified = FALSE,
   update = FALSE,
   republish = FALSE,
   view = interactive(),
@@ -103,12 +101,6 @@ wflow_publish <- function(
 
   if (!(is.logical(force) && length(force) == 1))
     stop("force must be a one-element logical vector")
-
-  if (!(is.logical(scratch) && length(scratch) == 1))
-    stop("scratch must be a one-element logical vector")
-
-  if (!(is.logical(modified) && length(modified) == 1))
-    stop("modified must be a one-element logical vector")
 
   if (!(is.logical(update) && length(update) == 1))
     stop("update must be a one-element logical vector")
@@ -208,7 +200,6 @@ wflow_publish <- function(
     file.copy(from = file.path(s1$docs, "."), to = docs_backup,
               recursive = TRUE, copy.date = TRUE)
     step2 <- wflow_build(files = files_to_build, make = FALSE,
-                         scratch = scratch, modified = modified,
                          update = update, republish = republish,
                          view = view, seed = seed,
                          local = FALSE, dry_run = dry_run, project = project)

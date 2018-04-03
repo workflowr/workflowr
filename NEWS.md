@@ -9,8 +9,6 @@
 * Remove `create_links_page()` (not widely used, if at all)
 * Note in documentation that setting the seed via `wflow_build()` or
 `wflow_publish()` is ignored if using `wflow_html()`.
-* Add arguments `scratch` and `modified` to `wflow_build()`. These corresponds
-to the labels returned by `wflow_status()`.
 
 # workflowr 0.11.0
 

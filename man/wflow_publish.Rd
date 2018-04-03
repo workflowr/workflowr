@@ -5,8 +5,8 @@
 \title{Publish the site}
 \usage{
 wflow_publish(files = NULL, message = NULL, all = FALSE, force = FALSE,
-  scratch = FALSE, modified = FALSE, update = FALSE, republish = FALSE,
-  view = interactive(), seed = 12345, dry_run = FALSE, project = ".")
+  update = FALSE, republish = FALSE, view = interactive(), seed = 12345,
+  dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to be added and committed with
@@ -21,13 +21,6 @@ modified and deleted. Equivalent to: \code{git commit -a}}
 
 \item{force}{logical (default: FALSE). Allow adding otherwise ignored files.
 Equivalent to: \code{git add -f}}
-
-\item{scratch}{logical (default: FALSE). Build any files that have not been
-committed to the Git repo (labeled "Scratch" by \code{\link{wflow_status}}).}
-
-\item{modified}{logical (default: FALSE). Build any files that have been
-committed more recently than their corresponding HTML file (labeled
-"Modified" by \code{\link{wflow_status}}).}
 
 \item{update}{logical (default: FALSE). Build any files that have been
 committed more recently than their corresponding HTML files (and do not

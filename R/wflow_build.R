@@ -16,13 +16,6 @@
 #' \item If \code{make = TRUE}, all files which have been modified more recently
 #' than their corresponding HTML files will be built.
 #'
-#' \item If \code{scratch = TRUE}, all files that have \bold{not} been committed
-#' to the Git repo will be built. This option ignores the file modification
-#' times.
-#'
-#' \item If \code{modified = TRUE}, all files which have been committed more
-#' recently than their corresponding HTML file will be built.
-#'
 #' \item If \code{update = TRUE}, all files which have been committed more
 #' recently than their corresponding HTML files will be built. However, files
 #' which currently have staged or unstaged changes will be ignored.
@@ -30,12 +23,6 @@
 #' \item If \code{republish = TRUE}, all published files will be rebuilt.
 #'
 #' }
-#'
-#' The argument \code{make} is the most useful for interactively performing your
-#' analysis. The other options are more useful when you are ready to publish
-#' specific files with \code{\link{wflow_publish}} (which passes these arguments
-#' to \code{wflow_build}. Run \code{\link{wflow_status}} to see which files are
-#' labeled as "scratch" or "modified".
 #'
 #' Under the hood, \code{wflow_build} is a wrapper for
 #' \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}.
@@ -50,11 +37,6 @@
 #'   corresponding HTML files (inspired by
 #'   \href{https://www.gnu.org/software/make/}{GNU Make}). This is the default
 #'   action if no files are specified.
-#' @param scratch logical (default: FALSE). Build any files that have not been
-#'   committed to the Git repo (labeled "Scratch" by \code{\link{wflow_status}}).
-#' @param modified logical (default: FALSE). Build any files that have been
-#'   committed more recently than their corresponding HTML file (labeled
-#'   "Modified" by \code{\link{wflow_status}}).
 #' @param update logical (default: FALSE). Build any files that have been
 #'   committed more recently than their corresponding HTML files (and do not
 #'   have any unstaged or staged changes). This ensures that the commit version
@@ -94,10 +76,6 @@
 #'
 #'    \item \bold{make}: The input argument \code{make}
 #'
-#'    \item \bold{scratch}: The input argument \code{scratch}
-#'
-#'    \item \bold{modified}: The input argument \code{modified}
-#'
 #'    \item \bold{update}: The input argument \code{update}
 #'
 #'    \item \bold{republish}: The input argument \code{republish}
@@ -135,17 +113,11 @@
 #' wflow_build(republish = TRUE)
 #' # Build file.Rmd and any files which have been modified
 #' wflow_build("file.Rmd", make = TRUE)
-#' # Build "scratch" files, i.e. those that have not been committed to Git
-#' wflow_build(make = FALSE, scratch = TRUE)
-#' # Build "scratch" files, i.e. those that have not been committed to Git
-#' wflow_build(make = FALSE, modified = TRUE)
-#'
 #' }
 #'
 #' @import rmarkdown
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
-                        scratch = FALSE, modified = FALSE,
                         update = FALSE, republish = FALSE, view = interactive(),
                         seed = 12345, log_dir = NULL,
                         local = FALSE, dry_run = FALSE, project = ".") {
@@ -171,12 +143,6 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!(is.logical(make) && length(make) == 1))
     stop("make must be a one-element logical vector")
-
-  if (!(is.logical(scratch) && length(scratch) == 1))
-    stop("scratch must be a one-element logical vector")
-
-  if (!(is.logical(modified) && length(modified) == 1))
-    stop("modified must be a one-element logical vector")
 
   if (!(is.logical(update) && length(update) == 1))
     stop("update must be a one-element logical vector")
@@ -240,16 +206,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
     files_to_build <- union(files_to_build, files_make)
   }
 
-  if (scratch || modified || update || republish) {
+  if (update || republish) {
     s <- wflow_status(project = project)
-    if (scratch) {
-      files_scratch <- rownames(s$status)[s$status$scratch]
-      files_to_build <- union(files_to_build, files_scratch)
-    }
-    if (modified) {
-      files_modified <- rownames(s$status)[s$status$modified]
-      files_to_build <- union(files_to_build, files_modified)
-    }
     if (update) {
       files_update <- rownames(s$status)[s$status$mod_committed &
                                         !s$status$mod_unstaged &
@@ -315,8 +273,6 @@ print.wflow_build <- function(x, ...) {
   cat("Summary from wflow_build\n\n")
   cat("Settings:\n")
   if (x$make) cat(" make: TRUE")
-    if (x$scratch) cat(" scratch: TRUE")
-    if (x$modified) cat(" modified: TRUE")
   if (x$update) cat(" update: TRUE")
   if (x$republish) cat(" republish: TRUE")
   cat("\n\n")

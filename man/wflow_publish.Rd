@@ -29,8 +29,9 @@ ID inserted into the HTML corresponds to the exact version of the source
 file that was used to produce it.}
 
 \item{republish}{logical (default: FALSE). Build all published R Markdown
-files. Useful for site-wide changes like updating the theme, navigation
-bar, or any other setting in \code{_site.yml}.}
+files (that do not have any unstaged or staged changes). Useful for
+site-wide changes like updating the theme, navigation bar, or any other
+setting in \code{_site.yml}.}
 
 \item{view}{logical (default: \code{\link{interactive}}). View the website
 with \code{\link{wflow_view}} after building files. If only one file is
@@ -88,12 +89,15 @@ wflow_publish(c("analysis/file.Rmd", "analysis/another.Rmd"),
               "Informative commit message")
 # All R Markdown files that start with the pattern "new_"
 wflow_publish("analysis/new_*Rmd", "Informative commit message")
-# Republish all published files regardless of whether they have been
-# modified. Useful for changing some universal aspect of the site,
-# e.g. the theme specifid in _site.yml.
+# Republish all published files even though they haven't been modified.
+# Useful for changing some universal aspect of the site, e.g. the theme
+# specified in _site.yml.
 wflow_publish("analysis/_site.yml", "Informative commit message",
               republish = TRUE)
-
+# Publish all previously published files that have been committed more
+# recently than their corresponding HTML files. This is useful if you like to
+# manually commit your R Markdown files.
+wflow_publish(update = TRUE)
 }
 
 }

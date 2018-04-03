@@ -7,7 +7,11 @@
 #'
 #' \code{wflow_build} has multiple, non-mutually exclusive options for deciding
 #' which files to build. In other words, if multiple options are set to
-#' \code{TRUE}, the union of all files will be built:
+#' \code{TRUE}, the union of all files will be built. The argument \code{make}
+#' is the most useful for interactively performing your analysis. The other
+#' options are more useful when you are ready to publish specific files with
+#' \code{\link{wflow_publish}} (which passes these arguments to
+#' \code{wflow_build}).
 #'
 #' \itemize{
 #'
@@ -16,11 +20,14 @@
 #' \item If \code{make = TRUE}, all files which have been modified more recently
 #' than their corresponding HTML files will be built.
 #'
-#' \item If \code{update = TRUE}, all files which have been committed more
-#' recently than their corresponding HTML files will be built. However, files
-#' which currently have staged or unstaged changes will be ignored.
+#' \item If \code{update = TRUE}, all previously published files which have been
+#' committed more recently than their corresponding HTML files will be built.
+#' However, files which currently have staged or unstaged changes will be
+#' ignored.
 #'
 #' \item If \code{republish = TRUE}, all published files will be rebuilt.
+#' However, files which currently have staged or unstaged changes will be
+#' ignored.
 #'
 #' }
 #'
@@ -43,8 +50,9 @@
 #'   ID inserted into the HTML corresponds to the exact version of the source
 #'   file that was used to produce it.
 #' @param republish logical (default: FALSE). Build all published R Markdown
-#'   files. Useful for site-wide changes like updating the theme, navigation
-#'   bar, or any other setting in \code{_site.yml}.
+#'   files (that do not have any unstaged or staged changes). Useful for
+#'   site-wide changes like updating the theme, navigation bar, or any other
+#'   setting in \code{_site.yml}.
 #' @param view logical (default: \code{\link{interactive}}). View the website
 #'   with \code{\link{wflow_view}} after building files. If only one file is
 #'   built, it is opened. If more than one file is built, the main index page is
@@ -215,7 +223,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
       files_to_build <- union(files_to_build, files_update)
     }
     if (republish) {
-      files_republish <- rownames(s$status)[s$status$published]
+      files_republish <- rownames(s$status)[s$status$published &
+                                           !s$status$mod_unstaged &
+                                           !s$status$mod_staged]
       files_to_build <- union(files_to_build, files_republish)
     }
   }

@@ -74,6 +74,30 @@ test_that("wflow_publish can `update`", {
   expect_false(html_decoy %in% o$step3$commit_files)
 })
 
+test_that("wflow_publish does not republish files with unstaged/staged changes", {
+  # republish = TRUE builds and commits all previously published files. However,
+  # if the files are not committed in step1, then they need to be skipped to
+  # avoid getting out of sync.
+
+  commit_head <- commits(r)[[1]]
+  on.exit(reset(commit_head, reset_type = "hard"))
+
+  # about.Rmd should be skipped b/c it has unstaged changes
+  cat("edit", file = rmd[1], append = TRUE)
+  # index.Rmd should be skipped b/c it has staged changes
+  cat("edit", file = rmd[2], append = TRUE)
+  add(r, rmd[2])
+  # Republish should only build license.Rmd
+  expect_message(o <- wflow_publish(republish = TRUE, view = FALSE, project = site_dir),
+                 rmd[3])
+  expect_true(is.null(o$step1))
+  expect_true(rmd[3] == o$step2$built)
+  # license.html and index.Rmd (b/c it was staged) are the only commit_files
+  expect_false(html[1] %in% o$step3$commit_files)
+  expect_false(html[2] %in% o$step3$commit_files)
+  expect_true(html[3] %in% o$step3$commit_files)
+})
+
 test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_git_commit", {
   f_test <- file.path(s$root, "test.txt")
   file.create(f_test)

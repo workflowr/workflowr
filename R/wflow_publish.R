@@ -45,12 +45,15 @@
 #'               "Informative commit message")
 #' # All R Markdown files that start with the pattern "new_"
 #' wflow_publish("analysis/new_*Rmd", "Informative commit message")
-#' # Republish all published files regardless of whether they have been
-#' # modified. Useful for changing some universal aspect of the site,
-#' # e.g. the theme specifid in _site.yml.
+#' # Republish all published files even though they haven't been modified.
+#' # Useful for changing some universal aspect of the site, e.g. the theme
+#' # specified in _site.yml.
 #' wflow_publish("analysis/_site.yml", "Informative commit message",
 #'               republish = TRUE)
-#'
+#' # Publish all previously published files that have been committed more
+#' # recently than their corresponding HTML files. This is useful if you like to
+#' # manually commit your R Markdown files.
+#' wflow_publish(update = TRUE)
 #' }
 #'
 #' @import rmarkdown

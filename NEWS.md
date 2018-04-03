@@ -11,6 +11,7 @@
 `wflow_publish()` is ignored if using `wflow_html()`.
 * `wflow_publish(republish = TRUE)` does not build HTML files that have
 unstaged/staged changes.
+* `wflow_build()` reports the total number of files that will be built.
 
 # workflowr 0.11.0
 

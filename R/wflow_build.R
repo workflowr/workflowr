@@ -233,6 +233,10 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # Build files ----------------------------------------------------------------
 
   if (!dry_run) {
+    n_files <- length(files_to_build)
+    if (n_files > 0) {
+      message(sprintf("Building %i file(s):", n_files))
+    }
     for (f in files_to_build) {
       message("Building ", f)
       # Remove figure files to prevent accumulating outdated files

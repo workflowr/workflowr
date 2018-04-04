@@ -4,6 +4,73 @@ context("report")
 
 
 
+
+# Test check_rmd ---------------------------------------------------------------
+
+tmp_dir <- tempfile("test-check_rmd")
+dir.create(tmp_dir)
+tmp_dir <- workflowr:::absolute(tmp_dir)
+git2r::init(tmp_dir)
+r <- git2r::repository(tmp_dir)
+rmd <- file.path(tmp_dir, "file.Rmd")
+writeLines(letters, rmd)
+s <- git2r::status(r, ignored = TRUE)
+
+test_that("check_rmd reports an untracked Rmd file", {
+  observed <- workflowr:::check_rmd(rmd, r, s)
+  expect_false(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>R Markdown file:</strong> uncommitted changes")
+})
+
+test_that("check_rmd reports an ignored Rmd file", {
+  gitignore <- file.path(tmp_dir, ".gitignore")
+  on.exit(unlink(gitignore))
+  writeLines("*Rmd", gitignore)
+  s <- git2r::status(r, ignored = TRUE)
+  observed <- workflowr:::check_rmd(rmd, r, s)
+  expect_false(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>R Markdown file:</strong> uncommitted changes")
+  expect_true(grepl("ignored", observed$details))
+})
+
+git2r::add(r, rmd)
+s <- git2r::status(r, ignored = TRUE)
+
+test_that("check_rmd reports a staged Rmd file", {
+  observed <- workflowr:::check_rmd(rmd, r, s)
+  expect_false(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>R Markdown file:</strong> uncommitted changes")
+  expect_true(grepl("staged changes", observed$details))
+})
+
+git2r::commit(r, "add rmd file")
+s <- git2r::status(r, ignored = TRUE)
+
+test_that("check_rmd reports a committed (up-to-date) Rmd file", {
+  observed <- workflowr:::check_rmd(rmd, r, s)
+  expect_true(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>R Markdown file:</strong> up-to-date")
+  expect_true(grepl("committed", observed$details))
+})
+
+writeLines(LETTERS, rmd)
+s <- git2r::status(r, ignored = TRUE)
+
+test_that("check_rmd reports an unstaged Rmd file", {
+  observed <- workflowr:::check_rmd(rmd, r, s)
+  expect_false(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>R Markdown file:</strong> uncommitted changes")
+  expect_true(grepl("unstaged changes", observed$details))
+})
+
+unlink(tmp_dir, recursive = TRUE)
+rm(r, rmd, s, tmp_dir)
+
 # Test detect_code -------------------------------------------------------------
 
 test_that("detect_code detects a code chunk", {

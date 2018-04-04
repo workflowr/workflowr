@@ -423,6 +423,8 @@ format_check <- function(check) {
 
 check_rmd <- function(input, r, s) {
 
+  stopifnot("ignored" %in% names(s))
+
   s_simpler <- lapply(s, unlist)
   s_simpler <- lapply(s_simpler, add_git_path, r = r)
 

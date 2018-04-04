@@ -236,3 +236,51 @@ test_that("relative handles NA and NULL", {
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
+
+
+# Test get_github_from_remote --------------------------------------------------
+
+tmp_dir <- tempfile("test-check_vc")
+dir.create(tmp_dir)
+tmp_dir <- workflowr:::absolute(tmp_dir)
+
+test_that("get_github_from_remote returns NA when no Git repo", {
+  observed <- workflowr:::get_github_from_remote(tmp_dir)
+  expect_identical(observed, NA_character_)
+})
+
+git2r::init(tmp_dir)
+r <- git2r::repository(tmp_dir)
+
+test_that("get_github_from_remote returns NA when no remotes", {
+  observed <- workflowr:::get_github_from_remote(tmp_dir)
+  expect_identical(observed, NA_character_)
+})
+
+wflow_git_remote(remote = "nonstandard", user = "testuser", repo = "testrepo",
+                 verbose = FALSE, project = tmp_dir)
+
+test_that("get_github_from_remote returns NA when no origin", {
+  observed <- workflowr:::get_github_from_remote(tmp_dir)
+  expect_identical(observed, NA_character_)
+})
+
+wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
+                 verbose = FALSE, project = tmp_dir)
+
+test_that("get_github_from_remote works with HTTPS protocol", {
+  observed <- workflowr:::get_github_from_remote(tmp_dir)
+  expect_identical(observed, "https://github.com/testuser2/testrepo")
+})
+
+wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
+                 protocol = "ssh", action = "set_url", verbose = FALSE,
+                 project = tmp_dir)
+
+test_that("get_github_from_remote works with SSH protocol", {
+  observed <- workflowr:::get_github_from_remote(tmp_dir)
+  expect_identical(observed, "https://github.com/testuser2/testrepo")
+})
+
+unlink(tmp_dir, recursive = TRUE)
+rm(r, tmp_dir)

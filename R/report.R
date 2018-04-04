@@ -13,7 +13,7 @@ create_report <- function(input, output_dir, has_code, opts) {
     s <- NULL
   }
 
-  # workflowr checks --------------------------------------------------------------
+  # workflowr checks -----------------------------------------------------------
   checks <- list()
 
   # Check R Markdown status
@@ -481,13 +481,23 @@ add_git_path <- function(x, r) {
 detect_code <- function(input) {
   stopifnot(file.exists(input))
   lines <- readLines(input)
-  code_chunks <- stringr::str_detect(lines, "^```\\{r")
-  # Inline code can span multiple lines, so concatenate first. Only interprets
-  # as code if at least two characters after the r. A new line counts as a
-  # character, which is the same as the space inserted by the collapse.
-  code_inline <- stringr::str_detect(paste(lines, collapse = " "),
-                                     "`r.{2,}`")
-  return(any(code_chunks) || code_inline)
+
+  code_chunks <- stringr::str_detect(lines, "^```\\{[a-z].*\\}$")
+  # Inline code can span multiple lines, so concatenate first. A new line counts
+  # as a character, which is the same as the space inserted by the collapse.
+  lines_collapsed <- paste(lines, collapse = " ")
+  # Extract all strings that start with "`r " and end with "`" (with no
+  # intervening "`").
+  code_inline_potential <- stringr::str_extract_all(lines_collapsed, "`r[^`]+`")[[1]]
+  # Only keep valid inline code:
+  # 1. Must start with at least one whitespace character after the "`r"
+  # 2. Must contain at least one non-whitespace character
+  #
+  # The regex in words is:
+  # `r{at least one whitespace character}{at least one non whitespace character}{zero or more characters}`
+  code_inline <- stringr::str_detect(code_inline_potential, "`r\\s+\\S+.*`")
+
+  return(any(code_chunks) || any(code_inline))
 }
 
 shorten_sha <- function(sha) {

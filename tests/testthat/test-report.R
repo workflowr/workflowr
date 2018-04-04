@@ -2,6 +2,49 @@ context("report")
 
 # Setup ------------------------------------------------------------------------
 
+# Test check_sessioninfo -------------------------------------------------------
+
+rmd <- tempfile("check-sessioninfo-", fileext = ".Rmd")
+file.copy("files/example.Rmd", rmd)
+
+test_that("check_sessioninfo reports sessioninfo reported as an option", {
+  observed <- workflowr:::check_sessioninfo(rmd, "sessionInfo()")
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>Session information:</strong> recorded")
+})
+
+test_that("check_sessioninfo reports missing sessioninfo", {
+  observed <- workflowr:::check_sessioninfo(rmd, "")
+  expect_false(observed$pass)
+  expect_identical(observed$summary, "<strong>Session information:</strong> unavailable")
+})
+
+cat("\nsessionInfo()\n", file = rmd, append = TRUE)
+
+test_that("check_sessioninfo reports sessioninfo in file as sessionInfo()", {
+  observed <- workflowr:::check_sessioninfo(rmd, "")
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>Session information:</strong> recorded")
+})
+
+lines <- readLines(rmd)
+writeLines(stringr::str_replace(lines, "sessionInfo", "session_info"),
+           con = rmd)
+
+test_that("check_sessioninfo reports sessioninfo in file as session_info() from devtools", {
+  observed <- workflowr:::check_sessioninfo(rmd, "")
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>Session information:</strong> recorded")
+})
+
+test_that("check_sessioninfo reports sessioninfo when in file and an option", {
+  observed <- workflowr:::check_sessioninfo(rmd, "sessionInfo()")
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>Session information:</strong> recorded")
+})
+
+unlink(rmd)
+rm(rmd, lines)
 
 # Test check_seed --------------------------------------------------------------
 

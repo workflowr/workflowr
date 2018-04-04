@@ -3,6 +3,22 @@ context("report")
 # Setup ------------------------------------------------------------------------
 
 
+# Test check_seed --------------------------------------------------------------
+
+test_that("check_seed reports valid seed", {
+  seed <- 1
+  observed <- workflowr:::check_seed(seed)
+  expect_true(observed$pass)
+  expect_identical(observed$summary,
+                   sprintf("<strong>Seed:</strong> <code>set.seed(%d)</code>", seed))
+})
+
+test_that("check_seed reports invalid seed", {
+  seed <- ""
+  observed <- workflowr:::check_seed(seed)
+  expect_false(observed$pass)
+  expect_identical(observed$summary, "<strong>Seed:</strong> none")
+})
 
 # Test check_environment -------------------------------------------------------
 

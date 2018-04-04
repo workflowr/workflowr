@@ -195,7 +195,8 @@ print.wflow_git_pull <- function(x, ...) {
 
   git_cmd <- "  $ git pull"
   git_cmd <- paste(git_cmd, x$remote, x$branch)
-  cat(git_cmd, "\n")
+  cat(git_cmd)
+  cat("\n")
 
   if (!is.null(x$merge_result)) {
     if (x$merge_result@up_to_date) {

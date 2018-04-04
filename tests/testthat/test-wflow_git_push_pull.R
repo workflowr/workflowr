@@ -169,6 +169,8 @@ test_that("wflow_git_push can run in dry-run mode", {
   expect_identical(result$branch, "master")
   expect_identical(result$force, FALSE)
   expect_identical(result$dry_run, TRUE)
+  # Test print method
+  expect_true("  $ git push origin master" %in% utils::capture.output(result))
 })
 
 test_that("wflow_git_pull can run in dry-run mode", {
@@ -176,4 +178,6 @@ test_that("wflow_git_pull can run in dry-run mode", {
   expect_identical(result$remote, "origin")
   expect_identical(result$branch, "master")
   expect_identical(result$dry_run, TRUE)
+  # Test print method
+  expect_true("  $ git pull origin master" %in% utils::capture.output(result))
 })

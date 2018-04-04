@@ -19,6 +19,8 @@ test_that("wflow_git_commit can commit one new file", {
   expect_true(f1 %in% actual$commit_files)
   recent <- commits(r, n = 1)[[1]]
   expect_identical(actual$commit@sha, recent@sha)
+  actual_print <- paste(utils::capture.output(actual), collapse = "\n")
+  expect_true(grepl(sprintf("\\$ git add %s", f1), actual_print))
 })
 
 test_that("wflow_git_commit can commit multiple new files", {
@@ -29,20 +31,30 @@ test_that("wflow_git_commit can commit multiple new files", {
   expect_identical(actual$commit_files, c(f2, f3))
   recent <- commits(r, n = 1)[[1]]
   expect_identical(actual$commit@sha, recent@sha)
+  actual_print <- paste(utils::capture.output(actual), collapse = "\n")
+  expect_true(grepl(sprintf("\\$ git add %s %s", f2, f3), actual_print))
 })
 
 test_that("wflow_git_commit creates a commit message", {
   o <- wflow_git_commit(all = TRUE, dry_run = TRUE, project = site_dir)
   expect_identical(o$message,
                    "wflow_git_commit(all = TRUE, dry_run = TRUE, project = site_dir)")
+  o_print <- paste(utils::capture.output(o), collapse = "\n")
+  # Need to use `fixed = TRUE` b/c of the parentheses in the message
+  expect_true(grepl(sprintf("$ git commit -a -m \"%s\"", o$message), o_print,
+                    fixed = TRUE))
 
   o <- wflow_git_commit(message = c("a", "b", "c"),
                     all = TRUE, dry_run = TRUE, project = site_dir)
   expect_identical(o$message, "a b c")
+  o_print <- paste(utils::capture.output(o), collapse = "\n")
+  expect_true(grepl(sprintf("\\$ git commit -a -m \"%s\"", o$message), o_print))
 
   o <- wflow_git_commit(message = "Example commit message",
                     all = TRUE, dry_run = TRUE, project = site_dir)
   expect_identical(o$message, "Example commit message")
+  o_print <- paste(utils::capture.output(o), collapse = "\n")
+  expect_true(grepl(sprintf("\\$ git commit -a -m \"%s\"", o$message), o_print))
 })
 
 test_that("wflow_git_commit can commit all tracked files", {

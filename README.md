@@ -117,15 +117,15 @@ Workflowr is available under the [MIT license][MIT]. Please run
 
 [adapr]: https://github.com/gelfondjal/adapr
 [analysis_framework]: https://github.com/jimhester/analysis_framework
-[appveyor]: https://ci.appveyor.com
+
 [blogdown]: https://github.com/rstudio/blogdown
 [blogR]: https://github.com/rmflight/blogR
 [bookdown]: https://github.com/rstudio/bookdown
 [cboettig/template]: https://github.com/cboettig/template
-[Codecov]: https://codecov.io/
+
 [contributing]: https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.md
 [contributors]: https://github.com/jdblischak/workflowr/graphs/contributors
-[covr]: https://github.com/jimhester/covr
+
 [cran-rr]: https://cran.r-project.org/web/views/ReproducibleResearch.html
 [demo01]: https://jdblischak.github.io/workflowr-demo01/
 [divvy]: https://stephenslab.github.io/wflow-divvy/
@@ -136,7 +136,7 @@ Workflowr is available under the [MIT license][MIT]. Please run
 [git-for-science]: https://doi.org/10.1371/journal.pcbi.1004668
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
-[hadley]: http://hadley.nz/
+
 [htmlwidgets]: http://www.htmlwidgets.org/
 [issues]: https://github.com/jdblischak/workflowr/issues
 [knitr]: https://github.com/yihui/knitr
@@ -158,11 +158,7 @@ Workflowr is available under the [MIT license][MIT]. Please run
 [prodigenr]: https://github.com/lwjohnst86/prodigenr
 [pRojects]: https://github.com/lockedata/pRojects
 [ProjectTemplate]: https://github.com/johnmyleswhite/ProjectTemplate
-[pt]: https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html
 [r]: http://cran.r-project.org
-[r-exts]: https://cran.r-project.org/doc/manuals/R-exts.html
-[r-exts-licensing]: https://cran.r-project.org/doc/manuals/R-exts.html#Licensing
-[r-pkg]: http://r-pkgs.had.co.nz/
 [rddj-template]: https://github.com/grssnbchr/rddj-template
 [researchcompendium]: https://github.com/benmarwick/researchcompendium
 [rmarkdown]: http://rmarkdown.rstudio.com/
@@ -170,7 +166,7 @@ Workflowr is available under the [MIT license][MIT]. Please run
 [rmflight]: https://github.com/rmflight
 [rmflight-post]: https://rmflight.github.io/posts/2014/07/analyses_as_packages.html
 [rOpenSci]: https://ropensci.github.io/reproducibility-guide/
-[roxygen2]: https://github.com/klutometis/roxygen
+
 [rr-init]: https://github.com/Reproducible-Science-Curriculum/rr-init
 [rrtools]: https://github.com/benmarwick/rrtools
 [rsmith]: https://github.com/hadley/rsmith
@@ -182,8 +178,6 @@ Workflowr is available under the [MIT license][MIT]. Please run
 [swc-git]: https://swcarpentry.github.io/workshop-template/#git
 [swc-r]: https://swcarpentry.github.io/workshop-template/#r
 [swc-shell]: https://swcarpentry.github.io/shell-novice
-[testthat]: https://github.com/hadley/testthat
-[travis]: https://travis-ci.org/
 [uchicago]: http://www.uchicago.edu/
 [vig-custom]: https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html
 [vig-details]: https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html

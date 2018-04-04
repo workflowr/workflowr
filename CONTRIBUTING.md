@@ -13,10 +13,6 @@ If you're new to submitting Pull Requests, please read the section [Contribute
 to other projects][contribute] in the tutorial [A quick introduction to version
 control with Git and GitHub][git-tutorial].
 
-[style]: http://adv-r.had.co.nz/Style.html
-[contribute]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011
-[git-tutorial]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668
-
 ## Explanation of branches
 
 branch name   | purpose
@@ -34,14 +30,13 @@ created with [pkgdown][], continuous integration testing is performed for Linux
 and macOS by [Travis CI][travis] and for Windows by [AppVeyor][appveyor], and
 code coverage is calculated with [covr][] and [Codecov][].
 
-The template files used by `wflow_start()` to populate a new project are located
-in `inst/infrastructure/`. The R Markdown templates used by `wflow_open()` are
-located in `inst/rmarkdown/templates/`. The [RStudio project template][pt] is
-configured by `inst/rstudio/templates/project/wflow_start.dcf`. The repository
-contains the files `LICENSE` and `LICENSE.md` to both adhere to [R package
-conventions for defining the license][r-exts-licensing] and also to make the
-license clear in a more conventional manner (suggestions for improvement
-welcome). `document.R` is a convenience script for regenerating the
+The template files used by `wflow_start()` to populate a new project are defined
+in the list `templates` in the file `R/infrastructure.R`. The [RStudio project
+template][pt] is configured by `inst/rstudio/templates/project/wflow_start.dcf`.
+The repository contains the files `LICENSE` and `LICENSE.md` to both adhere to
+[R package conventions for defining the license][r-exts-licensing] and also to
+make the license clear in a more conventional manner (suggestions for
+improvement welcome). `document.R` is a convenience script for regenerating the
 documentation. `build.sh` is a convenience script for running `R CMD check`. The
 remaining directories are standard for R packages as described in the manual
 [Writing R Extensions][r-exts].
@@ -85,6 +80,20 @@ to [Anaconda Cloud][anaconda]
     ```
 
 [anaconda]: https://anaconda.org/jdblischak/r-workflowr
+[appveyor]: https://ci.appveyor.com
+[Codecov]: https://codecov.io/
+[contribute]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011
+[covr]: https://github.com/jimhester/covr
+[git-tutorial]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668
+[hadley]: http://hadley.nz/
 [meta.yaml]: https://github.com/jdblischak/jdb-conda/blob/master/recipes/r-workflowr/meta.yaml
 [pkgdown]: https://github.com/r-lib/pkgdown
 [pkgdown-commit]: https://github.com/r-lib/pkgdown/issues/363#issuecomment-310187626
+[pt]: https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html
+[r-exts]: https://cran.r-project.org/doc/manuals/R-exts.html
+[r-exts-licensing]: https://cran.r-project.org/doc/manuals/R-exts.html#Licensing
+[r-pkg]: http://r-pkgs.had.co.nz/
+[roxygen2]: https://github.com/klutometis/roxygen
+[style]: http://adv-r.had.co.nz/Style.html
+[testthat]: https://github.com/hadley/testthat
+[travis]: https://travis-ci.org/

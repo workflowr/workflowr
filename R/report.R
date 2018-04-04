@@ -33,7 +33,7 @@ create_report <- function(input, output_dir, has_code, opts) {
   }
 
   # Check version control
-  checks$result_vc <- check_vc(input, output_dir, r, s, opts$github)
+  checks$result_vc <- check_vc(input, r, s, opts$github)
 
   # Formatting checks ----------------------------------------------------------
 
@@ -230,17 +230,21 @@ get_commit_title <- function(x, r) {
   return(title)
 }
 
-check_vc <- function(input, output_dir, r, s, github) {
+check_vc <- function(input, r, s, github) {
  if (!is.null(r)) {
    pass <- TRUE
    log <- git2r::commits(r)
-   sha <- log[[1]]@sha
-   sha7 <- shorten_sha(sha)
-   if (!is.na(github)) {
-     sha_display <- sprintf("<a href=\"%s/tree/%s\" target=\"_blank\">%s</a>",
-                            github, sha, sha7)
+   if (length(log) > 0) {
+     sha <- log[[1]]@sha
+     sha7 <- shorten_sha(sha)
+     if (!is.na(github)) {
+       sha_display <- sprintf("<a href=\"%s/tree/%s\" target=\"_blank\">%s</a>",
+                              github, sha, sha7)
+     } else {
+       sha_display <- sha7
+     }
    } else {
-     sha_display <- sha7
+     sha_display <- "No commits yet"
    }
    summary <- sprintf("<strong>Repository version:</strong> %s", sha_display)
    # Scrub HTML and other generated content (e.g. site_libs). It's ok that these

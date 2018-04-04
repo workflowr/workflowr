@@ -2,6 +2,89 @@ context("report")
 
 # Setup ------------------------------------------------------------------------
 
+
+# Test check_vc ----------------------------------------------------------------
+
+tmp_dir <- tempfile("test-check_vc")
+dir.create(tmp_dir)
+tmp_dir <- workflowr:::absolute(tmp_dir)
+rmd <- file.path(tmp_dir, "file.Rmd")
+writeLines(letters, rmd)
+
+test_that("check_vc reports lack of Git repo", {
+  observed <- workflowr:::check_vc(rmd, r = NULL, s = NULL, github = NA_character_)
+  expect_false(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>Repository version:</strong> no version control")
+})
+
+git2r::init(tmp_dir)
+r <- git2r::repository(tmp_dir)
+s <- git2r::status(r, ignored = TRUE)
+
+test_that("check_vc reports Git repo even if no commits", {
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+  expect_true(observed$pass)
+  expect_identical(observed$summary,
+                   "<strong>Repository version:</strong> No commits yet")
+})
+
+git2r::add(r, rmd)
+git2r::commit(r, "Add rmd")
+s <- git2r::status(r, ignored = TRUE)
+current_commit <- git2r::commits(r)[[1]]@sha
+commit_to_display <- workflowr:::shorten_sha(current_commit)
+
+test_that("check_vc reports Git repo", {
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+  expect_true(observed$pass)
+  expect_identical(observed$summary,
+                   sprintf("<strong>Repository version:</strong> %s",
+                           commit_to_display))
+})
+
+test_that("check_vc reports Git repo and can add GitHub URL", {
+  github <- "https://github.com/jdblischak/workflowr"
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = github)
+  expect_true(observed$pass)
+  expect_identical(observed$summary,
+                   sprintf("<strong>Repository version:</strong> <a href=\"%s/tree/%s\" target=\"_blank\">%s</a>",
+                           github, current_commit, commit_to_display))
+})
+
+test_that("check_vc ignores *html, *png, and site_libs", {
+  fname_html <- file.path(tmp_dir, "file.html")
+  file.create(fname_html)
+  fname_png <- file.path(tmp_dir, "file.png")
+  file.create(fname_png)
+  site_libs <- file.path(tmp_dir, "site_libs")
+  dir.create(site_libs)
+  site_libs_readme <- file.path(site_libs, "README.md")
+  file.create(site_libs_readme)
+
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+
+  expect_true(observed$pass)
+  expect_false(grepl(basename(fname_html), observed$details))
+  expect_false(grepl(basename(fname_png), observed$details))
+  expect_false(grepl(basename(site_libs), observed$details))
+  expect_true(grepl("working directory clean", observed$details))
+})
+
+rmd2 <- file.path(tmp_dir, "file2.Rmd")
+file.create(rmd2)
+s <- git2r::status(r, ignored = TRUE)
+
+test_that("check_vc reports uncommitted Rmd files", {
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+
+  expect_true(observed$pass)
+  expect_true(grepl(basename(rmd2), observed$details))
+})
+
+unlink(tmp_dir, recursive = TRUE)
+rm(r, rmd, rmd2, s, tmp_dir, current_commit, commit_to_display)
+
 # Test check_sessioninfo -------------------------------------------------------
 
 rmd <- tempfile("check-sessioninfo-", fileext = ".Rmd")

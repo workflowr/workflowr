@@ -4,6 +4,25 @@ context("report")
 
 
 
+# Test check_environment -------------------------------------------------------
+
+test_that("check_environment reports empty environment", {
+  envir_empty <- new.env()
+  on.exit(rm(envir_empty))
+  observed <- workflowr:::check_environment(envir_empty)
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>Environment:</strong> empty")
+})
+
+test_that("check_environment reports non-empty environment", {
+  envir_objects <- new.env()
+  on.exit(rm(envir_objects))
+  envir_objects$long_variable_name <- 1
+  observed <- workflowr:::check_environment(envir_objects)
+  expect_false(observed$pass)
+  expect_identical(observed$summary, "<strong>Environment:</strong> objects present")
+  expect_true(grepl("long_variable_name", observed$details))
+})
 
 # Test check_rmd ---------------------------------------------------------------
 

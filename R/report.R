@@ -349,9 +349,12 @@ of the R Markdown file.
   return(list(pass = pass, summary = summary, details = details))
 }
 
-check_environment <- function() {
-  ls_globalenv <- ls(name = .GlobalEnv)
-  if (length(ls_globalenv) == 0) {
+# This function is designed to check the global environment for any defined
+# objects that could interfere with an analysis. However, it accepts arbitrary
+# environments to facilitate unit testing.
+check_environment <- function(envir = .GlobalEnv) {
+  ls_envir <- ls(name = envir)
+  if (length(ls_envir) == 0) {
     pass <- TRUE
     summary <- "<strong>Environment:</strong> empty"
     details <-
@@ -371,7 +374,7 @@ unknown ways. For reproduciblity it's best to always run the code in an empty
 environment. Use <code>wflow_publish</code> or <code>wflow_build</code> to
 ensure that the code is always run in an empty environment.
 "
-    objects_table <- create_objects_table(.GlobalEnv)
+    objects_table <- create_objects_table(envir)
     details <- paste(collapse = "\n",
                      details,
                      "<br><br>",

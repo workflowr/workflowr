@@ -7,7 +7,7 @@ create_report <- function(input, output_dir, has_code, opts) {
   uses_git <- git2r::in_repository(input_dir)
   if (uses_git) {
     r <- git2r::repository(input_dir, discover = TRUE)
-    s <- git2r::status(r)
+    s <- git2r::status(r, ignored = TRUE)
   } else {
     r <- NULL
     s <- NULL

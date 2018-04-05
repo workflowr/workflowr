@@ -27,8 +27,11 @@ a first step for customizing your site, add the following information:
 
 * Briefly describe your project in `analysis/index.Rmd`
 * Share details about yourself in `analysis/about.Rmd`
-* Copy the text for a license into `LICENSE` and state the name of the license in `analysis/license.Rmd`. See [A Quick Guide to Software Licensing for the Scientist-Programmer](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598) by Morin et al., 2012 for advice. If you're ambivalent, the MIT license is a standard choice
-* Decide how authors should attribute your work by providing a citation in `CITATION`
+* State a software license in `analysis/license.Rmd`. See [A Quick Guide to
+Software Licensing for the Scientist-Programmer][morin2012] by Morin et al.,
+2012 for advice. If you're ambivalent, the MIT license is a standard choice.
+
+[morin2012]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598
 
 ## Changing the theme
 
@@ -38,12 +41,14 @@ the rmarkdown package accepts multiple Bootstrap themes. These are listed in the
 [bootswatch.com](http://bootswatch.com/) to compare the bootstrap themes. When
 typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).
 
-If you are using RStudio (version > 1.0), you can quickly see how the theme
-looks for one of your files. Open one of your R Markdown files, click Knit so
-that it appears in the Viewer tab, and then edit `analysis/_site.yml`. Every time
-you save an edit to the file, it will automatically re-render the R Markdown
-file and update the result in the Viewer (thus you'll want to use a
-quick-running file like `index.Rmd` when testing aesthetic changes).
+When experimenting with different themes, you'll want to build a fast-running
+file, e.g. likely `analysis/index.Rmd`, instead of rebuilding the entire site
+every time. Click the RStudio Knit button or run `wflow_build()` in the R
+console to preview each theme:
+
+```
+wflow_build("analysis/index.Rmd")
+```
 
 Once you have chosen a theme, update the website by running the following:
 
@@ -87,35 +92,6 @@ wflow_publish("analysis/_site.yml", "Add main result page to navbar",
 
 [navbar]: http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation
 
-## Customize the footer
-
-By default your workflowr website has the footer "This R Markdown site was
-created with workflowr" added to the end of each page. This is specified in the
-file `analysis/include/footer.html` and this file is specified in
-`analysis/_site.yml`. To remove the footer entirely, delete the following lines:
-
-```
-    include:
-      after_body: include/footer.html
-```
-
-To change the text that appears, directly edit the HTML file. Including
-formatting (e.g. bold, hyperlink, etc.) requires knowing HTML.
-
-This file is also how you can enable [disqus](https://disqus.com/) comments for
-your website pages. To enable comments, follow these steps:
-
-1. Start a disqus account
-1. Add your disqus shortname to `footer.html`
-1. Uncomment the disqus code in `footer.html`
-
-To change the footer for every page of the website, run the following:
-
-```{r wflow-publish-footer}
-wflow_publish("analysis/include/footer.html", "Customize the footer",
-              republish = TRUE)
-```
-
 ## Setup SSH keys
 
 Using the https protocol to communicate with GitHub is tedious because it
@@ -142,3 +118,26 @@ instructions.
 
 [ssh]: https://help.github.com/articles/generating-an-ssh-key/
 [set-url]: https://help.github.com/articles/changing-a-remote-s-url/
+
+## Change the session information function
+
+The default function used to report the session information is `sessionInfo()`.
+To change this, you can edit this setting in `_workflowr.yml`. For example, to
+instead use `devtools::session_info()`, add the following line to
+`_workflowr.yml`:
+
+```
+sessioninfo: "devtools::session_info()"
+```
+
+If you'd prefer to manually insert a more complex report of the session
+information, disable the automatic reporting by adding the following to
+`_workflowr.yml`:
+
+```
+sessioninfo: ""
+```
+
+Note however that workflowr will still check for the presence of a session
+information function. Specifically it expects to find either `sessionInfo` or
+`session_info` somewhere in the R Markdown document.

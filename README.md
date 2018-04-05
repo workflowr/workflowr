@@ -12,10 +12,11 @@ rmarkdown) and version control (Git, via git2r) to generate a website containing
 time-stamped, versioned, and documented results. Any R user can quickly and
 easily adopt workflowr.
 
-For an example, see the [Divvy data exploration project][divvy].
-
-To keep up-to-date with the latest workflowr developments, please join the
-[workflowr-announce][] mailing list (low-volume, read-only).
+For more details, see the [online documentation][workflowr-docs]. For an
+example, see the [Divvy data exploration project][divvy]. To keep up-to-date
+with the latest workflowr developments, please join the [workflowr-announce][]
+mailing list (low-volume, read-only). For bugs reports, feature requests, and
+questions, please open an [Issue][issues].
 
 [workflowr-announce]: https://groups.google.com/forum/#!forum/workflowr-announce
 
@@ -39,6 +40,8 @@ To keep up-to-date with the latest workflowr developments, please join the
     * Creates a website to present your research results
     * Documents how to host your website for free via [GitHub Pages][]
     * Creates links to past versions of results
+    
+For related tools, see [r-project-workflows][].
 
 ## Quick start
 
@@ -74,6 +77,9 @@ your results online via GitHub
 1. Read the [customization vignette][vig-custom] for ideas on how to customize
 your research website
 
+1. Read the [migrating vignette][vig-migrating] for how to integrate workflowr
+into your existing project
+
 ## Installation
 
 1. Install [R][r]
@@ -86,7 +92,7 @@ your research website
 
 1. Create an account on [GitHub][gh]
 
-1. Install [workflowr][] from [GitHub][gh] using [devtools][]:
+1. Install workflowr from [GitHub][gh] using [devtools][]:
 
     ```r
     #install.packages("devtools")
@@ -115,74 +121,31 @@ about the software that makes workflowr possible.
 Workflowr is available under the [MIT license][MIT]. Please run
 `citation("workflowr")` for proper attribution.
 
-[adapr]: https://github.com/gelfondjal/adapr
-[analysis_framework]: https://github.com/jimhester/analysis_framework
-
-[blogdown]: https://github.com/rstudio/blogdown
-[blogR]: https://github.com/rmflight/blogR
-[bookdown]: https://github.com/rstudio/bookdown
-[cboettig/template]: https://github.com/cboettig/template
-
-[contributing]: https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.md
 [contributors]: https://github.com/jdblischak/workflowr/graphs/contributors
-
-[cran-rr]: https://cran.r-project.org/web/views/ReproducibleResearch.html
-[demo01]: https://jdblischak.github.io/workflowr-demo01/
 [divvy]: https://stephenslab.github.io/wflow-divvy/
 [devtools]: https://github.com/hadley/devtools
-[exreport]: https://github.com/jacintoArias/exreport
 [gh]: https://github.com
 [git]: https://git-scm.com/
-[git-for-science]: https://doi.org/10.1371/journal.pcbi.1004668
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
-
-[htmlwidgets]: http://www.htmlwidgets.org/
 [issues]: https://github.com/jdblischak/workflowr/issues
 [knitr]: https://github.com/yihui/knitr
-[knitr-jekyll]: https://github.com/yihui/knitr-jekyll
-[knowledge-repo]: https://github.com/airbnb/knowledge-repo
-[lnraw]: https://github.com/mmadsen/lnraw
 [lsun]: https://github.com/LSun
-[makeProject]: https://cran.r-project.org/web/packages/makeProject/index.html
-[manuscriptPackage]: https://github.com/jhollist/manuscriptPackage
 [MIT]: https://opensource.org/licenses/mit-license.php
 [moore]: https://www.moore.org/
 [nkweiwang]: https://github.com/NKweiwang
-[Pakillo/template]: https://github.com/Pakillo/template
 [pandoc]: http://pandoc.org
 [pandoc-install]: https://github.com/rstudio/rmarkdown/blob/master/PANDOC.md
 [pcarbo]: https://pcarbo.github.io/
-[pkgdown]: http://hadley.github.io/pkgdown/
-[poirot]: https://github.com/ramnathv/poirot
-[prodigenr]: https://github.com/lwjohnst86/prodigenr
-[pRojects]: https://github.com/lockedata/pRojects
-[ProjectTemplate]: https://github.com/johnmyleswhite/ProjectTemplate
 [r]: http://cran.r-project.org
-[rddj-template]: https://github.com/grssnbchr/rddj-template
-[researchcompendium]: https://github.com/benmarwick/researchcompendium
 [rmarkdown]: http://rmarkdown.rstudio.com/
-[rmd-notebook]: https://github.com/lmullen/rmd-notebook
-[rmflight]: https://github.com/rmflight
-[rmflight-post]: https://rmflight.github.io/posts/2014/07/analyses_as_packages.html
-[rOpenSci]: https://ropensci.github.io/reproducibility-guide/
-
-[rr-init]: https://github.com/Reproducible-Science-Curriculum/rr-init
-[rrtools]: https://github.com/benmarwick/rrtools
-[rsmith]: https://github.com/hadley/rsmith
+[r-project-workflows]: https://github.com/jdblischak/r-project-workflows#readme
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
-[samantha]: https://github.com/DASpringate/samatha
-[singleCellSeq]: https://jdblischak.github.io/singleCellSeq/analysis/
 [stephens]: http://stephenslab.uchicago.edu/
-[swc]: https://software-carpentry.org
-[swc-git]: https://swcarpentry.github.io/workshop-template/#git
-[swc-r]: https://swcarpentry.github.io/workshop-template/#r
-[swc-shell]: https://swcarpentry.github.io/shell-novice
 [uchicago]: http://www.uchicago.edu/
 [vig-custom]: https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html
 [vig-details]: https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html
 [vig-migrating]: https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html
 [vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
-[workflowr]: https://jdblischak.github.io/workflowr/
+[workflowr-docs]: https://jdblischak.github.io/workflowr/
 [xiangzhu]: https://github.com/xiangzhu
-[zoon]: https://github.com/zoonproject/zoon

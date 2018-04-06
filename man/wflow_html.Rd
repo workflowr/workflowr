@@ -17,3 +17,28 @@ The output format \code{wflow_html} automatically 1) sets a seed with
 \code{\link{set.seed}}, 2) inserts version of Git repo, and 3) inserts
 \code{\link{sessionInfo}}.
 }
+\details{
+\code{wflow_html} searches for workflowr options set in two locations. The
+first is a file named _workflowr.yml that exists in the current or an
+upstream directory (for a typical workflowr project, _workflowr.yml should be
+at the root of the project). Second, it checks for any options set in the
+YAML header of the R Markdown file, which will overrride the settings in
+_workflowr.yml.
+
+The currently available settings (and their default values) are:
+
+\itemize{
+
+\item \bold{knit_root_dir:} The directory to execute the code in the R
+  Markdown file. This is ultimately passed to
+  \code{\link[rmarkdown]{render}}. The default is to execute the code in the
+  same directory as the R Markdown file.
+
+\item \bold{seed:} The seed to set at the beginning of the analysis. The
+  default is 12345.
+
+\item \bold{sessioninfo:} The function to run to record the session
+ information. The default is \code{sessionInfo()}.
+
+}
+}

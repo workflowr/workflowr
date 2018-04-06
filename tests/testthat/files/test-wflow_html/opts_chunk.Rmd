@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+output: workflowr::wflow_html
+---
+
+```{r}
+library("knitr")
+opts <- list(comment = opts_chunk$get("comment"),
+             fig.align = opts_chunk$get("fig.align"),
+             tidy = opts_chunk$get("tidy"))
+saveRDS(opts, "opts_chunk.rds")
+```

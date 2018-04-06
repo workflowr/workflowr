@@ -1,0 +1,10 @@
+---
+title: "Untitled"
+output: workflowr::wflow_html
+workflowr:
+  knit_root_dir: ".."
+---
+
+```{r}
+file.create("knit_root_dir.txt")
+```

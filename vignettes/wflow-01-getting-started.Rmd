@@ -182,6 +182,11 @@ generated (since one chunk can produce an arbitrary number of plots).
 
 The workflowr-specific configuration file is `_workflowr.yml`. It will apply the
 workflowr reproducibility checks consistently across all your R Markdown files.
+The most critical setting is `knit_root_dir`, which determines the directory
+where the files in `analysis/` will be executed. The default is to execute the
+code in the root of the project where `_workflowr.yml` is located (i.e. `"."`).
+To instead execute the code from `analysis/`, change the setting to
+`knit_root_dir: "analysis"`. See `?wflow_html` for more details.
 
 Also required is the RStudio project file, in this example `myproject.Rproj`. 
 Even if you are not using RStudio, do not delete this file because the workflowr

@@ -154,8 +154,14 @@ wflow_html <- function(...) {
 
     # Find the end of the YAML header for inserting new lines
     header_delims <- stringr::str_which(lines_in, "^-{3}|^\\.{3}")
-    header_end <- header_delims[2]
-    insert_point <- header_end
+    if (length(header_delims) >= 2) {
+      header_end <- header_delims[2]
+      header_lines <- lines_in[seq(header_end)]
+    } else {
+      # A valid R Markdown file does not require a YAML header
+      header_end <- 0
+      header_lines <- NULL
+    }
 
     # Get output directory if it exists
     output_dir <- get_output_dir(directory = dirname(input))
@@ -188,7 +194,7 @@ wflow_html <- function(...) {
       sessioninfo <- ""
     }
 
-    lines_out <- c(lines_in[1:header_end],
+    lines_out <- c(header_lines,
                    "**Last updated:** `r Sys.Date()`",
                    report,
                    "---",

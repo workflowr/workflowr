@@ -30,23 +30,24 @@
 #' @export
 wflow_site <- function(input, encoding = getOption("encoding"), ...) {
 
+  # Get output directory if it exists
+  output_dir <- get_output_dir(directory = input)
+
   render <- function(input_file,
                      output_format,
                      envir,
                      quiet,
                      encoding, ...) {
 
+    # input is defined in the enclosing environment, i.e. wflow_site
     input <- normalizePath(input)
 
     if (is.null(input_file)) {
-      files <- list.files(input, pattern = "^[^_].*\\.[Rr]md$")
-      files <- file.path(input, files)
+      files <- list.files(input, pattern = "^[^_].*\\.[Rr]md$",
+                          full.names = TRUE)
     } else {
       files <- input_file
     }
-
-    # Get output directory if it exists
-    output_dir <- get_output_dir(directory = input)
 
     # For an R Markdown website, the output_options self_contained and lib_dir
     # must be set. Force them here instead of temporarily editing the _site.yml
@@ -66,6 +67,9 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
                                          quiet = quiet,
                                          encoding = encoding)
       )
+
+      # output_dir is defined in the enclosing environment (i.e. render is
+      # defined inside of wflow_html)
 
       if (output_dir != input) {
         # Move HTML file
@@ -103,7 +107,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
   # return site generator
   list(
     name = "not implemented",
-    output_dir = "not implemented",
+    output_dir = output_dir,
     render = render,
     clean = function() stop("Not implemented", call. = FALSE)
   )

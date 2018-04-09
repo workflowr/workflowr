@@ -91,7 +91,7 @@ Describe your project.
 ---
 title: "License"
 output:
-  workflowr::wflow_html::
+  workflowr::wflow_html:
     toc: false
 ---
 

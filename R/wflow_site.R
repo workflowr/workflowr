@@ -40,7 +40,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
                      encoding, ...) {
 
     # input is defined in the enclosing environment, i.e. wflow_site
-    input <- normalizePath(input)
+    input <- absolute(input)
 
     if (is.null(input_file)) {
       files <- list.files(input, pattern = "^[^_].*\\.[Rr]md$",

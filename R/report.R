@@ -1,7 +1,7 @@
 
 create_report <- function(input, output_dir, has_code, opts) {
 
-  input <- normalizePath(input)
+  input <- absolute(input)
   input_dir <- dirname(input)
 
   uses_git <- git2r::in_repository(input_dir)
@@ -161,7 +161,7 @@ get_versions <- function(input, output_dir, blobs, r, github) {
 # Get versions table for figures. Needs to be refactored to share code with
 # get_versions.
 get_versions_fig <- function(fig, r, github) {
-  fig <- normalizePath(fig)
+  fig <- absolute(fig)
   blobs <- git2r::odb_blobs(r)
   blobs$fname <- ifelse(blobs$path == "", blobs$name,
                         file.path(blobs$path, blobs$name))

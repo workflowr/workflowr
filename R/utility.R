@@ -199,7 +199,7 @@ get_output_dir <- function(directory, yml = "_site.yml") {
   } else {
     output_dir <- file.path(directory, site_yml$output_dir)
     dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-    output_dir <- normalizePath(output_dir)
+    output_dir <- absolute(output_dir)
   }
 
   return(output_dir)

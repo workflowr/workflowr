@@ -141,7 +141,7 @@ wflow_html <- function(...) {
     # If knit_root_dir hasn't been configured in _workflowr.yml or the YAML header,
     # set it to the location of the original file
     if (is.null(wflow_opts$knit_root_dir)) {
-      wflow_opts$knit_root_dir <- dirname(normalizePath(input))
+      wflow_opts$knit_root_dir <- dirname(absolute(input))
     }
 
     # Set the knit_root_dir option for rmarkdown::render. However, the user can

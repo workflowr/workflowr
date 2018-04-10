@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update a workflowr project. — wflow_update • workflowr</title>
+<title>Update a workflowr project — wflow_update • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -89,41 +89,21 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update a workflowr project.</h1>
+    <h1>Update a workflowr project</h1>
     </div>
 
     
-    <p>Newer versions of workflowr sometimes make changes that need to be
-coordinated across multiple files. After upgrading workflowr, run
-<code>wflow_update</code> to make all the necessary changes.</p>
+    <p>Update an existing workflowr project to workflowr 1.0.</p>
     
 
-    <pre class="usage"><span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>commit</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>log_file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>log_open</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>dry_run</th>
-      <td><p>logical (default: TRUE). Preview the proposed updates.</p></td>
-    </tr>
-    <tr>
-      <th>commit</th>
-      <td><p>logical (default: TRUE). Commit the updated files (only files
-tracked by Git are included in commit). Only executed if <code>dry_run =
-FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>log_file</th>
-      <td><p>character (default: NULL). A file to save the log messages.
-If NULL, a temporary file is created.</p></td>
-    </tr>
-    <tr>
-      <th>log_open</th>
-      <td><p>logical (default: <code>interactive()</code>). Should the log file
-be opened in RStudio? This argument is ignored if the function is not run
-from within RStudio.</p></td>
+      <td><p>logical (default: TRUE). Preview the files to be updated.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -140,31 +120,37 @@ you'll need to provide the path to the project directory.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>By default, <code>wflow_update</code> is run in <code>dry_run</code> mode so that no
-unwanted changes are made. The log file contains the changes to each file,
-represented with the syntax from the
-<a href = 'https://en.wikipedia.org/wiki/Diff_utility#Usage'>Unix diff utility</a>.
-After reviewing the log file for the proposed changes, re-run the function
-with <code>dry_run = FALSE</code> to implement them.</p>
-<p>Currently <code>wflow_update</code> checks for the following items:</p><ul>
-<li><p>Updates the shared chunks in <code>analysis/chunks.R</code>.</p></li>
-<li><p>Updates each R Markdown file in <code>analysis/</code> to use the shared
-chunks. This is implemented with <code><a href='wflow_convert.html'>wflow_convert</a></code>.</p></li>
-<li><p>Removes the "BuildType: Website" from the Rproj file. This re-builds
-every R Markdown file everytime, so it is safer to always use
-<code><a href='wflow_build.html'>wflow_build</a></code>.</p></li>
+unwanted changes are made. Here's how to update an existing project to
+workflowr 1.0:</p><pre>
+# Preview the files that will be updated
+wflow_update()
+# Update the files
+wflow_update(dry_run = FALSE)
+# Preview the updates
+wflow_build()
+# Publish the updates
+wflow_publish("_workflowr.yml", "Update to 1.0", all = TRUE)
+</pre>
+    <p>Currently <code>wflow_update</code> checks for the following items:</p><ul>
+<li><p>Adds the site generator <code>site: workflowr::wflow_site</code> to index.Rmd</p></li>
+<li><p>Replaces <code><a href='http://www.rdocumentation.org/packages/rmarkdown/topics/html_document'>html_document</a></code> with
+<code>workflowr::wflow_html</code> in _site.yml and the YAML header of the R
+Markdown files</p></li>
+<li><p>Deletes analysis/chunks.R</p></li>
+<li><p>Removes the imported chunks in the R Markdown files</p></li>
+<li><p>Adds a _workflowr.yml file, but does not change any of the options (so
+that your site will continue to produce the same results)</p></li>
+<li><p>Removes the workflowr line from include/footer.html (this is now
+inserted automatically by <code><a href='wflow_html.html'>wflow_html</a></code>)</p></li>
 </ul>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='wflow_convert.html'>wflow_convert</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
 
-  <span class='co'># Preview the potential changes</span>
+  <span class='co'># Preview the files to be udpated</span>
   <span class='fu'>wflow_update</span>()
-  <span class='co'># Incorporate the changes</span>
+  <span class='co'># Update the files</span>
   <span class='fu'>wflow_update</span>(<span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 })</div></pre>
   </div>
@@ -176,8 +162,6 @@ every R Markdown file everytime, so it is safer to always use
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

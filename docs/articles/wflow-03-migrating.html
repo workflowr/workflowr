@@ -67,10 +67,10 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Migrating an existing project to use workflowr</h1>
-            <h3 class="subtitle">workflowr version 0.11.0</h3>
+            <h3 class="subtitle">workflowr version 0.11.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2018-03-10</h4>
+            <h4 class="date">2018-04-10</h4>
           </div>
 
     
@@ -91,9 +91,7 @@
 <span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/new-project"</span>)
 <span class="co"># Copy the files to the analysis subdirectory of the workflowr project</span>
 <span class="kw">file.copy</span>(<span class="dt">from =</span> <span class="kw">Sys.glob</span>(<span class="st">"~/projects/misc/*Rmd"</span>), <span class="dt">to =</span> <span class="st">"analysis"</span>)</code></pre></div>
-<p>Next update your R Markdown files to use the workflowr template (you can first run <code><a href="../reference/wflow_update.html">wflow_update()</a></code> with no arguments to preview the potential changes).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>(<span class="dt">dry_run =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p>Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
+<p>Next run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to see if your files run without error. Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</code></pre></div>
 </div>
 <div id="scenario-i-have-a-collection-of-r-markdown-files-and-other-project-infrastructure" class="section level2">
@@ -105,9 +103,7 @@
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>By default <code><a href="../reference/wflow_start.html">wflow_start()</a></code> will not overwrite your existing files (e.g. if you already have a <code>README.md</code>). If you’d prefer to overwrite your files with the default workflowr files, set <code>overwrite = TRUE</code>.</p>
 <p>To add your R Markdown files to the research website, you can move them to the subdirectory <code>analysis/</code> (note you can do this before or after running <code><a href="../reference/wflow_start.html">wflow_start()</a></code>).</p>
-<p>Next run <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to convert the R Markdown files to use the workflowr template:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>(<span class="dt">dry_run =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<p>Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
+<p>Next run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to see if your files run without error. Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</code></pre></div>
 </div>
 <div id="scenario-i-have-an-r-package" class="section level2">
@@ -125,43 +121,6 @@
 ^output$</code></pre>
 <p>If your primary purpose for creating a website to accompany your package is to share the package documentation, please check out the package <a href="https://github.com/hadley/pkgdown">pkgdown</a>. It creates a website from the vignettes and function documentation files (i.e. the Rd files in <code>man/</code>). In contrast, if the purpose of the website is to demonstrate results you obtained using the package, use workflowr.</p>
 </div>
-<div id="scenario-i-have-an-ashlar-project" class="section level2">
-<h2 class="hasAnchor">
-<a href="#scenario-i-have-an-ashlar-project" class="anchor"></a>Scenario: I have an ashlar project</h2>
-<p>If your project uses the <a href="https://github.com/jhsiao999/ashlar">ashlar</a> template, you’ll need to follow multiple steps to convert it to a valid workflowr setup.</p>
-<p>First, make sure you are in the “master” branch. Also, you should run the following Git commands from the base of the project directory.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> checkout master</code></pre></div>
-<p>If you have any HTML files in <code>analysis/</code> remove them using Git at the command line.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> rm analysis/*html</code></pre></div>
-<p>Next remove the other ashlar infrastructure files.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> rm analysis/chunk-options.R analysis/Makefile analysis/_output.yaml
-<span class="fu">git</span> rm -r analysis/libs analysis/include analysis/figure</code></pre></div>
-<p>Modify <code>.gitignore</code> so that it ignores HTML and figure files in <code>analysis/</code> only by changing <code>*html</code> to <code>analysis/*html</code> and <code>*png</code> to <code>analysis/figure</code>. Afterwards add the file.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">nano</span> .gitignore
-<span class="fu">git</span> add .gitignore</code></pre></div>
-<p>And move the RStudio project file from <code>analysis/</code> to the base of the project.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> mv analysis/*Rproj .</code></pre></div>
-<p>Commit these changes.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="fu">git</span> commit -m <span class="st">"Removed ashlar infrastructure."</span></code></pre></div>
-<p>Next open R to add the workflowr files. In the hypothetical example below, the existing package is located at <code>~/projects/ashlar-project/</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/ashlar-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>This will generate a few warning messages stating that the directory already contains a <code>.git</code> directory and a <code>.gitignore</code> file. These can be safely ignored because ashlar projects are expected to be using Git for version control.</p>
-<p>Lastly, you’ll need to update your R Markdown files to use the workflowr template, which you can do using the function <code><a href="../reference/wflow_update.html">wflow_update()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>()
-<span class="co"># Run with `dry_run = FALSE` to apply the updates</span>
-<span class="co"># wflow_update(dry_run = FALSE)</span></code></pre></div>
-<p>This will update every R Markdown file, with the exception of <code>index.Rmd</code>, <code>about.Rmd</code>, and <code>license.Rmd</code>. It will also fail to automatically convert any ashlar files that do not follow the template (e.g. they do not have the <code>sessionInfo()</code> chunk), so you will have to manually update these files. Also, workflowr no longer includes the date and SHA1 in the organizational files like <code>index.Rmd</code>, so you can remove this manually if you like.</p>
-<p>Now you should have a functioning workflowr project! From here you should be able to make a few more small edits and then follow the workflowr steps to create your website:</p>
-<ul>
-<li>Edit the navbar in <code>analysis/_site.yml</code> so that the GitHub URL points to your repository (and commit the change)</li>
-<li>Edit the README (and potentially other places, including on GitHub) so that the URL to the website no longer contains the trailing “analysis” in the name (and commit the change(s))</li>
-<li>Run <code>wflow_publish("analysis/*Rmd", "Publish files using workflowr"))</code> to build and commit the website files</li>
-<li>Push the changes to GitHub</li>
-<li>Change the Settings so that the website is served from “master branch /docs folder”</li>
-<li>Optionally remove the gh-pages branch (<a href="https://github.com/blog/1377-create-and-delete-branches">GitHub instructions</a>)</li>
-</ul>
-</div>
 </div>
   </div>
 
@@ -174,7 +133,6 @@
       <li><a href="#scenario-i-have-a-collection-of-r-markdown-files">Scenario: I have a collection of R Markdown files</a></li>
       <li><a href="#scenario-i-have-a-collection-of-r-markdown-files-and-other-project-infrastructure">Scenario: I have a collection of R Markdown files and other project infrastructure</a></li>
       <li><a href="#scenario-i-have-an-r-package">Scenario: I have an R package</a></li>
-      <li><a href="#scenario-i-have-an-ashlar-project">Scenario: I have an ashlar project</a></li>
       </ul>
 </div>
       </div>

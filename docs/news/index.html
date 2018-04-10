@@ -97,9 +97,50 @@
     <div id="workflowr-0-11-0-9000" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-11-0-9000" class="anchor"></a>workflowr 0.11.0.9000</h1>
+<div id="release-candidate-for-workflowr-1-0" class="section level2">
+<h2 class="hasAnchor">
+<a href="#release-candidate-for-workflowr-1-0" class="anchor"></a>Release candidate for workflowr 1.0</h2>
+<p>The 1.0 release is a big change. Instead of relying on the external code chunks in <code>chunks.R</code> to implement the reproducibility features, workflowr 1.0 replaces <code>chunks.R</code> with the output format <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code>. This enables a much more informative reproducibility report to be created.</p>
+<pre><code># Install release candidate from dev branch
+devtools::install_github("jdblischak/workflowr@dev")
+
+# Start a new project to test out the new features
+wflow_start("testproject")
+
+# Learn about the new ways to customize your site
+?wflow_html
+
+# Update an existing project
+wflow_update()</code></pre>
+</div>
+<div id="details" class="section level2">
+<h2 class="hasAnchor">
+<a href="#details" class="anchor"></a>Details</h2>
 <ul>
-<li>Remove <code>create_links_page()</code> (not widely used, if at all)</li>
+<li>Introduce <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and <code><a href="../reference/wflow_site.html">wflow_site()</a></code> to overhaul the reproduciblity features of workflowr</li>
+<li>Improve API consistency:
+<ul>
+<li>
+<code>wflow_commit()</code> -&gt; <code><a href="../reference/wflow_git_commit.html">wflow_git_commit()</a></code>
+</li>
+<li>
+<code>wflow_remotes()</code> -&gt; <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code>
+</li>
 </ul>
+</li>
+<li>Remove some less commonly used infrastructure files</li>
+<li>Remove template infrastructure: <code>wflow_open()</code> and <code>wflow_convert()</code>
+</li>
+<li>Reimplement <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to udpate a pre-1.0 workflowr project to a post-1.0 project</li>
+<li>Remove <code>create_links_page()</code> (not widely used, if at all)</li>
+<li>Note in documentation that setting the seed via <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is ignored if using <code><a href="../reference/wflow_html.html">wflow_html()</a></code>
+</li>
+<li>
+<code><a href="../reference/wflow_publish.html">wflow_publish(republish = TRUE)</a></code> does not build HTML files that have unstaged/staged changes</li>
+<li>
+<code><a href="../reference/wflow_build.html">wflow_build()</a></code> reports the total number of files that will be built</li>
+</ul>
+</div>
 </div>
     <div id="workflowr-0-11-0" class="section level1">
 <h1 class="hasAnchor">
@@ -120,7 +161,7 @@
     <div id="workflowr-0-10-1" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-10-1" class="anchor"></a>workflowr 0.10.1</h1>
-<p>Fix bug that prevented deleted files from being committed with <code><a href="../reference/wflow_commit.html">wflow_commit()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> (reported by @pcarbo)</p>
+<p>Fix bug that prevented deleted files from being committed with <code>wflow_commit()</code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> (reported by @pcarbo)</p>
 </div>
     <div id="workflowr-0-10-0" class="section level1">
 <h1 class="hasAnchor">
@@ -258,7 +299,7 @@
 <ul>
 <li>workflowr functions can now handle backslashes in filepaths</li>
 <li>
-<code><a href="../reference/wflow_update.html">wflow_update()</a></code> and <code><a href="../reference/wflow_convert.html">wflow_convert()</a></code> fail gracefully if the <code>diff</code> utility is not available and inform the user to install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>
+<code><a href="../reference/wflow_update.html">wflow_update()</a></code> and <code>wflow_convert()</code> fail gracefully if the <code>diff</code> utility is not available and inform the user to install <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a>
 </li>
 </ul>
 </div>
@@ -279,7 +320,7 @@
     <div id="workflowr-0-5-0" class="section level1">
 <h1 class="hasAnchor">
 <a href="#workflowr-0-5-0" class="anchor"></a>workflowr 0.5.0</h1>
-<p>This release changes the interface of some of the main workflowr functions. The functions <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> are introduced, and the previous functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code><a href="../reference/wflow_commit.html">wflow_commit()</a></code> are re-designed.</p>
+<p>This release changes the interface of some of the main workflowr functions. The functions <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> are introduced, and the previous functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code>wflow_commit()</code> are re-designed.</p>
 <div id="wflow_status" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wflow_status" class="anchor"></a>wflow_status</h2>
@@ -292,7 +333,7 @@
 <h2 class="hasAnchor">
 <a href="#wflow_publish" class="anchor"></a>wflow_publish</h2>
 <ul>
-<li><p>This new function replaces the previous functionality of <code><a href="../reference/wflow_commit.html">wflow_commit()</a></code>. The basic interface is much simpler.</p></li>
+<li><p>This new function replaces the previous functionality of <code>wflow_commit()</code>. The basic interface is much simpler.</p></li>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish("analysis/file.Rmd")</a></code> will 1) commit <code>analysis/file.Rmd</code>, 2) build <code>analysis/file.Rmd</code> in its own separate R session with <code>set.seed(12345)</code>, and 3) commit <code>docs/file.html</code> and any generated figures. These 3 steps are referred to as “publishing a file”.</p></li>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish(all = TRUE)</a></code> will publish all tracked analysis files, analogous to <code>git commit -a</code>.</p></li>
 <li><p>To change the theme or make some other change to the entire site, run <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/_site.yml", republish = TRUE)</a></code>, which will 1) commit the configuration file <code>analysis/_site.yml</code>, 2) re-build all the previously published analysis files using the new configuration options, and 3) commit the re-built HTML files.</p></li>
@@ -311,7 +352,7 @@
 <h2 class="hasAnchor">
 <a href="#wflow_commit" class="anchor"></a>wflow_commit</h2>
 <ul>
-<li><p><code><a href="../reference/wflow_commit.html">wflow_commit()</a></code> has been demoted to only being a wrapper for the equivalent functionality of <code>git add</code> and <code>git commit</code>. This can be useful for committing non-analysis files or R Markdown files that you aren’t ready to publish yet. However, you should use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> for the standard workflow.</p></li>
+<li><p><code>wflow_commit()</code> has been demoted to only being a wrapper for the equivalent functionality of <code>git add</code> and <code>git commit</code>. This can be useful for committing non-analysis files or R Markdown files that you aren’t ready to publish yet. However, you should use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> for the standard workflow.</p></li>
 <li><p>Set <code>all = TRUE</code> to run the equivalent of <code>git commit -a</code>.</p></li>
 </ul>
 </div>
@@ -357,8 +398,8 @@
 <a href="#workflowr-r-markdown-template" class="anchor"></a>workflowr R Markdown template</h2>
 <ul>
 <li>Updated workflowr R Markdown template can be built even if the user does not have workflowr installed</li>
-<li>Use new function <code><a href="../reference/wflow_convert.html">wflow_convert()</a></code> to convert an R Markdown file based on the previous template to use the latest version</li>
-<li>New optional “standalone” version of the workflowr template for creating files outside of a workflowr project (set <code>standalone = TRUE</code> for <code><a href="../reference/wflow_open.html">wflow_open()</a></code>)</li>
+<li>Use new function <code>wflow_convert()</code> to convert an R Markdown file based on the previous template to use the latest version</li>
+<li>New optional “standalone” version of the workflowr template for creating files outside of a workflowr project (set <code>standalone = TRUE</code> for <code>wflow_open()</code>)</li>
 <li>Can create a workflowr R Markdown file outside of a workflowr project by setting <code>path = NULL</code>
 </li>
 </ul>
@@ -371,7 +412,7 @@
 <li>
 <code><a href="../reference/wflow_update.html">wflow_update()</a></code> function updates workflowr projects to use the latest version of the template</li>
 <li>
-<code><a href="../reference/wflow_convert.html">wflow_convert()</a></code> converts an existing R Markdown file to use the workflowr template (can also update a file that uses a previous version of the template)</li>
+<code>wflow_convert()</code> converts an existing R Markdown file to use the workflowr template (can also update a file that uses a previous version of the template)</li>
 </ul>
 </div>
 <div id="other-new-functions" class="section level2">
@@ -381,7 +422,7 @@
 <li>
 <code><a href="../reference/wflow_view.html">wflow_view()</a></code> opens the website in the browser</li>
 <li>
-<code><a href="../reference/wflow_remotes.html">wflow_remotes()</a></code> manages remote Git repositories on GitHub. It can add a remote, remove a remote, or update the URL for an existing remote</li>
+<code>wflow_remotes()</code> manages remote Git repositories on GitHub. It can add a remote, remove a remote, or update the URL for an existing remote</li>
 </ul>
 </div>
 <div id="improvements-to-the-workflowr-r-package-itself" class="section level2">

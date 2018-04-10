@@ -1,17 +1,44 @@
 # workflowr 0.11.0.9000
 
+## Release candidate for workflowr 1.0
+
+The 1.0 release is a big change. Instead of relying on the external code chunks
+in `chunks.R` to implement the reproducibility features, workflowr 1.0 replaces
+`chunks.R` with the output format `wflow_html()` and site generator
+`wflow_site()`. This enables a much more informative reproducibility report to
+be created.
+
+```
+# Install release candidate from dev branch
+devtools::install_github("jdblischak/workflowr@dev")
+
+# Start a new project to test out the new features
+wflow_start("testproject")
+
+# Learn about the new ways to customize your site
+?wflow_html
+
+# Update an existing project
+wflow_update()
+```
+
+## Details
+
+* Introduce `wflow_html()` and `wflow_site()` to overhaul the reproduciblity
+features of workflowr
 * Improve API consistency:
     * `wflow_commit()` -> `wflow_git_commit()`
     * `wflow_remotes()` -> `wflow_git_remote()`
 * Remove some less commonly used infrastructure files
-* Remove template infrastructure: `wflow_open()`, `wflow_convert()`, and
-`wflow_update()`
+* Remove template infrastructure: `wflow_open()` and `wflow_convert()`
+* Reimplement `wflow_update()` to udpate a pre-1.0 workflowr project to a
+post-1.0 project
 * Remove `create_links_page()` (not widely used, if at all)
 * Note in documentation that setting the seed via `wflow_build()` or
-`wflow_publish()` is ignored if using `wflow_html()`.
+`wflow_publish()` is ignored if using `wflow_html()`
 * `wflow_publish(republish = TRUE)` does not build HTML files that have
-unstaged/staged changes.
-* `wflow_build()` reports the total number of files that will be built.
+unstaged/staged changes
+* `wflow_build()` reports the total number of files that will be built
 
 # workflowr 0.11.0
 

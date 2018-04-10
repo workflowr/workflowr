@@ -70,7 +70,7 @@
             <h3 class="subtitle">workflowr version 0.11.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2018-03-27</h4>
+            <h4 class="date">2018-04-10</h4>
           </div>
 
     
@@ -86,16 +86,15 @@
 </li>
 <li>Share details about yourself in <code>analysis/about.Rmd</code>
 </li>
-<li>Copy the text for a license into <code>LICENSE</code> and state the name of the license in <code>analysis/license.Rmd</code>. See <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598">A Quick Guide to Software Licensing for the Scientist-Programmer</a> by Morin et al., 2012 for advice. If you’re ambivalent, the MIT license is a standard choice</li>
-<li>Decide how authors should attribute your work by providing a citation in <code>CITATION</code>
-</li>
+<li>State a software license in <code>analysis/license.Rmd</code>. See <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598">A Quick Guide to Software Licensing for the Scientist-Programmer</a> by Morin et al., 2012 for advice. If you’re ambivalent, the MIT license is a standard choice.</li>
 </ul>
 </div>
 <div id="changing-the-theme" class="section level2">
 <h2 class="hasAnchor">
 <a href="#changing-the-theme" class="anchor"></a>Changing the theme</h2>
 <p>The theme is defined in the file <code>analysis/_site.yml</code>. The default is cosmo, but the rmarkdown package accepts multiple Bootstrap themes. These are listed in the <a href="http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style">rmarkdown documentation</a>. Go to <a href="http://bootswatch.com/">bootswatch.com</a> to compare the bootstrap themes. When typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).</p>
-<p>If you are using RStudio (version &gt; 1.0), you can quickly see how the theme looks for one of your files. Open one of your R Markdown files, click Knit so that it appears in the Viewer tab, and then edit <code>analysis/_site.yml</code>. Every time you save an edit to the file, it will automatically re-render the R Markdown file and update the result in the Viewer (thus you’ll want to use a quick-running file like <code>index.Rmd</code> when testing aesthetic changes).</p>
+<p>When experimenting with different themes, you’ll want to build a fast-running file, e.g. likely <code>analysis/index.Rmd</code>, instead of rebuilding the entire site every time. Click the RStudio Knit button or run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> in the R console to preview each theme:</p>
+<pre><code><a href="../reference/wflow_build.html">wflow_build("analysis/index.Rmd")</a></code></pre>
 <p>Once you have chosen a theme, update the website by running the following:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"Change the theme"</span>, <span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>This commits <code>analysis/_site.yml</code>, re-builds every previously published HTML file using the new theme, and commits all the republished HTML pages.</p>
@@ -112,33 +111,23 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"Add main result page to navbar"</span>,
               <span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </div>
-<div id="customize-the-footer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#customize-the-footer" class="anchor"></a>Customize the footer</h2>
-<p>By default your workflowr website has the footer “This R Markdown site was created with workflowr” added to the end of each page. This is specified in the file <code>analysis/include/footer.html</code> and this file is specified in <code>analysis/_site.yml</code>. To remove the footer entirely, delete the following lines:</p>
-<pre><code>    include:
-      after_body: include/footer.html</code></pre>
-<p>To change the text that appears, directly edit the HTML file. Including formatting (e.g. bold, hyperlink, etc.) requires knowing HTML.</p>
-<p>This file is also how you can enable <a href="https://disqus.com/">disqus</a> comments for your website pages. To enable comments, follow these steps:</p>
-<ol style="list-style-type: decimal">
-<li>Start a disqus account</li>
-<li>Add your disqus shortname to <code>footer.html</code>
-</li>
-<li>Uncomment the disqus code in <code>footer.html</code>
-</li>
-</ol>
-<p>To change the footer for every page of the website, run the following:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/include/footer.html"</span>, <span class="st">"Customize the footer"</span>,
-              <span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
-</div>
 <div id="setup-ssh-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setup-ssh-keys" class="anchor"></a>Setup SSH keys</h2>
 <p>Using the https protocol to communicate with GitHub is tedious because it requires entering your GitHub username and password. Using SSH keys for authentication removes the password requirement. Follow these <a href="https://help.github.com/articles/generating-an-ssh-key/">GitHub instructions</a> for creating SSH keys and linking them to your GitHub account. You’ll need to create separate SSH keys and link them each to GitHub for each machine where you clone your Git repository.</p>
-<p>After you create your SSH keys and add them to your GitHub account, you’ll need to instruct your local Git repository to use the SSH protocol. For a hypothetical GitHub username of “myname” and GitHub repository of “myproject”, you would change the remote “origin” (the default name by convention) using the function <code><a href="../reference/wflow_remotes.html">wflow_remotes()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_remotes.html">wflow_remotes</a></span>(<span class="dt">remote =</span> <span class="st">"origin"</span>, <span class="dt">user =</span> <span class="st">"myname"</span>, <span class="dt">repo =</span> <span class="st">"myproject"</span>,
+<p>After you create your SSH keys and add them to your GitHub account, you’ll need to instruct your local Git repository to use the SSH protocol. For a hypothetical GitHub username of “myname” and GitHub repository of “myproject”, you would change the remote “origin” (the default name by convention) using the function <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_git_remote.html">wflow_git_remote</a></span>(<span class="dt">remote =</span> <span class="st">"origin"</span>, <span class="dt">user =</span> <span class="st">"myname"</span>, <span class="dt">repo =</span> <span class="st">"myproject"</span>,
               <span class="dt">protocol =</span> <span class="st">"ssh"</span>, <span class="dt">action =</span> <span class="st">"set_url"</span>)</code></pre></div>
 <p>Alternatively you could update the remote URL using Git directly in the shell. See this GitHub documentation on <a href="https://help.github.com/articles/changing-a-remote-s-url/">changing a remote URL</a> for instructions.</p>
+</div>
+<div id="change-the-session-information-function" class="section level2">
+<h2 class="hasAnchor">
+<a href="#change-the-session-information-function" class="anchor"></a>Change the session information function</h2>
+<p>The default function used to report the session information is <code>sessionInfo()</code>. To change this, you can edit this setting in <code>_workflowr.yml</code>. For example, to instead use <code>devtools::session_info()</code>, add the following line to <code>_workflowr.yml</code>:</p>
+<pre><code>sessioninfo: "devtools::session_info()"</code></pre>
+<p>If you’d prefer to manually insert a more complex report of the session information, disable the automatic reporting by adding the following to <code>_workflowr.yml</code>:</p>
+<pre><code>sessioninfo: ""</code></pre>
+<p>Note however that workflowr will still check for the presence of a session information function. Specifically it expects to find either <code>sessionInfo</code> or <code>session_info</code> somewhere in the R Markdown document.</p>
 </div>
 </div>
   </div>
@@ -151,8 +140,8 @@
 <li><a href="#adding-project-details">Adding project details</a></li>
       <li><a href="#changing-the-theme">Changing the theme</a></li>
       <li><a href="#customize-the-navigation-bar">Customize the navigation bar</a></li>
-      <li><a href="#customize-the-footer">Customize the footer</a></li>
       <li><a href="#setup-ssh-keys">Setup SSH keys</a></li>
+      <li><a href="#change-the-session-information-function">Change the session information function</a></li>
       </ul>
 </div>
       </div>

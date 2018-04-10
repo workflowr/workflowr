@@ -11,7 +11,7 @@ stopifnot(file.exists("workflowr.Rproj"))
 
 devtools::document()
 devtools::clean_vignettes(); devtools::build_vignettes(); devtools::clean_vignettes()
-devtools::install()
+devtools::install(dependencies = FALSE)
 
 unlink("docs/articles/*R")
 pkgdown::build_site()

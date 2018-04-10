@@ -133,8 +133,9 @@ file that was used to produce it.</p></td>
     <tr>
       <th>republish</th>
       <td><p>logical (default: FALSE). Build all published R Markdown
-files. Useful for site-wide changes like updating the theme, navigation
-bar, or any other setting in <code>_site.yml</code>.</p></td>
+files (that do not have any unstaged or staged changes). Useful for
+site-wide changes like updating the theme, navigation bar, or any other
+setting in <code>_site.yml</code>.</p></td>
     </tr>
     <tr>
       <th>view</th>
@@ -146,7 +147,10 @@ opened. Not applicable if no files are built or if <code>dry_run = TRUE</code>.<
     <tr>
       <th>seed</th>
       <td><p>numeric (default: 12345). The seed to set before building each
-file. Passed to <code>set.seed</code>.</p></td>
+file. Passed to <code>set.seed</code>. <b>DEPRECATED:</b> The seed set
+here has no effect if you are using <code><a href='wflow_html.html'>wflow_html</a></code> as the output
+format defined in <code>_site.yml</code>. This argument is for backwards
+compatibility with previous versions of workflowr.</p></td>
     </tr>
     <tr>
       <th>log_dir</th>
@@ -198,14 +202,21 @@ you'll need to provide the path to the project directory.</p></td>
 
     <p><code>wflow_build</code> has multiple, non-mutually exclusive options for deciding
 which files to build. In other words, if multiple options are set to
-<code>TRUE</code>, the union of all files will be built:</p><ul>
+<code>TRUE</code>, the union of all files will be built. The argument <code>make</code>
+is the most useful for interactively performing your analysis. The other
+options are more useful when you are ready to publish specific files with
+<code><a href='wflow_publish.html'>wflow_publish</a></code> (which passes these arguments to
+<code>wflow_build</code>).</p><ul>
 <li><p>Files specified via the argument <code>files</code> are always built.</p></li>
 <li><p>If <code>make = TRUE</code>, all files which have been modified more recently
 than their corresponding HTML files will be built.</p></li>
-<li><p>If <code>update = TRUE</code>, all files which have been committed more
-recently than their corresponding HTML files will be built. However, files
-which currently have staged or unstaged changes will be ignored.</p></li>
-<li><p>If <code>republish = TRUE</code>, all published files will be rebuilt.</p></li>
+<li><p>If <code>update = TRUE</code>, all previously published files which have been
+committed more recently than their corresponding HTML files will be built.
+However, files which currently have staged or unstaged changes will be
+ignored.</p></li>
+<li><p>If <code>republish = TRUE</code>, all published files will be rebuilt.
+However, files which currently have staged or unstaged changes will be
+ignored.</p></li>
 </ul>
     <p>Under the hood, <code>wflow_build</code> is a wrapper for
 <code><a href='http://www.rdocumentation.org/packages/rmarkdown/topics/render_site'>render_site</a></code> from the package rmarkdown.</p>

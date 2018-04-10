@@ -106,7 +106,7 @@
       <tbody>
         <tr>
           <th colspan="2">
-            <h2 id="section-starting-a-workflowr-project" class="hasAnchor"><a href="#section-starting-a-workflowr-project" class="anchor"></a>Starting a workflowr project</h2>
+            <h2 id="section-main-functions" class="hasAnchor"><a href="#section-main-functions" class="anchor"></a>Main functions</h2>
             <p class="section-desc"></p>
           </th>
         </tr>
@@ -115,30 +115,8 @@
           <td>
             <p><code><a href="wflow_start.html">wflow_start</a></code> </p>
           </td>
-          <td><p>Start a new workflowr project.</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-creating-new-files" class="hasAnchor"><a href="#section-creating-new-files" class="anchor"></a>Creating new files</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="wflow_open.html">wflow_open</a></code> </p>
-          </td>
-          <td><p>Open R Markdown analysis file(s)</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-building-the-research-website" class="hasAnchor"><a href="#section-building-the-research-website" class="anchor"></a>Building the research website</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
+          <td><p>Start a new workflowr project</p></td>
+        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="wflow_build.html">wflow_build</a></code> </p>
@@ -147,32 +125,10 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="wflow_view.html">wflow_view</a></code> </p>
-          </td>
-          <td><p>View research website locally.</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-assessing-project-status" class="hasAnchor"><a href="#section-assessing-project-status" class="anchor"></a>Assessing project status</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
             <p><code><a href="wflow_status.html">wflow_status</a></code> </p>
           </td>
-          <td><p>Report status of workflowr project.</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-publishing-the-research-website" class="hasAnchor"><a href="#section-publishing-the-research-website" class="anchor"></a>Publishing the research website</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
+          <td><p>Report status of workflowr project</p></td>
+        </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="wflow_publish.html">wflow_publish</a></code> </p>
@@ -183,13 +139,13 @@
         <tr>
           <th colspan="2">
             <h2 id="section-managing-git-and-github" class="hasAnchor"><a href="#section-managing-git-and-github" class="anchor"></a>Managing Git and GitHub</h2>
-            <p class="section-desc"><p>Functions to perform local Git commands</p></p>
+            <p class="section-desc"><p>Functions to perform local Git commands. Not needed if you’d prefer to run Git commands in the Terminal.</p></p>
           </th>
         </tr>
         <tr>
           <!--  -->
           <td>
-            <p><code><a href="wflow_commit.html">wflow_commit</a></code> </p>
+            <p><code><a href="wflow_git_commit.html">wflow_git_commit</a></code> </p>
           </td>
           <td><p>Commit files</p></td>
         </tr><tr>
@@ -213,35 +169,47 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="wflow_remotes.html">wflow_remotes</a></code> </p>
+            <p><code><a href="wflow_git_remote.html">wflow_git_remote</a></code> </p>
           </td>
-          <td><p>Manage remote Git repositories.</p></td>
+          <td><p>Manage remote Git repositories</p></td>
+        </tr>
+      </tbody><tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-other-functions" class="hasAnchor"><a href="#section-other-functions" class="anchor"></a>Other functions</h2>
+            <p class="section-desc"></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="wflow_html.html">wflow_html</a></code> </p>
+          </td>
+          <td><p>Reproducible HTML document</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="wflow_remove.html">wflow_remove</a></code> </p>
           </td>
           <td><p>Remove files</p></td>
-        </tr>
-      </tbody><tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-updating-projects" class="hasAnchor"><a href="#section-updating-projects" class="anchor"></a>Updating projects</h2>
-            <p class="section-desc"><p>Functions to update workflowr projects or convert existing projects to use workflowr</p></p>
-          </th>
-        </tr>
-        <tr>
+        </tr><tr>
           <!--  -->
           <td>
-            <p><code><a href="wflow_convert.html">wflow_convert</a></code> </p>
+            <p><code><a href="wflow_site.html">wflow_site</a></code> </p>
           </td>
-          <td><p>Convert R Markdown files to workflowr template.</p></td>
+          <td><p>Custom site generator for workflowr websites</p></td>
         </tr><tr>
           <!--  -->
           <td>
             <p><code><a href="wflow_update.html">wflow_update</a></code> </p>
           </td>
-          <td><p>Update a workflowr project.</p></td>
+          <td><p>Update a workflowr project</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="wflow_view.html">wflow_view</a></code> </p>
+          </td>
+          <td><p>View research website locally</p></td>
         </tr>
       </tbody>
       </table>
@@ -251,13 +219,9 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-starting-a-workflowr-project">Starting a workflowr project</a></li>
-      <li><a href="#section-creating-new-files">Creating new files</a></li>
-      <li><a href="#section-building-the-research-website">Building the research website</a></li>
-      <li><a href="#section-assessing-project-status">Assessing project status</a></li>
-      <li><a href="#section-publishing-the-research-website">Publishing the research website</a></li>
+      <li><a href="#section-main-functions">Main functions</a></li>
       <li><a href="#section-managing-git-and-github">Managing Git and GitHub</a></li>
-      <li><a href="#section-updating-projects">Updating projects</a></li>
+      <li><a href="#section-other-functions">Other functions</a></li>
     </ul>
   </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>View research website locally — wflow_view • workflowr</title>
+<title>Commit files — wflow_git_commit • workflowr</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -89,38 +89,47 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>View research website locally</h1>
+    <h1>Commit files</h1>
     </div>
 
     
-    <p><code>wflow_view</code> displays the website locally in your browser or the RStudio
-Viewer pane.</p>
+    <p><code>wflow_git_commit</code> adds and commits files with Git. This is a convenience
+function to run Git commands from the R console instead of the shell. For
+most use cases, you should use <code><a href='wflow_publish.html'>wflow_publish</a></code> instead, which
+calls <code>wflow_git_commit</code> and then subsequently also builds and commits the
+website files.</p>
     
 
-    <pre class="usage"><span class='fu'>wflow_view</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_git_commit</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>files</th>
-      <td><p>character (default: NULL). Name(s) of the specific file(s) to
-view. These can be either the name(s) of the R Markdown file(s) in the
-analysis directory or the HTML file(s) in the docs directory. Also, the
-full path(s) to the file(s) can be input or just the basename(s) of the
-file(s). Supports file
+      <td><p>character (default: NULL). Files to be added and committed with
+Git. Supports file
 <a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
-      <th>recent</th>
-      <td><p>logical (default: FALSE). If <code>files = NULL</code>, display the
-HTML file with the most recent modification time. If <code>files = NULL</code>
-and <code>recent = FALSE</code>, then <code>index.html</code> is viewed.</p></td>
+      <th>message</th>
+      <td><p>character (default: NULL). A commit message.</p></td>
+    </tr>
+    <tr>
+      <th>all</th>
+      <td><p>logical (default: FALSE). Automatically stage files that have been
+modified and deleted. Equivalent to: <code>git commit -a</code></p></td>
+    </tr>
+    <tr>
+      <th>force</th>
+      <td><p>logical (default: FALSE). Allow adding otherwise ignored files.
+Equivalent to: <code>git add -f</code></p></td>
     </tr>
     <tr>
       <th>dry_run</th>
-      <td><p>logical (default: FALSE). Do not actually view file(s). Mainly
-useful for testing.</p></td>
+      <td><p>logical (default: FALSE). Preview the proposed action but do
+not actually add or commit any files.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -132,51 +141,49 @@ you'll need to provide the path to the project directory.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns a character vector of the relative paths to the
-  HTML files to be viewed.</p>
+    <p>An object of class <code>wflow_git_commit</code>, which is a list with the
+  following elements:</p><ul>
+<li><p><b>files</b>: The input argument <code>files</code>.</p></li>
+<li><p><b>message</b>: The message describing the commit.</p></li>
+<li><p><b>all</b>: The input argument <code>all</code>.</p></li>
+<li><p><b>force</b>: The input argument <code>force</code>.</p></li>
+<li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
+<li><p><b>commit</b>: The <code><a href='http://www.rdocumentation.org/packages/git2r/topics/git_commit-class'>git_commit-class</a></code> object
+returned by git2r (only included if <code>dry_run == FALSE</code>).</p></li>
+<li><p><b>commit_files</b>: The relative path(s) to the file(s) included in
+the commit (only included if <code>dry_run == FALSE</code>).</p></li>
+</ul>
+
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>wflow_view</code> by default displays the file <code>index.html</code>. To view the
-most recently modified HTML file, set <code>recent = TRUE</code>. To specify which
-file(s) to view, specify either the name(s) of the R Markdown or HTML
-file(s). The path(s) to the file(s) will be discarded, thus only HTML files
-in docs directory can be viewed with this function.
-    <code>wflow_view</code> uses <code>browseURL</code> to view the HTML files in the
-browser. If you wish to do something non-traditional like view an HTML file
-that is not in the docs directory or not part of a workflowr project, you can
-use that function directly.</p>
-<p>If <code>wflow_view</code> is run in the RStudio IDE and only one file has been
-requested to be viewed, the file is displayed in the
-<a href = 'https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html'>RStudio
-Viewer</a>.</p>
+    <p>Some potential use cases for <code>wflow_git_commit</code>:</p><ul>
+<li><p>Commit drafts which you do not yet want to be included in the website</p></li>
+<li><p>Commit files which do not directly affect the website (e.g. when you
+are writing scripts for a data processing pipeline)</p></li>
+<li><p>Manually commit files in <code>docs/</code> (proceed with caution!). This
+should only be done for content that is not automatically generated from the
+source files in the analysis directory, e.g. an image file you want to
+include in one of your pages.</p></li>
+</ul>
+    <p>Under the hood, <code>wflow_git_commit</code> is a wrapper for <code><a href='http://www.rdocumentation.org/packages/git2r/topics/add-methods'>add</a></code>
+and <code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-methods'>commit</a></code> from the package git2r.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code>browseURL</code></p>
+    <p><code><a href='wflow_publish.html'>wflow_publish</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
 
-  <span class='co'># View index.html</span>
-  <span class='fu'>wflow_view</span>()
-
-  <span class='co'># View the most recently modified HTML file</span>
-  <span class='fu'>wflow_view</span>(<span class='kw'>recent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-  <span class='co'># View a file by specifying the R Markdown file</span>
-  <span class='co'># (the following two are equivalent)</span>
-  <span class='fu'>wflow_view</span>(<span class='st'>"fname.Rmd"</span>)
-  <span class='fu'>wflow_view</span>(<span class='st'>"analysis/fname.Rmd"</span>)
-
-  <span class='co'># View a file by specifying the HTML file</span>
-  <span class='co'># (the following two are equivalent)</span>
-  <span class='fu'>wflow_view</span>(<span class='st'>"fname.html"</span>)
-  <span class='fu'>wflow_view</span>(<span class='st'>"docs/fname.html"</span>)
-
-  <span class='co'># View multiple files</span>
-  <span class='fu'>wflow_view</span>(<span class='fu'>c</span>(<span class='st'>"fname1.Rmd"</span>, <span class='st'>"fname2.Rmd"</span>))
+  <span class='co'># Commit a single file</span>
+  <span class='fu'>wflow_git_commit</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Add new analysis"</span>)
+  <span class='co'># Commit multiple files</span>
+  <span class='fu'>wflow_git_commit</span>(<span class='fu'>c</span>(<span class='st'>"code/process-data.sh"</span>, <span class='st'>"output/small-data.txt"</span>),
+               <span class='st'>"Process data set"</span>)
+  <span class='co'># Add and commit all tracked files, similar to `git commit -a`</span>
+  <span class='fu'>wflow_git_commit</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Lots of changes"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 })</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

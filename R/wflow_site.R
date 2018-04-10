@@ -8,7 +8,15 @@
 #' Do not call the function \code{wflow_site} directly. Instead insert the line
 #' below directly into the YAML header of the file \code{index.Rmd}:
 #'
-#' \code{site: workflowr::wflow_site}
+#' \preformatted{
+#' ---
+#' title: "Home"
+#' site: workflowr::wflow_site
+#' output:
+#'   workflowr::wflow_html:
+#'     toc: false
+#' ---
+#' }
 #'
 #' Then you can build the website by running \code{\link[rmarkdown]{render_site}}
 #' in the R console or clicking the Knit button in RStudio.

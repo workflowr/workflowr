@@ -28,14 +28,14 @@ test_that("wflow_update can update to workflowr 1.0", {
   files_updated <- wflow_update(dry_run = FALSE, project = tmp_dir)
   expect_identical(workflowr:::absolute(files_updated), expected)
 
-  # Confirm md5 sums
-  md5_expected <- tools::md5sum(list.files("files/test-wflow_update/post",
-                                           recursive = TRUE, full.names = TRUE))
-  names(md5_expected) <- NULL
-  md5_observed <- tools::md5sum(list.files(tmp_dir, recursive = TRUE,
-                                           full.names = TRUE))
-  names(md5_observed) <- NULL
-  expect_equal(md5_observed, md5_expected)
+  # Confirm files are updated correctly
+  lines_expected <- Map(readLines, list.files("files/test-wflow_update/post",
+                                              recursive = TRUE, full.names = TRUE))
+  names(lines_expected) <- NULL
+  lines_observed <- Map(readLines, list.files(tmp_dir, recursive = TRUE,
+                                              full.names = TRUE))
+  names(lines_observed) <- NULL
+  expect_identical(lines_observed, lines_expected)
 
   # Confirm that all files can be committed easily
   git_commit <- wflow_git_commit(file.path(tmp_dir, "_workflowr.yml"),

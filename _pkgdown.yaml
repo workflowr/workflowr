@@ -51,4 +51,5 @@ reference:
       - wflow_html
       - wflow_remove
       - wflow_site
+      - wflow_update
       - wflow_view

@@ -105,3 +105,16 @@ test_that("wflow_git_commit provides interpretable error message if commit fails
                             project = site_dir),
                "Commit failed because no files were added.")
 })
+
+test_that("wflow_git_commit fails early if no Git repository", {
+  git_orig <- file.path(site_dir, ".git")
+  git_tmp <- file.path(site_dir, "nothing-to-see-here")
+  on.exit(file.rename(git_tmp, git_orig))
+  file.rename(git_orig, git_tmp)
+
+  expect_error(wflow_git_commit(all = TRUE, project = site_dir),
+               "No Git repository detected.")
+  expect_error(wflow_git_commit(Sys.glob(file.path(site_dir, "analysis", "*Rmd")),
+                                project = site_dir),
+               "No Git repository detected.")
+})

@@ -78,7 +78,7 @@
 #'
 #' @export
 wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
-                         force = FALSE, dry_run = FALSE, project = ".") {
+                             force = FALSE, dry_run = FALSE, project = ".") {
 
   if (!is.null(files)) {
     if (!(is.character(files) && length(files) > 0))
@@ -116,6 +116,11 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
   }
 
   project <- absolute(project)
+
+  # Fail early if no Git repository
+  if (!git2r::in_repository(project)) {
+    stop("No Git repository detected.")
+  }
 
   if (is.null(files) && !all)
     stop("Must specify files to commit, set `all = TRUE`, or both",

@@ -1,6 +1,43 @@
 context("report")
 
-# Setup ------------------------------------------------------------------------
+# Test get_versions and get_versions_fig ---------------------------------------
+
+test_that("get_versions and get_versions_fig insert GitHub URL if available", {
+  tmp_dir <- tempfile()
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  rmd <- file.path(tmp_dir, "analysis", "file.Rmd")
+  lines <- c("---",
+             "output: workflowr::wflow_html",
+             "---",
+             "",
+             "```{r chunkname}",
+             "plot(1:10)",
+             "```")
+  writeLines(lines, rmd)
+
+  # Add remote
+  tmp_remote <- wflow_git_remote("origin", "testuser", "testrepo",
+                                 verbose = FALSE, project = tmp_dir)
+
+  # Go through a few commit cycles
+  for (i in 1:3) {
+    cat("edit", file = rmd, append = TRUE)
+    tmp_publish <- wflow_publish(rmd, project = tmp_dir)
+  }
+
+  r <- git2r::repository(tmp_dir)
+  blobs <- git2r::odb_blobs(r)
+  output_dir <- workflowr:::get_output_dir(file.path(tmp_dir, "analysis/"))
+  github <- workflowr:::get_github_from_remote(tmp_dir)
+  versions <- workflowr:::get_versions(input = rmd, output_dir, blobs, r, github)
+  expect_true(any(stringr::str_detect(versions, github)))
+  fig <- file.path(output_dir, "figure", basename(rmd), "chunkname-1.png")
+  versions_fig <- get_versions_fig(fig, r, github)
+  expect_true(any(stringr::str_detect(versions_fig, github)))
+})
 
 
 # Test check_vc ----------------------------------------------------------------

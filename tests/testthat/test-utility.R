@@ -135,7 +135,7 @@ test_that("absolute returns NA for NA", {
   expect_identical(workflowr:::absolute(NA), NA)
 })
 
-# Test relative -----------------------------------------------------------------
+# Test relative ----------------------------------------------------------------
 
 test_that("relative returns subdirectory", {
   path = "/test/location/project"

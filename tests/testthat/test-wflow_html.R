@@ -185,3 +185,63 @@ test_that("The default knit_root_dir for a workflowr project can be analysis/", 
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, basename(rmd))) == 1)
 })
+
+
+test_that("wflow_html can insert figures with or without Git repo present", {
+  tmp_dir <- tempfile()
+  dir.create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  lines <- c("---",
+             "output: workflowr::wflow_html",
+             "---",
+             "",
+             "```{r chunkname}",
+             "plot(1:10)",
+             "```")
+  writeLines(lines, rmd)
+
+  # Without Git repo
+  html <- render(rmd, quiet = TRUE)
+  expect_true(file.exists(html))
+  expect_true(file.exists(file.path(tmp_dir, "figure", basename(rmd),
+                                    "chunkname-1.png")))
+  html_lines <- readLines(html)
+  # Because it isn't a website, the image gets embedded as a base64 image
+  expect_true(sum(stringr::str_detect(html_lines,
+                                      "<img src=\"data:image/png;base64,")) == 1)
+
+  file.remove(html)
+  # With Git repo
+  git2r::init(tmp_dir)
+  html <- render(rmd, quiet = TRUE)
+  html_lines <- readLines(html)
+  expect_true(sum(stringr::str_detect(html_lines,
+                                      "<img src=\"data:image/png;base64,")) == 1)
+})
+
+
+test_that("github URL in _workflowr.yml overrides git remote", {
+  tmp_dir <- tempfile()
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # Add remote
+  tmp_remote <- wflow_git_remote("origin", "testuser", "testrepo",
+                                 verbose = FALSE, project = tmp_dir)
+
+  # Define GitHub URL in _workflowr.yml
+  cat("github: https://github.com/upstream/testrepo\n",
+      file = file.path(tmp_dir, "_workflowr.yml"), append = TRUE)
+
+  rmd <- file.path(tmp_dir, "analysis", "index.Rmd")
+  html <- render_site(rmd, quiet = TRUE)
+
+  html_lines <- readLines(html)
+  expect_true(any(stringr::str_detect(html_lines,
+                                      "https://github.com/upstream/testrepo")))
+  expect_false(any(stringr::str_detect(html_lines,
+                                       "https://github.com/testuser/testrepo")))
+})

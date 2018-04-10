@@ -46,14 +46,12 @@
 #'
 #' @return A character vector of the updated files.
 #'
-#' @seealso \code{\link{wflow_convert}}
-#'
 #' @examples
 #' \dontrun{
 #'
-#' # Preview the potential changes
+#' # Preview the files to be udpated
 #' wflow_update()
-#' # Incorporate the changes
+#' # Update the files
 #' wflow_update(dry_run = FALSE)
 #' }
 #'

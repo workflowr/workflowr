@@ -60,13 +60,10 @@ inserted automatically by \code{\link{wflow_html}})
 \examples{
 \dontrun{
 
-# Preview the potential changes
+# Preview the files to be udpated
 wflow_update()
-# Incorporate the changes
+# Update the files
 wflow_update(dry_run = FALSE)
 }
 
-}
-\seealso{
-\code{\link{wflow_convert}}
 }

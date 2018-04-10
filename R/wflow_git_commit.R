@@ -168,8 +168,12 @@ wflow_git_commit_ <- function(files = files, message = message, all = all,
     if (all) {
       # Temporary fix until git2r::commit can do `git commit -a`
       # https://github.com/ropensci/git2r/pull/283
-      tracked <- rownames(s$status)[s$status$tracked]
-      git2r::add(r, relative(tracked, start = git2r::workdir(r)))
+      #
+      # The above was merged, but `all = TRUE` is still unreliable. Just found a
+      # bug that affects Ubuntu and Windows, but not macOS. Manually adding all
+      # unstaged changes.
+      unstaged <- unlist(git2r::status(r)$unstaged)
+      git2r::add(r, unstaged)
     }
     # Commit
     tryCatch(

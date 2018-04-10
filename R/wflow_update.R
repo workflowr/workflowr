@@ -181,5 +181,8 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
     if (!dry_run) file.remove(chunks)
   }
 
+  # Output ---------------------------------------------------------------------
+
+  files_updated <- unique(sort(files_updated))
   return(files_updated)
 }

@@ -4,6 +4,9 @@
 extra white space in updated Rmd files and added extra tests that would have
 caught this earlier.
 
+* Make it more explicit in the documentation that `wflow_publish()` can also
+commit non-Rmd files just like `wflow_git_commit()`
+
 # workflowr 0.11.0.9000
 
 ## Release candidate for workflowr 1.0

@@ -2,15 +2,17 @@
 #'
 #' \code{wflow_publish} is the main workflowr function. Use it when you are
 #' ready to publish an analysis to your site. \code{wflow_publish} performs
-#' three steps: 1) commit the file(s), 2) rebuild the R Markdown file(s), 3)
-#' commit the generated website file(s). These steps ensure that the version of
-#' the HTML file is created by the latest version of the R Markdown file, which
-#' is critical for reproducibility.
+#' three steps: 1) commit the file(s) (can include both Rmd and non-Rmd files,
+#' e.g. \code{_site.yml}), 2) rebuild the R Markdown file(s), 3) commit the
+#' generated website file(s). These steps ensure that the version of the HTML
+#' file is created by the latest version of the R Markdown file, which is
+#' critical for reproducibility.
 #'
-#' @param files character (default: NULL). Files to be added and committed with
-#'   Git (step 1). Any R Markdown files will also be built (step 2) and their
-#'   output HTML and figures will be subsequently committed (step 3). Supports
-#'   file \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
+#' @param files character (default: NULL). R Markdown files and other files to
+#'   be added and committed with Git (step 1). Any R Markdown files will also be
+#'   built (step 2) and their output HTML and figures will be subsequently
+#'   committed (step 3). Supports file
+#'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
 #' @inheritParams wflow_git_commit
 #' @inheritParams wflow_build
 #'
@@ -20,7 +22,7 @@
 #'   \itemize{
 #'
 #'   \item \bold{step1}: An object of class \code{wflow_git_commit} from the first
-#'   step of committing the analysis files.
+#'   step of committing the files.
 #'
 #'   \item \bold{step2}: An object of class \code{wflow_build} from the second
 #'   step of building the HTML files.

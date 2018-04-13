@@ -110,14 +110,13 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
 
   if (!identical(index_in, index_out)) {
     files_updated <- c(files_updated, index)
-    if (!dry_run) writeLines(site_yml_out, index)
+    if (!dry_run) writeLines(index_out, index)
   }
 
   # R Markdown files -----------------------------------------------------------
 
-  rmd_files <- list.files(path = p$analysis, pattern = "^[^_].*\\.[Rr]md$")
-  # Keep the relative paths instead of using `full.names = TRUE`
-  rmd_files <- file.path(p$analysis, rmd_files)
+  rmd_files <- list.files(path = p$analysis, pattern = "^[^_].*\\.[Rr]md$",
+                          full.names = TRUE)
 
   for (rmd in rmd_files) {
     lines_in <- readLines(rmd)
@@ -132,9 +131,9 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
     text_out <- paste(lines_out, collapse = "\n")
     text_out <- stringr::str_replace(text_out, "html_document", "workflowr::wflow_html")
     # Remove empty code chunks
-    text_out <- stringr::str_replace_all(text_out, "```\\{r.*\\}\n```", "")
+    text_out <- stringr::str_replace_all(text_out, "\n```\\{r.*\\}\n```", "")
     # Remove read-chunk
-    text_out <- stringr::str_replace_all(text_out, "```\\{r read-chunk.*\\}\n.*\n```", "")
+    text_out <- stringr::str_replace_all(text_out, "\n```\\{r read-chunk.*\\}\n.*\n```\n", "")
 
     if (!identical(text_in, text_out)) {
       files_updated <- c(files_updated, rmd)

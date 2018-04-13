@@ -50,4 +50,12 @@ test_that("wflow_update can update to workflowr 1.0", {
   expect_identical(files_updated_post, character(0))
   s <- git2r::status(r)
   expect_null(unlist(s))
+
+  # Confirm that wflow_publish can build and commit the Rmd files
+  rmd <- Sys.glob(file.path(tmp_dir, "analysis", "*Rmd"))
+  html <- workflowr:::to_html(rmd, outdir = file.path(tmp_dir, "docs"))
+  publish <- wflow_publish(rmd, "Publish updated files", view = FALSE,
+                           project = tmp_dir)
+  expect_identical(workflowr:::absolute(publish$step2$built), rmd)
+  expect_true(all(html %in% workflowr:::absolute(publish$step3$commit_files)))
 })

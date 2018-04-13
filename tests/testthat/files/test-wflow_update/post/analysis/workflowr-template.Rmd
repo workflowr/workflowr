@@ -9,14 +9,8 @@ output: workflowr::wflow_html
 
 
 
-
-
-
-
-
 ```{r}
 plot(1:10)
 ```
-
 
 

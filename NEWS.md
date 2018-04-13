@@ -1,5 +1,9 @@
 # workflowr 0.11.0.9001
 
+* Fix bug in `wflow_update()` that overwrote `index.Rmd`. Also removed some
+extra white space in updated Rmd files and added extra tests that would have
+caught this earlier.
+
 # workflowr 0.11.0.9000
 
 ## Release candidate for workflowr 1.0

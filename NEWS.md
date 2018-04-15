@@ -7,6 +7,9 @@ caught this earlier.
 * Make it more explicit in the documentation that `wflow_publish()` can also
 commit non-Rmd files just like `wflow_git_commit()`
 
+* Use `knitr::hook_plot_md()` so that `wflow_html()` inserts HTML `img` tags for
+plots (this is rquired for `fig.align` to work).
+
 # workflowr 0.11.0.9000
 
 ## Release candidate for workflowr 1.0

@@ -117,14 +117,14 @@ wflow_html <- function(...) {
       fig_versions <- get_versions_fig(fig = input, r = r, github = github)
 
       if (fig_versions == "") {
-        return(sprintf("![](%s)", x))
+        return(knitr::hook_plot_md(x, options))
       } else {
-        paste(c(sprintf("![](%s)\n", x),
+        paste(c(knitr::hook_plot_md(x, options),
                 fig_versions),
               collapse = "\n")
       }
     } else {
-      return(sprintf("![](%s)", x))
+      return(knitr::hook_plot_md(x, options))
     }
   }
 

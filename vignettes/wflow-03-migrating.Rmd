@@ -127,4 +127,4 @@ creates a website from the vignettes and function documentation files (i.e. the
 Rd files in `man/`). In contrast, if the purpose of the website is to
 demonstrate results you obtained using the package, use workflowr.
 
-[pkgdown]: https://github.com/hadley/pkgdown
+[pkgdown]: https://github.com/r-lib/pkgdown

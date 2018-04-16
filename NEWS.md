@@ -333,7 +333,7 @@ Users should run `wflow_build()` instead. `wflow_update()` removes the build spe
 * Code coverage with [covr][] and [Codecov][]
 * Package documentation with [pkgdown][]
 
-[pkgdown]: http://hadley.github.io/pkgdown/
+[pkgdown]: http://pkgdown.r-lib.org/
 [travis]: https://travis-ci.org/
 [covr]: https://github.com/jimhester/covr
 [Codecov]: https://codecov.io/

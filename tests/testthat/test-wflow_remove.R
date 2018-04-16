@@ -13,17 +13,18 @@ tdir <- workflowr:::absolute(tdir)
 r <- repository(path = tdir)
 p <- wflow_paths()
 
-chunk_w_plot <-
-  "```{r a-plot, cache=TRUE}
-plot(1:10)
-```"
+chunk_w_plot <- c("",
+                  "```{r a-plot, cache=TRUE}",
+                  "plot(1:10)",
+                  "```",
+                  "")
 
 # Create an Rmd and a data file to be removed later. Add a chunk with a plot and
 # that is cached. Publish this analysis.
 rmd_published <- file.path(p$analysis, "published.Rmd")
 file.copy(from = file.path(cwd, "files", "example.Rmd"),
           to = rmd_published)
-cat(chunk_w_plot, file = rmd_published, append = TRUE)
+cat(chunk_w_plot, file = rmd_published, sep = "\n", append = TRUE)
 data_published <- file.path("data", "published.txt")
 file.create(data_published)
 suppressMessages(x <- wflow_publish(c(rmd_published, data_published), view = FALSE))

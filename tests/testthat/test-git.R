@@ -10,6 +10,7 @@ on.exit(unlink(dir_git, recursive = TRUE, force = TRUE))
 # Initialize Git repo
 git2r::init(dir_git)
 r <- git2r::repository(dir_git)
+git2r::config(r, user.name = "Test Name", user.email = "test@email")
 
 test_that("get_committed_files fails if no files have been committed", {
   expect_error(actual <- workflowr:::get_committed_files(r),

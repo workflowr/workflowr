@@ -5,7 +5,8 @@
 \title{Start a new workflowr project}
 \usage{
 wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
-  overwrite = FALSE, change_wd = TRUE)
+  overwrite = FALSE, change_wd = TRUE, user.name = NULL,
+  user.email = NULL)
 }
 \arguments{
 \item{directory}{character. The directory for the project, e.g.
@@ -36,6 +37,18 @@ existing files. Only relevant if \code{existing = TRUE}.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
 \code{directory}.}
+
+\item{user.name}{character (default: NULL). The user name used by Git to sign
+commits, e.g. "My Name". This setting will only apply to this specific
+workflowr project being created. To create a Git user name to apply to all
+workflowr projects (and Git repositories) on this computer, instead use
+\code{\link{wflow_git_config}}.}
+
+\item{user.email}{character (default: NULL). The email addresse used by Git
+to sign commits, e.g. "email@domain". This setting will only apply to this
+specific workflowr project being created. To create a Git email address to
+apply to all workflowr projects (and Git repositories) on this computer,
+instead use \code{\link{wflow_git_config}}.}
 }
 \value{
 Invisibly returns absolute path to workflowr project.

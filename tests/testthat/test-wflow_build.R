@@ -4,7 +4,8 @@ context("wflow_build")
 
 # start project in a tempdir
 site_dir <- tempfile("test-wflow_build-")
-suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email"))
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)
 s <- wflow_status(project = site_dir)

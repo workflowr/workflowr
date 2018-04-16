@@ -36,6 +36,16 @@
 #'   existing files. Only relevant if \code{existing = TRUE}.
 #' @param change_wd logical (default: TRUE). Change the working directory to the
 #'   \code{directory}.
+#' @param user.name character (default: NULL). The user name used by Git to sign
+#'   commits, e.g. "My Name". This setting will only apply to this specific
+#'   workflowr project being created. To create a Git user name to apply to all
+#'   workflowr projects (and Git repositories) on this computer, instead use
+#'   \code{\link{wflow_git_config}}.
+#' @param user.email character (default: NULL). The email addresse used by Git
+#'   to sign commits, e.g. "email@domain". This setting will only apply to this
+#'   specific workflowr project being created. To create a Git email address to
+#'   apply to all workflowr projects (and Git repositories) on this computer,
+#'   instead use \code{\link{wflow_git_config}}.
 #'
 #' @return Invisibly returns absolute path to workflowr project.
 #'
@@ -62,7 +72,9 @@ wflow_start <- function(directory,
                         git = TRUE,
                         existing = FALSE,
                         overwrite = FALSE,
-                        change_wd = TRUE) {
+                        change_wd = TRUE,
+                        user.name = NULL,
+                        user.email = NULL) {
   if (!is.character(directory) | length(directory) != 1)
     stop("directory must be a one element character vector: ", directory)
   if (!(is.null(name) | (is.character(name) | length(name) != 1)))
@@ -75,6 +87,13 @@ wflow_start <- function(directory,
     stop("overwrite must be a one element logical vector: ", overwrite)
   if (!is.logical(change_wd) | length(change_wd) != 1)
     stop("change_wd must be a one element logical vector: ", change_wd)
+  if (!(is.null(user.name) | (is.character(user.name) | length(user.name) != 1)))
+    stop("user.name must be NULL or a one element character vector: ", user.name)
+  if (!(is.null(user.email) | (is.character(user.email) | length(user.email) != 1)))
+    stop("user.email must be NULL or a one element character vector: ", user.email)
+  if ((is.null(user.name) && !is.null(user.email)) ||
+      (!is.null(user.name) && is.null(user.email)))
+    stop("Must specify both user.name and user.email, or neither.")
 
   if (!existing & dir.exists(directory)) {
     stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
@@ -97,7 +116,7 @@ wflow_start <- function(directory,
   }
 
   # Require that user.name and user.email be set locally or globally
-  if (git) {
+  if (git && is.null(user.name) && is.null(user.email)) {
     check_git_config(path = directory)
   }
 
@@ -170,6 +189,10 @@ wflow_start <- function(directory,
       message("Git repository initialized.")
     }
     repo <- git2r::repository(directory)
+    # Set local user.name and user.email
+    if (!is.null(user.name) && !is.null(user.email)) {
+      git2r::config(repo, user.name = user.name, user.email = user.email)
+    }
     # Make the first workflowr commit
     git2r::add(repo, project_files, force = TRUE)
     status <- git2r::status(repo)

@@ -4,7 +4,8 @@ context("wflow_git_remote")
 
 # Setup workflowr project for testing
 site_dir <- tempfile("test-wflow_git_remote-")
-suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email"))
 # Delete workflowr project on exit
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)

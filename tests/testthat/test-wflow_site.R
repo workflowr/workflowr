@@ -4,7 +4,8 @@ context("wflow_site")
 
 test_that("wflow_site returns the correct output_dir", {
   tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email")
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
@@ -26,7 +27,8 @@ test_that("wflow_site returns the correct output_dir", {
 
 test_that("Passing a directory to wflow_site should build all Rmd files", {
   tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email")
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 

@@ -34,7 +34,8 @@ test_that("workflowr functions can handle / on Windows", {
   on.exit(unlink(tmp_forw, recursive = TRUE, force = TRUE), add = TRUE)
 
   # wflow_start
-  expect_message(return_start <- wflow_start(tmp_forw),
+  expect_message(return_start <- wflow_start(tmp_forw, user.name = "Test Name",
+                             user.email = "test@email"),
                  tmp_forw)
   expect_identical(return_start, tmp_forw)
   # wflow_build
@@ -74,7 +75,8 @@ test_that("workflowr functions can handle \\ on Windows", {
   on.exit(unlink(tmp_forw, recursive = TRUE, force = TRUE), add = TRUE)
 
   # wflow_start
-  expect_message(return_start <- wflow_start(tmp_back),
+  expect_message(return_start <- wflow_start(tmp_back, user.name = "Test Name",
+                             user.email = "test@email"),
                  tmp_forw)
   expect_identical(return_start, tmp_forw)
   # wflow_build

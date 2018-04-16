@@ -12,6 +12,7 @@ test_that("wflow_update can update to workflowr 1.0", {
   dir.create(file.path(tmp_dir, "docs"))
   git2r::init(tmp_dir)
   r <- git2r::repository(tmp_dir)
+  git2r::config(r, user.name = "Test Name", user.email = "test@email")
   git2r::add(r, ".")
   git2r::commit(r, "Initial commit.")
 

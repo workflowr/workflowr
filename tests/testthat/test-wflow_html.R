@@ -153,7 +153,8 @@ test_that("wflow_html reads _workflowr.yml in the same directory, but can be ove
 
 test_that("The default knit_root_dir for a workflowr project is the root directory", {
   tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email")
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "analysis",  "file.Rmd")
@@ -168,7 +169,8 @@ test_that("The default knit_root_dir for a workflowr project is the root directo
 
 test_that("The default knit_root_dir for a workflowr project can be analysis/", {
   tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email")
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   wflow_yml <- file.path(tmp_dir, "_workflowr.yml")
@@ -224,7 +226,8 @@ test_that("wflow_html can insert figures with or without Git repo present", {
 
 test_that("github URL in _workflowr.yml overrides git remote", {
   tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email")
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 

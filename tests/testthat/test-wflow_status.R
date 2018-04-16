@@ -4,7 +4,8 @@ context("wflow_status")
 
 # Setup workflowr project for testing
 site_dir <- tempfile("test-wflow_status-")
-suppressMessages(wflow_start(site_dir, change_wd = FALSE))
+suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email"))
 site_dir <- workflowr:::relative(site_dir)
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))

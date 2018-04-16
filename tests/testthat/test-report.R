@@ -4,7 +4,8 @@ context("report")
 
 test_that("get_versions and get_versions_fig insert GitHub URL if available", {
   tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE)
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                             user.email = "test@email")
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
@@ -25,7 +26,7 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
   # Go through a few commit cycles
   for (i in 1:3) {
     cat("edit", file = rmd, append = TRUE)
-    tmp_publish <- wflow_publish(rmd, project = tmp_dir)
+    tmp_publish <- wflow_publish(rmd, view = FALSE, project = tmp_dir)
   }
 
   r <- git2r::repository(tmp_dir)
@@ -57,6 +58,7 @@ test_that("check_vc reports lack of Git repo", {
 
 git2r::init(tmp_dir)
 r <- git2r::repository(tmp_dir)
+git2r::config(r, user.name = "Test Name", user.email = "test@email")
 s <- git2r::status(r, ignored = TRUE)
 
 test_that("check_vc reports Git repo even if no commits", {
@@ -210,6 +212,7 @@ dir.create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 git2r::init(tmp_dir)
 r <- git2r::repository(tmp_dir)
+git2r::config(r, user.name = "Test Name", user.email = "test@email")
 rmd <- file.path(tmp_dir, "file.Rmd")
 writeLines(letters, rmd)
 s <- git2r::status(r, ignored = TRUE)

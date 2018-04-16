@@ -195,21 +195,9 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
 
   skip_on_cran()
 
-  # Temporarily move global .gitconfig file
-  if (.Platform$OS.type == "windows") {
-    # Can't use ~ because the default on Windows is the user's Documents
-    # directory.
-    # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
-    user_home <- workflowr:::get_home()
-    config_original <- file.path(user_home, ".gitconfig")
-  } else {
-    config_original <- "~/.gitconfig"
-  }
-  if (file.exists(config_original)) {
-    config_tmp <- paste0(config_original, "-workflowr")
-    file.rename(from = config_original, to = config_tmp)
-    on.exit(file.rename(from = config_tmp, to = config_original))
-  }
+  # local_no_gitconfig() is defined in tests/testthat.R
+  local_no_gitconfig("-workflowr")
+
   site_dir <- tempfile()
   expect_error(wflow_start(site_dir, change_wd = FALSE),
                "You must set your user.name and user.email for Git first\n")

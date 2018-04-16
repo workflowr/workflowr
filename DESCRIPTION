@@ -37,6 +37,7 @@ Suggests:
     covr,
     devtools,
     knitr,
-    testthat
+    testthat,
+    withr
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org

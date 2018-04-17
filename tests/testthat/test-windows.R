@@ -113,6 +113,10 @@ test_that("absolute can handle the Windows drive", {
   if (os != "windows") skip("Only relevant on Windows")
 
   drive <- Sys.getenv("HOMEDRIVE")
+
+  # Can't do this test if HOMEDRIVE is not set (e.g. on r-hub)
+  if (drive == "") skip("HOMEDRIVE not set")
+
   drive_back <- paste0(drive, "\\")
   drive_forw <- paste0(drive, "/")
   expect_identical(drive_forw, workflowr:::absolute(drive_back))

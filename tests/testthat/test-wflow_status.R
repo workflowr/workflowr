@@ -42,22 +42,29 @@ test_that("wflow_status identifies Git directory.", {
   expect_true(dir.exists(expected))
 })
 
-# Create a new untracked file that will have status Scr for Scratch
-rmd_scr <- file.path(s$analysis, "scratch.Rmd")
-file.create(rmd_scr)
-# Publish index.Rmd
-rmd_pub <- file.path(s$analysis, "index.Rmd")
-suppressMessages(wflow_publish(rmd_pub, "Publish the index", view = FALSE,
-                               project = site_dir))
-# Publish and then modify about.Rmd to have status Mod for Modified
-rmd_mod <- file.path(s$analysis, "about.Rmd")
-suppressMessages(wflow_publish(rmd_mod, "Publish the about page", view = FALSE,
-                               project = site_dir))
-cat("edit", file = rmd_mod, append = TRUE)
-# license.Rmd still has status Unp for Unpublished
-rmd_unp <- file.path(s$analysis, "license.Rmd")
+# Skip on CRAN. See ?testthat::skip_on_cran, which only works inside of unit
+# test functions.
+if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+  # Create a new untracked file that will have status Scr for Scratch
+  rmd_scr <- file.path(s$analysis, "scratch.Rmd")
+  file.create(rmd_scr)
+  # Publish index.Rmd
+  rmd_pub <- file.path(s$analysis, "index.Rmd")
+  suppressMessages(wflow_publish(rmd_pub, "Publish the index", view = FALSE,
+                                 project = site_dir))
+  # Publish and then modify about.Rmd to have status Mod for Modified
+  rmd_mod <- file.path(s$analysis, "about.Rmd")
+  suppressMessages(wflow_publish(rmd_mod, "Publish the about page", view = FALSE,
+                                 project = site_dir))
+  cat("edit", file = rmd_mod, append = TRUE)
+  # license.Rmd still has status Unp for Unpublished
+  rmd_unp <- file.path(s$analysis, "license.Rmd")
+}
 
 test_that("wflow_status classifies files when run from outside workflowr project.", {
+
+  skip_on_cran()
+
   s_tmp <- wflow_status(project = site_dir)
   expect_true(s_tmp$status[rmd_scr, "scratch"])
   expect_true(s_tmp$status[rmd_pub, "published"])
@@ -66,6 +73,9 @@ test_that("wflow_status classifies files when run from outside workflowr project
 })
 
 test_that("wflow_status classifies files when run from root of workflowr project.", {
+
+  skip_on_cran()
+
   rmd_scr <- workflowr:::relative(rmd_scr, start = s$root)
   rmd_pub <- workflowr:::relative(rmd_pub, start = s$root)
   rmd_mod <- workflowr:::relative(rmd_mod, start = s$root)
@@ -81,6 +91,9 @@ test_that("wflow_status classifies files when run from root of workflowr project
 })
 
 test_that("wflow_status classifies files when run from analysis/.", {
+
+  skip_on_cran()
+
   rmd_scr <- workflowr:::relative(rmd_scr, start = s$analysis)
   rmd_pub <- workflowr:::relative(rmd_pub, start = s$analysis)
   rmd_mod <- workflowr:::relative(rmd_mod, start = s$analysis)
@@ -96,6 +109,9 @@ test_that("wflow_status classifies files when run from analysis/.", {
 })
 
 test_that("wflow_status classifies files when run from docs/.", {
+
+  skip_on_cran()
+
   rmd_scr <- workflowr:::relative(rmd_scr, start = s$docs)
   rmd_pub <- workflowr:::relative(rmd_pub, start = s$docs)
   rmd_mod <- workflowr:::relative(rmd_mod, start = s$docs)
@@ -111,6 +127,9 @@ test_that("wflow_status classifies files when run from docs/.", {
 })
 
 test_that("wflow_status reports only specified files", {
+
+  skip_on_cran()
+
   s_tmp <- wflow_status(rmd_scr, project = site_dir)
   expect_identical(rownames(s_tmp$status), rmd_scr)
   s_tmp <- wflow_status(c(rmd_scr, rmd_unp, rmd_pub), project = site_dir)

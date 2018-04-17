@@ -3,6 +3,9 @@ context("report")
 # Test get_versions and get_versions_fig ---------------------------------------
 
 test_that("get_versions and get_versions_fig insert GitHub URL if available", {
+
+  skip_on_cran()
+
   tmp_dir <- tempfile()
   tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
                              user.email = "test@email")

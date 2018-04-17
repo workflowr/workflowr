@@ -29,6 +29,9 @@ stopifnot(length(rmd) > 0)
 html <- workflowr:::to_html(rmd, outdir = s$docs)
 
 test_that("wflow_build builds the website, but only once", {
+
+  skip_on_cran()
+
   suppressMessages(o <- wflow_build(view = FALSE, project = site_dir))
   expect_identical(o$built, rmd)
   expect_true(all(file.exists(html)))
@@ -36,6 +39,9 @@ test_that("wflow_build builds the website, but only once", {
 })
 
 test_that("wflow_view opens website.", {
+
+  skip_on_cran()
+
   expected <- file.path(s$docs, "index.html")
   actual <- wflow_view(dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
@@ -48,6 +54,9 @@ test_html <- workflowr:::to_html(test_rmd, outdir = s$docs)
 s <- wflow_status(project = site_dir)
 
 test_that("wflow_build only builds new file", {
+
+  skip_on_cran()
+
   html_mtime_pre <- file.mtime(html)
   Sys.sleep(2)
   suppressMessages(o <- wflow_build(view = FALSE, project = site_dir))
@@ -59,6 +68,9 @@ test_that("wflow_build only builds new file", {
 })
 
 test_that("wflow_view can open specific file with Rmd extension & without path.", {
+
+  skip_on_cran()
+
   expected <- file.path(s$docs, "first-analysis.html")
   actual <- wflow_view("first-analysis.Rmd", dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
@@ -67,6 +79,9 @@ test_that("wflow_view can open specific file with Rmd extension & without path."
 all_rmd <- rownames(s$status)
 all_html <- workflowr:::to_html(all_rmd, outdir = s$docs)
 test_that("wflow_publish can commit new file and website", {
+
+  skip_on_cran()
+
   html_mtime_pre <- file.mtime(all_html)
   Sys.sleep(2)
   expect_message(o <- wflow_publish(all_rmd,
@@ -78,7 +93,6 @@ test_that("wflow_publish can commit new file and website", {
   html_mtime_post <- file.mtime(all_html)
   expect_true(all(html_mtime_pre < html_mtime_post))
   log <- commits(r)
-  # browser()
   expect_true(length(log) == 3)
   expect_identical(log[[1]]@message, "Build site.")
   expect_identical(log[[2]]@message, "first analysis")

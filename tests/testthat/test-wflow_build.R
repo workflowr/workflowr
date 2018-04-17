@@ -18,6 +18,9 @@ html <- workflowr:::to_html(rmd, outdir = s$docs)
 # Test wflow_build -------------------------------------------------------------
 
 test_that("wflow_build builds the specified files", {
+
+  skip_on_cran()
+
   # Dry run for file 1
   expect_silent(actual <- wflow_build(rmd[1], dry_run = TRUE,
                                       project = site_dir))
@@ -43,6 +46,8 @@ test_that("wflow_build builds the specified files", {
 })
 
 test_that("wflow_build can run in 'make' mode", {
+
+  skip_on_cran()
 
   # Reset modifications of rmd files. It is important to wait a couple
   # seconds so that the modification times are different.
@@ -71,6 +76,9 @@ test_that("wflow_build can run in 'make' mode", {
 # Fixed error in which 'make' didn't work with relative paths from the root
 # directory. This set of tests ensures that this won't happen again.
 test_that("wflow_build can run in 'make' mode from within project", {
+
+  skip_on_cran()
+
   cwd <- getwd()
   setwd(site_dir)
   on.exit(setwd(cwd))
@@ -99,10 +107,13 @@ test_that("wflow_build can run in 'make' mode from within project", {
   expect_identical(actual$built, rmd_local[1])
 })
 
-# Publish the files
-suppressMessages(wflow_publish(files = rmd, view = FALSE, project = site_dir))
-
 test_that("wflow_build update builds published files with modifications", {
+
+  skip_on_cran()
+
+  # Publish the files
+  suppressMessages(wflow_publish(files = rmd, view = FALSE, project = site_dir))
+
   cat("edit", file = rmd[1], append = TRUE)
   wflow_git_commit(rmd[1], project = site_dir)
   expect_silent(actual <- wflow_build(update = TRUE, dry_run = TRUE,
@@ -116,6 +127,9 @@ test_that("wflow_build update builds published files with modifications", {
 })
 
 test_that("wflow_build republish builds all published files", {
+
+  skip_on_cran()
+
   wflow_build(view = FALSE, project = site_dir)
   html_mtime_pre <- file.mtime(html)
   Sys.sleep(2)
@@ -135,6 +149,9 @@ test_that("wflow_build republish builds all published files", {
 # should only be able to access it from the global environment when built
 # locally.
 test_that("Only locally built files can access variables in the global environment", {
+
+  skip_on_cran()
+
   file.copy(from = "files/test-wflow_build/global-variable.Rmd",
             to = s$analysis)
   rmd_local <- file.path(s$analysis, "global-variable.Rmd")
@@ -160,6 +177,9 @@ test_that("Only locally built files can access variables in the global environme
 # The test file local.Rmd loads the package "tools" and defines the variable
 # `local_variable`.
 test_that("Only locally built files add packages/variables to global environment", {
+
+  skip_on_cran()
+
   file.copy(from = "files/test-wflow_build/local.Rmd",
             to = s$analysis)
   rmd_local <- file.path(s$analysis, "local.Rmd")
@@ -182,6 +202,9 @@ test_that("Only locally built files add packages/variables to global environment
 })
 
 test_that("wflow_build only builds files starting with _ when specified", {
+
+  skip_on_cran()
+
   rmd_ignore <- file.path(s$analysis, "_ignore.Rmd")
   file.copy(from = "files/example.Rmd", to = rmd_ignore)
   html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
@@ -198,12 +221,18 @@ test_that("wflow_build only builds files starting with _ when specified", {
 })
 
 test_that("wflow_build uses tempdir() to save log files by default", {
+
+  skip_on_cran()
+
   expected <- workflowr:::absolute(file.path(tempdir(), "workflowr"))
   actual <- wflow_build(rmd[1], view = FALSE, project = site_dir)
   expect_identical(expected, actual$log_dir)
 })
 
 test_that("wflow_build accepts custom directory to save log files", {
+
+  skip_on_cran()
+
   expected <- workflowr:::absolute(file.path(site_dir, "log"))
   actual <- wflow_build(rmd[1], view = FALSE, log_dir = expected,
                         project = site_dir)
@@ -217,6 +246,9 @@ test_that("wflow_build accepts custom directory to save log files", {
 # important that these figure files are removed, which this still tests.
 # Furthermore it tests that unused files are removed from docs/.
 test_that("wflow_build automatically removes unused figure files", {
+
+  skip_on_cran()
+
   # Build a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)

@@ -38,31 +38,34 @@ test_that("workflowr functions can handle / on Windows", {
                              user.email = "test@email"),
                  tmp_forw)
   expect_identical(return_start, tmp_forw)
+  # wflow_git_commit
+  return_commit <- wflow_git_commit(rmd_forw, dry_run = TRUE)
+  expect_identical(return_commit$files, rmd_forw)
+  # wflow_status
+  return_status <- wflow_status(rmd_forw)
+  expect_identical(rownames(return_status$status), rmd_forw)
+  # extract_commit
+  recent_commit <- extract_commit(tmp_forw, 1)
+  expect_false(is.na(recent_commit$sha1))
+  # wflow_git_remote
+  expect_silent(wflow_git_remote(verbose = FALSE, project = tmp_forw))
+
+  skip_on_cran()
+
   # wflow_build
   utils::capture.output(return_build <- wflow_build(rmd_forw, view = FALSE,
                                                     log_dir = log_forw))
   expect_identical(return_build$files, rmd_forw)
-  # wflow_git_commit
-  return_commit <- wflow_git_commit(rmd_forw, dry_run = TRUE)
-  expect_identical(return_commit$files, rmd_forw)
   # wflow_publish
   return_publish <- wflow_publish(rmd_forw, dry_run = TRUE)
   expect_identical(return_publish$step2$files, rmd_forw)
   expect_true(html_forw %in% return_publish$step3$files)
-  # wflow_status
-  return_status <- wflow_status(rmd_forw)
-  expect_identical(rownames(return_status$status), rmd_forw)
   # wflow_view
   return_view <- wflow_view(rmd_forw, dry_run = TRUE)
   expect_identical(return_view, html_forw)
-  # extract_commit
-  recent_commit <- extract_commit(tmp_forw, 1)
-  expect_false(is.na(recent_commit$sha1))
   # wflow_remove
   return_remove <- wflow_remove(rmd_forw, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
-  # wflow_git_remote
-  expect_silent(wflow_git_remote(verbose = FALSE, project = tmp_forw))
 })
 
 # Test backslash -----------------------------------------------------------
@@ -79,31 +82,34 @@ test_that("workflowr functions can handle \\ on Windows", {
                              user.email = "test@email"),
                  tmp_forw)
   expect_identical(return_start, tmp_forw)
+  # wflow_git_commit
+  return_commit <- wflow_git_commit(rmd_back, dry_run = TRUE)
+  expect_identical(return_commit$files, rmd_forw)
+  # wflow_status
+  return_status <- wflow_status(rmd_back)
+  expect_identical(rownames(return_status$status), rmd_forw)
+  # extract_commit
+  recent_commit <- extract_commit(tmp_back, 1)
+  expect_false(is.na(recent_commit$sha1))
+  # wflow_git_remote
+  expect_silent(wflow_git_remote(verbose = FALSE, project = tmp_back))
+
+  skip_on_cran()
+
   # wflow_build
   utils::capture.output(return_build <- wflow_build(rmd_back, view = FALSE,
                                                     log_dir = log_back))
   expect_identical(return_build$files, rmd_forw)
-  # wflow_git_commit
-  return_commit <- wflow_git_commit(rmd_back, dry_run = TRUE)
-  expect_identical(return_commit$files, rmd_forw)
   # wflow_publish
   return_publish <- wflow_publish(rmd_back, dry_run = TRUE)
   expect_identical(return_publish$step2$files, rmd_forw)
   expect_true(html_forw %in% return_publish$step3$files)
-  # wflow_status
-  return_status <- wflow_status(rmd_back)
-  expect_identical(rownames(return_status$status), rmd_forw)
   # wflow_view
   return_view <- wflow_view(rmd_back, dry_run = TRUE)
   expect_identical(return_view, html_forw)
-  # extract_commit
-  recent_commit <- extract_commit(tmp_back, 1)
-  expect_false(is.na(recent_commit$sha1))
   # wflow_remove
   return_remove <- wflow_remove(rmd_back, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
-  # wflow_git_remote
-  expect_silent(wflow_git_remote(verbose = FALSE, project = tmp_back))
 })
 
 # Test absolute ----------------------------------------------------------------

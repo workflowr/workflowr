@@ -23,6 +23,9 @@ setwd(tmp_dir)
 # Test build_rmd ---------------------------------------------------------------
 
 test_that("seed is set when file is built", {
+
+  skip_on_cran()
+
   for (s in 1:3) {
     build_rmd("seed.Rmd", seed = s, quiet = TRUE)
     set.seed(s)
@@ -35,12 +38,18 @@ test_that("seed is set when file is built", {
 })
 
 test_that("An error breaks it", {
+
+  skip_on_cran()
+
   expect_error(build_rmd("error.Rmd", seed = 1, quiet = TRUE),
                "There was an error")
   expect_false(file.exists("_site/error.html"))
 })
 
 test_that("A warning does not cause any problem", {
+
+  skip_on_cran()
+
   expect_silent(build_rmd("warning.Rmd", seed = 1, quiet = TRUE))
   expect_true(file.exists("_site/warning.html"))
 })

@@ -26,6 +26,9 @@ setwd(tmp_dir)
 # Test build_rmd_external ------------------------------------------------------
 
 test_that("log_dir is created if non-existent", {
+
+  skip_on_cran()
+
   unlink(l, recursive = TRUE, force = TRUE) # just to be safe
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   expect_message(build_rmd_external("seed.Rmd", seed = 1, log_dir = l),
@@ -34,6 +37,9 @@ test_that("log_dir is created if non-existent", {
 })
 
 test_that("log files are created", {
+
+  skip_on_cran()
+
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   build_rmd_external("seed.Rmd", seed = 1, log_dir = l)
   expect_true(length(Sys.glob(file.path(l, "seed.Rmd-*-out.txt"))) == 1)
@@ -41,6 +47,9 @@ test_that("log files are created", {
 })
 
 test_that("seed is set when file is built", {
+
+  skip_on_cran()
+
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   for (s in 1:3) {
     build_rmd_external("seed.Rmd", seed = s, log_dir = l)
@@ -55,6 +64,9 @@ test_that("seed is set when file is built", {
 
 test_that("An error stops execution, does not create file,
           and provides informative error message", {
+
+  skip_on_cran()
+
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   expect_error(utils::capture.output(
     build_rmd_external("error.Rmd", seed = 1, log_dir = l)),
@@ -65,6 +77,9 @@ test_that("An error stops execution, does not create file,
 })
 
 test_that("A warning does not cause any problem", {
+
+  skip_on_cran()
+
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   dir.create(l)
   expect_silent(build_rmd_external("warning.Rmd", seed = 1, log_dir = l))

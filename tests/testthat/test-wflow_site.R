@@ -26,6 +26,9 @@ test_that("wflow_site returns the correct output_dir", {
 })
 
 test_that("Passing a directory to wflow_site should build all Rmd files", {
+
+  skip_on_cran()
+
   tmp_dir <- tempfile()
   tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
                              user.email = "test@email")

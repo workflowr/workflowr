@@ -24,6 +24,9 @@ file.copy(from = "files/test-wflow_build/error.Rmd",
 # Test wflow_publish -----------------------------------------------------------
 
 test_that("wflow_publish works in a simple case", {
+
+  skip_on_cran()
+
   expect_message(o <- wflow_publish(rmd, view = FALSE, project = site_dir),
                  rmd[1])
   expect_true(all(file.exists(html)))
@@ -37,6 +40,9 @@ file.create(rmd_decoy)
 html_decoy <- workflowr:::to_html(rmd_decoy, outdir = s$docs)
 
 test_that("wflow_publish can `republish`", {
+
+  skip_on_cran()
+
   mtime_pre <- file.mtime(html)
   Sys.sleep(2)
   # Change the theme
@@ -63,6 +69,9 @@ test_that("wflow_publish can `republish`", {
 wflow_git_commit(rmd_decoy, "Commit decoy Rmd", project = site_dir)
 
 test_that("wflow_publish can `update`", {
+
+  skip_on_cran()
+
   # Edit and manually commit a published Rmd file, then use `update` to publish.
   cat("edit", file = rmd[1], append = TRUE)
   wflow_git_commit(rmd[1], "Draft edit", project = site_dir)
@@ -76,6 +85,9 @@ test_that("wflow_publish can `update`", {
 })
 
 test_that("wflow_publish does not republish files with unstaged/staged changes", {
+
+  skip_on_cran()
+
   # republish = TRUE builds and commits all previously published files. However,
   # if the files are not committed in step1, then they need to be skipped to
   # avoid getting out of sync.
@@ -100,6 +112,9 @@ test_that("wflow_publish does not republish files with unstaged/staged changes",
 })
 
 test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_git_commit", {
+
+  skip_on_cran()
+
   f_test <- file.path(s$root, "test.txt")
   file.create(f_test)
   expect_silent(o <- wflow_publish(f_test, view = FALSE, project = site_dir))
@@ -113,6 +128,9 @@ test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_gi
 # are commented out below. However, it still needs to remove the figure files in
 # docs/ and commit the changes, which is tested below.
 test_that("wflow_publish automatically removes unused figure files", {
+
+  skip_on_cran()
+
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
@@ -159,6 +177,9 @@ test_that("wflow_publish automatically removes unused figure files", {
 # git2r requires the non-existent directory to either be an absolute path or a
 # relative path from the root of the Git repo.
 test_that("wflow_publish removes unused figure files even if directory no longer exists", {
+
+  skip_on_cran()
+
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
@@ -190,6 +211,9 @@ test_that("wflow_publish removes unused figure files even if directory no longer
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_publish resets Git repo to previous commit if build fails", {
+
+  skip_on_cran()
+
   commit_pre <- commits(r, n = 1)[[1]]
   expect_error(utils::capture.output(
     wflow_publish(rmd_to_fail, view = FALSE, project = site_dir)),
@@ -199,6 +223,9 @@ test_that("wflow_publish resets Git repo to previous commit if build fails", {
 })
 
 test_that("wflow_publish restores previous docs/ if build fails", {
+
+  skip_on_cran()
+
   md5sum_pre <- tools::md5sum(rmd)
   mtime_pre <- file.mtime(rmd)
   Sys.sleep(2)

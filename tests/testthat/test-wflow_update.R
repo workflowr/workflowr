@@ -60,6 +60,8 @@ test_that("wflow_update can update to workflowr 1.0", {
   s <- git2r::status(r)
   expect_null(unlist(s))
 
+  skip_on_cran()
+
   # Confirm that wflow_publish can build and commit the Rmd files
   rmd <- Sys.glob(file.path(tmp_dir, "analysis", "*Rmd"))
   html <- workflowr:::to_html(rmd, outdir = file.path(tmp_dir, "docs"))

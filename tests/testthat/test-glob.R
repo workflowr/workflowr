@@ -98,6 +98,9 @@ test_that("glob throws error for invalid glob", {
 expected <- Sys.glob(rmd_glob)
 
 test_that("wflow_build accepts file globs", {
+
+  skip_on_cran()
+
   actual <- wflow_build(rmd_glob, dry_run = TRUE, project = site_dir)
   expect_identical(actual$files, expected)
   expect_error(wflow_build(file.path(s$analysis, "bad*blob.Rmd"),
@@ -114,6 +117,9 @@ test_that("wflow_git_commit accepts file globs", {
 })
 
 test_that("wflow_publish accepts file globs", {
+
+  skip_on_cran()
+
   actual <- wflow_publish(rmd_glob, dry_run = TRUE, project = site_dir)
   expect_identical(actual$step2$files, expected)
   expect_error(wflow_publish(file.path(s$analysis, "bad*blob.Rmd"),

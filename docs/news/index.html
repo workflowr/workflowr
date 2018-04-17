@@ -94,15 +94,12 @@
     </div>
 
     <div class="contents">
-    <div id="workflowr-0-11-0-9000" class="section level1">
+    <div id="workflowr-1-0-0" class="section level1">
 <h1 class="hasAnchor">
-<a href="#workflowr-0-11-0-9000" class="anchor"></a>workflowr 0.11.0.9000</h1>
-<div id="release-candidate-for-workflowr-1-0" class="section level2">
-<h2 class="hasAnchor">
-<a href="#release-candidate-for-workflowr-1-0" class="anchor"></a>Release candidate for workflowr 1.0</h2>
-<p>The 1.0 release is a big change. Instead of relying on the external code chunks in <code>chunks.R</code> to implement the reproducibility features, workflowr 1.0 replaces <code>chunks.R</code> with the output format <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code>. This enables a much more informative reproducibility report to be created.</p>
-<pre><code># Install release candidate from dev branch
-devtools::install_github("jdblischak/workflowr@dev")
+<a href="#workflowr-1-0-0" class="anchor"></a>workflowr 1.0.0</h1>
+<p>The 1.0.0 release is a major change. Instead of relying on the external code chunks in <code>chunks.R</code> to implement the reproducibility features, workflowr 1.0.0 replaces <code>chunks.R</code> with the output format <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code>. This enables a much more informative reproducibility report to be created.</p>
+<pre><code># Install from GitHub
+devtools::install_github("jdblischak/workflowr")
 
 # Start a new project to test out the new features
 wflow_start("testproject")
@@ -112,7 +109,6 @@ wflow_start("testproject")
 
 # Update an existing project
 wflow_update()</code></pre>
-</div>
 <div id="details" class="section level2">
 <h2 class="hasAnchor">
 <a href="#details" class="anchor"></a>Details</h2>
@@ -139,6 +135,7 @@ wflow_update()</code></pre>
 <code><a href="../reference/wflow_publish.html">wflow_publish(republish = TRUE)</a></code> does not build HTML files that have unstaged/staged changes</li>
 <li>
 <code><a href="../reference/wflow_build.html">wflow_build()</a></code> reports the total number of files that will be built</li>
+<li>Enable <code><a href="../reference/wflow_start.html">wflow_start()</a></code> to set local Git user.name and user.email. Preferred method for most users is still to set global Git user.name and user.email with <code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code>.</li>
 </ul>
 </div>
 </div>
@@ -433,7 +430,7 @@ wflow_update()</code></pre>
 </li>
 <li>Code coverage with <a href="https://github.com/jimhester/covr">covr</a> and <a href="https://codecov.io/">Codecov</a>
 </li>
-<li>Package documentation with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>
+<li>Package documentation with <a href="http://pkgdown.r-lib.org/">pkgdown</a>
 </li>
 </ul>
 </div>
@@ -471,7 +468,7 @@ wflow_update()</code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-0-11-0-9000">0.11.0.9000</a></li>
+        <li><a href="#workflowr-1-0-0">1.0.0</a></li>
         <li><a href="#workflowr-0-11-0">0.11.0</a></li>
         <li><a href="#workflowr-0-10-2">0.10.2</a></li>
         <li><a href="#workflowr-0-10-1">0.10.1</a></li>

@@ -43,8 +43,8 @@ remaining directories are standard for R packages as described in the manual
 
 ## Release checklist
 
-* Bump version in [DESCRIPTION](DESCRIPTION), [README.md](README.md), and
-[NEWS.md](NEWS.md)
+* Bump version in [DESCRIPTION](DESCRIPTION), [NEWS.md](NEWS.md), and
+[the test _workflowr.yml file](tests/testthat/files/test-wflow_update/post/_workflowr.yml)
 * Bump date in [DESCRIPTION](DESCRIPTION)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs

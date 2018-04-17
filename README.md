@@ -18,7 +18,13 @@ with the latest workflowr developments, please join the [workflowr-announce][]
 mailing list (low-volume, read-only). For bugs reports, feature requests, and
 questions, please open an [Issue][issues].
 
+For those with existing workflowr projects (pre-1.0.0), see `?wflow_update` if
+you're interested in updating your project to use the latest features. If you
+like your current project the way it is, you can continue to use workflowr as
+you have been by getting the latest bug fixes from [workflowrBeta][].
+
 [workflowr-announce]: https://groups.google.com/forum/#!forum/workflowr-announce
+[workflowrBeta]: https://github.com/jdblischak/workflowrBeta
 
 * [Features](#features)
 * [Quick start](#quick-start)

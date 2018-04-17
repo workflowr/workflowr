@@ -100,7 +100,8 @@ also changes the working directory to the workflowr project.</p>
     
 
     <pre class="usage"><span class='fu'>wflow_start</span>(<span class='no'>directory</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>user.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +146,22 @@ existing files. Only relevant if <code>existing = TRUE</code>.</p></td>
       <th>change_wd</th>
       <td><p>logical (default: TRUE). Change the working directory to the
 <code>directory</code>.</p></td>
+    </tr>
+    <tr>
+      <th>user.name</th>
+      <td><p>character (default: NULL). The user name used by Git to sign
+commits, e.g. "My Name". This setting will only apply to this specific
+workflowr project being created. To create a Git user name to apply to all
+workflowr projects (and Git repositories) on this computer, instead use
+<code><a href='wflow_git_config.html'>wflow_git_config</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>user.email</th>
+      <td><p>character (default: NULL). The email addresse used by Git
+to sign commits, e.g. "email@domain". This setting will only apply to this
+specific workflowr project being created. To create a Git email address to
+apply to all workflowr projects (and Git repositories) on this computer,
+instead use <code><a href='wflow_git_config.html'>wflow_git_config</a></code>.</p></td>
     </tr>
     </table>
     

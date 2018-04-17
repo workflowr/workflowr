@@ -1,32 +1,14 @@
-# workflowr 0.11.0.9001
+# workflowr 1.0.0
 
-* Fix bug in `wflow_update()` that overwrote `index.Rmd`. Also removed some
-extra white space in updated Rmd files and added extra tests that would have
-caught this earlier.
-
-* Make it more explicit in the documentation that `wflow_publish()` can also
-commit non-Rmd files just like `wflow_git_commit()`
-
-* Use `knitr::hook_plot_md()` so that `wflow_html()` inserts HTML `img` tags for
-plots (this is rquired for `fig.align` to work).
-
-* Enable `wflow_start()` to set local Git user.name and user.email. Preferred
-method for most users is still to set global Git user.name and user.email with
-`wflow_git_config()`.
-
-# workflowr 0.11.0.9000
-
-## Release candidate for workflowr 1.0
-
-The 1.0 release is a big change. Instead of relying on the external code chunks
-in `chunks.R` to implement the reproducibility features, workflowr 1.0 replaces
+The 1.0.0 release is a major change. Instead of relying on the external code chunks
+in `chunks.R` to implement the reproducibility features, workflowr 1.0.0 replaces
 `chunks.R` with the output format `wflow_html()` and site generator
 `wflow_site()`. This enables a much more informative reproducibility report to
 be created.
 
 ```
-# Install release candidate from dev branch
-devtools::install_github("jdblischak/workflowr@dev")
+# Install from GitHub
+devtools::install_github("jdblischak/workflowr")
 
 # Start a new project to test out the new features
 wflow_start("testproject")
@@ -55,6 +37,9 @@ post-1.0 project
 * `wflow_publish(republish = TRUE)` does not build HTML files that have
 unstaged/staged changes
 * `wflow_build()` reports the total number of files that will be built
+* Enable `wflow_start()` to set local Git user.name and user.email. Preferred
+method for most users is still to set global Git user.name and user.email with
+`wflow_git_config()`.
 
 # workflowr 0.11.0
 

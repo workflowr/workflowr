@@ -95,10 +95,11 @@
     
     <p><code>wflow_publish</code> is the main workflowr function. Use it when you are
 ready to publish an analysis to your site. <code>wflow_publish</code> performs
-three steps: 1) commit the file(s), 2) rebuild the R Markdown file(s), 3)
-commit the generated website file(s). These steps ensure that the version of
-the HTML file is created by the latest version of the R Markdown file, which
-is critical for reproducibility.</p>
+three steps: 1) commit the file(s) (can include both Rmd and non-Rmd files,
+e.g. <code>_site.yml</code>), 2) rebuild the R Markdown file(s), 3) commit the
+generated website file(s). These steps ensure that the version of the HTML
+file is created by the latest version of the R Markdown file, which is
+critical for reproducibility.</p>
     
 
     <pre class="usage"><span class='fu'>wflow_publish</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -110,10 +111,11 @@ is critical for reproducibility.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>files</th>
-      <td><p>character (default: NULL). Files to be added and committed with
-Git (step 1). Any R Markdown files will also be built (step 2) and their
-output HTML and figures will be subsequently committed (step 3). Supports
-file <a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+      <td><p>character (default: NULL). R Markdown files and other files to
+be added and committed with Git (step 1). Any R Markdown files will also be
+built (step 2) and their output HTML and figures will be subsequently
+committed (step 3). Supports file
+<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>message</th>
@@ -178,7 +180,7 @@ you'll need to provide the path to the project directory.</p></td>
   the following elements:</p>
 <p></p><ul>
 <li><p><b>step1</b>: An object of class <code>wflow_git_commit</code> from the first
-  step of committing the analysis files.</p></li>
+  step of committing the files.</p></li>
 <li><p><b>step2</b>: An object of class <code>wflow_build</code> from the second
   step of building the HTML files.</p></li>
 <li><p><b>step3</b>: An object of class <code>wflow_git_commit</code> from the third

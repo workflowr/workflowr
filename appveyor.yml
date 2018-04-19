@@ -36,6 +36,8 @@ before_test:
 environment:
   global:
     USE_RTOOLS: true
+    # Do not skip tests with skip_on_cran()
+    NOT_CRAN: true
 
   matrix:
   # 64-bit
@@ -58,10 +60,6 @@ test_script:
 on_failure:
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
-
-# Do not skip tests with skip_on_cran()
-environment:
-  NOT_CRAN: true
 
 artifacts:
   - path: '*.Rcheck\**\*.log'

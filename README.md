@@ -96,14 +96,14 @@ into your existing project
     
     * (Optional) Install [Git][git]
 
-1. Create an account on [GitHub][gh]
-
 1. Install workflowr from [GitHub][gh] using [devtools][]:
 
     ```r
     #install.packages("devtools")
     devtools::install_github("jdblischak/workflowr")
     ```
+
+1. Create an account on [GitHub][gh]
 
 ## Attribution
 

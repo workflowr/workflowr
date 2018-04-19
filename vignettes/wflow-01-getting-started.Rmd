@@ -16,33 +16,19 @@ vignette: >
 library("knitr")
 
 # The code in this vignette requires a functional Git setup. If a workflowr user
-# does not already have this setup (which is reasonable since it's not
-# required), the code is not evaluated and a warning is sent to consult the
-# online documentation.
-
-# If Git user.name and user.email not set, set eval=FALSE.
-git_config <- workflowr::wflow_git_config()
-if (is.null(git_config$user.name) || is.null(git_config$user.email)) {
+# has a .git directory upstream of R's temporary diretory, then wflow_start will
+# fail. If this situation is detected, the code is not evaluated.
+if (git2r::in_repository(tempdir())) {
   opts_chunk$set(eval = FALSE)
   warning(workflowr:::wrap(
-    "Because you do not have Git configured on this machine, none of the code
-    below was executed. Please refer to the online documentation to see the
-    output: https://jdblischak.github.io/workflowr/"))
+    "Because you have a Git repository upstream of R's temporary directory,
+    none of the code below was executed. Please refer to the online
+    documentation to see the output:
+    https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
+    \n\nYou should consider removing the directory since it was likely created
+    in error: ",
+    git2r::repository(tempdir(), discover = TRUE)@path))
 }
-rm(git_config)
-# If ~/.git exists, set eval=FALSE
-home <- workflowr:::get_home()
-home_git <- file.path(home, ".git")
-if (dir.exists(home_git)) {
-  opts_chunk$set(eval = FALSE)
-  warning(workflowr:::wrap(
-    "Because you have a Git repository in your home directory, none of the
-    code below was executed. Please refer to the online documentation to see
-    the output: https://jdblischak.github.io/workflowr/ \n\nYou should
-    consider removing the directory since it was likely created in error: ",
-    home_git))
-}
-rm(home, home_git)
 ```
 
 ```{r chunk-options, cache=FALSE, include=FALSE}
@@ -60,8 +46,8 @@ rmarkdown) and version control (Git, via git2r) to generate a website containing
 time-stamped, versioned, and documented results. Any R user can quickly and
 easily adopt workflowr.
 
-This tutorial assumes you have already followed the installation instructions
-in the [README](https://jdblischak.github.io/workflowr/index.html).
+This tutorial assumes you have already followed the [installation
+instructions](https://jdblischak.github.io/workflowr/index.html#installation).
 Specifically, you need to have R, pandoc (or RStudio), and workflowr installed
 on your computer. Furthermore, you need a GitHub account.
 
@@ -81,10 +67,10 @@ able to run the basic Git commands, so there is no need to install Git prior to
 using workflowr.
 
 One of the main goals of workflowr is to help make your research more
-transparent and reproducible. This is achieved by including the unique
-identifier that Git assigns a snapshot of your code (or "commit" as
-Git calls it) at the top of each of your HTML files, so you always
-know which version of the code produced the results.
+transparent and reproducible. This is achieved by displaying multiple
+"reproducibility checks" at the top of each analysis, including the unique
+identifier that Git assigns a snapshot of your code (or "commit" as Git calls
+it), so you always know which version of the code produced the results.
 
 [vcs]: https://en.wikipedia.org/wiki/Version_control
 
@@ -124,10 +110,14 @@ directory in the R console, switch the file navigator to the project, and
 configure the Git pane.] and initializes a Git repository with the initial
 commit already made.
 
-```{r start-project, echo=3}
+```{r wflow-start, eval=FALSE}
+wflow_start("myproject")
+```
+
+```{r wflow-start-hidden, echo=FALSE}
 setwd(.tmp)
 unlink(.project, recursive = TRUE)
-wflow_start("myproject")
+wflow_start("myproject", user.name = "Your Name", user.email = "email@domain")
 ```
 
 `wflow_start()` created the following directory structure in `myproject/`:
@@ -169,7 +159,7 @@ implementing the data analyses for your project. It also contains a special R
 Markdown file, `index.Rmd`, that does not contain any R code, but will be used
 to generate `index.html`, the homepage for your website. In addition, this
 directory contains the important configuration files `_site.yml`, which you can
-use to edit the theme, navigation bar, and other website aesthetics.. Do not
+use to edit the theme, navigation bar, and other website aesthetics. Do not
 delete `index.Rmd` or `_site.yml`.
 
 * `docs/`: This directory contains all the HTML files for your
@@ -198,9 +188,9 @@ project, but can be removed if you do not find them useful.
 
 * `data/`: This directory is for raw data files.
 
-* `code/`: This directory is for code and scripts that might not be
-appropriate as R Markdown notebooks (e.g. for pre-processing the data, or
-for long-running code).
+* `code/`: This directory is for code that might not be appropriate to include
+in R Markdown format (e.g. for pre-processing the data, or for long-running
+code).
 
 * `output/`: This directory is for processed data files and other
 outputs generated from the code and data. For example, scripts in
@@ -284,7 +274,7 @@ unpublished ("Unp"). Furthermore, it instructs how to publish them: use
 of the R Markdown files to publish ^[Instead of listing each file individually,
 you can also pass [file globs](https://en.wikipedia.org/wiki/Glob_(programming))
 as input to any workflowr function, e.g. `wflow_publish("analysis/*Rmd",
-"Publish the initial files for myproject")`]. The second is a message that will
+"Publish the initial files for myproject")`.]. The second is a message that will
 recorded by the version control system Git when it commits (i.e. saves a
 snapshot of) these files. The more informative the commit message the better (so
 that future you knows what you were trying to accomplish).
@@ -328,9 +318,7 @@ wflow_status()
 At this point you have built a version-controlled website that exists on your
 local computer. The next step is to put your code on GitHub so that it can serve
 your website online. To do this, login to your account on GitHub and create a
-new repository following these [instructions][new-repo]. Make sure you do not
-add an automatically-generated README, .gitignore, or license (these are
-important, but workflowr already creates them for you). For the purposes of this
+new repository following these [instructions][new-repo]. For the purposes of this
 tutorial, the code below assumes that the GitHub repository also has the name
 "myproject." This isn't strictly neccesary (you can name your GitHub repository
 whatever you like), but it's generally good organizational practice to use the
@@ -346,15 +334,20 @@ wflow_git_remote("origin", "myname", "myproject")
 ```
 
 This creates the alias "origin" that points to your remote repository on
-GitHub^["origin" is the conventional name, but could be anything you wanted].
+GitHub^["origin" is the conventional name, but could be anything you wanted.].
 The associated URL is https://github.com/myname/myproject.git^[The name of the
 repository on GitHub does not need to be identical to the directory name of your
 local Git repo; however, it is convenient to have them match since this is the
-default behavior of `git clone` when copying your repo to a another computer].
+default behavior of `git clone` when copying your repo to a another computer.].
 You only need to run this command once to add the remote repository.
 
-Now you can push your files to GitHub with the function `wflow_git_push().` Run
-the following in the R console:
+Now you can push your files to GitHub with the function
+`wflow_git_push()`^[Unfortunately this can fail for many different reasons. If
+you already regularly use `git push` in the Terminal, you will probably want to
+continue using this. If you don't have Git installed on your computer and thus
+must use `wflow_git_push()`, you can search the [git2r
+Issues](https://github.com/ropensci/git2r/issues) for troubleshooting ideas.].
+Run the following in the R console:
 
 ```{r wflow-git-push}
 wflow_git_push(dry_run = TRUE)
@@ -364,7 +357,7 @@ Using `dry_run = TRUE` previews what the function will do. Remove this argument
 to actually push to GitHub. You will be prompted to enter your GitHub username
 and password for authentication^[If you'd prefer to use SSH keys for
 authentication, please see the section [Setup SSH
-keys](wflow-02-customization.html#setup-ssh-keys)]. Each time you make changes
+keys](wflow-02-customization.html#setup-ssh-keys).]. Each time you make changes
 to your project, e.g. run `wflow_publish()`, you will need to run
 `wflow_git_push()` to send the changes to GitHub.
 
@@ -372,7 +365,7 @@ Now that your code is on GitHub, you need to tell GitHub that you want the files
 in `docs/` to be published as a website. Go to Settings -> GitHub Pages and
 choose "master branch docs/ folder" as the Source
 ([instructions][publish-docs]). Using the hypothetical names above, the
-repository would be hosted at the URL `https://myname.github.io/myproject/`^[It
+repository would be hosted at the URL `myname.github.io/myproject/`^[It
 may take a few minutes for the site to be rendered.]. If you scroll back down to
 the GitHub Pages section of the Settings page, you can click on the URL there.
 

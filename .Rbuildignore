@@ -10,3 +10,4 @@
 ^build\.sh$
 ^LICENSE\.md$
 ^appveyor\.yml$
+tar\.gz$

@@ -335,10 +335,6 @@ wflow_git_remote("origin", "myname", "myproject")
 
 This creates the alias "origin" that points to your remote repository on
 GitHub^["origin" is the conventional name, but could be anything you wanted.].
-The associated URL is https://github.com/myname/myproject.git^[The name of the
-repository on GitHub does not need to be identical to the directory name of your
-local Git repo; however, it is convenient to have them match since this is the
-default behavior of `git clone` when copying your repo to a another computer.].
 You only need to run this command once to add the remote repository.
 
 Now you can push your files to GitHub with the function

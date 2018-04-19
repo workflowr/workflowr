@@ -59,6 +59,10 @@ on_failure:
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
 
+# Do not skip tests with skip_on_cran()
+environment:
+  NOT_CRAN: true
+
 artifacts:
   - path: '*.Rcheck\**\*.log'
     name: Logs

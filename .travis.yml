@@ -5,6 +5,11 @@ sudo: false
 cache: packages
 latex: false
 
+# Do not skip tests with skip_on_cran(). Adding this to be explicit for my
+# future self. This is already set by default.
+env:
+  - NOT_CRAN=true
+
 matrix:
   include:
     - os: linux

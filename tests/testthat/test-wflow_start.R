@@ -5,6 +5,9 @@ context("wflow_start")
 
 # Setup ------------------------------------------------------------------------
 
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
+
 library("git2r")
 
 project_files <- names(workflowr:::templates)
@@ -195,7 +198,7 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
 
   skip_on_cran()
 
-  # local_no_gitconfig() is defined in tests/testthat.R
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
   local_no_gitconfig("-workflowr")
 
   site_dir <- tempfile()

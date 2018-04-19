@@ -1,8 +1,9 @@
 context("wflow_git_config")
 
-# local_no_gitconfig() is defined in tests/testthat.R. Thus to run these tests
-# you'll need to use `devtools::check` or `R CMD check`. Unfortunately
-# `devtools::test` does not work.
+# Setup ------------------------------------------------------------------------
+
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
 
 # Test wflow_git_config --------------------------------------------------------
 

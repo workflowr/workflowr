@@ -9,7 +9,7 @@
 * Windows 10, R 3.4.3 (local)
 * Windows Server 2012 R2, R 3.4.4 (AppVeyor)
 * Windows Server 2008 R2 SP1, R-devel, 32/64 bit (r-hub)
-* win-builder (release)
+* win-builder (release, devel)
 
 ## R CMD check results
 

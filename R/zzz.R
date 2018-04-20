@@ -25,6 +25,8 @@
 #'
 #'   \item \code{\link{wflow_start}} - Start workflowr project
 #'
+#'   \item \code{\link{wflow_build}} - Build the site to view locally
+#'
 #'   \item \code{\link{wflow_publish}} - Publish analyses to include in the
 #'   website
 #'

@@ -21,7 +21,4 @@ Maintainer: 'John Blischak <jdblischak@uchicago.edu>'
 New submission
 
 Possibly mis-spelled words in DESCRIPTION:
-  git2r (12:21)
-  knitr (11:45)
-  rmarkdown (11:55)
   versioned (13:3)

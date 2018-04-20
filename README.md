@@ -33,6 +33,8 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
 
 ## Features
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/O1wv94sZfvE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 * Organized
     * Provides a project template with organized subdirectories
     * Mixes code and results with R Markdown

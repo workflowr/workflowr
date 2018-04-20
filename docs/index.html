@@ -106,6 +106,7 @@
 </ul>
 </li>
 </ul>
+<p>To see a workflowr website in action, see this <a href="https://www.youtube.com/watch?v=O1wv94sZfvE">video demonstration</a>.</p>
 <p>For related tools, see <a href="https://github.com/jdblischak/r-project-workflows#readme">r-project-workflows</a>.</p>
 </div>
 <div id="quick-start" class="section level2">
@@ -151,12 +152,13 @@ wflow_publish("analysis/*", "Start my new project")</code></pre>
 <li><p>(Optional) Install <a href="https://git-scm.com/">Git</a></p></li>
 </ul>
 </li>
-<li><p>Create an account on <a href="https://github.com">GitHub</a></p></li>
 <li>
 <p>Install workflowr from <a href="https://github.com">GitHub</a> using <a href="https://github.com/hadley/devtools">devtools</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#install.packages("devtools")</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">"devtools"</span>, <span class="st">"yaml"</span>))
 devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"jdblischak/workflowr"</span>)</code></pre></div>
+<p>Note that the purpose of explicitly installing the yaml package is to avoid a <a href="https://community.rstudio.com/t/error-when-starting-rstudio-there-is-no-package-yaml/4070">Windows-specific RStudio error</a>.</p>
 </li>
+<li><p>Create an account on <a href="https://github.com">GitHub</a></p></li>
 </ol>
 </div>
 <div id="attribution" class="section level2">

@@ -67,17 +67,17 @@
   <div class="col-md-9">
     <div class="page-header toc-ignore">
       <h1>Getting started with workflowr</h1>
-            <h3 class="subtitle">workflowr version 1.0.0</h3>
+            <h3 class="subtitle">workflowr version 1.0.1</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2018-04-17</h4>
+            <h4 class="date">2018-04-20</h4>
           </div>
 
     
     
 <div class="contents">
 <p>The workflowr R package helps scientists organize their research in a way that promotes effective project management, reproducibility, collaboration, and sharing of results. Workflowr combines literate programming (knitr and rmarkdown) and version control (Git, via git2r) to generate a website containing time-stamped, versioned, and documented results. Any R user can quickly and easily adopt workflowr.</p>
-<p>This tutorial assumes you have already followed the installation instructions in the <a href="https://jdblischak.github.io/workflowr/index.html">README</a>. Specifically, you need to have R, pandoc (or RStudio), and workflowr installed on your computer. Furthermore, you need a GitHub account.</p>
+<p>This tutorial assumes you have already followed the <a href="https://jdblischak.github.io/workflowr/index.html#installation">installation instructions</a>. Specifically, you need to have R, pandoc (or RStudio), and workflowr installed on your computer. Furthermore, you need a GitHub account.</p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -86,7 +86,7 @@
 <li><p>An R Markdown-based website. This consists of a configuration file (<code>_site.yml</code>), a collection of R Markdown files, and their corresponding HTML files.</p></li>
 <li><p>A Git repository. Git is a <a href="https://en.wikipedia.org/wiki/Version_control">version control system</a> that helps track code development<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Workflowr is able to run the basic Git commands, so there is no need to install Git prior to using workflowr.</p></li>
 </ol>
-<p>One of the main goals of workflowr is to help make your research more transparent and reproducible. This is achieved by including the unique identifier that Git assigns a snapshot of your code (or “commit” as Git calls it) at the top of each of your HTML files, so you always know which version of the code produced the results.</p>
+<p>One of the main goals of workflowr is to help make your research more transparent and reproducible. This is achieved by displaying multiple “reproducibility checks” at the top of each analysis, including the unique identifier that Git assigns a snapshot of your code (or “commit” as Git calls it), so you always know which version of the code produced the results.</p>
 </div>
 <div id="start-the-project" class="section level2">
 <h2 class="hasAnchor">
@@ -94,14 +94,14 @@
 <p>To start a new project, open R (or RStudio) and load the workflowr package (note that all the code in this vignette should be run directly in the R console, i.e. do <strong>not</strong> try to run workflowr functions inside of R Markdown documents).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">"workflowr"</span>)</code></pre></div>
 <pre><code>## Loading required package: rmarkdown</code></pre>
-<pre><code>## This is workflowr version 1.0.0
+<pre><code>## This is workflowr version 1.0.1
 ## Run ?workflowr for help getting started</code></pre>
 <p>If you have never created a Git repository on your computer before, you need to run the following command to tell Git your name and email. Git uses this information to assign the changes you make to the code to you (analogous to how Track Changes in a Microsoft Office Word document assigns your changes to you). You do not need to use the exact same name and email as you used for your GitHub account. Also, you only need to run this command once per computer, and all subsequent workflowr projects will use this information (you can also update it at any time by re-running the command with different input).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the example text with your information</span>
 <span class="kw"><a href="../reference/wflow_git_config.html">wflow_git_config</a></span>(<span class="dt">user.name =</span> <span class="st">"Your Name"</span>, <span class="dt">user.email =</span> <span class="st">"email@domain"</span>)</code></pre></div>
 <p>Now you are ready to start your first workflowr project! <code><a href="../reference/wflow_start.html">wflow_start("myproject")</a></code> creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and initializes a Git repository with the initial commit already made.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</code></pre></div>
-<pre><code>## Project "myproject" started in /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/Rtmp1IZkVp/wflow-01-getting-started-13d975035822/myproject</code></pre>
+<pre><code>## Project "myproject" started in /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpmlfNsJ/wflow-01-getting-started-e9859696a15/myproject</code></pre>
 <pre><code>## Git repository initialized.</code></pre>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> created the following directory structure in <code>myproject/</code>:</p>
 <pre><code>myproject/
@@ -125,7 +125,7 @@
 <p>At this point, you have a minimal but complete workflowr project; that is, you have all the files needed to use the main workflowr commands and publish a research website. Later on, as you get more comfortable with the basic setup, you can modify and add to the initial file structure. The overall rationale for this setup is to help organize the files that will be commonly included in a data analysis project. However, not all of these files are required to use workflowr.</p>
 <p>The two <strong>required</strong> subdirectories are <code>analysis/</code> and <code>docs/</code>. These directories should never be removed from the workflowr project.</p>
 <ul>
-<li><p><code>analysis/</code>: This directory contains all the source R Markdown files for implementing the data analyses for your project. It also contains a special R Markdown file, <code>index.Rmd</code>, that does not contain any R code, but will be used to generate <code>index.html</code>, the homepage for your website. In addition, this directory contains the important configuration files <code>_site.yml</code>, which you can use to edit the theme, navigation bar, and other website aesthetics.. Do not delete <code>index.Rmd</code> or <code>_site.yml</code>.</p></li>
+<li><p><code>analysis/</code>: This directory contains all the source R Markdown files for implementing the data analyses for your project. It also contains a special R Markdown file, <code>index.Rmd</code>, that does not contain any R code, but will be used to generate <code>index.html</code>, the homepage for your website. In addition, this directory contains the important configuration files <code>_site.yml</code>, which you can use to edit the theme, navigation bar, and other website aesthetics. Do not delete <code>index.Rmd</code> or <code>_site.yml</code>.</p></li>
 <li><p><code>docs/</code>: This directory contains all the HTML files for your website. The HTML files are built from the R Markdown files in <code>analysis/</code>. Furthermore, any figures created by the R Markdown files are saved here. Each of these figures is saved according to the following pattern: <code>docs/figure/&lt;insert Rmd filename&gt;/&lt;insert chunk name&gt;-#.png</code>, where <code>#</code> corresponds to which of the plots the chunk generated (since one chunk can produce an arbitrary number of plots).</p></li>
 </ul>
 <p>The workflowr-specific configuration file is <code>_workflowr.yml</code>. It will apply the workflowr reproducibility checks consistently across all your R Markdown files. The most critical setting is <code>knit_root_dir</code>, which determines the directory where the files in <code>analysis/</code> will be executed. The default is to execute the code in the root of the project where <code>_workflowr.yml</code> is located (i.e. <code>"."</code>). To instead execute the code from <code>analysis/</code>, change the setting to <code>knit_root_dir: "analysis"</code>. See <code><a href="../reference/wflow_html.html">?wflow_html</a></code> for more details.</p>
@@ -133,7 +133,7 @@
 <p>The <strong>optional</strong> directories are <code>data/</code>, <code>code/</code>, and <code>output/</code>. These directories are suggestions for organizing your data analysis project, but can be removed if you do not find them useful.</p>
 <ul>
 <li><p><code>data/</code>: This directory is for raw data files.</p></li>
-<li><p><code>code/</code>: This directory is for code and scripts that might not be appropriate as R Markdown notebooks (e.g. for pre-processing the data, or for long-running code).</p></li>
+<li><p><code>code/</code>: This directory is for code that might not be appropriate to include in R Markdown format (e.g. for pre-processing the data, or for long-running code).</p></li>
 <li><p><code>output/</code>: This directory is for processed data files and other outputs generated from the code and data. For example, scripts in <code>code</code> that pre-process raw data files from <code>data/</code> should save the processed data files in <code>output/</code>.</p></li>
 </ul>
 <p>The <code>.Rprofile</code> file is a regular R script that is run once when the project is opened. It contains the call <code>library("workflowr")</code>, ensuring that workflowr is loaded automatically each time a workflowr-project is opened.</p>
@@ -161,7 +161,7 @@
 ## docs/license.html
 ## 
 ## Log files saved in
-## /var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/Rtmp1IZkVp/workflowr</code></pre>
+## /var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpmlfNsJ/workflowr</code></pre>
 <p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files). Lastly, it displays the website in the RStudio Viewer or default web browser.</p>
 <p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice">Makefile</a> (<code>make = TRUE</code> is the default when no input files are provided), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built (and no files are displayed).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</code></pre></div>
@@ -216,7 +216,7 @@
 ##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd 
 ##   $ git commit -m "Publish the initial files for myproject" 
 ## 
-## The following file(s) were included in commit d0ebf9b:
+## The following file(s) were included in commit 6a98bd1:
 ## analysis/about.Rmd
 ## analysis/index.Rmd
 ## analysis/license.Rmd
@@ -236,7 +236,7 @@
 ## docs/license.html
 ## 
 ## Log files saved in
-## /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/Rtmp1IZkVp/workflowr
+## /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpmlfNsJ/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -247,7 +247,7 @@
 ##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit b3cf45d:
+## The following file(s) were included in commit 972d681:
 ## docs/about.html
 ## docs/index.html
 ## docs/license.html
@@ -275,15 +275,15 @@
 <div id="deploy-the-website" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deploy-the-website" class="anchor"></a>Deploy the website</h2>
-<p>At this point you have built a version-controlled website that exists on your local computer. The next step is to put your code on GitHub so that it can serve your website online. To do this, login to your account on GitHub and create a new repository following these <a href="https://help.github.com/articles/creating-a-new-repository/">instructions</a>. Make sure you do not add an automatically-generated README, .gitignore, or license (these are important, but workflowr already creates them for you). For the purposes of this tutorial, the code below assumes that the GitHub repository also has the name “myproject.” This isn’t strictly neccesary (you can name your GitHub repository whatever you like), but it’s generally good organizational practice to use the same name for both your GitHub repository and the local directory on your computer.</p>
+<p>At this point you have built a version-controlled website that exists on your local computer. The next step is to put your code on GitHub so that it can serve your website online. To do this, login to your account on GitHub and create a new repository following these <a href="https://help.github.com/articles/creating-a-new-repository/">instructions</a>. For the purposes of this tutorial, the code below assumes that the GitHub repository also has the name “myproject.” This isn’t strictly neccesary (you can name your GitHub repository whatever you like), but it’s generally good organizational practice to use the same name for both your GitHub repository and the local directory on your computer.</p>
 <p>Next you need to tell your local Git repository about this new GitHub repository. Run the <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code> command below in the R console, replacing “myname” with your GitHub username:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_git_remote.html">wflow_git_remote</a></span>(<span class="st">"origin"</span>, <span class="st">"myname"</span>, <span class="st">"myproject"</span>)</code></pre></div>
 <pre><code>## The repository has the following remotes set:
 ## 
 ##    name                                     url
 ##  origin https://github.com/myname/myproject.git</code></pre>
-<p>This creates the alias “origin” that points to your remote repository on GitHub<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. The associated URL is <a href="https://github.com/myname/myproject.git" class="uri">https://github.com/myname/myproject.git</a><a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>. You only need to run this command once to add the remote repository.</p>
-<p>Now you can push your files to GitHub with the function <code>wflow_git_push().</code> Run the following in the R console:</p>
+<p>This creates the alias “origin” that points to your remote repository on GitHub<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. You only need to run this command once to add the remote repository.</p>
+<p>Now you can push your files to GitHub with the function <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code><a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>. Run the following in the R console:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_git_push.html">wflow_git_push</a></span>(<span class="dt">dry_run =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## Summary from wflow_git_push
 ## 
@@ -293,7 +293,7 @@
 ## 
 ##   $ git push origin master</code></pre>
 <p>Using <code>dry_run = TRUE</code> previews what the function will do. Remove this argument to actually push to GitHub. You will be prompted to enter your GitHub username and password for authentication<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. Each time you make changes to your project, e.g. run <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>, you will need to run <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> to send the changes to GitHub.</p>
-<p>Now that your code is on GitHub, you need to tell GitHub that you want the files in <code>docs/</code> to be published as a website. Go to Settings -&gt; GitHub Pages and choose “master branch docs/ folder” as the Source (<a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch">instructions</a>). Using the hypothetical names above, the repository would be hosted at the URL <code>https://myname.github.io/myproject/</code><a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a>. If you scroll back down to the GitHub Pages section of the Settings page, you can click on the URL there.</p>
+<p>Now that your code is on GitHub, you need to tell GitHub that you want the files in <code>docs/</code> to be published as a website. Go to Settings -&gt; GitHub Pages and choose “master branch docs/ folder” as the Source (<a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch">instructions</a>). Using the hypothetical names above, the repository would be hosted at the URL <code>myname.github.io/myproject/</code><a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a>. If you scroll back down to the GitHub Pages section of the Settings page, you can click on the URL there.</p>
 </div>
 <div id="add-a-new-analysis-file" class="section level2">
 <h2 class="hasAnchor">
@@ -345,7 +345,7 @@
 ##   $ git add analysis/index.Rmd analysis/first-analysis.Rmd 
 ##   $ git commit -m "Add my first analysis" 
 ## 
-## The following file(s) were included in commit 84e5ab3:
+## The following file(s) were included in commit e80dcc9:
 ## analysis/first-analysis.Rmd
 ## analysis/index.Rmd
 ## 
@@ -363,7 +363,7 @@
 ## docs/first-analysis.html
 ## 
 ## Log files saved in
-## /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/Rtmp1IZkVp/workflowr
+## /private/var/folders/5b/hbjnbkkd0t957rs24vxgvw200000gn/T/RtmpmlfNsJ/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -374,7 +374,7 @@
 ##   $ git add docs/index.html docs/first-analysis.html docs/figure/index.Rmd docs/figure/first-analysis.Rmd docs/site_libs 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit fb775d2:
+## The following file(s) were included in commit 25dd015:
 ## docs/first-analysis.html
 ## docs/index.html
 ## docs/site_libs/jqueryui-1.11.4/
@@ -454,10 +454,10 @@
 <ol>
 <li id="fn1"><p>There are many ways to use Git: in the Terminal, in the RStudio Git pane, or another Git graphical user interface (GUI) (see <a href="https://git-scm.com/download/gui/linux">here</a> for GUI options).<a href="#fnref1">↩</a></p></li>
 <li id="fn2"><p>If you’re using RStudio, you can alternatively create a new workflowr project using the RStudio project template. Go to <code>File</code> -&gt; <code>New Project...</code> and select <code>workflowr project</code> from the list of project types. In the future you can return to your project by choosing <code>Open Project...</code> and selecting the file <code>myproject.Rproj</code>. This will set the correct working directory in the R console, switch the file navigator to the project, and configure the Git pane.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Instead of listing each file individually, you can also pass <a href="https://en.wikipedia.org/wiki/Glob_(programming)">file globs</a> as input to any workflowr function, e.g. <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/*Rmd", "Publish the initial files for myproject")</a></code><a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>“origin” is the conventional name, but could be anything you wanted<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>The name of the repository on GitHub does not need to be identical to the directory name of your local Git repo; however, it is convenient to have them match since this is the default behavior of <code>git clone</code> when copying your repo to a another computer<a href="#fnref5">↩</a></p></li>
-<li id="fn6"><p>If you’d prefer to use SSH keys for authentication, please see the section <a href="wflow-02-customization.html#setup-ssh-keys">Setup SSH keys</a><a href="#fnref6">↩</a></p></li>
+<li id="fn3"><p>Instead of listing each file individually, you can also pass <a href="https://en.wikipedia.org/wiki/Glob_(programming)">file globs</a> as input to any workflowr function, e.g. <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/*Rmd", "Publish the initial files for myproject")</a></code>.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>“origin” is the conventional name, but could be anything you wanted.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Unfortunately this can fail for many different reasons. If you already regularly use <code>git push</code> in the Terminal, you will probably want to continue using this. If you don’t have Git installed on your computer and thus must use <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, you can search the <a href="https://github.com/ropensci/git2r/issues">git2r Issues</a> for troubleshooting ideas.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>If you’d prefer to use SSH keys for authentication, please see the section <a href="wflow-02-customization.html#setup-ssh-keys">Setup SSH keys</a>.<a href="#fnref6">↩</a></p></li>
 <li id="fn7"><p>It may take a few minutes for the site to be rendered.<a href="#fnref7">↩</a></p></li>
 <li id="fn8"><p>Alternatively you can run <code>git push</code> in the Terminal or use the RStudio Git Pane.<a href="#fnref8">↩</a></p></li>
 </ol>

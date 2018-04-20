@@ -1,3 +1,8 @@
+# workflowr 1.0.1
+
+Various minor changes to documentation, tests, and package infrastructure to
+prepare for CRAN submission.
+
 # workflowr 1.0.0
 
 The 1.0.0 release is a major change. Instead of relying on the external code chunks

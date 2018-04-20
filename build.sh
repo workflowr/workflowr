@@ -30,4 +30,4 @@ echo "Buiding..."
 R CMD build .
 
 echo "Checking..."
-R CMD check "$source"
+R CMD check --as-cran "$source"

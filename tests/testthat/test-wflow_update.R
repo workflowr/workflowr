@@ -27,6 +27,10 @@ test_that("wflow_update can update to workflowr 1.0", {
                                    "analysis/include/footer.html",
                                    "analysis/index.Rmd",
                                    "analysis/workflowr-template.Rmd"))
+  # For some reason, only the r-hub Ubuntu 16.04 sorts the files by ignoring the
+  # underscores. Thus have to explicitly sort them to match the results from
+  # wflow_update().
+  expected <- sort(expected)
   files_dry <- wflow_update(project = tmp_dir)
   expect_identical(tolower(workflowr:::absolute(files_dry)),
                    tolower(expected))
@@ -49,7 +53,7 @@ test_that("wflow_update can update to workflowr 1.0", {
   git_commit <- wflow_git_commit(file.path(tmp_dir, "_workflowr.yml"),
                                  "Update to 1.0", all = TRUE, project = tmp_dir)
   expect_identical("Update to 1.0", git_commit$message)
-  expect_identical(tolower(workflowr:::absolute(git_commit$commit_files)),
+  expect_identical(tolower(sort(workflowr:::absolute(git_commit$commit_files))),
                    tolower(expected))
 
   # Confirm that subsequent calls to wflow_update have no effect

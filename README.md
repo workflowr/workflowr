@@ -33,8 +33,6 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
 
 ## Features
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/O1wv94sZfvE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 * Organized
     * Provides a project template with organized subdirectories
     * Mixes code and results with R Markdown
@@ -48,7 +46,9 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
     * Creates a website to present your research results
     * Documents how to host your website for free via [GitHub Pages][]
     * Creates links to past versions of results
-    
+
+To see a workflowr website in action, see this [video demonstration][video].
+
 For related tools, see [r-project-workflows][].
 
 ## Quick start
@@ -154,6 +154,7 @@ Workflowr is available under the [MIT license][MIT]. Please run
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
 [stephens]: http://stephenslab.uchicago.edu/
 [uchicago]: http://www.uchicago.edu/
+[video]: https://www.youtube.com/watch?v=O1wv94sZfvE
 [vig-custom]: https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html
 [vig-details]: https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html
 [vig-migrating]: https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html

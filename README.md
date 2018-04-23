@@ -98,15 +98,11 @@ into your existing project
     
     * (Optional) Install [Git][git]
 
-1. Install workflowr from [GitHub][gh] using [devtools][]:
+1. Install workflowr from [CRAN][cran]:
 
     ```r
-    install.packages(c("devtools", "yaml"))
-    devtools::install_github("jdblischak/workflowr")
+    install.packages("workflowr")
     ```
-
-    Note that the purpose of explicitly installing the yaml package is to avoid
-    a [Windows-specific RStudio error][yaml-error].
 
 1. Create an account on [GitHub][gh]
 
@@ -133,8 +129,8 @@ Workflowr is available under the [MIT license][MIT]. Please run
 `citation("workflowr")` for proper attribution.
 
 [contributors]: https://github.com/jdblischak/workflowr/graphs/contributors
+[cran]: https://cran.r-project.org/package=workflowr
 [divvy]: https://stephenslab.github.io/wflow-divvy/
-[devtools]: https://github.com/hadley/devtools
 [gh]: https://github.com
 [git]: https://git-scm.com/
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
@@ -161,4 +157,3 @@ Workflowr is available under the [MIT license][MIT]. Please run
 [vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
 [workflowr-docs]: https://jdblischak.github.io/workflowr/
 [xiangzhu]: https://github.com/xiangzhu
-[yaml-error]: https://community.rstudio.com/t/error-when-starting-rstudio-there-is-no-package-yaml/4070

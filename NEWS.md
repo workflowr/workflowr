@@ -1,5 +1,7 @@
 #  1.0.1.9000
 
+* S3 print method for `wflow_start()`
+
 # workflowr 1.0.1
 
 Various minor changes to documentation, tests, and package infrastructure to

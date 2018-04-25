@@ -287,7 +287,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created", 
   capture.output(actual <- wflow_start(dir_test, change_wd = FALSE,
                                        user.name = "Test Name",
                                        user.email = "test@email"))
-  expect_identical(actual, expected)
+  expect_identical(actual$directory, expected)
   expect_true(file.exists(file.path(expected, "z.Rproj")))
 })
 
@@ -308,7 +308,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
   capture.output(actual <- wflow_start(dir_test, change_wd = FALSE,
                                        user.name = "Test Name",
                                        user.email = "test@email"))
-  expect_identical(actual, expected)
+  expect_identical(actual$directory, expected)
   expect_true(file.exists(file.path(expected, "z.Rproj")))
 })
 
@@ -334,7 +334,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
   capture.output(actual <- wflow_start(dir_test, change_wd = FALSE,
                                        user.name = "Test Name",
                                        user.email = "test@email"))
-  expect_identical(actual, expected)
+  expect_identical(actual$directory, expected)
   expect_true(file.exists(file.path(expected, "z.Rproj")))
 })
 

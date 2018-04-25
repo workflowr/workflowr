@@ -51,7 +51,33 @@ apply to all workflowr projects (and Git repositories) on this computer,
 instead use \code{\link{wflow_git_config}}.}
 }
 \value{
-Invisibly returns absolute path to workflowr project.
+An object of class \code{wflow_start}, which is a list with the
+  following elements:
+
+ \itemize{
+
+   \item \bold{directory}: The input argument \code{directory}
+
+   \item \bold{name}: The input argument \code{name}
+
+   \item \bold{git}: The input argument \code{git}
+
+   \item \bold{existing}: The input argument \code{existing}
+
+   \item \bold{overwrite}: The input argument \code{overwrite}
+
+   \item \bold{change_wd}: The input argument \code{change_wd}
+
+   \item \bold{user.name}: The input argument \code{user.name}
+
+   \item \bold{user.email}: The input argument \code{user.email}
+
+   \item \bold{user.name}: The directory where the log files were saved
+
+   \item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
+   returned by \link{git2r} (\code{NULL} if \code{git = FALSE}).
+
+ }
 }
 \description{
 \code{wflow_start} creates a minimal workflowr project. The default

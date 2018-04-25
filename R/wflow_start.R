@@ -47,7 +47,33 @@
 #'   apply to all workflowr projects (and Git repositories) on this computer,
 #'   instead use \code{\link{wflow_git_config}}.
 #'
-#' @return Invisibly returns absolute path to workflowr project.
+#' @return An object of class \code{wflow_start}, which is a list with the
+#'   following elements:
+#'
+#'  \itemize{
+#'
+#'    \item \bold{directory}: The input argument \code{directory}
+#'
+#'    \item \bold{name}: The input argument \code{name}
+#'
+#'    \item \bold{git}: The input argument \code{git}
+#'
+#'    \item \bold{existing}: The input argument \code{existing}
+#'
+#'    \item \bold{overwrite}: The input argument \code{overwrite}
+#'
+#'    \item \bold{change_wd}: The input argument \code{change_wd}
+#'
+#'    \item \bold{user.name}: The input argument \code{user.name}
+#'
+#'    \item \bold{user.email}: The input argument \code{user.email}
+#'
+#'    \item \bold{user.name}: The directory where the log files were saved
+#'
+#'    \item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
+#'    returned by \link{git2r} (\code{NULL} if \code{git = FALSE}).
+#'
+#'  }
 #'
 #' @seealso vignette("wflow-01-getting-started")
 #'
@@ -170,14 +196,9 @@ wflow_start <- function(directory,
   # Configure RStudio
   rs_version <- check_rstudio_version()
 
-  message(glue::glue("Project \"{name}\" started in {directory}\n"))
-
   # Change working directory to workflowr project
   if (change_wd) {
     setwd(directory)
-  } else {
-    message("Did not change working directory.\n",
-            "Current working directory: ", getwd())
   }
 
   # Configure Git repository
@@ -186,7 +207,6 @@ wflow_start <- function(directory,
       warning("A .git directory already exists in ", directory)
     } else {
       git2r::init(directory)
-      message("Git repository initialized.")
     }
     repo <- git2r::repository(directory)
     # Set local user.name and user.email
@@ -199,11 +219,49 @@ wflow_start <- function(directory,
     if (length(status$staged) == 0) {
       warning("No new workflowr files were committed.")
     } else{
-      git2r::commit(repo, message = "Start workflowr project.")
+      commit <- git2r::commit(repo, message = "Start workflowr project.")
     }
   }
 
-  return(invisible(directory))
+  # Prepare output -------------------------------------------------------------
+
+  o <- list(directory = directory,
+            name = name,
+            git = git,
+            existing = existing,
+            overwrite = overwrite,
+            change_wd = change_wd,
+            user.name = user.name,
+            user.email = user.email,
+            commit = if (exists("commit")) commit else NULL)
+  class(o) <- "wflow_start"
+
+  return(o)
+}
+
+#' @export
+print.wflow_start <- function(x, ...) {
+  cat("wflow_start:\n")
+  if (x$existing) {
+    cat(sprintf("  - Existing directory: %s\n", x$directory))
+  } else {
+    cat(sprintf("  - New directory: %s\n", x$directory))
+  }
+  cat(sprintf("  - Project name: %s\n", x$name))
+  cat(sprintf("  - Working directory: %s\n", getwd()))
+  if (git2r::in_repository(x$directory)) {
+    repo <- git2r::repository(x$directory, discover = TRUE)
+    cat(sprintf("  - Git repo: %s\n", repo@path))
+  }
+  if (x$git) {
+    if (is.null(x$commit)) {
+      cat("  - No commit was made\n")
+    } else {
+      cat(sprintf("  - commit: %s\n", shorten_sha(x$commit@sha)))
+    }
+  }
+
+  return(invisible(x))
 }
 
 check_rstudio_version <- function() {

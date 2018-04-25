@@ -1,3 +1,5 @@
+#  1.0.1.9000
+
 # workflowr 1.0.1
 
 Various minor changes to documentation, tests, and package infrastructure to

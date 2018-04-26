@@ -34,10 +34,9 @@ test_that("workflowr functions can handle / on Windows", {
   on.exit(unlink(tmp_forw, recursive = TRUE, force = TRUE), add = TRUE)
 
   # wflow_start
-  expect_message(return_start <- wflow_start(tmp_forw, user.name = "Test Name",
-                             user.email = "test@email"),
-                 tmp_forw)
-  expect_identical(return_start, tmp_forw)
+  return_start <- wflow_start(tmp_forw, user.name = "Test Name",
+                              user.email = "test@email")
+  expect_identical(return_start$directory, tmp_forw)
   # wflow_git_commit
   return_commit <- wflow_git_commit(rmd_forw, dry_run = TRUE)
   expect_identical(return_commit$files, rmd_forw)
@@ -78,10 +77,9 @@ test_that("workflowr functions can handle \\ on Windows", {
   on.exit(unlink(tmp_forw, recursive = TRUE, force = TRUE), add = TRUE)
 
   # wflow_start
-  expect_message(return_start <- wflow_start(tmp_back, user.name = "Test Name",
-                             user.email = "test@email"),
-                 tmp_forw)
-  expect_identical(return_start, tmp_forw)
+  return_start <- wflow_start(tmp_back, user.name = "Test Name",
+                              user.email = "test@email")
+  expect_identical(return_start$directory, tmp_forw)
   # wflow_git_commit
   return_commit <- wflow_git_commit(rmd_back, dry_run = TRUE)
   expect_identical(return_commit$files, rmd_forw)

@@ -10,53 +10,56 @@ wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
 }
 \arguments{
 \item{directory}{character. The directory where the workflowr
-project files will be added, e.g., "~/new-project". When
+project files will be added, e.g., "~/my-wflow-project". When
 \code{existing = FALSE}, the directory will be created.}
 
-\item{name}{character (default: NULL). Project name, e.g. "My
-Project". When \code{name = NULL}, the project name is
-automatically set based on the argument \code{directory}. For
-example, if \code{directory = "~/projects/myproject"}, then
-\code{name} is set to \code{"myproject"}.  \code{name} is displayed
-on the site's navigation bar and the README.md.}
+\item{name}{character (default: \code{NULL}). The name of the
+project, e.g. "My Workflowr Project". When \code{name = NULL}, the
+project name is automatically determined based on
+\code{directory}. For example, if \code{directory =
+"~/projects/my-wflow-project"}, then \code{name} is set to
+\code{"my-wflow-project"}. The project name is displayed on the
+website's navigation bar and in the \code{README.md} file.}
 
-\item{git}{logical (default: TRUE). Should the workflowr files be
-committed with Git? If no Git repository is detected,
-\code{wflow_start} will initialize the repository and make an
-initial commit. If there is already a Git repository,
-\code{wflow_start} will make an additional commit. In both cases,
-only files needed for the workflowr project will be included in the
-commit.}
+\item{git}{logical (default: \code{TRUE}). Should the workflowr
+files be committed with Git? If \code{git = TRUE} and no existing
+Git repository is detected, \code{wflow_start} will initialize the
+repository and make an initial commit. If a Git repository already
+exists in the chosen directory, \code{wflow_start} any newly
+created or modified files will be commited to the existing
+repository.}
 
-\item{existing}{logical (default: FALSE). Indicate if the specified
-\code{directory} already exists. The default prevents injecting the
-workflowr files into an unwanted location. Only set to TRUE if you
-wish to add the workflowr files to an existing project.}
+\item{existing}{logical (default: \code{FALSE}). Indicate whether
+\code{directory} already exists. This argument is added to prevent
+accidental creation of files in an existing directory; setting
+\code{existing = FALSE} prevents files from being created if the
+specified directory already exists.}
 
-\item{overwrite}{logical (default: FALSE). Control whether to
-overwrite existing files that have the same names as the workflowr
-files. Only relevant if \code{existing = TRUE}. Even if
-\code{overwrite = FALSE}, existing files that have the same names
-as the workflowr files will still be committed if \code{git =
-TRUE}.}
+\item{overwrite}{logical (default: \code{FALSE}). Similar to
+\code{existing}, this argument prevents files from accidentally
+being overwrittenw when \code{overwrite = FALSE}.  When
+\code{overwrite = FALSE}, any existing file in \code{directory}
+that has the same name as a workflowr file will be replaced by the
+workflowr file. When \code{git = TRUE}, all new or overwritten
+files are committed.}
 
-\item{change_wd}{logical (default: TRUE). Change the working
+\item{change_wd}{logical (default: \code{TRUE}). Change the working
 directory to the \code{directory}.}
 
-\item{dry_run}{logical (default: FALSE). Preview the actions to be
-performed without executing them.}
+\item{dry_run}{logical (default: \code{FALSE}). When \code{dry_run
+= TRUE}, the actions are previewed without executing them.}
 
-\item{user.name}{character (default: NULL). The user name used by
-Git to sign commits, e.g. "My Name". This setting will only apply
-to this specific workflowr project being created. To create a
-global Git user name to be the default for this computer, instead
-use \code{\link{wflow_git_config}}.}
+\item{user.name}{character (default: \code{NULL}). The user name
+used by Git to sign commits, e.g., "Ada Lovelace". This setting
+only applies to the workflowr project being created. To specify the
+global setting for the Git user name, use
+\code{\link{wflow_git_config}} instead.}
 
-\item{user.email}{character (default: NULL). The email address
-used by Git to sign commits, e.g. "email@domain". This setting will
-only apply to this specific workflowr project being created. To
-create a global Git email address to be the default for this
-computer, instead use \code{\link{wflow_git_config}}.}
+\item{user.email}{character (default: \code{NULL}). The email
+address used by Git to sign commits, e.g.,
+"ada.lovelace@ox.ac.uk". This setting only applies to the workflowr
+project being created. To specify the global setting for the Git
+email address, use \code{\link{wflow_git_config}} instead.}
 }
 \value{
 An object of class \code{wflow_start}, which is a list with the
@@ -88,12 +91,11 @@ An object of class \code{wflow_start}, which is a list with the
  }
 }
 \description{
-\code{wflow_start} creates a directory with the files that are
-essential to beginning a workflowr project. The default behaviour
-is to add these files to a new directory, but it is also possible
-to populate an existing directory. By default, the working
-directory is changed to the specified location of the workflowr
-project.
+\code{wflow_start} creates a directory with the essential files for
+a workflowr project. The default behaviour is to add these files to
+a new directory, but it is also possible to populate an existing
+directory. By default, the working directory is changed to the
+workflowr project directory.
 }
 \details{
 This is recommended function to set up the file infrastructure for

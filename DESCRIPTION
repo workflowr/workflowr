@@ -34,7 +34,7 @@ Imports:
     utils,
     whisker,
     yaml
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 Suggests:
     covr,
     devtools,

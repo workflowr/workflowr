@@ -5,8 +5,8 @@
 \title{Start a new workflowr project}
 \usage{
 wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
-  overwrite = FALSE, change_wd = TRUE, user.name = NULL,
-  user.email = NULL)
+  overwrite = FALSE, change_wd = TRUE, dry_run = FALSE,
+  user.name = NULL, user.email = NULL)
 }
 \arguments{
 \item{directory}{character. The directory for the project, e.g.
@@ -40,6 +40,9 @@ be committed if \code{git = TRUE}.}
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
 \code{directory}.}
 
+\item{dry_run}{logical (default: FALSE). Preview the actions to be performed
+without executing them.}
+
 \item{user.name}{character (default: NULL). The user name used by Git to sign
 commits, e.g. "My Name". This setting will only apply to this specific
 workflowr project being created. To create a global Git user name to be the
@@ -69,11 +72,11 @@ An object of class \code{wflow_start}, which is a list with the
 
    \item \bold{change_wd}: The input argument \code{change_wd}
 
+   \item \bold{dry_run}: The input argument \code{dry_run}
+
    \item \bold{user.name}: The input argument \code{user.name}
 
    \item \bold{user.email}: The input argument \code{user.email}
-
-   \item \bold{user.name}: The directory where the log files were saved
 
    \item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
    returned by \link{git2r} (\code{NULL} if \code{git = FALSE}).
@@ -179,6 +182,9 @@ wflow_start("path/to/new-project")
 
 # Provide a custom name for the project.
 wflow_start("path/to/new-project", name = "My Project")
+
+# Preview what wflow_start would do
+wflow_start("path/to/new-project", dry_run = TRUE)
 
 # Add workflowr files to an existing project.
 wflow_start("path/to/current-project", existing = TRUE)

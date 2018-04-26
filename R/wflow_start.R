@@ -137,6 +137,9 @@
 #' @param change_wd logical (default: TRUE). Change the working
 #'   directory to the \code{directory}.
 #' 
+#' @param dry_run logical (default: FALSE). Preview the actions to be
+#'   performed without executing them.
+#' 
 #' @param user.name character (default: NULL). The user name used by
 #'   Git to sign commits, e.g. "My Name". This setting will only apply
 #'   to this specific workflowr project being created. To create a
@@ -166,15 +169,15 @@
 #'
 #'    \item \bold{change_wd}: The input argument \code{change_wd}.
 #'
-#'    \item \bold{user.name}: The input argument \code{user.name}.
+#'    \item \bold{dry_run}: The input argument \code{dry_run}
+#'
+#'    \item \bold{user.name}: The input argument \code{user.name}
 #'
 #'    \item \bold{user.email}: The input argument \code{user.email}.
 #'
-#'    \item \bold{user.name}: The directory where the log files were saved.
-#'
-#'    \item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
-#'    returned by \link{git2r} (\code{NULL} if \code{git = FALSE}).
-#'
+#'    \item \bold{commit}: The \code{\link[git2r]{git_commit-class}}
+#'    object returned by \link{git2r} (\code{NULL} if \code{git =
+#'    FALSE}).
 #'  }
 #'
 #' @seealso vignette("wflow-01-getting-started")
@@ -186,6 +189,9 @@
 #'
 #' # Provide a custom name for the project.
 #' wflow_start("path/to/new-project", name = "My Project")
+#'
+#' # Preview what wflow_start would do
+#' wflow_start("path/to/new-project", dry_run = TRUE)
 #'
 #' # Add workflowr files to an existing project.
 #' wflow_start("path/to/current-project", existing = TRUE)
@@ -201,6 +207,7 @@ wflow_start <- function(directory,
                         existing = FALSE,
                         overwrite = FALSE,
                         change_wd = TRUE,
+                        dry_run = FALSE,
                         user.name = NULL,
                         user.email = NULL) {
   if (!is.character(directory) | length(directory) != 1)
@@ -215,6 +222,8 @@ wflow_start <- function(directory,
     stop("overwrite must be a one element logical vector: ", overwrite)
   if (!is.logical(change_wd) | length(change_wd) != 1)
     stop("change_wd must be a one element logical vector: ", change_wd)
+  if (!is.logical(dry_run) | length(dry_run) != 1)
+    stop("dry_run must be a one element logical vector: ", dry_run)
   if (!(is.null(user.name) | (is.character(user.name) | length(user.name) != 1)))
     stop("user.name must be NULL or a one element character vector: ", user.name)
   if (!(is.null(user.email) | (is.character(user.email) | length(user.email) != 1)))
@@ -249,7 +258,7 @@ wflow_start <- function(directory,
   }
 
   # Create directory if it doesn't already exist
-  if (!existing & !dir.exists(directory)) {
+  if (!existing && !dir.exists(directory) && !dry_run) {
     dir.create(directory, recursive = TRUE)
   }
 
@@ -280,18 +289,22 @@ wflow_start <- function(directory,
                                                "docs", "output")),
                         showWarnings = FALSE)
 
-  for (fname in project_files) {
-    if (!file.exists(fname) || overwrite) {
-      cat(glue::glue(templates[[fname]]), file = fname)
+  if (!dry_run) {
+    for (fname in project_files) {
+      if (!file.exists(fname) || overwrite) {
+        cat(glue::glue(templates[[fname]]), file = fname)
+      }
     }
   }
 
   # Create .nojekyll files in analysis/ and docs/ directories
   nojekyll_analysis <- file.path(directory, "analysis", ".nojekyll")
-  file.create(nojekyll_analysis)
   nojekyll_docs <- file.path(directory, "docs", ".nojekyll")
-  file.create(nojekyll_docs)
   project_files <- c(project_files, nojekyll_analysis, nojekyll_docs)
+  if (!dry_run) {
+    file.create(nojekyll_analysis)
+    file.create(nojekyll_docs)
+  }
 
   # Configure, initialize, and commit ------------------------------------------
 
@@ -299,12 +312,12 @@ wflow_start <- function(directory,
   rs_version <- check_rstudio_version()
 
   # Change working directory to workflowr project
-  if (change_wd) {
+  if (change_wd && !dry_run) {
     setwd(directory)
   }
 
   # Configure Git repository
-  if (git) {
+  if (git && !dry_run) {
     if (git2r::in_repository(directory)) {
       warning("A .git directory already exists in ", directory)
     } else {
@@ -333,6 +346,7 @@ wflow_start <- function(directory,
             existing = existing,
             overwrite = overwrite,
             change_wd = change_wd,
+            dry_run = dry_run,
             user.name = user.name,
             user.email = user.email,
             commit = if (exists("commit")) commit else NULL)
@@ -343,23 +357,64 @@ wflow_start <- function(directory,
 
 #' @export
 print.wflow_start <- function(x, ...) {
-  cat("wflow_start:\n")
-  if (x$existing) {
-    cat(sprintf("  - Existing directory: %s\n", x$directory))
-  } else {
-    cat(sprintf("  - New directory: %s\n", x$directory))
-  }
-  cat(sprintf("  - Project name: %s\n", x$name))
-  cat(sprintf("  - Working directory: %s\n", getwd()))
-  if (git2r::in_repository(x$directory)) {
-    repo <- git2r::repository(x$directory, discover = TRUE)
-    cat(sprintf("  - Git repo: %s\n", repo@path))
-  }
-  if (x$git) {
-    if (is.null(x$commit)) {
-      cat("  - No commit was made\n")
+  if (x$dry_run) {
+    cat("wflow_start (\"dry run mode\"):\n")
+    if (x$existing) {
+      cat(sprintf("- Files would be added to existing directory %s\n", x$directory))
     } else {
-      cat(sprintf("  - commit: %s\n", shorten_sha(x$commit@sha)))
+      cat(sprintf("- New directory would be created at %s\n", x$directory))
+    }
+    cat(sprintf("- Project name would be \"%s\"\n", x$name))
+    if (x$change_wd) {
+      cat(sprintf("- Working directory would be changed to %s\n", x$directory))
+    } else {
+      cat(sprintf("- Working directory would continue to be %s\n", getwd()))
+    }
+    if (x$existing && git2r::in_repository(x$directory)) {
+      repo <- git2r::repository(x$directory, discover = TRUE)
+      cat(sprintf("- Git repo already present at %s\n", repo@path))
+    } else if (x$git) {
+      cat(sprintf("- Git repo would be initiated at %s\n", x$directory))
+    } else {
+      cat(sprintf("- Git repo would not be initiated\n", x$directory))
+    }
+    if (x$git) {
+      cat("- Files would be commited with Git\n")
+    } else {
+      cat("- Files would not be commited with Git\n")
+    }
+  } else {
+    cat("wflow_start:\n")
+    if (x$existing) {
+      cat(sprintf("- File added to existing directory %s\n", x$directory))
+    } else {
+      cat(sprintf("- New directory created at %s\n", x$directory))
+    }
+    cat(sprintf("- Project name is \"%s\"\n", x$name))
+    if (x$change_wd) {
+      cat(sprintf("- Working directory changed to %s\n", x$directory))
+    } else {
+      cat(sprintf("- Working directory continues to be %s\n", getwd()))
+    }
+    if (git2r::in_repository(x$directory)) {
+      repo <- git2r::repository(x$directory, discover = TRUE)
+      if (x$git && !x$existing) {
+        cat(sprintf("- Git repo inititated at %s\n", repo@path))
+      } else if (x$git && x$existing && length(git2r::commits(repo)) == 1) {
+        cat(sprintf("- Git repo inititated at %s\n", repo@path))
+      } else {
+        cat(sprintf("- Git repo already present at %s\n", repo@path))
+      }
+      if (x$git) {
+        if (is.null(x$commit)) {
+          cat("- Files were not committed\n")
+        } else {
+          cat(sprintf("- Files were committed in version %s\n",
+                      shorten_sha(x$commit@sha)))
+        }
+      }
+    } else {
+      cat("- No Git repo\n")
     }
   }
 

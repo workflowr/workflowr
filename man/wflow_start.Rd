@@ -5,8 +5,8 @@
 \title{Start a new workflowr project}
 \usage{
 wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
-  overwrite = FALSE, change_wd = TRUE, user.name = NULL,
-  user.email = NULL)
+  overwrite = FALSE, change_wd = TRUE, dry_run = FALSE,
+  user.name = NULL, user.email = NULL)
 }
 \arguments{
 \item{name}{character (default: NULL). Project name, e.g. "My
@@ -26,6 +26,7 @@ commit.}
 
 \item{existing}{logical (default: FALSE). Indicate if the specified
 \code{directory} already exists. The default prevents injecting the
+<<<<<<< HEAD
 workflowr files into an unwanted location. Only set to TRUE if you
 wish to add the workflowr files to an existing project.}
 
@@ -50,6 +51,33 @@ used by Git to sign commits, e.g. "email@domain". This setting will
 only apply to this specific workflowr project being created. To
 create a global Git email address to be the default for this
 computer, instead use \code{\link{wflow_git_config}}.}
+=======
+workflowr files into an unwanted location. Only set to TRUE if you wish to
+add the workflowr files to an existing project.}
+
+\item{overwrite}{logical (default: FALSE). Control whether to overwrite
+existing files that have the same names as the workflowr files. Only
+relevant if \code{existing = TRUE}. Even if \code{overwrite = FALSE},
+existing files that have the same names as the workflowr files will still
+be committed if \code{git = TRUE}.}
+
+\item{change_wd}{logical (default: TRUE). Change the working directory to the
+\code{directory}.}
+
+\item{dry_run}{logical (default: FALSE). Preview the actions to be performed
+without executing them.}
+
+\item{user.name}{character (default: NULL). The user name used by Git to sign
+commits, e.g. "My Name". This setting will only apply to this specific
+workflowr project being created. To create a global Git user name to be the
+default for this computer, instead use \code{\link{wflow_git_config}}.}
+
+\item{user.email}{character (default: NULL). The email addresse used by Git
+to sign commits, e.g. "email@domain". This setting will only apply to this
+specific workflowr project being created. To create a global Git email
+address to be the default for this computer, instead use
+\code{\link{wflow_git_config}}.}
+>>>>>>> 99309bdeadf1cc3db9b78b4182e4b3c16e476486
 }
 \value{
 An object of class \code{wflow_start}, which is a list with the
@@ -69,12 +97,21 @@ An object of class \code{wflow_start}, which is a list with the
 
    \item \bold{change_wd}: The input argument \code{change_wd}.
 
+<<<<<<< HEAD
    \item \bold{user.name}: The input argument \code{user.name}.
+=======
+   \item \bold{dry_run}: The input argument \code{dry_run}
+
+   \item \bold{user.name}: The input argument \code{user.name}
+>>>>>>> 99309bdeadf1cc3db9b78b4182e4b3c16e476486
 
    \item \bold{user.email}: The input argument \code{user.email}.
 
+<<<<<<< HEAD
    \item \bold{user.name}: The directory where the log files were saved.
 
+=======
+>>>>>>> 99309bdeadf1cc3db9b78b4182e4b3c16e476486
    \item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
    returned by \link{git2r} (\code{NULL} if \code{git = FALSE}).
 
@@ -196,6 +233,9 @@ wflow_start("path/to/new-project")
 
 # Provide a custom name for the project.
 wflow_start("path/to/new-project", name = "My Project")
+
+# Preview what wflow_start would do
+wflow_start("path/to/new-project", dry_run = TRUE)
 
 # Add workflowr files to an existing project.
 wflow_start("path/to/current-project", existing = TRUE)

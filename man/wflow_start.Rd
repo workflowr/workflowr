@@ -71,30 +71,27 @@ modified later using \code{git config --local} shell command.}
 An object of class \code{wflow_start}, which is a list with the
   following elements:
 
- \itemize{
+   \item{directory}{The input argument \code{directory}.}
 
-   \item \bold{directory}: The input argument \code{directory}.
+   \item{name}{The input argument \code{name}.}
 
-   \item \bold{name}: The input argument \code{name}.
+   \item{fit}{The input argument \code{git}.}
 
-   \item \bold{git}: The input argument \code{git}.
+   \item{existing}{The input argument \code{existing}.}
 
-   \item \bold{existing}: The input argument \code{existing}.
+   \item{\bold{overwrite}}{The input argument \code{overwrite}.}
 
-   \item \bold{overwrite}: The input argument \code{overwrite}.
+   \item{change_wd}{The input argument \code{change_wd}.}
 
-   \item \bold{change_wd}: The input argument \code{change_wd}.
+   \item{dry_run}{The input argument \code{dry_run}.}
 
-   \item \bold{dry_run}: The input argument \code{dry_run}
+   \item{user.name}{The input argument \code{user.name}.}
 
-   \item \bold{user.name}: The input argument \code{user.name}
+   \item{user.email}{The input argument \code{user.email}.}
 
-   \item \bold{user.email}: The input argument \code{user.email}.
-
-   \item \bold{commit}: The \code{\link[git2r]{git_commit-class}}
+   \item{commit}{The \code{\link[git2r]{git_commit-class}}
    object returned by \link{git2r}, or \code{NULL} if \code{git =
-   FALSE}.
- }
+   FALSE}.}
 }
 \description{
 \code{wflow_start} creates a directory with the essential files for
@@ -234,6 +231,7 @@ wflow_start("path/to/current-project", existing = TRUE)
 # commit them.
 wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
 }
+
 }
 \seealso{
 vignette("wflow-01-getting-started")

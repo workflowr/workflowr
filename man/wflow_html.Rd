@@ -2,98 +2,24 @@
 % Please edit documentation in R/wflow_html.R
 \name{wflow_html}
 \alias{wflow_html}
-\title{Reproducible HTML document}
+\title{Convert to a workflowr HTML document}
 \usage{
 wflow_html(...)
 }
 \arguments{
-\item{...}{Arguments passed to \code{\link[rmarkdown]{html_document}}}
+\item{...}{Arguments passed to \code{\link[rmarkdown]{html_document}}.}
 }
 \value{
-\code{\link[rmarkdown]{output_format}}
+An \code{\link[rmarkdown]{output_format}} object to pass to
+\code{\link[rmarkdown]{render}}.
 }
 \description{
-The output format \code{wflow_html} automatically sets a seed with
-\code{\link{set.seed}}, inserts version of Git repo, inserts
-\code{\link{sessionInfo}}, inserts links to past versions of the file and
-figures, and more!
-}
-\details{
-\code{wflow_html} extends \code{\link[rmarkdown]{html_document}}. To change
-aesthetic aspects of the website (e.g. the theme, table of contents, etc.),
-you can pass these arguments directly to \code{wflow_html} defined in
-_site.yml or the YAML header of the R Markdown files. To control the
-reproducibility features of \code{wflow_html}, you can edit
-_workflowr.yml or set them in the YAML header (described below).
-
-\code{wflow_html} searches for workflowr options set in two locations. The
-first is a file named _workflowr.yml that exists in the current or an
-upstream directory (for a typical workflowr project, _workflowr.yml should be
-at the root of the project). Second, it checks for any options set in the
-YAML header of the R Markdown file, which will overrride the settings in
-_workflowr.yml.
-
-The currently available settings (and their default values) are:
-
-\itemize{
-
-\item \bold{knit_root_dir:} The directory to execute the code in the R
-  Markdown file. This is ultimately passed to
-  \code{\link[rmarkdown]{render}}. New workflowr projects define
-  \code{knit_root_dir} in _workflowr.yml to be \code{"."}, which results in
-  the code being executed in the root directory. If you'd prefer to knit the
-  files you can change this to \code{"analysis"}. Alternatively you could
-  delete this option from _workflowr.yml. This is because if
-  \code{knit_root_dir} is not set in _workflowr.yml or the YAML header, the
-  default is to execute the code in the same directory as the R Markdown file
-  (i.e. analysis/).
-
-\item \bold{seed:} The seed to set at the beginning of the analysis. New
-  workflowr projects will define the seed in _workflowr.yml as the date in
-  the format YYYYMMDD. If no seed is configured in _workflowr.yml or the
-  YAML header of the file, the default is 12345.
-
-\item \bold{sessioninfo:} The function to run to record the session
- information. The default is \code{sessionInfo()}.
-
-\item \bold{github:} The URL of the GitHub repo for creating links to past
- results. The default is to try and guess the URL from the remote
- repositories defined (see \code{\link{wflow_git_remote}}). If multiple users
- are collaborating on a project, setting the value of \code{github} in
- _workflowr.yml ensures that everyone generates the same URLs in the HTML
- files.
-
-}
-
-Here's an example of a customized _workflowr.yml file:
-
-\preformatted{
-# Execute code in project directory
-knit_root_dir: "."
-# Set a custom seed
-seed: 4815162342
-# Use devtools to generate the
-# session information
-sessioninfo: "devtools::session_info()"
-# Always use this URL when inserting links
-# to past results
-github: https://github.com/repoowner/mainrepo
-}
-
-The same could be acheived for a single file in its YAML header using the
-keyword workflowr:
-
-\preformatted{
----
-title: "About"
-output:
-  workflowr::wflow_html:
-    toc: false
-workflowr:
-  knit_root_dir: "."
-  seed: 4815162342
-  sessioninfo: "devtools::session_info()"
-  github: https://github.com/repoowner/mainrepo
----
-}
+Workflowr custom format for converting from R Markdown to an HTML
+document. See \code{\link[rmarkdown]{render}}
+\code{\link[rmarkdown]{render_site}} for an explanation of how this
+conversion format can be specified inside the \code{_site.yml}
+configuration file or an R Markdown file. This is intended to be
+used to generate webpages for a workflowr website, but it can also
+be used outside a workflowr project to generate webpages from R
+Markdown documents.
 }

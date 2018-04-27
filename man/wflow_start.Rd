@@ -125,7 +125,7 @@ following files:
 ├── data/
 │   └── README.md
 ├── docs/
-├── directory.Rproj
+├── <directory>.Rproj
 ├── output/
 │   └── README.md
 └── README.md
@@ -164,34 +164,49 @@ execute the code from \code{analysis/}, for example, change the
 setting to \code{knit_root_dir: "analysis"}. See
 \code{\link{wflow_html}} for more details.
 
-Also required is the RStudio project file, in the example
-above\code{directory.Rproj}. Even if you are not using RStudio, do
-not delete this file because the workflowr functions rely on it to
-determine the root directory of the project.
+Another required file is the RStudio project file (ending in
+\code{.Rpoj}). \emph{Do not delete this file even if you do not use
+RStudio; among other essential tasks, it is used to determine the
+project root directory.}
 
 The \bold{optional} directories are \code{data/}, \code{code/}, and
 \code{output/}. These directories are suggestions for organizing
-your data analysis project, but can be removed if you do not find
-them useful.
+your workflowr project and can be removed if you do not find them
+relevant to your project.
 
-\code{data/} is a directory for raw data files.
+\code{data/} should be used to store "raw" (unprocessed) data
+files.
 
-\code{code/} is a directory for code that might not be appropriate
-to include in R Markdown format (e.g. for pre-processing the data,
-or for long-running code).
+\code{code/} should be used to store additional code that might not
+be appropriate to include in R Markdown files (e.g., code to
+preprocess the data, long-running scripts, or functions that are
+used in multiple R Markdown files).
 
-\code{output/} is a directory for processed data files and other
-outputs generated from the code and data. For example, scripts in
-\code{code/} that pre-process raw data files from \code{data/}
-should save the processed data files in \code{output/}.
+\code{output/} should be used to store processed data files and
+other outputs generated from the code and analyses. For example,
+scripts in \code{code/} that pre-process raw data files from
+\code{data/} should save the processed data files in
+\code{output/}.
 
-The \code{.Rprofile} file is a regular R script that is run once
-when the project is opened. It contains the call
-\code{library("workflowr")}, ensuring that workflowr is loaded
-automatically each time a workflowr-project is opened.
+All these subdirectories except for \code{docs/} include a README
+file summarizing the contents of the subdirectory, and can be
+modified as desired, for example, to document the files stored in
+each directory.
+
+\code{.Rprofile} is an optional file in the root directory of the
+workflowr project containing R code that is executed whenever the
+\code{.Rproj} file is loaded in RStudio, or whenever R is started
+up inside the project root directory. This file includes the line
+of code \code{library("workflowr")} to ensure that the workflowr
+package is loaded.
+
+Finally, \code{.gitignore} is an optional file that indicates to
+Git which files should be ignored---that is, files that are never
+committed to the repository. Some suggested files to ignore such as
+\code{.Rhistory} and \code{.Rdata} are listed here.
 }
 \note{
-Do not delete file \code{.Rproj} even if you do not use
+. Do not delete file \code{.Rproj} even if you do not use
   RStudio; workflowr will not work correctly unless this file is
   there.
 }

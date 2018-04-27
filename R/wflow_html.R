@@ -10,9 +10,9 @@
 #' Markdown documents.
 #'
 #' The output format \code{wflow_html} provides a number of features
-#' including: automatically sets a seed with \code{\link{set.seed}};
-#' inserts the Git commit id; provides \code{\link{sessionInfo}} at
-#' the end of the document; and inserts links to past versions of the
+#' including: automatically setting a seed with \code{\link{set.seed}};
+#' inserting the Git commit id; providing \code{\link{sessionInfo}} at
+#' the end of the document; and inserting links to past versions of the
 #' file and figures.
 #'
 #' \code{wflow_html} extends
@@ -31,7 +31,6 @@
 #' These settings (along with their default values) are as follows:
 #'
 #' \describe{
-#'
 #'   \item{knit_root_dir}{The directory where code inside an R
 #'   Markdown file is executed; this ultimately sets argument
 #'   \code{knit_root_dir} in \code{\link[rmarkdown]{render}}. By
@@ -46,7 +45,7 @@
 #'   excuted in the same directory as \code{myanalysis.Rmd}. For
 #'   workflowr functions such as \code{\link{wflow_build}} which are run
 #'   from the root directory of the workflowr project, this particular
-#'   setting results in the code being executed from the project root.
+#'   setting results in the code being executed from the project root.}
 #'
 #'   \item{seed}{The \code{seed} argument in the call to
 #'   \code{\link{set.seed}}, which is added to beginning of an R
@@ -63,7 +62,6 @@
 #'   this setting inside \code{_workflowr.yml} is especially helpful if
 #'   multiple users are collaborating on a project since it ensures that
 #'   everyone generates the same URLs.}
-#'
 #' }
 #'
 #' If you would like to adjust any of these settings inside the
@@ -79,12 +77,12 @@
 #' seed: 4815162342
 #' # Use devtools to generate the session information.
 #' sessioninfo: "devtools::session_info()"
-#' # Always use this URL when inserting links to past results.
+#' # Use this URL when inserting links to past results.
 #' github: https://github.com/repoowner/mainrepo
 #' }
 #'
-#' The settings can also be single file in its YAML header
-#' using the keyword workflowr:
+#' And here is an example of a YAML header inside an R Markdown file
+#' with custom settings:
 #'
 #' \preformatted{
 #' ---

@@ -161,13 +161,19 @@
 #'   used by Git to sign commits, e.g., "Ada Lovelace". This setting
 #'   only applies to the workflowr project being created. To specify the
 #'   global setting for the Git user name, use
-#'   \code{\link{wflow_git_config}} instead.
+#'   \code{\link{wflow_git_config}} instead. When \code{user.name =
+#'   NULL}, no user name is recorded for the project, and the global
+#'   setting will be used. This setting can be modified later
+#'   using \code{git config --local} shell command.
 #' 
 #' @param user.email character (default: \code{NULL}). The email
 #'   address used by Git to sign commits, e.g.,
 #'   "ada.lovelace@ox.ac.uk". This setting only applies to the workflowr
 #'   project being created. To specify the global setting for the Git
-#'   email address, use \code{\link{wflow_git_config}} instead.
+#'   email address, use \code{\link{wflow_git_config}} instead. When
+#'   \code{user.name = NULL}, no email address is recorded for the
+#'   project, and the global setting will be used. This setting can be
+#'   modified later using \code{git config --local} shell command.
 #'
 #' @return An object of class \code{wflow_start}, which is a list with the
 #'   following elements:

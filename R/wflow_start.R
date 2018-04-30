@@ -380,33 +380,33 @@ print.wflow_start <- function(x, ...) {
   if (x$dry_run) {
     cat("wflow_start (\"dry run mode\"):\n")
     if (x$existing) {
-      cat(sprintf("- Files would be added to existing directory %s\n", x$directory))
+      cat(sprintf("- Files will be added to existing directory %s\n", x$directory))
     } else {
-      cat(sprintf("- New directory would be created at %s\n", x$directory))
+      cat(sprintf("- New directory will be created at %s\n", x$directory))
     }
-    cat(sprintf("- Project name would be \"%s\"\n", x$name))
+    cat(sprintf("- Project name will be \"%s\"\n", x$name))
     if (x$change_wd) {
-      cat(sprintf("- Working directory would be changed to %s\n", x$directory))
+      cat(sprintf("- Working directory will be changed to %s\n", x$directory))
     } else {
-      cat(sprintf("- Working directory would continue to be %s\n", getwd()))
+      cat(sprintf("- Working directory will continue to be %s\n", getwd()))
     }
     if (x$existing && git2r::in_repository(x$directory)) {
       repo <- git2r::repository(x$directory, discover = TRUE)
       cat(sprintf("- Git repo already present at %s\n", repo@path))
     } else if (x$git) {
-      cat(sprintf("- Git repo would be initiated at %s\n", x$directory))
+      cat(sprintf("- Git repo will be initiated at %s\n", x$directory))
     } else {
-      cat(sprintf("- Git repo would not be initiated\n", x$directory))
+      cat(sprintf("- Git repo will not be initiated\n", x$directory))
     }
     if (x$git) {
-      cat("- Files would be commited with Git\n")
+      cat("- Files will be commited with Git\n")
     } else {
-      cat("- Files would not be commited with Git\n")
+      cat("- Files will not be commited with Git\n")
     }
   } else {
     cat("wflow_start:\n")
     if (x$existing) {
-      cat(sprintf("- File added to existing directory %s\n", x$directory))
+      cat(sprintf("- Files added to existing directory %s\n", x$directory))
     } else {
       cat(sprintf("- New directory created at %s\n", x$directory))
     }
@@ -419,9 +419,9 @@ print.wflow_start <- function(x, ...) {
     if (git2r::in_repository(x$directory)) {
       repo <- git2r::repository(x$directory, discover = TRUE)
       if (x$git && !x$existing) {
-        cat(sprintf("- Git repo inititated at %s\n", repo@path))
+        cat(sprintf("- Git repo initiated at %s\n", repo@path))
       } else if (x$git && x$existing && length(git2r::commits(repo)) == 1) {
-        cat(sprintf("- Git repo inititated at %s\n", repo@path))
+        cat(sprintf("- Git repo initiated at %s\n", repo@path))
       } else {
         cat(sprintf("- Git repo already present at %s\n", repo@path))
       }

@@ -404,3 +404,203 @@ test_that("wflow_start fails early if directory does not exist and `existing = T
   expect_false(dir.exists(site_dir))
 
 })
+
+# Test print.wflow_start -------------------------------------------------------
+
+test_that("print.wflow_start works with change_wd = FALSE", {
+  tmp_dir <- tempfile()
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # Dry run
+  dry_run <- wflow_start(tmp_dir, change_wd = FALSE, dry_run = TRUE)
+  p_dry_run <- utils::capture.output(dry_run)
+  expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
+  expect_identical(p_dry_run[2],
+                   paste("- New directory will be created at", tmp_dir))
+  expect_identical(p_dry_run[3],
+                   sprintf("- Project name will be \"%s\"", basename(tmp_dir)))
+  expect_identical(p_dry_run[4],
+                   paste("- Working directory will continue to be", getwd()))
+  expect_identical(stringr::str_sub(p_dry_run[5], 1, 31),
+                   "- Git repo will be initiated at")
+  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+
+  # Actual run
+  actual_run <- wflow_start(tmp_dir, change_wd = FALSE)
+  # Resolve symlink on macOS
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  # Have to use discover argument to get same result with /.git/
+  r <- git2r::repository(path = tmp_dir, discover = TRUE)
+  p_actual_run <- utils::capture.output(actual_run)
+  expect_identical(p_actual_run[1], "wflow_start:")
+  expect_identical(p_actual_run[2],
+                   paste("- New directory created at", tmp_dir))
+  expect_identical(p_actual_run[3],
+                   sprintf("- Project name is \"%s\"", basename(tmp_dir)))
+  expect_identical(p_actual_run[4],
+                   paste("- Working directory continues to be", getwd()))
+  expect_identical(p_actual_run[5],
+                   paste("- Git repo initiated at", r@path))
+  expect_identical(p_actual_run[6],
+                   paste("- Files were committed in version",
+                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+})
+
+test_that("print.wflow_start works with change_wd = FALSE and git = FALSE", {
+  tmp_dir <- tempfile()
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # Dry run
+  dry_run <- wflow_start(tmp_dir, change_wd = FALSE, git = FALSE, dry_run = TRUE)
+  p_dry_run <- utils::capture.output(dry_run)
+  expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
+  expect_identical(p_dry_run[2],
+                   paste("- New directory will be created at", tmp_dir))
+  expect_identical(p_dry_run[3],
+                   sprintf("- Project name will be \"%s\"", basename(tmp_dir)))
+  expect_identical(p_dry_run[4],
+                   paste("- Working directory will continue to be", getwd()))
+  expect_identical(p_dry_run[5],
+                   "- Git repo will not be initiated")
+  expect_identical(p_dry_run[6], "- Files will not be commited with Git")
+
+  # Actual run
+  actual_run <- wflow_start(tmp_dir, change_wd = FALSE, git = FALSE)
+  # Resolve symlink on macOS
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  p_actual_run <- utils::capture.output(actual_run)
+  expect_identical(p_actual_run[1], "wflow_start:")
+  expect_identical(p_actual_run[2],
+                   paste("- New directory created at", tmp_dir))
+  expect_identical(p_actual_run[3],
+                   sprintf("- Project name is \"%s\"", basename(tmp_dir)))
+  expect_identical(p_actual_run[4],
+                   paste("- Working directory continues to be", getwd()))
+  expect_identical(p_actual_run[5], "- No Git repo")
+})
+
+test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", {
+  tmp_dir <- tempfile()
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  dir.create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+
+  # Dry run
+  dry_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE, dry_run = TRUE)
+  p_dry_run <- utils::capture.output(dry_run)
+  expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
+  expect_identical(p_dry_run[2],
+                   paste("- Files will be added to existing directory", tmp_dir))
+  expect_identical(p_dry_run[3],
+                   sprintf("- Project name will be \"%s\"", basename(tmp_dir)))
+  expect_identical(p_dry_run[4],
+                   paste("- Working directory will continue to be", getwd()))
+  expect_identical(stringr::str_sub(p_dry_run[5], 1, 31),
+                   "- Git repo will be initiated at")
+  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+
+  # Actual run
+  actual_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE)
+  # Have to use discover argument to get same result with /.git/
+  r <- git2r::repository(path = tmp_dir, discover = TRUE)
+  p_actual_run <- utils::capture.output(actual_run)
+  expect_identical(p_actual_run[1], "wflow_start:")
+  expect_identical(p_actual_run[2],
+                   paste("- Files added to existing directory", tmp_dir))
+  expect_identical(p_actual_run[3],
+                   sprintf("- Project name is \"%s\"", basename(tmp_dir)))
+  expect_identical(p_actual_run[4],
+                   paste("- Working directory continues to be", getwd()))
+  expect_identical(p_actual_run[5],
+                   paste("- Git repo initiated at", r@path))
+  expect_identical(p_actual_run[6],
+                   paste("- Files were committed in version",
+                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+})
+
+test_that("print.wflow_start works with existing Git repo", {
+  tmp_dir <- tempfile()
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  dir.create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  repo <- git2r::init(tmp_dir)
+  f <- file.path(tmp_dir, "file")
+  file.create(f)
+  git2r::add(repo, f)
+  git2r::commit(repo, "initial commit")
+
+  # Dry run
+  dry_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE, dry_run = TRUE)
+  p_dry_run <- utils::capture.output(dry_run)
+  # Have to use discover argument to get same result with /.git/
+  r <- git2r::repository(path = tmp_dir, discover = TRUE)
+  expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
+  expect_identical(p_dry_run[2],
+                   paste("- Files will be added to existing directory", tmp_dir))
+  expect_identical(p_dry_run[3],
+                   sprintf("- Project name will be \"%s\"", basename(tmp_dir)))
+  expect_identical(p_dry_run[4],
+                   paste("- Working directory will continue to be", getwd()))
+  expect_identical(p_dry_run[5],
+                   paste("- Git repo already present at", r@path))
+  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+
+  # Actual run
+  actual_run <- expect_warning(wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE),
+                               paste("A .git directory already exists in", tmp_dir))
+  p_actual_run <- utils::capture.output(actual_run)
+  expect_identical(p_actual_run[1], "wflow_start:")
+  expect_identical(p_actual_run[2],
+                   paste("- Files added to existing directory", tmp_dir))
+  expect_identical(p_actual_run[3],
+                   sprintf("- Project name is \"%s\"", basename(tmp_dir)))
+  expect_identical(p_actual_run[4],
+                   paste("- Working directory continues to be", getwd()))
+  expect_identical(p_actual_run[5],
+                   paste("- Git repo already present at", r@path))
+  expect_identical(p_actual_run[6],
+                   paste("- Files were committed in version",
+                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+})
+
+
+test_that("print.wflow_start works with change_wd = TRUE", {
+  tmp_dir <- tempfile()
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
+
+  # Dry run
+  dry_run <- wflow_start(tmp_dir, dry_run = TRUE)
+  p_dry_run <- utils::capture.output(dry_run)
+  expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
+  expect_identical(p_dry_run[2],
+                   paste("- New directory will be created at", tmp_dir))
+  expect_identical(p_dry_run[3],
+                   sprintf("- Project name will be \"%s\"", basename(tmp_dir)))
+  expect_identical(p_dry_run[4],
+                   paste("- Working directory will be changed to", tmp_dir))
+  expect_identical(stringr::str_sub(p_dry_run[5], 1, 31),
+                   "- Git repo will be initiated at")
+  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+
+  # Actual run
+  actual_run <- wflow_start(tmp_dir)
+  # Resolve symlink on macOS
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  # Have to use discover argument to get same result with /.git/
+  r <- git2r::repository(path = tmp_dir, discover = TRUE)
+  p_actual_run <- utils::capture.output(actual_run)
+  expect_identical(p_actual_run[1], "wflow_start:")
+  expect_identical(p_actual_run[2],
+                   paste("- New directory created at", tmp_dir))
+  expect_identical(p_actual_run[3],
+                   sprintf("- Project name is \"%s\"", basename(tmp_dir)))
+  expect_identical(p_actual_run[4],
+                   paste("- Working directory changed to", tmp_dir))
+  expect_identical(p_actual_run[5],
+                   paste("- Git repo initiated at", r@path))
+  expect_identical(p_actual_run[6],
+                   paste("- Files were committed in version",
+                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+})

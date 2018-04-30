@@ -408,7 +408,7 @@ test_that("wflow_start fails early if directory does not exist and `existing = T
 # Test print.wflow_start -------------------------------------------------------
 
 test_that("print.wflow_start works with change_wd = FALSE", {
-  tmp_dir <- tempfile()
+  tmp_dir <- workflowr:::absolute(tempfile())
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
   # Dry run
@@ -447,7 +447,7 @@ test_that("print.wflow_start works with change_wd = FALSE", {
 })
 
 test_that("print.wflow_start works with change_wd = FALSE and git = FALSE", {
-  tmp_dir <- tempfile()
+  tmp_dir <- workflowr:::absolute(tempfile())
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
   # Dry run
@@ -563,9 +563,8 @@ test_that("print.wflow_start works with existing Git repo", {
                          workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
 })
 
-
 test_that("print.wflow_start works with change_wd = TRUE", {
-  tmp_dir <- tempfile()
+  tmp_dir <- workflowr:::absolute(tempfile())
   cwd <- getwd()
   on.exit(setwd(cwd))
   on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)

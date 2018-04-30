@@ -159,8 +159,11 @@ implementing the data analyses for your project. It also contains a special R
 Markdown file, `index.Rmd`, that does not contain any R code, but will be used
 to generate `index.html`, the homepage for your website. In addition, this
 directory contains the important configuration files `_site.yml`, which you can
-use to edit the theme, navigation bar, and other website aesthetics. Do not
+use to edit the theme, navigation bar, and other website aesthetics (for more
+details see the documentation on [R Markdown websites][rmd-website]). Do not
 delete `index.Rmd` or `_site.yml`.
+
+[rmd-website]: https://rmarkdown.rstudio.com/rmarkdown_websites.html
 
 * `docs/`: This directory contains all the HTML files for your
 website. The HTML files are built from the R Markdown files in

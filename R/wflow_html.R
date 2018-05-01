@@ -305,6 +305,11 @@ wflow_html <- function(...) {
                        wflow_opts$sessioninfo,
                        "```",
                        "")
+      # If there is a bibliography, make sure it appears before the session
+      # information
+      if (!is.null(header$bibliography)) {
+        sessioninfo <- add_bibliography(sessioninfo, lines_in)
+      }
     } else {
       sessioninfo <- ""
     }
@@ -370,4 +375,22 @@ wflow_html <- function(...) {
                                 pre_processor = pre_processor,
                                 base_format = rmarkdown::html_document(...))
   return(o)
+}
+
+# Add the bibliography prior to the session information, but only if they
+# haven't manually inserted the bibliography already.
+#
+# sessioninfo - character vector with session information lines to insert at end
+# of R Markdown file
+#
+# lines - character vector of the lines of current R Markdown file
+#
+# Prepends <div id="refs"></div> if this string is not already present in the
+# documents.
+add_bibliography <- function(sessioninfo, lines) {
+  stopifnot(is.character(sessioninfo), is.character(lines))
+  if (!any(stringr::str_detect(lines, "<div id=[\'\"]refs[\'\"]>"))) {
+    sessioninfo <- c("", "<div id=\"refs\"></div>", "", sessioninfo)
+  }
+  return(sessioninfo)
 }

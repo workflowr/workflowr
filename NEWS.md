@@ -1,6 +1,7 @@
 #  1.0.1.9000
 
 * S3 print method for `wflow_start()`
+* Add bibliography before session information (reported by @docmanny, #102)
 
 # workflowr 1.0.1
 

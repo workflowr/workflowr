@@ -281,3 +281,66 @@ test_that("github URL in _workflowr.yml overrides git remote", {
   expect_false(any(stringr::str_detect(html_lines,
                                        "https://github.com/testuser/testrepo")))
 })
+
+# Test add_bibliography --------------------------------------------------------
+
+test_that("add_bibliography only adds bibliography when necessary", {
+  # Test by directly passing text. The next test block uses actual files
+  expected <- c("", "<div id=\"refs\"></div>", "", "")
+  expect_identical(workflowr:::add_bibliography("", ""), expected)
+
+  expect_identical(workflowr:::add_bibliography("", "<div id=\"refs\"></div>"),
+                   "")
+
+  expect_identical(workflowr:::add_bibliography("", "<div id=\'refs\'></div>"),
+                   "")
+})
+
+test_that("add_bibliography adds bibliography to files", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  dir.create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # Copy test.bib
+  file.copy("files/test-wflow_html/test.bib", file.path(tmp_dir, "test.bib"))
+
+  # Don't add bibliography when not specified in YAML header
+  bib_none <- file.path(tmp_dir, "bib-none.Rmd")
+  file.copy("files/example.Rmd", bib_none)
+  bib_none_html <- render(bib_none, quiet = TRUE)
+  expect_false(any(stringr::str_detect(readLines(bib_none_html),
+                                       "<div id=\"refs\">")))
+
+  # Add bibliography before session information
+  bib_add <- file.path(tmp_dir, "bib-add.Rmd")
+  file.copy("files/test-wflow_html/bib-add.Rmd", bib_add)
+  bib_add_html <- render(bib_add, quiet = TRUE)
+  bib_add_lines <- readLines(bib_add_html)
+  refs_line <- stringr::str_which(bib_add_lines, "<div id=\"refs\">")
+  sinfo_line <- stringr::str_which(bib_add_lines, "sessionInfo()")
+  expect_true(refs_line < sinfo_line)
+
+  # Don't add if user already manually added (double quotes)
+  bib_dont_add_1 <- file.path(tmp_dir, "bib-dont-add-1.Rmd")
+  file.copy("files/test-wflow_html/bib-dont-add-1.Rmd", bib_dont_add_1)
+  bib_dont_add_1_html <- render(bib_dont_add_1, quiet = TRUE)
+  bib_dont_add_1_lines <- readLines(bib_dont_add_1_html)
+  refs_line <- stringr::str_which(bib_dont_add_1_lines, "<div id=\"refs\">")
+  expect_true(length(refs_line) == 1)
+  sinfo_line <- stringr::str_which(bib_dont_add_1_lines, "sessionInfo()")
+  expect_true(refs_line < sinfo_line)
+
+  # Don't add if user already manually added (single quotes)
+  bib_dont_add_2 <- file.path(tmp_dir, "bib-dont-add-2.Rmd")
+  file.copy("files/test-wflow_html/bib-dont-add-2.Rmd", bib_dont_add_2)
+  bib_dont_add_2_html <- render(bib_dont_add_2, quiet = TRUE)
+  bib_dont_add_2_lines <- readLines(bib_dont_add_2_html)
+  refs_line <- stringr::str_which(bib_dont_add_2_lines, "<div id=[\"\']refs[\"\']>")
+  expect_true(length(refs_line) == 1)
+  sinfo_line <- stringr::str_which(bib_dont_add_2_lines, "sessionInfo()")
+  expect_true(refs_line < sinfo_line)
+})

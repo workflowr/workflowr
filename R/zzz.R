@@ -40,11 +40,15 @@
 #'
 #' \describe{
 #'
-#' \item{\code{\link{wflow_html}}}{This help page gives more technical
-#'   details about how R Markdown files are converted to webpages, and
-#'   how the rendering settings can be customized.}
-#' }
+#' \item{\code{\link{wflow_html}}}{More technical details about how
+#'   individual R Markdown files are converted to webpages, and how the
+#'   rendering settings can be customized.}
 #'
+#' \item{\code{\link{wflow_site}}}{This help page explains how
+#'   project-wide rendering settings can be customized in the
+#'   \code{_site.yml} file.}
+#' }
+#' 
 #' @docType package
 #' @name workflowr
 #' 

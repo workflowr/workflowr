@@ -208,6 +208,24 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   file.remove(file_w_figs)
 })
 
+test_that("wflow_publish commits new .nojekyll after docs/ name change", {
+  x <- wflow_start(tempfile(), change_wd = FALSE, user.name = "Test Name",
+                   user.email = "test@email")
+  p <- workflowr:::wflow_paths(project = x$directory)
+  site_yml <- file.path(p$analysis, "_site.yml")
+  y <- yaml::yaml.load_file(site_yml)
+  y$output_dir <- "../test"
+  yaml::write_yaml(y, file = site_yml)
+  # Create the new output directory. Otherwise receive multiple warnings. I
+  # should improve this (added to project Improvements)
+  dir.create(file.path(x$directory, "test"))
+  publish <- wflow_publish(c(site_yml, file.path(p$analysis, "*Rmd")),
+                           "Change output dir to test/", project = x$directory)
+  nojekyll <- file.path(p$root, "test", ".nojekyll")
+  expect_true(file.exists(nojekyll))
+  expect_true(nojekyll %in% publish$step3$commit_files)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_publish resets Git repo to previous commit if build fails", {

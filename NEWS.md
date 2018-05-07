@@ -2,6 +2,16 @@
 
 * S3 print method for `wflow_start()`
 * Add bibliography before session information (reported by @docmanny, #102)
+* Ensure that `wflow_build()` creates a new `.nojekyll` file if necessary and
+that `wflow_publish()` commits it. This is most useful when changing the name of
+the output directory (#72)
+* Remove the fields `include`/`exclude` from the template `_site.yml`. Also
+remove the file `analysis/.nojekyll` (related to point above). Unlike
+`rmarkdown:::default_site`, `wflow_site()` does not copy the entire directory to
+the output directory, so these fields have no effect. See the R Markdown
+documentation on [Included files][included-files] for more information.
+
+[included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 
 # workflowr 1.0.1
 

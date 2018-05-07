@@ -42,8 +42,6 @@ knit_root_dir: "."
     `analysis/_site.yml` = '
 name: "{name}"
 output_dir: "../docs"
-include: [".nojekyll"]
-exclude: ["include"]
 navbar:
   title: "{name}"
   left:

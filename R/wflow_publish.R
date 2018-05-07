@@ -223,9 +223,10 @@ wflow_publish <- function(
 
   # Step 3 only needs to be performed if files were built in step 2.
   if (length(step2$built) > 0) {
-    site_libs <- file.path(s2$docs, "site_libs")
     dir_figure <- file.path(s2$docs, "figure", basename(step2$built))
-    files_to_commit <- c(step2$html, dir_figure, site_libs)
+    site_libs <- file.path(s2$docs, "site_libs")
+    docs_nojekyll <- file.path(s2$docs, ".nojekyll")
+    files_to_commit <- c(step2$html, dir_figure, site_libs, docs_nojekyll)
 
     # Call directly to internal function `wflow_git_commit_` to bypass input checks.
     # In a dry run, some files may not actually exist yet. Also, not every Rmd

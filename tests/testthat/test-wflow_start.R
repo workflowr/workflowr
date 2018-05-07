@@ -75,7 +75,6 @@ test_that("wflow_start creates docs/ directories and .nojekyll files", {
 
   expect_true(dir.exists(file.path(site_dir, "docs")))
   expect_true(file.exists(file.path(site_dir, "docs", ".nojekyll")))
-  expect_true(file.exists(file.path(site_dir, "analysis", ".nojekyll")))
 
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
@@ -121,7 +120,6 @@ test_that("wflow_start commits all the project files", {
   # hidden files
   expect_true(".gitignore" %in% committed)
   expect_true(".Rprofile" %in% committed)
-  expect_true("analysis/.nojekyll" %in% committed)
   expect_true("docs/.nojekyll" %in% committed)
 
   unlink(site_dir, recursive = TRUE, force = TRUE)

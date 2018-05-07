@@ -250,6 +250,11 @@ wflow_build <- function(files = NULL, make = is.null(files),
         build_rmd_external(f, seed = seed, log_dir = log_dir, envir = .GlobalEnv)
       }
     }
+    # Create .nojekyll if it doesn't exist
+    nojekyll <- file.path(p$docs, ".nojekyll")
+    if (!file.exists(nojekyll)) {
+      file.create(nojekyll)
+    }
   }
 
   # View files -----------------------------------------------------------------

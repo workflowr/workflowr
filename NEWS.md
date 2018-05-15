@@ -10,6 +10,8 @@ remove the file `analysis/.nojekyll` (related to point above). Unlike
 `rmarkdown:::default_site`, `wflow_site()` does not copy the entire directory to
 the output directory, so these fields have no effect. See the R Markdown
 documentation on [Included files][included-files] for more information.
+* Dramatically increase speed of `wflow_status()`/`wflow_publish()` by using
+`git2r::odb_blobs` to obtain past commit times of files
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

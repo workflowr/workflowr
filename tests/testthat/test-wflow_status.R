@@ -45,20 +45,28 @@ test_that("wflow_status identifies Git directory.", {
 # Skip on CRAN. See ?testthat::skip_on_cran, which only works inside of unit
 # test functions.
 if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+  # index.Rmd will have status published
+  rmd_pub <- file.path(s$analysis, "index.Rmd")
+  # about.Rmd will have status modified
+  rmd_mod <- file.path(s$analysis, "about.Rmd")
+  # license.Rmd will have status Unp for Unpublished
+  rmd_unp <- file.path(s$analysis, "license.Rmd")
   # Create a new untracked file that will have status Scr for Scratch
   rmd_scr <- file.path(s$analysis, "scratch.Rmd")
   file.create(rmd_scr)
-  # Publish index.Rmd
-  rmd_pub <- file.path(s$analysis, "index.Rmd")
-  suppressMessages(wflow_publish(rmd_pub, "Publish the index", view = FALSE,
-                                 project = site_dir))
-  # Publish and then modify about.Rmd to have status Mod for Modified
-  rmd_mod <- file.path(s$analysis, "about.Rmd")
-  suppressMessages(wflow_publish(rmd_mod, "Publish the about page", view = FALSE,
-                                 project = site_dir))
+  # Create a new file that will be published, modified, and then only committed
+  rmd_mod_committed <- file.path(s$analysis, "mod-committed.Rmd")
+  file.create(rmd_mod_committed)
+
+  # Publish index.Rmd, about.Rmd, and mod-committed.Rmd
+  suppressMessages(wflow_publish(c(rmd_pub, rmd_mod, rmd_mod_committed),
+                                 view = FALSE, project = site_dir))
+  # Modify about.Rmd to have status Mod for Modified
   cat("edit", file = rmd_mod, append = TRUE)
-  # license.Rmd still has status Unp for Unpublished
-  rmd_unp <- file.path(s$analysis, "license.Rmd")
+  # Modify mod-committed.Rmd and then commit the change
+  cat("edit", file = rmd_mod_committed, append = TRUE)
+  wflow_git_commit(rmd_mod_committed, "Commit but don't publish",
+                   project = site_dir)
 }
 
 test_that("wflow_status classifies files when run from outside workflowr project.", {
@@ -70,6 +78,7 @@ test_that("wflow_status classifies files when run from outside workflowr project
   expect_true(s_tmp$status[rmd_pub, "published"])
   expect_true(s_tmp$status[rmd_mod, "modified"])
   expect_true(s_tmp$status[rmd_unp, "unpublished"])
+  expect_true(s_tmp$status[rmd_mod_committed, "mod_committed"])
 })
 
 test_that("wflow_status classifies files when run from root of workflowr project.", {
@@ -80,6 +89,8 @@ test_that("wflow_status classifies files when run from root of workflowr project
   rmd_pub <- workflowr:::relative(rmd_pub, start = s$root)
   rmd_mod <- workflowr:::relative(rmd_mod, start = s$root)
   rmd_unp <- workflowr:::relative(rmd_unp, start = s$root)
+  rmd_mod_committed <- workflowr:::relative(rmd_mod_committed, start = s$root)
+
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$root)
@@ -88,6 +99,7 @@ test_that("wflow_status classifies files when run from root of workflowr project
   expect_true(s_tmp$status[rmd_pub, "published"])
   expect_true(s_tmp$status[rmd_mod, "modified"])
   expect_true(s_tmp$status[rmd_unp, "unpublished"])
+  expect_true(s_tmp$status[rmd_mod_committed, "mod_committed"])
 })
 
 test_that("wflow_status classifies files when run from analysis/.", {
@@ -98,6 +110,8 @@ test_that("wflow_status classifies files when run from analysis/.", {
   rmd_pub <- workflowr:::relative(rmd_pub, start = s$analysis)
   rmd_mod <- workflowr:::relative(rmd_mod, start = s$analysis)
   rmd_unp <- workflowr:::relative(rmd_unp, start = s$analysis)
+  rmd_mod_committed <- workflowr:::relative(rmd_mod_committed, start = s$analysis)
+
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$analysis)
@@ -106,6 +120,7 @@ test_that("wflow_status classifies files when run from analysis/.", {
   expect_true(s_tmp$status[rmd_pub, "published"])
   expect_true(s_tmp$status[rmd_mod, "modified"])
   expect_true(s_tmp$status[rmd_unp, "unpublished"])
+  expect_true(s_tmp$status[rmd_mod_committed, "mod_committed"])
 })
 
 test_that("wflow_status classifies files when run from docs/.", {
@@ -116,6 +131,8 @@ test_that("wflow_status classifies files when run from docs/.", {
   rmd_pub <- workflowr:::relative(rmd_pub, start = s$docs)
   rmd_mod <- workflowr:::relative(rmd_mod, start = s$docs)
   rmd_unp <- workflowr:::relative(rmd_unp, start = s$docs)
+  rmd_mod_committed <- workflowr:::relative(rmd_mod_committed, start = s$docs)
+
   cwd <- getwd()
   on.exit(setwd(cwd))
   setwd(s$docs)
@@ -124,6 +141,7 @@ test_that("wflow_status classifies files when run from docs/.", {
   expect_true(s_tmp$status[rmd_pub, "published"])
   expect_true(s_tmp$status[rmd_mod, "modified"])
   expect_true(s_tmp$status[rmd_unp, "unpublished"])
+  expect_true(s_tmp$status[rmd_mod_committed, "mod_committed"])
 })
 
 test_that("wflow_status reports only specified files", {
@@ -134,6 +152,20 @@ test_that("wflow_status reports only specified files", {
   expect_identical(rownames(s_tmp$status), rmd_scr)
   s_tmp <- wflow_status(c(rmd_scr, rmd_unp, rmd_pub), project = site_dir)
   expect_identical(rownames(s_tmp$status), c(rmd_scr, rmd_unp, rmd_pub))
+})
+
+test_that("wflow_status print method works", {
+
+  skip_on_cran()
+
+  s_tmp <- wflow_status(project = site_dir)
+  s_print <- utils::capture.output(print(s_tmp))
+
+  expect_true(paste("Scr", rmd_scr) %in% s_print)
+  expect_true(paste("Mod", rmd_mod) %in% s_print)
+  expect_true(paste("Mod", rmd_mod_committed) %in% s_print)
+  expect_true(paste("Unp", rmd_unp) %in% s_print)
+  expect_false(paste("Mod", rmd_pub) %in% s_print)
 })
 
 test_that("wflow_status detects files with extension .rmd", {

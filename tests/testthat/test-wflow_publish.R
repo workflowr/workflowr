@@ -209,6 +209,9 @@ test_that("wflow_publish removes unused figure files even if directory no longer
 })
 
 test_that("wflow_publish commits new .nojekyll after docs/ name change", {
+
+  skip_on_cran()
+
   x <- wflow_start(tempfile(), change_wd = FALSE, user.name = "Test Name",
                    user.email = "test@email")
   p <- workflowr:::wflow_paths(project = x$directory)
@@ -220,10 +223,21 @@ test_that("wflow_publish commits new .nojekyll after docs/ name change", {
   # should improve this (added to project Improvements)
   dir.create(file.path(x$directory, "test"))
   publish <- wflow_publish(c(site_yml, file.path(p$analysis, "*Rmd")),
-                           "Change output dir to test/", project = x$directory)
+                           "Change output dir to test/", view = FALSE,
+                           project = x$directory)
   nojekyll <- file.path(p$root, "test", ".nojekyll")
   expect_true(file.exists(nojekyll))
   expect_true(nojekyll %in% publish$step3$commit_files)
+})
+
+test_that("wflow_publish can display build log directly in R console with verbose", {
+
+  skip_on_cran()
+
+  x <- utils::capture.output(
+    publish <- wflow_publish(rmd[2], view = FALSE, verbose = TRUE, project = site_dir))
+  expect_true(publish$step2$verbose)
+  expect_true(length(x) > 0)
 })
 
 # Test error handling ----------------------------------------------------------

@@ -277,6 +277,16 @@ test_that("wflow_build automatically removes unused figure files", {
   unlink(file.path(s$docs, "figure", basename(file_w_figs)), recursive = TRUE)
 })
 
+test_that("wflow_build can display build log directly in R console with verbose", {
+
+  skip_on_cran()
+
+  x <- utils::capture.output(
+    build <- wflow_build(rmd[2], view = FALSE, verbose = TRUE, project = site_dir))
+  expect_true(build$verbose)
+  expect_true(length(x) > 0)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_build fails if file outside of analysis/", {

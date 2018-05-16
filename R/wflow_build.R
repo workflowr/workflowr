@@ -66,6 +66,9 @@
 #'   from building files. It will be created if necessary and ignored if
 #'   \code{local = TRUE}. The default is to use a directory named
 #'   \code{workflowr} in \code{\link{tempdir}}.
+#' @param verbose logical (default: FALSE). Display the build log directly in
+#'   the R console as each file is built. This is useful for monitoring
+#'   long-running code chunks.
 #' @param local logical (default: FALSE). Build files locally in the R console.
 #'   This should only be used for debugging purposes. The default is to build
 #'   each file in its own separate fresh R process to ensure each file is
@@ -93,6 +96,8 @@
 #'    \item \bold{seed}: The input argument \code{seed}
 #'
 #'    \item \bold{log_dir}: The directory where the log files were saved
+#'
+#'    \item \bold{verbose}: The input argument \code{verbose}
 #'
 #'    \item \bold{local}: The input argument \code{local}
 #'
@@ -127,7 +132,7 @@
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
                         update = FALSE, republish = FALSE, view = interactive(),
-                        seed = 12345, log_dir = NULL,
+                        seed = 12345, log_dir = NULL, verbose = FALSE,
                         local = FALSE, dry_run = FALSE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
@@ -247,7 +252,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
       if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)
       } else {
-        build_rmd_external(f, seed = seed, log_dir = log_dir, envir = .GlobalEnv)
+        build_rmd_external(f, seed = seed, log_dir = log_dir, verbose = verbose,
+                           envir = .GlobalEnv)
       }
     }
     # Create .nojekyll if it doesn't exist
@@ -278,7 +284,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   o <- list(files = files, make = make,
             update = update, republish = republish, view = view,
-            seed = seed, log_dir = log_dir,
+            seed = seed, log_dir = log_dir, verbose = verbose,
             local = local, dry_run = dry_run,
             built = files_to_build,
             html = to_html(files_to_build, outdir = p$docs))
@@ -349,7 +355,7 @@ return_modified_rmd <- function(rmd_files, docs) {
   return(files_to_update)
 }
 
-build_rmd_external <- function(rmd, seed, log_dir, ...) {
+build_rmd_external <- function(rmd, seed, log_dir, verbose = FALSE, ...) {
   if (!(is.character(rmd) && length(rmd) == 1))
     stop("rmd must be a one element character vector")
   if (!file.exists(rmd))
@@ -373,7 +379,8 @@ build_rmd_external <- function(rmd, seed, log_dir, ...) {
     callr::r_safe(build_rmd,
                   args = list(rmd, seed, ...),
                   stdout = stdout_file,
-                  stderr = stderr_file),
+                  stderr = stderr_file,
+                  show = verbose),
     error = function(e) {
       message(wrap("Build failed. See log files for full details."))
       message("stdout: ", stdout_file)

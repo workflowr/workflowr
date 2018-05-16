@@ -86,6 +86,23 @@ test_that("A warning does not cause any problem", {
   expect_true(file.exists("_site/warning.html"))
 })
 
+test_that("verbose displays build log directly in R console", {
+
+  skip_on_cran()
+
+  on.exit(unlink(l, recursive = TRUE, force = TRUE))
+  dir.create(l)
+
+  observed <- utils::capture.output(
+    build_rmd_external("index.Rmd", seed = 1, log_dir = l, verbose = TRUE))
+  # Remove extraneous characters surrounded by \r from console output
+  observed <- stringr::str_replace_all(observed, "\r.\r", "")
+  expected_stdout <- readLines(Sys.glob(file.path(l, "index.Rmd-*out.txt")))
+  expected_stderr <- readLines(Sys.glob(file.path(l, "index.Rmd-*err.txt")))
+  expect_true(all(expected_stdout %in% observed))
+  expect_true(all(expected_stderr %in% observed))
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("rmd is valid", {

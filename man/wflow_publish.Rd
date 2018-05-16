@@ -6,7 +6,7 @@
 \usage{
 wflow_publish(files = NULL, message = NULL, all = FALSE, force = FALSE,
   update = FALSE, republish = FALSE, view = interactive(), seed = 12345,
-  dry_run = FALSE, project = ".")
+  verbose = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). R Markdown files and other files to
@@ -44,6 +44,10 @@ file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
 here has no effect if you are using \code{\link{wflow_html}} as the output
 format defined in \code{_site.yml}. This argument is for backwards
 compatibility with previous versions of workflowr.}
+
+\item{verbose}{logical (default: FALSE). Display the build log directly in
+the R console as each file is built. This is useful for monitoring
+long-running code chunks.}
 
 \item{dry_run}{logical (default: FALSE). Preview the proposed action but do
 not actually add or commit any files.}

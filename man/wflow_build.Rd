@@ -6,7 +6,7 @@
 \usage{
 wflow_build(files = NULL, make = is.null(files), update = FALSE,
   republish = FALSE, view = interactive(), seed = 12345, log_dir = NULL,
-  local = FALSE, dry_run = FALSE, project = ".")
+  verbose = FALSE, local = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in
@@ -48,6 +48,10 @@ from building files. It will be created if necessary and ignored if
 \code{local = TRUE}. The default is to use a directory named
 \code{workflowr} in \code{\link{tempdir}}.}
 
+\item{verbose}{logical (default: FALSE). Display the build log directly in
+the R console as each file is built. This is useful for monitoring
+long-running code chunks.}
+
 \item{local}{logical (default: FALSE). Build files locally in the R console.
 This should only be used for debugging purposes. The default is to build
 each file in its own separate fresh R process to ensure each file is
@@ -79,6 +83,8 @@ An object of class \code{wflow_build}, which is a list with the
    \item \bold{seed}: The input argument \code{seed}
 
    \item \bold{log_dir}: The directory where the log files were saved
+
+   \item \bold{verbose}: The input argument \code{verbose}
 
    \item \bold{local}: The input argument \code{local}
 

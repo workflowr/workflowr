@@ -12,6 +12,9 @@ the output directory, so these fields have no effect. See the R Markdown
 documentation on [Included files][included-files] for more information.
 * Dramatically increase speed of `wflow_status()`/`wflow_publish()` by using
 `git2r::odb_blobs` to obtain past commit times of files
+* Add argument `verbose` to `wflow_build()`/`wflow_publish()` to display the
+build log in the R console as each file is built. Useful for monitoring
+long-running code chunks. (idea from @pcarbo)
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

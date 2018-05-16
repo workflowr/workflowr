@@ -71,6 +71,7 @@ wflow_publish <- function(
   republish = FALSE,
   view = interactive(),
   seed = 12345,
+  verbose = FALSE,
   # general
   dry_run = FALSE,
   project = "."
@@ -207,7 +208,8 @@ wflow_publish <- function(
     step2 <- wflow_build(files = files_to_build, make = FALSE,
                          update = update, republish = republish,
                          view = view, seed = seed,
-                         local = FALSE, dry_run = dry_run, project = project)
+                         local = FALSE, verbose = verbose,
+                         dry_run = dry_run, project = project)
     # If something fails in subsequent steps, delete docs/ and restore backup
     on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
     on.exit(dir.create(s1$docs), add = TRUE)

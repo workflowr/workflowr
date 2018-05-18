@@ -116,6 +116,7 @@ test_that("verbose displays build log directly in R console", {
   expect_identical(observed[stringr::str_detect(observed, "pandoc")],
                    expected_stdout[stringr::str_detect(expected_stdout, "pandoc")])
   # Confirm that "Output created:" line was sent to R console
+  print(observed)
   expect_identical(observed[stringr::str_detect(observed, "Output created:")],
                    expected_stderr[stringr::str_detect(expected_stderr, "Output created:")])
 })

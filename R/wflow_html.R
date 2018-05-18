@@ -360,9 +360,25 @@ wflow_html <- function(...) {
     footer <- glue::glue(includes$footer)
     writeLines(footer, con = fname_footer)
 
+    # Workaround due to annoying Pandoc 2+ bug that sometimes throws a warning
+    # if metadata field pagetitle is not defined. This controls the text in the
+    # browser tab, so its value is non-trivial. I wasn't able to reproduce
+    # locally (tried with rmarkdown 1.8/1.9). It always causes failure on
+    # AppVeyor but only r-oldrel for macOS on Travis (which is why I thought 1.8
+    # v. 1.9 might be the issue). Also not sure why this is just showing up now.
+    #
+    # https://travis-ci.org/jdblischak/workflowr/jobs/379910196#L592
+    # https://ci.appveyor.com/project/jdblischak/workflowr/build/job/ai5sinmh9646etb8#L292
+    if (is.null(metadata$title)) {
+      pagetitle <- "workflowr"
+    } else {
+      pagetitle <- metadata$title
+    }
+
     # Pandoc args
     args <- c("--include-before-body", fname_header,
-              "--include-after-body", fname_footer)
+              "--include-after-body", fname_footer,
+              "--metadata", paste0("pagetitle=", pagetitle))
     return(args)
   }
 

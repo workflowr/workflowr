@@ -97,12 +97,27 @@ test_that("verbose displays build log directly in R console", {
     build_rmd_external("warning.Rmd", seed = 1, log_dir = l, verbose = TRUE))
   # Remove extraneous characters surrounded by \r from console output
   observed <- stringr::str_replace_all(observed, "\r.\r", "")
-  # Remove trailing \r (observed on Windows, not on Linux. Maybe macOS)
-  observed <- stringr::str_replace_all(observed, "\r$", "")
+  os <- Sys.info()["sysname"]
+  # Remove trailing \r (only observed on Windows)
+  if (os == "Windows") {
+    observed <- stringr::str_replace_all(observed, "\r$", "")
+  }
+  # Remove extraneous \r pairs with many characters in-between (only observed on
+  # macOS)
+  if (os == "Darwin") {
+    observed <- stringr::str_replace_all(observed, "\r", "")
+  }
   expected_stdout <- readLines(Sys.glob(file.path(l, "warning.Rmd-*out.txt")))
   expected_stderr <- readLines(Sys.glob(file.path(l, "warning.Rmd-*err.txt")))
-  expect_true(expected_stdout[length(expected_stdout)] %in% observed)
-  expect_true(expected_stderr[length(expected_stderr)] %in% observed)
+  # Confirm that chunk labels were sent to R console
+  expect_identical(observed[stringr::str_detect(observed, "^label:")],
+                   expected_stdout[stringr::str_detect(expected_stdout, "^label:")])
+  # Confirm that pandoc line was sent to R console
+  expect_identical(observed[stringr::str_detect(observed, "pandoc")],
+                   expected_stdout[stringr::str_detect(expected_stdout, "pandoc")])
+  # Confirm that "Output created:" line was sent to R console
+  expect_identical(observed[stringr::str_detect(observed, "Output created:")],
+                   expected_stderr[stringr::str_detect(expected_stderr, "Output created:")])
 })
 
 # Test error handling ----------------------------------------------------------

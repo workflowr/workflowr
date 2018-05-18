@@ -97,6 +97,8 @@ test_that("verbose displays build log directly in R console", {
     build_rmd_external("warning.Rmd", seed = 1, log_dir = l, verbose = TRUE))
   # Remove extraneous characters surrounded by \r from console output
   observed <- stringr::str_replace_all(observed, "\r.\r", "")
+  # Remove trailing \r (observed on Windows, not on Linux. Maybe macOS)
+  observed <- stringr::str_replace_all(observed, "\r$", "")
   expected_stdout <- readLines(Sys.glob(file.path(l, "warning.Rmd-*out.txt")))
   expected_stderr <- readLines(Sys.glob(file.path(l, "warning.Rmd-*err.txt")))
   expect_true(expected_stdout[length(expected_stdout)] %in% observed)

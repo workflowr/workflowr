@@ -120,6 +120,9 @@ wflow_publish <- function(
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
 
+  if (!(is.logical(verbose) && length(verbose) == 1))
+    stop("verbose must be a one-element logical vector")
+
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
 

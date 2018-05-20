@@ -177,6 +177,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
   log_dir <- absolute(log_dir)
   dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
 
+  if (!(is.logical(verbose) && length(verbose) == 1))
+    stop("verbose must be a one-element logical vector")
+
   if (!(is.logical(local) && length(local) == 1))
     stop("local must be a one-element logical vector")
 

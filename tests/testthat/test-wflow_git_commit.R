@@ -11,6 +11,9 @@ site_dir <- workflowr:::relative(site_dir)
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 r <- repository(path = site_dir)
 
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
+
 # Test wflow_git_commit ------------------------------------------------------------
 
 test_that("wflow_git_commit can commit one new file", {
@@ -118,4 +121,25 @@ test_that("wflow_git_commit fails early if no Git repository", {
   expect_error(wflow_git_commit(Sys.glob(file.path(site_dir, "analysis", "*Rmd")),
                                 project = site_dir),
                "No Git repository detected.")
+})
+
+test_that("wflow_git_commit throws an error if user.name and user.email are not set", {
+
+  skip_on_cran()
+
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
+  local_no_gitconfig("-workflowr")
+
+  # Also have to remove local ./.git/config in the project's Git repo. Couldn't
+  # figure out a good way to do this with withr. Couldn't get to "restore"
+  # function to run at the end of the function call.
+  gitconfig <- file.path(site_dir, ".git", "config")
+  gitconfig_tmp <- file.path(tempdir(), "config")
+  file.rename(gitconfig, gitconfig_tmp)
+  on.exit(file.rename(gitconfig_tmp, gitconfig), add = TRUE)
+
+  expect_error(wflow_git_commit(project = site_dir),
+               "You must set your user.name and user.email for Git first")
+  expect_error(wflow_git_commit(project = site_dir),
+               "wflow_git_commit")
 })

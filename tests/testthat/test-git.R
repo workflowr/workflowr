@@ -1,5 +1,10 @@
 context("git")
 
+# Setup ------------------------------------------------------------------------
+
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
+
 # Test get_committed_files -----------------------------------------------------
 
 # Create temp Git directory
@@ -49,4 +54,21 @@ test_that("get_committed_files stops reporting files after they are removed", {
   expected <- basename(c(f[2], f2))
   actual <- workflowr:::get_committed_files(r)
   expect_identical(actual, expected)
+})
+
+# Test check_git_config --------------------------------------------------------
+
+test_that("check_git_config throws an error when user.name and user.email are not set", {
+
+  skip_on_cran()
+
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
+  local_no_gitconfig("-workflowr")
+
+  expect_error(workflowr:::check_git_config("."),
+               "You must set your user.name and user.email for Git first")
+
+  custom_message <- "fname"
+  expect_error(workflowr:::check_git_config(".", custom_message = custom_message),
+               custom_message)
 })

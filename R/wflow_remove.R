@@ -96,6 +96,9 @@ wflow_remove <- function(files,
     use_git <- FALSE
   }
 
+  if (use_git && !dry_run) check_git_config(project,
+                                            "`wflow_remove` with `git = TRUE`")
+
   # Gather files to remove -----------------------------------------------------
 
   # Are any of the specified files R Markdown files in the analysis directory?

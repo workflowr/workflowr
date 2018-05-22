@@ -3,6 +3,10 @@ context("wflow_remove")
 # Setup -----------------------------------------------------------------------
 
 library("git2r")
+
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
+
 cwd <- getwd()
 tdir <- tempfile("test-wflow_remove-")
 on.exit(setwd(cwd))
@@ -202,4 +206,26 @@ test_that("wflow_remove requires valid argument: project", {
   expect_error(wflow_remove("analysis/index.Rmd", project = "nonexistent/",
                             dry_run = TRUE),
                "project directory does not exist.")
+})
+
+test_that("wflow_remove throws an error if user.name and user.email are not set", {
+
+  skip_on_cran()
+
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
+  local_no_gitconfig("-workflowr")
+
+  # Also have to remove local ./.git/config in the project's Git repo. Couldn't
+  # figure out a good way to do this with withr. Couldn't get to "restore"
+  # function to run at the end of the function call.
+  gitconfig <- file.path(tdir, ".git", "config")
+  gitconfig_tmp <- file.path(tempdir(), "config")
+  file.rename(gitconfig, gitconfig_tmp)
+  on.exit(file.rename(gitconfig_tmp, gitconfig), add = TRUE)
+
+  about <- file.path(p$analysis, "about.Rmd")
+  expect_error(wflow_remove(about, project = tdir),
+               "You must set your user.name and user.email for Git first")
+  expect_error(wflow_remove(about, project = tdir),
+               "`wflow_remove` with `git = TRUE`")
 })

@@ -141,6 +141,8 @@ wflow_publish <- function(
   r <- git2r::repository(path = s0$git)
   commit_current <- git2r::commits(r, n = 1)[[1]]
 
+  if (!dry_run) check_git_config(project, "`wflow_publish`")
+
   # Step 1: Commit analysis files ----------------------------------------------
 
   # Decide if wflow_git_commit should be run. At least one of the following

@@ -201,8 +201,10 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
 
   site_dir <- tempfile()
   expect_error(wflow_start(site_dir, change_wd = FALSE),
-               "You must set your user.name and user.email for Git first\n")
+               "You must set your user.name and user.email for Git first")
   expect_false(dir.exists(site_dir))
+  expect_error(wflow_start(site_dir, change_wd = FALSE),
+               "`wflow_start` with `git = TRUE`")
 })
 
 test_that("wflow_start can handle relative path to current directory: .", {

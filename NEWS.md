@@ -15,6 +15,11 @@ documentation on [Included files][included-files] for more information.
 * Add argument `verbose` to `wflow_build()`/`wflow_publish()` to display the
 build log in the R console as each file is built. Useful for monitoring
 long-running code chunks. (idea from @pcarbo)
+* If a user has not set the Git configuration variables `user.name` and
+`user.email`, any workflowr function that creates a Git commit will throw an
+informative error message. Previously this was only done for `wflow_start()`,
+but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
+`wflow_remove()`. (idea from @pcarbo)
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

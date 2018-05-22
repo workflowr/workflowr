@@ -122,6 +122,8 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
     stop("No Git repository detected.")
   }
 
+  if (!dry_run) check_git_config(project, "`wflow_git_commit`")
+
   if (is.null(files) && !all)
     stop("Must specify files to commit, set `all = TRUE`, or both",
          call. = FALSE)

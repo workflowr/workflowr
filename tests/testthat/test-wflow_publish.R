@@ -21,6 +21,9 @@ rmd_to_fail <- file.path(s$analysis, "error.Rmd")
 file.copy(from = "files/test-wflow_build/error.Rmd",
           to = rmd_to_fail)
 
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
+
 # Test wflow_publish -----------------------------------------------------------
 
 test_that("wflow_publish works in a simple case", {
@@ -268,4 +271,26 @@ test_that("wflow_publish restores previous docs/ if build fails", {
   mtime_post <- file.mtime(rmd)
   expect_identical(md5sum_post, md5sum_pre)
   expect_identical(mtime_post, mtime_pre)
+})
+
+
+test_that("wflow_publish throws an error if user.name and user.email are not set", {
+
+  skip_on_cran()
+
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
+  local_no_gitconfig("-workflowr")
+
+  # Also have to remove local ./.git/config in the project's Git repo. Couldn't
+  # figure out a good way to do this with withr. Couldn't get to "restore"
+  # function to run at the end of the function call.
+  gitconfig <- file.path(site_dir, ".git", "config")
+  gitconfig_tmp <- file.path(tempdir(), "config")
+  file.rename(gitconfig, gitconfig_tmp)
+  on.exit(file.rename(gitconfig_tmp, gitconfig), add = TRUE)
+
+  expect_error(wflow_publish(project = site_dir),
+               "You must set your user.name and user.email for Git first")
+  expect_error(wflow_publish(project = site_dir),
+               "wflow_publish")
 })

@@ -279,7 +279,7 @@ wflow_start <- function(directory,
 
   # Require that user.name and user.email be set locally or globally
   if (git && is.null(user.name) && is.null(user.email)) {
-    check_git_config(path = directory)
+    check_git_config(path = directory, "`wflow_start` with `git = TRUE`")
   }
 
   # Create directory if it doesn't already exist
@@ -464,7 +464,7 @@ check_rstudio_version <- function() {
 # path character. Path to repository
 #
 # If unable to find user.name and user.email, stops the program.
-check_git_config <- function(path) {
+check_git_config <- function(path, custom_message = "this function") {
   stopifnot(is.character(path))
   # Only look for local configuration file if the directory exists and it is a
   # Git repo
@@ -476,7 +476,7 @@ check_git_config <- function(path) {
 
   # Determine if user.name and user.email are set
   if (look_for_local) {
-    r <- git2r::repository(path)
+    r <- git2r::repository(path, discover = TRUE)
     git_config <- git2r::config(r)
     config_email_set <- "user.email" %in% names(git_config$global) |
                         "user.email" %in% names(git_config$local)
@@ -491,12 +491,11 @@ check_git_config <- function(path) {
   if (config_email_set & config_name_set) {
     return(invisible())
   } else {
-   stop("You must set your user.name and user.email for Git first\n",
-        "to be able to run `wflow_start` with `git = TRUE`.\n",
-        "Run the following command in R, replacing the arguments\n",
-        "with your name and email address, and then re-run `wflow_start`:\n",
-        "\n",
-        'wflow_git_config(user.name = "Your Name", user.email = "email@domain")',
-        call. = FALSE)
+    stop(wrap(
+      "You must set your user.name and user.email for Git first to be able to
+      run ", custom_message, ". To do this, run the following command in R,
+      replacing the arguments with your name and email address:\n\n
+      wflow_git_config(user.name = \"Your Name\", user.email = \"email@domain\")"),
+      call. = FALSE)
   }
 }

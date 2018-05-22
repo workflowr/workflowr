@@ -2,6 +2,8 @@
 
 library("withr")
 
+# Temporarily move global ~/.gitconfig file ------------------------------------
+
 # withr "set" function
 #
 # Moves .gitconfig to .gitconfig-suffix

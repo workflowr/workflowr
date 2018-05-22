@@ -46,6 +46,47 @@ extract_commit <- function(path, num) {
   return(list(sha1 = sha1, message = commit_message))
 }
 
+# Check for user.name and user.email in .gitconfig
+#
+# path character. Path to repository
+#
+# If unable to find user.name and user.email, stops the program.
+check_git_config <- function(path, custom_message = "this function") {
+  stopifnot(is.character(path))
+  # Only look for local configuration file if the directory exists and it is a
+  # Git repo
+  if (dir.exists(path)) {
+    look_for_local <- git2r::in_repository(path)
+  } else {
+    look_for_local <- FALSE
+  }
+
+  # Determine if user.name and user.email are set
+  if (look_for_local) {
+    r <- git2r::repository(path, discover = TRUE)
+    git_config <- git2r::config(r)
+    config_email_set <- "user.email" %in% names(git_config$global) |
+      "user.email" %in% names(git_config$local)
+    config_name_set <- "user.name" %in% names(git_config$global) |
+      "user.name" %in% names(git_config$local)
+  } else {
+    git_config <- git2r::config()
+    config_email_set <- "user.email" %in% names(git_config$global)
+    config_name_set <- "user.name" %in% names(git_config$global)
+  }
+
+  if (config_email_set & config_name_set) {
+    return(invisible())
+  } else {
+    stop(wrap(
+      "You must set your user.name and user.email for Git first to be able to
+      run ", custom_message, ". To do this, run the following command in R,
+      replacing the arguments with your name and email address:\n\n
+      wflow_git_config(user.name = \"Your Name\", user.email = \"email@domain\")"),
+      call. = FALSE)
+  }
+}
+
 # Obtain all the committed files in a Git repository at a given commit.
 #
 # The default is to use the head commit.

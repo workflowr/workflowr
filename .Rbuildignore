@@ -12,3 +12,4 @@
 ^appveyor\.yml$
 tar\.gz$
 ^cran-comments\.md$
+^\.github$

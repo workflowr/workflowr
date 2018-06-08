@@ -61,7 +61,7 @@ test_that("workflowr functions can handle / on Windows", {
   expect_true(html_forw %in% return_publish$step3$files)
   # wflow_view
   return_view <- wflow_view(rmd_forw, dry_run = TRUE)
-  expect_identical(return_view, html_forw)
+  expect_identical(return_view$opened, html_forw)
   # wflow_remove
   return_remove <- wflow_remove(rmd_forw, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))
@@ -104,7 +104,7 @@ test_that("workflowr functions can handle \\ on Windows", {
   expect_true(html_forw %in% return_publish$step3$files)
   # wflow_view
   return_view <- wflow_view(rmd_back, dry_run = TRUE)
-  expect_identical(return_view, html_forw)
+  expect_identical(return_view$opened, html_forw)
   # wflow_remove
   return_remove <- wflow_remove(rmd_back, dry_run = TRUE)
   expect_identical(return_remove$files, c(rmd_forw, html_forw))

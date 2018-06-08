@@ -32,8 +32,16 @@
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return Invisibly returns a character vector of the relative paths to the
-#'   HTML files to be viewed.
+#' @return An object of class \code{wflow_view}, which is a list with the
+#'   following elements:
+#'
+#'   \item{files}{The input argument \code{files} (converted to relative paths).}
+#'
+#'   \item{latest}{The input argument \code{latest}.}
+#'
+#'   \item{dry_run}{The input argument \code{dry_run}.}
+#'
+#'   \item{opened}{The HTML files opened by \code{wflow_view}.}
 #'
 #' @seealso \code{\link{browseURL}}
 #'
@@ -151,5 +159,24 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
 
   # Prepare output -------------------------------------------------------------
 
-  return(invisible(html))
+  o <- list(files = files, latest = latest, dry_run = dry_run, opened = html)
+  class(o) <- "wflow_view"
+
+  return(o)
+}
+
+#' @export
+print.wflow_view <- function(x, ...) {
+
+  if (x$dry_run) {
+    cat("wflow_view would open:\n")
+  } else {
+    cat("wflow_view opened:\n")
+  }
+
+  for (f in x$opened) {
+    cat(sprintf("- %s\n", f))
+  }
+
+  return(invisible(x))
 }

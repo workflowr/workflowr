@@ -148,7 +148,7 @@ test_that("wflow_view accepts file globs", {
   file.create(html)
   on.exit(file.remove(html))
   actual <- wflow_view(rmd_glob, dry_run = TRUE, project = site_dir)
-  expect_identical(actual, html)
+  expect_identical(actual$opened, html)
   expect_error(wflow_view(file.path(s$analysis, "bad*blob.Rmd"),
                             dry_run = TRUE, project = site_dir),
                "Invalid file glob:")

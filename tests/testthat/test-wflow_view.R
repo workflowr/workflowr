@@ -31,7 +31,7 @@ test_that("wflow_view opens docs/index.html by default.", {
 
   expected <- file.path(p$docs, "index.html")
   actual <- wflow_view(dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view can open most recently built HTML file.", {
@@ -41,7 +41,7 @@ test_that("wflow_view can open most recently built HTML file.", {
   suppressMessages(wflow_build(rmd[1], view = FALSE, project = site_dir))
   expected <- html[1]
   actual <- wflow_view(latest = TRUE, dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view can open a specific file.", {
@@ -51,7 +51,7 @@ test_that("wflow_view can open a specific file.", {
   expected <- file.path(p$docs, "license.html")
   actual <- wflow_view(files = file.path(p$docs, "license.html"),
                        dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view can open multiple specific files.", {
@@ -61,7 +61,7 @@ test_that("wflow_view can open multiple specific files.", {
   expected <- file.path(p$docs, c("license.html", "about.html"))
   actual <- wflow_view(files = file.path(p$docs, c("license.html", "about.html")),
                        dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view can handle Rmd and html file extensions.", {
@@ -72,7 +72,7 @@ test_that("wflow_view can handle Rmd and html file extensions.", {
   actual <- wflow_view(files = c(file.path(p$analysis, "license.Rmd"),
                                  file.path(p$docs, "about.html")),
                        dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view can open most recently built HTML file in addition to other files.", {
@@ -83,13 +83,13 @@ test_that("wflow_view can open most recently built HTML file in addition to othe
   expected <- c(html[2:1])
   actual <- wflow_view(files = rmd[2], latest = TRUE, dry_run = TRUE,
                        project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 
   # Shouldn't be redundant
   expected <- c(html[1:2])
   actual <- wflow_view(files = rmd[1:2], latest = TRUE, dry_run = TRUE,
                        project = site_dir)
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view requires correct paths to files.", {
@@ -126,7 +126,7 @@ test_that("wflow_view sends warning for missing HTML file.", {
                                                 rmd_wo_html),
                                       dry_run = TRUE, project = site_dir),
                  "The following HTML files are missing:")
-  expect_identical(actual, expected)
+  expect_identical(actual$opened, expected)
 })
 
 test_that("wflow_view throws error if no files to view.", {

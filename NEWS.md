@@ -27,6 +27,9 @@ but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
     HTML files. Previously, `wflow_view()` would guess the correct path. While
     convenient, it was also potentially confusing since it was inconsistent with
     the other workflowr functions)
+    * The argument `latest` is no longer mutually-exclusive with `files`. If the
+    most recently modified HTML is different than those specified by `files`,
+    they will all be opened for viewing.
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

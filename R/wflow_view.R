@@ -22,9 +22,10 @@
 #'   view. These can be either the name(s) of the R Markdown file(s) in the
 #'   analysis directory or the HTML file(s) in the docs directory. Supports file
 #'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
-#' @param latest logical (default: FALSE). If \code{files = NULL}, display the
-#'   HTML file with the most recent modification time. If \code{files = NULL}
-#'   and \code{latest = FALSE}, then \code{index.html} is viewed.
+#' @param latest logical (default: FALSE). Display the HTML file with the most
+#'   recent modification time (in addition to those specified in \code{files}).
+#'   If \code{files = NULL} and \code{latest = FALSE}, then \code{index.html} is
+#'   viewed.
 #' @param dry_run logical (default: FALSE). Do not actually view file(s). Mainly
 #'   useful for testing.
 #' @param project character (default: ".") By default the function assumes the
@@ -96,20 +97,22 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
   # 2. View most recently modified HTML file
   # 3. View specified files
   #
-  if (is.null(files) & !latest) {
-    # 1. View docs/index.html
-    html <- file.path(docs_dir, "index.html")
-  } else if (is.null(files) & latest) {
-    # 2. View most recently modified HTML file
+  html <- files
+
+  if (!is.null(html)) {
+    # `ext` was created during the error handling at the start of the function
+    html[ext != "html"] <- to_html(html[ext != "html"], outdir = docs_dir)
+  }
+
+  if (latest) {
     html_all <- list.files(path = docs_dir, pattern = "html$",
                            full.names = TRUE)
     html_mtime <- file.mtime(html_all)
-    html <- html_all[which.max(html_mtime)]
-  } else {
-    # 3. View specified files
-    html <- files
-    # `ext` was created during the error handling at the start of the function
-    html[ext != "html"] <- to_html(html[ext != "html"], outdir = docs_dir)
+    html <- unique(c(html, html_all[which.max(html_mtime)]))
+  }
+
+  if (length(html) == 0) {
+    html <- file.path(docs_dir, "index.html")
   }
 
   html_missing <- !file.exists(html)

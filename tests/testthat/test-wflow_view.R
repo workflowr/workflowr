@@ -75,6 +75,23 @@ test_that("wflow_view can handle Rmd and html file extensions.", {
   expect_identical(actual, expected)
 })
 
+test_that("wflow_view can open most recently built HTML file in addition to other files.", {
+
+  skip_on_cran()
+
+  suppressMessages(wflow_build(rmd[1], view = FALSE, project = site_dir))
+  expected <- c(html[2:1])
+  actual <- wflow_view(files = rmd[2], latest = TRUE, dry_run = TRUE,
+                       project = site_dir)
+  expect_identical(actual, expected)
+
+  # Shouldn't be redundant
+  expected <- c(html[1:2])
+  actual <- wflow_view(files = rmd[1:2], latest = TRUE, dry_run = TRUE,
+                       project = site_dir)
+  expect_identical(actual, expected)
+})
+
 test_that("wflow_view requires correct paths to files.", {
 
   skip_on_cran()

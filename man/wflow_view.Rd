@@ -12,9 +12,10 @@ view. These can be either the name(s) of the R Markdown file(s) in the
 analysis directory or the HTML file(s) in the docs directory. Supports file
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
-\item{latest}{logical (default: FALSE). If \code{files = NULL}, display the
-HTML file with the most recent modification time. If \code{files = NULL}
-and \code{latest = FALSE}, then \code{index.html} is viewed.}
+\item{latest}{logical (default: FALSE). Display the HTML file with the most
+recent modification time (in addition to those specified in \code{files}).
+If \code{files = NULL} and \code{latest = FALSE}, then \code{index.html} is
+viewed.}
 
 \item{dry_run}{logical (default: FALSE). Do not actually view file(s). Mainly
 useful for testing.}

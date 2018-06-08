@@ -29,8 +29,10 @@ but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
     the other workflowr functions)
     * The argument `latest` is no longer mutually-exclusive with `files`. If the
     most recently modified HTML is different than those specified by `files`,
-    they will all be opened for viewing.
+    they will all be opened for viewing
     * S3 print method
+    * Do not attemt to open HTML files with `browseURL()` if
+    `getOption("browser")` does not provide a default option
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

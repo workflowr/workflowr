@@ -176,3 +176,43 @@ test_that("wflow_view throws error if given non-workflowr files.", {
     expect_error(wflow_view(f, dry_run = TRUE, project = site_dir))
   }
 })
+
+
+
+test_that("wflow_view S3 print method", {
+
+  skip_on_cran()
+
+  actual <- utils::capture.output(
+    wflow_view(html[1], dry_run = TRUE, project = site_dir))
+  expect_true(length(actual) == 2)
+  expect_identical(actual[1], "wflow_view would open:")
+  expect_true(stringr::str_detect(actual[2], html[1]))
+})
+
+test_that("wflow_view reports if browser does not exist", {
+
+  skip_on_cran()
+
+  withr::with_options(list(browser = ""),
+                     {
+                       expect_silent(actual <-
+                                       wflow_view(html[1], dry_run = TRUE,
+                                                  project = site_dir))
+                       expect_false(actual$browser)
+                       print_method <- utils::capture.output(actual)
+                       expect_true(any(stringr::str_detect(print_method,
+                                                           "\\?browseURL")))
+                     })
+
+  withr::with_options(list(browser = NULL),
+                      {
+                        expect_silent(actual <-
+                                        wflow_view(html[1], dry_run = TRUE,
+                                                   project = site_dir))
+                        expect_false(actual$browser)
+                        print_method <- utils::capture.output(actual)
+                        expect_true(any(stringr::str_detect(print_method,
+                                                            "\\?browseURL")))
+                      })
+})

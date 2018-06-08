@@ -18,6 +18,10 @@
 #' \href{https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html}{RStudio
 #' Viewer}.
 #'
+#' If R has no default browser set (determined by \code{getOption("browser")}),
+#' then \code{wflow_view} cannot open any HTML files. See
+#' \code{\link{browseURL}} for setup instructions.
+#'
 #' @param files character (default: NULL). Name(s) of the specific file(s) to
 #'   view. These can be either the name(s) of the R Markdown file(s) in the
 #'   analysis directory or the HTML file(s) in the docs directory. Supports file
@@ -40,6 +44,10 @@
 #'   \item{latest}{The input argument \code{latest}.}
 #'
 #'   \item{dry_run}{The input argument \code{dry_run}.}
+#'
+#'   \item{browser}{Logical indicating if a default browser has been set. If
+#'   FALSE, no HTML files can be opened. This is determined by the value
+#'   returned by \code{getOption("browser")}.}
 #'
 #'   \item{opened}{The HTML files opened by \code{wflow_view}.}
 #'
@@ -154,6 +162,26 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
               Try running `wflow_build()` first."))
   }
 
+  # Check default browser ------------------------------------------------------
+
+  # If no option is set for browser, browseURL will throw an error. This is
+  # disastrous if wflow_view was called from wflow_publish because it resets
+  # everything it had done if there is an error.
+
+  browser_opt <- getOption("browser")
+  # This can either be an R function that accepts a URL or a string with the
+  # name of the system program to invoke (e.g. "firefox"). If it is NULL or "",
+  # it won't work.
+  if (is.null(browser_opt)) {
+    browser <- FALSE
+  } else if (is.function(browser_opt)) {
+    browser <- TRUE
+  } else if (nchar(browser_opt) > 0) {
+    browser <- TRUE
+  } else {
+    browser <- FALSE
+  }
+
   # View files -----------------------------------------------------------------
 
   if (!dry_run) {
@@ -166,7 +194,7 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
       file.copy(p$docs, tmp_dir, recursive = TRUE)
       html_tmp <- file.path(tmp_dir, basename(p$docs), basename(html))
       viewer(html_tmp)
-    } else { # Use the default browser
+    } else if (browser) { # Use the default browser
       for (h in html) {
         utils::browseURL(h)
       }
@@ -175,7 +203,8 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
 
   # Prepare output -------------------------------------------------------------
 
-  o <- list(files = files, latest = latest, dry_run = dry_run, opened = html)
+  o <- list(files = files, latest = latest, dry_run = dry_run,
+            browser = browser, opened = html)
   class(o) <- "wflow_view"
 
   return(o)
@@ -183,6 +212,16 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
 
 #' @export
 print.wflow_view <- function(x, ...) {
+
+  if (!x$browser) {
+    cat(wrap(
+      "wflow_view will not open any files because no option is set for a
+      default browser. See the Details section of ?browseURL for setup
+      instructions.\n"
+      ))
+
+    return(invisible(x))
+  }
 
   if (x$dry_run) {
     cat("wflow_view would open:\n")

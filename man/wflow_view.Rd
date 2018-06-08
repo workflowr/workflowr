@@ -34,6 +34,10 @@ An object of class \code{wflow_view}, which is a list with the
 
   \item{dry_run}{The input argument \code{dry_run}.}
 
+  \item{browser}{Logical indicating if a default browser has been set. If
+  FALSE, no HTML files can be opened. This is determined by the value
+  returned by \code{getOption("browser")}.}
+
   \item{opened}{The HTML files opened by \code{wflow_view}.}
 }
 \description{
@@ -55,6 +59,10 @@ If \code{wflow_view} is run in the RStudio IDE and only one file has been
 requested to be viewed, the file is displayed in the
 \href{https://rstudio.github.io/rstudio-extensions/rstudio_viewer.html}{RStudio
 Viewer}.
+
+If R has no default browser set (determined by \code{getOption("browser")}),
+then \code{wflow_view} cannot open any HTML files. See
+\code{\link{browseURL}} for setup instructions.
 }
 \examples{
 \dontrun{

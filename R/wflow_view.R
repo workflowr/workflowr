@@ -60,6 +60,8 @@
 wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
                        project = ".") {
 
+  # Check input arguments ------------------------------------------------------
+
   if (!is.null(files)) {
     if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
@@ -89,7 +91,8 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
   project <- absolute(project)
 
   p <- wflow_paths(project = project)
-  docs_dir <- p$docs
+
+  # Obtain files ---------------------------------------------------------------
 
   # 3 options:
   #
@@ -101,18 +104,18 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
 
   if (!is.null(html)) {
     # `ext` was created during the error handling at the start of the function
-    html[ext != "html"] <- to_html(html[ext != "html"], outdir = docs_dir)
+    html[ext != "html"] <- to_html(html[ext != "html"], outdir = p$docs)
   }
 
   if (latest) {
-    html_all <- list.files(path = docs_dir, pattern = "html$",
+    html_all <- list.files(path = p$docs, pattern = "html$",
                            full.names = TRUE)
     html_mtime <- file.mtime(html_all)
     html <- unique(c(html, html_all[which.max(html_mtime)]))
   }
 
   if (length(html) == 0) {
-    html <- file.path(docs_dir, "index.html")
+    html <- file.path(p$docs, "index.html")
   }
 
   html_missing <- !file.exists(html)
@@ -127,6 +130,8 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
               Try running `wflow_build()` first."))
   }
 
+  # View files -----------------------------------------------------------------
+
   if (!dry_run) {
     # If run in RStudio and only 1 file to be viewed, use the RStudio Viewer
     viewer <- getOption("viewer")
@@ -134,8 +139,8 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
       # RStudio Viewer only displays files saved in the R temporary directory
       # (and it isn't fooled by symlinks).
       tmp_dir <- absolute(tempdir())
-      file.copy(docs_dir, tmp_dir, recursive = TRUE)
-      html_tmp <- file.path(tmp_dir, basename(docs_dir), basename(html))
+      file.copy(p$docs, tmp_dir, recursive = TRUE)
+      html_tmp <- file.path(tmp_dir, basename(p$docs), basename(html))
       viewer(html_tmp)
     } else { # Use the default browser
       for (h in html) {
@@ -143,6 +148,8 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
       }
     }
   }
+
+  # Prepare output -------------------------------------------------------------
 
   return(invisible(html))
 }

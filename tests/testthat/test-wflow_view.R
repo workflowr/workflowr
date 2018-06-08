@@ -162,3 +162,17 @@ test_that("wflow_view throws error if given directory input.", {
   expect_error(wflow_view(d, project = site_dir),
                "files cannot include a path to a directory")
 })
+
+test_that("wflow_view throws error if given non-workflowr files.", {
+
+  invalid <- list(rmd_in_root = file.path(p$root, "file.Rmd"),
+                  rmd_in_docs = file.path(p$docs, "file.Rmd"),
+                  html_in_root = file.path(p$root, "file.html"),
+                  html_in_analysis = file.path(p$analysis, "file.html"))
+  on.exit(lapply(invalid, file.remove))
+  lapply(invalid, file.create)
+
+  for (f in invalid) {
+    expect_error(wflow_view(f, dry_run = TRUE, project = site_dir))
+  }
+})

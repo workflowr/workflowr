@@ -100,6 +100,22 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
 
   p <- wflow_paths(project = project)
 
+  # Require that any R Markdown files are in the R Markdown directory and the
+  # HTML files are in the website directory
+  if (!is.null(files)) {
+    for (i in seq_along(files)) {
+      if (ext[i] == "html") {
+        if (!stringr::str_detect(files[i], p$docs)) {
+          stop("Cannot view non-workflowr file: ", files[i])
+        }
+      } else {
+        if (!stringr::str_detect(files[i], p$analysis)) {
+          stop("Cannot view non-workflowr file: ", files[i])
+        }
+      }
+    }
+  }
+
   # Obtain files ---------------------------------------------------------------
 
   html <- files

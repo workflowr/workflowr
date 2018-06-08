@@ -23,6 +23,10 @@ but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
 * Updates to `wflow_view()`:
     * Renamed argument `recent` to `latest` to display the most recently
     modified HTML file
+    * The argument `files` now requires correct paths to existing R Markdown or
+    HTML files. Previously, `wflow_view()` would guess the correct path. While
+    convenient, it was also potentially confusing since it was inconsistent with
+    the other workflowr functions)
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

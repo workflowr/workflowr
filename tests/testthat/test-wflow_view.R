@@ -49,7 +49,7 @@ test_that("wflow_view can open a specific file.", {
   skip_on_cran()
 
   expected <- file.path(p$docs, "license.html")
-  actual <- wflow_view(files = "license.html",
+  actual <- wflow_view(files = file.path(p$docs, "license.html"),
                        dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
 })
@@ -59,7 +59,7 @@ test_that("wflow_view can open multiple specific files.", {
   skip_on_cran()
 
   expected <- file.path(p$docs, c("license.html", "about.html"))
-  actual <- wflow_view(files = c("license.html", "about.html"),
+  actual <- wflow_view(files = file.path(p$docs, c("license.html", "about.html")),
                        dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
 })
@@ -69,50 +69,59 @@ test_that("wflow_view can handle Rmd and html file extensions.", {
   skip_on_cran()
 
   expected <- file.path(p$docs, c("license.html", "about.html"))
-  actual <- wflow_view(files = c("license.Rmd", "about.html"),
+  actual <- wflow_view(files = c(file.path(p$analysis, "license.Rmd"),
+                                 file.path(p$docs, "about.html")),
                        dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
 })
 
-test_that("wflow_view ignores paths to files.", {
+test_that("wflow_view requires correct paths to files.", {
 
   skip_on_cran()
 
-  expected <- file.path(p$docs, "about.html")
-  actual <- wflow_view(files = "x/docs/about.html",
-                       dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
-  actual <- wflow_view(files = "x/analysis/about.Rmd",
-                       dry_run = TRUE, project = site_dir)
-  expect_identical(actual, expected)
+  expect_error(wflow_view(files = "x/docs/about.html",
+                          dry_run = TRUE, project = site_dir),
+               "Not all files exist. Check the paths to the files")
+
+  expect_error(wflow_view(files = "x/analysis/about.Rmd",
+                          dry_run = TRUE, project = site_dir),
+               "Not all files exist. Check the paths to the files")
 })
 
 # Warnings and errors ----------------------------------------------------------
 
 test_that("wflow_view throws error for wrong file extension.", {
-  expect_error(wflow_view(files = c("about.html", "license.x"),
+  expect_error(wflow_view(files = file.path(p$analysis, "_site.yml"),
                           dry_run = TRUE, project = site_dir),
                "File extensions must be either Rmd, rmd, or html.")
 })
 
-test_that("wflow_view sends warning for missing file.", {
+test_that("wflow_view sends warning for missing HTML file.", {
 
   skip_on_cran()
 
+  rmd_wo_html <- file.path(p$analysis, "rmd_wo_html.Rmd")
+  on.exit(file.remove(rmd_wo_html))
+  file.create(rmd_wo_html)
+
   expected <- file.path(p$docs, "about.html")
-  expect_warning(actual <- wflow_view(files = c("about.html", "missing.html"),
+  expect_warning(actual <- wflow_view(files = c(file.path(p$docs, "about.html"),
+                                                rmd_wo_html),
                                       dry_run = TRUE, project = site_dir),
                  "The following HTML files are missing:")
   expect_identical(actual, expected)
 })
 
 test_that("wflow_view throws error if no files to view.", {
-  expect_error(suppressWarnings(wflow_view(files = "missing.html",
+
+  rmd_wo_html <- file.path(p$analysis, "rmd_wo_html.Rmd")
+  on.exit(file.remove(rmd_wo_html))
+  file.create(rmd_wo_html)
+
+  expect_error(suppressWarnings(wflow_view(files = rmd_wo_html,
                                            dry_run = TRUE, project = site_dir)),
                "No HTML files were able to viewed.")
-  expect_error(suppressWarnings(wflow_view(files = "missing.x",
-                                           dry_run = TRUE, project = site_dir)),
-               "File extensions must be either Rmd, rmd, or html.")
+
   unlink(file.path(p$docs, "index.html"))
   expect_error(suppressWarnings(wflow_view(dry_run = TRUE, project = site_dir)),
                "No HTML files were able to viewed.")

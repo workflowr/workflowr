@@ -9,9 +9,7 @@ wflow_view(files = NULL, latest = FALSE, dry_run = FALSE, project = ".")
 \arguments{
 \item{files}{character (default: NULL). Name(s) of the specific file(s) to
 view. These can be either the name(s) of the R Markdown file(s) in the
-analysis directory or the HTML file(s) in the docs directory. Also, the
-full path(s) to the file(s) can be input or just the basename(s) of the
-file(s). Supports file
+analysis directory or the HTML file(s) in the docs directory. Supports file
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
 \item{latest}{logical (default: FALSE). If \code{files = NULL}, display the
@@ -37,8 +35,7 @@ Viewer pane.
 \code{wflow_view} by default displays the file \code{index.html}. To view the
 most recently modified HTML file, set \code{latest = TRUE}. To specify which
 file(s) to view, specify either the name(s) of the R Markdown or HTML
-file(s). The path(s) to the file(s) will be discarded, thus only HTML files
-in docs directory can be viewed with this function.
+file(s).
 
 \code{wflow_view} uses \code{\link{browseURL}} to view the HTML files in the
 browser. If you wish to do something non-traditional like view an HTML file
@@ -60,17 +57,14 @@ wflow_view()
 wflow_view(latest = TRUE)
 
 # View a file by specifying the R Markdown file
-# (the following two are equivalent)
-wflow_view("fname.Rmd")
 wflow_view("analysis/fname.Rmd")
 
 # View a file by specifying the HTML file
-# (the following two are equivalent)
-wflow_view("fname.html")
 wflow_view("docs/fname.html")
 
 # View multiple files
 wflow_view(c("fname1.Rmd", "fname2.Rmd"))
+wflow_view("docs/*html")
 }
 }
 \seealso{

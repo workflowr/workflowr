@@ -4,7 +4,7 @@
 \alias{wflow_view}
 \title{View research website locally}
 \usage{
-wflow_view(files = NULL, recent = FALSE, dry_run = FALSE, project = ".")
+wflow_view(files = NULL, latest = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Name(s) of the specific file(s) to
@@ -14,9 +14,9 @@ full path(s) to the file(s) can be input or just the basename(s) of the
 file(s). Supports file
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
-\item{recent}{logical (default: FALSE). If \code{files = NULL}, display the
+\item{latest}{logical (default: FALSE). If \code{files = NULL}, display the
 HTML file with the most recent modification time. If \code{files = NULL}
-and \code{recent = FALSE}, then \code{index.html} is viewed.}
+and \code{latest = FALSE}, then \code{index.html} is viewed.}
 
 \item{dry_run}{logical (default: FALSE). Do not actually view file(s). Mainly
 useful for testing.}
@@ -35,7 +35,7 @@ Viewer pane.
 }
 \details{
 \code{wflow_view} by default displays the file \code{index.html}. To view the
-most recently modified HTML file, set \code{recent = TRUE}. To specify which
+most recently modified HTML file, set \code{latest = TRUE}. To specify which
 file(s) to view, specify either the name(s) of the R Markdown or HTML
 file(s). The path(s) to the file(s) will be discarded, thus only HTML files
 in docs directory can be viewed with this function.
@@ -57,7 +57,7 @@ Viewer}.
 wflow_view()
 
 # View the most recently modified HTML file
-wflow_view(recent = TRUE)
+wflow_view(latest = TRUE)
 
 # View a file by specifying the R Markdown file
 # (the following two are equivalent)

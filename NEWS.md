@@ -20,6 +20,9 @@ long-running code chunks. (idea from @pcarbo)
 informative error message. Previously this was only done for `wflow_start()`,
 but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
 `wflow_remove()`. (idea from @pcarbo)
+* Updates to `wflow_view()`:
+    * Renamed argument `recent` to `latest` to display the most recently
+    modified HTML file
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

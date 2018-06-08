@@ -40,7 +40,7 @@ test_that("wflow_view can open most recently built HTML file.", {
 
   suppressMessages(wflow_build(rmd[1], view = FALSE, project = site_dir))
   expected <- html[1]
-  actual <- wflow_view(recent = TRUE, dry_run = TRUE, project = site_dir)
+  actual <- wflow_view(latest = TRUE, dry_run = TRUE, project = site_dir)
   expect_identical(actual, expected)
 })
 

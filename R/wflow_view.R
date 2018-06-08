@@ -4,7 +4,7 @@
 #' Viewer pane.
 #'
 #' \code{wflow_view} by default displays the file \code{index.html}. To view the
-#' most recently modified HTML file, set \code{recent = TRUE}. To specify which
+#' most recently modified HTML file, set \code{latest = TRUE}. To specify which
 #' file(s) to view, specify either the name(s) of the R Markdown or HTML
 #' file(s). The path(s) to the file(s) will be discarded, thus only HTML files
 #' in docs directory can be viewed with this function.
@@ -25,9 +25,9 @@
 #'   full path(s) to the file(s) can be input or just the basename(s) of the
 #'   file(s). Supports file
 #'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
-#' @param recent logical (default: FALSE). If \code{files = NULL}, display the
+#' @param latest logical (default: FALSE). If \code{files = NULL}, display the
 #'   HTML file with the most recent modification time. If \code{files = NULL}
-#'   and \code{recent = FALSE}, then \code{index.html} is viewed.
+#'   and \code{latest = FALSE}, then \code{index.html} is viewed.
 #' @param dry_run logical (default: FALSE). Do not actually view file(s). Mainly
 #'   useful for testing.
 #' @param project character (default: ".") By default the function assumes the
@@ -46,7 +46,7 @@
 #' wflow_view()
 #'
 #' # View the most recently modified HTML file
-#' wflow_view(recent = TRUE)
+#' wflow_view(latest = TRUE)
 #'
 #' # View a file by specifying the R Markdown file
 #' # (the following two are equivalent)
@@ -62,7 +62,7 @@
 #' wflow_view(c("fname1.Rmd", "fname2.Rmd"))
 #' }
 #' @export
-wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
+wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
                        project = ".") {
 
   if (!is.null(files)) {
@@ -80,8 +80,8 @@ wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
       stop(wrap("File extensions must be either Rmd, rmd, or html."))
   }
 
-  if (!(is.logical(recent) && length(recent) == 1))
-    stop("recent must be a one element logical vector. You entered: ", recent)
+  if (!(is.logical(latest) && length(latest) == 1))
+    stop("latest must be a one element logical vector. You entered: ", latest)
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one element logical vector. You entered: ", dry_run)
   if (!(is.character(project) && length(project) == 1))
@@ -100,10 +100,10 @@ wflow_view <- function(files = NULL, recent = FALSE, dry_run = FALSE,
   # 2. View most recently modified HTML file
   # 3. View specified files
   #
-  if (is.null(files) & !recent) {
+  if (is.null(files) & !latest) {
     # 1. View docs/index.html
     html <- file.path(docs_dir, "index.html")
-  } else if (is.null(files) & recent) {
+  } else if (is.null(files) & latest) {
     # 2. View most recently modified HTML file
     html_all <- list.files(path = docs_dir, pattern = "html$",
                            full.names = TRUE)

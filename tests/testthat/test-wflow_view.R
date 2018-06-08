@@ -183,11 +183,26 @@ test_that("wflow_view S3 print method", {
 
   skip_on_cran()
 
-  actual <- utils::capture.output(
-    wflow_view(html[1], dry_run = TRUE, project = site_dir))
-  expect_true(length(actual) == 2)
-  expect_identical(actual[1], "wflow_view would open:")
-  expect_true(stringr::str_detect(actual[2], html[1]))
+  # Have to ensure that getOption("browser") is set since this changes the print
+  # method output. The value for the option can be a string or a function
+  withr::with_options(list(browser = "firefox"),
+                      {
+                        actual <- utils::capture.output(
+                          wflow_view(html[1], dry_run = TRUE, project = site_dir))
+                        expect_true(length(actual) == 2)
+                        expect_identical(actual[1], "wflow_view would open:")
+                        expect_true(stringr::str_detect(actual[2], html[1]))
+                      })
+
+  withr::with_options(list(browser = function(x) x),
+                      {
+                        actual <- utils::capture.output(
+                          wflow_view(html[1], dry_run = TRUE, project = site_dir))
+                        expect_true(length(actual) == 2)
+                        expect_identical(actual[1], "wflow_view would open:")
+                        expect_true(stringr::str_detect(actual[2], html[1]))
+                      })
+
 })
 
 test_that("wflow_view reports if browser does not exist", {

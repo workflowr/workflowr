@@ -33,6 +33,8 @@ but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
     * S3 print method
     * Do not attemt to open HTML files with `browseURL()` if
     `getOption("browser")` does not provide a default option
+* Resurrect `wflow_open()`. Since there is no longer a workflowr template in
+workflowr 1.0+, it creates a file with a minimal YAML header.
 
 [included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
 

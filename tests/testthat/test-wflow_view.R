@@ -105,6 +105,17 @@ test_that("wflow_view requires correct paths to files.", {
                "Not all files exist. Check the paths to the files")
 })
 
+test_that("wflow_view removes duplicates.", {
+
+  skip_on_cran()
+
+  expected <- html
+  actual <- wflow_view(files = c(html, html), dry_run = TRUE, project = site_dir)
+  expect_identical(actual$opened, expected)
+  actual <- wflow_view(files = c(html, html, rmd), dry_run = TRUE, project = site_dir)
+  expect_identical(actual$opened, expected)
+})
+
 # Warnings and errors ----------------------------------------------------------
 
 test_that("wflow_view throws error for wrong file extension.", {

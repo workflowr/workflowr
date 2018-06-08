@@ -102,19 +102,16 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
 
   # Obtain files ---------------------------------------------------------------
 
-  # 3 options:
-  #
-  # 1. View docs/index.html
-  # 2. View most recently modified HTML file
-  # 3. View specified files
-  #
   html <- files
 
+  # Convert any R Markdown files to HTML and remove duplicates
   if (!is.null(html)) {
     # `ext` was created during the error handling at the start of the function
     html[ext != "html"] <- to_html(html[ext != "html"], outdir = p$docs)
+    html <- unique(html)
   }
 
+  # Obtain the most recently modified file
   if (latest) {
     html_all <- list.files(path = p$docs, pattern = "html$",
                            full.names = TRUE)
@@ -122,9 +119,12 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
     html <- unique(c(html, html_all[which.max(html_mtime)]))
   }
 
+  # Open the index page if no other files specified
   if (length(html) == 0) {
     html <- file.path(p$docs, "index.html")
   }
+
+  # Check for misssing HTML files ----------------------------------------------
 
   html_missing <- !file.exists(html)
   if (any(html_missing)) {

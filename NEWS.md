@@ -1,3 +1,13 @@
+#  1.0.1.9001
+
+* Move rmarkdown from Depends to Imports. Unlike earlier versions, it's no
+longer necessary to call rmarkdown functions directly when using workflowr
+(which was the original intention of attaching rmarkdown). Also there is the
+potential for problems to arise from the order in which package are loaded in a
+user's R session (described [here][leeper-depends]).
+
+[leeper-depends]: https://github.com/leeper/Depends
+
 #  1.0.1.9000
 
 * S3 print method for `wflow_start()`

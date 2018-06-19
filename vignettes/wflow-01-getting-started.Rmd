@@ -320,8 +320,15 @@ wflow_status()
 
 At this point you have built a version-controlled website that exists on your
 local computer. The next step is to put your code on GitHub so that it can serve
-your website online. To do this, login to your account on GitHub and create a
-new repository following these [instructions][new-repo]. For the purposes of this
+your website online.
+
+To do this, login to your account on GitHub and create a new repository
+following these [instructions][new-repo]. The screenshot below shows the menu in
+the topright of the webpage.
+
+![Create a new repository on GitHub. © 2018 GitHub Inc. All rights reserved.](https://help.github.com/assets/images/help/repository/repo-create.png)
+
+For the purposes of this
 tutorial, the code below assumes that the GitHub repository also has the name
 "myproject." This isn't strictly neccesary (you can name your GitHub repository
 whatever you like), but it's generally good organizational practice to use the

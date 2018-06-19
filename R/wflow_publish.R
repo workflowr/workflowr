@@ -202,7 +202,8 @@ wflow_publish <- function(
   files_to_build <- files_to_build[!s1$status[files_to_build, "mod_staged"]]
 
   if (length(files_to_build) > 0) {
-    # Create a backup copy of the docs/ directory
+    # Create a backup copy of the docs/ directory. If either step 2 (build the
+    # HTML) or step 3 (commit the HTML) fails, delete docs/ and restore backup
     docs_backup <- tempfile(pattern = sprintf("docs-backup-%s-",
                                               format(Sys.time(),
                                                      "%Y-%m-%d-%Hh-%Mm-%Ss")))
@@ -210,16 +211,16 @@ wflow_publish <- function(
     docs_backup <- absolute(docs_backup)
     file.copy(from = file.path(s1$docs, "."), to = docs_backup,
               recursive = TRUE, copy.date = TRUE)
+    on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
+    on.exit(dir.create(s1$docs), add = TRUE)
+    on.exit(file.copy(from = file.path(docs_backup, "."), to = s1$docs,
+                      recursive = TRUE, copy.date = TRUE), add = TRUE)
+
     step2 <- wflow_build(files = files_to_build, make = FALSE,
                          update = update, republish = republish,
                          view = view, seed = seed,
                          local = FALSE, verbose = verbose,
                          dry_run = dry_run, project = project)
-    # If something fails in subsequent steps, delete docs/ and restore backup
-    on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
-    on.exit(dir.create(s1$docs), add = TRUE)
-    on.exit(file.copy(from = file.path(docs_backup, "."), to = s1$docs,
-                      recursive = TRUE, copy.date = TRUE), add = TRUE)
     s2 <- wflow_status(project = project)
   } else {
     step2 <- NULL

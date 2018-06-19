@@ -261,18 +261,17 @@ test_that("wflow_publish restores previous docs/ if build fails", {
 
   skip_on_cran()
 
-  md5sum_pre <- tools::md5sum(rmd)
-  mtime_pre <- file.mtime(rmd)
+  md5sum_pre <- tools::md5sum(html)
+  mtime_pre <- file.mtime(html)
   Sys.sleep(2)
   expect_error(utils::capture.output(
     wflow_publish(c(rmd, rmd_to_fail), view = FALSE, project = site_dir)),
     "There was an error")
-  md5sum_post <- tools::md5sum(rmd)
-  mtime_post <- file.mtime(rmd)
+  md5sum_post <- tools::md5sum(html)
+  mtime_post <- file.mtime(html)
   expect_identical(md5sum_post, md5sum_pre)
   expect_identical(mtime_post, mtime_pre)
 })
-
 
 test_that("wflow_publish throws an error if user.name and user.email are not set", {
 

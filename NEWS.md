@@ -6,6 +6,9 @@ longer necessary to call rmarkdown functions directly when using workflowr
 potential for problems to arise from the order in which package are loaded in a
 user's R session (described [here][leeper-depends]).
 
+* Restore all files in website directory if `wflow_publish()` fails to build any
+of the files (reported by @pcarbo)
+
 [leeper-depends]: https://github.com/leeper/Depends
 
 #  1.0.1.9000
@@ -36,7 +39,7 @@ but has been expanded to `wflow_git_commit()`, `wflow_publish()`, and
     * The argument `files` now requires correct paths to existing R Markdown or
     HTML files. Previously, `wflow_view()` would guess the correct path. While
     convenient, it was also potentially confusing since it was inconsistent with
-    the other workflowr functions)
+    the other workflowr functions
     * The argument `latest` is no longer mutually-exclusive with `files`. If the
     most recently modified HTML is different than those specified by `files`,
     they will all be opened for viewing

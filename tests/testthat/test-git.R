@@ -5,7 +5,7 @@ context("git")
 # Load helper function local_no_gitconfig()
 source("helpers.R", local = TRUE)
 
-# Test get_committed_files -----------------------------------------------------
+# Test get_committed_files and obtain_files_in_commit --------------------------
 
 # Create temp Git directory
 dir_git <- tempfile("test-get_committed_files-")
@@ -33,6 +33,12 @@ test_that("get_committed_files works on root commit", {
   expect_identical(actual, expected)
 })
 
+test_that("obtain_files_in_commit works on root commit", {
+  expected <- f
+  actual <- workflowr:::obtain_files_in_commit(r, git2r::commits(r)[[1]])
+  expect_identical(actual, expected)
+})
+
 # Commit more files
 f2 <- file.path(dir_git, c("c.txt", "d.txt"))
 file.create(f2)
@@ -45,6 +51,12 @@ test_that("get_committed_files works on multiple commits", {
   expect_identical(actual, expected)
 })
 
+test_that("obtain_files_in_commit works on standard commit", {
+  expected <- f2
+  actual <- workflowr:::obtain_files_in_commit(r, git2r::commits(r)[[1]])
+  expect_identical(actual, expected)
+})
+
 # Remove a file
 git2r::rm_file(r, basename(f[1]))
 git2r::commit(r, message = "remove a file")
@@ -52,6 +64,12 @@ git2r::commit(r, message = "remove a file")
 test_that("get_committed_files stops reporting files after they are removed", {
   expected <- c(f[2], f2)
   actual <- workflowr:::get_committed_files(r)
+  expect_identical(actual, expected)
+})
+
+test_that("obtain_files_in_commit reports a deleted file", {
+  expected <- f[1]
+  actual <- workflowr:::obtain_files_in_commit(r, git2r::commits(r)[[1]])
   expect_identical(actual, expected)
 })
 

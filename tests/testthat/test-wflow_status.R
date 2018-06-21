@@ -62,9 +62,9 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   suppressMessages(wflow_publish(c(rmd_pub, rmd_mod, rmd_mod_committed),
                                  view = FALSE, project = site_dir))
   # Modify about.Rmd to have status Mod for Modified
-  cat("edit", file = rmd_mod, append = TRUE)
+  cat("edit\n", file = rmd_mod, append = TRUE)
   # Modify mod-committed.Rmd and then commit the change
-  cat("edit", file = rmd_mod_committed, append = TRUE)
+  cat("edit\n", file = rmd_mod_committed, append = TRUE)
   wflow_git_commit(rmd_mod_committed, "Commit but don't publish",
                    project = site_dir)
 }

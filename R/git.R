@@ -102,7 +102,7 @@ get_committed_files <- function(repo, commit = NULL) {
   }
   tree <- git2r::tree(commit)
   files <- ls_files(tree)
-  files <- paste0(git2r::workdir(repo), files)
+  files <- absolute(paste0(git2r::workdir(repo), files))
   return(files)
 }
 
@@ -130,6 +130,8 @@ ls_files <- function (tree) {
 # files: character vector of filenames
 # outdir: directory with website files
 get_outdated_files <- function(repo, files, outdir = NULL) {
+  if (length(files) == 0) return(files)
+
   ext <- tools::file_ext(files)
   if (!all(grepl("[Rr]md", ext)))
     stop("Only R Markdown files are accepted.")
@@ -167,25 +169,38 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
 # running a diff between the trees pointed to by the commit and its parent
 # commit.
 #
-# This only works for commits that have one parent commit. Thus it will fail
-# for merge commits (two parents) or the initial root commit (zero parents).
-# two most recent commits. This uses `diff,git_tree`. See the source code at
+# This only works for commits that have one parent commit. Thus it will fail for
+# merge commits (two or more parents) or the initial root commit (zero parents).
+# This uses `diff,git_tree`. See the source code at
 # \url{https://github.com/ropensci/git2r/blob/89d916f17cb979b3cc21cbb5834755a2cf075f5f/R/diff.r#L314}
 # and examples at
 # \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
 #
 # @seealso \code{\link{obtain_files_in_commit_root}}
+#
+# Returns absolute paths.
 obtain_files_in_commit <- function(repo, commit) {
   stopifnot(class(repo) == "git_repository",
             class(commit) == "git_commit")
   parent_commit <- git2r::parents(commit)
-  if (length(parent_commit) != 1) {
+
+  # 3 possibilities:
+  #
+  # 1. Root commit with 0 parents
+  # 2. Standard commit with 1 parent
+  # 3. Merge commit with 2+ parents (yes, it's possible to merge more than 2 branches!)
+  if (length(parent_commit) == 0) {
+    files <- obtain_files_in_commit_root(repo, commit)
+  } else if (length(parent_commit) == 1) {
+    git_diff <- git2r::diff(git2r::tree(commit),
+                            git2r::tree(parent_commit[[1]]))
+    files <- sapply(git_diff@files, function(x) x@new_file)
+  } else {
     stop(sprintf("Cannot perform diff on commit %s because it has %d parents",
                  commit@sha, length(parent_commit)))
   }
-  git_diff <- git2r::diff(git2r::tree(commit),
-                          git2r::tree(parent_commit[[1]]))
-  files <- sapply(git_diff@files, function(x) x@new_file)
+
+  files <- absolute(paste0(git2r::workdir(repo), files))
   return(files)
 }
 
@@ -199,6 +214,8 @@ obtain_files_in_commit <- function(repo, commit) {
 # This only works for the root commit, i.e. it must have no parents.
 #
 # @seealso \code{\link{obtain_files_in_commit}}
+#
+# Returns paths relative to Git root directory.
 obtain_files_in_commit_root <- function(repo, commit) {
   # Obtain the files in the root commit of a Git repository
   stopifnot(class(repo) ==  "git_repository",

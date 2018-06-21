@@ -153,8 +153,8 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
 # run, some of the files may not yet be built (which would cause an error).
 # Also, not every Rmd file will create output figures, but it's easier to just
 # attempt to add figures for every file.
-wflow_git_commit_ <- function(files = files, message = message, all = all,
-                          force = force, dry_run = dry_run, project = project) {
+wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
+                              force = FALSE, dry_run = FALSE, project = ".") {
 
   # Obtain workflowr status
   s <- wflow_status(project = project)

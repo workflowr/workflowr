@@ -10,6 +10,7 @@ suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name
 site_dir <- workflowr:::relative(site_dir)
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 r <- repository(path = site_dir)
+s <- wflow_status(project = site_dir)
 
 # Load helper function local_no_gitconfig()
 source("helpers.R", local = TRUE)
@@ -69,7 +70,7 @@ test_that("wflow_git_commit can commit all tracked files", {
   file.create(untracked)
   on.exit(file.remove(untracked))
   for (f in tracked)
-    cat("edit", file = f, append = TRUE)
+    cat("edit\n", file = f, append = TRUE)
   expect_silent(actual <- wflow_git_commit(all = TRUE, project = site_dir))
   expect_identical(actual$commit_files, tracked)
   recent <- commits(r, n = 1)[[1]]
@@ -85,6 +86,59 @@ test_that("wflow_git_commit does not affect Git repo if `dry_run = TRUE`", {
                              project = site_dir))
   after <- commits(r, n = 1)[[1]]
   expect_identical(after, before)
+})
+
+# Test wflow_git_commit_ -------------------------------------------------------
+
+test_that("wflow_git_commit_ can commit deleted files", {
+  commit_current <- commits(r, n = 1)[[1]]
+  on.exit(reset(commit_current, reset_type = "hard"))
+
+  index <- file.path(s$analysis, "index.Rmd")
+  about <- file.path(s$analysis, "about.Rmd")
+  cat("edit\n", file = index, append = TRUE)
+  file.remove(about)
+  observed <- workflowr:::wflow_git_commit_(c(index, about),
+                                            message = "Edit and delete",
+                                            project = site_dir)
+  expect_true(index %in% observed$commit_files)
+  expect_true(about %in% observed$commit_files)
+})
+
+test_that("wflow_git_commit_ can commit deleted files from project root", {
+  wd <- getwd()
+  on.exit(setwd(wd))
+  setwd(s$root)
+
+  commit_current <- commits(r, n = 1)[[1]]
+  on.exit(reset(commit_current, reset_type = "hard"), add = TRUE)
+
+  index <- "analysis/index.Rmd"
+  about <- "analysis/about.Rmd"
+  cat("edit\n", file = index, append = TRUE)
+  file.remove(about)
+  observed <- workflowr:::wflow_git_commit_(c(index, about),
+                                            message = "Edit and delete")
+  expect_true(index %in% observed$commit_files)
+  expect_true(about %in% observed$commit_files)
+})
+
+test_that("wflow_git_commit_ can commit deleted files from project subdir", {
+  wd <- getwd()
+  on.exit(setwd(wd))
+  setwd(s$analysis)
+
+  commit_current <- commits(r, n = 1)[[1]]
+  on.exit(reset(commit_current, reset_type = "hard"), add = TRUE)
+
+  index <- "index.Rmd"
+  about <- "about.Rmd"
+  cat("edit\n", file = index, append = TRUE)
+  file.remove(about)
+  observed <- workflowr:::wflow_git_commit_(c(index, about),
+                                            message = "Edit and delete")
+  expect_true(index %in% observed$commit_files)
+  expect_true(about %in% observed$commit_files)
 })
 
 # Test error handling ----------------------------------------------------------

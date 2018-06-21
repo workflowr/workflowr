@@ -138,6 +138,19 @@ test_that("wflow_remove can remove a directory", {
   expect_false(file.exists(f))
 })
 
+test_that("wflow_remove can remove a file with a relative path from a subdir", {
+  rmd <- file.path(p$analysis, "new.Rmd")
+  file.create(rmd)
+  add(r, rmd)
+  commit(r, "Add an rmd file to remove")
+
+  expect_silent(with_dir("code/",
+                         o <- wflow_remove(file.path("../analysis", basename(rmd)))))
+  expect_false(file.exists(rmd))
+  s <- status(r)
+  expect_equal(length(s$untracked) + length(s$unstaged) + length(s$staged), 0)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_remove requires valid argument: files", {

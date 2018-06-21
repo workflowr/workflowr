@@ -196,7 +196,11 @@ wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
             dry_run = dry_run)
   class(o) <- "wflow_git_commit"
   if (!dry_run) {
-    commit_files <- obtain_files_in_commit(r, commit)
+    if (length(git2r::commits(r)) == 1) {
+      commit_files <- obtain_files_in_commit_root(r, commit)
+    } else {
+      commit_files <- obtain_files_in_commit(r, commit)
+    }
     commit_files <- paste0(git2r::workdir(r), commit_files)
     o$commit <- commit
     o$commit_files <- relative(commit_files)

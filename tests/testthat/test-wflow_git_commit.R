@@ -88,6 +88,24 @@ test_that("wflow_git_commit does not affect Git repo if `dry_run = TRUE`", {
   expect_identical(after, before)
 })
 
+test_that("wflow_git_commit can perform the initial commit", {
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  x <- tempfile()
+  on.exit(unlink(x, recursive = TRUE), add = TRUE)
+
+  o_start <- wflow_start(x, git = FALSE, user.name = "Test Name",
+                         user.email = "test@email")
+  expect_null(o_start$commit)
+
+  r <- init(x)
+  o <- wflow_git_commit(c("*", ".gitignore", ".Rprofile"),
+                        message = "Initial commit", project = x)
+  expect_equal(length(commits(r)), 1)
+  s <- status(r)
+  expect_equal(length(s$untracked) + length(s$unstaged) + length(s$staged), 0)
+})
+
 # Test wflow_git_commit_ -------------------------------------------------------
 
 test_that("wflow_git_commit_ can commit deleted files", {
@@ -106,8 +124,8 @@ test_that("wflow_git_commit_ can commit deleted files", {
 })
 
 test_that("wflow_git_commit_ can commit deleted files from project root", {
-  wd <- getwd()
-  on.exit(setwd(wd))
+  cwd <- getwd()
+  on.exit(setwd(cwd))
   setwd(s$root)
 
   commit_current <- commits(r, n = 1)[[1]]
@@ -124,8 +142,8 @@ test_that("wflow_git_commit_ can commit deleted files from project root", {
 })
 
 test_that("wflow_git_commit_ can commit deleted files from project subdir", {
-  wd <- getwd()
-  on.exit(setwd(wd))
+  cwd <- getwd()
+  on.exit(setwd(cwd))
   setwd(s$analysis)
 
   commit_current <- commits(r, n = 1)[[1]]

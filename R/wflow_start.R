@@ -372,7 +372,7 @@ wflow_start <- function(directory,
             dry_run = dry_run,
             user.name = user.name,
             user.email = user.email,
-            commit = if (exists("commit")) commit else NULL)
+            commit = if (exists("commit", inherits = FALSE)) commit else NULL)
   class(o) <- "wflow_start"
 
   return(o)

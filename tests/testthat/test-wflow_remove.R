@@ -92,7 +92,7 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
   expect_true(all(file.exists(rmd_published, data_published),
                   dir.exists(c(cache_published, fig_docs_published))))
   files_committed <- workflowr:::get_committed_files(r)
-  expect_true(all(c(rmd_published, data_published) %in% files_committed))
+  expect_true(all(c(rmd_published, data_published) %in% relative(files_committed)))
   # Now remove the files
   actual <- wflow_remove(c(rmd_published, data_published))
   expect_false(any(file.exists(rmd_published, data_published),

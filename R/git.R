@@ -90,16 +90,19 @@ check_git_config <- function(path, custom_message = "this function") {
 # Obtain all the committed files in a Git repository at a given commit.
 #
 # The default is to use the head commit.
+#
+# Returns absolute paths.
 get_committed_files <- function(repo, commit = NULL) {
   n_commits <- length(git2r::commits(repo))
   if (n_commits == 0) {
-    stop(wrap("The Git repository has no commits yet."))
+    return(NA)
   }
   if (is.null(commit)) {
     commit <- git2r::lookup(repo, git2r::branch_target(git2r::head(repo)))
   }
   tree <- git2r::tree(commit)
   files <- ls_files(tree)
+  files <- paste0(git2r::workdir(repo), files)
   return(files)
 }
 
@@ -158,57 +161,6 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
   return(outdated)
 }
 
-# Decide which files to render and commit
-#
-# Recursively search the commit log until the R Markdown file or its
-# corresponding HTML file is found. If the Rmd is found first, the HTML file
-# needs to be re-rendered, added, and committed (return TRUE). If the HTML file
-# is found first, then it is up-to-date (return FALSE).
-#
-# @seealso \code{\link{obtain_files_in_commit}},
-#   \code{\link{obtain_files_in_commit_root}}, \code{\link{wflow_git_commit}}
-decide_to_render <- function(repo, log, rmd) {
-  stopifnot(class(repo) == "git_repository",
-            class(log) == "list",
-            is.character(rmd))
-  if (length(log) == 0) {
-    warning("File not found in commit log: ", rmd)
-    return(NA)
-  } else {
-    stopifnot(sapply(log, function(x) class(x) == "git_commit"))
-  }
-  html <- file.path("docs", stringr::str_replace(basename(rmd), "Rmd$", "html"))
-  # Obtain the files updated in the most recent commit, similar to `git
-  # status --stat`
-  parent_commit <- git2r::parents(log[[1]])
-  # The next action depends on what kind of commit is the most recent. Skip
-  # merge commits (2 parents). Obtain files from a standard commit (1 parent)
-  # using obtain_files_in_commit. Obtain files from root commit (0 parents)
-  # using obtain_files_in_commit_root.
-  if (length(parent_commit) == 2) {
-    return(decide_to_render(repo, log[-1], rmd))
-  } else if (length(parent_commit) == 1) {
-    files <- obtain_files_in_commit(repo, log[[1]])
-  } else if (length(parent_commit) == 0) {
-    files <- obtain_files_in_commit_root(repo, log[[1]])
-  }
-  # Decide if the R Markdown file should be rendered (it has been updated most
-  # recently), not rendered (the HTML has been updated more recently), or to
-  # continue searching the commit log (neither the Rmd nor HTML has been
-  # observed in the commit log yet).
-  if (rmd %in% files) {
-    return(TRUE)
-  } else if (html %in% files) {
-    return(FALSE)
-  } else {
-    return(decide_to_render(repo, log[-1], rmd))
-  }
-
-  # This final return should only be executed if there is an error in the
-  # recursive function.
-  return(files)
-}
-
 # Obtain the files updated in a commit
 #
 # Obtain the files updated in a commit, similar to \code{git status --stat}, by
@@ -222,8 +174,7 @@ decide_to_render <- function(repo, log, rmd) {
 # and examples at
 # \url{https://github.com/ropensci/git2r/blob/cb30b1dd5f8b57978101ea7b7dc26ae2c9eed38e/tests/diff.R#L88}.
 #
-# @seealso \code{\link{obtain_files_in_commit_root}},
-#   \code{\link{decide_to_render}}
+# @seealso \code{\link{obtain_files_in_commit_root}}
 obtain_files_in_commit <- function(repo, commit) {
   stopifnot(class(repo) == "git_repository",
             class(commit) == "git_commit")
@@ -247,7 +198,7 @@ obtain_files_in_commit <- function(repo, commit) {
 #
 # This only works for the root commit, i.e. it must have no parents.
 #
-# @seealso \code{\link{obtain_files_in_commit}}, \code{\link{decide_to_render}}
+# @seealso \code{\link{obtain_files_in_commit}}
 obtain_files_in_commit_root <- function(repo, commit) {
   # Obtain the files in the root commit of a Git repository
   stopifnot(class(repo) ==  "git_repository",

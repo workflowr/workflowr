@@ -162,9 +162,7 @@ wflow_remove <- function(files,
 
   if (use_git) {
     # Obtain committed files
-    files_committed <- get_committed_files(r)
-    files_committed <- file.path(git2r::workdir(r), files_committed)
-    files_committed <- relative(files_committed)
+    files_committed <- relative(get_committed_files(r))
 
     # Obtain files to be removed from Git
     logical_files_git <- files_to_remove %in% files_committed

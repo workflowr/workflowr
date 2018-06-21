@@ -149,7 +149,7 @@ wflow_status <- function(files = NULL, project = ".") {
   mod_staged <- files_analysis %in% s$staged
   tracked <- files_analysis %in% setdiff(files_analysis,
                                          c(s$untracked, s$ignored))
-  files_committed <- paste0(git2r::workdir(r), get_committed_files(r))
+  files_committed <- get_committed_files(r)
   files_committed <- relative(files_committed)
   committed <- files_analysis %in% files_committed
   files_html <- to_html(files_analysis, outdir = o$docs)

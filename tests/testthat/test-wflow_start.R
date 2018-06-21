@@ -94,10 +94,11 @@ test_that("wflow_start git = FALSE does not initialize a Git repository", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  capture.output(wflow_start(site_dir, git = FALSE, change_wd = FALSE,
-                             user.name = "Test Name", user.email = "test@email"))
+  o <- wflow_start(site_dir, git = FALSE, change_wd = FALSE,
+                   user.name = "Test Name", user.email = "test@email")
   site_dir <- workflowr:::absolute(site_dir)
   expect_false(git2r::in_repository(site_dir))
+  expect_null(o$commit)
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
@@ -113,14 +114,14 @@ test_that("wflow_start commits all the project files", {
   committed <- workflowr:::get_committed_files(r)
 
   for (f in project_files) {
-    expect_true(f %in% committed)
+    expect_true(file.path(site_dir, f) %in% committed)
   }
   # Rproj file
-  expect_true(paste0(basename(site_dir), ".Rproj") %in% committed)
+  expect_true(file.path(site_dir, paste0(basename(site_dir), ".Rproj")) %in% committed)
   # hidden files
-  expect_true(".gitignore" %in% committed)
-  expect_true(".Rprofile" %in% committed)
-  expect_true("docs/.nojekyll" %in% committed)
+  expect_true(file.path(site_dir, ".gitignore") %in% committed)
+  expect_true(file.path(site_dir, ".Rprofile") %in% committed)
+  expect_true(file.path(site_dir, "docs/.nojekyll") %in% committed)
 
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })

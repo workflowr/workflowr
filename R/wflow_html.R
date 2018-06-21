@@ -161,6 +161,7 @@ wflow_html <- function(...) {
     options$fig.path <- paste0(options$fig.path, .Platform$file.sep)
     return(options)
   }
+
   plot_hook <- function(x, options) {
     if (git2r::in_repository(".")) {
       r <- git2r::repository(".", discover = TRUE)
@@ -212,30 +213,7 @@ wflow_html <- function(...) {
     tmpfile <- file.path(tempdir(), basename(input))
     e$knit_input <- tmpfile
 
-    # Default wflow options
-    wflow_opts <- list(knit_root_dir = NULL,
-                        seed = 12345,
-                        github = get_github_from_remote(dirname(input)),
-                        sessioninfo = "sessionInfo()")
-
-    # Get options from a potential _workflowr.yml file
-    wflow_root <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),
-                                            path = dirname(input)), silent = TRUE)
-    if (class(wflow_root) != "try-error") {
-      wflow_yml <- file.path(wflow_root, "_workflowr.yml")
-      wflow_yml_opts <- yaml::yaml.load_file(wflow_yml)
-      for (opt in names(wflow_yml_opts)) {
-        wflow_opts[[opt]] <- wflow_yml_opts[[opt]]
-      }
-      # If knit_root_dir is a relative path, interpret it as relative to the
-      # location of _workflowr.yml
-      if (!is.null(wflow_opts$knit_root_dir)) {
-        if (!R.utils::isAbsolutePath(wflow_opts$knit_root_dir)) {
-          wflow_opts$knit_root_dir <- absolute(file.path(wflow_root,
-                                                          wflow_opts$knit_root_dir))
-        }
-      }
-    }
+    wflow_opts <- wflow_options(input)
 
     # Get potential options from YAML header. These override the options
     # specified in _workflowr.yml.
@@ -249,7 +227,7 @@ wflow_html <- function(...) {
     if (!is.null(wflow_opts$knit_root_dir)) {
       if (!R.utils::isAbsolutePath(wflow_opts$knit_root_dir)) {
         wflow_opts$knit_root_dir <- absolute(file.path(dirname(input),
-                                                        wflow_opts$knit_root_dir))
+                                                       wflow_opts$knit_root_dir))
       }
     }
 

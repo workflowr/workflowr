@@ -11,7 +11,7 @@
 #' directory. The knit directory is where the code in the R Markdown files is
 #' executed, and may be defined via the field \code{knit_root_dir} in the file
 #' \code{_workflowr.yml} (see \code{\link{wflow_html}} for all the details). If
-#' this field is not defined, then hte knit directory is the R Markdown
+#' this field is not defined, then the knit directory is the R Markdown
 #' directory. Third, it opens the file(s) in RStudio if applicable. The latter
 #' two side effects can be turned off if desired.
 #'
@@ -77,27 +77,28 @@ wflow_open <- function(files,
 
   # Determine knit directory ---------------------------------------------------
 
-  # If project is NULL, create upstream directories. Set `analysis_dir` to
+  # If project is NULL, create upstream directories. Set `knit_directory` to
   # the directory of the first file for `change_wd`.
   if (is.null(project)) {
     for (rmd_dir in dirname(files)) {
       dir.create(rmd_dir, showWarnings = FALSE, recursive = TRUE)
     }
-    analysis_dir <- dirname(files)[1]
+    knit_directory <- dirname(files)[1]
   } else {
-    # If project is set, find the analysis/ subdirectory.
+    # If project is set, find the knit directory
 
     # Confirm that project exists
     if (!dir.exists(project)) {
       stop("project does not exist: ", project)
     }
 
-    # To do: refactor code in wflow_html$pre_knit for finding knit_root_dir
-    # setting
-
-    # Find analysis/ subdirectory
-    p <- wflow_paths(project = project)
-    analysis_dir <- absolute(p$analysis)
+    # Find knit directory (knit_root_dir). This ignores any potential settings
+    # in the YAML header(s) of existing file(s).
+    wflow_opts <- wflow_options(files[1])
+    knit_directory <- wflow_opts$knit_root_dir
+    if (is.null(knit_directory)) {
+      knit_directory <- dirname(files)
+    }
   }
 
   # Guess metadata -------------------------------------------------------------
@@ -132,11 +133,11 @@ wflow_open <- function(files,
   # Set working directory ------------------------------------------------------
 
   current_wd <- getwd()
-  if (change_wd & current_wd != analysis_dir) {
-    setwd(analysis_dir)
+  if (change_wd & current_wd != knit_directory) {
+    setwd(knit_directory)
     message("Working directory was changed.",
             "\nPrevious:\t", absolute(current_wd),
-            "\nCurrent:\t", absolute(analysis_dir))
+            "\nCurrent:\t", absolute(knit_directory))
   }
 
   # Open files -----------------------------------------------------------------

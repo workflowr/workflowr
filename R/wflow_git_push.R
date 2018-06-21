@@ -170,7 +170,12 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
                } else {
                  reason <- c("Push failed for unknown reason.",
                              "\n\nThe error message from git2r::push() was:\n\n",
-                             e$message)
+                             e$message,
+                             "\n\nThese sorts of errors are difficult to
+                             troubleshoot. If you have Git installed on your
+                             machine, the easiest solution is to instead run
+                             `git push` in the Terminal. This is equivalent to
+                             wflow_git_push().")
                }
                stop(wrap(reason), call. = FALSE)
              }

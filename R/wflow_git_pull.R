@@ -161,7 +161,12 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
                } else {
                  reason <- c("Pull failed for unknown reason.",
                              "\n\nThe error message from git2r::pull() was:\n\n",
-                             e$message)
+                             e$message,
+                             "\n\nThese sorts of errors are difficult to
+                             troubleshoot. If you have Git installed on your
+                             machine, the easiest solution is to instead run
+                             `git pull` in the Terminal. This is equivalent to
+                             wflow_git_pull().")
                }
                stop(wrap(reason), call. = FALSE)
              }

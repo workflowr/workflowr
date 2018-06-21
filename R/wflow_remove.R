@@ -161,18 +161,13 @@ wflow_remove <- function(files,
   # Gather files to remove from Git --------------------------------------------
 
   if (use_git) {
-    # Need to make the files relative to Git directory
-    files_to_remove_rel <- relative(files_to_remove,
-                                    start = git2r::workdir(r))
-    # Obtain committed files (relative to Git directory)
+    # Obtain committed files
     files_committed <- get_committed_files(r)
+    files_committed <- file.path(git2r::workdir(r), files_committed)
+    files_committed <- relative(files_committed)
 
     # Obtain files to be removed from Git
-    #
-    # Need both relative to Git to pass to git2r and relative to current working
-    # directory to report to user
-    logical_files_git <- files_to_remove_rel %in% files_committed
-    files_to_remove_from_git_rel <- files_to_remove_rel[logical_files_git]
+    logical_files_git <- files_to_remove %in% files_committed
     files_to_remove_from_git <- files_to_remove[logical_files_git]
   } else {
     files_to_remove_from_git <- NA
@@ -188,8 +183,8 @@ wflow_remove <- function(files,
 
   # Commit removed files -------------------------------------------------------
 
-  if (use_git && !dry_run && length(files_to_remove_from_git_rel) > 0) {
-    git2r::add(r, files_to_remove_from_git_rel)
+  if (use_git && !dry_run && length(files_to_remove_from_git) > 0) {
+    git2r::add(r, absolute(files_to_remove_from_git))
     git2r::commit(r, message = message)
     commit <- git2r::commits(r, n = 1)[[1]]
   } else {

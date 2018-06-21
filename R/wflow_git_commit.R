@@ -165,7 +165,7 @@ wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
   if (!dry_run) {
     # Add the specified files
     if (!is.null(files)) {
-      git2r::add(r, relative(files, start = git2r::workdir(r)), force = force)
+      git2r::add(r, absolute(files), force = force)
     }
     if (all) {
       # Temporary fix until git2r::commit can do `git commit -a`
@@ -175,7 +175,7 @@ wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
       # bug that affects Ubuntu and Windows, but not macOS. Manually adding all
       # unstaged changes.
       unstaged <- unlist(git2r::status(r)$unstaged)
-      git2r::add(r, unstaged)
+      git2r::add(r, file.path(git2r::workdir(r), unstaged))
     }
     # Commit
     tryCatch(

@@ -9,6 +9,10 @@ user's R session (described [here][leeper-depends]).
 * Restore all files in website directory if `wflow_publish()` fails to build any
 of the files (reported by @pcarbo)
 
+* Fix Windows-specific bug in `wflow_publish()`, `wflow_remove()`, and
+`wflow_git_commit()`. The bug prevented Windows users from running these
+functions from a subdirectory of a workflowr project.
+
 [leeper-depends]: https://github.com/leeper/Depends
 
 #  1.0.1.9000

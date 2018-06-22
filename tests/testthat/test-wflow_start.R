@@ -413,7 +413,8 @@ test_that("print.wflow_start works with change_wd = FALSE", {
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
   # Dry run
-  dry_run <- wflow_start(tmp_dir, change_wd = FALSE, dry_run = TRUE)
+  dry_run <- wflow_start(tmp_dir, change_wd = FALSE, dry_run = TRUE,
+                         user.name = "Test Name", user.email = "test@email")
   p_dry_run <- utils::capture.output(dry_run)
   expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
   expect_identical(p_dry_run[2],
@@ -427,7 +428,8 @@ test_that("print.wflow_start works with change_wd = FALSE", {
   expect_identical(p_dry_run[6], "- Files will be commited with Git")
 
   # Actual run
-  actual_run <- wflow_start(tmp_dir, change_wd = FALSE)
+  actual_run <- wflow_start(tmp_dir, change_wd = FALSE,
+                            user.name = "Test Name", user.email = "test@email")
   # Resolve symlink on macOS
   tmp_dir <- workflowr:::absolute(tmp_dir)
   # Have to use discover argument to get same result with /.git/
@@ -487,7 +489,8 @@ test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", 
   tmp_dir <- workflowr:::absolute(tmp_dir)
 
   # Dry run
-  dry_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE, dry_run = TRUE)
+  dry_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE, dry_run = TRUE,
+                         user.name = "Test Name", user.email = "test@email")
   p_dry_run <- utils::capture.output(dry_run)
   expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
   expect_identical(p_dry_run[2],
@@ -501,7 +504,8 @@ test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", 
   expect_identical(p_dry_run[6], "- Files will be commited with Git")
 
   # Actual run
-  actual_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE)
+  actual_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE,
+                            user.name = "Test Name", user.email = "test@email")
   # Have to use discover argument to get same result with /.git/
   r <- git2r::repository(path = tmp_dir, discover = TRUE)
   p_actual_run <- utils::capture.output(actual_run)
@@ -525,6 +529,7 @@ test_that("print.wflow_start works with existing Git repo", {
   dir.create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   repo <- git2r::init(tmp_dir)
+  config(repo, user.name = "Test Name", user.email = "test@email")
   f <- file.path(tmp_dir, "file")
   file.create(f)
   git2r::add(repo, f)
@@ -571,7 +576,8 @@ test_that("print.wflow_start works with change_wd = TRUE", {
   on.exit(unlink(tmp_dir, recursive = TRUE), add = TRUE)
 
   # Dry run
-  dry_run <- wflow_start(tmp_dir, dry_run = TRUE)
+  dry_run <- wflow_start(tmp_dir, dry_run = TRUE,
+                         user.name = "Test Name", user.email = "test@email")
   p_dry_run <- utils::capture.output(dry_run)
   expect_identical(p_dry_run[1], "wflow_start (\"dry run mode\"):")
   expect_identical(p_dry_run[2],
@@ -585,7 +591,7 @@ test_that("print.wflow_start works with change_wd = TRUE", {
   expect_identical(p_dry_run[6], "- Files will be commited with Git")
 
   # Actual run
-  actual_run <- wflow_start(tmp_dir)
+  actual_run <- wflow_start(tmp_dir, user.name = "Test Name", user.email = "test@email")
   # Resolve symlink on macOS
   tmp_dir <- workflowr:::absolute(tmp_dir)
   # Have to use discover argument to get same result with /.git/

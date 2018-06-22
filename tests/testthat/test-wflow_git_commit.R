@@ -94,11 +94,11 @@ test_that("wflow_git_commit can perform the initial commit", {
   x <- tempfile()
   on.exit(unlink(x, recursive = TRUE), add = TRUE)
 
-  o_start <- wflow_start(x, git = FALSE, user.name = "Test Name",
-                         user.email = "test@email")
+  o_start <- wflow_start(x, git = FALSE)
   expect_null(o_start$commit)
 
   r <- init(x)
+  config(r, user.name = "Test Name", user.email = "test@email")
   o <- wflow_git_commit(c("*", ".gitignore", ".Rprofile"),
                         message = "Initial commit", project = x)
   expect_equal(length(commits(r)), 1)

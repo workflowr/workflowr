@@ -153,6 +153,10 @@ wflow_open <- function(files,
     writeLines(header, files_new[i])
   }
 
+  # Now that files all exist, ensure that symlinks are expanded
+  files <- absolute(files)
+  files_new <- absolute(files_new)
+
   # Set working directory ------------------------------------------------------
 
   current_wd <- absolute(getwd())

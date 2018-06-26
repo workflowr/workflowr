@@ -140,7 +140,10 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
 
   o <- wflow_open(c(testfile1, testfile2), change_wd = TRUE,
                   open_file = FALSE, project = NULL)
+
   expect_true(all(file.exists(o$files)))
+  # Fix the symlink now that the file has been created
+  testfile2 <- workflowr:::absolute(testfile2)
   expect_identical(o$files, c(testfile1, testfile2))
 })
 

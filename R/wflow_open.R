@@ -120,8 +120,9 @@ wflow_open <- function(files,
     wflow_opts <- wflow_options(files[1])
     knit_directory <- wflow_opts$knit_root_dir
     if (is.null(knit_directory)) {
-      knit_directory <- dirname(files)
+      knit_directory <- p$analysis
     }
+    knit_directory <- absolute(knit_directory)
   }
 
   # Guess metadata -------------------------------------------------------------
@@ -155,12 +156,12 @@ wflow_open <- function(files,
 
   # Set working directory ------------------------------------------------------
 
-  current_wd <- getwd()
+  current_wd <- absolute(getwd())
   if (change_wd & current_wd != knit_directory) {
     setwd(knit_directory)
     message("Working directory was changed.",
-            "\nPrevious:\t", absolute(current_wd),
-            "\nCurrent:\t", absolute(knit_directory))
+            "\nPrevious:\t", current_wd,
+            "\nCurrent:\t", knit_directory)
   }
 
   # Open files -----------------------------------------------------------------

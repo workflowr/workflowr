@@ -163,3 +163,15 @@ test_that("wflow_open rejects filenames without Rmd or rmd extension", {
   expect_silent(wflow_open(file.path(p$analysis, "valid-ext.rmd"), change_wd = FALSE, open_file = FALSE,
                            project = site_dir))
 })
+
+test_that("wflow_open throws error if not in workflowr project and project!=NULL", {
+  x <- tempfile()
+  dir.create(x)
+  on.exit(unlink(x, recursive = TRUE))
+  rmd <- file.path(x, "test.Rmd")
+  expect_error(wflow_open(rmd, change_wd = FALSE, open_file = FALSE),
+               "This isn't a workflowr project")
+  expect_silent(wflow_open(rmd, change_wd = FALSE, open_file = FALSE,
+                           project = NULL))
+})
+

@@ -120,7 +120,7 @@ test_that("wflow_open accepts file globs", {
   rmd_glob_expanded <- Sys.glob(rmd_glob)
   open_w_glob <- wflow_open(rmd_glob, change_wd = FALSE, open_file = FALSE,
                             project = site_dir)
-  expect_identical(open_w_glob, rmd_glob_expanded)
+  expect_identical(relative(open_w_glob$files), rmd_glob_expanded)
 
   expect_error(wflow_open(file.path(s$analysis, "bad*blob.Rmd"),
                           project = site_dir),
@@ -130,7 +130,7 @@ test_that("wflow_open accepts file globs", {
   on.exit(file.remove(rmd_new))
   open_w_glob_new <- wflow_open(c(rmd_glob, rmd_new), change_wd = FALSE,
                                 open_file = FALSE, project = site_dir)
-  expect_identical(open_w_glob_new, c(rmd_glob_expanded, rmd_new))
+  expect_identical(relative(open_w_glob_new$files), c(rmd_glob_expanded, rmd_new))
   expect_true(file.exists(rmd_new))
 })
 

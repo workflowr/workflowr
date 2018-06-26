@@ -16,13 +16,13 @@ test_that("wflow_open creates a new file, but does not overwrite", {
 
   rmd <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
                     open_file = FALSE, project = site_dir)
-  expect_true(file.exists(rmd))
-  modification_time_pre <- file.mtime(rmd)
+  expect_true(file.exists(rmd$files))
+  modification_time_pre <- file.mtime(rmd$files)
   Sys.sleep(2)
   rmd2 <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
                      open_file = FALSE, project = site_dir)
-  expect_identical(rmd2, rmd)
-  modification_time_post <- file.mtime(rmd2)
+  expect_identical(rmd2$files, rmd$files)
+  modification_time_post <- file.mtime(rmd2$files)
   expect_identical(modification_time_post, modification_time_pre)
 })
 
@@ -40,33 +40,31 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_silent(rmd <- wflow_open(file.path(p$analysis, "do-not-change-wd.Rmd"),
                                   change_wd = FALSE,
                                   open_file = FALSE, project = site_dir))
-  expect_true(file.exists(rmd))
+  expect_true(file.exists(rmd$files))
   wd_same <- getwd()
   expect_identical(wd_pre, wd_same)
 
   # knit directory == root (default)
-  expect_message(rmd <- wflow_open(file.path(p$analysis, "do-change-wd.Rmd"),
-                                   change_wd = TRUE,
-                                   open_file = FALSE, project = site_dir),
-                 "Working directory was changed.")
-  expect_true(file.exists(rmd))
+  rmd <- wflow_open(file.path(p$analysis, "do-change-wd.Rmd"),
+                    change_wd = TRUE,
+                    open_file = FALSE, project = site_dir)
+  expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$root))
   expect_silent(rmd <- wflow_open("no-need-to-change-wd.Rmd",
                                   change_wd = TRUE, open_file = FALSE,
                                   project = "."))
-  expect_true(file.exists(rmd))
+  expect_true(file.exists(rmd$files))
   expect_identical(getwd(), absolute(p$root))
 
   # knit directory == analysis
   yml <- yaml::read_yaml(wflow_yml)
   yml$knit_root_dir <- "analysis"
   yaml::write_yaml(yml, file = wflow_yml)
-  expect_message(rmd <- wflow_open(file.path(p$analysis, "change-to-analysis.Rmd"),
-                                   change_wd = TRUE,
-                                   open_file = FALSE, project = "."),
-                 "Working directory was changed.")
-  expect_true(file.exists(rmd))
+  rmd <- wflow_open(file.path(p$analysis, "change-to-analysis.Rmd"),
+                    change_wd = TRUE,
+                    open_file = FALSE, project = ".")
+  expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
 
@@ -74,11 +72,10 @@ test_that("wflow_open changes the working directory to the knit directory", {
   yml <- yaml::read_yaml(wflow_yml)
   yml$knit_root_dir <- "docs"
   yaml::write_yaml(yml, file = wflow_yml)
-  expect_message(rmd <- wflow_open(file.path(p$analysis, "change-to-docs.Rmd"),
-                                   change_wd = TRUE,
-                                   open_file = FALSE, project = "."),
-                 "Working directory was changed.")
-  expect_true(file.exists(rmd))
+  rmd <- wflow_open(file.path(p$analysis, "change-to-docs.Rmd"),
+                    change_wd = TRUE,
+                    open_file = FALSE, project = ".")
+  expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$docs))
 
@@ -86,11 +83,10 @@ test_that("wflow_open changes the working directory to the knit directory", {
   yml <- yaml::read_yaml(wflow_yml)
   yml$knit_root_dir <- NULL
   yaml::write_yaml(yml, file = wflow_yml)
-  expect_message(rmd <- wflow_open(file.path(p$analysis, "unset.Rmd"),
-                                   change_wd = TRUE,
-                                   open_file = FALSE, project = "."),
-                 "Working directory was changed.")
-  expect_true(file.exists(rmd))
+  rmd <- wflow_open(file.path(p$analysis, "unset.Rmd"),
+                    change_wd = TRUE,
+                    open_file = FALSE, project = ".")
+  expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
 })
@@ -100,13 +96,13 @@ test_that("wflow_open can accept multiple files", {
   rmd_multi <- file.path(p$analysis, paste0(1:3, ".Rmd"))
   rmd <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
                     project = site_dir)
-  expect_true(all(file.exists(rmd)))
-  modification_time_pre <- file.mtime(rmd)
+  expect_true(all(file.exists(rmd$files)))
+  modification_time_pre <- file.mtime(rmd$files)
   Sys.sleep(2)
   rmd2 <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
                      project = site_dir)
-  expect_identical(rmd2, rmd)
-  modification_time_post <- file.mtime(rmd)
+  expect_identical(rmd2$files, rmd$files)
+  modification_time_post <- file.mtime(rmd$files)
   expect_identical(modification_time_post, modification_time_pre)
 })
 
@@ -142,10 +138,10 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   on.exit(unlink(location_nonexist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile2 <- file.path(location_nonexist, "nonexist.Rmd")
 
-  outfile <- wflow_open(c(testfile1, testfile2), change_wd = TRUE,
-                        open_file = FALSE, project = NULL)
-  expect_true(all(file.exists(outfile)))
-  expect_identical(outfile, workflowr:::relative(c(testfile1, testfile2)))
+  o <- wflow_open(c(testfile1, testfile2), change_wd = TRUE,
+                  open_file = FALSE, project = NULL)
+  expect_true(all(file.exists(o$files)))
+  expect_identical(o$files, c(testfile1, testfile2))
 })
 
 # Errors -----------------------------------------------------------------------

@@ -142,31 +142,30 @@ wflow_open <- function(files,
 
   # Create files ---------------------------------------------------------------
 
-  for (i in seq_along(files)) {
-    if (!file.exists(files[i])) {
-      header <- glue::glue("---
+  files_new <- files[!file.exists(files)]
+  for (i in seq_along(files_new)) {
+    header <- glue::glue("---
                            title: \"{yaml_title[i]}\"
                            author: \"{yaml_author}\"
                            date: \"{yaml_date}\"
                            output: workflowr::wflow_html
                            ---")
-      writeLines(header, files[i])
-    }
+    writeLines(header, files_new[i])
   }
 
   # Set working directory ------------------------------------------------------
 
   current_wd <- absolute(getwd())
-  if (change_wd & current_wd != knit_directory) {
+  if (change_wd && current_wd != knit_directory) {
     setwd(knit_directory)
-    message("Working directory was changed.",
-            "\nPrevious:\t", current_wd,
-            "\nCurrent:\t", knit_directory)
+    new_wd <- knit_directory
+  } else {
+    new_wd <- NULL
   }
 
   # Open files -----------------------------------------------------------------
 
-  if (rstudioapi::isAvailable() & open_file) {
+  if (rstudioapi::isAvailable() && open_file) {
     for (rmd in files) {
       rstudioapi::navigateToFile(rmd)
     }
@@ -174,5 +173,39 @@ wflow_open <- function(files,
 
   # Prepare output -------------------------------------------------------------
 
-  return(invisible(relative(files)))
+  o <- list(files = files,
+            change_wd = change_wd,
+            open_file = open_file,
+            knit_root_dir = knit_directory,
+            previous_wd  = current_wd,
+            new_wd = new_wd,
+            files_new = files_new)
+
+  class(o) <- "wflow_open"
+
+  return(o)
+}
+
+#' @export
+print.wflow_open <- function(x, ...) {
+  cat("wflow_open:\n")
+  if (length(x$files_new) > 0) {
+    cat("- The following new files were created:\n")
+    cat(paste0("  - ", x$files_new), sep = "\n")
+  }
+  files_existing <- setdiff(x$files, x$files_new)
+  if (rstudioapi::isAvailable() && x$open_file && length(files_existing) > 0) {
+    cat("- The following existing files were opened:\n")
+    cat(paste0("  - ", files_existing), sep = "\n")
+  }
+
+  if (x$change_wd) {
+    if (is.null(x$new_wd)) {
+      cat(sprintf("- Working directory continues to be %s\n", x$previous_wd))
+    } else {
+      cat(sprintf("- Working directory changed to %s\n", x$previous_wd))
+    }
+  }
+
+  return(invisible(x))
 }

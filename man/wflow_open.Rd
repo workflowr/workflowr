@@ -42,7 +42,7 @@ title, author, and date. Second, it sets the working directory to the knit
 directory. The knit directory is where the code in the R Markdown files is
 executed, and may be defined via the field \code{knit_root_dir} in the file
 \code{_workflowr.yml} (see \code{\link{wflow_html}} for all the details). If
-this field is not defined, then hte knit directory is the R Markdown
+this field is not defined, then the knit directory is the R Markdown
 directory. Third, it opens the file(s) in RStudio if applicable. The latter
 two side effects can be turned off if desired.
 

@@ -194,21 +194,19 @@ wflow_open <- function(files,
 print.wflow_open <- function(x, ...) {
   cat("wflow_open:\n")
   if (length(x$files_new) > 0) {
-    cat("- The following new files were created:\n")
-    cat(paste0("  - ", x$files_new), sep = "\n")
+    cat("- New file(s):\n")
+    cat(paste0("  ", x$files_new), sep = "\n")
   }
   files_existing <- setdiff(x$files, x$files_new)
-  if (rstudioapi::isAvailable() && x$open_file && length(files_existing) > 0) {
-    cat("- The following existing files were opened:\n")
-    cat(paste0("  - ", files_existing), sep = "\n")
+  if (length(files_existing) > 0) {
+    cat("- Existing file(s):\n")
+    cat(paste0("  ", files_existing), sep = "\n")
   }
 
-  if (x$change_wd) {
-    if (is.null(x$new_wd)) {
-      cat(sprintf("- Working directory continues to be %s\n", x$previous_wd))
-    } else {
-      cat(sprintf("- Working directory changed to %s\n", x$previous_wd))
-    }
+  if (x$change_wd && !is.null(x$new_wd)) {
+    cat(sprintf("- New working directory: %s\n", x$new_wd))
+  } else {
+    cat(sprintf("- Same working directory: %s\n", x$previous_wd))
   }
 
   return(invisible(x))

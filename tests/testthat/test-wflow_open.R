@@ -17,11 +17,15 @@ test_that("wflow_open creates a new file, but does not overwrite", {
   rmd <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
                     open_file = FALSE, project = site_dir)
   expect_true(file.exists(rmd$files))
+  expect_output(print(rmd), "- New file\\(s\\):")
+  expect_output(print(rmd), rmd$files)
   modification_time_pre <- file.mtime(rmd$files)
   Sys.sleep(2)
   rmd2 <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
                      open_file = FALSE, project = site_dir)
   expect_identical(rmd2$files, rmd$files)
+  expect_output(print(rmd2), "- Existing file\\(s\\):")
+  expect_output(print(rmd2), rmd2$files)
   modification_time_post <- file.mtime(rmd2$files)
   expect_identical(modification_time_post, modification_time_pre)
 })
@@ -43,6 +47,8 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_true(file.exists(rmd$files))
   wd_same <- getwd()
   expect_identical(wd_pre, wd_same)
+  expect_output(print(rmd), "- Same working directory")
+  expect_output(print(rmd), wd_same)
 
   # knit directory == root (default)
   rmd <- wflow_open(file.path(p$analysis, "do-change-wd.Rmd"),
@@ -51,11 +57,15 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$root))
+  expect_output(print(rmd), "- New working directory")
+  expect_output(print(rmd), getwd())
   expect_silent(rmd <- wflow_open("no-need-to-change-wd.Rmd",
                                   change_wd = TRUE, open_file = FALSE,
                                   project = "."))
   expect_true(file.exists(rmd$files))
   expect_identical(getwd(), absolute(p$root))
+  expect_output(print(rmd), "- Same working directory")
+  expect_output(print(rmd), getwd())
 
   # knit directory == analysis
   yml <- yaml::read_yaml(wflow_yml)
@@ -67,6 +77,8 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
+  expect_output(print(rmd), "- New working directory")
+  expect_output(print(rmd), getwd())
 
   # knit directory == docs
   yml <- yaml::read_yaml(wflow_yml)
@@ -78,6 +90,8 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$docs))
+  expect_output(print(rmd), "- New working directory")
+  expect_output(print(rmd), getwd())
 
   # knit directory == NULL (unset defaults to analysis/)
   yml <- yaml::read_yaml(wflow_yml)
@@ -89,6 +103,9 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
+  expect_output(print(rmd), "- New working directory")
+  expect_output(print(rmd), getwd())
+
 })
 
 test_that("wflow_open can accept multiple files", {

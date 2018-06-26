@@ -173,12 +173,13 @@ test_that("wflow_open throws error if not in workflowr project and project!=NULL
                "This isn't a workflowr project")
   expect_silent(wflow_open(rmd, change_wd = FALSE, open_file = FALSE,
                            project = NULL))
+  expect_true(file.exists(rmd))
 })
 
 test_that("wflow_open throws error if in workflowr project, but Rmd files outside workflowr project", {
-  rmd1 <- tempfile(fileext = ".Rmd")
+  rmd1 <- absolute(tempfile(fileext = ".Rmd"))
   rmd2 <- absolute(file.path(p$analysis, "index.Rmd"))
-  rmd3 <- tempfile(fileext = ".Rmd")
+  rmd3 <- absolute(tempfile(fileext = ".Rmd"))
   on.exit(unlink(c(rmd1, rmd3)))
 
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
@@ -196,4 +197,5 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
   expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3),
                                 change_wd = FALSE, open_file = FALSE,
                                 project = NULL))
+  expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
 })

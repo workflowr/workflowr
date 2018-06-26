@@ -92,7 +92,7 @@ wflow_open <- function(files,
       stop("project does not exist: ", project)
     }
 
-    # Confirm that the Rmd files to be created are in a workflowr project
+    # Confirm project is a valid workflowr project
     tryCatch(p <- wflow_paths(project = project),
              error = function(e) {
                stop(call. = FALSE, wrap(
@@ -102,6 +102,18 @@ wflow_open <- function(files,
                ))
              }
     )
+
+    # Confirm that the Rmd files to be created are in the workflowr project
+    regex <- paste0("^", absolute(p$root))
+    outside <- !stringr::str_detect(files, regex)
+    if (any(outside)) {
+      stop(call. = FALSE, wrap(
+        "The following file(s) are not within the workflowr project. Set
+        project=NULL to create an R Markdown file outside of a workflowr
+        project. See ?wflow_open for details."), "\n\n",
+        paste(files[outside], collapse = "\n")
+      )
+    }
 
     # Find knit directory (knit_root_dir). This ignores any potential settings
     # in the YAML header(s) of existing file(s).

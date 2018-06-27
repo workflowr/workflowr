@@ -104,14 +104,29 @@ wflow_open <- function(files,
     )
 
     # Confirm that the Rmd files to be created are in the workflowr project
-    regex <- paste0("^", absolute(p$root))
-    outside <- !stringr::str_detect(files, regex)
+    regex_root <- paste0("^", absolute(p$root))
+    outside <- !stringr::str_detect(files, regex_root)
     if (any(outside)) {
       stop(call. = FALSE, wrap(
         "The following file(s) are not within the workflowr project. Set
         project=NULL to create an R Markdown file outside of a workflowr
         project. See ?wflow_open for details."), "\n\n",
         paste(files[outside], collapse = "\n")
+      )
+    }
+
+    # Send warning if Rmd files not saved in R Markdown directory
+    regex_analysis <- paste0("^", absolute(p$analysis))
+    non_analysis <- !stringr::str_detect(files, regex_analysis)
+    if (any(non_analysis)) {
+      warning(call. = FALSE, wrap(
+        "The following file(s) are not within the R Markdown directory of your
+        workflowr project. This probably isn't what you wanted."), "\n\n",
+        paste(files[non_analysis], collapse = "\n"), "\n\n",
+        wrap(
+          "For the results to be included in the website, the R Markdown files
+          need to be saved in the following directory:"),  "\n\n",
+        absolute(p$analysis)
       )
     }
 

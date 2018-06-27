@@ -59,7 +59,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_identical(getwd(), absolute(p$root))
   expect_output(print(rmd), "- New working directory")
   expect_output(print(rmd), getwd())
-  expect_silent(rmd <- wflow_open("no-need-to-change-wd.Rmd",
+  expect_silent(rmd <- wflow_open(file.path(p$analysis, "no-need-to-change-wd.Rmd"),
                                   change_wd = TRUE, open_file = FALSE,
                                   project = "."))
   expect_true(file.exists(rmd$files))
@@ -214,4 +214,29 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
                                 change_wd = FALSE, open_file = FALSE,
                                 project = NULL))
   expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
+})
+
+test_that("wflow_open sends warning if file is not in R Markdown directory", {
+  rmd1 <- absolute(file.path(p$docs, "docs.Rmd"))
+  rmd2 <- absolute(file.path(p$analysis, "index.Rmd"))
+  rmd3 <- absolute(file.path(p$root, "root.Rmd"))
+  on.exit(unlink(c(rmd1, rmd3)))
+
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
+                            change_wd = FALSE, open_file = FALSE,
+                            project = site_dir),
+                 "not within the R Markdown directory")
+  expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
+                            change_wd = FALSE, open_file = FALSE,
+                            project = site_dir),
+                 rmd1)
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
+                            change_wd = FALSE, open_file = FALSE,
+                            project = site_dir),
+                 rmd3)
+  # No warning if project=NULL
+  expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3),
+                                change_wd = FALSE, open_file = FALSE,
+                                project = NULL))
 })

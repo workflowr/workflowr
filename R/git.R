@@ -192,7 +192,7 @@ obtain_files_in_commit <- function(repo, commit) {
   if (length(parent_commit) == 0) {
     files <- obtain_files_in_commit_root(repo, commit)
   } else if (length(parent_commit) == 1) {
-    git_diff <- git2r::diff(git2r::tree(commit),
+    git_diff <- git2r_diff(git2r::tree(commit),
                             git2r::tree(parent_commit[[1]]))
     files <- sapply(git_diff@files, function(x) x@new_file)
   } else {
@@ -452,6 +452,14 @@ authenticate_git <- function(remote, remote_avail, username = NULL,
 # Utility functions for backwards compatibility with git2r
 # S4 <= 0.21.0
 # S3 >= 0.22.0
+
+git2r_diff <- function(x1, x2) {
+  if (packageVersion("git2r") <= package_version("0.21.0")) {
+    git2r::diff(x1, x2)
+  } else {
+    base::diff(x1, x2)
+  }
+}
 
 # Add back trailing slash
 git2r_workdir <- function(x) {

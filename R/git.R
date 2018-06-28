@@ -108,8 +108,8 @@ get_committed_files <- function(repo, commit = NULL) {
 
 # List all files in a given "git_tree" object.
 ls_files <- function (tree) {
-  tree_list <- methods::as(tree, "list")
-  tree_df <- methods::as(tree, "data.frame")
+  tree_list <- git2r_as.list(tree)
+  tree_df <-git2r_as.data.frame(tree)
   names(tree_list) <- tree_df$name
   files <- tree_df$name[tree_df$type == "blob"]
   dirs <- tree_df$name[tree_df$type == "tree"]
@@ -221,7 +221,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
   stopifnot(class(repo) ==  "git_repository",
             class(commit) == "git_commit",
             length(git2r::parents(commit)) == 0)
-  entries <- methods::as(git2r::tree(commit), "data.frame")
+  entries <- git2r_as.data.frame(git2r::tree(commit))
   files <- character()
   while (nrow(entries) > 0) {
     if (entries$type[1] == "blob") {
@@ -236,7 +236,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
       #  - add the subdirectory to the name so that path is correct
       #  - remove the entry from beginning and add new entries to end of
       #    data.frame
-      new_tree_df <- methods::as(git2r::lookup(repo, entries$sha[1]), "data.frame")
+      new_tree_df <- git2r_as.data.frame(git2r::lookup(repo, entries$sha[1]))
       new_tree_df$name <- file.path(entries$name[1], new_tree_df$name)
       entries <- rbind(entries[-1, ], new_tree_df)
     } else {
@@ -452,6 +452,22 @@ authenticate_git <- function(remote, remote_avail, username = NULL,
 # Utility functions for backwards compatibility with git2r
 # S4 <= 0.21.0
 # S3 >= 0.22.0
+
+git2r_as.data.frame <- function(x) {
+  if (packageVersion("git2r") <= package_version("0.21.0")) {
+    methods::as(x, "data.frame")
+  } else {
+    as.data.frame(x)
+  }
+}
+
+git2r_as.list <- function(x) {
+  if (packageVersion("git2r") <= package_version("0.21.0")) {
+    methods::as(x, "list")
+  } else {
+    as.list(x)
+  }
+}
 
 git2r_diff <- function(x1, x2) {
   if (packageVersion("git2r") <= package_version("0.21.0")) {

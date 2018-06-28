@@ -27,7 +27,7 @@ if (git2r::in_repository(tempdir())) {
     https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
     \n\nYou should consider removing the directory since it was likely created
     in error: ",
-    git2r::repository(tempdir(), discover = TRUE)@path))
+    workflowr:::git2r_slot(git2r::repository(tempdir(), discover = TRUE), "path")))
 }
 ```
 

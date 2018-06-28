@@ -273,7 +273,7 @@ wflow_start <- function(directory,
     dir_existing <- obtain_existing_path(directory)
     if (git2r::in_repository(dir_existing)) {
       r <- git2r::repository(dir_existing, discover = TRUE)
-      stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", dirname(r@path))
+      stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", git2r_workdir(r))
     }
   }
 
@@ -395,7 +395,7 @@ print.wflow_start <- function(x, ...) {
     }
     if (x$existing && git2r::in_repository(x$directory)) {
       repo <- git2r::repository(x$directory, discover = TRUE)
-      cat(sprintf("- Git repo already present at %s\n", repo@path))
+      cat(sprintf("- Git repo already present at %s\n", git2r_slot(repo, "path")))
     } else if (x$git) {
       cat(sprintf("- Git repo will be initiated at %s\n", x$directory))
     } else {
@@ -422,11 +422,11 @@ print.wflow_start <- function(x, ...) {
     if (git2r::in_repository(x$directory)) {
       repo <- git2r::repository(x$directory, discover = TRUE)
       if (x$git && !x$existing) {
-        cat(sprintf("- Git repo initiated at %s\n", repo@path))
+        cat(sprintf("- Git repo initiated at %s\n", git2r_slot(repo, "path")))
       } else if (x$git && x$existing && length(git2r::commits(repo)) == 1) {
-        cat(sprintf("- Git repo initiated at %s\n", repo@path))
+        cat(sprintf("- Git repo initiated at %s\n", git2r_slot(repo, "path")))
       } else {
-        cat(sprintf("- Git repo already present at %s\n", repo@path))
+        cat(sprintf("- Git repo already present at %s\n", git2r_slot(repo, "path")))
       }
       if (x$git) {
         if (is.null(x$commit)) {

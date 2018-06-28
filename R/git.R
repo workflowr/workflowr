@@ -485,6 +485,14 @@ git2r_head <- function(x) {
   }
 }
 
+git2r_slot <- function(x, slotname) {
+  if (isS4(x)) {
+    methods::slot(x, slotname)
+  } else {
+    x[[slotname]]
+  }
+}
+
 # Add back trailing slash
 git2r_workdir <- function(x) {
   if (packageVersion("git2r") <= package_version("0.21.0")) {

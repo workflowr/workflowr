@@ -21,7 +21,7 @@ LazyData: true
 Imports:
     callr,
     getPass,
-    git2r (<= 0.21.0),
+    git2r,
     glue,
     knitr,
     methods,

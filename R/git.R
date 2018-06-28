@@ -98,7 +98,7 @@ get_committed_files <- function(repo, commit = NULL) {
     return(NA)
   }
   if (is.null(commit)) {
-    commit <- git2r::lookup(repo, git2r::branch_target(git2r::head(repo)))
+    commit <- git2r::lookup(repo, git2r::branch_target(git2r_head(repo)))
   }
   tree <- git2r::tree(commit)
   files <- ls_files(tree)
@@ -315,7 +315,7 @@ check_remote <- function(remote, remote_avail) {
 # Returns a list of length two.
 determine_remote_and_branch <- function(repo, remote, branch) {
   stopifnot(class(repo) == "git_repository")
-  git_head <- git2r::head(repo)
+  git_head <- git2r_head(repo)
   tracking <- git2r::branch_get_upstream(git_head)
   # If both remote and branch are NULL and the current branch is tracking a
   # remote branch, use this remote and branch.
@@ -458,6 +458,14 @@ git2r_diff <- function(x1, x2) {
     git2r::diff(x1, x2)
   } else {
     base::diff(x1, x2)
+  }
+}
+
+git2r_head <- function(x) {
+  if (packageVersion("git2r") <= package_version("0.21.0")) {
+    git2r::head(x)
+  } else {
+    git2r::repository_head(x)
   }
 }
 

@@ -139,7 +139,7 @@ wflow_status <- function(files = NULL, project = ".") {
   s <- git2r::status(r, ignored = TRUE)
   # Convert from a list of lists of paths relative to the .git directory to a
   # list of character vectors of absolute paths
-  s <- lapply(s, function(x) paste0(git2r::workdir(r), as.character(x)))
+  s <- lapply(s, function(x) paste0(git2r_workdir(r), as.character(x)))
   # Convert from absolute paths to paths relative to working directory
   s <- lapply(s, relative)
   # Determine status of each analysis file in the Git repository. Each status

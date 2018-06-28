@@ -83,7 +83,7 @@ create_report <- function(input, output_dir, has_code, opts) {
 
 get_versions <- function(input, output_dir, blobs, r, github) {
 
-  blobs$fname <- file.path(git2r::workdir(r), blobs$path, blobs$name)
+  blobs$fname <- file.path(git2r_workdir(r), blobs$path, blobs$name)
   blobs$fname <- absolute(blobs$fname)
   blobs$ext <- tools::file_ext(blobs$fname)
 
@@ -105,8 +105,8 @@ get_versions <- function(input, output_dir, blobs, r, github) {
                                get_commit_title,
                                "character(1)",
                                r = r)
-  git_html <- stringr::str_replace(html, git2r::workdir(r), "")
-  git_rmd <- stringr::str_replace(input, git2r::workdir(r), "")
+  git_html <- stringr::str_replace(html, git2r_workdir(r), "")
+  git_rmd <- stringr::str_replace(input, git2r_workdir(r), "")
 
   if (is.na(github)) {
     blobs_file$Version <- shorten_sha(blobs_file$Version)
@@ -165,7 +165,7 @@ get_versions_fig <- function(fig, r, github) {
   blobs <- git2r::odb_blobs(r)
   blobs$fname <- ifelse(blobs$path == "", blobs$name,
                         file.path(blobs$path, blobs$name))
-  blobs$fname_abs <- paste0(git2r::workdir(r), blobs$fname)
+  blobs$fname_abs <- paste0(git2r_workdir(r), blobs$fname)
   blobs_file <- blobs[blobs$fname_abs == fig, ]
   # Ignore blobs that don't map to commits (caused by `git commit --amend`)
   git_log <- git2r::commits(r)
@@ -481,7 +481,7 @@ build the HTML.
 
 add_git_path <- function(x, r) {
   if (!is.null(x)) {
-    paste0(git2r::workdir(r), x)
+    paste0(git2r_workdir(r), x)
   } else {
    NA_character_
   }

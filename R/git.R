@@ -197,7 +197,7 @@ obtain_files_in_commit <- function(repo, commit) {
     files <- sapply(git_diff@files, function(x) x@new_file)
   } else {
     stop(sprintf("Cannot perform diff on commit %s because it has %d parents",
-                 commit@sha, length(parent_commit)))
+                 git2r_slot(commit, "sha"), length(parent_commit)))
   }
 
   files <- absolute(paste0(git2r::workdir(repo), files))

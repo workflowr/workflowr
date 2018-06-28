@@ -209,17 +209,18 @@ print.wflow_git_pull <- function(x, ...) {
         "No changes were made because your local and remote repositories are
         in sync."
         ), "\n", sep = "")
-    } else if (x$merge_result@fast_forward && length(x$merge_result@sha) == 0) {
+    } else if (git2r_slot(x$merge_result, "fast_forward") &&
+               length(git2r_slot(x$merge_result, "sha")) == 0) {
       cat("\n", wrap(
         "The latest changes in the remote repository were successfully pulled
         into your local repository."
       ), "\n", sep = "")
-    } else if (x$merge_result@fast_forward) {
+    } else if (git2r_slot(x$merge_result, "fast_forward")) {
       cat("\n", wrap(sprintf(
         "The latest changes in the remote repository were successfully pulled
         into your local repository. To combine the changes that differed
         between the two repositories, the merge commit %s was created.",
-      x$merge_result@sha)), "\n", sep = "")
+      git2r_slot(x$merge_result, "sha"))), "\n", sep = "")
     } else if (x$merge_result@conflicts) {
       cat("\n", wrap(
         "There were conflicts that Git could not resolve automatically when

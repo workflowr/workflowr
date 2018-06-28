@@ -433,7 +433,7 @@ print.wflow_start <- function(x, ...) {
           cat("- Files were not committed\n")
         } else {
           cat(sprintf("- Files were committed in version %s\n",
-                      shorten_sha(x$commit@sha)))
+                      shorten_sha(git2r_slot(x$commit, "sha"))))
         }
       }
     } else {

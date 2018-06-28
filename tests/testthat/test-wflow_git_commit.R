@@ -23,7 +23,7 @@ test_that("wflow_git_commit can commit one new file", {
   expect_silent(actual <- wflow_git_commit(f1, project = site_dir))
   expect_true(f1 %in% actual$commit_files)
   recent <- commits(r, n = 1)[[1]]
-  expect_identical(actual$commit@sha, recent@sha)
+  expect_identical(git2r_slot(actual$commit, "sha"), git2r_slot(recent, "sha"))
   actual_print <- paste(utils::capture.output(actual), collapse = "\n")
   expect_true(grepl(sprintf("\\$ git add %s", f1), actual_print))
 })
@@ -35,7 +35,7 @@ test_that("wflow_git_commit can commit multiple new files", {
   expect_silent(actual <- wflow_git_commit(c(f2, f3), project = site_dir))
   expect_identical(actual$commit_files, c(f2, f3))
   recent <- commits(r, n = 1)[[1]]
-  expect_identical(actual$commit@sha, recent@sha)
+  expect_identical(git2r_slot(actual$commit, "sha"), git2r_slot(recent, "sha"))
   actual_print <- paste(utils::capture.output(actual), collapse = "\n")
   expect_true(grepl(sprintf("\\$ git add %s %s", f2, f3), actual_print))
 })
@@ -74,7 +74,7 @@ test_that("wflow_git_commit can commit all tracked files", {
   expect_silent(actual <- wflow_git_commit(all = TRUE, project = site_dir))
   expect_identical(actual$commit_files, tracked)
   recent <- commits(r, n = 1)[[1]]
-  expect_identical(actual$commit@sha, recent@sha)
+  expect_identical(git2r_slot(actual$commit, "sha"), git2r_slot(recent, "sha"))
 })
 
 test_that("wflow_git_commit does not affect Git repo if `dry_run = TRUE`", {

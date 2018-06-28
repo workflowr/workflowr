@@ -27,7 +27,7 @@
 #' @param change_wd logical (default: TRUE). Change the working directory to the
 #'   knit directory. If \code{project = NULL}, change working directory to
 #'   destination of first file in \code{files}.
-#' @param open_file logical (default: TRUE). Open the file in the RStudio
+#' @param edit_in_rstudio logical (default: TRUE). Open the file in the RStudio
 #'   editor.
 #' @param project character (or NULL). By default the function assumes the
 #'   current working directory is within the project. If this is not true,
@@ -51,7 +51,7 @@
 #' @export
 wflow_open <- function(files,
                        change_wd = TRUE,
-                       open_file = TRUE,
+                       edit_in_rstudio = TRUE,
                        project = ".") {
 
   # Check input arguments ------------------------------------------------------
@@ -60,8 +60,8 @@ wflow_open <- function(files,
     stop("files must be a character vector")
   if (!(is.logical(change_wd) && length(change_wd) == 1))
     stop("change_wd must be a one element logical vector")
-  if (!(is.logical(open_file) && length(open_file) == 1))
-    stop("open_file must be a one element logical vector")
+  if (!(is.logical(edit_in_rstudio) && length(edit_in_rstudio) == 1))
+    stop("edit_in_rstudio must be a one element logical vector")
   if (!(is.null(project) || (is.character(project) && length(project) == 1)))
     stop("project must be NULL or a one element character vector")
 
@@ -191,7 +191,7 @@ wflow_open <- function(files,
 
   # Open files -----------------------------------------------------------------
 
-  if (rstudioapi::isAvailable() && open_file) {
+  if (rstudioapi::isAvailable() && edit_in_rstudio) {
     for (rmd in files) {
       rstudioapi::navigateToFile(rmd)
     }
@@ -201,7 +201,7 @@ wflow_open <- function(files,
 
   o <- list(files = files,
             change_wd = change_wd,
-            open_file = open_file,
+            edit_in_rstudio = edit_in_rstudio,
             knit_root_dir = knit_directory,
             previous_wd  = current_wd,
             new_wd = new_wd,

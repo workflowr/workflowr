@@ -15,14 +15,14 @@ p <- workflowr:::wflow_paths(project = site_dir)
 test_that("wflow_open creates a new file, but does not overwrite", {
 
   rmd <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
-                    open_file = FALSE, project = site_dir)
+                    edit_in_rstudio = FALSE, project = site_dir)
   expect_true(file.exists(rmd$files))
   expect_output(print(rmd), "- New file\\(s\\):")
   expect_output(print(rmd), rmd$files)
   modification_time_pre <- file.mtime(rmd$files)
   Sys.sleep(2)
   rmd2 <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
-                     open_file = FALSE, project = site_dir)
+                     edit_in_rstudio = FALSE, project = site_dir)
   expect_identical(rmd2$files, rmd$files)
   expect_output(print(rmd2), "- Existing file\\(s\\):")
   expect_output(print(rmd2), rmd2$files)
@@ -43,7 +43,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   wd_pre <- getwd()
   expect_silent(rmd <- wflow_open(file.path(p$analysis, "do-not-change-wd.Rmd"),
                                   change_wd = FALSE,
-                                  open_file = FALSE, project = site_dir))
+                                  edit_in_rstudio = FALSE, project = site_dir))
   expect_true(file.exists(rmd$files))
   wd_same <- getwd()
   expect_identical(wd_pre, wd_same)
@@ -53,14 +53,14 @@ test_that("wflow_open changes the working directory to the knit directory", {
   # knit directory == root (default)
   rmd <- wflow_open(file.path(p$analysis, "do-change-wd.Rmd"),
                     change_wd = TRUE,
-                    open_file = FALSE, project = site_dir)
+                    edit_in_rstudio = FALSE, project = site_dir)
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$root))
   expect_output(print(rmd), "- New working directory")
   expect_output(print(rmd), getwd())
   expect_silent(rmd <- wflow_open(file.path(p$analysis, "no-need-to-change-wd.Rmd"),
-                                  change_wd = TRUE, open_file = FALSE,
+                                  change_wd = TRUE, edit_in_rstudio = FALSE,
                                   project = "."))
   expect_true(file.exists(rmd$files))
   expect_identical(getwd(), absolute(p$root))
@@ -73,7 +73,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   yaml::write_yaml(yml, file = wflow_yml)
   rmd <- wflow_open(file.path(p$analysis, "change-to-analysis.Rmd"),
                     change_wd = TRUE,
-                    open_file = FALSE, project = ".")
+                    edit_in_rstudio = FALSE, project = ".")
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
@@ -86,7 +86,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   yaml::write_yaml(yml, file = wflow_yml)
   rmd <- wflow_open(file.path(p$analysis, "change-to-docs.Rmd"),
                     change_wd = TRUE,
-                    open_file = FALSE, project = ".")
+                    edit_in_rstudio = FALSE, project = ".")
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$docs))
@@ -99,7 +99,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   yaml::write_yaml(yml, file = wflow_yml)
   rmd <- wflow_open(file.path(p$analysis, "unset.Rmd"),
                     change_wd = TRUE,
-                    open_file = FALSE, project = ".")
+                    edit_in_rstudio = FALSE, project = ".")
   expect_true(file.exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
@@ -111,12 +111,12 @@ test_that("wflow_open changes the working directory to the knit directory", {
 test_that("wflow_open can accept multiple files", {
 
   rmd_multi <- file.path(p$analysis, paste0(1:3, ".Rmd"))
-  rmd <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
+  rmd <- wflow_open(rmd_multi, change_wd = FALSE, edit_in_rstudio = FALSE,
                     project = site_dir)
   expect_true(all(file.exists(rmd$files)))
   modification_time_pre <- file.mtime(rmd$files)
   Sys.sleep(2)
-  rmd2 <- wflow_open(rmd_multi, change_wd = FALSE, open_file = FALSE,
+  rmd2 <- wflow_open(rmd_multi, change_wd = FALSE, edit_in_rstudio = FALSE,
                      project = site_dir)
   expect_identical(rmd2$files, rmd$files)
   modification_time_post <- file.mtime(rmd$files)
@@ -128,12 +128,12 @@ test_that("wflow_open can accept multiple files", {
 #   rmd_paths <- c("basename.Rmd",
 #                  file.path(site_dir, "analysis", "full.Rmd"),
 #                  file.path(site_dir, "code", "wrong.Rmd"))
-#   rmd <- wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
+#   rmd <- wflow_open(rmd_paths, change_wd = FALSE, edit_in_rstudio = FALSE,
 #                     project = site_dir)
 #   expect_true(all(file.exists(rmd)))
 #   modification_time_pre <- file.mtime(rmd)
 #   Sys.sleep(2)
-#   rmd2 <- wflow_open(rmd_paths, change_wd = FALSE, open_file = FALSE,
+#   rmd2 <- wflow_open(rmd_paths, change_wd = FALSE, edit_in_rstudio = FALSE,
 #                      project = site_dir)
 #   expect_identical(rmd2, rmd)
 #   modification_time_post <- file.mtime(rmd)
@@ -156,7 +156,7 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   testfile2 <- file.path(location_nonexist, "nonexist.Rmd")
 
   o <- wflow_open(c(testfile1, testfile2), change_wd = TRUE,
-                  open_file = FALSE, project = NULL)
+                  edit_in_rstudio = FALSE, project = NULL)
 
   expect_true(all(file.exists(o$files)))
   # Fix the symlink now that the file has been created
@@ -168,15 +168,15 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
 
 test_that("wflow_open rejects filenames without Rmd or rmd extension", {
 
-  expect_error(wflow_open(file.path(p$analysis, "invalid-ext.md"), change_wd = FALSE, open_file = FALSE,
+  expect_error(wflow_open(file.path(p$analysis, "invalid-ext.md"), change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
                "R Markdown files must have the extension Rmd or rmd.")
-  expect_error(wflow_open("no-ext", change_wd = FALSE, open_file = FALSE,
+  expect_error(wflow_open("no-ext", change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
                "R Markdown files must have the extension Rmd or rmd.")
-  expect_silent(wflow_open(file.path(p$analysis, "valid-ext.Rmd"), change_wd = FALSE, open_file = FALSE,
+  expect_silent(wflow_open(file.path(p$analysis, "valid-ext.Rmd"), change_wd = FALSE, edit_in_rstudio = FALSE,
                            project = site_dir))
-  expect_silent(wflow_open(file.path(p$analysis, "valid-ext.rmd"), change_wd = FALSE, open_file = FALSE,
+  expect_silent(wflow_open(file.path(p$analysis, "valid-ext.rmd"), change_wd = FALSE, edit_in_rstudio = FALSE,
                            project = site_dir))
 })
 
@@ -185,9 +185,9 @@ test_that("wflow_open throws error if not in workflowr project and project!=NULL
   dir.create(x)
   on.exit(unlink(x, recursive = TRUE))
   rmd <- file.path(x, "test.Rmd")
-  expect_error(wflow_open(rmd, change_wd = FALSE, open_file = FALSE),
+  expect_error(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE),
                "This isn't a workflowr project")
-  expect_silent(wflow_open(rmd, change_wd = FALSE, open_file = FALSE,
+  expect_silent(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE,
                            project = NULL))
   expect_true(file.exists(rmd))
 })
@@ -199,19 +199,19 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
   on.exit(unlink(c(rmd1, rmd3)))
 
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
-                          change_wd = FALSE, open_file = FALSE,
+                          change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
                "The following file\\(s\\) are not within the workflowr project")
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
-                          change_wd = FALSE, open_file = FALSE,
+                          change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
                rmd1)
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
-                          change_wd = FALSE, open_file = FALSE,
+                          change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
                rmd3)
   expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3),
-                                change_wd = FALSE, open_file = FALSE,
+                                change_wd = FALSE, edit_in_rstudio = FALSE,
                                 project = NULL))
   expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
 })
@@ -223,20 +223,20 @@ test_that("wflow_open sends warning if file is not in R Markdown directory", {
   on.exit(unlink(c(rmd1, rmd3)))
 
   expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
-                            change_wd = FALSE, open_file = FALSE,
+                            change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  "not within the R Markdown directory")
   expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
   expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
-                            change_wd = FALSE, open_file = FALSE,
+                            change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd1)
   expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
-                            change_wd = FALSE, open_file = FALSE,
+                            change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd3)
   # No warning if project=NULL
   expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3),
-                                change_wd = FALSE, open_file = FALSE,
+                                change_wd = FALSE, edit_in_rstudio = FALSE,
                                 project = NULL))
 })

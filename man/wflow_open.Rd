@@ -4,7 +4,7 @@
 \alias{wflow_open}
 \title{Open R Markdown analysis file(s)}
 \usage{
-wflow_open(files, change_wd = TRUE, open_file = TRUE, project = ".")
+wflow_open(files, change_wd = TRUE, edit_in_rstudio = TRUE, project = ".")
 }
 \arguments{
 \item{files}{character. R Markdown file(s) to open. Files must have the
@@ -17,7 +17,7 @@ workflowr project.}
 knit directory. If \code{project = NULL}, change working directory to
 destination of first file in \code{files}.}
 
-\item{open_file}{logical (default: TRUE). Open the file in the RStudio
+\item{edit_in_rstudio}{logical (default: TRUE). Open the file in the RStudio
 editor.}
 
 \item{project}{character (or NULL). By default the function assumes the

@@ -98,12 +98,9 @@ wflow_open <- function(files,
 
   # Determine knit directory ---------------------------------------------------
 
-  # If project is NULL, create upstream directories. Set `knit_directory` to
-  # the directory of the first file for `change_wd`.
+  # If project is NULL, set `knit_directory` to the directory of the first file
+  # for `change_wd`.
   if (is.null(project)) {
-    for (rmd_dir in dirname(files)) {
-      dir.create(rmd_dir, showWarnings = FALSE, recursive = TRUE)
-    }
     knit_directory <- dirname(files)[1]
   } else {
     # If project is set, find the knit directory
@@ -157,8 +154,7 @@ wflow_open <- function(files,
     }
 
     # Send warning if Rmd files not saved in R Markdown directory
-    regex_analysis <- paste0("^", absolute(p$analysis))
-    non_analysis <- !stringr::str_detect(files, regex_analysis)
+    non_analysis <- !dirname(files) == absolute(p$analysis)
     if (any(non_analysis)) {
       warning(call. = FALSE, wrap(
         "The following file(s) are not within the R Markdown directory of your
@@ -212,6 +208,7 @@ wflow_open <- function(files,
                      "",
                      "```",
                      "")
+    dir.create(dirname(files_new[i]), showWarnings = FALSE, recursive = TRUE)
     writeLines(c(header, boilerplate), files_new[i])
   }
 

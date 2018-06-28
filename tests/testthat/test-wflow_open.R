@@ -162,6 +162,8 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   # Fix the symlink now that the file has been created
   testfile2 <- workflowr:::absolute(testfile2)
   expect_identical(o$files, c(testfile1, testfile2))
+  # Confirm the working directory was changed to the location of the first file
+  expect_identical(getwd(), location_exist)
 })
 
 # Errors -----------------------------------------------------------------------
@@ -220,23 +222,31 @@ test_that("wflow_open sends warning if file is not in R Markdown directory", {
   rmd1 <- absolute(file.path(p$docs, "docs.Rmd"))
   rmd2 <- absolute(file.path(p$analysis, "index.Rmd"))
   rmd3 <- absolute(file.path(p$root, "root.Rmd"))
-  on.exit(unlink(c(rmd1, rmd3)))
+  dir_mistake <- absolute(file.path(p$analysis, "analysis"))
+  rmd4 <- absolute(file.path(dir_mistake, "root.Rmd"))
+  on.exit(unlink(c(rmd1, rmd3, dir_mistake), recursive = TRUE))
 
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  "not within the R Markdown directory")
-  expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
+  expect_true(all(file.exists(c(rmd1, rmd2, rmd3, rmd4))))
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd1)
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3),
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd3)
+  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
+                            change_wd = FALSE, edit_in_rstudio = FALSE,
+                            project = site_dir),
+                 rmd4)
   # No warning if project=NULL
-  expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3),
+  unlink(c(rmd1, rmd3, dir_mistake), recursive = TRUE)
+  expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                                 change_wd = FALSE, edit_in_rstudio = FALSE,
                                 project = NULL))
+  expect_true(all(file.exists(c(rmd1, rmd2, rmd3, rmd4))))
 })

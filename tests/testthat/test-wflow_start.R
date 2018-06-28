@@ -446,7 +446,7 @@ test_that("print.wflow_start works with change_wd = FALSE", {
                    paste("- Git repo initiated at", git2r_slot(r, "path")))
   expect_identical(p_actual_run[6],
                    paste("- Files were committed in version",
-                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+                         workflowr:::shorten_sha(git2r::branch_target(git2r_head(r)))))
 })
 
 test_that("print.wflow_start works with change_wd = FALSE and git = FALSE", {
@@ -520,7 +520,7 @@ test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", 
                    paste("- Git repo initiated at", git2r_slot(r, "path")))
   expect_identical(p_actual_run[6],
                    paste("- Files were committed in version",
-                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+                         workflowr:::shorten_sha(git2r::branch_target(git2r_head(r)))))
 })
 
 test_that("print.wflow_start works with existing Git repo", {
@@ -566,7 +566,7 @@ test_that("print.wflow_start works with existing Git repo", {
                    paste("- Git repo already present at", git2r_slot(r, "path")))
   expect_identical(p_actual_run[6],
                    paste("- Files were committed in version",
-                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+                         workflowr:::shorten_sha(git2r::branch_target(git2r_head(r)))))
 })
 
 test_that("print.wflow_start works with change_wd = TRUE", {
@@ -608,5 +608,5 @@ test_that("print.wflow_start works with change_wd = TRUE", {
                    paste("- Git repo initiated at", git2r_slot(r, "path")))
   expect_identical(p_actual_run[6],
                    paste("- Files were committed in version",
-                         workflowr:::shorten_sha(git2r::branch_target(git2r::head(r)))))
+                         workflowr:::shorten_sha(git2r::branch_target(git2r_head(r)))))
 })

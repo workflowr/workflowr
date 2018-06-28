@@ -102,7 +102,7 @@ get_committed_files <- function(repo, commit = NULL) {
   }
   tree <- git2r::tree(commit)
   files <- ls_files(tree)
-  files <- absolute(paste0(git2r::workdir(repo), files))
+  files <- absolute(paste0(git2r_workdir(repo), files))
   return(files)
 }
 
@@ -138,7 +138,7 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
   # Corresponding HTML files
   html <- to_html(files, outdir = outdir)
   # Remove preceding path if necessary. Has to be relative to .git directory.
-  path_to_git <- git2r::workdir(repo)
+  path_to_git <- git2r_workdir(repo)
   files <- stringr::str_replace(files, path_to_git, "")
   html <- stringr::str_replace(html, path_to_git, "")
   # For each source file, determine if it has been committed more recently than
@@ -201,7 +201,7 @@ obtain_files_in_commit <- function(repo, commit) {
                  git2r_slot(commit, "sha"), length(parent_commit)))
   }
 
-  files <- absolute(paste0(git2r::workdir(repo), files))
+  files <- absolute(paste0(git2r_workdir(repo), files))
   return(files)
 }
 
@@ -500,6 +500,6 @@ git2r_workdir <- function(x) {
   if (packageVersion("git2r") <= package_version("0.21.0")) {
     git2r::workdir(x)
   } else {
-    paste0(git2r::workdir(x))
+    paste0(git2r::workdir(x), "/")
   }
 }

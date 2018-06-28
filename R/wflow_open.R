@@ -165,7 +165,14 @@ wflow_open <- function(files,
                            date: \"{yaml_date}\"
                            output: workflowr::wflow_html
                            ---")
-    writeLines(header, files_new[i])
+    boilerplate <- c("",
+                     "## Introduction",
+                     "",
+                     "```{r}",
+                     "",
+                     "```",
+                     "")
+    writeLines(c(header, boilerplate), files_new[i])
   }
 
   # Now that files all exist, ensure that symlinks are expanded

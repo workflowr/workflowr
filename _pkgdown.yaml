@@ -49,6 +49,7 @@ reference:
   - title: "Other functions"
     contents:
       - wflow_html
+      - wflow_open
       - wflow_remove
       - wflow_site
       - wflow_update

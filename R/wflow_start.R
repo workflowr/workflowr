@@ -185,7 +185,7 @@
 #'
 #'    \item{name}{The input argument \code{name}.}
 #'
-#'    \item{fit}{The input argument \code{git}.}
+#'    \item{git}{The input argument \code{git}.}
 #'
 #'    \item{existing}{The input argument \code{existing}.}
 #'

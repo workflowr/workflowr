@@ -94,6 +94,8 @@ wflow_open <- function(files,
   if (any(non_standard))
     stop("R Markdown files must have the extension Rmd or rmd.")
 
+  files_new <- files[!file.exists(files)]
+
   # Determine knit directory ---------------------------------------------------
 
   # If project is NULL, create upstream directories. Set `knit_directory` to
@@ -122,9 +124,11 @@ wflow_open <- function(files,
              }
     )
 
-    # Send a warning if user has a beta workflowr project
+    # Send a warning if user has a beta workflowr project and tries to create a
+    # new file
     yml <- yaml::read_yaml(file.path(p$analysis, "_site.yml"))
-    if (names(yml$output) != "workflowr::wflow_html") {
+    if (names(yml$output) != "workflowr::wflow_html" &&
+        length(files_new) > 0) {
       warning(call. = FALSE, wrap(
         "It appears that your site was created using a beta release of
         workflowr, thus you likely don't want to use the R Markdown file
@@ -133,7 +137,7 @@ wflow_open <- function(files,
       ), "\n\n",
       "To continue using your site as is, you can:\n\n",
       "1. Create a new R Markdown file by copying an existing one\n\n",
-      "2. Install the beta release of workflowr:\n\n",
+      "2. Install the beta release of workflowr and use its wflow_open:\n\n",
       "devtools::install_github(\"jdblischak/workflowrBeta\")\n\n",
       "To update to a workflowr 1.0+ site, you can:\n\n",
       "1. Run wflow_update() to preview the files that would be affected\n\n",
@@ -194,7 +198,6 @@ wflow_open <- function(files,
 
   # Create files ---------------------------------------------------------------
 
-  files_new <- files[!file.exists(files)]
   for (i in seq_along(files_new)) {
     header <- glue::glue("---
                            title: \"{yaml_title[i]}\"

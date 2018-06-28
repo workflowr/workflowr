@@ -120,7 +120,8 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   branch <- remote_and_branch$branch
 
   # Send warning if the remote branch is not the same one as local branch (HEAD)
-  warn_branch_mismatch(remote_branch = branch, local_branch = git_head@name)
+  warn_branch_mismatch(remote_branch = branch,
+                       local_branch = git2r_slot(git_head, "name"))
 
   # Obtain authentication ------------------------------------------------------
 
@@ -204,7 +205,7 @@ print.wflow_git_pull <- function(x, ...) {
   cat("\n")
 
   if (!is.null(x$merge_result)) {
-    if (x$merge_result@up_to_date) {
+    if (git2r_slot(x$merge_result, "up_to_date")) {
       cat("\n", wrap(
         "No changes were made because your local and remote repositories are
         in sync."
@@ -221,7 +222,7 @@ print.wflow_git_pull <- function(x, ...) {
         into your local repository. To combine the changes that differed
         between the two repositories, the merge commit %s was created.",
       git2r_slot(x$merge_result, "sha"))), "\n", sep = "")
-    } else if (x$merge_result@conflicts) {
+    } else if (git2r_slot(x$merge_result, "conflicts")) {
       cat("\n", wrap(
         "There were conflicts that Git could not resolve automatically when
         trying to pull changes from the remote repository. You will need to

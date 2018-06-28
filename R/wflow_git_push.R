@@ -125,7 +125,8 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   branch <- remote_and_branch$branch
 
   # Send warning if the remote branch is not the same one as local branch (HEAD)
-  warn_branch_mismatch(remote_branch = branch, local_branch = git_head@name)
+  warn_branch_mismatch(remote_branch = branch,
+                       local_branch = git2r_slot(git_head, "name"))
 
   # Obtain authentication ------------------------------------------------------
 

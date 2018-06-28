@@ -225,7 +225,7 @@ get_versions_fig <- function(fig, r, github) {
 
 
 get_commit_title <- function(x, r) {
-  full <- git2r::lookup(r, x)@message
+  full <- git2r_slot(git2r::lookup(r, x), "message")
   title <- stringr::str_split(full, "\n")[[1]][1]
   return(title)
 }

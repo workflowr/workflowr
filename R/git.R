@@ -194,7 +194,8 @@ obtain_files_in_commit <- function(repo, commit) {
   } else if (length(parent_commit) == 1) {
     git_diff <- git2r_diff(git2r::tree(commit),
                             git2r::tree(parent_commit[[1]]))
-    files <- sapply(git_diff@files, function(x) x@new_file)
+    files <- sapply(git2r_slot(git_diff, "files"),
+                    function(x) git2r_slot(x, "new_file"))
   } else {
     stop(sprintf("Cannot perform diff on commit %s because it has %d parents",
                  git2r_slot(commit, "sha"), length(parent_commit)))
@@ -321,7 +322,8 @@ determine_remote_and_branch <- function(repo, remote, branch) {
   # remote branch, use this remote and branch.
   if (is.null(remote) && is.null(branch) && !is.null(tracking)) {
     remote <- git2r::branch_remote_name(tracking)
-    branch <- stringr::str_split_fixed(tracking@name, "/", n = 2)[, 2]
+    branch <- stringr::str_split_fixed(git2r_slot(tracking, "name"),
+                                       "/", n = 2)[, 2]
   }
   # If remote is NULL, take an educated guess at what the user would want.
   if (is.null(remote)) {
@@ -329,7 +331,7 @@ determine_remote_and_branch <- function(repo, remote, branch) {
   }
   # If branch is NULL, use the same name as the current branch.
   if (is.null(branch)) {
-    branch <- git_head@name
+    branch <- git2r_slot(git_head, "name")
   }
 
   return(list(remote = remote, branch = branch))

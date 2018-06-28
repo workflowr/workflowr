@@ -53,8 +53,9 @@
 #'
 #' \item \bold{username}: GitHub username.
 #'
-#' \item \bold{merge_result}: The \code{\link[git2r]{git_merge_result-class}}
-#' object returned by \link{git2r} (only included if \code{dry_run == FALSE}).
+#' \item \bold{merge_result}: The object returned by
+#' \link{git2r}::\code{\link[git2r]{merge.git_repository}} (only included if
+#' \code{dry_run == FALSE}).
 #'
 #' \item \bold{dry_run}: The input argument \code{dry_run}.
 #'

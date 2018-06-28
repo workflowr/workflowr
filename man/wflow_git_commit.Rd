@@ -43,8 +43,9 @@ An object of class \code{wflow_git_commit}, which is a list with the
 
 \item \bold{dry_run}: The input argument \code{dry_run}.
 
-\item \bold{commit}: The \code{\link[git2r]{git_commit-class}} object
-returned by \link{git2r} (only included if \code{dry_run == FALSE}).
+\item \bold{commit}: The object returned by
+\link{git2r}::\code{\link[git2r]{commit}} (only included if \code{dry_run ==
+FALSE}).
 
 \item \bold{commit_files}: The relative path(s) to the file(s) included in
 the commit (only included if \code{dry_run == FALSE}).

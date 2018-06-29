@@ -7,6 +7,7 @@ x <- tempfile()
 on.exit(unlink(x, recursive = TRUE, force = TRUE))
 dir.create(x)
 r <- init(x)
+config(r, user.name = "Test Name", user.email = "test@email")
 
 f1 <- file.path(x, "f1.txt")
 file.create(f1)

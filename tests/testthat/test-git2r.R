@@ -7,18 +7,39 @@ x <- tempfile()
 on.exit(unlink(x, recursive = TRUE, force = TRUE))
 dir.create(x)
 r <- init(x)
+
 f1 <- file.path(x, "f1.txt")
 file.create(f1)
 add(r, f1)
 c1 <- commit(r, "commit 1")
 t1 <- tree(c1)
-b1 <- branch_create(c1, name = "b1")
-checkout(b1)
+b1 <- git2r_head(r)
+
+b2 <- branch_create(c1, name = "b2")
+checkout(b2)
 f2 <- file.path(x, "f2.txt")
-file.create(f2)
+writeLines("original\n", con = f2)
 add(r, f2)
 c2 <- commit(r, "commit 2")
 t2 <- tree(c2)
+
+b3 <- branch_create(c1, name = "b3")
+checkout(b3)
+f3 <- file.path(x, "f3.txt")
+file.create(f3)
+add(r, f3)
+c3 <- commit(r, "commit 3")
+t3 <- tree(c3)
+
+# Conflict branch
+b4 <- branch_create(c1, name = "b4")
+checkout(b4)
+writeLines("replacement\n", con = f2)
+add(r, f2)
+c4 <- commit(r, "commit 4")
+t4 <- tree(c4)
+
+checkout(r, "master")
 
 # Test git2r -------------------------------------------------------------------
 
@@ -62,10 +83,39 @@ test_that("diff returns a diff", {
 test_that("slot returns slot values", {
   expect_identical(git2r_slot(c1, "message"), "commit 1")
   expect_identical(class(git2r_slot(c1, "sha")), "character")
-  expect_identical(git2r_slot(b1, "name"), "b1")
+  expect_identical(git2r_slot(b2, "name"), "b2")
 })
 
 test_that("merge returns git_merge_result", {
-  m <- git2r_merge(r, "b1")
-  expect_equivalent(class(m), "git_merge_result")
+  m1 <- git2r_merge(r, "b2")
+  expect_equivalent(class(m1), "git_merge_result")
+  expect_identical(git2r_slot(m1, "up_to_date"), FALSE)
+  expect_identical(git2r_slot(m1, "fast_forward"), TRUE)
+  expect_identical(git2r_slot(m1, "conflicts"), FALSE)
+  expect_identical(git2r_slot(m1, "sha"), NA_character_)
+
+  # Merge a second time, which has no effect
+  m2 <- git2r_merge(r, "b2")
+  expect_equivalent(class(m2), "git_merge_result")
+  expect_identical(git2r_slot(m2, "up_to_date"), TRUE)
+  expect_identical(git2r_slot(m2, "fast_forward"), FALSE)
+  expect_identical(git2r_slot(m2, "conflicts"), FALSE)
+  expect_identical(git2r_slot(m2, "sha"), NA_character_)
+
+  # Merge parallel branch, which should create a merge commit
+  m3 <- git2r_merge(r, "b3")
+  expect_equivalent(class(m3), "git_merge_result")
+  expect_identical(git2r_slot(m3, "up_to_date"), FALSE)
+  expect_identical(git2r_slot(m3, "fast_forward"), FALSE)
+  expect_identical(git2r_slot(m3, "conflicts"), FALSE)
+  expect_identical(git2r_slot(m3, "sha"),
+                   git2r_slot(commits(r)[[1]], "sha"))
+
+  # Merge conflicting branch, which should create a merge conflict
+  m4 <- git2r_merge(r, "b4")
+  expect_equivalent(class(m4), "git_merge_result")
+  expect_identical(git2r_slot(m4, "up_to_date"), FALSE)
+  expect_identical(git2r_slot(m4, "fast_forward"), FALSE)
+  expect_identical(git2r_slot(m4, "conflicts"), TRUE)
+  expect_identical(git2r_slot(m4, "sha"), NA_character_)
 })

@@ -36,7 +36,11 @@ git2r_head <- function(x) {
 
 git2r_merge <- function(x, b) {
   if (isS4(x)) {
-    git2r::merge(x, b)
+    m <- git2r::merge(x, b)
+    if (length(m@fast_forward) == 0) m@fast_forward <- FALSE
+    if (length(m@conflicts) == 0) m@conflicts <- FALSE
+    if (length(m@sha) == 0) m@sha <- NA_character_
+    return(m)
   } else {
     base::merge(x, b)
   }

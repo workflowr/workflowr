@@ -3,6 +3,8 @@ set -eu
 
 # Convenience script for running `R CMD check`. Must be run from the root of the
 # project directory.
+#
+# Optional arguments are passed directly to `R CMD check`.
 
 if [ ! -f DESCRIPTION ]
 then
@@ -30,4 +32,5 @@ echo "Buiding..."
 R CMD build .
 
 echo "Checking..."
-R CMD check --as-cran "$source"
+echo "$*"
+R CMD check --as-cran $* "$source"

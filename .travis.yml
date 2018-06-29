@@ -21,6 +21,9 @@ matrix:
       r_github_packages: jimhester/covr
       env: R_CODECOV=cover-this-build-only
     - os: linux
+      r: release
+      r_github_packages: ropensci/git2r@v0.22.0-RC2
+    - os: linux
       r: devel
       warnings_are_errors: false
     - os: osx

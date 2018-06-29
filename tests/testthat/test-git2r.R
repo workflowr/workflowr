@@ -64,3 +64,8 @@ test_that("slot returns slot values", {
   expect_identical(class(git2r_slot(c1, "sha")), "character")
   expect_identical(git2r_slot(b1, "name"), "b1")
 })
+
+test_that("merge returns git_merge_result", {
+  m <- git2r_merge(r, "b1")
+  expect_equivalent(class(m), "git_merge_result")
+})

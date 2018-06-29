@@ -172,7 +172,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
                stop(wrap(reason), call. = FALSE)
              }
     )
-    merge_result <- git2r::merge(r, paste(remote, branch, sep = "/"))
+    merge_result <- git2r_merge(r, paste(remote, branch, sep = "/"))
   } else {
     merge_result <- NULL
   }

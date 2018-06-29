@@ -34,6 +34,14 @@ git2r_head <- function(x) {
   }
 }
 
+git2r_merge <- function(x, b) {
+  if (isS4(x)) {
+    git2r::merge(x, b)
+  } else {
+    base::merge(x, b)
+  }
+}
+
 git2r_slot <- function(x, slotname) {
   if (isS4(x)) {
     methods::slot(x, slotname)

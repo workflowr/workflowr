@@ -45,7 +45,7 @@ git2r_slot <- function(x, slotname) {
 git2r_workdir <- function(x) {
   if (isS4(x)) {
     # Remove trailing slash
-    stringr::str_sub(git2r::workdir(x), "/$", "")
+    stringr::str_replace(git2r::workdir(x), "/$", "")
   } else {
     git2r::workdir(x)
   }

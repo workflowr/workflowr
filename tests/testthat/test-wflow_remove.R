@@ -110,8 +110,8 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
 test_that("wflow_remove can remove files with no Git repo present", {
   # Temporarily move .git directory
   tgit <- tempfile("git-")
-  on.exit(file.rename(from = tgit, to = p$git), add = TRUE)
-  file.rename(from = p$git, to = tgit)
+  on.exit(file.rename(from = tgit, to = file.path(p$git, ".git")), add = TRUE)
+  file.rename(from = file.path(p$git, ".git"), to = tgit)
   tgit <- workflowr:::absolute(tgit)
   # The test will remove README, so restore it afterwards
   f <- "README.md"

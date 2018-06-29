@@ -75,7 +75,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
       o$git <- NA_character_
     }
   } else {
-    o$git <- absolute(git2r_slot(r, "path"))
+    o$git <- absolute(git2r_workdir(r))
   }
 
   # Make paths relative to working directory

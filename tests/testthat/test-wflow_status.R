@@ -36,7 +36,7 @@ test_that("wflow_status identifies docs directory.", {
 })
 
 test_that("wflow_status identifies Git directory.", {
-  expected <- file.path(site_dir, ".git")
+  expected <- site_dir
   actual <- s$git
   expect_identical(actual, expected)
   expect_true(dir.exists(expected))

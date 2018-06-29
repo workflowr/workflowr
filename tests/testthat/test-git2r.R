@@ -33,9 +33,9 @@ test_that("lookup returns a commit", {
   expect_identical(c_look, c1)
 })
 
-test_that("workdir includes a trailing slash", {
+test_that("workdir does not includes a trailing slash", {
   wd <- git2r_workdir(r)
-  expect_identical(stringr::str_sub(wd, start = -1), "/")
+  expect_false(stringr::str_sub(wd, start = -1) == "/")
 })
 
 test_that("as.list returns a list", {
@@ -60,7 +60,6 @@ test_that("diff returns a diff", {
 })
 
 test_that("slot returns slot values", {
-  expect_identical(git2r_slot(r, "path"), x)
   expect_identical(git2r_slot(c1, "message"), "commit 1")
   expect_identical(class(git2r_slot(c1, "sha")), "character")
   expect_identical(git2r_slot(b1, "name"), "b1")

@@ -116,23 +116,23 @@ the workflowr project directory, and configure the Git pane.
 \code{wflow_start} populates the chosen directory with the
 following files:
 
-\preformatted{├── .gitignore
-├── .Rprofile
-├── _workflowr.yml
-├── analysis/
-│   ├── about.Rmd
-│   ├── index.Rmd
-│   ├── license.Rmd
-│   └── _site.yml
-├── code/
-│   ├── README.md
-├── data/
-│   └── README.md
-├── docs/
-├── <directory>.Rproj
-├── output/
-│   └── README.md
-└── README.md
+\preformatted{|--- .gitignore
+|--- .Rprofile
+|--- _workflowr.yml
+|--- analysis/
+|   |--- about.Rmd
+|   |--- index.Rmd
+|   |--- license.Rmd
+|   |--- _site.yml
+|--- code/
+|   |--- README.md
+|--- data/
+|   |--- README.md
+|--- docs/
+|--- <directory>.Rproj
+|--- output/
+|   |--- README.md
+|--- README.md
 }
 
 The two \bold{required} subdirectories are \code{analysis/} and

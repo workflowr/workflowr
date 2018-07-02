@@ -10,6 +10,9 @@ site_dir <- workflowr:::relative(site_dir)
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 p <- workflowr:::wflow_paths(project = site_dir)
 
+# Load helper function local_no_gitconfig()
+source("helpers.R", local = TRUE)
+
 # Test wflow_open --------------------------------------------------------------
 
 test_that("wflow_open creates a new file, but does not overwrite", {
@@ -164,6 +167,53 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   expect_identical(o$files, c(testfile1, testfile2))
   # Confirm the working directory was **not** changed
   expect_identical(getwd(), cwd)
+})
+
+test_that("wflow_open can create a file when no Git repo or config present", {
+
+  skip_on_cran()
+
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
+  local_no_gitconfig("-workflowr")
+
+  # First in the context of a workflowr project
+  x <- wflow_start(tempfile(), git = FALSE, change_wd = FALSE)
+  p <- wflow_paths(project = x$directory)
+  rmd <- file.path(p$analysis, "new.Rmd")
+  o <- wflow_open(files = rmd, change_wd = FALSE,
+                  edit_in_rstudio = FALSE, project = p$root)
+  expect_true(file.exists(rmd))
+
+  # Second outside the context of a workflowr project
+  cwd <- getwd()
+  x <-tempfile()
+  dir.create(x)
+  x <- workflowr:::absolute(x)
+  rmd <- file.path(x, "new.Rmd")
+  o <- wflow_open(files = rmd, edit_in_rstudio = FALSE, project = NULL)
+  expect_identical(getwd(), cwd)
+  expect_true(file.exists(rmd))
+})
+
+test_that("wflow_open sends warning if used in workflowrBeta project", {
+  tmp_dir <- tempfile()
+  dir.create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  file.copy("files/test-wflow_update/pre/.", tmp_dir, recursive = TRUE)
+  dir.create(file.path(tmp_dir, "docs"))
+  git2r::init(tmp_dir)
+  r <- git2r::repository(tmp_dir)
+  git2r::config(r, user.name = "Test Name", user.email = "test@email")
+  git2r::add(r, ".")
+  git2r::commit(r, "Initial commit.")
+
+  rmd <- file.path(tmp_dir, "analysis", "new.Rmd")
+  expect_warning(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE,
+                            project = tmp_dir),
+                 "It appears that your site was created")
+  expect_true(file.exists(rmd))
 })
 
 # Errors -----------------------------------------------------------------------

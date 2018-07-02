@@ -142,8 +142,8 @@ test_that("wflow_open can accept multiple files", {
 
 test_that("wflow_open can save outside of analysis/ when project = NULL", {
 
-  # When project = NULL, wflow_open will create output directories if needed, and
-  # switches the working directory to the path of the first input file.
+  # When project = NULL, wflow_open will create output directories if needed,
+  # but will not change the working directory.
   cwd <- getwd()
   on.exit(setwd(cwd))
   location_exist <- tempfile("test-wflow_open-exist-")
@@ -162,8 +162,8 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   # Fix the symlink now that the file has been created
   testfile2 <- workflowr:::absolute(testfile2)
   expect_identical(o$files, c(testfile1, testfile2))
-  # Confirm the working directory was changed to the location of the first file
-  expect_identical(getwd(), location_exist)
+  # Confirm the working directory was **not** changed
+  expect_identical(getwd(), cwd)
 })
 
 # Errors -----------------------------------------------------------------------
@@ -203,7 +203,7 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
                           change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
-               "The following file\\(s\\) are not within the workflowr project")
+               "not within the R Markdown directory")
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
                           change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
@@ -218,33 +218,33 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
   expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
 })
 
-test_that("wflow_open sends warning if file is not in R Markdown directory", {
+test_that("wflow_open throws error if file is not in R Markdown directory", {
   rmd1 <- absolute(file.path(p$docs, "docs.Rmd"))
   rmd2 <- absolute(file.path(p$analysis, "index.Rmd"))
   rmd3 <- absolute(file.path(p$root, "root.Rmd"))
   dir_mistake <- absolute(file.path(p$analysis, "analysis"))
-  rmd4 <- absolute(file.path(dir_mistake, "root.Rmd"))
+  rmd4 <- absolute(file.path(dir_mistake, "mistake.Rmd"))
   on.exit(unlink(c(rmd1, rmd3, dir_mistake), recursive = TRUE))
 
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
+  expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  "not within the R Markdown directory")
-  expect_true(all(file.exists(c(rmd1, rmd2, rmd3, rmd4))))
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
+  expect_false(all(file.exists(c(rmd1, rmd3, rmd4))))
+  expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd1)
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
+  expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd3)
-  expect_warning(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
+  expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  rmd4)
+
   # No warning if project=NULL
-  unlink(c(rmd1, rmd3, dir_mistake), recursive = TRUE)
   expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                                 change_wd = FALSE, edit_in_rstudio = FALSE,
                                 project = NULL))

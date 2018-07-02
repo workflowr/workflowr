@@ -10,12 +10,12 @@ wflow_open(files, change_wd = TRUE, edit_in_rstudio = TRUE, project = ".")
 \item{files}{character. R Markdown file(s) to open. Files must have the
 extension Rmd or rmd. Supports file
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}. Set
-\code{project = NULL} to create an R Markdown file outside of a workflowr
-project.}
+\code{project = NULL} to create an R Markdown file outside of the R
+Markdown directory of a workflowr project.}
 
 \item{change_wd}{logical (default: TRUE). Change the working directory to the
-knit directory. If \code{project = NULL}, change working directory to
-destination of first file in \code{files}.}
+knit directory. If \code{project = NULL}, the working directory is
+\bold{not} changed.}
 
 \item{edit_in_rstudio}{logical (default: TRUE). Open the file(s) in the
 RStudio editor.}
@@ -37,7 +37,7 @@ An object of class \code{wflow_open}, which is a list with the
   \item{edit_in_rstudio}{The input argument \code{edit_in_rstudio}.}
 
   \item{knit_root_dir}{The knit directory (see \code{\link{wflow_html}} for
-  details).}
+  details). This is \code{NULL} if \code{project} was set to \code{NULL}.}
 
   \item{previous_wd}{The working directory in which \code{wflow_open} was
   executed.}
@@ -66,8 +66,9 @@ directory. Third, it opens the file(s) in RStudio if applicable. The latter
 two side effects can be turned off if desired.
 
 If you would like to create an R Markdown file with \code{wflow_open} for an
-analysis that is not part of a workflowr project, set \code{project =
-NULL}. Otherwise \code{wflow_open} will throw an error.
+analysis that is not part of a workflowr project, set \code{project = NULL}.
+Otherwise \code{wflow_open} will throw an error. Note that the working
+directory is \bold{not} changed when \code{project = NULL}.
 }
 \examples{
 \dontrun{

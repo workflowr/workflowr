@@ -16,17 +16,18 @@
 #' two side effects can be turned off if desired.
 #'
 #' If you would like to create an R Markdown file with \code{wflow_open} for an
-#' analysis that is not part of a workflowr project, set \code{project =
-#' NULL}. Otherwise \code{wflow_open} will throw an error.
+#' analysis that is not part of a workflowr project, set \code{project = NULL}.
+#' Otherwise \code{wflow_open} will throw an error. Note that the working
+#' directory is \bold{not} changed when \code{project = NULL}.
 #'
 #' @param files character. R Markdown file(s) to open. Files must have the
 #'   extension Rmd or rmd. Supports file
 #'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}. Set
-#'   \code{project = NULL} to create an R Markdown file outside of a workflowr
-#'   project.
+#'   \code{project = NULL} to create an R Markdown file outside of the R
+#'   Markdown directory of a workflowr project.
 #' @param change_wd logical (default: TRUE). Change the working directory to the
-#'   knit directory. If \code{project = NULL}, change working directory to
-#'   destination of first file in \code{files}.
+#'   knit directory. If \code{project = NULL}, the working directory is
+#'   \bold{not} changed.
 #' @param edit_in_rstudio logical (default: TRUE). Open the file(s) in the
 #'   RStudio editor.
 #' @param project character (or NULL). By default the function assumes the
@@ -45,7 +46,7 @@
 #'   \item{edit_in_rstudio}{The input argument \code{edit_in_rstudio}.}
 #'
 #'   \item{knit_root_dir}{The knit directory (see \code{\link{wflow_html}} for
-#'   details).}
+#'   details). This is \code{NULL} if \code{project} was set to \code{NULL}.}
 #'
 #'   \item{previous_wd}{The working directory in which \code{wflow_open} was
 #'   executed.}
@@ -98,10 +99,9 @@ wflow_open <- function(files,
 
   # Determine knit directory ---------------------------------------------------
 
-  # If project is NULL, set `knit_directory` to the directory of the first file
-  # for `change_wd`.
+  # If project is NULL, set `knit_directory` to NULL
   if (is.null(project)) {
-    knit_directory <- dirname(files)[1]
+    knit_directory <- NULL
   } else {
     # If project is set, find the knit directory
 
@@ -141,29 +141,23 @@ wflow_open <- function(files,
       "2. Follow the instructions in ?wflow_update to make the transition")
     }
 
-    # Confirm that the Rmd files to be created are in the workflowr project
-    regex_root <- paste0("^", absolute(p$root))
-    outside <- !stringr::str_detect(files, regex_root)
-    if (any(outside)) {
-      stop(call. = FALSE, wrap(
-        "The following file(s) are not within the workflowr project. Set
-        project=NULL to create an R Markdown file outside of a workflowr
-        project. See ?wflow_open for details."), "\n\n",
-        paste(files[outside], collapse = "\n")
-      )
-    }
-
-    # Send warning if Rmd files not saved in R Markdown directory
+    # Throw error if Rmd files not saved in R Markdown directory
     non_analysis <- !dirname(files) == absolute(p$analysis)
     if (any(non_analysis)) {
-      warning(call. = FALSE, wrap(
+      stop(call. = FALSE, wrap(
         "The following file(s) are not within the R Markdown directory of your
-        workflowr project. This probably isn't what you wanted."), "\n\n",
+        workflowr project:"), "\n\n",
         paste(files[non_analysis], collapse = "\n"), "\n\n",
         wrap(
           "For the results to be included in the website, the R Markdown files
           need to be saved in the following directory:"),  "\n\n",
-        absolute(p$analysis)
+        absolute(p$analysis),
+        "\n\n",
+        wrap(
+          "Set project=NULL to create an R Markdown file outside of the R
+          Markdown directory of your workflowr project. See ?wflow_open for
+          details."
+        )
       )
     }
 
@@ -219,7 +213,7 @@ wflow_open <- function(files,
   # Set working directory ------------------------------------------------------
 
   current_wd <- absolute(getwd())
-  if (change_wd && current_wd != knit_directory) {
+  if (change_wd && !is.null(project) && current_wd != knit_directory) {
     setwd(knit_directory)
     new_wd <- knit_directory
   } else {

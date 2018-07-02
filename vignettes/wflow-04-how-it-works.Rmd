@@ -113,7 +113,7 @@ There is lots of interest and development around reproducible research with R.
 Projects like workflowr are possible due to two key developments. First, the R 
 packages [knitr][] and [rmarkdown][] have made it easy for any R programmer to 
 generate reports that combine text, code, output, and figures. Second, the 
-version control software [Git][], the Git hosting site [GitHub][gh], and the 
+version control software [Git][], the Git hosting site [GitHub][], and the
 static website hosting service [GitHub Pages][] have made it easy to share not 
 only source code but also static HTML files (i.e. no need to purchase a domain
 name, setup a server, etc).

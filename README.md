@@ -6,7 +6,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/workflowr)](https://cran.r-project.org/package=workflowr)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
 
-The workflowr R package helps scientists organize their research in a way that
+The workflowr R package helps researchers organize their analyses in a way that
 promotes effective project management, reproducibility, collaboration, and
 sharing of results. Workflowr combines literate programming (knitr and
 rmarkdown) and version control (Git, via git2r) to generate a website containing
@@ -28,8 +28,8 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
 [workflowrBeta]: https://github.com/jdblischak/workflowrBeta
 
 * [Features](#features)
-* [Quick start](#quick-start)
 * [Installation](#installation)
+* [Quick start](#quick-start)
 * [Attribution](#attribution)
 
 ## Features
@@ -51,6 +51,24 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
 To see a workflowr website in action, see this [video demonstration][video].
 
 For related tools, see [r-project-workflows][].
+
+## Installation
+
+1. Install [R][r]
+
+    * (Recommended) Install [RStudio][rstudio]
+
+    * (Optional) Install [pandoc][pandoc-install]
+
+    * (Optional) Install [Git][git]
+
+1. Install workflowr from [CRAN][cran]:
+
+    ```r
+    install.packages("workflowr")
+    ```
+
+1. Create an account on [GitHub][gh]
 
 ## Quick start
 
@@ -88,24 +106,6 @@ your research website
 
 1. Read the [migrating vignette][vig-migrating] for how to integrate workflowr
 into your existing project
-
-## Installation
-
-1. Install [R][r]
-
-    * (Recommended) Install [RStudio][rstudio]
-
-    * (Optional) Install [pandoc][pandoc-install]
-    
-    * (Optional) Install [Git][git]
-
-1. Install workflowr from [CRAN][cran]:
-
-    ```r
-    install.packages("workflowr")
-    ```
-
-1. Create an account on [GitHub][gh]
 
 ## Attribution
 

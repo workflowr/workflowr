@@ -142,7 +142,16 @@ wflow_open <- function(files,
     }
 
     # Throw error if Rmd files not saved in R Markdown directory
-    non_analysis <- !absolute(dirname(files)) == absolute(p$analysis)
+    if (.Platform$OS.type == "windows") {
+      # On CRAN Windows machines, sometimes the drive is uppercase and sometimes
+      # lowercase, which breaks this check. Even wrapping both in `absolute`
+      # doesn't fix it. Since filepaths are not case sensitive on Windows, e.g.
+      # `(dir.exists(tolower(getwd())))`, first make the paths lowercase.
+      non_analysis <- !tolower(absolute(dirname(files))) ==
+                       tolower(absolute(p$analysis))
+    } else {
+      non_analysis <- !dirname(files) == absolute(p$analysis)
+    }
     if (any(non_analysis)) {
       stop(call. = FALSE, wrap(
         "Argument \"files\" specifies at least one file outside the R Markdown

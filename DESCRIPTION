@@ -23,7 +23,7 @@ Imports:
     getPass,
     git2r,
     glue,
-    knitr,
+    knitr (>= 1.18),
     methods,
     rmarkdown (>= 1.7),
     rprojroot,

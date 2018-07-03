@@ -326,7 +326,7 @@ To do this, login to your account on GitHub and create a new repository
 following these [instructions][new-repo]. The screenshot below shows the menu in
 the topright of the webpage.
 
-![Create a new repository on GitHub. © 2018 GitHub Inc. All rights reserved.](https://help.github.com/assets/images/help/repository/repo-create.png)
+![Create a new repository on GitHub.](github-new-repo.png)
 
 For the purposes of this
 tutorial, the code below assumes that the GitHub repository also has the name

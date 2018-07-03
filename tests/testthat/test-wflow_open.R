@@ -253,7 +253,7 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
                           change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
-               "not within the R Markdown directory")
+               "Argument \"files\" specifies at least")
   expect_error(wflow_open(c(rmd1, rmd2, rmd3),
                           change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
@@ -279,7 +279,7 @@ test_that("wflow_open throws error if file is not in R Markdown directory", {
   expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
-                 "not within the R Markdown directory")
+                 "Argument \"files\" specifies at least")
   expect_false(all(file.exists(c(rmd1, rmd3, rmd4))))
   expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,

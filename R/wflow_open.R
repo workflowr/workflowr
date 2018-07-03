@@ -145,12 +145,12 @@ wflow_open <- function(files,
     non_analysis <- !dirname(files) == absolute(p$analysis)
     if (any(non_analysis)) {
       stop(call. = FALSE, wrap(
-        "The following file(s) are not within the R Markdown directory of your
-        workflowr project:"), "\n\n",
+        "Argument \"files\" specifies at least one file outside the R Markdown
+        source directory:"), "\n\n",
         paste(files[non_analysis], collapse = "\n"), "\n\n",
         wrap(
-          "For the results to be included in the website, the R Markdown files
-          need to be saved in the following directory:"),  "\n\n",
+          "R Markdown files inside your workflowr project must be in the
+          following directory:"), "\n\n",
         absolute(p$analysis),
         "\n\n",
         wrap(

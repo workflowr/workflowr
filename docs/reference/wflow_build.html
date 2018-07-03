@@ -18,13 +18,28 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Build the site — wflow_build" />
+
+<meta property="og:description" content="wflow_build builds the website from the files in the analysis
+directory. This is intended to be used when developing your code to preview
+the changes. When you are ready to commit the files, use
+wflow_publish." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">workflowr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">workflowr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +98,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,24 +106,28 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Build the site</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_build.R'><code>R/wflow_build.R</code></a></small>
+    <div class="hidden name"><code>wflow_build.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>wflow_build</code> builds the website from the files in the analysis
 directory. This is intended to be used when developing your code to preview
 the changes. When you are ready to commit the files, use
 <code><a href='wflow_publish.html'>wflow_publish</a></code>.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>wflow_build</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fu'>is.null</span>(<span class='no'>files</span>), <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fu'>interactive</span>(), <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>, <span class='kw'>log_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -112,14 +136,14 @@ the changes. When you are ready to commit the files, use
 the analysis directory with the extension Rmd or rmd. If <code>files</code> is
 <code>NULL</code>, the default behavior is to build all outdated files (see
 argument <code>make</code> below). Supports file
-<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>make</th>
       <td><p>logical (default: <code>is.null(files)</code>). When <code>make =
 TRUE</code>, build any files that have been modified more recently than their
 corresponding HTML files (inspired by
-<a href = 'https://www.gnu.org/software/make/'>GNU Make</a>). This is the default
+<a href='https://www.gnu.org/software/make/'>GNU Make</a>). This is the default
 action if no files are specified.</p></td>
     </tr>
     <tr>
@@ -160,6 +184,12 @@ from building files. It will be created if necessary and ignored if
 <code>workflowr</code> in <code>tempdir</code>.</p></td>
     </tr>
     <tr>
+      <th>verbose</th>
+      <td><p>logical (default: FALSE). Display the build log directly in
+the R console as each file is built. This is useful for monitoring
+long-running code chunks.</p></td>
+    </tr>
+    <tr>
       <th>local</th>
       <td><p>logical (default: FALSE). Build files locally in the R console.
 This should only be used for debugging purposes. The default is to build
@@ -191,6 +221,7 @@ you'll need to provide the path to the project directory.</p></td>
 <li><p><b>view</b>: The input argument <code>view</code></p></li>
 <li><p><b>seed</b>: The input argument <code>seed</code></p></li>
 <li><p><b>log_dir</b>: The directory where the log files were saved</p></li>
+<li><p><b>verbose</b>: The input argument <code>verbose</code></p></li>
 <li><p><b>local</b>: The input argument <code>local</code></p></li>
 <li><p><b>dry_run</b>: The input argument <code>dry_run</code></p></li>
 <li><p><b>built</b>: The relative paths to the built R Markdown files</p></li>
@@ -206,7 +237,8 @@ which files to build. In other words, if multiple options are set to
 is the most useful for interactively performing your analysis. The other
 options are more useful when you are ready to publish specific files with
 <code><a href='wflow_publish.html'>wflow_publish</a></code> (which passes these arguments to
-<code>wflow_build</code>).</p><ul>
+<code>wflow_build</code>).</p>
+<ul>
 <li><p>Files specified via the argument <code>files</code> are always built.</p></li>
 <li><p>If <code>make = TRUE</code>, all files which have been modified more recently
 than their corresponding HTML files will be built.</p></li>
@@ -223,25 +255,25 @@ ignored.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='wflow_publish.html'>wflow_publish</a></code></p>
+    <div class='dont-index'><p><code><a href='wflow_publish.html'>wflow_publish</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-
-  <span class='co'># Build any files which have modified</span>
-  <span class='fu'>wflow_build</span>() <span class='co'># equivalent to wflow_build(make = TRUE)</span>
-  <span class='co'># Build a single file</span>
-  <span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>)
-  <span class='co'># Build multiple files</span>
-  <span class='fu'>wflow_build</span>(<span class='fu'>c</span>(<span class='st'>"file1.Rmd"</span>, <span class='st'>"file2.Rmd"</span>))
-  <span class='co'># Build multiple files using a file glob</span>
-  <span class='fu'>wflow_build</span>(<span class='st'>"file*.Rmd"</span>)
-  <span class='co'># Build every published file</span>
-  <span class='fu'>wflow_build</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='co'># Build file.Rmd and any files which have been modified</span>
-  <span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-})</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Build any files which have modified</span>
+<span class='fu'>wflow_build</span>() <span class='co'># equivalent to wflow_build(make = TRUE)</span>
+<span class='co'># Build a single file</span>
+<span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>)
+<span class='co'># Build multiple files</span>
+<span class='fu'>wflow_build</span>(<span class='fu'>c</span>(<span class='st'>"file1.Rmd"</span>, <span class='st'>"file2.Rmd"</span>))
+<span class='co'># Build multiple files using a file glob</span>
+<span class='fu'>wflow_build</span>(<span class='st'>"file*.Rmd"</span>)
+<span class='co'># Build every published file</span>
+<span class='fu'>wflow_build</span>(<span class='kw'>republish</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># Build file.Rmd and any files which have been modified</span>
+<span class='fu'>wflow_build</span>(<span class='st'>"file.Rmd"</span>, <span class='kw'>make</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -266,11 +298,14 @@ ignored.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

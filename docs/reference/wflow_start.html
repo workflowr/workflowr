@@ -18,13 +18,29 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Start a new workflowr project — wflow_start" />
+
+<meta property="og:description" content="wflow_start creates a directory with the essential files for
+a workflowr project. The default behaviour is to add these files to
+a new directory, but it is also possible to populate an existing
+directory. By default, the working directory is changed to the
+workflowr project directory." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +63,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">workflowr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">workflowr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +99,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,116 +107,264 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Start a new workflowr project</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_start.R'><code>R/wflow_start.R</code></a></small>
+    <div class="hidden name"><code>wflow_start.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p><code>wflow_start</code> creates a minimal workflowr project. The default
-behaviour is to add these files to a new directory, but it is also
-possible to populate an already existing project. By default, it
-also changes the working directory to the workflowr project.</p>
+    <p><code>wflow_start</code> creates a directory with the essential files for
+a workflowr project. The default behaviour is to add these files to
+a new directory, but it is also possible to populate an existing
+directory. By default, the working directory is changed to the
+workflowr project directory.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>wflow_start</span>(<span class='no'>directory</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>user.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>user.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>directory</th>
-      <td><p>character. The directory for the project, e.g.
-"~/new-project". When <code>existing = FALSE</code>, the directory will
-be created.</p></td>
+      <td><p>character. The directory where the workflowr
+project files will be added, e.g., "~/my-wflow-project". When
+<code>existing = FALSE</code>, the directory will be created.</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>character (default: NULL). Project name, e.g. "My Project". When
-<code>name = NULL</code>, the project name is automatically set based on the
-argument <code>directory</code>. For example, if <code>directory =
-"~/projects/myproject"</code>, then <code>name</code> is set to <code>"myproject"</code>.
-<code>name</code> is displayed on the site's navigation bar and the README.md.</p></td>
+      <td><p>character (default: <code>NULL</code>). The name of the
+project, e.g. "My Workflowr Project". When <code>name = NULL</code>, the
+project name is automatically determined based on
+<code>directory</code>. For example, if <code>directory =
+"~/projects/my-wflow-project"</code>, then <code>name</code> is set to
+<code>"my-wflow-project"</code>. The project name is displayed on the
+website's navigation bar and in the <code>README.md</code> file.</p></td>
     </tr>
     <tr>
       <th>git</th>
-      <td><p>logical (default: TRUE). Should Git be used for version
-control? If <code>directory</code> is a new Git repository and <code>git
-= TRUE</code>, <code>wflow_start</code> will initialize the repository and make
-an initial commit. If <code>git = TRUE</code> and <code>directory</code> is
-already a Git repository, <code>wflow_start</code> will make an
-additional commit. In both cases, only files needed for the
-workflowr project will be included in the commit.</p></td>
+      <td><p>logical (default: <code>TRUE</code>). Should the workflowr
+files be committed with Git? If <code>git = TRUE</code> and no existing
+Git repository is detected, <code>wflow_start</code> will initialize the
+repository and make an initial commit. If a Git repository already
+exists in the chosen directory, <code>wflow_start</code> any newly
+created or modified files will be commited to the existing
+repository.</p></td>
     </tr>
     <tr>
       <th>existing</th>
-      <td><p>logical (default: FALSE). Indicate if the specified
-<code>directory</code> already exists. The default prevents injecting the
-workflowr files into an unwanted location. Only set to TRUE if you wish to
-add the workflowr files to an existing project.</p></td>
+      <td><p>logical (default: <code>FALSE</code>). Indicate whether
+<code>directory</code> already exists. This argument is added to prevent
+accidental creation of files in an existing directory; setting
+<code>existing = FALSE</code> prevents files from being created if the
+specified directory already exists.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>logical (default: FALSE). Control whether to overwrite
-existing files. Only relevant if <code>existing = TRUE</code>.</p></td>
+      <td><p>logical (default: <code>FALSE</code>). Similar to
+<code>existing</code>, this argument prevents files from accidentally
+being overwritten when <code>overwrite = FALSE</code>. When
+<code>overwrite = TRUE</code>, any existing file in <code>directory</code> that
+has the same name as a workflowr file will be replaced by the
+workflowr file. When <code>git = TRUE</code>, all the standard workflowr
+files will be added and committed (regardless of whether they were
+overwritten or still contain the original content).</p></td>
     </tr>
     <tr>
       <th>change_wd</th>
-      <td><p>logical (default: TRUE). Change the working directory to the
-<code>directory</code>.</p></td>
+      <td><p>logical (default: <code>TRUE</code>). Change the working
+directory to the <code>directory</code>.</p></td>
+    </tr>
+    <tr>
+      <th>dry_run</th>
+      <td><p>logical (default: <code>FALSE</code>). When <code>dry_run
+= TRUE</code>, the actions are previewed without executing them.</p></td>
     </tr>
     <tr>
       <th>user.name</th>
-      <td><p>character (default: NULL). The user name used by Git to sign
-commits, e.g. "My Name". This setting will only apply to this specific
-workflowr project being created. To create a Git user name to apply to all
-workflowr projects (and Git repositories) on this computer, instead use
-<code><a href='wflow_git_config.html'>wflow_git_config</a></code>.</p></td>
+      <td><p>character (default: <code>NULL</code>). The user name
+used by Git to sign commits, e.g., "Ada Lovelace". This setting
+only applies to the workflowr project being created. To specify the
+global setting for the Git user name, use
+<code><a href='wflow_git_config.html'>wflow_git_config</a></code> instead. When <code>user.name =
+NULL</code>, no user name is recorded for the project, and the global
+setting will be used. This setting can be modified later
+by running <code>git config --local</code> in the Terminal.</p></td>
     </tr>
     <tr>
       <th>user.email</th>
-      <td><p>character (default: NULL). The email addresse used by Git
-to sign commits, e.g. "email@domain". This setting will only apply to this
-specific workflowr project being created. To create a Git email address to
-apply to all workflowr projects (and Git repositories) on this computer,
-instead use <code><a href='wflow_git_config.html'>wflow_git_config</a></code>.</p></td>
+      <td><p>character (default: <code>NULL</code>). The email
+address used by Git to sign commits, e.g.,
+"ada.lovelace@ox.ac.uk". This setting only applies to the workflowr
+project being created. To specify the global setting for the Git
+email address, use <code><a href='wflow_git_config.html'>wflow_git_config</a></code> instead. When
+<code>user.name = NULL</code>, no email address is recorded for the
+project, and the global setting will be used. This setting can be
+modified later by running <code>git config --local</code> in the Terminal.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Invisibly returns absolute path to workflowr project.</p>
+    <p>An object of class <code>wflow_start</code>, which is a list with the
+  following elements:</p>
+<p></p>
+<dt>directory</dt><dd><p>The input argument <code>directory</code>.</p></dd>
+
+   <dt>name</dt><dd><p>The input argument <code>name</code>.</p></dd>
+
+   <dt>git</dt><dd><p>The input argument <code>git</code>.</p></dd>
+
+   <dt>existing</dt><dd><p>The input argument <code>existing</code>.</p></dd>
+
+   <dt>overwrite</dt><dd><p>The input argument <code>overwrite</code>.</p></dd>
+
+   <dt>change_wd</dt><dd><p>The input argument <code>change_wd</code>.</p></dd>
+
+   <dt>dry_run</dt><dd><p>The input argument <code>dry_run</code>.</p></dd>
+
+   <dt>user.name</dt><dd><p>The input argument <code>user.name</code>.</p></dd>
+
+   <dt>user.email</dt><dd><p>The input argument <code>user.email</code>.</p></dd>
+
+   <dt>commit</dt><dd><p>The object returned by
+   git2r::<code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-methods'>commit</a></code>, or <code>NULL</code> if <code>git =
+   FALSE</code>.</p></dd>
+
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This is the initial function that organizes the infrastructure to
-create a research website for your project. Note that while you do
-not need to use RStudio with workflowr, do not delete the Rproj
-file because it is required by other functions.</p>
+    <p>This is recommended function to set up the file infrastructure for
+a workflowr project. If you are using RStudio, you can also create
+a new workflowr project as an "RStudio Project Template". Go to
+"File" -&gt; "New Project..." then select "workflowr project" from the
+list of project types. In the future, you can return to your
+project by choosing menu option "Open Project..." and selecting the
+<code>.Rproj</code> file located at the root of the workflowr project
+directory. In RStudio, opening this file will change the working
+directory to the appropriate location, set the file navigator to
+the workflowr project directory, and configure the Git pane.</p>
+<p><code>wflow_start</code> populates the chosen directory with the
+following files:</p>
+<pre>|--- .gitignore
+|--- .Rprofile
+|--- _workflowr.yml
+|--- analysis/
+|   |--- about.Rmd
+|   |--- index.Rmd
+|   |--- license.Rmd
+|   |--- _site.yml
+|--- code/
+|   |--- README.md
+|--- data/
+|   |--- README.md
+|--- docs/
+|--- &lt;directory&gt;.Rproj
+|--- output/
+|   |--- README.md
+|--- README.md
+</pre>
+    <p>The two <b>required</b> subdirectories are <code>analysis/</code> and
+<code>docs/</code>. These directories should never be removed from the
+workflowr project.</p>
+<p><code>analysis/</code> contains all the source R Markdown files that
+implement the analyses for your project. It contains a special R
+Markdown file, <code>index.Rmd</code>, that typically does not include R
+code, and is will be used to generate <code>index.html</code>, the
+homepage for the project website.  Additionally, this directory
+contains the important configuration file <code>_site.yml</code>. The
+website theme, navigation bar, and other properties can be
+controlled through this file (for more details see the
+documentation on
+<a href='https://rmarkdown.rstudio.com/rmarkdown_websites.html'>R
+Markdown websites</a>). Do not delete <code>index.Rmd</code> or
+<code>_site.yml</code>.</p>
+<p><code>docs/</code> will contain all the webpages generated from the R
+Markdown files in <code>analysis/</code>. Any figures generated by
+rendering the R Markdown files are also stored here. Each figure is
+saved according to the following convention:
+<code>docs/figure/&lt;Rmd-filename&gt;/&lt;chunk-name&gt;-#.png</code>, where
+<code>#</code> corresponds to which of the plots the chunk generated (one
+chunk can produce several plots).</p>
+<p><code>_workflowr.yml</code> is an additional configuration file used only
+by workflowr. It is used to apply the workflowr reproducibility
+checks consistently across all R Markdown files. The most important
+setting is <code>knit_root_dir</code> which determines the directory
+where the scripts in <code>analysis/</code> are executed. The default is
+to run code from the project root (<em>i.e.,</em> <code>"."</code>). To
+execute the code from <code>analysis/</code>, for example, change the
+setting to <code>knit_root_dir: "analysis"</code>. See
+<code><a href='wflow_html.html'>wflow_html</a></code> for more details.</p>
+<p>Another required file is the RStudio project file (ending in
+<code>.Rproj</code>). <em>Do not delete this file even if you do not
+use RStudio; among other essential tasks, it is used to determine
+the project root directory.</em></p>
+<p>The <b>optional</b> directories are <code>data/</code>, <code>code/</code>, and
+<code>output/</code>. These directories are suggestions for organizing
+your workflowr project and can be removed if you do not find them
+relevant to your project.</p>
+<p><code>data/</code> should be used to store "raw" (unprocessed) data
+files.</p>
+<p><code>code/</code> should be used to store additional code that might not
+be appropriate to include in R Markdown files (e.g., code to
+preprocess the data, long-running scripts, or functions that are
+used in multiple R Markdown files).</p>
+<p><code>output/</code> should be used to store processed data files and
+other outputs generated from the code and analyses. For example,
+scripts in <code>code/</code> that pre-process raw data files from
+<code>data/</code> should save the processed data files in
+<code>output/</code>.</p>
+<p>All these subdirectories except for <code>docs/</code> include a README
+file summarizing the contents of the subdirectory, and can be
+modified as desired, for example, to document the files stored in
+each directory.</p>
+<p><code>.Rprofile</code> is an optional file in the root directory of the
+workflowr project containing R code that is executed whenever the
+<code>.Rproj</code> file is loaded in RStudio, or whenever R is started
+up inside the project root directory. This file includes the line
+of code <code>library("workflowr")</code> to ensure that the workflowr
+package is loaded.</p>
+<p>Finally, <code>.gitignore</code> is an optional file that indicates to
+Git which files should be ignored---that is, files that are never
+committed to the repository. Some suggested files to ignore such as
+<code>.Rhistory</code> and <code>.Rdata</code> are listed here.</p>
+    
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Do not delete the file <code>.Rproj</code> even if you do not use
+  RStudio; workflowr will not work correctly unless this file is
+  there.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>vignette("wflow-01-getting-started")</p>
+    <div class='dont-index'><p>vignette("wflow-01-getting-started")</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>)
 
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>)
+<span class='co'># Provide a custom name for the project.</span>
+<span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"My Project"</span>)
 
-  <span class='co'># Provide a custom name for the project.</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"My Project"</span>)
+<span class='co'># Preview what wflow_start would do</span>
+<span class='fu'>wflow_start</span>(<span class='st'>"path/to/new-project"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-  <span class='co'># Add workflowr files to an existing project.</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># Add workflowr files to an existing project.</span>
+<span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-  <span class='co'># Add workflowr files to an existing project, but do not automatically</span>
-  <span class='co'># commit them.</span>
-  <span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-})</div></pre>
+<span class='co'># Add workflowr files to an existing project, but do not automatically</span>
+<span class='co'># commit them.</span>
+<span class='fu'>wflow_start</span>(<span class='st'>"path/to/current-project"</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>existing</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -205,6 +374,8 @@ file because it is required by other functions.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#note">Note</a></li>
 
       <li><a href="#see-also">See also</a></li>
       
@@ -220,11 +391,14 @@ file because it is required by other functions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

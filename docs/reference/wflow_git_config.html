@@ -18,13 +18,28 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Configure Git settings — wflow_git_config" />
+
+<meta property="og:description" content="wflow_git_config configures the global Git settings on the current
+machine. This is a convenience function to run Git commands from the R
+console instead of the Terminal. The same functionality can be acheived by
+running git config in the Terminal." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +62,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">workflowr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">workflowr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +98,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,22 +106,26 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Configure Git settings</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_git_config.R'><code>R/wflow_git_config.R</code></a></small>
+    <div class="hidden name"><code>wflow_git_config.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>wflow_git_config</code> configures the global Git settings on the current
 machine. This is a convenience function to run Git commands from the R
 console instead of the Terminal. The same functionality can be acheived by
 running <code>git config</code> in the Terminal.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -125,7 +149,8 @@ before on your computer, make sure to set this.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>wflow_git_config</code>, which is a list with the
-  following elements:</p><ul>
+  following elements:</p>
+<ul>
 <li><p><b>user.name</b>: The current global Git user.name</p></li>
 <li><p><b>user.email</b>: The current global Git user.email</p></li>
 <li><p><b>all_settings</b>: A list of all current global Git settings</p></li>
@@ -148,20 +173,20 @@ settings, but not delete them. To perform either of these actions, please use
 <p>Under the hood, <code>wflow_git_config</code> is a wrapper for
 <code><a href='http://www.rdocumentation.org/packages/git2r/topics/config'>config</a></code> from the package git2r.</p>
 <p>To learn more about how to configure Git, see the Software Carpentry lesson
-<a href = 'http://swcarpentry.github.io/git-novice/02-setup/'>Setting Up Git</a>.</p>
+<a href='http://swcarpentry.github.io/git-novice/02-setup/'>Setting Up Git</a>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># View current Git settings</span>
+<span class='fu'>wflow_git_config</span>()
+<span class='co'># Set user.name and user.email</span>
+<span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='st'>"A Name"</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='st'>"email@domain"</span>)
+<span class='co'># Set core.editor (the text editor that Git opens to write commit messages)</span>
+<span class='fu'>wflow_git_config</span>(<span class='kw'>core.editor</span> <span class='kw'>=</span> <span class='st'>"nano"</span>)
 
-  <span class='co'># View current Git settings</span>
-  <span class='fu'>wflow_git_config</span>()
-  <span class='co'># Set user.name and user.email</span>
-  <span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='st'>"A Name"</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='st'>"email@domain"</span>)
-  <span class='co'># Set core.editor (the text editor that Git opens to write commit messages)</span>
-  <span class='fu'>wflow_git_config</span>(<span class='kw'>core.editor</span> <span class='kw'>=</span> <span class='st'>"nano"</span>)
-
-})</div></pre>
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -184,11 +209,14 @@ settings, but not delete them. To perform either of these actions, please use
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -18,13 +18,25 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Report status of workflowr project — wflow_status" />
+
+<meta property="og:description" content="wflow_status reports the analysis files that require user action." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +59,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">workflowr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">workflowr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +95,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,26 +103,30 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Report status of workflowr project</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_status.R'><code>R/wflow_status.R</code></a></small>
+    <div class="hidden name"><code>wflow_status.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>wflow_status</code> reports the analysis files that require user action.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>wflow_status</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>files</th>
       <td><p>character (default: NULL) The analysis file(s) to report the
 status. By default checks the status of all analysis files. Supports
-file <a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+file <a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -118,7 +139,8 @@ you'll need to provide the path to the project directory.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns an object of class <code>wflow_status</code>, which is a list with
-  the following elements:</p><ul>
+  the following elements:</p>
+<ul>
 <li><p><b>root</b>: The relative path to the root directory of the workflowr
 project (i.e. contains the RStudio .Rproj file).</p></li>
 <li><p><b>analysis</b>: The relative path to the directory that contains
@@ -132,7 +154,8 @@ each file (see below).</p></li>
 </ul>
 
 <p>The data frame <code>status</code> contains the following non-mutually exclusive
-columns (all logical vectors):</p><ul>
+columns (all logical vectors):</p>
+<ul>
 <li><p><b>ignored</b>: The R Markdown file has been ignored by Git according
 to the patterns in the file <code>.gitignore</code>.</p></li>
 <li><p><b>mod_unstaged</b>: The R Markdown file has unstaged modifications.</p></li>
@@ -157,25 +180,26 @@ considered a scratch file until it is committed.</p></li>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>wflow_status</code> reports analysis files with one of the following
-statuses:</p><ul>
+statuses:</p>
+<ul>
 <li><p><b>Mod</b>: Modified file. Any published file that has been modified
 since the last time the HTML was published.</p></li>
 <li><p><b>Unp</b>: Unpublished file. Any tracked file whose corresponding HTML
 is not tracked. May or may not have staged or unstaged changes.</p></li>
 <li><p><b>Scr</b>: Scratch file. Any untracked file that is not specifically
 ignored.</p></li>
-</ul><p><code>wflow_status</code> only works for workflowr projects that use Git.</p>
+</ul>
+    <p><code>wflow_status</code> only works for workflowr projects that use Git.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-
-  <span class='fu'>wflow_status</span>()
-  <span class='co'># Get status of specific file(s)</span>
-  <span class='fu'>wflow_status</span>(<span class='st'>"analysis/file.Rmd"</span>)
-  <span class='co'># Save the results</span>
-  <span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'>wflow_status</span>()
-})</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'>wflow_status</span>()
+<span class='co'># Get status of specific file(s)</span>
+<span class='fu'>wflow_status</span>(<span class='st'>"analysis/file.Rmd"</span>)
+<span class='co'># Save the results</span>
+<span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'>wflow_status</span>()
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -198,11 +222,14 @@ ignored.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

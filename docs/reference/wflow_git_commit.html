@@ -18,13 +18,29 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Commit files — wflow_git_commit" />
+
+<meta property="og:description" content="wflow_git_commit adds and commits files with Git. This is a convenience
+function to run Git commands from the R console instead of the shell. For
+most use cases, you should use wflow_publish instead, which
+calls wflow_git_commit and then subsequently also builds and commits the
+website files." />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,8 +63,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">workflowr</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">workflowr</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.1.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -79,6 +99,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -86,12 +107,15 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Commit files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_git_commit.R'><code>R/wflow_git_commit.R</code></a></small>
+    <div class="hidden name"><code>wflow_git_commit.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>wflow_git_commit</code> adds and commits files with Git. This is a convenience
 function to run Git commands from the R console instead of the shell. For
@@ -99,18 +123,19 @@ most use cases, you should use <code><a href='wflow_publish.html'>wflow_publish<
 calls <code>wflow_git_commit</code> and then subsequently also builds and commits the
 website files.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>wflow_git_commit</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>files</th>
       <td><p>character (default: NULL). Files to be added and committed with
 Git. Supports file
-<a href = 'https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
       <th>message</th>
@@ -142,14 +167,16 @@ you'll need to provide the path to the project directory.</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>wflow_git_commit</code>, which is a list with the
-  following elements:</p><ul>
+  following elements:</p>
+<ul>
 <li><p><b>files</b>: The input argument <code>files</code>.</p></li>
 <li><p><b>message</b>: The message describing the commit.</p></li>
 <li><p><b>all</b>: The input argument <code>all</code>.</p></li>
 <li><p><b>force</b>: The input argument <code>force</code>.</p></li>
 <li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
-<li><p><b>commit</b>: The <code><a href='http://www.rdocumentation.org/packages/git2r/topics/git_commit-class'>git_commit-class</a></code> object
-returned by git2r (only included if <code>dry_run == FALSE</code>).</p></li>
+<li><p><b>commit</b>: The object returned by
+git2r::<code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-methods'>commit</a></code> (only included if <code>dry_run ==
+FALSE</code>).</p></li>
 <li><p><b>commit_files</b>: The relative path(s) to the file(s) included in
 the commit (only included if <code>dry_run == FALSE</code>).</p></li>
 </ul>
@@ -157,7 +184,8 @@ the commit (only included if <code>dry_run == FALSE</code>).</p></li>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Some potential use cases for <code>wflow_git_commit</code>:</p><ul>
+    <p>Some potential use cases for <code>wflow_git_commit</code>:</p>
+<ul>
 <li><p>Commit drafts which you do not yet want to be included in the website</p></li>
 <li><p>Commit files which do not directly affect the website (e.g. when you
 are writing scripts for a data processing pipeline)</p></li>
@@ -171,20 +199,20 @@ and <code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-me
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='wflow_publish.html'>wflow_publish</a></code></p>
+    <div class='dont-index'><p><code><a href='wflow_publish.html'>wflow_publish</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>not_run</span>({
-
-  <span class='co'># Commit a single file</span>
-  <span class='fu'>wflow_git_commit</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Add new analysis"</span>)
-  <span class='co'># Commit multiple files</span>
-  <span class='fu'>wflow_git_commit</span>(<span class='fu'>c</span>(<span class='st'>"code/process-data.sh"</span>, <span class='st'>"output/small-data.txt"</span>),
-               <span class='st'>"Process data set"</span>)
-  <span class='co'># Add and commit all tracked files, similar to `git commit -a`</span>
-  <span class='fu'>wflow_git_commit</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Lots of changes"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-})</div></pre>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Commit a single file</span>
+<span class='fu'>wflow_git_commit</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Add new analysis"</span>)
+<span class='co'># Commit multiple files</span>
+<span class='fu'>wflow_git_commit</span>(<span class='fu'>c</span>(<span class='st'>"code/process-data.sh"</span>, <span class='st'>"output/small-data.txt"</span>),
+             <span class='st'>"Process data set"</span>)
+<span class='co'># Add and commit all tracked files, similar to `git commit -a`</span>
+<span class='fu'>wflow_git_commit</span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"Lots of changes"</span>, <span class='kw'>all</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -209,11 +237,14 @@ and <code><a href='http://www.rdocumentation.org/packages/git2r/topics/commit-me
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -1,0 +1,10 @@
+pandoc: 1.19.2.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  wflow-01-getting-started: wflow-01-getting-started.html
+  wflow-02-customization: wflow-02-customization.html
+  wflow-03-migrating: wflow-03-migrating.html
+  wflow-04-how-it-works: wflow-04-how-it-works.html
+  wflow-05-faq: wflow-05-faq.html
+

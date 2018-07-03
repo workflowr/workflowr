@@ -29,6 +29,16 @@ if (git2r::in_repository(tempdir())) {
     in error: ",
     workflowr:::git2r_slot(git2r::repository(tempdir(), discover = TRUE), "path")))
 }
+
+# The code in this vignette requires pandoc. Not every CRAN server has pandoc
+# installed.
+if (!rmarkdown::pandoc_available()) {
+  opts_chunk$set(eval = FALSE)
+  message(workflowr:::wrap(
+    "The code chunks below were not executed because this machine does not
+    have pandoc installed."
+  ))
+}
 ```
 
 ```{r chunk-options, cache=FALSE, include=FALSE}

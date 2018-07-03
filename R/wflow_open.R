@@ -142,7 +142,7 @@ wflow_open <- function(files,
     }
 
     # Throw error if Rmd files not saved in R Markdown directory
-    non_analysis <- !dirname(files) == absolute(p$analysis)
+    non_analysis <- !absolute(dirname(files)) == absolute(p$analysis)
     if (any(non_analysis)) {
       stop(call. = FALSE, wrap(
         "Argument \"files\" specifies at least one file outside the R Markdown

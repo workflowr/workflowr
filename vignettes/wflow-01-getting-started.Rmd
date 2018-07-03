@@ -386,8 +386,13 @@ and open it in your preferred text editor (e.g. RStudio). Alternatively, you can
 use the convenience function `wflow_open()`, which will create the file (and
 open it if you are using RStudio):
 
-```{r create-file}
+```{r create-file, eval=FALSE}
 wflow_open("analysis/first-analysis.Rmd")
+```
+
+```{r create-file-hidden, echo=FALSE}
+# Don't want to actually open the file when building the vignette in RStudio
+wflow_open("analysis/first-analysis.Rmd", edit_in_rstudio = FALSE)
 ```
 
 Now you are ready to start writing! Go ahead and add some example code. If you

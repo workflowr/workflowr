@@ -2,18 +2,18 @@
 
 This is a resubmission. In this version I have:
 
+* Fixed the NOTE about the missing object
+
 * Fixed the failing unit test and confirmed there are no errors by submitting to
 win-builder
 
 * Fixed the vignette warnings from the previous CRAN release (1.0.1)
 
-* However, the NOTE is expected due to forthcoming breaking changes in the
-dependency git2r
+## Background
 
 The upcoming [git2r release][git2r] is backwards incompatible. This minor
 release of workflowr is compatible both with previous versions of git2r (<=
-0.21.0) and the upcoming release (0.22.0). The NOTE about a missing or
-unexported object is anticipating the new function in git2r.
+0.21.0) and the upcoming release (0.22.0).
 
 [git2r]: https://github.com/ropensci/git2r/releases/tag/v0.22.0-RC2
 
@@ -32,10 +32,7 @@ unexported object is anticipating the new function in git2r.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* checking dependencies in R code ... NOTE
-Missing or unexported object: ‘git2r::repository_head’
+0 errors | 0 warnings | 0 note
 
 ## Test environments with git2r release candidate
 
@@ -46,7 +43,4 @@ Missing or unexported object: ‘git2r::repository_head’
 
 ## R CMD check results with git2r release candidate
 
-0 errors | 0 warnings | 1 note
-
-* checking dependencies in R code ... NOTE
-Missing or unexported object: ‘git2r::merge’
+0 errors | 0 warnings | 0 note

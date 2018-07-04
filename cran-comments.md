@@ -1,5 +1,17 @@
+## Resubmission
+
+This is a resubmission. In this version I have:
+
+* Fixed the failing unit test and confirmed there are no errors by submitting to
+win-builder
+
+* Fixed the vignette warnings from the previous CRAN release (1.0.1)
+
+* However, the NOTE is expected due to forthcoming breaking changes in the
+dependency git2r
+
 The upcoming [git2r release][git2r] is backwards incompatible. This minor
-release of workflowr is backwards compatible with previous versions of git2r (<=
+release of workflowr is compatible both with previous versions of git2r (<=
 0.21.0) and the upcoming release (0.22.0). The NOTE about a missing or
 unexported object is anticipating the new function in git2r.
 

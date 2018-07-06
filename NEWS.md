@@ -1,3 +1,7 @@
+# workflowr 1.1.1
+
+Fix unit test on CRAN Windows servers.
+
 # workflowr 1.1.0
 
 workflowr 1.1.0 is a maintenance release. It includes some minor new features,

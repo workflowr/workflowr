@@ -35,6 +35,10 @@ test_that("wflow_open creates a new file, but does not overwrite", {
 
 test_that("wflow_open changes the working directory to the knit directory", {
 
+  # Too many filepath edge cases on CRAN servers that are not caught on
+  # windbuilder or AppVeyor
+  skip_on_cran()
+
   cwd <- getwd()
   on.exit(setwd(cwd))
   wflow_yml <- absolute(file.path(p$root, "_workflowr.yml"))

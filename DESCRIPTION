@@ -7,7 +7,9 @@ Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu"),
     person("Peter", "Carbonetto", role = c("aut")),
-    person("Matthew", "Stephens", role = c("aut")))
+    person("Matthew", "Stephens", role = c("aut")),
+    person("Luke", "Zappia", role = c("ctb"),
+           comment = "Instructions for hosting with GitLab"))
 Description: Combines literate programming ('knitr' and 'rmarkdown') and version
   control ('Git', via 'git2r') to generate a website containing time-stamped,
   versioned, and documented results.

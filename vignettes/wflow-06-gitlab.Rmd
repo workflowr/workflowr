@@ -1,7 +1,7 @@
 ---
 title: "Hosting worklowr using GitLab"
 subtitle: "workflowr version `r utils::packageVersion('workflowr')`"
-author: "John Blischak"
+author: "Luke Zappia, John Blischak"
 date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
@@ -64,7 +64,7 @@ uses `sed` to do this but you could also do it in RStudio or your favourite text
 editor.
 
 ```
-sed s/docs/public/ analysis/_site.yml
+sed -i'.bk' s/docs/public/ analysis/_site.yml
 ```
 
 We already have a directory called `docs` so we also need to tell git that we
@@ -139,7 +139,7 @@ force workflowr to do this by setting the `republish` option in the
 `wflow_publish` function to `TRUE`.
 
 ```
-wflow_publish(republish = TRUE)
+wflow_publish("_workflowr.yml", republish = TRUE)
 ```
 
 Check your website to make sure you have links to previous versions of versions

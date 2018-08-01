@@ -1,5 +1,7 @@
 # workflowr 1.1.1.9000
 
+* Add instructions for hosting workflowr website with GitLab (@lazappi in #112)
+
 # workflowr 1.1.1
 
 Fix unit test on CRAN Windows servers.

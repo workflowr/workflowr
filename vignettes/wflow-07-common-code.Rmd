@@ -1,0 +1,62 @@
+---
+title: "Sharing common code across analyses"
+subtitle: "workflowr version `r utils::packageVersion('workflowr')`"
+author: "Tim Trice, John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Customize your research website}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r chunk-options, include=FALSE}
+library("knitr")
+opts_chunk$set(eval = FALSE)
+```
+
+During the course of a project, you may want to repeat a similar analysis
+across multiple R Markdown files. To avoid duplicated code across your files
+(which is difficult to update), there are multiple strategies you can use to
+share common code:
+
+1. To share R code like function definitions, you can put this code in an R
+script and import in each file with the function `source()`
+
+1. To share common R Markdown text and code chunks, you can use child documents
+
+1. To share common templates, you can use the knitr function `knit_expand()`
+
+Each of these strategies is detailed below, with a special emphasis on how to
+use them within the workflowr framework.
+
+## Overview of directories
+
+First, a quick overview of the directories in a workflowr project. This is
+critical for importing these shared files.
+
+In a standard R Markdown file, the code is executed in the directory where the R
+Markdown file is saved. Thus any paths to files in the R Markdown file should be
+relative to this directory. However, the directory where the code is executed,
+referred to as the "knit directory" in the workflowr documentation, can be
+configured. The default for a new workflowr project is to run the code in the
+root of the workflowr project (this is defined in the file `_workflowr.yml`; see
+`?wflow_html` for configuration details). Thus any filepaths should be relative
+to the root of the project. As an example, if you have shared R functions
+defined in the file `~/Desktop/myproject/code/common.R`, the relative filepath
+from the root of the project directory would be `"code/common.R"`.
+
+## Share R code with source()
+
+## Share child documents with chunk option
+
+https://yihui.name/knitr/demo/child/
+
+## Share templates with knit_expand()
+
+```{r knit-expand-vignette}
+vignette("knit_expand", package = "knitr")
+```
+

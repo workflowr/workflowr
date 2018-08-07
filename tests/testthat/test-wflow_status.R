@@ -253,3 +253,28 @@ test_that("wflow_paths is not confused by multiple similar _site.yml files in th
   expect_silent(p2 <- wflow_paths(project = site_dir))
   expect_identical(p2, p1)
 })
+
+test_that("wflow_paths throws error if multiple _site.yml files in top-level directories", {
+  extra <- file.path(site_dir, "code", "_site.yml")
+  on.exit(file.remove(extra))
+  file.create(extra)
+  expect_error(wflow_paths(project = site_dir),
+               "Found more than one _site.yml file.")
+})
+
+test_that("wflow_paths throws error if output_dir field not set in _site.yml", {
+  site_yml <- file.path(site_dir, "analysis", "_site.yml")
+  site_yml_tmp <- file.path(tempdir(), "_site.yml")
+  on.exit(file.rename(site_yml_tmp, site_yml))
+  file.rename(site_yml, site_yml_tmp)
+  file.create(site_yml)
+  expect_error(wflow_paths(project = site_dir), "output_dir")
+})
+
+test_that("wflow_paths throws warning if docs/ directory is missing", {
+  docs <- file.path(site_dir, "docs")
+  docs_tmp <- file.path(tempdir(), "docs")
+  on.exit(file.rename(docs_tmp, docs))
+  file.rename(docs, docs_tmp)
+  expect_warning(wflow_paths(project = site_dir), "Run wflow_build()")
+})

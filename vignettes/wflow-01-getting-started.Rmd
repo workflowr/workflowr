@@ -181,7 +181,11 @@ website. The HTML files are built from the R Markdown files in
 are saved here. Each of these figures is saved according to the
 following pattern: `docs/figure/<insert Rmd filename>/<insert chunk
 name>-#.png`, where `#` corresponds to which of the plots the chunk
-generated (since one chunk can produce an arbitrary number of plots).
+generated (since one chunk can produce an arbitrary number of plots)^[Because of
+this requirement, you can't customize the knitr option `fig.path` (which
+controls where figure files are saved) in any R Markdown file that is part of a
+workflowr project. If you do set it, it will be ignored and workflowr will
+insert a warning into the HTML file to alert you.].
 
 The workflowr-specific configuration file is `_workflowr.yml`. It will apply the
 workflowr reproducibility checks consistently across all your R Markdown files.

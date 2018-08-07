@@ -156,37 +156,62 @@ wflow_html <- function(...) {
   # Save the figures in "figure/<basename-of-Rmd-file>/"
   # https://yihui.name/knitr/hooks/#option-hooks
   hook_fig_path <- function(options) {
+    # Record the original figure path. If it was set by the user, a warning will
+    # be inserted into the document by the knit hook `plot_hook` to notify that
+    # the setting was ignored.
+    options$fig.path.orig <- options$fig.path
+
     options$fig.path <- file.path("figure", knitr::current_input())
     # Requires trailing slash
     options$fig.path <- paste0(options$fig.path, .Platform$file.sep)
     return(options)
   }
 
+  # This knit hook inserts a table of previous versions of the figure
   plot_hook <- function(x, options) {
-    if (git2r::in_repository(".")) {
-      r <- git2r::repository(".", discover = TRUE)
 
-      input <- file.path(getwd(), x)
-
-      # Need to refactor obtaining workflowr options
-      github = get_github_from_remote(getwd())
-      output_dir <- get_output_dir(directory = getwd())
-      if (!is.null(output_dir)) {
-        input <- file.path(output_dir, x)
-      }
-
-      fig_versions <- get_versions_fig(fig = input, r = r, github = github)
-
-      if (fig_versions == "") {
+    # Inserts a Bootstrap warning into the HTML file if user set custom fig.path
+    # which gets ignored by workflowr
+    wflow_hook_plot_md <- function(x, options) {
+      expected <- paste0(tools::file_path_sans_ext(knitr::current_input()),
+                         "_files", .Platform$file.sep, "figure-html",
+                         .Platform$file.sep)
+      if (options$fig.path.orig == expected) {
         return(knitr::hook_plot_md(x, options))
-      } else {
-        paste(c(knitr::hook_plot_md(x, options),
-                fig_versions),
-              collapse = "\n")
       }
-    } else {
-      return(knitr::hook_plot_md(x, options))
+
+      fig_path_warning <- "<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr."
+      return(glue::glue("{knitr::hook_plot_md(x, options)}
+                        <div class=\"alert alert-warning\">
+                        {fig_path_warning}
+                        </div>"))
     }
+
+    # Exit early if there is no Git repository
+    if (!git2r::in_repository(".")) {
+      return(wflow_hook_plot_md(x, options))
+    }
+
+    r <- git2r::repository(".", discover = TRUE)
+
+    input <- file.path(getwd(), x)
+
+    # Need to refactor obtaining workflowr options
+    github = get_github_from_remote(getwd())
+    output_dir <- get_output_dir(directory = getwd())
+    if (!is.null(output_dir)) {
+      input <- file.path(output_dir, x)
+    }
+
+    fig_versions <- get_versions_fig(fig = input, r = r, github = github)
+
+    # Exit early if no previous versions of the figure are available
+    if (fig_versions == "") {
+      return(wflow_hook_plot_md(x, options))
+    }
+
+    return(paste(c(wflow_hook_plot_md(x, options), fig_versions),
+                 collapse = "\n"))
   }
 
   knitr <- rmarkdown::knitr_options(opts_chunk = list(comment = NA,

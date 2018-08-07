@@ -1,0 +1,19 @@
+---
+title: "Untitled"
+output: workflowr::wflow_html
+---
+
+In this example, a custom fig.path is set for only one chunk, which should
+result in only one warning.
+
+```{r plot-one, fig.path="custom"}
+plot(1:10)
+```
+
+```{r plot-two}
+plot(1:10)
+```
+
+```{r plot-three}
+plot(1:10)
+```

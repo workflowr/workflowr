@@ -190,7 +190,6 @@ test_that("The default knit_root_dir for a workflowr project is the root directo
   expect_true(sum(stringr::str_detect(html_lines, tmp_dir)) == 1)
 })
 
-
 test_that("The default knit_root_dir for a workflowr project can be analysis/", {
 
   skip_on_cran()
@@ -281,6 +280,36 @@ test_that("github URL in _workflowr.yml overrides git remote", {
   expect_false(any(stringr::str_detect(html_lines,
                                        "https://github.com/testuser/testrepo")))
 })
+
+# Test plot_hook ---------------------------------------------------------------
+
+test_that("wflow_html sends warning if fig.path is set by user", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  dir.create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # If set in only only one chunk, only one warning should be generated
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  file.copy("files/test-wflow_html/fig-path-one-chunk.Rmd", rmd)
+  html <- render(rmd, quiet = TRUE)
+  expect_true(file.exists(html))
+  html_lines <- readLines(html)
+  expect_true(sum(stringr::str_detect(html_lines, "<code>fig.path</code>")) == 1)
+
+  # If set globally, a warning should be generated for each plot (in this case 3)
+  rmd2 <- file.path(tmp_dir, "file2.Rmd")
+  file.copy("files/test-wflow_html/fig-path-all-chunks.Rmd", rmd2)
+  html2 <- render(rmd2, quiet = TRUE)
+  expect_true(file.exists(html2))
+  html_lines2 <- readLines(html2)
+  expect_true(sum(stringr::str_detect(html_lines2, "<code>fig.path</code>")) == 3)
+
+})
+
 
 # Test add_bibliography --------------------------------------------------------
 

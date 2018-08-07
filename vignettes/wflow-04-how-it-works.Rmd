@@ -76,6 +76,12 @@ figures in `docs` corresponding to new or updated R Markdown files, and
 `analysis/figure/` is in the `.gitignore` file to prevent accidentally
 committing duplicate files.
 
+Because workflowr requires the figures to be saved to a specific location in
+order to function properly, it will override any custom setting of the knitr
+option `fig.path` (which controls where figure files are saved) and insert a
+warning into the HTML file to alert the user that their value for `fig.path` was
+ignored.
+
 ## Additional tools
 
 [RStudio, Inc.][] is a company that develops open source software for R users.

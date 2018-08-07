@@ -1,0 +1,23 @@
+---
+title: "Untitled"
+output: workflowr::wflow_html
+---
+
+In this example, a custom fig.path is set globally, which should result in a
+warning for each plot (3 total).
+
+```{r setup}
+knitr::opts_chunk$set(fig.path = "anything/")
+```
+
+```{r plot-one}
+plot(1:10)
+```
+
+```{r plot-two}
+plot(1:10)
+```
+
+```{r plot-three}
+plot(1:10)
+```

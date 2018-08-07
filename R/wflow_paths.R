@@ -41,7 +41,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
   # Analysis directory with _site.yml
   top_level_files <- list.files(path = o$root, full.names = TRUE)
   subdirs <- top_level_files[dir.exists(top_level_files)]
-  site_file <- list.files(path = subdirs, pattern = "_site.yml",
+  site_file <- list.files(path = subdirs, pattern = "^_site.yml$",
                           full.names = TRUE)
   if (length(site_file) == 0) {
     stop(wrap("Unable to find the file _site.yml in the analysis directory.

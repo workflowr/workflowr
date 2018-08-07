@@ -244,3 +244,12 @@ test_that("wflow_paths returns NA if no Git repository and error_git = FALSE.", 
   expect_silent(p <- wflow_paths(project = site_dir))
   expect_identical(p$git, NA_character_)
 })
+
+test_that("wflow_paths is not confused by multiple similar _site.yml files in the same directory", {
+  p1 <- wflow_paths(project = site_dir)
+  spurious <- file.path(site_dir, "analysis", "_site.yml.bk")
+  on.exit(file.remove(spurious))
+  file.create(spurious)
+  expect_silent(p2 <- wflow_paths(project = site_dir))
+  expect_identical(p2, p1)
+})

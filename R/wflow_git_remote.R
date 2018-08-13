@@ -25,6 +25,9 @@
 #' @param action character (default: "add"). The action to perform on the
 #'   remotes. Must be one of "add", "remove", or "set_url". This argument is
 #'   ignored if \code{remote = NULL}.
+#' @param domain character (default: "github.com"). The domain of the remote
+#'   host. For example, if you want to host your Git repository at GitLab, you
+#'   would specify "gitlab.com".
 #' @param verbose logical (default: TRUE). Display the current remotes.
 #'   Analogous to \code{git remote -v}.
 #' @param project character (default: ".") By default the function assumes the
@@ -50,6 +53,7 @@
 #' @export
 wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
                           protocol = "https", action = "add",
+                          domain = "github.com",
                           verbose = TRUE, project = ".") {
   if (!(is.null(remote) | (is.character(remote) & length(remote) == 1)))
     stop("remote must be a one element character vector. You entered: ", remote)
@@ -64,6 +68,8 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
     stop("protocol must be either https or ssh. You entered: ", protocol)
   if (!(action %in% c("add", "remove", "set_url")))
     stop("action must be add, remove, or set_url. You entered: ", action)
+  if (!is.character(domain) | length(domain) != 1)
+    stop("domain must be a one element character vector. You entered: ", domain)
   if (!is.logical(verbose) | length(verbose) != 1)
     stop("verbose must be a one element logical vector. You entered: ", verbose)
   if (!is.character(project) | length(project) != 1)
@@ -84,10 +90,10 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
   if (!is.null(remote)) {
     switch(action,
            add = git_remote_add(r, remotes_current, remote,
-                                user, repo, protocol),
+                                user, repo, protocol, domain),
            remove = git_remote_remove(r, remotes_current, remote),
            set_url = git_remote_set_url(r, remotes_current, remote,
-                                        user, repo, protocol))
+                                        user, repo, protocol, domain))
   }
 
   remotes <- git2r::remotes(r)
@@ -113,7 +119,8 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
 }
 
 # Add a remote repository
-git_remote_add <- function(r, remotes_current, remote, user, repo, protocol) {
+git_remote_add <- function(r, remotes_current, remote, user, repo, protocol,
+                           domain) {
   if (remote %in% remotes_current)
     stop(remote, " is already defined as a remote.\n",
          "Use `action = \"set_url\"` to update the URL.")
@@ -134,7 +141,8 @@ git_remote_remove <- function(r, remotes_current, remote) {
 }
 
 # Set URL for a remote repository
-git_remote_set_url <- function(r, remotes_current, remote, user, repo, protocol) {
+git_remote_set_url <- function(r, remotes_current, remote, user, repo, protocol,
+                               domain) {
   if (!(remote %in% remotes_current))
     stop(remote, " is not defined as a remote.\n",
          "Use `action = \"add\"` to add it.")
@@ -155,14 +163,18 @@ git_remote_set_url <- function(r, remotes_current, remote, user, repo, protocol)
 # > workflowr:::create_remote_url("fakename", "fakerepo", "ssh")
 # [1] "git@github.com:fakename/fakerepo.git"
 #
-create_remote_url <- function(user, repo, protocol) {
-  remote_url <- paste0(user, "/", repo, ".git")
-  if (protocol == "https") {
-    remote_url <- paste0("https://github.com/", remote_url)
-  } else if (protocol == "ssh") {
-    remote_url <- paste0("git@github.com:", remote_url)
-  } else {
-    stop("Invalid input for protocol. You entered: ", protocol)
-  }
-  return(remote_url)
+# > workflowr:::create_remote_url("fakename", "fakerepo", "https",
+#                                 domain = "gitlab.com")
+# [1] "https://gitlab.com/fakename/fakerepo.git"
+#
+# > workflowr:::create_remote_url("fakename", "fakerepo", "ssh"
+#                                 domain = "gitlab.com")
+# [1] "git@gitlab.com:fakename/fakerepo.git"
+#
+create_remote_url <- function(user, repo, protocol, domain = "github.com") {
+  switch(protocol,
+         https = sprintf("https://%s/%s/%s.git",
+                         domain, user, repo),
+         ssh = sprintf("git@%s:%s/%s.git",
+                       domain, user, repo))
 }

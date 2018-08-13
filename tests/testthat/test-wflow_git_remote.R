@@ -24,9 +24,18 @@ test_that("create_remote_url can create ssh URLs.", {
   expect_identical(actual, expected)
 })
 
-test_that("create_remote_url throws error for improper protocol.", {
-  expect_error(workflowr:::create_remote_url("fakename", "fakerepo", "wrong"),
-               "Invalid input for protocol. You entered: wrong")
+test_that("create_remote_url can create https URLs for GitLab.", {
+  expected <- "https://gitlab.com/fakename/fakerepo.git"
+  actual <- workflowr:::create_remote_url("fakename", "fakerepo", "https",
+                                          domain = "gitlab.com")
+  expect_identical(actual, expected)
+})
+
+test_that("create_remote_url can create ssh URLs for GitLab.", {
+  expected <- "git@gitlab.com:fakename/fakerepo.git"
+  actual <- workflowr:::create_remote_url("fakename", "fakerepo", "ssh",
+                                          domain = "gitlab.com")
+  expect_identical(actual, expected)
 })
 
 # Test wflow_git_remote --------------------------------------------------------
@@ -116,4 +125,10 @@ test_that("wflow_git_remote will not update URL of non-existent remotes", {
                              repo = "fakerepo", action = "set_url",
                              project = site_dir),
                "wrong is not defined as a remote.")
+})
+
+test_that("wflow_git_remote throws error for improper protocol", {
+  expect_error(wflow_git_remote(remote = "origin", user = "fakename",
+                                repo = "fakerepo", protocol = "wrong"),
+               "protocol must be either https or ssh. You entered: wrong")
 })

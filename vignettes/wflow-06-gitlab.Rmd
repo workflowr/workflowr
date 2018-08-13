@@ -1,5 +1,5 @@
 ---
-title: "Hosting worklowr using GitLab"
+title: "Hosting workflowr websites using GitLab"
 subtitle: "workflowr version `r utils::packageVersion('workflowr')`"
 author: "Luke Zappia, John Blischak"
 date: "`r Sys.Date()`"
@@ -27,8 +27,7 @@ a basic knowledge of using git from a command line interface.
 
 The first thing we need to do is set up the project we want to host. We can do
 this by following the first few steps of the instructions in the
-"Getting started" vignette, however we can't use the `wflow_git_remote`
-command as it assumes we will be using GitHub. When you get to that stage follow
+"Getting started" vignette. When you get to the section [Deploy the website](wflow-01-getting-started.html#deploy-the-website), follow
 the rest of the steps in this vignette.
 
 ## Step 1: Set up a remote repository
@@ -36,18 +35,23 @@ the rest of the steps in this vignette.
 Log in to the GitLab instance you want to use and create a repository to host
 your project. You will need to know your user name and the repository name for
 the following steps (here we are going to use "myname" and "myproject") as well
-as a URL for the hosting instance.
+as a URL for the hosting instance. The example below assumes you are using
+GitLab.com. If instead you are using a custom instance of GitLab, you will need
+to change the value for the argument `domain` accordingly ^[For example, the
+University of Chicago hosts a GitLab instance for its researchers at
+https://git.rcc.uchicago.edu/, which would require setting `domain =
+"git.rcc.uchicago.edu"`].
+
+```{r wflow-git-remote, eval=FALSE}
+wflow_git_remote(remote = "origin", user = "myname", repo = "myproject",
+                 domain = "gitlab.com")
+```
 
 We now want to connect our local git repository to the one we have just created
-on GitLab. Helpully GitLab provides us instructions on how to do that under
-"Existing Git respository" on our new repository page. The simplest thing to
-do is copy these commands and run them in your local repository directory. If
-you can't see the commands or want to do it manually the most important parts
-are:
+on GitLab:
 
-```
-git remote add origin HOSTING_URL/myname/myproject.git
-git push origin master
+```{r wflow-git-push, eval=FALSE}
+wflow_git_push()
 ```
 
 If this step has worked correctly you should be able to refresh your GitLab

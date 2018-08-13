@@ -5,8 +5,9 @@
 \title{Build the site}
 \usage{
 wflow_build(files = NULL, make = is.null(files), update = FALSE,
-  republish = FALSE, view = interactive(), seed = 12345, log_dir = NULL,
-  verbose = FALSE, local = FALSE, dry_run = FALSE, project = ".")
+  republish = FALSE, view = interactive(), seed = 12345,
+  log_dir = NULL, verbose = FALSE, local = FALSE, dry_run = FALSE,
+  project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in

@@ -5,7 +5,8 @@
 \title{Manage remote Git repositories}
 \usage{
 wflow_git_remote(remote = NULL, user = NULL, repo = NULL,
-  protocol = "https", action = "add", verbose = TRUE, project = ".")
+  protocol = "https", action = "add", domain = "github.com",
+  verbose = TRUE, project = ".")
 }
 \arguments{
 \item{remote}{character (default: NULL). The name of the remote.}
@@ -22,6 +23,10 @@ with GitHub. Must be either "https" or "ssh".}
 \item{action}{character (default: "add"). The action to perform on the
 remotes. Must be one of "add", "remove", or "set_url". This argument is
 ignored if \code{remote = NULL}.}
+
+\item{domain}{character (default: "github.com"). The domain of the remote
+host. For example, if you want to host your Git repository at GitLab, you
+would specify "gitlab.com".}
 
 \item{verbose}{logical (default: TRUE). Display the current remotes.
 Analogous to \code{git remote -v}.}

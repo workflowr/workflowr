@@ -1,6 +1,8 @@
 # workflowr 1.1.1.9000
 
 * Add instructions for hosting workflowr website with GitLab (@lazappi in #112)
+* Add argument `domain` to `wflow_git_remote()` to allow specifying any remote
+Git host, e.g. `domain = "gitlab.com"`
 * Insert warning into HTML if user configures the knitr chunk option
 `fig.path`, which workflowr ignores (idea from @lazappi in #114)
 

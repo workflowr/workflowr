@@ -4,9 +4,10 @@
 \alias{wflow_publish}
 \title{Publish the site}
 \usage{
-wflow_publish(files = NULL, message = NULL, all = FALSE, force = FALSE,
-  update = FALSE, republish = FALSE, view = interactive(), seed = 12345,
-  verbose = FALSE, dry_run = FALSE, project = ".")
+wflow_publish(files = NULL, message = NULL, all = FALSE,
+  force = FALSE, update = FALSE, republish = FALSE,
+  view = interactive(), seed = 12345, verbose = FALSE,
+  dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). R Markdown files and other files to

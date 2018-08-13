@@ -73,38 +73,21 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
 
   project <- absolute(project)
 
-  if (git2r::in_repository(project)) {
-    r <- git2r::repository(project, discover = TRUE)
-  } else{
+  if (!git2r::in_repository(project))
     stop("The specified path to the project is not in a Git repository: ",
          project)
-  }
 
+  r <- git2r::repository(project, discover = TRUE)
   remotes_current <- git2r::remotes(r)
 
   # Add, remove, or change URL based on value of `action`
-  if (action == "add" & !is.null(remote)) {
-    if (remote %in% remotes_current)
-      stop(remote, " is already defined as a remote.\n",
-           "Use `action = \"set_url\"` to update the URL.")
-    if (is.null(user) | is.null(repo))
-      stop("Must specify both `user` and `repo` to add remote.")
-    remote_url <- create_remote_url(user, repo, protocol)
-    git2r::remote_add(r, remote, remote_url)
-  } else if (action == "remove" & !is.null(remote)) {
-    if (remote %in% remotes_current) {
-      git2r::remote_remove(r, remote)
-    } else {
-      stop(remote, " is not defined as a remote. Unable to remove.")
-    }
-  } else if (action == "set_url" & !is.null(remote)) {
-    if (!(remote %in% remotes_current))
-      stop(remote, " is not defined as a remote.\n",
-           "Use `action = \"add\"` to add it.")
-    if (is.null(user) | is.null(repo))
-      stop("Must specify both `user` and `repo` to change URL with set_url.")
-    remote_url <- create_remote_url(user, repo, protocol)
-    git2r::remote_set_url(r, remote, remote_url)
+  if (!is.null(remote)) {
+    switch(action,
+           add = git_remote_add(r, remotes_current, remote,
+                                user, repo, protocol),
+           remove = git_remote_remove(r, remotes_current, remote),
+           set_url = git_remote_set_url(r, remotes_current, remote,
+                                        user, repo, protocol))
   }
 
   remotes <- git2r::remotes(r)
@@ -127,6 +110,40 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
   # Return invisibly a named character vector of the remote URLs.
   names(urls) <- remotes
   return(invisible(urls))
+}
+
+# Add a remote repository
+git_remote_add <- function(r, remotes_current, remote, user, repo, protocol) {
+  if (remote %in% remotes_current)
+    stop(remote, " is already defined as a remote.\n",
+         "Use `action = \"set_url\"` to update the URL.")
+  if (is.null(user) | is.null(repo))
+    stop("Must specify both `user` and `repo` to add remote.")
+
+  remote_url <- create_remote_url(user, repo, protocol)
+  git2r::remote_add(r, remote, remote_url)
+  return(invisible(remote_url))
+}
+
+# Remove a remote repository
+git_remote_remove <- function(r, remotes_current, remote) {
+  if (!(remote %in% remotes_current))
+    stop(remote, " is not defined as a remote. Unable to remove.")
+
+  git2r::remote_remove(r, remote)
+}
+
+# Set URL for a remote repository
+git_remote_set_url <- function(r, remotes_current, remote, user, repo, protocol) {
+  if (!(remote %in% remotes_current))
+    stop(remote, " is not defined as a remote.\n",
+         "Use `action = \"add\"` to add it.")
+  if (is.null(user) | is.null(repo))
+    stop("Must specify both `user` and `repo` to change URL with set_url.")
+
+  remote_url <- create_remote_url(user, repo, protocol)
+  git2r::remote_set_url(r, remote, remote_url)
+  return(invisible(remote_url))
 }
 
 # Create remote URLs.

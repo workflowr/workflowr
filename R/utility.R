@@ -157,12 +157,20 @@ glob <- function(paths) {
   return(result)
 }
 
-# If the user doesn't define a URL for a GitHub repo in the YAML header or
+# If the user doesn't define a URL for a host repo in the YAML header or
 # _workflowr.yml, determine the URL from the remote "origin". If this remote
 # doesn't exist, return NA.
-get_github_from_remote <- function(path) {
-  # HTTPS: https://github.com/jdblischak/workflowr.git
-  # SSH: git@github.com:jdblischak/workflowr.git
+#
+# GitHub:
+# HTTPS: https://github.com/jdblischak/workflowr.git
+# SSH: git@github.com:jdblischak/workflowr.git
+# Return value:  https://github.com/jdblischak/workflowr
+#
+# GitLab:
+# HTTPS: https://gitlab.com/jdblischak/wflow-gitlab.git
+# SSH: git@gitlab.com:jdblischak/wflow-gitlab.git
+# Return value: https://gitlab.com/jdblischak/wflow-gitlab
+get_host_from_remote <- function(path) {
   if (!git2r::in_repository(path = path)) {
     return(NA_character_)
   }
@@ -172,15 +180,12 @@ get_github_from_remote <- function(path) {
     return(NA_character_)
   }
   origin <- git2r::remote_url(r, remote = "origin")
-  if (!stringr::str_detect(origin, "github")) {
-    return(NA_character_)
-  }
-  github <- origin
+  host <- origin
   # Remove trailing .git
-  github <- stringr::str_replace(github, "\\.git$", "")
+  host <- stringr::str_replace(host, "\\.git$", "")
   # If SSH, replace with HTTPS URL
-  github <- stringr::str_replace(github, "^git@github.com:", "https://github.com/")
-  return(github)
+  host <- stringr::str_replace(host, "^git@(.+):", "https://\\1/")
+  return(host)
 }
 
 # Get output directory if it exists

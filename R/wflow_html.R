@@ -197,7 +197,7 @@ wflow_html <- function(...) {
     input <- file.path(getwd(), x)
 
     # Need to refactor obtaining workflowr options
-    github = get_github_from_remote(getwd())
+    github = get_host_from_remote(getwd())
     output_dir <- get_output_dir(directory = getwd())
     if (!is.null(output_dir)) {
       input <- file.path(output_dir, x)

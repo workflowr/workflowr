@@ -12,7 +12,7 @@ wflow_options <- function(file) {
   # Default wflow options
   wflow_opts <- list(knit_root_dir = NULL,
                      seed = 12345,
-                     github = get_github_from_remote(dirname(file)),
+                     github = get_host_from_remote(dirname(file)),
                      sessioninfo = "sessionInfo()")
 
   # Get options from a potential _workflowr.yml file

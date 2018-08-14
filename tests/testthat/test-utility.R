@@ -238,38 +238,38 @@ test_that("relative handles NA and NULL", {
 })
 
 
-# Test get_github_from_remote --------------------------------------------------
+# Test get_host_from_remote --------------------------------------------------
 
-tmp_dir <- tempfile("test-check_vc")
+tmp_dir <- tempfile("test-get_host_from_remote")
 dir.create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 
-test_that("get_github_from_remote returns NA when no Git repo", {
-  observed <- workflowr:::get_github_from_remote(tmp_dir)
+test_that("get_host_from_remote returns NA when no Git repo", {
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
   expect_identical(observed, NA_character_)
 })
 
 git2r::init(tmp_dir)
 r <- git2r::repository(tmp_dir)
 
-test_that("get_github_from_remote returns NA when no remotes", {
-  observed <- workflowr:::get_github_from_remote(tmp_dir)
+test_that("get_host_from_remote returns NA when no remotes", {
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
   expect_identical(observed, NA_character_)
 })
 
 wflow_git_remote(remote = "nonstandard", user = "testuser", repo = "testrepo",
                  verbose = FALSE, project = tmp_dir)
 
-test_that("get_github_from_remote returns NA when no origin", {
-  observed <- workflowr:::get_github_from_remote(tmp_dir)
+test_that("get_host_from_remote returns NA when no origin", {
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
   expect_identical(observed, NA_character_)
 })
 
 wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
                  verbose = FALSE, project = tmp_dir)
 
-test_that("get_github_from_remote works with HTTPS protocol", {
-  observed <- workflowr:::get_github_from_remote(tmp_dir)
+test_that("get_host_from_remote works with HTTPS protocol", {
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
   expect_identical(observed, "https://github.com/testuser2/testrepo")
 })
 
@@ -277,9 +277,44 @@ wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
                  protocol = "ssh", action = "set_url", verbose = FALSE,
                  project = tmp_dir)
 
-test_that("get_github_from_remote works with SSH protocol", {
-  observed <- workflowr:::get_github_from_remote(tmp_dir)
+test_that("get_host_from_remote works with SSH protocol", {
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
   expect_identical(observed, "https://github.com/testuser2/testrepo")
+})
+
+wflow_git_remote(remote = "origin", action = "remove", verbose = FALSE,
+                 project = tmp_dir)
+
+test_that("get_host_from_remote works with GitLab.com HTTPS protocol", {
+  wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
+                   domain = "gitlab.com", project = tmp_dir)
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
+  expect_identical(observed, "https://gitlab.com/testuser2/testrepo")
+  wflow_git_remote(remote = "origin", action = "remove", project = tmp_dir)
+})
+
+test_that("get_host_from_remote works with GitLab.com SSH protocol", {
+  wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
+                   protocol = "ssh", domain = "gitlab.com", project = tmp_dir)
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
+  expect_identical(observed, "https://gitlab.com/testuser2/testrepo")
+  wflow_git_remote(remote = "origin", action = "remove", project = tmp_dir)
+})
+
+test_that("get_host_from_remote works with custom HTTPS protocol", {
+  wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
+                   domain = "git.rcc.uchicago.edu", project = tmp_dir)
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
+  expect_identical(observed, "https://git.rcc.uchicago.edu/testuser2/testrepo")
+  wflow_git_remote(remote = "origin", action = "remove", project = tmp_dir)
+})
+
+test_that("get_host_from_remote works with custom SSH protocol", {
+  wflow_git_remote(remote = "origin", user = "testuser2", repo = "testrepo",
+                   protocol = "ssh", domain = "git.rcc.uchicago.edu", project = tmp_dir)
+  observed <- workflowr:::get_host_from_remote(tmp_dir)
+  expect_identical(observed, "https://git.rcc.uchicago.edu/testuser2/testrepo")
+  wflow_git_remote(remote = "origin", action = "remove", project = tmp_dir)
 })
 
 unlink(tmp_dir, recursive = TRUE)

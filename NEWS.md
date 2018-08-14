@@ -5,6 +5,9 @@
 Git host, e.g. `domain = "gitlab.com"`
 * Insert warning into HTML if user configures the knitr chunk option
 `fig.path`, which workflowr ignores (idea from @lazappi in #114)
+* Improve formatting of tables using [Bootstrap table classes][bootstrap-tables]
+
+[bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 
 # workflowr 1.1.1
 

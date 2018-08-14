@@ -130,28 +130,30 @@ get_versions <- function(input, output_dir, blobs, r, github) {
 
   template <-
 "
-<table style = \"border-collapse:separate; border-spacing:5px;\">
+<div class=\"table-responsive\">
+<table class=\"table table-condensed table-hover\">
 <thead>
 <tr>
-<th style=\"text-align:left;\"> File </th>
-<th style=\"text-align:left;\"> Version </th>
-<th style=\"text-align:left;\"> Author </th>
-<th style=\"text-align:left;\"> Date </th>
-<th style=\"text-align:left;\"> Message </th>
+<th>File</th>
+<th>Version</th>
+<th>Author</th>
+<th>Date</th>
+<th>Message</th>
 </tr>
 </thead>
 <tbody>
 {{#blobs_file}}
 <tr>
-<td style=\"text-align:left;\"> {{{File}}} </td>
-<td style=\"text-align:left;\"> {{{Version}}} </td>
-<td style=\"text-align:left;\"> {{Author}} </td>
-<td style=\"text-align:left;\"> {{Date}} </td>
-<td style=\"text-align:left;\"> {{Message}} </td>
+<td>{{{File}}}</td>
+<td>{{{Version}}}</td>
+<td>{{Author}}</td>
+<td>{{Date}}</td>
+<td>{{Message}}</td>
 </tr>
 {{/blobs_file}}
 </tbody>
 </table>
+</div>
 "
   data <- list(blobs_file = unname(whisker::rowSplit(blobs_file)))
   text <- whisker::whisker.render(template, data)
@@ -196,24 +198,26 @@ get_versions_fig <- function(fig, r, github) {
     "
   <details>
   <summary><em>Expand here to see past versions of {{fig}}:</em></summary>
-  <table style = \"border-collapse:separate; border-spacing:5px;\">
+  <div class=\"table-responsive\">
+  <table class=\"table table-condensed table-striped\">
   <thead>
   <tr>
-  <th style=\"text-align:left;\"> Version </th>
-  <th style=\"text-align:left;\"> Author </th>
-  <th style=\"text-align:left;\"> Date </th>
+  <th>Version</th>
+  <th>Author</th>
+  <th>Date</th>
   </tr>
   </thead>
   <tbody>
   {{#blobs_file}}
   <tr>
-  <td style=\"text-align:left;\"> {{{Version}}} </td>
-  <td style=\"text-align:left;\"> {{Author}} </td>
-  <td style=\"text-align:left;\"> {{Date}} </td>
+  <td>{{{Version}}}</td>
+  <td>{{Author}}</td>
+  <td>{{Date}}</td>
   </tr>
   {{/blobs_file}}
   </tbody>
   </table>
+  </div>
   </details>
   "
   data <- list(fig = basename(fig),
@@ -402,7 +406,7 @@ create_objects_table <- function(env) {
   table <- knitr::kable(df, format = "html", row.names = FALSE)
   # Add table formatting
   table <- stringr::str_replace(table, "<table>",
-            "<table style = \"border-collapse:separate; border-spacing:5px;\">")
+            "<table class=\"table table-condensed table-hover\">")
   return(as.character(table))
 }
 

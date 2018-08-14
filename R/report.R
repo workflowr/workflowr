@@ -199,7 +199,7 @@ get_versions_fig <- function(fig, r, github) {
   <details>
   <summary><em>Expand here to see past versions of {{fig}}:</em></summary>
   <div class=\"table-responsive\">
-  <table class=\"table table-condensed table-striped\">
+  <table class=\"table table-condensed table-hover\">
   <thead>
   <tr>
   <th>Version</th>

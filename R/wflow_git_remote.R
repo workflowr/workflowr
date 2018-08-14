@@ -127,7 +127,7 @@ git_remote_add <- function(r, remotes_current, remote, user, repo, protocol,
   if (is.null(user) | is.null(repo))
     stop("Must specify both `user` and `repo` to add remote.")
 
-  remote_url <- create_remote_url(user, repo, protocol)
+  remote_url <- create_remote_url(user, repo, protocol, domain)
   git2r::remote_add(r, remote, remote_url)
   return(invisible(remote_url))
 }
@@ -149,7 +149,7 @@ git_remote_set_url <- function(r, remotes_current, remote, user, repo, protocol,
   if (is.null(user) | is.null(repo))
     stop("Must specify both `user` and `repo` to change URL with set_url.")
 
-  remote_url <- create_remote_url(user, repo, protocol)
+  remote_url <- create_remote_url(user, repo, protocol, domain)
   git2r::remote_set_url(r, remote, remote_url)
   return(invisible(remote_url))
 }

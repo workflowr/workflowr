@@ -85,6 +85,28 @@ test_that("wflow_git_remote can remove the only remaining remote.", {
   expect_true(length(remotes) == 0)
 })
 
+test_that("wflow_git_remote can add a GitLab remote.", {
+  expect_message(remotes <- wflow_git_remote(remote = "gitlab",
+                                             user = "fakename",
+                                             repo = "fakerepo",
+                                             domain = "gitlab.com",
+                                             project = site_dir),
+                 "The repository has the following remotes set:")
+  expect_true(remotes["gitlab"] == "https://gitlab.com/fakename/fakerepo.git")
+  wflow_git_remote(remote = "gitlab", action = "remove", project = site_dir)
+})
+
+test_that("wflow_git_remote can add a custom remote.", {
+  expect_message(remotes <- wflow_git_remote(remote = "custom",
+                                             user = "fakename",
+                                             repo = "fakerepo",
+                                             domain = "git.rcc.uchicago.edu",
+                                             project = site_dir),
+                 "The repository has the following remotes set:")
+  expect_true(remotes["custom"] == "https://git.rcc.uchicago.edu/fakename/fakerepo.git")
+  wflow_git_remote(remote = "custom", action = "remove", project = site_dir)
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_git_remote rejects remotes with spaces or punctuation", {

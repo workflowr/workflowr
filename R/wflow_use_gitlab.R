@@ -29,7 +29,8 @@ wflow_use_gitlab <- function(project = ".") {
     public <- file.path(dirname(s$docs), "public")
     file.rename(s$docs, public)
     git2r::add(r, public)
-    git2r::add(r, s$docs)
+    # Have to use aboslute path since the directory was deleted
+    git2r::add(r, absolute(s$docs))
   }
 
   # wflow_rename()

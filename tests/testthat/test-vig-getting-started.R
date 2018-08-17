@@ -6,7 +6,7 @@ library("git2r")
 
 # start project in a tempdir
 site_dir <- tempfile("new-")
-suppressMessages(wflow_start(site_dir, change_wd = FALSE,user.name = "Test Name",
+suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
                              user.email = "test@email"))
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)

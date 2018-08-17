@@ -13,12 +13,11 @@ test_that("wflow_site returns the correct output_dir", {
   expect_identical(observed$output_dir, file.path(tmp_dir, "docs"))
 
   # Change output_dir to public/
-  site_yml <- file.path(tmp_dir, "analysis", "_site.yml")
-  site_yml_lines <- readLines(site_yml)
-  site_yml_lines <- stringr::str_replace(site_yml_lines,
-                                          "output_dir: \"../docs\"",
-                                          "output_dir: \"../public\"")
-  writeLines(site_yml_lines, site_yml)
+  site_yml_fname <- file.path(tmp_dir, "analysis", "_site.yml")
+  site_yml <- yaml::yaml.load_file(site_yml_fname)
+  site_yml$output_dir <- "../public"
+  yaml::write_yaml(site_yml, file = site_yml_fname)
+
   observed <- wflow_site(file.path(tmp_dir, "analysis"))
   expect_identical(observed$output_dir, file.path(tmp_dir, "public"))
   # get_output_dir() also creates the output directory

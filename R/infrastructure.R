@@ -1,6 +1,10 @@
 # Infrastructure for workflowr projects.
 
-# These templates are used by wflow_start().
+# This file defines templates for use with various workflowr functions. They are
+# inserted with `cat(glue::glue(x), file = fname)`, which removes the starting
+# blank line and leaves a final blank line in the output file.
+
+# wflow_start() ----------------------------------------------------------------
 
 templates <- list(
   .gitignore = '
@@ -154,6 +158,8 @@ StripTrailingWhitespace: Yes
 '
 )
 
+# wflow_html() -----------------------------------------------------------------
+
 # These templates are used by wflow_html() to insert HTML before and after the
 # document body.
 
@@ -191,3 +197,18 @@ footer is added to webpages before the MathJax javascript. -->
 
 '
 )
+
+# wflow_use_gitlab() -----------------------------------------------------------
+
+gitlab <- list(`.gitlab-ci.yml` = '
+pages:
+  stage: deploy
+  script:
+    - echo \'Nothing to do...\'
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
+')

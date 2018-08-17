@@ -302,7 +302,7 @@ wflow_start <- function(directory,
 
   # Add files ------------------------------------------------------------------
 
-  # Use templates defined in R/templates.R
+  # Use templates defined in R/infrastructure.R
   names(templates)[which(names(templates) == "Rproj")] <-
     glue::glue("{basename(directory)}.Rproj")
   names(templates) <- file.path(directory, names(templates))

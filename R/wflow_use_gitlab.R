@@ -51,18 +51,8 @@ wflow_use_gitlab <- function(project = ".") {
 
   # .gitlab-ci.yml -------------------------------------------------------------
 
-  gitlab_yml <- "
-pages:
-  stage: deploy
-  script:
-    - echo 'Nothing to do...'
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
-
-"
+  # The list `gitlab` is defined in R/infrastructure.R
+  gitlab_yml <- gitlab[[".gitlab-ci.yml"]]
   gitlab_yml_fname <- file.path(s$root, ".gitlab-ci.yml")
   if (file.exists(gitlab_yml_fname)) {
     message(".gitlab-ci.yml file already exists")

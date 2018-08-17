@@ -4,9 +4,14 @@
 #'
 #' 1. Rename docs/ to public/
 #' 2. Edit output_dir in _site.yml
-#' 3. Create .gitlab-ci.yml
+#' 3. Add link in navigation bar
+#' 4. Create .gitlab-ci.yml
 #'
 #' https://docs.gitlab.com/ee/ci/yaml/README.html#pages
+#'
+#' @param project character (default: ".") By default the function assumes the
+#'   current working directory is within the project. If this is not true,
+#'   you'll need to provide the path to the project directory.
 #'
 #'@export
 wflow_use_gitlab <- function(project = ".") {
@@ -40,6 +45,19 @@ wflow_use_gitlab <- function(project = ".") {
     message("Output directory is already set to public/")
   } else {
     site_yml$output_dir <- "../public"
+    yaml::write_yaml(site_yml, file = site_yml_fname)
+    git2r::add(r, site_yml_fname)
+  }
+
+  # Add link in navigation bar -------------------------------------------------
+
+  host <- get_host_from_remote(path = project)
+  if (!is.na(host)) {
+    site_yml$navbar$right <- c(site_yml$navbar$right,
+                               list(right = list(
+                                 icon = "fa-gitlab",
+                                 text = "Source code",
+                                 href = host)))
     yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
   }

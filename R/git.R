@@ -87,6 +87,34 @@ check_git_config <- function(path, custom_message = "this function") {
   }
 }
 
+# Check for staged changes
+#
+# path character. Path to repository
+#
+# If staged changes are detected, stops the program.
+check_staged_changes <- function(path, custom_message = "this function") {
+  stopifnot(is.character(path))
+
+  r <- git2r::repository(path, discover = TRUE)
+  git_status <- git2r::status(r)
+
+  if (length(git_status$staged) == 0) {
+    return(invisible())
+  } else {
+    # Format files
+    files_staged <- as.character(git_status$staged)
+    files_staged <- file.path(git2r_workdir(r), files_staged)
+    files_staged <- relative(files_staged)
+    files_staged <- utils::capture.output(dput(files_staged))
+    stop(wrap(
+      "The Git repository has staged changes. You must decide if you want to
+      commit these changes first before you run ", custom_message, ". To do
+      this, run the following command in R:\n\n wflow_git_commit(",
+      files_staged, ")"),
+      call. = FALSE)
+  }
+}
+
 # Obtain all the committed files in a Git repository at a given commit.
 #
 # The default is to use the head commit.

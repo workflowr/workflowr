@@ -45,23 +45,20 @@ knit_root_dir: "."
 ',
     `analysis/_site.yml` = '
 name: "{name}"
-output_dir: "../docs"
+output_dir: ../docs
 navbar:
   title: "{name}"
   left:
-    - text: "Home"
-      href: index.html
-    - text: "About"
-      href: about.html
-    - text: "License"
-      href: license.html
-  right:
-    - icon: fa-github
-      href: https://github.com/jdblischak/workflowr
+  - text: Home
+    href: index.html
+  - text: About
+    href: about.html
+  - text: License
+    href: license.html
 output:
   workflowr::wflow_html:
-    toc: true
-    toc_float: true
+    toc: yes
+    toc_float: yes
     theme: cosmo
     highlight: textmate
 

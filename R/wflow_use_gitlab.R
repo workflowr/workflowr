@@ -37,15 +37,10 @@ wflow_use_gitlab <- function(project = ".") {
   }
   site_yml <- yaml::yaml.load_file(site_yml_fname)
   if (site_yml$output_dir == "../public") {
-    message("Output directory is already set to \"../public\"")
+    message("Output directory is already set to public/")
   } else {
-    # yaml::write_yaml creates a lot of noise (it removes quotation marks),
-    # so instead directly edit text.
-    site_yml_text <- readLines(site_yml_fname)
-    site_yml_gitlab <- stringr::str_replace(site_yml_text,
-                                            "output_dir: .+",
-                                            "output_dir: \"../public\"")
-    writeLines(site_yml_gitlab, con = site_yml_fname)
+    site_yml$output_dir <- "../public"
+    yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
   }
 

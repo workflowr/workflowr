@@ -11,7 +11,6 @@ on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)
 r <- git2r::repository(path = site_dir)
 s <- wflow_status(project = site_dir)
-wflow_publish(rownames(s$status), view = FALSE, project = site_dir)
 
 # Test GitLab instructions -----------------------------------------------------
 
@@ -23,6 +22,10 @@ test_that("Add GitLab remote", {
 })
 
 test_that("Setup GitLab infrastructure", {
+
+  skip_on_cran()
+
+  wflow_publish(rownames(s$status), view = FALSE, project = site_dir)
   gitlab <- wflow_use_gitlab(project = site_dir)
   s <- wflow_status(project = site_dir)
   expect_identical(absolute(s$docs), file.path(site_dir, "public"))
@@ -39,6 +42,9 @@ test_that("Setup GitLab infrastructure", {
 })
 
 test_that("Republish analyses", {
+
+  skip_on_cran()
+
   pub <- wflow_publish(republish = TRUE, view = FALSE, project = site_dir)
   expect_identical(unique(basename(dirname(pub$step2$html))), "public")
   html_committed <- stringr::str_subset(pub$step3$commit_files, "html$")

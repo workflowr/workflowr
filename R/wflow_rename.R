@@ -160,11 +160,9 @@ wflow_rename <- function(files,
     d_files_from <- list.files(path = dirs_from[i], all.files = TRUE,
                                full.names = TRUE, recursive = TRUE)
     # Replace with new directory name
-    d_files_to <- stringr::str_replace(d_files_from,
-                                       absolute(dirs_from[i]),
-                                       absolute(dirs_to[i]))
-    files <- c(files, relative(d_files_from))
-    to <- c(to, relative(d_files_to))
+    d_files_to <- stringr::str_replace(d_files_from, dirs_from[i], dirs_to[i])
+    files <- c(files, d_files_from)
+    to <- c(to, d_files_to)
   }
 
   # Gather files to commit -----------------------------------------------------

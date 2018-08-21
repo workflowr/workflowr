@@ -100,11 +100,11 @@ wflow_rename <- function(files,
   p <- wflow_paths(project = project)
 
   # Should changes be committed?
-  if (!is.na(p$git) && git) {
-    use_git <- TRUE
+  use_git <- !is.na(p$git) && git
+
+  # Even if not committing files, still assess the Git repository
+  if (!is.na(p$git)) {
     r <- git2r::repository(path = p$git)
-  } else {
-    use_git <- FALSE
   }
 
   # Early stops
@@ -120,7 +120,7 @@ wflow_rename <- function(files,
 
   # from and to must have same file extensions
 
-  # Gather files to rename -----------------------------------------------------
+  # Gather R Markdown accessory files to rename --------------------------------
 
   # Are any of the specified files R Markdown files in the analysis directory?
   files_ext <- tools::file_ext(files)
@@ -149,9 +149,27 @@ wflow_rename <- function(files,
     }
   }
 
+  # Expand directories ---------------------------------------------------------
+
+  is_dir <- dir.exists(files)
+  dirs_from <- files[is_dir]
+  dirs_to <- to[is_dir]
+  files <- files[!is_dir]
+  to <- to[!is_dir]
+  for (i in seq_along(dirs_from)) {
+    d_files_from <- list.files(path = dirs_from[i], all.files = TRUE,
+                               full.names = TRUE, recursive = TRUE)
+    # Replace with new directory name
+    d_files_to <- stringr::str_replace(d_files_from,
+                                       absolute(dirs_from[i]),
+                                       absolute(dirs_to[i]))
+    files <- c(files, relative(d_files_from))
+    to <- c(to, relative(d_files_to))
+  }
+
   # Gather files to commit -----------------------------------------------------
 
-  if (use_git) {
+  if (!is.na(p$git)) {
     # Obtain committed files
     files_committed <- relative(get_committed_files(r))
 
@@ -165,7 +183,14 @@ wflow_rename <- function(files,
   # rename files ---------------------------------------------------------------
 
   if (!dry_run) {
+    # Create any new directories, otherwise file.rename won't work
+    lapply(to, function(x) {
+      dir.create(dirname(x), showWarnings = FALSE, recursive = TRUE)
+    })
+    # Rename individual files
     file.rename(from = files, to = to)
+    # Remove any previous directories
+    lapply(dirs_from, unlink, recursive = TRUE)
   }
 
   # Commit renamed files -------------------------------------------------------

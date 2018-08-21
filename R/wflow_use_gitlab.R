@@ -27,13 +27,9 @@ wflow_use_gitlab <- function(project = ".") {
     message("The website directory is already named \"public\"")
   } else {
     public <- file.path(dirname(s$docs), "public")
-    file.rename(s$docs, public)
-    git2r::add(r, public)
-    # Have to use aboslute path since the directory was deleted
-    git2r::add(r, absolute(s$docs))
+    renamed <- wflow_rename(s$docs, public, git = FALSE, project = project)
+    git2r::add(r, absolute(renamed$files_git))
   }
-
-  # wflow_rename()
 
   # Edit output_dir in _site.yml -----------------------------------------------
 

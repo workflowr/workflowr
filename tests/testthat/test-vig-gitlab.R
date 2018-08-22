@@ -38,7 +38,8 @@ test_that("Setup GitLab infrastructure", {
   expect_equal(length(git_status$untracked), 0)
   site_yml_fname <- file.path(s$analysis, "_site.yml")
   site_yml <- yaml::yaml.load_file(site_yml_fname)
-  site_yml$navbar$right[["icon"]] <- "fa-gitlab"
+  expect_identical(site_yml$navbar$right[[1]][["icon"]], "fa-gitlab")
+  expect_identical(site_yml$output_dir, "../public")
 })
 
 test_that("Republish analyses", {
@@ -46,6 +47,7 @@ test_that("Republish analyses", {
   skip_on_cran()
 
   pub <- wflow_publish(republish = TRUE, view = FALSE, project = site_dir)
+  expect_false(is.null(pub$step2$html))
   expect_identical(unique(basename(dirname(pub$step2$html))), "public")
   html_committed <- stringr::str_subset(pub$step3$commit_files, "html$")
   expect_identical(unique(basename(dirname(html_committed))), "public")

@@ -50,11 +50,9 @@ wflow_use_gitlab <- function(project = ".") {
 
   host <- get_host_from_remote(path = project)
   if (!is.na(host)) {
-    site_yml$navbar$right <- c(site_yml$navbar$right,
-                               list(right = list(
-                                 icon = "fa-gitlab",
-                                 text = "Source code",
-                                 href = host)))
+    site_yml$navbar$right <- list(list(icon = "fa-gitlab",
+                                       text = "Source code",
+                                       href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
   }

@@ -8,6 +8,7 @@ init:
           $ErrorActionPreference = "Stop"
           Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
           Import-Module '..\appveyor-tool.ps1'
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 install:
   ps: Bootstrap
@@ -58,14 +59,8 @@ test_script:
   - travis-tool.sh run_tests
 
 on_failure:
-  - export APPVEYOR_SSH_BLOCK=true
-  - curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
-
-on_finish:
-  - export APPVEYOR_SSH_BLOCK=true
-  - curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
 artifacts:
   - path: '*.Rcheck\**\*.log'

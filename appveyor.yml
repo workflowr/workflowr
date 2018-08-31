@@ -58,14 +58,14 @@ test_script:
   - travis-tool.sh run_tests
 
 on_failure:
-  - sh: export APPVEYOR_SSH_BLOCK=true
-  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+  - export APPVEYOR_SSH_BLOCK=true
+  - curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
 
 on_finish:
-  - sh: export APPVEYOR_SSH_BLOCK=true
-  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
+  - export APPVEYOR_SSH_BLOCK=true
+  - curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
 artifacts:
   - path: '*.Rcheck\**\*.log'

@@ -27,6 +27,8 @@ test_that("Setup GitLab infrastructure", {
 
   wflow_publish(rownames(s$status), view = FALSE, project = site_dir)
   gitlab <- wflow_use_gitlab(project = site_dir)
+  print("The output from wflow_use_gitlab is:")
+  print(gitlab)
   s <- wflow_status(project = site_dir)
   print("The directory structure at this point is:")
   print(dir(site_dir))

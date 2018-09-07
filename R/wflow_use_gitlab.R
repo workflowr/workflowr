@@ -25,6 +25,7 @@ wflow_use_gitlab <- function(project = ".") {
 
   if (basename(s$docs) == "public") {
     message("The website directory is already named \"public\"")
+    renamed <- NULL
   } else {
     public <- file.path(dirname(s$docs), "public")
     renamed <- wflow_rename(s$docs, public, git = FALSE, project = project)
@@ -73,5 +74,5 @@ wflow_use_gitlab <- function(project = ".") {
 
   git2r::commit(r, message = "Host with GitLab.")
 
-  return()
+  return(renamed)
 }

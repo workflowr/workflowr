@@ -231,7 +231,11 @@ wflow_publish <- function(
 
   # Step 3 only needs to be performed if files were built in step 2.
   if (length(step2$built) > 0) {
-    dir_figure <- file.path(s2$docs, "figure", basename(step2$built))
+
+    # Have to loop on step2$built as an underlying git2r function requires a
+    # length 1 character vector
+    figs_path <- vapply(basename(step2$built), create_figure_path, character(1))
+    dir_figure <- file.path(s2$docs, figs_path)
     site_libs <- file.path(s2$docs, "site_libs")
     docs_nojekyll <- file.path(s2$docs, ".nojekyll")
     files_to_commit <- c(step2$html, dir_figure, site_libs, docs_nojekyll)

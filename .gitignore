@@ -4,6 +4,7 @@
 .Ruserdata
 .Rapp.history
 .DS_Store
+.vscode
 inst/doc
 vignettes/*R
 vignettes/*html

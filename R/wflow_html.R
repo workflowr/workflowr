@@ -161,7 +161,8 @@ wflow_html <- function(...) {
     # the setting was ignored.
     options$fig.path.orig <- options$fig.path
 
-    options$fig.path <- file.path("figure", knitr::current_input())
+    input <- knitr::current_input()
+    options$fig.path <- create_figure_path(input)
     # Requires trailing slash
     options$fig.path <- paste0(options$fig.path, .Platform$file.sep)
     return(options)

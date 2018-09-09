@@ -248,9 +248,10 @@ wflow_build <- function(files = NULL, make = is.null(files),
     for (f in files_to_build) {
       message("Building ", f)
       # Remove figure files to prevent accumulating outdated files
-      figs_analysis <- file.path(p$analysis, "figure", basename(f))
+      path <- create_figure_path(basename(f))
+      figs_analysis <- file.path(p$analysis, path)
       unlink(figs_analysis, recursive = TRUE)
-      figs_docs <- file.path(p$docs, "figure", basename(f))
+      figs_docs <- file.path(p$docs, path)
       unlink(figs_docs, recursive = TRUE)
       if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)

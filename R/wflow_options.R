@@ -7,13 +7,15 @@
 #  seed - random seed to set at beginning of each analysis
 #  github - URL to associated GitHub repository
 #  sessioninfo - Function to record session information
+#  fig_path_ext - figures directory with or without .Rmd
 wflow_options <- function(file) {
 
   # Default wflow options
   wflow_opts <- list(knit_root_dir = NULL,
                      seed = 12345,
                      github = get_host_from_remote(dirname(file)),
-                     sessioninfo = "sessionInfo()")
+                     sessioninfo = "sessionInfo()",
+                     fig_path_ext = FALSE)
 
   # Get options from a potential _workflowr.yml file
   wflow_root <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),
@@ -35,4 +37,31 @@ wflow_options <- function(file) {
   }
 
   return(wflow_opts)
+}
+
+#' check the fig_path_ext option
+#'
+#' @param input the path to a RMarkdown file
+#'
+#' @keywords internal
+is_fig_path_ext <- function(input) {
+
+  wflow_opts <- wflow_options(input)
+
+  wflow_opts$fig_path_ext
+}
+
+#' create the path to the figure folder
+#'
+#' @param input the path to a RMarkdown file
+#'
+#' @keywords internal
+create_figure_path <- function(input) {
+
+  if (is_fig_path_ext(input)){
+    res <- file.path("figure", tools::file_path_sans_ext(input))
+  } else {
+    res <- file.path("figure", input)
+  }
+  res
 }

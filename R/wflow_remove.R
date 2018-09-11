@@ -125,10 +125,11 @@ wflow_remove <- function(files,
       files_to_remove <- c(files_to_remove, html)
     }
     # Any figure files in analysis directory?
+    fig_path <- create_figure_path(basename(rmd))
     if (p$analysis == ".") {
-      dir_figs_analysis <- create_figure_path(rmd)
+      dir_figs_analysis <- fig_path
     } else {
-      dir_figs_analysis <- file.path(p$analysis, create_figure_path(rmd))
+      dir_figs_analysis <- file.path(p$analysis, fig_path)
     }
     figs_analysis <- list.files(path = dir_figs_analysis, full.names = TRUE)
     if (length(figs_analysis) > 0) {
@@ -137,9 +138,9 @@ wflow_remove <- function(files,
     }
     # Any figure files in docs directory?
     if (p$docs == ".") {
-      dir_figs_docs <- create_figure_path(rmd)
+      dir_figs_docs <- fig_path
     } else {
-      dir_figs_docs <- file.path(p$docs, create_figure_path(rmd))
+      dir_figs_docs <- file.path(p$docs, fig_path)
     }
     figs_docs <- list.files(path = dir_figs_docs, full.names = TRUE)
     if (length(figs_docs) > 0) {

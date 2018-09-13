@@ -5,6 +5,9 @@ sudo: false
 cache: packages
 latex: false
 
+# Temporarily use callr 2.0.4
+# https://github.com/r-lib/callr/commit/abd9fe8288acba17ab6a3a797e4ad146186ed3f9#diff-35ba4a2677442e210c23a00a5601aba3
+r_github_packages: r-lib/callr@abd9fe8288acba17ab6a3a797e4ad146186ed3f9
 
 env:
   global:

@@ -72,6 +72,9 @@ test_that("An error stops execution, does not create file,
     build_rmd_external("error.Rmd", seed = 1, log_dir = l)),
                "There was an error")
   expect_false(file.exists("_site/error.html"))
+
+  skip("callr 3.0.0 doesn't write the error message to stderr")
+  # https://github.com/r-lib/callr/issues/80
   stderr_lines <- readLines(Sys.glob(file.path(l, "error.Rmd-*-err.txt")))
   expect_true(any(grepl("There was an error", stderr_lines)))
 })

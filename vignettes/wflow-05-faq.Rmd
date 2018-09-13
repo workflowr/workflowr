@@ -152,6 +152,15 @@ central location for dat:// -linked content, removing the need for the host
 computer to be running. The latter dathttpd example is an additional
 server/self-hosting option that can be used if desired.
 
+Another alternative is to upload your workflowr website to [Amazon s3][s3]. s3 is
+an object storage service for the Amazon cloud, and can be used to host static
+websites. Basic HTTP authentication can be accomplished using [CloudFront][cloudfront],
+Amazon's content delivery network, and [Lamba@Edge][lambda], which enables the 
+execution of serverless functions to customize content delivered by the CDN.
+This [blog post][hackernoon] goes into more detail about what that all means.
+A more detailed guide to setting up the bucket is [here][kynatro]. Some
+templates for scripting the process are [here][dumrauf].
+
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 
 Yes! If you'd like to create a single HTML or PDF file to distribute an isolated
@@ -186,15 +195,21 @@ the lowercase workflowr should be the preferred option.
 [beaker]: https://beakerbrowser.com/
 [beaker-install]: https://beakerbrowser.com/docs/install/
 [Bootstrap]: http://getbootstrap.com/
+[cloudfront]: https://aws.amazon.com/cloudfront/
 [dat]: https://datproject.org/
 [dat-docs]: https://docs.datproject.org/
 [dathttpd]: https://github.com/beakerbrowser/dathttpd
+[dumrauf]: https://github.com/dumrauf/serverless_static_website_with_basic_auth
 [gh-pages]: https://pages.github.com/
 [gh-status]: https://twitter.com/githubstatus
 [gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
+[hackernoon]: https://hackernoon.com/serverless-password-protecting-a-static-website-in-an-aws-s3-bucket-bfaaa01b8666
 [hashbase.io]: https://hashbase.io
 [issues]: https://github.com/jdblischak/workflowr/issues
 [johnsonlab]: https://github.com/johnsonlab
 [johnsonlab-blog]: https://johnsonlab.github.io/blog-post-22/
+[kynatro]: http://kynatro.com/blog/2018/01/03/a-step-by-step-guide-to-creating-a-password-protected-s3-bucket/
+[lambda]: https://docs.aws.amazon.com/lambda/latest/dg/lambda-edge.html
 [pfrazee]: https://github.com/pfrazee
 [rmarkdown]: http://rmarkdown.rstudio.com/
+[s3]: https://aws.amazon.com/s3/

@@ -30,7 +30,7 @@ following message:
 
 If you've followed the setup instructions from the [Getting started
 vignette](wflow-01-getting-started.html), and especially if the website
-displayed in the past, it's _very unlikely_ that you caused the problem. The 
+displayed in the past, it's _very unlikely_ that you caused the problem. The
 hosting is provided by [GitHub Pages][gh-pages], and it sometimes is delayed or
 down. Overall for a free service, it is very reliable. If you wait 5 minutes (or
 30 minutes at most), your website will likely be back to normal.
@@ -44,11 +44,13 @@ builds][gh-troubleshooting].
 
 ## Can I make my workflowr website private?
 
-Short answer: No, not if you use the default setup that hosts the site on GitHub
-Pages. For an alternative setup, see the FAQ below that describes an [option for
-securely sharing your workflowr site][faq-beaker].
+Short answer: Not if you use the default setup that hosts the site on GitHub
+Pages. For alternative setups, see the FAQ below on [sharing your workflowr
+site with the beaker browser][faq-beaker] or [hosting it in a
+password-protected s3 bucket.][faq-s3].
 
 [faq-beaker]: #can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion
+[faq-s3]: #can-i-password-protect-my-website
 
 Long answer: Even if you create a private GitHub repository, the website it
 creates is still public. If you're not ready to publish your results online, you
@@ -152,14 +154,17 @@ central location for dat:// -linked content, removing the need for the host
 computer to be running. The latter dathttpd example is an additional
 server/self-hosting option that can be used if desired.
 
-Another alternative is to upload your workflowr website to [Amazon s3][s3]. s3 is
-an object storage service for the Amazon cloud, and can be used to host static
-websites. Basic HTTP authentication can be accomplished using [CloudFront][cloudfront],
-Amazon's content delivery network, and [Lamba@Edge][lambda], which enables the 
-execution of serverless functions to customize content delivered by the CDN.
-This [blog post][hackernoon] goes into more detail about what that all means.
-A more detailed guide to setting up the bucket is [here][kynatro]. Some
-templates for scripting the process are [here][dumrauf].
+## Can I password-protect my website?
+
+Another way to privately share your workflowr site is by uploading it
+to [Amazon s3][s3]. s3 is an object storage service for the Amazon cloud, and
+can be used to host static websites. Basic HTTP authentication can be
+accomplished using [CloudFront][cloudfront], Amazon's content delivery network,
+and [Lamba@Edge][lambda], which enables the execution of serverless functions
+to customize content delivered by the CDN. This [blog post][hackernoon]
+goes into more detail about what that all means. A more detailed guide to
+setting up the bucket is [here][kynatro]. Some templates for
+scripting the process are [here][dumrauf].
 
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 

@@ -30,7 +30,7 @@ test_that("fig_path_ext has no effect when set to FALSE", {
   # Figure functions detect that the setting is FALSE
   expect_false(workflowr:::is_fig_path_ext(rmd[1]))
   expect_identical(
-    stringr::str_sub(workflowr:::create_figure_path(basename(rmd[1])), start = -4),
+    stringr::str_sub(workflowr:::create_figure_path(rmd[1]), start = -4),
     ".Rmd")
 
   # Publish a file with figures
@@ -79,8 +79,8 @@ test_that("fig_path_ext removes file extension in fig dir when set to FALSE", {
   # Figure functions detect that the setting is FALSE
   expect_true(workflowr:::is_fig_path_ext(rmd[1]))
   expect_identical(
-    basename(workflowr:::create_figure_path(basename(rmd[1]))),
-    tools::file_path_sans_ext(basename(rmd[1])))
+    basename(workflowr:::create_figure_path(rmd[1])),
+    basename(tools::file_path_sans_ext(rmd[1])))
 
   # Publish a file with figures
   file_w_figs <- file.path(s$analysis, "fig.Rmd")

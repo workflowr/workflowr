@@ -248,7 +248,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
     for (f in files_to_build) {
       message("Building ", f)
       # Remove figure files to prevent accumulating outdated files
-      path <- create_figure_path(basename(f))
+      path <- create_figure_path(f)
       figs_analysis <- file.path(p$analysis, path)
       unlink(figs_analysis, recursive = TRUE)
       figs_docs <- file.path(p$docs, path)

@@ -125,7 +125,7 @@ wflow_remove <- function(files,
       files_to_remove <- c(files_to_remove, html)
     }
     # Any figure files in analysis directory?
-    fig_path <- create_figure_path(basename(rmd))
+    fig_path <- create_figure_path(rmd)
     if (p$analysis == ".") {
       dir_figs_analysis <- fig_path
     } else {

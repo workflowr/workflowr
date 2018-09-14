@@ -86,7 +86,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
         output_file <- file.path(output_dir, basename(output_file))
 
         # Move figures
-        fig_dir <- create_figure_path(basename(f))
+        fig_dir <- create_figure_path(f)
         fig_dir <- file.path(input, fig_dir)
 
         if (dir.exists(fig_dir)) {

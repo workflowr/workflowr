@@ -234,7 +234,7 @@ wflow_publish <- function(
 
     # Have to loop on step2$built as an underlying git2r function requires a
     # length 1 character vector
-    figs_path <- vapply(basename(step2$built), create_figure_path, character(1))
+    figs_path <- vapply(step2$built, create_figure_path, character(1))
     dir_figure <- file.path(s2$docs, figs_path)
     site_libs <- file.path(s2$docs, "site_libs")
     docs_nojekyll <- file.path(s2$docs, ".nojekyll")

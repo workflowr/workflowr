@@ -59,9 +59,9 @@ is_fig_path_ext <- function(input) {
 create_figure_path <- function(input) {
 
   if (is_fig_path_ext(input)){
-    res <- file.path("figure", tools::file_path_sans_ext(input))
+    res <- file.path("figure", basename(tools::file_path_sans_ext(input)))
   } else {
-    res <- file.path("figure", input)
+    res <- file.path("figure", basename(input))
   }
   res
 }

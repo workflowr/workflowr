@@ -139,6 +139,21 @@ test_that("wflow_remove can remove a directory", {
   expect_false(file.exists(f))
 })
 
+# Test needed to handle Windows behavior of file.exists
+test_that("wflow_remove can remove a directory with a trailing slash", {
+  d <- "toplevel/"
+  dir.create(d)
+  on.exit(unlink(d, recursive = TRUE, force = TRUE))
+  f <- file.path(d, "file")
+  file.create(f)
+  add(r, f)
+  commit(r, "new file")
+  actual <- wflow_remove(d)
+  expect_identical(actual$files_git, workflowr:::relative(f))
+  expect_false(dir.exists(d))
+  expect_false(file.exists(f))
+})
+
 test_that("wflow_remove can remove a file with a relative path from a subdir", {
   rmd <- file.path(p$analysis, "new.Rmd")
   file.create(rmd)

@@ -56,7 +56,7 @@ wflow_remove <- function(files,
   if (!(is.character(files) && length(files) > 0))
     stop("files must be a character vector of filenames")
   files <- glob(files)
-  if (!all(file.exists(files)))
+  if (!all(file.exists(files) | dir.exists(files)))
     stop("Not all files exist. Check the paths to the files")
   # Change filepaths to relative paths
   files <- relative(files)

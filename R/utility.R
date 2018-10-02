@@ -76,7 +76,7 @@ absolute <- function(path) {
   # but not "C:". If this function manually removes the trailing slash, then the
   # drive, e.g. "C:", gets returned as the current working directory.
   # Fortunately R.utils::getAbsolutePath is smarter than normalizePath (it
-  # strips the trailing slash expect when the path is to the root of a drive),
+  # strips the trailing slash except when the path is to the root of a drive),
   # so this does not need to be explicitly performed.
 
   # normalizePath does not return an absolute path for a non-existent file or

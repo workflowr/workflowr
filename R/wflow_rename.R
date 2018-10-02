@@ -63,13 +63,15 @@ wflow_rename <- function(files,
   if (!(is.character(files) && length(files) > 0))
     stop("files must be a character vector of filenames")
   files <- glob(files)
-  if (!all(file.exists(files)))
+  if (!all(file.exists(files) | dir.exists(files)))
     stop("Not all files exist. Check the paths to the files")
   # Change filepaths to relative paths
   files <- relative(files)
 
   if (!(is.character(to) && length(to) == length(files)))
     stop("to must be a character vector of filenames the same length as files")
+  # Warning: this will not resolve symlinks since the files do not yet exist
+  to <- relative(to)
 
   if (is.null(message)) {
     message <- deparse(sys.call())
@@ -208,7 +210,9 @@ wflow_rename <- function(files,
             message = message,
             dry_run = dry_run,
             commit = commit,
-            files_git = files_to_commit)
+            # Re-run relative() on files_to_commit to resolve any potential
+            # symlinks in paths to newly created files
+            files_git = relative(files_to_commit))
   class(o) <- "wflow_rename"
   return(o)
 }

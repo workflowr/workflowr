@@ -119,6 +119,7 @@ Thus add the following to the `.Rbuildignore` file:
 ^data$
 ^code$
 ^output$
+^_workflowr.yml$
 ```
 
 If your primary purpose for creating a website to accompany your package is to 

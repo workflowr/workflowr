@@ -129,3 +129,35 @@ Rd files in `man/`). In contrast, if the purpose of the website is to
 demonstrate results you obtained using the package, use workflowr.
 
 [pkgdown]: https://github.com/r-lib/pkgdown
+
+## Scenario: I have an old worklowr project
+
+If you created a workflowr project prior to its release to CRAN (any version
+less than 1.0), you can migrate the project to use the 1.0+ features by running
+`wflow_update()`:
+
+```{r}
+# Install the latest version from CRAN
+install.packages("workflowr")
+library("workflowr")
+# Preview the files that would be changed
+wflow_update()
+# Update the files
+wflow_update(dry_run = FALSE)
+# Republish your analyses with the latest features
+wflow_publish(republish = TRUE)
+```
+
+A few notes:
+
+1. You do *not* have to upgrade if you don't want. To continue using the Beta
+version of workflowr, follow the [workflowrBeta installation
+instructions][beta-install].
+
+1. For your updated project, the code in the R Markdown files will continue to be
+executed from the R Markdown directory (typically `analysis/`). However, if you
+create a new workflowr project, the default directory for executing the code
+will be the root directory of the project (see `?wflow_html` for background and
+instructions for changing this behavior).
+
+[beta-install]: https://github.com/jdblischak/workflowrBeta#quick-start

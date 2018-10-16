@@ -122,6 +122,19 @@ Thus add the following to the `.Rbuildignore` file:
 ^_workflowr.yml$
 ```
 
+Furthermore, to prevent R from compressing the files in `data/` (which is
+harmless but time-consuming), you can set `LazyData: false` in the file
+`DESCRIPTION`. However, if you do want to distribute data files with your R
+package, you'll need to instead rename the workflowr subdirectory and update the
+R Markdown files to search for files in the updated directory name (and also
+update `.Rbuildignore` to ignore this new directory and not `data/`). Then you
+can save the data files to distribute with the package in `data/`. For more
+details, see the relevant sections in the CRAN manual [Writing R
+Extensions][data-in-packages] and Hadley's [R Packages][r-pkgs-data].
+
+[data-in-packages]: https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Data-in-packages
+[r-pkgs-data]: http://r-pkgs.had.co.nz/data.html
+
 If your primary purpose for creating a website to accompany your package is to 
 share the package documentation, please check out the package [pkgdown][]. It 
 creates a website from the vignettes and function documentation files (i.e. the 

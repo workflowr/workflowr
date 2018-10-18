@@ -183,12 +183,12 @@ wflow_rename <- function(files,
   # rename files ---------------------------------------------------------------
 
   if (!dry_run) {
-    # Create any new directories, otherwise file.rename won't work
+    # Create any new directories, otherwise rename would not work
     lapply(to, function(x) {
       dir.create(dirname(x), showWarnings = FALSE, recursive = TRUE)
     })
     # Rename individual files
-    file.rename(from = files, to = to)
+    fs::file_move(path = files, new_path = to)
     # Remove any previous directories
     lapply(dirs_from, unlink, recursive = TRUE)
   }

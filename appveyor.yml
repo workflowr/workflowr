@@ -35,7 +35,9 @@ before_test:
 
 environment:
   global:
-    USE_RTOOLS: true
+    # Reduce build time by only using binary packages
+    USE_RTOOLS: false
+    PKGTYPE: win.binary
     # Do not skip tests with skip_on_cran()
     NOT_CRAN: true
 

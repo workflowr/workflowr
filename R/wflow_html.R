@@ -251,7 +251,7 @@ wflow_html <- function(...) {
     # If knit_root_dir was specified as a relative path in the YAML header,
     # interpret it as relative to the location of the file
     if (!is.null(wflow_opts$knit_root_dir)) {
-      if (!R.utils::isAbsolutePath(wflow_opts$knit_root_dir)) {
+      if (!fs::is_absolute_path(wflow_opts$knit_root_dir)) {
         wflow_opts$knit_root_dir <- absolute(file.path(dirname(input),
                                                        wflow_opts$knit_root_dir))
       }

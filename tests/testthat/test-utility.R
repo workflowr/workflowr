@@ -69,25 +69,25 @@ test_that("to_html throws errors for invalid extensions", {
 test_that("absolute expands existing file", {
   path_rel <- "test-utility.R"
   path_abs <- workflowr:::absolute(path_rel)
-  expect_true(R.utils::isAbsolutePath(path_abs))
+  expect_true(fs::is_absolute_path(path_abs))
 })
 
 test_that("absolute expands existing directory", {
   path_rel <- "."
   path_abs <- workflowr:::absolute(path_rel)
-  expect_true(R.utils::isAbsolutePath(path_abs))
+  expect_true(fs::is_absolute_path(path_abs))
 })
 
 test_that("absolute expands non-existent file", {
   path_rel <- "non-existent-file"
   path_abs <- workflowr:::absolute(path_rel)
-  expect_true(R.utils::isAbsolutePath(path_abs))
+  expect_true(fs::is_absolute_path(path_abs))
 })
 
 test_that("absolute expands non-existent directory", {
   path_rel <- "a/b/c"
   path_abs <- workflowr:::absolute(path_rel)
-  expect_true(R.utils::isAbsolutePath(path_abs))
+  expect_true(fs::is_absolute_path(path_abs))
 })
 
 test_that("absolute removes duplicated forward slashes", {

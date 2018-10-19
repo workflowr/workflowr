@@ -29,7 +29,7 @@ wflow_options <- function(file) {
     # If knit_root_dir is a relative path, interpret it as relative to the
     # location of _workflowr.yml
     if (!is.null(wflow_opts$knit_root_dir)) {
-      if (!R.utils::isAbsolutePath(wflow_opts$knit_root_dir)) {
+      if (!fs::is_absolute_path(wflow_opts$knit_root_dir)) {
         wflow_opts$knit_root_dir <- absolute(file.path(wflow_root,
                                                        wflow_opts$knit_root_dir))
       }

@@ -62,29 +62,14 @@ absolute <- function(path) {
   if (!is.character(path))
     stop("path must be NULL or a character vector")
 
-  # Using normalizePath is frustrating because of its differences on Windows,
-  # but it is the easiest way to resolve symlinks. Note that it only resolves
-  # symlinks if the file or directory exists.
-  newpath <- normalizePath(path, winslash = "/", mustWork = FALSE)
+  newpath <- fs::path_abs(path)
+  newpath <- fs::path_expand_r(newpath)
+  newpath <- as.character(newpath)
 
-  # On Windows **only**, NA gets appended to path. Ensure that any NAs are
-  # returned as NA
-  newpath[is.na(path)] <- NA
-
-  # On Windows **only**, normalizePath doesn't strip trailing slash. This is
-  # presumably due to the edge case of the homedrive, i.e. "C:/" is a valid path
-  # but not "C:". If this function manually removes the trailing slash, then the
-  # drive, e.g. "C:", gets returned as the current working directory.
-  # Fortunately R.utils::getAbsolutePath is smarter than normalizePath (it
-  # strips the trailing slash except when the path is to the root of a drive),
-  # so this does not need to be explicitly performed.
-
-  # normalizePath does not return an absolute path for a non-existent file or
-  # directory, e.g. `normalizePath("a")` returns `"a"`.
-  newpath <- R.utils::getAbsolutePath(newpath)
-  # The original filepaths are added as the "names" attribute when there is more
-  # than one filepath. Remove them.
-  attributes(newpath) <- NULL
+  # Add trailing slash for Windows drive
+  if (.Platform$OS.type == "windows") {
+    newpath <- stringr::str_replace(newpath, ":$", ":/")
+  }
 
   return(newpath)
 }
@@ -103,11 +88,8 @@ relative <- function(path, start = getwd()) {
   if (!(is.character(start) && length(start) == 1))
     stop("start must be a character vector of length 1")
 
-  newpath <- R.utils::getRelativePath(absolute(path),
-                                      relativeTo = absolute(start))
-  # The original filepaths are added as the "names" attribute when there is more
-  # than one filepath. Remove them.
-  attributes(newpath) <- NULL
+  newpath <- fs::path_rel(path, start = start)
+  newpath <- as.character(newpath)
 
   return(newpath)
 }

@@ -62,9 +62,13 @@ absolute <- function(path) {
   if (!is.character(path))
     stop("path must be NULL or a character vector")
 
-  newpath <- ifelse(file.exists(path),
-                    fs::path_real(path),
-                    fs::path_expand_r(fs::path_abs(path)))
+  newpath <- path
+  # Convert to absolute path
+  newpath <- fs::path_abs(newpath)
+  # Expand ~ using R's definition of user directory
+  newpath <- fs::path_expand_r(newpath)
+  # Resolve symlinks
+  newpath <- resolve_symlink(newpath)
   newpath <- as.character(newpath)
 
   # Add trailing slash for Windows drive
@@ -89,10 +93,48 @@ relative <- function(path, start = getwd()) {
   if (!(is.character(start) && length(start) == 1))
     stop("start must be a character vector of length 1")
 
-  newpath <- fs::path_rel(path, start = start)
+  newpath <- path
+  # First resolve any symlinks
+  newpath <- absolute(newpath)
+  start <- absolute(start)
+  # Convert to relative path
+  newpath <- fs::path_rel(newpath, start = start)
   newpath <- as.character(newpath)
 
   return(newpath)
+}
+
+# Resolve symlinks in a filepath even if file does not exist.
+#
+# Input: Vector of absolute filepaths
+# Output: Vector of absolute filepaths with any symlinks resolved
+resolve_symlink <- function(path) {
+  return(vapply(path, resolve_symlink_, character(1), USE.NAMES = FALSE))
+}
+
+# Recursive function to resolve symlinks one path at a time.
+resolve_symlink_ <- function(path) {
+  # Base case #1: If path exists, resolve symlink
+  if (file.exists(path)) {
+    return(fs::path_real(path))
+  }
+
+  parts <- fs::path_split(path)[[1]]
+  len <- length(parts)
+
+  # Base case #2: Only 1 part of file path remaining. Return it.
+  #
+  # Possible cases:
+  #   * Windows drive, e.g. C:, b/c file.exists("C:") returns FALSE
+  #   * Invalid input such as NA
+  #   * A Fake file path that doesn't exist on the machine
+  if (len == 1) {
+    return(path)
+  }
+
+  return(fs::path_join(c(
+    resolve_symlink(fs::path_join(parts[-len])),
+    parts[len])))
 }
 
 # Because ~ maps to ~/Documents on Windows, need a reliable way to determine the

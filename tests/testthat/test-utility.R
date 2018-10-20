@@ -237,6 +237,29 @@ test_that("relative handles NA and NULL", {
   expect_identical(actual, expected)
 })
 
+# Test resolve_symlink ---------------------------------------------------------
+
+test_that("absolute can resolve symlinks", {
+  link <- workflowr:::absolute(tempfile())
+  target <- workflowr:::absolute(".")
+  on.exit(fs::link_delete(link))
+  fs::link_create(target, link)
+  expect_equal(workflowr:::absolute(link), target)
+  # Non-existent path
+  nonexist <- file.path(link, "x/y/z")
+  expect_equal(workflowr:::absolute(nonexist), file.path(target, "x/y/z"))
+})
+
+test_that("relative can resolve symlinks", {
+  link <- workflowr:::absolute(tempfile())
+  target <- workflowr:::absolute(".")
+  on.exit(fs::link_delete(link))
+  fs::link_create(target, link)
+  expect_equal(workflowr:::relative(link), ".")
+  # Non-existent path
+  nonexist <- file.path(link, "x/y/z")
+  expect_equal(workflowr:::relative(nonexist), "x/y/z")
+})
 
 # Test get_host_from_remote --------------------------------------------------
 

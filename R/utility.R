@@ -62,8 +62,9 @@ absolute <- function(path) {
   if (!is.character(path))
     stop("path must be NULL or a character vector")
 
-  newpath <- fs::path_abs(path)
-  newpath <- fs::path_expand_r(newpath)
+  newpath <- ifelse(file.exists(path),
+                    fs::path_real(path),
+                    fs::path_expand_r(fs::path_abs(path)))
   newpath <- as.character(newpath)
 
   # Add trailing slash for Windows drive

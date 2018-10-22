@@ -71,11 +71,6 @@ absolute <- function(path) {
   newpath <- resolve_symlink(newpath)
   newpath <- as.character(newpath)
 
-  # Add trailing slash for Windows drive
-  if (.Platform$OS.type == "windows") {
-    newpath <- stringr::str_replace(newpath, ":$", ":/")
-  }
-
   return(newpath)
 }
 

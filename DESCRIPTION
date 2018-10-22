@@ -25,7 +25,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     callr,
-    fs,
+    fs (>= 1.2.4),
     getPass,
     git2r,
     glue,

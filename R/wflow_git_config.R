@@ -84,7 +84,7 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
       # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f
       user_home <- get_home()
       config_file <- file.path(user_home, ".gitconfig")
-      if (!file.exists(config_file)) {
+      if (!fs::file_exists(config_file)) {
         file.create(config_file)
       }
     }

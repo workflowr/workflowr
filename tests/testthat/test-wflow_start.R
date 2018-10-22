@@ -25,9 +25,9 @@ test_that("wflow_start copies files correctly", {
   site_dir <- workflowr:::absolute(site_dir)
 
   for (f in project_files) {
-    expect_true(file.exists(file.path(site_dir, f)))
+    expect_true(fs::file_exists(file.path(site_dir, f)))
   }
-  expect_true(file.exists(file.path(site_dir,
+  expect_true(fs::file_exists(file.path(site_dir,
                                     paste0(basename(site_dir), ".Rproj"))))
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
@@ -73,8 +73,8 @@ test_that("wflow_start creates docs/ directories and .nojekyll files", {
                              user.name = "Test Name", user.email = "test@email"))
   site_dir <- workflowr:::absolute(site_dir)
 
-  expect_true(dir.exists(file.path(site_dir, "docs")))
-  expect_true(file.exists(file.path(site_dir, "docs", ".nojekyll")))
+  expect_true(fs::dir_exists(file.path(site_dir, "docs")))
+  expect_true(fs::file_exists(file.path(site_dir, "docs", ".nojekyll")))
 
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
@@ -203,7 +203,7 @@ test_that("wflow_start throws an error if user.name and user.email are not set",
   site_dir <- tempfile()
   expect_error(wflow_start(site_dir, change_wd = FALSE),
                "You must set your user.name and user.email for Git first")
-  expect_false(dir.exists(site_dir))
+  expect_false(fs::dir_exists(site_dir))
   expect_error(wflow_start(site_dir, change_wd = FALSE),
                "`wflow_start` with `git = TRUE`")
 })
@@ -222,7 +222,7 @@ test_that("wflow_start can handle relative path to current directory: .", {
   utils::capture.output(wflow_start(".", existing = TRUE, change_wd = FALSE,
                              user.name = "Test Name", user.email = "test@email"))
 
-  expect_true(file.exists(paste0(basename(site_dir), ".Rproj")))
+  expect_true(fs::file_exists(paste0(basename(site_dir), ".Rproj")))
 })
 
 test_that("wflow_start can handle relative path to upstream directory: ..", {
@@ -240,7 +240,7 @@ test_that("wflow_start can handle relative path to upstream directory: ..", {
   utils::capture.output(wflow_start("..", existing = TRUE, change_wd = FALSE,
                              user.name = "Test Name", user.email = "test@email"))
 
-  expect_true(file.exists(file.path("..", paste0(basename(site_dir), ".Rproj"))))
+  expect_true(fs::file_exists(file.path("..", paste0(basename(site_dir), ".Rproj"))))
 })
 
 test_that("wflow_start can handle relative paths to non-existent directories", {
@@ -259,7 +259,7 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
   # but it shouldn't break the code.
   utils::capture.output(wflow_start("./new", change_wd = FALSE,
                              user.name = "Test Name", user.email = "test@email"))
-  expect_true(file.exists("./new/new.Rproj"))
+  expect_true(fs::file_exists("./new/new.Rproj"))
 
   # Create and move to an unrelated subdirectory
   fs::dir_create("unrelated")
@@ -268,7 +268,7 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
   # Start a new workflowr project in an upstream, non-existent directory
   utils::capture.output(wflow_start("../upstream", change_wd = FALSE,
                              user.name = "Test Name", user.email = "test@email"))
-  expect_true(file.exists("../upstream/upstream.Rproj"))
+  expect_true(fs::file_exists("../upstream/upstream.Rproj"))
 })
 
 
@@ -289,7 +289,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created", 
                                        user.name = "Test Name",
                                        user.email = "test@email"))
   expect_identical(actual$directory, expected)
-  expect_true(file.exists(file.path(expected, "z.Rproj")))
+  expect_true(fs::file_exists(file.path(expected, "z.Rproj")))
 })
 
 test_that("wflow_start can handle deeply nested paths that need to be created and begin with ./", {
@@ -310,7 +310,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
                                        user.name = "Test Name",
                                        user.email = "test@email"))
   expect_identical(actual$directory, expected)
-  expect_true(file.exists(file.path(expected, "z.Rproj")))
+  expect_true(fs::file_exists(file.path(expected, "z.Rproj")))
 })
 
 test_that("wflow_start can handle deeply nested paths that need to be created and use relative paths", {
@@ -336,7 +336,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
                                        user.name = "Test Name",
                                        user.email = "test@email"))
   expect_identical(actual$directory, expected)
-  expect_true(file.exists(file.path(expected, "z.Rproj")))
+  expect_true(fs::file_exists(file.path(expected, "z.Rproj")))
 })
 
 test_that("wflow_start throws error when given a deeply nested path that needs to be created, uses relative paths, and is contained within a Git repository", {
@@ -364,7 +364,7 @@ test_that("wflow_start throws error when given a deeply nested path that needs t
   expect_error(wflow_start(dir_test, change_wd = FALSE,
                            user.name = "Test Name", user.email = "test@email"),
                site_dir)
-  expect_false(dir.exists(file.path(site_dir, "a/b/c/x/y/z")))
+  expect_false(fs::dir_exists(file.path(site_dir, "a/b/c/x/y/z")))
 })
 
 test_that("wflow_start changes to workflowr directory by default", {
@@ -402,7 +402,7 @@ test_that("wflow_start fails early if directory does not exist and `existing = T
   expect_error(wflow_start(site_dir, existing = TRUE, change_wd = FALSE,
                            user.name = "Test Name", user.email = "test@email"),
                "Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
-  expect_false(dir.exists(site_dir))
+  expect_false(fs::dir_exists(site_dir))
 
 })
 

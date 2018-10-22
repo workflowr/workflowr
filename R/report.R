@@ -493,7 +493,7 @@ add_git_path <- function(x, r) {
 }
 
 detect_code <- function(input) {
-  stopifnot(file.exists(input))
+  stopifnot(fs::file_exists(input))
   lines <- readLines(input)
 
   code_chunks <- stringr::str_detect(lines, "^```\\{[a-z].*\\}$")

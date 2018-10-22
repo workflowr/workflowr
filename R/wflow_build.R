@@ -140,10 +140,10 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if (!is.null(files)) {
     if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
-    if (any(dir.exists(files)))
+    if (any(fs::dir_exists(files)))
       stop("files cannot include a path to a directory")
     files <- glob(files)
-    if (!all(file.exists(files)))
+    if (!all(fs::file_exists(files)))
       stop("Not all files exist. Check the paths to the files")
     # Change filepaths to relative paths
     files <- relative(files)
@@ -189,7 +189,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  if (!dir.exists(project)) {
+  if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }
 
@@ -262,7 +262,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
     }
     # Create .nojekyll if it doesn't exist
     nojekyll <- file.path(p$docs, ".nojekyll")
-    if (!file.exists(nojekyll)) {
+    if (!fs::file_exists(nojekyll)) {
       file.create(nojekyll)
     }
   }
@@ -362,13 +362,13 @@ return_modified_rmd <- function(rmd_files, docs) {
 build_rmd_external <- function(rmd, seed, log_dir, verbose = FALSE, ...) {
   if (!(is.character(rmd) && length(rmd) == 1))
     stop("rmd must be a one element character vector")
-  if (!file.exists(rmd))
+  if (!fs::file_exists(rmd))
     stop("rmd does not exist: ", rmd)
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
   if (!(is.character(log_dir) && length(log_dir) == 1))
     stop("log_dir must be a one element character vector")
-  if (!dir.exists(log_dir)) {
+  if (!fs::dir_exists(log_dir)) {
     fs::dir_create(log_dir)
     message("log directory created: ", log_dir)
   }
@@ -404,7 +404,7 @@ build_rmd <- function(rmd, seed, ...) {
     stop("rmd must be a one element character vector")
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
-  if (!file.exists(rmd))
+  if (!fs::file_exists(rmd))
     stop("rmd must exist")
 
   set.seed(seed)

@@ -93,7 +93,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  if (!dir.exists(project)) {
+  if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }
 

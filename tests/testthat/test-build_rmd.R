@@ -43,7 +43,7 @@ test_that("An error breaks it", {
 
   expect_error(build_rmd("error.Rmd", seed = 1, quiet = TRUE),
                "There was an error")
-  expect_false(file.exists("_site/error.html"))
+  expect_false(fs::file_exists("_site/error.html"))
 })
 
 test_that("A warning does not cause any problem", {
@@ -51,7 +51,7 @@ test_that("A warning does not cause any problem", {
   skip_on_cran()
 
   expect_silent(build_rmd("warning.Rmd", seed = 1, quiet = TRUE))
-  expect_true(file.exists("_site/warning.html"))
+  expect_true(fs::file_exists("_site/warning.html"))
 })
 
 # Test error handling ----------------------------------------------------------

@@ -11,7 +11,7 @@ remove_gitconfig <- function(suffix) {
   user_home <- workflowr:::get_home()
   config_original <- file.path(user_home, ".gitconfig")
   config_tmp <- paste0(config_original, suffix)
-  if (file.exists(config_original)) {
+  if (fs::file_exists(config_original)) {
     file.rename(from = config_original, to = config_tmp)
   }
   return(config_tmp)
@@ -24,9 +24,9 @@ remove_gitconfig <- function(suffix) {
 restore_gitconfig <- function(config_tmp) {
   user_home <- workflowr:::get_home()
   config_original <- file.path(user_home, ".gitconfig")
-  if (file.exists(config_tmp)) {
+  if (fs::file_exists(config_tmp)) {
     file.rename(from = config_tmp, to = config_original)
-  } else if (file.exists(config_original)) {
+  } else if (fs::file_exists(config_original)) {
     # If no temporary backup was created, remove the .gitconfig just created
     file.remove(config_original)
   }

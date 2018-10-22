@@ -15,7 +15,7 @@ test_that("wflow_html sets custom knitr chunk options", {
   rmd <- file.path(tmp_dir, "file.Rmd")
   file.copy("files/test-wflow_html/opts_chunk.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   observed <- readRDS(file.path(tmp_dir, "opts_chunk.rds"))
   expect_identical(observed$comment, NA)
   expect_identical(observed$fig.align, "center")
@@ -37,9 +37,9 @@ test_that("wflow_html can set knit_root_dir in YAML header", {
   rmd <- file.path(sub_dir, "file.Rmd")
   file.copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
-  expect_false(file.exists(file.path(sub_dir, "knit_root_dir.txt")))
-  expect_true(file.exists(file.path(tmp_dir, "knit_root_dir.txt")))
+  expect_true(fs::file_exists(html))
+  expect_false(fs::file_exists(file.path(sub_dir, "knit_root_dir.txt")))
+  expect_true(fs::file_exists(file.path(tmp_dir, "knit_root_dir.txt")))
 })
 
 test_that("knit_root_dir can be overridden by command-line render argument", {
@@ -59,9 +59,9 @@ test_that("knit_root_dir can be overridden by command-line render argument", {
   rmd <- file.path(sub_dir, "file.Rmd")
   file.copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
   html <- render(rmd, quiet = TRUE, knit_root_dir = dirname(rmd))
-  expect_true(file.exists(html))
-  expect_true(file.exists(file.path(sub_dir, "knit_root_dir.txt")))
-  expect_false(file.exists(file.path(tmp_dir, "knit_root_dir.txt")))
+  expect_true(fs::file_exists(html))
+  expect_true(fs::file_exists(file.path(sub_dir, "knit_root_dir.txt")))
+  expect_false(fs::file_exists(file.path(tmp_dir, "knit_root_dir.txt")))
 })
 
 test_that("wflow_html can change the sesssioninfo from the YAML header", {
@@ -82,7 +82,7 @@ test_that("wflow_html can change the sesssioninfo from the YAML header", {
              "`r 1 + 1`")
   writeLines(lines, rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "devtools::session_info")) == 1)
 })
@@ -106,7 +106,7 @@ test_that("wflow_html can change the seed from the YAML header", {
              "`r round(rnorm(1), 5)`")
   writeLines(lines, rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   set.seed(1)
   expect_true(sum(stringr::str_detect(html_lines,
@@ -125,7 +125,7 @@ test_that("wflow_html does not require a YAML header", {
   lines <- c("some text")
   writeLines(lines, rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "some text")) == 1)
 })
@@ -150,7 +150,7 @@ test_that("wflow_html reads _workflowr.yml in the same directory, but can be ove
              "`r round(rnorm(1), 5)`")
   writeLines(lines, rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   set.seed(5)
   expect_true(sum(stringr::str_detect(html_lines,
@@ -185,7 +185,7 @@ test_that("The default knit_root_dir for a workflowr project is the root directo
   lines <- c("`r getwd()`")
   writeLines(lines, rmd)
   html <- render_site(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, tmp_dir)) == 1)
 })
@@ -209,7 +209,7 @@ test_that("The default knit_root_dir for a workflowr project can be analysis/", 
   lines <- c("`r getwd()`")
   writeLines(lines, rmd)
   html <- render_site(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, basename(rmd))) == 1)
 })
@@ -235,8 +235,8 @@ test_that("wflow_html can insert figures with or without Git repo present", {
 
   # Without Git repo
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
-  expect_true(file.exists(file.path(tmp_dir, "figure", basename(rmd),
+  expect_true(fs::file_exists(html))
+  expect_true(fs::file_exists(file.path(tmp_dir, "figure", basename(rmd),
                                     "chunkname-1.png")))
   html_lines <- readLines(html)
   # Because it isn't a website, the image gets embedded as a base64 image
@@ -296,7 +296,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
   rmd <- file.path(tmp_dir, "file.Rmd")
   file.copy("files/test-wflow_html/fig-path-one-chunk.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
-  expect_true(file.exists(html))
+  expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "<code>fig.path</code>")) == 1)
 
@@ -304,7 +304,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
   rmd2 <- file.path(tmp_dir, "file2.Rmd")
   file.copy("files/test-wflow_html/fig-path-all-chunks.Rmd", rmd2)
   html2 <- render(rmd2, quiet = TRUE)
-  expect_true(file.exists(html2))
+  expect_true(fs::file_exists(html2))
   html_lines2 <- readLines(html2)
   expect_true(sum(stringr::str_detect(html_lines2, "<code>fig.path</code>")) == 3)
 

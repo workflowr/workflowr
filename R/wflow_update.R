@@ -64,7 +64,7 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
     stop("dry_run must be a one element logical vector. You entered: ", dry_run)
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one element character vector. You entered: ", project)
-  if (!dir.exists(project))
+  if (!fs::dir_exists(project))
     stop("project does not exist. You entered: ", project)
 
   project <- absolute(project)
@@ -152,7 +152,7 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
     "# See ?wflow_html to learn how to customize workflowr."
   )
 
-  if (!file.exists(wflow_yml)) {
+  if (!fs::file_exists(wflow_yml)) {
     files_updated <- c(files_updated, wflow_yml)
     if (!dry_run) writeLines(wflow_yml_lines, wflow_yml)
   }
@@ -160,7 +160,7 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
   # footer.html ----------------------------------------------------------------
 
   footer <- file.path(p$analysis, "include", "footer.html")
-  if (file.exists(footer)) {
+  if (fs::file_exists(footer)) {
     footer_in <- readLines(footer)
     footer_out <- footer_in
     footer_out <- stringr::str_replace(footer_out,
@@ -175,7 +175,7 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
   # chunks.R -------------------------------------------------------------------
 
   chunks <- file.path(p$analysis, "chunks.R")
-  if (file.exists(chunks)) {
+  if (fs::file_exists(chunks)) {
     files_updated <- c(files_updated, chunks)
     if (!dry_run) file.remove(chunks)
   }

@@ -16,7 +16,7 @@
 # non-existing.
 #
 obtain_existing_path <- function(path) {
-  if (dir.exists(path)) {
+  if (fs::dir_exists(path)) {
     return(absolute(path))
   } else {
     return(obtain_existing_path(dirname(path)))
@@ -110,7 +110,7 @@ resolve_symlink <- function(path) {
 # Recursive function to resolve symlinks one path at a time.
 resolve_symlink_ <- function(path) {
   # Base case #1: If path exists, resolve symlink
-  if (file.exists(path)) {
+  if (fs::file_exists(path)) {
     return(fs::path_real(path))
   }
 
@@ -120,13 +120,13 @@ resolve_symlink_ <- function(path) {
   # Base case #2: Only 1 part of file path remaining. Return it.
   #
   # Possible cases:
-  #   * Windows drive, e.g. C:, b/c file.exists("C:") returns FALSE
   #   * Invalid input such as NA
   #   * A Fake file path that doesn't exist on the machine
   if (len == 1) {
     return(path)
   }
 
+  # Recursive case
   return(fs::path_join(c(
     resolve_symlink(fs::path_join(parts[-len])),
     parts[len])))
@@ -145,7 +145,7 @@ get_home <- function() {
   } else {
     home <- Sys.getenv("USERPROFILE")
     home <- absolute(home)
-    if (!dir.exists(home)) {
+    if (!fs::dir_exists(home)) {
       stop(wrap("Unable to determine user's home directory on Windows: ", home))
     }
     return(home)
@@ -211,10 +211,10 @@ get_host_from_remote <- function(path) {
 # Get output directory if it exists
 get_output_dir <- function(directory, yml = "_site.yml") {
 
-  stopifnot(dir.exists(directory))
+  stopifnot(fs::dir_exists(directory))
 
   site_fname <- file.path(directory, "_site.yml")
-  if (!file.exists(site_fname)) {
+  if (!fs::file_exists(site_fname)) {
     return(NULL)
   }
   site_yml <- yaml::yaml.load_file(site_fname)

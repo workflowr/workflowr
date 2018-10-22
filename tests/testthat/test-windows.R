@@ -166,6 +166,6 @@ test_that("relative works on Windows paths with mixmatched trailing slashes", {
 
 test_that("get_home obtains a valid home directory", {
   home <- workflowr:::get_home()
-  expect_true(dir.exists(home))
+  expect_true(fs::dir_exists(home))
   expect_false(stringr::str_detect(home, "Documents"))
 })

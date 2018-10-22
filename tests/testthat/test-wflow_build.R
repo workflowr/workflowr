@@ -25,24 +25,24 @@ test_that("wflow_build builds the specified files", {
   expect_silent(actual <- wflow_build(rmd[1], dry_run = TRUE,
                                       project = site_dir))
   expect_identical(actual$built, rmd[1])
-  expect_false(file.exists(html[1]))
+  expect_false(fs::file_exists(html[1]))
   # Build file 1
   expect_message(actual <- wflow_build(rmd[1], view = FALSE, dry_run = FALSE,
                                        project = site_dir),
                  rmd[1])
   expect_identical(actual$built, rmd[1])
-  expect_true(file.exists(html[1]))
+  expect_true(fs::file_exists(html[1]))
   # Dry run for files 2 & 3
   expect_silent(actual <- wflow_build(rmd[2:3], dry_run = TRUE,
                                       project = site_dir))
   expect_identical(actual$built, rmd[2:3])
-  expect_false(any(file.exists(html[2:3])))
+  expect_false(any(fs::file_exists(html[2:3])))
   # Build files 2 & 3
   expect_message(actual <- wflow_build(rmd[2:3], view = FALSE, dry_run = FALSE,
                                        project = site_dir),
                  rmd[2])
   expect_identical(actual$built, rmd[2:3])
-  expect_true(all(file.exists(html[2:3])))
+  expect_true(all(fs::file_exists(html[2:3])))
 })
 
 test_that("wflow_build can run in 'make' mode", {
@@ -165,10 +165,10 @@ test_that("Only locally built files can access variables in the global environme
   expect_error(utils::capture.output(wflow_build(rmd_local, view = FALSE,
                                                  project = site_dir)),
                "object 'global_variable' not found")
-  expect_false(file.exists(html_local))
+  expect_false(fs::file_exists(html_local))
   utils::capture.output(wflow_build(rmd_local, local = TRUE, view = FALSE,
                                     project = site_dir))
-  expect_true(file.exists(html_local))
+  expect_true(fs::file_exists(html_local))
   # Remove the global variable
   rm("global_variable", envir = env)
   stopifnot(!exists("global_variable", envir = env))
@@ -210,13 +210,13 @@ test_that("wflow_build only builds files starting with _ when specified", {
   html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
   # Ignored by default "make"-mode
   expect_silent(actual <- wflow_build(view = FALSE, project = site_dir))
-  expect_false(file.exists(html_ignore))
+  expect_false(fs::file_exists(html_ignore))
   expect_equal(length(actual$built), 0)
   # Built when directly specified
   expect_message(actual <- wflow_build(rmd_ignore, view = FALSE,
                                        project = site_dir),
                  rmd_ignore)
-  expect_true(file.exists(html_ignore))
+  expect_true(fs::file_exists(html_ignore))
   expect_identical(actual$built, rmd_ignore)
 })
 
@@ -236,7 +236,7 @@ test_that("wflow_build accepts custom directory to save log files", {
   expected <- workflowr:::absolute(file.path(site_dir, "log"))
   actual <- wflow_build(rmd[1], view = FALSE, log_dir = expected,
                         project = site_dir)
-  expect_true(dir.exists(expected))
+  expect_true(fs::dir_exists(expected))
   expect_identical(expected, actual$log_dir)
 })
 
@@ -255,22 +255,22 @@ test_that("wflow_build automatically removes unused figure files", {
   build_v01 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  # expect_true(all(file.exists(figs_analysis_v01))) # see wflow_site()
+  # expect_true(all(fs::file_exists(figs_analysis_v01))) # see wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  expect_true(all(file.exists(figs_docs_v01)))
+  expect_true(all(fs::file_exists(figs_docs_v01)))
   # Update the file such that the previous 2 chunks are now named, plus add a
   # 3rd plot chunk
   file.copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
   build_v02 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
-  expect_false(all(file.exists(figs_analysis_v01)))
-  expect_false(all(file.exists(figs_docs_v01)))
+  expect_false(all(fs::file_exists(figs_analysis_v01)))
+  expect_false(all(fs::file_exists(figs_docs_v01)))
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("named1-1.png", "named2-1.png", "named3-1.png"))
-  # expect_true(all(file.exists(figs_analysis_v02))) # see wflow_site()
+  # expect_true(all(fs::file_exists(figs_analysis_v02))) # see wflow_site()
   figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
-  expect_true(all(file.exists(figs_docs_v02)))
+  expect_true(all(fs::file_exists(figs_docs_v02)))
   # Cleanup
   file.remove(file_w_figs)
   unlink(file.path(s$analysis, "figure", basename(file_w_figs)), recursive = TRUE)

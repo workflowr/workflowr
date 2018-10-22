@@ -56,7 +56,7 @@ wflow_remove <- function(files,
   if (!(is.character(files) && length(files) > 0))
     stop("files must be a character vector of filenames")
   files <- glob(files)
-  if (!all(file.exists(files) | dir.exists(files)))
+  if (!all(fs::file_exists(files) | fs::dir_exists(files)))
     stop("Not all files exist. Check the paths to the files")
   # Change filepaths to relative paths
   files <- relative(files)
@@ -79,7 +79,7 @@ wflow_remove <- function(files,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  if (!dir.exists(project)) {
+  if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }
 
@@ -110,7 +110,7 @@ wflow_remove <- function(files,
 
   # If the user inputs a directory, obtain all the files in those directories so
   # that they can be removed from the Git repo if applicable.
-  is_dir <- dir.exists(files)
+  is_dir <- fs::dir_exists(files)
   files_to_remove <- files[!is_dir]
   dirs_to_remove <- files[is_dir]
   for (d in dirs_to_remove) {
@@ -121,7 +121,7 @@ wflow_remove <- function(files,
   for (rmd in files_rmd) {
     # Corresponding HTML?
     html <- to_html(rmd, outdir = p$docs)
-    if (file.exists(html)) {
+    if (fs::file_exists(html)) {
       files_to_remove <- c(files_to_remove, html)
     }
     # Any figure files in analysis directory?
@@ -152,7 +152,7 @@ wflow_remove <- function(files,
     if (p$analysis != ".") {
       dir_cache <- file.path(p$analysis, dir_cache)
     }
-    if (dir.exists(dir_cache)) {
+    if (fs::dir_exists(dir_cache)) {
       files_cache <- list.files(path = dir_cache, full.names = TRUE,
                                 recursive = TRUE)
       files_to_remove <- c(files_to_remove, files_cache)

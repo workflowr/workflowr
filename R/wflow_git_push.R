@@ -98,7 +98,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  if (!dir.exists(project)) {
+  if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }
 

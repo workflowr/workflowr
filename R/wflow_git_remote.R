@@ -74,7 +74,7 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
     stop("verbose must be a one element logical vector. You entered: ", verbose)
   if (!is.character(project) | length(project) != 1)
     stop("project must be a one element character vector. You entered: ", project)
-  if (!dir.exists(project))
+  if (!fs::dir_exists(project))
     stop("project does not exist. You entered: ", project)
 
   project <- absolute(project)

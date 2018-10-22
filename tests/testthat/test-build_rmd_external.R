@@ -33,7 +33,7 @@ test_that("log_dir is created if non-existent", {
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   expect_message(build_rmd_external("seed.Rmd", seed = 1, log_dir = l),
                  sprintf("log directory created: %s", l))
-  expect_true(dir.exists(l))
+  expect_true(fs::dir_exists(l))
 })
 
 test_that("log files are created", {
@@ -71,7 +71,7 @@ test_that("An error stops execution, does not create file,
   expect_error(utils::capture.output(
     build_rmd_external("error.Rmd", seed = 1, log_dir = l)),
                "There was an error")
-  expect_false(file.exists("_site/error.html"))
+  expect_false(fs::file_exists("_site/error.html"))
 
   skip("callr 3.0.0 doesn't write the error message to stderr")
   # https://github.com/r-lib/callr/issues/80
@@ -86,7 +86,7 @@ test_that("A warning does not cause any problem", {
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
   fs::dir_create(l)
   expect_silent(build_rmd_external("warning.Rmd", seed = 1, log_dir = l))
-  expect_true(file.exists("_site/warning.html"))
+  expect_true(fs::file_exists("_site/warning.html"))
 })
 
 test_that("verbose displays build log directly in R console", {

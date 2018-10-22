@@ -21,7 +21,7 @@ test_that("wflow_site returns the correct output_dir", {
   observed <- wflow_site(file.path(tmp_dir, "analysis"))
   expect_identical(observed$output_dir, file.path(tmp_dir, "public"))
   # get_output_dir() also creates the output directory
-  expect_true(dir.exists(file.path(tmp_dir, "public")))
+  expect_true(fs::dir_exists(file.path(tmp_dir, "public")))
 })
 
 test_that("Passing a directory to wflow_site should build all Rmd files", {
@@ -38,5 +38,5 @@ test_that("Passing a directory to wflow_site should build all Rmd files", {
   html <- workflowr:::to_html(rmd, outdir = file.path(tmp_dir, "docs"))
 
   observed <- render_site(file.path(tmp_dir, "analysis"), quiet = TRUE)
-  expect_true(all(file.exists(html)))
+  expect_true(all(fs::file_exists(html)))
 })

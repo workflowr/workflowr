@@ -63,7 +63,7 @@ wflow_rename <- function(files,
   if (!(is.character(files) && length(files) > 0))
     stop("files must be a character vector of filenames")
   files <- glob(files)
-  if (!all(file.exists(files) | dir.exists(files)))
+  if (!all(fs::file_exists(files) | fs::dir_exists(files)))
     stop("Not all files exist. Check the paths to the files")
   # Change filepaths to relative paths
   files <- relative(files)
@@ -91,7 +91,7 @@ wflow_rename <- function(files,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  if (!dir.exists(project)) {
+  if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }
 
@@ -133,7 +133,7 @@ wflow_rename <- function(files,
     # Corresponding HTML?
     html1 <- to_html(files[i], outdir = p$docs)
     html2 <- to_html(to[i], outdir = p$docs)
-    if (file.exists(html1)) {
+    if (fs::file_exists(html1)) {
       files <- c(files, html1)
       to <- c(to, html2)
     }
@@ -145,7 +145,7 @@ wflow_rename <- function(files,
       dir_figs_docs1 <- file.path(p$docs, "figure", basename(files[i]))
       dir_figs_docs2 <- file.path(p$docs, "figure", basename(to[i]))
     }
-    if (dir.exists(dir_figs_docs1)) {
+    if (fs::dir_exists(dir_figs_docs1)) {
       files <- c(files, dir_figs_docs1)
       to <- c(to, dir_figs_docs2)
     }
@@ -153,7 +153,7 @@ wflow_rename <- function(files,
 
   # Expand directories ---------------------------------------------------------
 
-  is_dir <- dir.exists(files)
+  is_dir <- fs::dir_exists(files)
   dirs_from <- files[is_dir]
   dirs_to <- to[is_dir]
   files <- files[!is_dir]

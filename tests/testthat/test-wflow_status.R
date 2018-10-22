@@ -18,28 +18,28 @@ test_that("wflow_status identifies root directory.", {
   expected <- site_dir
   actual <- s$root
   expect_identical(actual, expected)
-  expect_true(dir.exists(expected))
+  expect_true(fs::dir_exists(expected))
 })
 
 test_that("wflow_status identifies analysis directory.", {
   expected <- file.path(site_dir, "analysis")
   actual <- s$analysis
   expect_identical(actual, expected)
-  expect_true(dir.exists(expected))
+  expect_true(fs::dir_exists(expected))
 })
 
 test_that("wflow_status identifies docs directory.", {
   expected <- file.path(site_dir, "docs")
   actual <- s$docs
   expect_identical(actual, expected)
-  expect_true(dir.exists(expected))
+  expect_true(fs::dir_exists(expected))
 })
 
 test_that("wflow_status identifies Git directory.", {
   expected <- site_dir
   actual <- s$git
   expect_identical(actual, expected)
-  expect_true(dir.exists(expected))
+  expect_true(fs::dir_exists(expected))
 })
 
 # Skip on CRAN. See ?testthat::skip_on_cran, which only works inside of unit

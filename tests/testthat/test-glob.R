@@ -131,7 +131,7 @@ test_that("wflow_open accepts file globs", {
   open_w_glob_new <- wflow_open(c(rmd_glob, rmd_new), change_wd = FALSE,
                                 edit_in_rstudio = FALSE, project = site_dir)
   expect_identical(relative(open_w_glob_new$files), c(rmd_glob_expanded, rmd_new))
-  expect_true(file.exists(rmd_new))
+  expect_true(fs::file_exists(rmd_new))
 })
 
 test_that("wflow_publish accepts file globs", {

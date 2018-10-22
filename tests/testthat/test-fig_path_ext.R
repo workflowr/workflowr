@@ -41,12 +41,12 @@ test_that("fig_path_ext has no effect when set to FALSE", {
   docs_fig <- file.path(s$docs, "figure", basename(file_w_figs), "unnamed-chunk-1-1.png")
   expect_true(docs_fig %in% published$step3$commit_files)
   analysis_fig <- file.path(s$analysis, "figure", basename(file_w_figs), "unnamed-chunk-1-1.png")
-  expect_false(file.exists(analysis_fig))
+  expect_false(fs::file_exists(analysis_fig))
 
   # Remove a file with figures
   removed <- wflow_remove(file_w_figs, "Remove file", project = site_dir)
   expect_true(docs_fig %in% removed$files_git)
-  expect_false(dir.exists(dirname(docs_fig)))
+  expect_false(fs::dir_exists(dirname(docs_fig)))
 })
 
 # Scenario #2: set fig_path_ext to TRUE ----------------------------------------
@@ -94,10 +94,10 @@ test_that("fig_path_ext removes file extension in fig dir when set to FALSE", {
   analysis_fig <- file.path(s$analysis, "figure",
                             tools::file_path_sans_ext(basename(file_w_figs)),
                             "unnamed-chunk-1-1.png")
-  expect_false(file.exists(analysis_fig))
+  expect_false(fs::file_exists(analysis_fig))
 
   # Remove a file with figures
   removed <- wflow_remove(file_w_figs, "Remove file", project = site_dir)
   expect_true(docs_fig %in% removed$files_git)
-  expect_false(dir.exists(dirname(docs_fig)))
+  expect_false(fs::dir_exists(dirname(docs_fig)))
 })

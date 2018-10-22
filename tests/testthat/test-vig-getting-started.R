@@ -14,11 +14,11 @@ r <- repository(path = site_dir)
 s <- wflow_status(project = site_dir)
 
 test_that("wflow_start provides necessary infrastructure", {
-  expect_true(dir.exists(file.path(site_dir, ".git")))
-  expect_true(dir.exists(file.path(site_dir, "analysis")))
-  expect_true(file.exists(file.path(site_dir, "analysis/_site.yml")))
-  expect_true(file.exists(file.path(site_dir, "analysis/index.Rmd")))
-  expect_true(file.exists(file.path(site_dir,
+  expect_true(fs::dir_exists(file.path(site_dir, ".git")))
+  expect_true(fs::dir_exists(file.path(site_dir, "analysis")))
+  expect_true(fs::file_exists(file.path(site_dir, "analysis/_site.yml")))
+  expect_true(fs::file_exists(file.path(site_dir, "analysis/index.Rmd")))
+  expect_true(fs::file_exists(file.path(site_dir,
                                     paste0(basename(site_dir), ".Rproj"))))
   expect_true(length(commits(r)) == 1)
 })
@@ -34,7 +34,7 @@ test_that("wflow_build builds the website, but only once", {
 
   suppressMessages(o <- wflow_build(view = FALSE, project = site_dir))
   expect_identical(o$built, rmd)
-  expect_true(all(file.exists(html)))
+  expect_true(all(fs::file_exists(html)))
   expect_silent(o <- wflow_build(view = FALSE, project = site_dir))
 })
 
@@ -61,7 +61,7 @@ test_that("wflow_build only builds new file", {
   Sys.sleep(2)
   suppressMessages(o <- wflow_build(view = FALSE, project = site_dir))
   expect_identical(o$built, test_rmd)
-  expect_true(file.exists(test_html))
+  expect_true(fs::file_exists(test_html))
   html_mtime_post <- file.mtime(html)
   expect_identical(html_mtime_pre, html_mtime_post)
   expect_silent(wflow_build(view = FALSE, project = site_dir))
@@ -90,7 +90,7 @@ test_that("wflow_publish can commit new file and website", {
                                     view = FALSE,
                                     project = site_dir))
   expect_identical(o$step2$built, all_rmd)
-  expect_true(all(file.exists(all_html)))
+  expect_true(all(fs::file_exists(all_html)))
   html_mtime_post <- file.mtime(all_html)
   expect_true(all(html_mtime_pre < html_mtime_post))
   log <- commits(r)

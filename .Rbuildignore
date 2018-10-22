@@ -7,7 +7,7 @@
 ^\.codecov\.yml$
 ^_pkgdown\.yaml$
 ^document\.R$
-^build\.sh$
+\.sh$
 ^LICENSE\.md$
 ^appveyor\.yml$
 tar\.gz$

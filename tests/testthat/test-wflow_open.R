@@ -19,7 +19,7 @@ test_that("wflow_open creates a new file, but does not overwrite", {
 
   rmd <- wflow_open(file.path(p$analysis, "test.Rmd"), change_wd = FALSE,
                     edit_in_rstudio = FALSE, project = site_dir)
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   expect_output(print(rmd), "- New file\\(s\\):")
   expect_output(print(rmd), rmd$files)
   modification_time_pre <- file.mtime(rmd$files)
@@ -51,7 +51,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_silent(rmd <- wflow_open(file.path(p$analysis, "do-not-change-wd.Rmd"),
                                   change_wd = FALSE,
                                   edit_in_rstudio = FALSE, project = site_dir))
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   wd_same <- getwd()
   expect_identical(wd_pre, wd_same)
   expect_output(print(rmd), "- Same working directory")
@@ -61,7 +61,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   rmd <- wflow_open(file.path(p$analysis, "do-change-wd.Rmd"),
                     change_wd = TRUE,
                     edit_in_rstudio = FALSE, project = site_dir)
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$root))
   expect_output(print(rmd), "- New working directory")
@@ -69,7 +69,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   expect_silent(rmd <- wflow_open(file.path(p$analysis, "no-need-to-change-wd.Rmd"),
                                   change_wd = TRUE, edit_in_rstudio = FALSE,
                                   project = "."))
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   expect_identical(getwd(), absolute(p$root))
   expect_output(print(rmd), "- Same working directory")
   expect_output(print(rmd), getwd())
@@ -81,7 +81,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   rmd <- wflow_open(file.path(p$analysis, "change-to-analysis.Rmd"),
                     change_wd = TRUE,
                     edit_in_rstudio = FALSE, project = ".")
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
   expect_output(print(rmd), "- New working directory")
@@ -94,7 +94,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   rmd <- wflow_open(file.path(p$analysis, "change-to-docs.Rmd"),
                     change_wd = TRUE,
                     edit_in_rstudio = FALSE, project = ".")
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$docs))
   expect_output(print(rmd), "- New working directory")
@@ -107,7 +107,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   rmd <- wflow_open(file.path(p$analysis, "unset.Rmd"),
                     change_wd = TRUE,
                     edit_in_rstudio = FALSE, project = ".")
-  expect_true(file.exists(rmd$files))
+  expect_true(fs::file_exists(rmd$files))
   p <- workflowr:::wflow_paths()
   expect_identical(getwd(), absolute(p$analysis))
   expect_output(print(rmd), "- New working directory")
@@ -120,7 +120,7 @@ test_that("wflow_open can accept multiple files", {
   rmd_multi <- file.path(p$analysis, paste0(1:3, ".Rmd"))
   rmd <- wflow_open(rmd_multi, change_wd = FALSE, edit_in_rstudio = FALSE,
                     project = site_dir)
-  expect_true(all(file.exists(rmd$files)))
+  expect_true(all(fs::file_exists(rmd$files)))
   modification_time_pre <- file.mtime(rmd$files)
   Sys.sleep(2)
   rmd2 <- wflow_open(rmd_multi, change_wd = FALSE, edit_in_rstudio = FALSE,
@@ -137,7 +137,7 @@ test_that("wflow_open can accept multiple files", {
 #                  file.path(site_dir, "code", "wrong.Rmd"))
 #   rmd <- wflow_open(rmd_paths, change_wd = FALSE, edit_in_rstudio = FALSE,
 #                     project = site_dir)
-#   expect_true(all(file.exists(rmd)))
+#   expect_true(all(fs::file_exists(rmd)))
 #   modification_time_pre <- file.mtime(rmd)
 #   Sys.sleep(2)
 #   rmd2 <- wflow_open(rmd_paths, change_wd = FALSE, edit_in_rstudio = FALSE,
@@ -165,7 +165,7 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   o <- wflow_open(c(testfile1, testfile2), change_wd = TRUE,
                   edit_in_rstudio = FALSE, project = NULL)
 
-  expect_true(all(file.exists(o$files)))
+  expect_true(all(fs::file_exists(o$files)))
   # Fix the symlink now that the file has been created
   testfile2 <- workflowr:::absolute(testfile2)
   expect_identical(o$files, c(testfile1, testfile2))
@@ -186,7 +186,7 @@ test_that("wflow_open can create a file when no Git repo or config present", {
   rmd <- file.path(p$analysis, "new.Rmd")
   o <- wflow_open(files = rmd, change_wd = FALSE,
                   edit_in_rstudio = FALSE, project = p$root)
-  expect_true(file.exists(rmd))
+  expect_true(fs::file_exists(rmd))
 
   # Second outside the context of a workflowr project
   cwd <- getwd()
@@ -196,7 +196,7 @@ test_that("wflow_open can create a file when no Git repo or config present", {
   rmd <- file.path(x, "new.Rmd")
   o <- wflow_open(files = rmd, edit_in_rstudio = FALSE, project = NULL)
   expect_identical(getwd(), cwd)
-  expect_true(file.exists(rmd))
+  expect_true(fs::file_exists(rmd))
 })
 
 test_that("wflow_open sends warning if used in workflowrBeta project", {
@@ -217,7 +217,7 @@ test_that("wflow_open sends warning if used in workflowrBeta project", {
   expect_warning(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = tmp_dir),
                  "It appears that your site was created")
-  expect_true(file.exists(rmd))
+  expect_true(fs::file_exists(rmd))
 })
 
 # Errors -----------------------------------------------------------------------
@@ -245,7 +245,7 @@ test_that("wflow_open throws error if not in workflowr project and project!=NULL
                "This isn't a workflowr project")
   expect_silent(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE,
                            project = NULL))
-  expect_true(file.exists(rmd))
+  expect_true(fs::file_exists(rmd))
 })
 
 test_that("wflow_open throws error if in workflowr project, but Rmd files outside workflowr project", {
@@ -269,7 +269,7 @@ test_that("wflow_open throws error if in workflowr project, but Rmd files outsid
   expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3),
                                 change_wd = FALSE, edit_in_rstudio = FALSE,
                                 project = NULL))
-  expect_true(all(file.exists(c(rmd1, rmd2, rmd3))))
+  expect_true(all(fs::file_exists(c(rmd1, rmd2, rmd3))))
 })
 
 test_that("wflow_open throws error if file is not in R Markdown directory", {
@@ -284,7 +284,7 @@ test_that("wflow_open throws error if file is not in R Markdown directory", {
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
                  "Argument \"files\" specifies at least")
-  expect_false(all(file.exists(c(rmd1, rmd3, rmd4))))
+  expect_false(all(fs::file_exists(c(rmd1, rmd3, rmd4))))
   expect_error(wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                             change_wd = FALSE, edit_in_rstudio = FALSE,
                             project = site_dir),
@@ -302,5 +302,5 @@ test_that("wflow_open throws error if file is not in R Markdown directory", {
   expect_silent(o <- wflow_open(c(rmd1, rmd2, rmd3, rmd4),
                                 change_wd = FALSE, edit_in_rstudio = FALSE,
                                 project = NULL))
-  expect_true(all(file.exists(c(rmd1, rmd2, rmd3, rmd4))))
+  expect_true(all(fs::file_exists(c(rmd1, rmd2, rmd3, rmd4))))
 })

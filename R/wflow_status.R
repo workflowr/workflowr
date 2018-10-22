@@ -99,10 +99,10 @@ wflow_status <- function(files = NULL, project = ".") {
   if (!is.null(files)) {
     if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
-    if (any(dir.exists(files)))
+    if (any(fs::dir_exists(files)))
       stop("files cannot include a path to a directory")
     files <- glob(files)
-    if (!all(file.exists(files)))
+    if (!all(fs::file_exists(files)))
       stop("Not all files exist. Check the paths to the files")
     # Change filepaths to relative paths
     files <- relative(files)
@@ -115,7 +115,7 @@ wflow_status <- function(files = NULL, project = ".") {
 
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one element character vector")
-  if (!dir.exists(project))
+  if (!fs::dir_exists(project))
     stop("project does not exist.")
   project <- absolute(project)
 

@@ -35,7 +35,7 @@ wflow_use_gitlab <- function(project = ".") {
   # Edit output_dir in _site.yml -----------------------------------------------
 
   site_yml_fname <- file.path(s$analysis, "_site.yml")
-  if (!file.exists(site_yml_fname)) {
+  if (!fs::file_exists(site_yml_fname)) {
     stop("The website configuration file _site.yml does not exist.")
   }
   site_yml <- yaml::yaml.load_file(site_yml_fname)
@@ -63,7 +63,7 @@ wflow_use_gitlab <- function(project = ".") {
   # The list `gitlab` is defined in R/infrastructure.R
   gitlab_yml <- gitlab[[".gitlab-ci.yml"]]
   gitlab_yml_fname <- file.path(s$root, ".gitlab-ci.yml")
-  if (file.exists(gitlab_yml_fname)) {
+  if (fs::file_exists(gitlab_yml_fname)) {
     message(".gitlab-ci.yml file already exists")
   } else {
     cat(glue::glue(gitlab_yml), file = gitlab_yml_fname)

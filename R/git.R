@@ -22,7 +22,7 @@
 #' }
 #' @export
 extract_commit <- function(path, num) {
-  stopifnot(file.exists(path),
+  stopifnot(fs::file_exists(path),
             is.numeric(num),
             num == trunc(num),
             num > 0)
@@ -55,7 +55,7 @@ check_git_config <- function(path, custom_message = "this function") {
   stopifnot(is.character(path))
   # Only look for local configuration file if the directory exists and it is a
   # Git repo
-  if (dir.exists(path)) {
+  if (fs::dir_exists(path)) {
     look_for_local <- git2r::in_repository(path)
   } else {
     look_for_local <- FALSE

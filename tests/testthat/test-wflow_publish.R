@@ -32,7 +32,7 @@ test_that("wflow_publish works in a simple case", {
 
   expect_message(o <- wflow_publish(rmd, view = FALSE, project = site_dir),
                  rmd[1])
-  expect_true(all(file.exists(html)))
+  expect_true(all(fs::file_exists(html)))
   s <- wflow_status(project = site_dir)
   expect_true(all(s$status[rmd, "published"]))
 })
@@ -63,7 +63,7 @@ test_that("wflow_publish can `republish`", {
   expect_true(all(mtime_post > mtime_pre))
   expect_true(config == o$step1$commit_files)
   expect_true(all(html %in% o$step3$commit_files))
-  expect_false(file.exists(html_decoy))
+  expect_false(fs::file_exists(html_decoy))
   expect_false(html_decoy %in% o$step3$commit_files)
 })
 
@@ -83,7 +83,7 @@ test_that("wflow_publish can `update`", {
                  rmd[1])
   expect_true(is.null(o$step1))
   expect_true(html[1] == o$step3$commit_files)
-  expect_false(file.exists(html_decoy))
+  expect_false(fs::file_exists(html_decoy))
   expect_false(html_decoy %in% o$step3$commit_files)
 })
 
@@ -140,23 +140,23 @@ test_that("wflow_publish automatically removes unused figure files", {
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  # expect_true(all(file.exists(figs_analysis_v01))) # see wflow_site()
+  # expect_true(all(fs::file_exists(figs_analysis_v01))) # see wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  expect_true(all(file.exists(figs_docs_v01)))
+  expect_true(all(fs::file_exists(figs_docs_v01)))
   expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
   # Update the file such that the previous 2 chunks are now named, plus add a
   # 3rd plot chunk
   file.copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
   publish_v02 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
-  expect_false(all(file.exists(figs_analysis_v01)))
-  expect_false(all(file.exists(figs_docs_v01)))
+  expect_false(all(fs::file_exists(figs_analysis_v01)))
+  expect_false(all(fs::file_exists(figs_docs_v01)))
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("named1-1.png", "named2-1.png", "named3-1.png"))
-  # expect_true(all(file.exists(figs_analysis_v02))) # see wflow_site()
+  # expect_true(all(fs::file_exists(figs_analysis_v02))) # see wflow_site()
   figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
-  expect_true(all(file.exists(figs_docs_v02)))
+  expect_true(all(fs::file_exists(figs_docs_v02)))
   expect_true(all(figs_docs_v02 %in% publish_v02$step3$commit_files))
   # The v01 files should also be listed in the commit_files b/c they are removed
   # in this commit
@@ -189,16 +189,16 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  # expect_true(all(file.exists(figs_analysis_v01))) # see wflow_site()
+  # expect_true(all(fs::file_exists(figs_analysis_v01))) # see wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  expect_true(all(file.exists(figs_docs_v01)))
+  expect_true(all(fs::file_exists(figs_docs_v01)))
   expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
   # Update the file to have no plots
   file.copy("files/test-wflow_build/seed.Rmd", file_w_figs, overwrite = TRUE)
   publish_v02 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
-  expect_false(all(file.exists(figs_analysis_v01)))
-  expect_false(all(file.exists(figs_docs_v01)))
+  expect_false(all(fs::file_exists(figs_analysis_v01)))
+  expect_false(all(fs::file_exists(figs_docs_v01)))
   # The old figure files should also be listed in the commit_files b/c they are
   # removed in this commit
   expect_true(all(figs_docs_v01 %in% publish_v02$step3$commit_files))
@@ -229,7 +229,7 @@ test_that("wflow_publish commits new .nojekyll after docs/ name change", {
                            "Change output dir to test/", view = FALSE,
                            project = x$directory)
   nojekyll <- file.path(p$root, "test", ".nojekyll")
-  expect_true(file.exists(nojekyll))
+  expect_true(fs::file_exists(nojekyll))
   expect_true(nojekyll %in% publish$step3$commit_files)
 })
 

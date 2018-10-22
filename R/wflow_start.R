@@ -257,9 +257,9 @@ wflow_start <- function(directory,
       (!is.null(user.name) && is.null(user.email)))
     stop("Must specify both user.name and user.email, or neither.")
 
-  if (!existing & dir.exists(directory)) {
+  if (!existing & fs::dir_exists(directory)) {
     stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
-  } else if (existing & !dir.exists(directory)) {
+  } else if (existing & !fs::dir_exists(directory)) {
     stop("Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
   }
 
@@ -283,7 +283,7 @@ wflow_start <- function(directory,
   }
 
   # Create directory if it doesn't already exist
-  if (!existing && !dir.exists(directory) && !dry_run) {
+  if (!existing && !fs::dir_exists(directory) && !dry_run) {
     fs::dir_create(directory)
   }
 
@@ -317,7 +317,7 @@ wflow_start <- function(directory,
 
   if (!dry_run) {
     for (fname in project_files) {
-      if (!file.exists(fname) || overwrite) {
+      if (!fs::file_exists(fname) || overwrite) {
         cat(glue::glue(templates[[fname]]), file = fname)
       }
     }

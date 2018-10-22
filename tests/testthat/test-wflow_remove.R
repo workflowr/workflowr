@@ -69,12 +69,12 @@ test_that("wflow_remove removes an unpublished Rmd file and its associated files
   expect_identical(actual$dry_run, TRUE)
   expect_identical(actual$commit, NA)
   expect_identical(actual$files_git, character())
-  expect_true(all(file.exists(rmd_unpublished, data_unpublished),
-                  dir.exists(c(cache_unpublished, fig_docs_unpublished))))
+  expect_true(all(fs::file_exists(c(rmd_unpublished, data_unpublished)),
+                  fs::dir_exists(c(cache_unpublished, fig_docs_unpublished))))
   # Now remove the files
   actual <- wflow_remove(c(rmd_unpublished, data_unpublished))
-  expect_false(any(file.exists(rmd_unpublished, data_unpublished),
-                  dir.exists(c(cache_unpublished, fig_docs_unpublished))))
+  expect_false(any(fs::file_exists(c(rmd_unpublished, data_unpublished)),
+                  fs::dir_exists(c(cache_unpublished, fig_docs_unpublished))))
 })
 
 test_that("wflow_remove removes a published Rmd file and its associated files", {
@@ -89,14 +89,14 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
   expect_identical(actual$dry_run, TRUE)
   expect_identical(actual$commit, NA)
   expect_true(all(c(rmd_published, data_published) %in% actual$files_git))
-  expect_true(all(file.exists(rmd_published, data_published),
-                  dir.exists(c(cache_published, fig_docs_published))))
+  expect_true(all(fs::file_exists(c(rmd_published, data_published)),
+                  fs::dir_exists(c(cache_published, fig_docs_published))))
   files_committed <- workflowr:::get_committed_files(r)
   expect_true(all(c(rmd_published, data_published) %in% relative(files_committed)))
   # Now remove the files
   actual <- wflow_remove(c(rmd_published, data_published))
-  expect_false(any(file.exists(rmd_published, data_published),
-                   dir.exists(c(cache_published, fig_docs_published))))
+  expect_false(any(fs::file_exists(c(rmd_published, data_published)),
+                   fs::dir_exists(c(cache_published, fig_docs_published))))
   commit_latest <- commits(r)[[1]]
   expect_identical(git2r_slot(actual$commit, "sha"),
                    git2r_slot(commit_latest, "sha"))
@@ -116,10 +116,10 @@ test_that("wflow_remove can remove files with no Git repo present", {
   # The test will remove README, so restore it afterwards
   f <- "README.md"
   on.exit(checkout(r, path = f), add = TRUE)
-  expect_true(file.exists(f))
+  expect_true(fs::file_exists(f))
   # Remove README.md
   expect_silent(actual <- wflow_remove(f))
-  expect_false(file.exists(f))
+  expect_false(fs::file_exists(f))
   expect_identical(actual$files, f)
   expect_identical(actual$commit, NA)
   expect_identical(actual$files_git, NA)
@@ -135,11 +135,11 @@ test_that("wflow_remove can remove a directory", {
   commit(r, "new file")
   actual <- wflow_remove(d)
   expect_identical(actual$files_git, f)
-  expect_false(dir.exists(d))
-  expect_false(file.exists(f))
+  expect_false(fs::dir_exists(d))
+  expect_false(fs::file_exists(f))
 })
 
-# Test needed to handle Windows behavior of file.exists
+# Test needed to handle Windows behavior of fs::file_exists
 test_that("wflow_remove can remove a directory with a trailing slash", {
   d <- "toplevel/"
   fs::dir_create(d)
@@ -150,8 +150,8 @@ test_that("wflow_remove can remove a directory with a trailing slash", {
   commit(r, "new file")
   actual <- wflow_remove(d)
   expect_identical(actual$files_git, workflowr:::relative(f))
-  expect_false(dir.exists(d))
-  expect_false(file.exists(f))
+  expect_false(fs::dir_exists(d))
+  expect_false(fs::file_exists(f))
 })
 
 test_that("wflow_remove can remove a file with a relative path from a subdir", {
@@ -162,7 +162,7 @@ test_that("wflow_remove can remove a file with a relative path from a subdir", {
 
   expect_silent(with_dir("code/",
                          o <- wflow_remove(file.path("../analysis", basename(rmd)))))
-  expect_false(file.exists(rmd))
+  expect_false(fs::file_exists(rmd))
   s <- status(r)
   expect_equal(length(s$untracked) + length(s$unstaged) + length(s$staged), 0)
 })

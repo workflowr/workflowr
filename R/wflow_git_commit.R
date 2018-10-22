@@ -85,7 +85,7 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
     if (!(is.character(files) && length(files) > 0))
       stop("files must be NULL or a character vector of filenames")
     files <- glob(files)
-    if (!all(file.exists(files)))
+    if (!all(fs::file_exists(files)))
       stop("Not all files exist. Check the paths to the files")
     # Change filepaths to relative paths
     files <- relative(files)
@@ -112,7 +112,7 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
-  if (!dir.exists(project)) {
+  if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }
 
@@ -249,7 +249,7 @@ shorten_site_libs <- function(files) {
       out[i] <- paste(f_split[i, seq(col_site_libs + 1)],
                       collapse = .Platform$file.sep)
       # Add final / so that it is clear it's a directory
-      if (dir.exists(out[i])) {
+      if (fs::dir_exists(out[i])) {
         out[i] <- paste0(out[i], .Platform$file.sep)
       }
     }

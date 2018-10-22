@@ -284,7 +284,7 @@ wflow_start <- function(directory,
 
   # Create directory if it doesn't already exist
   if (!existing && !dir.exists(directory) && !dry_run) {
-    dir.create(directory, recursive = TRUE)
+    fs::dir_create(directory)
   }
 
   # Convert to absolute path. Needs to be run again after creating the directory
@@ -309,10 +309,11 @@ wflow_start <- function(directory,
   project_files <- names(templates)
 
   # Create subdirectories
-  dir.create.vectorized <- Vectorize(dir.create, vectorize.args = "path")
-  dir.create.vectorized(file.path(directory, c("analysis", "code", "data",
-                                               "docs", "output")),
-                        showWarnings = FALSE)
+  subdirs <- file.path(directory, c("analysis", "code", "data", "docs",
+                                    "output"))
+  if (!dry_run) {
+    fs::dir_create(subdirs)
+  }
 
   if (!dry_run) {
     for (fname in project_files) {

@@ -157,7 +157,7 @@ test_that("wflow_view throws error if no files to view.", {
 
 test_that("wflow_view throws error if given directory input.", {
   d <- file.path(site_dir, "toplevel")
-  dir.create(d)
+  fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   expect_error(wflow_view(d, project = site_dir),
                "files cannot include a path to a directory")

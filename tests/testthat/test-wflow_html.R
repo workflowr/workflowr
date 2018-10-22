@@ -9,7 +9,7 @@ test_that("wflow_html sets custom knitr chunk options", {
   # The R Markdown file opts_chunk.Rmd reads the options and exports to an RDS
   # file
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
@@ -29,11 +29,11 @@ test_that("wflow_html can set knit_root_dir in YAML header", {
   # The R Markdown file knit_root_dir.Rmd creates a file knit_root_dir.txt in
   # its working directory, which is one upstream from its file location.
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   sub_dir <- file.path(tmp_dir, "sub_dir")
-  dir.create(sub_dir)
+  fs::dir_create(sub_dir)
   rmd <- file.path(sub_dir, "file.Rmd")
   file.copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
@@ -51,11 +51,11 @@ test_that("knit_root_dir can be overridden by command-line render argument", {
   # However, this is overriden by passing the directory that contains the file
   # directly to render.
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   sub_dir <- file.path(tmp_dir, "sub_dir")
-  dir.create(sub_dir)
+  fs::dir_create(sub_dir)
   rmd <- file.path(sub_dir, "file.Rmd")
   file.copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
   html <- render(rmd, quiet = TRUE, knit_root_dir = dirname(rmd))
@@ -69,7 +69,7 @@ test_that("wflow_html can change the sesssioninfo from the YAML header", {
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
@@ -93,7 +93,7 @@ test_that("wflow_html can change the seed from the YAML header", {
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
@@ -118,7 +118,7 @@ test_that("wflow_html does not require a YAML header", {
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
@@ -135,7 +135,7 @@ test_that("wflow_html reads _workflowr.yml in the same directory, but can be ove
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
@@ -220,7 +220,7 @@ test_that("wflow_html can insert figures with or without Git repo present", {
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
@@ -288,7 +288,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
@@ -330,7 +330,7 @@ test_that("add_bibliography adds bibliography to files", {
   skip_on_cran()
 
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 

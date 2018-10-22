@@ -91,7 +91,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
 
         if (dir.exists(fig_dir)) {
           fig_output_dir <- file.path(output_dir, "figure")
-          dir.create(fig_output_dir, showWarnings = FALSE)
+          fs::dir_create(fig_output_dir)
           file.copy(fig_dir, fig_output_dir, recursive = TRUE)
           unlink(fig_dir, recursive = TRUE)
         }

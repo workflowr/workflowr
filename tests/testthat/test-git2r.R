@@ -5,7 +5,7 @@ context("git2r")
 library("git2r")
 x <- tempfile()
 on.exit(unlink(x, recursive = TRUE, force = TRUE))
-dir.create(x)
+fs::dir_create(x)
 r <- init(x)
 config(r, user.name = "Test Name", user.email = "test@email")
 

@@ -224,7 +224,7 @@ test_that("wflow_publish commits new .nojekyll after docs/ name change", {
   yaml::write_yaml(y, file = site_yml)
   # Create the new output directory. Otherwise receive multiple warnings. I
   # should improve this (added to project Improvements)
-  dir.create(file.path(x$directory, "test"))
+  fs::dir_create(file.path(x$directory, "test"))
   publish <- wflow_publish(c(site_yml, file.path(p$analysis, "*Rmd")),
                            "Change output dir to test/", view = FALSE,
                            project = x$directory)

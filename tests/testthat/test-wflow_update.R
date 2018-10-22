@@ -9,12 +9,12 @@ context("wflow_update")
 
 test_that("wflow_update can update to workflowr 1.0", {
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
   file.copy("files/test-wflow_update/pre/.", tmp_dir, recursive = TRUE)
-  dir.create(file.path(tmp_dir, "docs"))
+  fs::dir_create(file.path(tmp_dir, "docs"))
   git2r::init(tmp_dir)
   r <- git2r::repository(tmp_dir)
   git2r::config(r, user.name = "Test Name", user.email = "test@email")

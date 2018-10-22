@@ -7,7 +7,7 @@ tmp_dir <- tempfile("build_rmd-")
 cwd <- getwd()
 on.exit(setwd(cwd))
 on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
-dir.create(tmp_dir)
+fs::dir_create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 
 # Copy test files

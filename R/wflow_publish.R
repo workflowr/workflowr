@@ -207,12 +207,12 @@ wflow_publish <- function(
     docs_backup <- tempfile(pattern = sprintf("docs-backup-%s-",
                                               format(Sys.time(),
                                                      "%Y-%m-%d-%Hh-%Mm-%Ss")))
-    dir.create(docs_backup)
+    fs::dir_create(docs_backup)
     docs_backup <- absolute(docs_backup)
     file.copy(from = file.path(s1$docs, "."), to = docs_backup,
               recursive = TRUE, copy.date = TRUE)
     on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
-    on.exit(dir.create(s1$docs), add = TRUE)
+    on.exit(fs::dir_create(s1$docs), add = TRUE)
     on.exit(file.copy(from = file.path(docs_backup, "."), to = s1$docs,
                       recursive = TRUE, copy.date = TRUE), add = TRUE)
 

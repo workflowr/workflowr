@@ -211,7 +211,7 @@ wflow_open <- function(files,
                      "",
                      "```",
                      "")
-    dir.create(dirname(files_new[i]), showWarnings = FALSE, recursive = TRUE)
+    fs::dir_create(dirname(files_new[i]))
     writeLines(c(header, boilerplate), files_new[i])
   }
 

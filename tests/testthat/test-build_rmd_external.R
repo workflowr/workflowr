@@ -7,7 +7,7 @@ tmp_dir <- tempfile("build_rmd_external-")
 cwd <- getwd()
 on.exit(setwd(cwd))
 on.exit(unlink(tmp_dir, recursive = TRUE, force = TRUE), add = TRUE)
-dir.create(tmp_dir)
+fs::dir_create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 
 # Copy test files
@@ -84,7 +84,7 @@ test_that("A warning does not cause any problem", {
   skip_on_cran()
 
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
-  dir.create(l)
+  fs::dir_create(l)
   expect_silent(build_rmd_external("warning.Rmd", seed = 1, log_dir = l))
   expect_true(file.exists("_site/warning.html"))
 })
@@ -94,7 +94,7 @@ test_that("verbose displays build log directly in R console", {
   skip_on_cran()
 
   on.exit(unlink(l, recursive = TRUE, force = TRUE))
-  dir.create(l)
+  fs::dir_create(l)
 
   observed <- utils::capture.output(
     build_rmd_external("warning.Rmd", seed = 1, log_dir = l, verbose = TRUE))

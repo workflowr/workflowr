@@ -228,7 +228,7 @@ get_output_dir <- function(directory, yml = "_site.yml") {
     output_dir <- directory
   } else {
     output_dir <- file.path(directory, site_yml$output_dir)
-    dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+    fs::dir_create(output_dir)
     output_dir <- absolute(output_dir)
   }
 

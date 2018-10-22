@@ -47,7 +47,7 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
 # Test check_vc ----------------------------------------------------------------
 
 tmp_dir <- tempfile("test-check_vc")
-dir.create(tmp_dir)
+fs::dir_create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 rmd <- file.path(tmp_dir, "file.Rmd")
 writeLines(letters, rmd)
@@ -100,7 +100,7 @@ test_that("check_vc ignores *html, *png, and site_libs", {
   fname_png <- file.path(tmp_dir, "file.png")
   file.create(fname_png)
   site_libs <- file.path(tmp_dir, "site_libs")
-  dir.create(site_libs)
+  fs::dir_create(site_libs)
   site_libs_readme <- file.path(site_libs, "README.md")
   file.create(site_libs_readme)
 
@@ -211,7 +211,7 @@ test_that("check_environment reports non-empty environment", {
 # Test check_rmd ---------------------------------------------------------------
 
 tmp_dir <- tempfile("test-check_rmd")
-dir.create(tmp_dir)
+fs::dir_create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 git2r::init(tmp_dir)
 r <- git2r::repository(tmp_dir)

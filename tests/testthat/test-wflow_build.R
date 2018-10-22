@@ -314,7 +314,7 @@ test_that("wflow_build fails early for bad files", {
 
 test_that("wflow_build throws error if given directory input", {
   d <- file.path(site_dir, "toplevel")
-  dir.create(d)
+  fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   expect_error(wflow_build(d, project = site_dir),
                "files cannot include a path to a directory")

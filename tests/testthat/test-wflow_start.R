@@ -130,7 +130,7 @@ test_that("wflow_start does not overwrite files by default", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
@@ -151,7 +151,7 @@ test_that("wflow_start overwrites files when forced", {
 
   # start project in a tempdir
   site_dir <- tempfile()
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   readme_file <- file.path(site_dir, "README.md")
   writeLines("original", con = readme_file)
@@ -173,7 +173,7 @@ test_that("wflow_start does not overwrite an existing .git directory and does no
 
   # start project in a tempdir
   site_dir <- tempfile()
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   git2r::init(site_dir)
   r <- git2r::repository(site_dir)
@@ -212,7 +212,7 @@ test_that("wflow_start can handle relative path to current directory: .", {
 
   # start project in a tempdir
   site_dir <- tempfile("test-start-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -230,7 +230,7 @@ test_that("wflow_start can handle relative path to upstream directory: ..", {
   # start project in a tempdir
   site_dir <- tempfile("test-start-")
   site_dir_subdir <- file.path(site_dir, "random-subdir")
-  dir.create(site_dir_subdir, recursive = TRUE)
+  fs::dir_create(site_dir_subdir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir_subdir)
@@ -247,7 +247,7 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
 
   # Create and move to a temp directory
   site_dir <- tempfile("test-start-relative-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -262,7 +262,7 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
   expect_true(file.exists("./new/new.Rproj"))
 
   # Create and move to an unrelated subdirectory
-  dir.create("unrelated")
+  fs::dir_create("unrelated")
   setwd("unrelated")
 
   # Start a new workflowr project in an upstream, non-existent directory
@@ -276,7 +276,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created", 
 
   # Create and move to a temp directory
   site_dir <- tempfile("test-deeply-nested-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -296,7 +296,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
 
   # Create and move to a temp directory
   site_dir <- tempfile("test-deeply-nested-plus-cwd-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -317,7 +317,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
 
   # Create and move to a temp directory
   site_dir <- tempfile("test-deeply-nested-plus-relative-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -326,7 +326,7 @@ test_that("wflow_start can handle deeply nested paths that need to be created an
 
   # Create and move to a nested directory
   dir_unrelated <- "1/2/3/4/5/6"
-  dir.create(dir_unrelated, recursive = TRUE)
+  fs::dir_create(dir_unrelated)
   setwd(dir_unrelated)
 
   # Start workflowr project in a highly nested upstream directory
@@ -343,7 +343,7 @@ test_that("wflow_start throws error when given a deeply nested path that needs t
 
   # Create and move to a temp directory
   site_dir <- tempfile("test-deeply-nested-plus-relative-git-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   cwd <- getwd()
   setwd(site_dir)
@@ -355,7 +355,7 @@ test_that("wflow_start throws error when given a deeply nested path that needs t
 
   # Create and move to a nested directory
   dir_unrelated <- "1/2/3/4/5/6"
-  dir.create(dir_unrelated, recursive = TRUE)
+  fs::dir_create(dir_unrelated)
   setwd(dir_unrelated)
 
   # Start workflowr project in a highly nested upstream directory
@@ -385,7 +385,7 @@ test_that("wflow_start changes to workflowr directory by default", {
 test_that("wflow_start fails early if directory exists and `existing = FALSE`", {
 
   site_dir <- tempfile("test-start-")
-  dir.create(site_dir)
+  fs::dir_create(site_dir)
   site_dir <- workflowr:::absolute(site_dir)
   on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
@@ -485,7 +485,7 @@ test_that("print.wflow_start works with change_wd = FALSE and git = FALSE", {
 test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", {
   tmp_dir <- tempfile()
   on.exit(unlink(tmp_dir, recursive = TRUE))
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
 
   # Dry run
@@ -526,7 +526,7 @@ test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", 
 test_that("print.wflow_start works with existing Git repo", {
   tmp_dir <- tempfile()
   on.exit(unlink(tmp_dir, recursive = TRUE))
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   repo <- git2r::init(tmp_dir)
   config(repo, user.name = "Test Name", user.email = "test@email")

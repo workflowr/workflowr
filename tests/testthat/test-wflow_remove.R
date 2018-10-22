@@ -127,7 +127,7 @@ test_that("wflow_remove can remove files with no Git repo present", {
 
 test_that("wflow_remove can remove a directory", {
   d <- "toplevel"
-  dir.create(d)
+  fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   f <- file.path(d, "file")
   file.create(f)
@@ -142,7 +142,7 @@ test_that("wflow_remove can remove a directory", {
 # Test needed to handle Windows behavior of file.exists
 test_that("wflow_remove can remove a directory with a trailing slash", {
   d <- "toplevel/"
-  dir.create(d)
+  fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   f <- file.path(d, "file")
   file.create(f)

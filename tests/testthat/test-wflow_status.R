@@ -180,7 +180,7 @@ test_that("wflow_status detects files with extension .rmd", {
 
 test_that("wflow_status throws error if not in workflowr project.", {
   non_project <- tempfile("non-project-")
-  dir.create(non_project, recursive = TRUE)
+  fs::dir_create(non_project)
   non_project <- workflowr:::absolute(non_project)
   on.exit(unlink(non_project, recursive = TRUE))
   expect_silent(s <- wflow_status(project = site_dir))
@@ -218,7 +218,7 @@ test_that("wflow_status throws error if no Git repository.", {
 
 test_that("wflow_status throws error if given directory input.", {
   d <- file.path(site_dir, "toplevel")
-  dir.create(d)
+  fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   expect_error(wflow_status(d, project = site_dir),
                "files cannot include a path to a directory")

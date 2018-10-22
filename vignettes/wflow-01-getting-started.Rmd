@@ -45,7 +45,7 @@ if (!rmarkdown::pandoc_available()) {
 .tmp <- tempfile("wflow-01-getting-started-")
 .tmp <- workflowr:::absolute(.tmp)
 .project <- file.path(.tmp, "myproject")
-dir.create(.project, recursive = TRUE)
+fs::dir_create(.project)
 opts_knit$set(root.dir = .project)
 ```
 

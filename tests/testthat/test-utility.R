@@ -218,7 +218,7 @@ test_that("relative works on vector input", {
 })
 
 test_that("relative works on relative paths to existing files", {
-  dir.create("x/y/z", recursive = TRUE)
+  fs::dir_create("x/y/z")
   on.exit(unlink("x", recursive = TRUE, force = TRUE))
   path = c("x", "x/y/z")
   start = "./x/y"
@@ -264,7 +264,7 @@ test_that("relative can resolve symlinks", {
 # Test get_host_from_remote --------------------------------------------------
 
 tmp_dir <- tempfile("test-get_host_from_remote")
-dir.create(tmp_dir)
+fs::dir_create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 
 test_that("get_host_from_remote returns NA when no Git repo", {

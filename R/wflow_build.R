@@ -175,7 +175,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
     stop("log_dir must be NULL or a one element character vector")
   }
   log_dir <- absolute(log_dir)
-  dir.create(log_dir, showWarnings = FALSE, recursive = TRUE)
+  fs::dir_create(log_dir)
 
   if (!(is.logical(verbose) && length(verbose) == 1))
     stop("verbose must be a one-element logical vector")
@@ -369,7 +369,7 @@ build_rmd_external <- function(rmd, seed, log_dir, verbose = FALSE, ...) {
   if (!(is.character(log_dir) && length(log_dir) == 1))
     stop("log_dir must be a one element character vector")
   if (!dir.exists(log_dir)) {
-    dir.create(log_dir, recursive = TRUE)
+    fs::dir_create(log_dir)
     message("log directory created: ", log_dir)
   }
 

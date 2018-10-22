@@ -154,7 +154,7 @@ test_that("wflow_open can save outside of analysis/ when project = NULL", {
   cwd <- getwd()
   on.exit(setwd(cwd))
   location_exist <- tempfile("test-wflow_open-exist-")
-  dir.create(location_exist)
+  fs::dir_create(location_exist)
   location_exist <- workflowr:::absolute(location_exist)
   on.exit(unlink(location_exist, recursive = TRUE, force = TRUE), add = TRUE)
   testfile1 <- file.path(location_exist, "exist.Rmd")
@@ -191,7 +191,7 @@ test_that("wflow_open can create a file when no Git repo or config present", {
   # Second outside the context of a workflowr project
   cwd <- getwd()
   x <-tempfile()
-  dir.create(x)
+  fs::dir_create(x)
   x <- workflowr:::absolute(x)
   rmd <- file.path(x, "new.Rmd")
   o <- wflow_open(files = rmd, edit_in_rstudio = FALSE, project = NULL)
@@ -201,12 +201,12 @@ test_that("wflow_open can create a file when no Git repo or config present", {
 
 test_that("wflow_open sends warning if used in workflowrBeta project", {
   tmp_dir <- tempfile()
-  dir.create(tmp_dir)
+  fs::dir_create(tmp_dir)
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
   file.copy("files/test-wflow_update/pre/.", tmp_dir, recursive = TRUE)
-  dir.create(file.path(tmp_dir, "docs"))
+  fs::dir_create(file.path(tmp_dir, "docs"))
   git2r::init(tmp_dir)
   r <- git2r::repository(tmp_dir)
   git2r::config(r, user.name = "Test Name", user.email = "test@email")
@@ -238,7 +238,7 @@ test_that("wflow_open rejects filenames without Rmd or rmd extension", {
 
 test_that("wflow_open throws error if not in workflowr project and project!=NULL", {
   x <- tempfile()
-  dir.create(x)
+  fs::dir_create(x)
   on.exit(unlink(x, recursive = TRUE))
   rmd <- file.path(x, "test.Rmd")
   expect_error(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE),

@@ -17,7 +17,6 @@ matrix:
       r: oldrel
     - os: linux
       r: release
-      r_github_packages: jimhester/covr
       env: R_CODECOV=cover-this-build-only
     - os: linux
       r: release

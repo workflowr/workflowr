@@ -248,7 +248,7 @@ test_that("wflow_paths returns NA if no Git repository and error_git = FALSE.", 
 test_that("wflow_paths is not confused by multiple similar _site.yml files in the same directory", {
   p1 <- wflow_paths(project = site_dir)
   spurious <- file.path(site_dir, "analysis", "_site.yml.bk")
-  on.exit(file.remove(spurious))
+  on.exit(fs::file_delete(spurious))
   file.create(spurious)
   expect_silent(p2 <- wflow_paths(project = site_dir))
   expect_identical(p2, p1)
@@ -256,7 +256,7 @@ test_that("wflow_paths is not confused by multiple similar _site.yml files in th
 
 test_that("wflow_paths throws error if multiple _site.yml files in top-level directories", {
   extra <- file.path(site_dir, "code", "_site.yml")
-  on.exit(file.remove(extra))
+  on.exit(fs::file_delete(extra))
   file.create(extra)
   expect_error(wflow_paths(project = site_dir),
                "Found more than one _site.yml file.")

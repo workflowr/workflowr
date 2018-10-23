@@ -28,7 +28,7 @@ restore_gitconfig <- function(config_tmp) {
     file.rename(from = config_tmp, to = config_original)
   } else if (fs::file_exists(config_original)) {
     # If no temporary backup was created, remove the .gitconfig just created
-    file.remove(config_original)
+    fs::file_delete(config_original)
   }
 }
 

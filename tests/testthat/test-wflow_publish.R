@@ -167,7 +167,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   expect_false(length(current_status$staged) > 0)
   expect_false(length(current_status$unstaged) > 0)
   # Cleanup
-  file.remove(file_w_figs)
+  fs::file_delete(file_w_figs)
   unlink(file.path(s$analysis, "figure", basename(file_w_figs)),
          recursive = TRUE, force = TRUE)
   unlink(file.path(s$docs, "figure", basename(file_w_figs)),
@@ -208,7 +208,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   expect_false(length(current_status$staged) > 0)
   expect_false(length(current_status$unstaged) > 0)
   # Cleanup
-  file.remove(file_w_figs)
+  fs::file_delete(file_w_figs)
 })
 
 test_that("wflow_publish commits new .nojekyll after docs/ name change", {

@@ -156,7 +156,7 @@ test_that("Only locally built files can access variables in the global environme
             to = s$analysis)
   rmd_local <- file.path(s$analysis, "global-variable.Rmd")
   html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
-  on.exit(file.remove(rmd_local, html_local))
+  on.exit(fs::file_delete(c(rmd_local, html_local)))
   # Create a variable in the global environment
   # https://stackoverflow.com/a/25096276/2483477
   env <- globalenv()
@@ -184,7 +184,7 @@ test_that("Only locally built files add packages/variables to global environment
             to = s$analysis)
   rmd_local <- file.path(s$analysis, "local.Rmd")
   html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
-  on.exit(file.remove(rmd_local, html_local))
+  on.exit(fs::file_delete(c(rmd_local, html_local)))
   on.exit(detach("package:tools"), add = TRUE)
   # Build file externally
   utils::capture.output(wflow_build(rmd_local, view = FALSE,
@@ -272,7 +272,7 @@ test_that("wflow_build automatically removes unused figure files", {
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v02)))
   # Cleanup
-  file.remove(file_w_figs)
+  fs::file_delete(file_w_figs)
   unlink(file.path(s$analysis, "figure", basename(file_w_figs)), recursive = TRUE)
   unlink(file.path(s$docs, "figure", basename(file_w_figs)), recursive = TRUE)
 })

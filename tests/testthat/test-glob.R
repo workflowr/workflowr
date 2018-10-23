@@ -127,7 +127,7 @@ test_that("wflow_open accepts file globs", {
                "Invalid file glob:")
 
   rmd_new <- file.path(s$analysis, "new.Rmd")
-  on.exit(file.remove(rmd_new))
+  on.exit(fs::file_delete(rmd_new))
   open_w_glob_new <- wflow_open(c(rmd_glob, rmd_new), change_wd = FALSE,
                                 edit_in_rstudio = FALSE, project = site_dir)
   expect_identical(relative(open_w_glob_new$files), c(rmd_glob_expanded, rmd_new))
@@ -164,7 +164,7 @@ test_that("wflow_status accepts file globs", {
 test_that("wflow_view accepts file globs", {
   html <- workflowr:::to_html(expected, outdir = s$docs)
   file.create(html)
-  on.exit(file.remove(html))
+  on.exit(fs::file_delete(html))
   actual <- wflow_view(rmd_glob, dry_run = TRUE, project = site_dir)
   expect_identical(actual$opened, html)
   expect_error(wflow_view(file.path(s$analysis, "bad*blob.Rmd"),

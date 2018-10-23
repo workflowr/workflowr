@@ -243,7 +243,7 @@ test_that("wflow_html can insert figures with or without Git repo present", {
   expect_true(sum(stringr::str_detect(html_lines,
                                       "<img src=\"data:image/png;base64,")) == 1)
 
-  file.remove(html)
+  fs::file_delete(html)
   # With Git repo
   git2r::init(tmp_dir)
   html <- render(rmd, quiet = TRUE)

@@ -129,7 +129,7 @@ test_that("wflow_view sends warning for missing HTML file.", {
   skip_on_cran()
 
   rmd_wo_html <- file.path(p$analysis, "rmd_wo_html.Rmd")
-  on.exit(file.remove(rmd_wo_html))
+  on.exit(fs::file_delete(rmd_wo_html))
   file.create(rmd_wo_html)
 
   expected <- file.path(p$docs, "about.html")
@@ -143,7 +143,7 @@ test_that("wflow_view sends warning for missing HTML file.", {
 test_that("wflow_view throws error if no files to view.", {
 
   rmd_wo_html <- file.path(p$analysis, "rmd_wo_html.Rmd")
-  on.exit(file.remove(rmd_wo_html))
+  on.exit(fs::file_delete(rmd_wo_html))
   file.create(rmd_wo_html)
 
   expect_error(suppressWarnings(wflow_view(files = rmd_wo_html,
@@ -169,7 +169,7 @@ test_that("wflow_view throws error if given non-workflowr files.", {
                   rmd_in_docs = file.path(p$docs, "file.Rmd"),
                   html_in_root = file.path(p$root, "file.html"),
                   html_in_analysis = file.path(p$analysis, "file.html"))
-  on.exit(lapply(invalid, file.remove))
+  on.exit(lapply(invalid, fs::file_delete))
   lapply(invalid, file.create)
 
   for (f in invalid) {

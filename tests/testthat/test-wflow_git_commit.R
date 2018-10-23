@@ -68,7 +68,7 @@ test_that("wflow_git_commit can commit all tracked files", {
   # Create a temporary untracked file that should not be committed
   untracked <- file.path(site_dir, "analysis", "untracked.Rmd")
   file.create(untracked)
-  on.exit(file.remove(untracked))
+  on.exit(fs::file_delete(untracked))
   for (f in tracked)
     cat("edit\n", file = f, append = TRUE)
   expect_silent(actual <- wflow_git_commit(all = TRUE, project = site_dir))
@@ -81,7 +81,7 @@ test_that("wflow_git_commit does not affect Git repo if `dry_run = TRUE`", {
   before <- commits(r, n = 1)[[1]]
   tmp_file <- file.path(site_dir, "tmp.txt")
   file.create(tmp_file)
-  on.exit(file.remove(tmp_file))
+  on.exit(fs::file_delete(tmp_file))
   expect_silent(wflow_git_commit(files = tmp_file, dry_run = TRUE,
                              project = site_dir))
   after <- commits(r, n = 1)[[1]]
@@ -115,7 +115,7 @@ test_that("wflow_git_commit_ can commit deleted files", {
   index <- file.path(s$analysis, "index.Rmd")
   about <- file.path(s$analysis, "about.Rmd")
   cat("edit\n", file = index, append = TRUE)
-  file.remove(about)
+  fs::file_delete(about)
   observed <- workflowr:::wflow_git_commit_(c(index, about),
                                             message = "Edit and delete",
                                             project = site_dir)
@@ -134,7 +134,7 @@ test_that("wflow_git_commit_ can commit deleted files from project root", {
   index <- "analysis/index.Rmd"
   about <- "analysis/about.Rmd"
   cat("edit\n", file = index, append = TRUE)
-  file.remove(about)
+  fs::file_delete(about)
   observed <- workflowr:::wflow_git_commit_(c(index, about),
                                             message = "Edit and delete")
   expect_true(index %in% observed$commit_files)
@@ -152,7 +152,7 @@ test_that("wflow_git_commit_ can commit deleted files from project subdir", {
   index <- "index.Rmd"
   about <- "about.Rmd"
   cat("edit\n", file = index, append = TRUE)
-  file.remove(about)
+  fs::file_delete(about)
   observed <- workflowr:::wflow_git_commit_(c(index, about),
                                             message = "Edit and delete")
   expect_true(index %in% observed$commit_files)

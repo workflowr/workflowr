@@ -177,7 +177,7 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
   chunks <- file.path(p$analysis, "chunks.R")
   if (fs::file_exists(chunks)) {
     files_updated <- c(files_updated, chunks)
-    if (!dry_run) file.remove(chunks)
+    if (!dry_run) fs::file_delete(chunks)
   }
 
   # Output ---------------------------------------------------------------------

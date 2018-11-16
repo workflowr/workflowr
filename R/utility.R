@@ -230,28 +230,33 @@ get_output_dir <- function(directory, yml = "_site.yml") {
   return(output_dir)
 }
 
-# Convert named nested list to data frame
-status_to_df <- function(s) {
-  stopifnot(class(s) == "git_status")
-  s_vec <- unlist(s)
-  if (length(s_vec) > 0) {
-    categories <- stringr::str_split(names(s_vec), pattern = "\\.", n = 2,
-                                     simplify = TRUE)
-    d <- data.frame(categories, s_vec, stringsAsFactors = FALSE)
-    colnames(d) <- c("state1", "state2", "file")
-  } else {
-    d <- data.frame(state1 = character(0), state2 = character(0),
-                    file = character(0), stringsAsFactors = FALSE)
+# Convert the output of git2r::status() to a data frame for easier manipulation
+status_to_df <- function(x) {
+  stopifnot(class(x) == "git_status")
+
+  col_status <- character()
+  col_substatus <- character()
+  col_file <- character()
+
+  for (stat in names(x)) {
+    files <- unlist(x[[stat]])
+    col_status <- c(col_status, rep(stat, length(files)))
+    col_substatus <- c(col_substatus, names(files))
+    col_file <- c(col_file, files)
   }
 
-  return(d)
+  out <- data.frame(status = col_status,
+                    substatus = col_substatus,
+                    file = col_file,
+                    stringsAsFactors = FALSE)
+  return(out)
 }
 
 # Convert data frame to git_status
 df_to_status <- function(d) {
   stopifnot(is.data.frame(d),
             colnames(d) == c("state1", "state2", "file"))
-  status <- list(staged =structure(list(), .Names = character(0)),
+  status <- list(staged = structure(list(), .Names = character(0)),
                  unstaged = structure(list(), .Names = character(0)),
                  untracked = structure(list(), .Names = character(0)))
   for (i in seq_along(d$file)) {

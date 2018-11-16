@@ -342,3 +342,49 @@ test_that("get_host_from_remote works with custom SSH protocol", {
 
 unlink(tmp_dir, recursive = TRUE)
 rm(r, tmp_dir)
+
+# Test status_to_df and df_to_status -------------------------------------------
+
+test_that("status_to_df converts to data frame and df_to_status reverts", {
+  files_staged <- structure(list(modified = "staged-1.txt"),
+                            .Names = "modified")
+  files_unstaged <- structure(list(modified = "unstaged-1.txt"),
+                              .Names = "modified")
+  files_untracked <- structure(list(untracked = "untracked-1.txt",
+                                    untracked = "untracked-2.txt"),
+                               .Names = c("untracked", "untracked"))
+  input <- structure(list(staged = files_staged,
+                          unstaged = files_unstaged,
+                          untracked = files_untracked),
+                          .Names = c("staged", "unstaged", "untracked"),
+                          class = "git_status")
+
+  expected <- data.frame(
+    state1 = c("staged", "unstaged", "untracked", "untracked"),
+    state2 = c("modified", "modified", "untracked", "untracked"),
+    file = c("staged-1.txt", "unstaged-1.txt", "untracked-1.txt", "untracked-2.txt"),
+    stringsAsFactors = FALSE)
+
+  observed <- workflowr:::status_to_df(input)
+  expect_identical(observed, expected)
+
+  # Revert to git_status
+  expect_identical(workflowr:::df_to_status(observed), input)
+})
+
+test_that("status_to_df and df_to_status can handle empty status", {
+  input <- structure(list(staged = structure(list(), .Names = character(0)),
+                          unstaged = structure(list(), .Names = character(0)),
+                          untracked = structure(list(), .Names = character(0))),
+                     .Names = c("staged", "unstaged", "untracked"),
+                     class = "git_status")
+
+  expected <- data.frame(state1 = character(), state2 = character(),
+                         file =  character(), stringsAsFactors = FALSE)
+
+  observed <- workflowr:::status_to_df(input)
+  expect_identical(observed, expected)
+
+  # Revert to git_status
+  expect_identical(workflowr:::df_to_status(observed), input)
+})

@@ -241,7 +241,7 @@ status_to_df <- function(s) {
     colnames(d) <- c("state1", "state2", "file")
   } else {
     d <- data.frame(state1 = character(0), state2 = character(0),
-                    file = character(0))
+                    file = character(0), stringsAsFactors = FALSE)
   }
 
   return(d)
@@ -251,7 +251,9 @@ status_to_df <- function(s) {
 df_to_status <- function(d) {
   stopifnot(is.data.frame(d),
             colnames(d) == c("state1", "state2", "file"))
-  status <- list(staged = list(), unstaged = list(), untracked = list())
+  status <- list(staged =structure(list(), .Names = character(0)),
+                 unstaged = structure(list(), .Names = character(0)),
+                 untracked = structure(list(), .Names = character(0)))
   for (i in seq_along(d$file)) {
     status[[d$state1[i]]] <- c(status[[d$state1[i]]], list(d$file[i]))
     names(status[[d$state1[i]]])[length(status[[d$state1[i]]])] <- d$state2[i]

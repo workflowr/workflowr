@@ -255,13 +255,13 @@ status_to_df <- function(x) {
 # Convert data frame to git_status
 df_to_status <- function(d) {
   stopifnot(is.data.frame(d),
-            colnames(d) == c("state1", "state2", "file"))
+            colnames(d) == c("status", "substatus", "file"))
   status <- list(staged = structure(list(), .Names = character(0)),
                  unstaged = structure(list(), .Names = character(0)),
                  untracked = structure(list(), .Names = character(0)))
   for (i in seq_along(d$file)) {
-    status[[d$state1[i]]] <- c(status[[d$state1[i]]], list(d$file[i]))
-    names(status[[d$state1[i]]])[length(status[[d$state1[i]]])] <- d$state2[i]
+    status[[d$status[i]]] <- c(status[[d$status[i]]], list(d$file[i]))
+    names(status[[d$status[i]]])[length(status[[d$status[i]]])] <- d$substatus[i]
   }
   class(status) <- "git_status"
   return(status)

@@ -360,8 +360,8 @@ test_that("status_to_df converts to data frame and df_to_status reverts", {
                           class = "git_status")
 
   expected <- data.frame(
-    state1 = c("staged", "unstaged", "untracked", "untracked"),
-    state2 = c("modified", "modified", "untracked", "untracked"),
+    status = c("staged", "unstaged", "untracked", "untracked"),
+    substatus = c("modified", "modified", "untracked", "untracked"),
     file = c("staged-1.txt", "unstaged-1.txt", "untracked-1.txt", "untracked-2.txt"),
     stringsAsFactors = FALSE)
 
@@ -379,7 +379,7 @@ test_that("status_to_df and df_to_status can handle empty status", {
                      .Names = c("staged", "unstaged", "untracked"),
                      class = "git_status")
 
-  expected <- data.frame(state1 = character(), state2 = character(),
+  expected <- data.frame(status = character(), substatus = character(),
                          file =  character(), stringsAsFactors = FALSE)
 
   observed <- workflowr:::status_to_df(input)

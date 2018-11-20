@@ -163,6 +163,15 @@ wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
   # Establish connection to Git repository
   r <- git2r::repository(s$git)
 
+  # Files cannot have merge conflicts
+  conflicted_files_all <- rownames(s$status)[s$status$conflicted]
+  conflicted_files <- files[files %in% conflicted_files_all]
+  if (length(conflicted_files) > 0) {
+    stop(call. = FALSE, wrap(
+      "Cannot proceed due to merge conflicts in the following file(s):"
+      ), "\n\n", paste(conflicted_files, collapse = "\n"))
+  }
+
   if (!dry_run) {
     # Add the specified files
     if (!is.null(files)) {

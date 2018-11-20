@@ -137,18 +137,24 @@ wflow_status <- function(files = NULL, project = ".") {
   # Obtain status of each file
   r <- git2r::repository(o$git)
   s <- git2r::status(r, ignored = TRUE)
-  # Convert from a list of lists of paths relative to the .git directory to a
-  # list of character vectors of absolute paths
-  s <- lapply(s, function(x) file.path(git2r_workdir(r), as.character(x)))
-  # Convert from absolute paths to paths relative to working directory
-  s <- lapply(s, relative)
-  # Determine status of each analysis file in the Git repository. Each status
-  # is a logical vector.
-  ignored <- files_analysis %in% s$ignored
-  mod_unstaged <- files_analysis %in% s$unstaged
-  mod_staged <- files_analysis %in% s$staged
+  s_df <- status_to_df(s)
+  # Fix file paths
+  s_df$file <- file.path(git2r_workdir(r), s_df$file)
+  s_df$file <- relative(s_df$file)
+  # Categorize all files by git status
+  f_ignored <- s_df$file[s_df$status == "ignored"]
+  f_unstaged <- s_df$file[s_df$status == "unstaged"]
+  f_conflicted <- s_df$file[s_df$substatus == "conflicted"]
+  f_staged <- s_df$file[s_df$status == "staged"]
+  f_untracked <- s_df$file[s_df$status == "untracked"]
+  # Determine status of each analysis file (i.e. Rmd) in the Git repository.
+  # Each status is a logical vector.
+  ignored <- files_analysis %in% f_ignored
+  mod_unstaged <- files_analysis %in% f_unstaged
+  conflicted <- files_analysis %in% f_conflicted
+  mod_staged <- files_analysis %in% f_staged
   tracked <- files_analysis %in% setdiff(files_analysis,
-                                         c(s$untracked, s$ignored))
+                                         c(f_untracked, f_ignored))
   files_committed <- get_committed_files(r)
   files_committed <- relative(files_committed)
   committed <- files_analysis %in% files_committed
@@ -173,7 +179,7 @@ wflow_status <- function(files = NULL, project = ".") {
   # Scratch file. Any untracked file that is not specifically ignored.
   scratch <- !tracked & !ignored
 
-  o$status <- data.frame(ignored, mod_unstaged, mod_staged, tracked,
+  o$status <- data.frame(ignored, mod_unstaged, conflicted, mod_staged, tracked,
                          committed, published, mod_committed, modified,
                          unpublished, scratch,
                          row.names = files_analysis)

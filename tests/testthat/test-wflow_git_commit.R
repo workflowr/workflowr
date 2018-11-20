@@ -215,3 +215,29 @@ test_that("wflow_git_commit throws an error if user.name and user.email are not 
   expect_error(wflow_git_commit(project = site_dir),
                "wflow_git_commit")
 })
+
+test_that("wflow_git_commit fails early if merge conflicts detected", {
+  x <- tempfile("test-merge-conflicts-")
+  suppressMessages(wflow_start(x, change_wd = FALSE, user.name = "Test Name",
+                               user.email = "test@email"))
+  x <- workflowr:::relative(x)
+  on.exit(unlink(x, recursive = TRUE, force = TRUE))
+  r <- repository(path = x)
+  s <- wflow_status(project = x)
+
+  # Edit index.Rmd on new branch
+  rmd <- file.path(s$analysis, "index.Rmd")
+  checkout(r, "b2", create = TRUE)
+  cat("\nedit on b2\n", file = rmd, append = TRUE)
+  add(r, rmd)
+  commit(r, "edit index.Rmd on b2")
+  # Edit index.Rmd on master branch
+  checkout(r, "master")
+  cat("\nedit on master\n", file = rmd, append = TRUE)
+  add(r, rmd)
+  commit(r, "edit index.Rmd on master")
+  # Generate merge conflict
+  merge(r, "b2")
+  # Attempt to publish
+  expect_error(wflow_publish(rmd, project = x), rmd)
+})

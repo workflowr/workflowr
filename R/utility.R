@@ -248,6 +248,7 @@ status_to_df <- function(x) {
   out <- data.frame(status = col_status,
                     substatus = col_substatus,
                     file = col_file,
+                    row.names = seq_along(col_status),
                     stringsAsFactors = FALSE)
   return(out)
 }

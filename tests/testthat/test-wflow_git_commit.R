@@ -237,7 +237,7 @@ test_that("wflow_git_commit fails early if merge conflicts detected", {
   add(r, rmd)
   commit(r, "edit index.Rmd on master")
   # Generate merge conflict
-  merge(r, "b2")
+  workflowr:::git2r_merge(r, "b2")
   # Attempt to publish
   expect_error(wflow_publish(rmd, project = x), rmd)
 })

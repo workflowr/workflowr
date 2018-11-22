@@ -279,7 +279,7 @@ wflow_html <- function(...) {
       sessioninfo <- c("",
                        "## Session information",
                        "",
-                       "```{r session-info-chunk-inserted-by-workflowr}",
+                       "```{r session-info-chunk-inserted-by-workflowr, cache = FALSE}",
                        wflow_opts$sessioninfo,
                        "```",
                        "")

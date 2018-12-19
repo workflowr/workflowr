@@ -217,8 +217,7 @@ print.wflow_view <- function(x, ...) {
     cat(wrap(
       "wflow_view will not open any files because no option is set for a
       default browser. See the Details section of ?browseURL for setup
-      instructions.\n"
-      ))
+      instructions."), sep = "\n")
 
     return(invisible(x))
   }

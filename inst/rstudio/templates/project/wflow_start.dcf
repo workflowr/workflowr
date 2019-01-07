@@ -2,6 +2,7 @@ Binding: wflow_start
 Title: workflowr project
 Subtitle: RStudio interface to wflow_start()
 Caption: Start a workflowr project
+Icon: reproducible.png
 OpenFiles: README.md, analysis/index.Rmd, _workflowr.yml, analysis/_site.yml
 
 Parameter: git

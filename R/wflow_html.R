@@ -302,13 +302,20 @@ wflow_html <- function(...) {
 
     # Add session information at the end
     if (has_code && wflow_opts$sessioninfo != "") {
-      sessioninfo <- c("",
-                       "## Session information",
-                       "",
-                       "```{r session-info-chunk-inserted-by-workflowr}",
-                       wflow_opts$sessioninfo,
-                       "```",
-                       "")
+      sessioninfo <- glue::glue('
+      <button type="button" class="btn btn-default"
+        data-toggle="collapse" data-target="#workflowr-sessioninfo">
+        Session information
+      </button>
+
+      <div id="workflowr-sessioninfo" class="collapse">
+      <p>
+      ```{{r session-info-chunk-inserted-by-workflowr}}
+      {wflow_opts$sessioninfo}
+      ```
+      </p>
+      </div>
+      ')
       # If there is a bibliography, make sure it appears before the session
       # information
       if (!is.null(header$bibliography)) {

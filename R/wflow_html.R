@@ -329,7 +329,7 @@ wflow_html <- function(...) {
     lines_out <- c(header_lines,
                    "**Last updated:** `r Sys.Date()`",
                    report,
-                   "---",
+                   "",
                    seed_chunk,
                    lines_in[(header_end + 1):length(lines_in)],
                    sessioninfo)

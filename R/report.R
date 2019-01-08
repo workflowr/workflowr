@@ -76,7 +76,27 @@ create_report <- function(input, output_dir, has_code, opts) {
 
   # Return ---------------------------------------------------------------------
 
+  checks_passed <- vapply(checks, function(x) x$pass, FUN.VALUE = logical(1))
+  if (all(checks_passed)) {
+    icon <- "glyphicon-ok text-success"
+  } else {
+    icon <- "glyphicon-exclamation-sign text-danger"
+  }
   report <- paste(report_checks, report_versions, collapse = "\n")
+  report <- glue::glue('
+  <p>
+  <button type="button" class="btn btn-default" data-toggle="collapse"
+    data-target="#workflowr-report">
+    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+    workflowr
+    <span class="glyphicon {icon}" aria-hidden="true"></span>
+  </button>
+
+  <div id="workflowr-report" class="collapse">
+  {report}
+  </div>
+  </p>
+  ')
 
   return(report)
 }

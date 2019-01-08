@@ -8,6 +8,7 @@ Git host, e.g. `domain = "gitlab.com"`
 * Improve formatting of tables using [Bootstrap table classes][bootstrap-tables]
 * Collapse the "Session information" chunk (@xiangzhu, #120)
 * Convert table of past figure versions to a collapsable button (@xiangzhu, #120)
+* Collapse the reproducibility report (@timtrice, #110)
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 

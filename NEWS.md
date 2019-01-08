@@ -7,6 +7,7 @@ Git host, e.g. `domain = "gitlab.com"`
 `fig.path`, which workflowr ignores (idea from @lazappi in #114)
 * Improve formatting of tables using [Bootstrap table classes][bootstrap-tables]
 * Collapse the "Session information" chunk (@xiangzhu, #120)
+* Convert table of past figure versions to a collapsable button (@xiangzhu, #120)
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 

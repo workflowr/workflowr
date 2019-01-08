@@ -196,8 +196,15 @@ get_versions_fig <- function(fig, r, github) {
 
   template <-
     "
-  <details>
-  <summary><em>Expand here to see past versions of {{fig}}:</em></summary>
+  <p>
+  <button type=\"button\" class=\"btn btn-default btn-xs\"
+  data-toggle=\"collapse\" data-target=\"#{{id}}\"
+  style = \"display: block; margin: auto;\">
+  Past versions of {{fig}}
+  </button>
+  </p>
+
+  <div id=\"{{id}}\" class=\"collapse\">
   <div class=\"table-responsive\">
   <table class=\"table table-condensed table-hover\">
   <thead>
@@ -218,9 +225,10 @@ get_versions_fig <- function(fig, r, github) {
   </tbody>
   </table>
   </div>
-  </details>
+  </div>
   "
   data <- list(fig = basename(fig),
+               id = paste0("fig-", tools::file_path_sans_ext(basename(fig))),
                blobs_file = unname(whisker::rowSplit(blobs_file)))
   text <- whisker::whisker.render(template, data)
 

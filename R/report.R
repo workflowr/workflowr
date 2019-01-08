@@ -91,11 +91,33 @@ create_report <- function(input, output_dir, has_code, opts) {
     workflowr
     <span class="glyphicon {icon}" aria-hidden="true"></span>
   </button>
+  </p>
 
   <div id="workflowr-report" class="collapse">
-  {report}
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#details">Details</a></li>
+    <li><a data-toggle="tab" href="#report">Report</a></li>
+    <li><a data-toggle="tab" href="#versions">Past versions</a></li>
+  </ul>
+
+  <div class="tab-content">
+  <div id="details" class="tab-pane fade in active">
+    <p><strong>Last updated:</strong> 2019-01-08</p>
+    <p>
+    This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+    analysis was created with
+    <a href="https://github.com/jdblischak/workflowr">workflowr</a>
+    {packageVersion("workflowr")} on {Sys.Date()}.
+    </p>
   </div>
-  </p>
+  <div id="report" class="tab-pane fade">
+    {report_checks}
+  </div>
+  <div id="versions" class="tab-pane fade">
+    {report_versions}
+  </div>
+  </div>
+  </div>
   ')
 
   return(report)

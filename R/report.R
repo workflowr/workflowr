@@ -38,15 +38,12 @@ create_report <- function(input, output_dir, has_code, opts) {
   # Formatting checks ----------------------------------------------------------
 
   checks_formatted <- Map(format_check, checks)
-  template_checks <-
-"
-<strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
-<ul>
-{{{checks}}}
-</ul>
-"
-  data_checks <- list(checks = paste(unlist(checks_formatted), collapse = "\n"))
-  report_checks <- whisker::whisker.render(template_checks, data_checks)
+  checks_formatted_string <- paste(unlist(checks_formatted), collapse = "\n")
+  report_checks <- glue::glue('
+  <div class="panel-group" id="workflowr-checks">
+    {checks_formatted_string}
+  </div>
+  ')
 
   # Version history ------------------------------------------------------------
 
@@ -466,20 +463,27 @@ format_check <- function(check) {
   } else {
     symbol <- "<strong style=\"color:red;\">&#10006;</strong>"
   }
-  template <-
-    "
-  <li>
-  <details>
-  <summary>
-  {{{symbol}}} {{{summary}}}
-  </summary>
-  {{{details}}}
-  </details>
-  </li>
-  "
-  data <- list(symbol = symbol, summary = check$summary,
-               details = check$details)
-  text <- whisker::whisker.render(template, data)
+  # Create a unique ID for the collapsible panel based on the summary by
+  # concatenating all alphanumeric characters.
+  panel_id <- stringr::str_extract_all(check$summary, "[:alnum:]")[[1]]
+  panel_id <- paste(panel_id, collapse = "")
+  text <- glue::glue('
+  <div class="panel panel-default">
+  <div class="panel-heading">
+  <h4 class="panel-title">
+  <a data-toggle="collapse" data-parent="#workflowr-checks" href="#{panel_id}">
+    {symbol} {check$summary}
+  </a>
+  </h4>
+  </div>
+  <div id="{panel_id}" class="panel-collapse collapse">
+  <div class="panel-body">
+    {check$details}
+  </div>
+  </div>
+  </div>
+  '
+  )
   return(text)
 }
 

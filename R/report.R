@@ -62,9 +62,9 @@ create_report <- function(input, output_dir, has_code, opts) {
 
   checks_passed <- vapply(checks, function(x) x$pass, FUN.VALUE = logical(1))
   if (all(checks_passed)) {
-    icon <- "glyphicon-ok text-success"
+    symbol <- "glyphicon-ok text-success"
   } else {
-    icon <- "glyphicon-exclamation-sign text-danger"
+    symbol <- "glyphicon-exclamation-sign text-danger"
   }
   report <- paste(report_checks, report_versions, collapse = "\n")
   report <- glue::glue('
@@ -73,14 +73,16 @@ create_report <- function(input, output_dir, has_code, opts) {
     data-target="#workflowr-report">
     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
     workflowr
-    <span class="glyphicon {icon}" aria-hidden="true"></span>
+    <span class="glyphicon {symbol}" aria-hidden="true"></span>
   </button>
   </p>
 
   <div id="workflowr-report" class="collapse">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#details">Details</a></li>
-    <li><a data-toggle="tab" href="#report">Report</a></li>
+    <li><a data-toggle="tab" href="#report">
+    Report <span class="glyphicon {symbol}" aria-hidden="true"></span>
+    </a></li>
     <li><a data-toggle="tab" href="#versions">Past versions</a></li>
   </ul>
 
@@ -457,9 +459,9 @@ create_objects_table <- function(env) {
 
 format_check <- function(check) {
   if (check$pass) {
-    symbol <- "<strong style=\"color:blue;\">&#10004;</strong>"
+    symbol <- "glyphicon-ok text-success"
   } else {
-    symbol <- "<strong style=\"color:red;\">&#10006;</strong>"
+    symbol <- "glyphicon-exclamation-sign text-danger"
   }
   # Create a unique ID for the collapsible panel based on the summary by
   # concatenating all alphanumeric characters.
@@ -470,7 +472,8 @@ format_check <- function(check) {
   <div class="panel-heading">
   <h4 class="panel-title">
   <a data-toggle="collapse" data-parent="#workflowr-checks" href="#{panel_id}">
-    {symbol} {check$summary}
+    <span class="glyphicon {symbol}" aria-hidden="true"></span>
+    {check$summary}
   </a>
   </h4>
   </div>

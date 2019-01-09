@@ -184,14 +184,6 @@ footer is added to webpages before the MathJax javascript. -->
   }});
 </script>
 
-<hr>
-<p>
-  This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
-  analysis was created with
-  <a href="https://github.com/jdblischak/workflowr">workflowr</a> {wflow_version}
-</p>
-<hr>
-
 '
 )
 

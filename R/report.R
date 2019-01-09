@@ -86,12 +86,14 @@ create_report <- function(input, output_dir, has_code, opts) {
 
   <div class="tab-content">
   <div id="details" class="tab-pane fade in active">
-    <p><strong>Last updated:</strong> 2019-01-08</p>
+    <p><strong>Last updated:</strong> {Sys.Date()}</p>
     <p>
     This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
-    analysis was created with
-    <a href="https://github.com/jdblischak/workflowr">workflowr</a>
-    {packageVersion("workflowr")} on {Sys.Date()}.
+    analysis was created with <a
+    href="https://github.com/jdblischak/workflowr">workflowr</a> (version
+    {packageVersion("workflowr")}). The <em>Report</em> tab describes the
+    reproducibility checks that were applied when the results were created.
+    The <em>Past versions</em> tab lists the development history.
     </p>
   <hr>
   </div>

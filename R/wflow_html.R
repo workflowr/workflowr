@@ -327,7 +327,6 @@ wflow_html <- function(...) {
     }
 
     lines_out <- c(header_lines,
-                   "**Last updated:** `r Sys.Date()`",
                    report,
                    "",
                    seed_chunk,
@@ -368,9 +367,7 @@ wflow_html <- function(...) {
 
     # footer
     fname_footer <- tempfile("footer", fileext = ".html")
-    wflow_version <- utils::packageVersion("workflowr")
-    footer <- glue::glue(includes$footer)
-    writeLines(footer, con = fname_footer)
+    writeLines(includes$footer, con = fname_footer)
 
     # Pandoc 2+ sends a warning if there is no title and uses the filename
     # without the extension to set the pagetitle (this is the text that is

@@ -303,10 +303,13 @@ wflow_html <- function(...) {
     # Add session information at the end
     if (has_code && wflow_opts$sessioninfo != "") {
       sessioninfo <- glue::glue('
+      <br>
+      <br>
       <p>
       <button type="button" class="btn btn-default"
         data-toggle="collapse" data-target="#workflowr-sessioninfo"
         style = "display: block;">
+        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
         Session information
       </button>
       </p>

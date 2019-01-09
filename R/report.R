@@ -79,7 +79,7 @@ create_report <- function(input, output_dir, has_code, opts) {
 
   <div id="workflowr-report" class="collapse">
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#details">Details</a></li>
+    <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
     <li><a data-toggle="tab" href="#report">
     Report <span class="glyphicon {symbol}" aria-hidden="true"></span>
     </a></li>
@@ -87,8 +87,14 @@ create_report <- function(input, output_dir, has_code, opts) {
   </ul>
 
   <div class="tab-content">
-  <div id="details" class="tab-pane fade in active">
+  <div id="summary" class="tab-pane fade in active">
     <p><strong>Last updated:</strong> {Sys.Date()}</p>
+    <p><strong>Checks:</strong>
+    <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+    {sum(checks_passed)}
+    <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+    {sum(!checks_passed)}
+    </p>
     <p>
     This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
     analysis was created with <a
@@ -470,12 +476,12 @@ format_check <- function(check) {
   text <- glue::glue('
   <div class="panel panel-default">
   <div class="panel-heading">
-  <h4 class="panel-title">
+  <p class="panel-title">
   <a data-toggle="collapse" data-parent="#workflowr-checks" href="#{panel_id}">
     <span class="glyphicon {symbol}" aria-hidden="true"></span>
     {check$summary}
   </a>
-  </h4>
+  </p>
   </div>
   <div id="{panel_id}" class="panel-collapse collapse">
   <div class="panel-body">

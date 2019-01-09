@@ -1,4 +1,4 @@
-# workflowr 1.1.1.9000
+# workflowr 1.1.1.9001
 
 * Add instructions for hosting workflowr website with GitLab (@lazappi in #112)
 * Add argument `domain` to `wflow_git_remote()` to allow specifying any remote
@@ -9,6 +9,7 @@ Git host, e.g. `domain = "gitlab.com"`
 * Collapse the "Session information" chunk (@xiangzhu, #120)
 * Convert table of past figure versions to a collapsable button (@xiangzhu, #120)
 * Collapse the reproducibility report (@timtrice, #110)
+* Remove the footer
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 

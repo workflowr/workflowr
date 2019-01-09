@@ -50,25 +50,12 @@ create_report <- function(input, output_dir, has_code, opts) {
   if (uses_git) {
     blobs <- git2r::odb_blobs(r)
     versions <- get_versions(input, output_dir, blobs, r, opts$github)
-    if (versions == "") {
-      report_versions <- versions
-    } else {
-      template_versions <-
-"
-<details>
-<summary>
-<small><strong>Expand here to see past versions:</strong></small>
-</summary>
-<ul>
-{{{versions}}}
-</ul>
-</details>
-"
-      report_versions <- whisker::whisker.render(template_versions,
-                                                 data = list(versions = versions))
-    }
+    report_versions <- versions
   } else {
-    report_versions <- ""
+    report_versions <-
+      "<p>This project is not being versioned with Git. To obtain the full
+      reproducibility benefits of using workflowr, please see
+      <code>?wflow_start</code>.</p>"
   }
 
   # Return ---------------------------------------------------------------------
@@ -106,12 +93,15 @@ create_report <- function(input, output_dir, has_code, opts) {
     <a href="https://github.com/jdblischak/workflowr">workflowr</a>
     {packageVersion("workflowr")} on {Sys.Date()}.
     </p>
+  <hr>
   </div>
   <div id="report" class="tab-pane fade">
     {report_checks}
+  <hr>
   </div>
   <div id="versions" class="tab-pane fade">
     {report_versions}
+  <hr>
   </div>
   </div>
   </div>
@@ -135,7 +125,10 @@ get_versions <- function(input, output_dir, blobs, r, github) {
   blobs_file <- blobs_file[blobs_file$commit %in% git_log_sha, ]
   # Exit early if there are no past versions
   if (nrow(blobs_file) == 0) {
-    return("")
+    text <-
+      "<p>There are no past versions. Publish this analysis with
+      <code>wflow_publish()</code> to start tracking its development.</p>"
+    return(text)
   }
   colnames(blobs_file) <- c("File", "Version", "Author", "Date")
   blobs_file <- blobs_file[order(blobs_file$Date, decreasing = TRUE), ]
@@ -169,6 +162,9 @@ get_versions <- function(input, output_dir, blobs, r, github) {
 
   template <-
 "
+<p>These are the previous versions of the R Markdown and HTML files. If you've
+configured a remote Git repository (see <code>?wflow_git_remote</code>), click
+on the hyperlinks in the table below to view them.</p>
 <div class=\"table-responsive\">
 <table class=\"table table-condensed table-hover\">
 <thead>

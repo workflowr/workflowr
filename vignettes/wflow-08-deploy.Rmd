@@ -7,7 +7,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Frequently asked questions}
+  %\VignetteIndexEntry{Alternative strategies for deploying workflowr websites}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

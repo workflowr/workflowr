@@ -26,6 +26,10 @@ matrix:
       warnings_are_errors: false
     - os: osx
       r: oldrel
+      addons:
+        homebrew:
+          packages:
+            - libgit2
     - os: osx
       r: release
 

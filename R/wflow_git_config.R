@@ -85,7 +85,7 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
       user_home <- get_home()
       config_file <- file.path(user_home, ".gitconfig")
       if (!fs::file_exists(config_file)) {
-        file.create(config_file)
+        fs::file_create(config_file)
       }
     }
   }

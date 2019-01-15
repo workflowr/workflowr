@@ -15,8 +15,8 @@ file.copy("files/test-wflow_build/.", tmp_dir, recursive = TRUE)
 
 # Create empty website files to satisfy rmarkdown::render_site (called by
 # build_rmd). HTML files written to _site/
-file.create(file.path(tmp_dir, "_site.yml"))
-file.create(file.path(tmp_dir, "index.Rmd"))
+fs::file_create(file.path(tmp_dir, "_site.yml"))
+fs::file_create(file.path(tmp_dir, "index.Rmd"))
 
 setwd(tmp_dir)
 

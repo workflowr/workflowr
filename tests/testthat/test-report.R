@@ -96,13 +96,13 @@ test_that("check_vc reports Git repo and can add GitHub URL", {
 
 test_that("check_vc ignores *html, *png, and site_libs", {
   fname_html <- file.path(tmp_dir, "file.html")
-  file.create(fname_html)
+  fs::file_create(fname_html)
   fname_png <- file.path(tmp_dir, "file.png")
-  file.create(fname_png)
+  fs::file_create(fname_png)
   site_libs <- file.path(tmp_dir, "site_libs")
   fs::dir_create(site_libs)
   site_libs_readme <- file.path(site_libs, "README.md")
-  file.create(site_libs_readme)
+  fs::file_create(site_libs_readme)
 
   observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
 
@@ -114,7 +114,7 @@ test_that("check_vc ignores *html, *png, and site_libs", {
 })
 
 rmd2 <- file.path(tmp_dir, "file2.Rmd")
-file.create(rmd2)
+fs::file_create(rmd2)
 s <- git2r::status(r, ignored = TRUE)
 
 test_that("check_vc reports uncommitted Rmd files", {

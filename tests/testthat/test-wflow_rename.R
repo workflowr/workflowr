@@ -128,7 +128,7 @@ test_that("wflow_rename can rename one Rmd file with HTML and figs", {
   dir_fig <- file.path(p$docs, workflowr:::create_figure_path(original))
   fs::dir_create(dir_fig)
   fig <- file.path(dir_fig, "fig.png")
-  file.create(fig)
+  fs::file_create(fig)
   add(r, fig)
   commit(r, "Publish fake fig to accompany Rmd file to be renamed")
   # Expected files

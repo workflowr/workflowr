@@ -19,7 +19,7 @@ source("helpers.R", local = TRUE)
 
 test_that("wflow_git_commit can commit one new file", {
   f1 <- file.path(site_dir, "f1.txt")
-  file.create(f1)
+  fs::file_create(f1)
   expect_silent(actual <- wflow_git_commit(f1, project = site_dir))
   expect_true(f1 %in% actual$commit_files)
   recent <- commits(r, n = 1)[[1]]
@@ -31,7 +31,7 @@ test_that("wflow_git_commit can commit one new file", {
 test_that("wflow_git_commit can commit multiple new files", {
   f2 <- file.path(site_dir, "f2.txt")
   f3 <- file.path(site_dir, "f3.txt")
-  file.create(f2, f3)
+  fs::file_create(c(f2, f3))
   expect_silent(actual <- wflow_git_commit(c(f2, f3), project = site_dir))
   expect_identical(actual$commit_files, c(f2, f3))
   recent <- commits(r, n = 1)[[1]]
@@ -67,7 +67,7 @@ test_that("wflow_git_commit can commit all tracked files", {
                        c("about.Rmd", "index.Rmd", "license.Rmd"))
   # Create a temporary untracked file that should not be committed
   untracked <- file.path(site_dir, "analysis", "untracked.Rmd")
-  file.create(untracked)
+  fs::file_create(untracked)
   on.exit(fs::file_delete(untracked))
   for (f in tracked)
     cat("edit\n", file = f, append = TRUE)
@@ -80,7 +80,7 @@ test_that("wflow_git_commit can commit all tracked files", {
 test_that("wflow_git_commit does not affect Git repo if `dry_run = TRUE`", {
   before <- commits(r, n = 1)[[1]]
   tmp_file <- file.path(site_dir, "tmp.txt")
-  file.create(tmp_file)
+  fs::file_create(tmp_file)
   on.exit(fs::file_delete(tmp_file))
   expect_silent(wflow_git_commit(files = tmp_file, dry_run = TRUE,
                              project = site_dir))

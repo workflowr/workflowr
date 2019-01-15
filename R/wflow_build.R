@@ -263,7 +263,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
     # Create .nojekyll if it doesn't exist
     nojekyll <- file.path(p$docs, ".nojekyll")
     if (!fs::file_exists(nojekyll)) {
-      file.create(nojekyll)
+      fs::file_create(nojekyll)
     }
   }
 

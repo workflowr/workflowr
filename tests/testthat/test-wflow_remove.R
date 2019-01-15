@@ -33,7 +33,7 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
             to = rmd_published)
   cat(chunk_w_plot, file = rmd_published, sep = "\n", append = TRUE)
   data_published <- file.path("data", "published.txt")
-  file.create(data_published)
+  fs::file_create(data_published)
   suppressMessages(x <- wflow_publish(c(rmd_published, data_published), view = FALSE))
   cache_published <- file.path(p$analysis,
                                paste0(tools::file_path_sans_ext(
@@ -46,7 +46,7 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   rmd_unpublished <- file.path(p$analysis, "unpublished.Rmd")
   file.copy(from = rmd_published, to = rmd_unpublished)
   data_unpublished <- file.path("data", "unpublished.txt")
-  file.create(data_unpublished)
+  fs::file_create(data_unpublished)
   suppressMessages(x <- wflow_build(rmd_unpublished, view = FALSE))
   cache_unpublished <- file.path(p$analysis,
                                  paste0(tools::file_path_sans_ext(
@@ -137,7 +137,7 @@ test_that("wflow_remove can remove a directory", {
   fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   f <- file.path(d, "file")
-  file.create(f)
+  fs::file_create(f)
   add(r, f)
   commit(r, "new file")
   actual <- wflow_remove(d)
@@ -152,7 +152,7 @@ test_that("wflow_remove can remove a directory with a trailing slash", {
   fs::dir_create(d)
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   f <- file.path(d, "file")
-  file.create(f)
+  fs::file_create(f)
   add(r, f)
   commit(r, "new file")
   actual <- wflow_remove(d)
@@ -163,7 +163,7 @@ test_that("wflow_remove can remove a directory with a trailing slash", {
 
 test_that("wflow_remove can remove a file with a relative path from a subdir", {
   rmd <- file.path(p$analysis, "new.Rmd")
-  file.create(rmd)
+  fs::file_create(rmd)
   add(r, rmd)
   commit(r, "Add an rmd file to remove")
 
@@ -176,11 +176,11 @@ test_that("wflow_remove can remove a file with a relative path from a subdir", {
 
 test_that("wflow_remove can remove figure file from analysis/", {
   rmd <- file.path(p$analysis, "new.Rmd")
-  file.create(rmd)
+  fs::file_create(rmd)
   dir_fig <- file.path(p$analysis, workflowr:::create_figure_path(rmd))
   fs::dir_create(dir_fig)
   fig <- file.path(dir_fig, "test.png")
-  file.create(fig)
+  fs::file_create(fig)
   expect_silent(actual <- wflow_remove(rmd))
   expect_identical(actual$files, c(rmd, fig))
   expect_false(fs::file_exists(rmd))
@@ -189,11 +189,11 @@ test_that("wflow_remove can remove figure file from analysis/", {
 
   # Same thing, but from analysis/ subdirectory
   rmd <- file.path(p$analysis, "new.Rmd")
-  file.create(rmd)
+  fs::file_create(rmd)
   dir_fig <- file.path(p$analysis, workflowr:::create_figure_path(rmd))
   fs::dir_create(dir_fig)
   fig <- file.path(dir_fig, "test.png")
-  file.create(fig)
+  fs::file_create(fig)
   expect_silent(with_dir(p$analysis,
                          actual <- wflow_remove(file.path("../analysis", basename(rmd)))))
   expect_false(fs::file_exists(rmd))
@@ -203,11 +203,11 @@ test_that("wflow_remove can remove figure file from analysis/", {
 
 test_that("wflow_remove can remove figure file from docs/", {
   rmd <- file.path(p$analysis, "new.Rmd")
-  file.create(rmd)
+  fs::file_create(rmd)
   dir_fig <- file.path(p$docs, workflowr:::create_figure_path(rmd))
   fs::dir_create(dir_fig)
   fig <- file.path(dir_fig, "test.png")
-  file.create(fig)
+  fs::file_create(fig)
   expect_silent(actual <- wflow_remove(rmd))
   expect_identical(actual$files, c(rmd, fig))
   expect_false(fs::file_exists(rmd))
@@ -216,11 +216,11 @@ test_that("wflow_remove can remove figure file from docs/", {
 
   # Same thing, but from docs/ subdirectory
   rmd <- file.path(p$analysis, "new.Rmd")
-  file.create(rmd)
+  fs::file_create(rmd)
   dir_fig <- file.path(p$docs, workflowr:::create_figure_path(rmd))
   fs::dir_create(dir_fig)
   fig <- file.path(dir_fig, "test.png")
-  file.create(fig)
+  fs::file_create(fig)
   expect_silent(with_dir(p$docs,
                          actual <- wflow_remove(file.path("../analysis", basename(rmd)))))
   expect_false(fs::file_exists(rmd))

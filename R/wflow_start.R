@@ -327,7 +327,7 @@ wflow_start <- function(directory,
   nojekyll <- file.path(directory, "docs", ".nojekyll")
   project_files <- c(project_files, nojekyll)
   if (!dry_run) {
-    file.create(nojekyll)
+    fs::file_create(nojekyll)
   }
 
   # Configure, initialize, and commit ------------------------------------------

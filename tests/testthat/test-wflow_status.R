@@ -53,10 +53,10 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   rmd_unp <- file.path(s$analysis, "license.Rmd")
   # Create a new untracked file that will have status Scr for Scratch
   rmd_scr <- file.path(s$analysis, "scratch.Rmd")
-  file.create(rmd_scr)
+  fs::file_create(rmd_scr)
   # Create a new file that will be published, modified, and then only committed
   rmd_mod_committed <- file.path(s$analysis, "mod-committed.Rmd")
-  file.create(rmd_mod_committed)
+  fs::file_create(rmd_mod_committed)
 
   # Publish index.Rmd, about.Rmd, and mod-committed.Rmd
   suppressMessages(wflow_publish(c(rmd_pub, rmd_mod, rmd_mod_committed),
@@ -170,7 +170,7 @@ test_that("wflow_status print method works", {
 
 test_that("wflow_status detects files with extension .rmd", {
   lowercase <- file.path(s$analysis, "lowercase.rmd")
-  file.create(lowercase)
+  fs::file_create(lowercase)
   on.exit(unlink(lowercase), add = TRUE)
   s_rmd <- wflow_status(lowercase, project = site_dir)
   expect_identical(rownames(s_rmd$status), lowercase)
@@ -249,7 +249,7 @@ test_that("wflow_paths is not confused by multiple similar _site.yml files in th
   p1 <- wflow_paths(project = site_dir)
   spurious <- file.path(site_dir, "analysis", "_site.yml.bk")
   on.exit(fs::file_delete(spurious))
-  file.create(spurious)
+  fs::file_create(spurious)
   expect_silent(p2 <- wflow_paths(project = site_dir))
   expect_identical(p2, p1)
 })
@@ -257,7 +257,7 @@ test_that("wflow_paths is not confused by multiple similar _site.yml files in th
 test_that("wflow_paths throws error if multiple _site.yml files in top-level directories", {
   extra <- file.path(site_dir, "code", "_site.yml")
   on.exit(fs::file_delete(extra))
-  file.create(extra)
+  fs::file_create(extra)
   expect_error(wflow_paths(project = site_dir),
                "Found more than one _site.yml file.")
 })
@@ -267,7 +267,7 @@ test_that("wflow_paths throws error if output_dir field not set in _site.yml", {
   site_yml_tmp <- file.path(tempdir(), "_site.yml")
   on.exit(file.rename(site_yml_tmp, site_yml))
   file.rename(site_yml, site_yml_tmp)
-  file.create(site_yml)
+  fs::file_create(site_yml)
   expect_error(wflow_paths(project = site_dir), "output_dir")
 })
 

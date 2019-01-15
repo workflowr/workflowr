@@ -39,7 +39,7 @@ test_that("wflow_publish works in a simple case", {
 
 # Create decoy file that should not be built since it is unpublished
 rmd_decoy <- file.path(s$analysis, "decoy.Rmd")
-file.create(rmd_decoy)
+fs::file_create(rmd_decoy)
 html_decoy <- workflowr:::to_html(rmd_decoy, outdir = s$docs)
 
 test_that("wflow_publish can `republish`", {
@@ -119,7 +119,7 @@ test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_gi
   skip_on_cran()
 
   f_test <- file.path(s$root, "test.txt")
-  file.create(f_test)
+  fs::file_create(f_test)
   expect_silent(o <- wflow_publish(f_test, view = FALSE, project = site_dir))
   expect_true(f_test == o$step1$commit_files)
   expect_true(is.null(o$step2))

@@ -291,7 +291,7 @@ test_that("wflow_build can display build log directly in R console with verbose"
 
 test_that("wflow_build fails if file outside of analysis/", {
   rmd_outside <- file.path(s$root, "outside.Rmd")
-  file.create(rmd_outside)
+  fs::file_create(rmd_outside)
   # When passing one invalid file
   expect_error(wflow_build(rmd_outside, project = site_dir),
                "Only files in the analysis directory can be built with wflow_build.")
@@ -307,7 +307,7 @@ test_that("wflow_build fails early for bad files", {
                "files cannot include a path to a directory")
   expect_error(wflow_build("", project = site_dir),
                "Not all files exist. Check the paths to the files")
-  file.create(file.path(s$analysis, "invalid.R"))
+  fs::file_create(file.path(s$analysis, "invalid.R"))
   expect_error(wflow_build(file.path(s$analysis, "invalid.R"), project = site_dir),
                "File extensions must be either Rmd or rmd.")
 })

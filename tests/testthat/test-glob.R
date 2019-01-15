@@ -163,7 +163,7 @@ test_that("wflow_status accepts file globs", {
 
 test_that("wflow_view accepts file globs", {
   html <- workflowr:::to_html(expected, outdir = s$docs)
-  file.create(html)
+  fs::file_create(html)
   on.exit(fs::file_delete(html))
   actual <- wflow_view(rmd_glob, dry_run = TRUE, project = site_dir)
   expect_identical(actual$opened, html)

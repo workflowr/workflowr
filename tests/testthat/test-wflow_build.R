@@ -152,8 +152,7 @@ test_that("Only locally built files can access variables in the global environme
 
   skip_on_cran()
 
-  file.copy(from = "files/test-wflow_build/global-variable.Rmd",
-            to = s$analysis)
+  fs::file_copy("files/test-wflow_build/global-variable.Rmd", s$analysis)
   rmd_local <- file.path(s$analysis, "global-variable.Rmd")
   html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
   on.exit(fs::file_delete(c(rmd_local, html_local)))
@@ -180,8 +179,7 @@ test_that("Only locally built files add packages/variables to global environment
 
   skip_on_cran()
 
-  file.copy(from = "files/test-wflow_build/local.Rmd",
-            to = s$analysis)
+  fs::file_copy("files/test-wflow_build/local.Rmd", s$analysis)
   rmd_local <- file.path(s$analysis, "local.Rmd")
   html_local <- workflowr:::to_html(rmd_local, outdir = s$docs)
   on.exit(fs::file_delete(c(rmd_local, html_local)))
@@ -206,7 +204,7 @@ test_that("wflow_build only builds files starting with _ when specified", {
   skip_on_cran()
 
   rmd_ignore <- file.path(s$analysis, "_ignore.Rmd")
-  file.copy(from = "files/example.Rmd", to = rmd_ignore)
+  fs::file_copy("files/example.Rmd", rmd_ignore)
   html_ignore <- workflowr:::to_html(rmd_ignore, outdir = s$docs)
   # Ignored by default "make"-mode
   expect_silent(actual <- wflow_build(view = FALSE, project = site_dir))
@@ -251,7 +249,7 @@ test_that("wflow_build automatically removes unused figure files", {
 
   # Build a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
-  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
   build_v01 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
@@ -261,7 +259,7 @@ test_that("wflow_build automatically removes unused figure files", {
   expect_true(all(fs::file_exists(figs_docs_v01)))
   # Update the file such that the previous 2 chunks are now named, plus add a
   # 3rd plot chunk
-  file.copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
+  fs::file_copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
   build_v02 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
   expect_false(all(fs::file_exists(figs_analysis_v01)))
   expect_false(all(fs::file_exists(figs_docs_v01)))

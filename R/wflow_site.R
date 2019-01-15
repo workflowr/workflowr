@@ -81,7 +81,7 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
 
       if (output_dir != input) {
         # Move HTML file
-        file.copy(output_file, output_dir, overwrite = TRUE)
+        fs::file_copy(output_file, output_dir, overwrite = TRUE)
         unlink(output_file)
         output_file <- file.path(output_dir, basename(output_file))
 

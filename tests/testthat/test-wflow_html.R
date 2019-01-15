@@ -13,7 +13,7 @@ test_that("wflow_html sets custom knitr chunk options", {
   tmp_dir <- workflowr:::absolute(tmp_dir)
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
-  file.copy("files/test-wflow_html/opts_chunk.Rmd", rmd)
+  fs::file_copy("files/test-wflow_html/opts_chunk.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   observed <- readRDS(file.path(tmp_dir, "opts_chunk.rds"))
@@ -35,7 +35,7 @@ test_that("wflow_html can set knit_root_dir in YAML header", {
   sub_dir <- file.path(tmp_dir, "sub_dir")
   fs::dir_create(sub_dir)
   rmd <- file.path(sub_dir, "file.Rmd")
-  file.copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
+  fs::file_copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   expect_false(fs::file_exists(file.path(sub_dir, "knit_root_dir.txt")))
@@ -57,7 +57,7 @@ test_that("knit_root_dir can be overridden by command-line render argument", {
   sub_dir <- file.path(tmp_dir, "sub_dir")
   fs::dir_create(sub_dir)
   rmd <- file.path(sub_dir, "file.Rmd")
-  file.copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
+  fs::file_copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
   html <- render(rmd, quiet = TRUE, knit_root_dir = dirname(rmd))
   expect_true(fs::file_exists(html))
   expect_true(fs::file_exists(file.path(sub_dir, "knit_root_dir.txt")))
@@ -294,7 +294,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
 
   # If set in only only one chunk, only one warning should be generated
   rmd <- file.path(tmp_dir, "file.Rmd")
-  file.copy("files/test-wflow_html/fig-path-one-chunk.Rmd", rmd)
+  fs::file_copy("files/test-wflow_html/fig-path-one-chunk.Rmd", rmd)
   html <- render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
@@ -302,7 +302,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
 
   # If set globally, a warning should be generated for each plot (in this case 3)
   rmd2 <- file.path(tmp_dir, "file2.Rmd")
-  file.copy("files/test-wflow_html/fig-path-all-chunks.Rmd", rmd2)
+  fs::file_copy("files/test-wflow_html/fig-path-all-chunks.Rmd", rmd2)
   html2 <- render(rmd2, quiet = TRUE)
   expect_true(fs::file_exists(html2))
   html_lines2 <- readLines(html2)
@@ -335,18 +335,18 @@ test_that("add_bibliography adds bibliography to files", {
   on.exit(unlink(tmp_dir, recursive = TRUE))
 
   # Copy test.bib
-  file.copy("files/test-wflow_html/test.bib", file.path(tmp_dir, "test.bib"))
+  fs::file_copy("files/test-wflow_html/test.bib", file.path(tmp_dir, "test.bib"))
 
   # Don't add bibliography when not specified in YAML header
   bib_none <- file.path(tmp_dir, "bib-none.Rmd")
-  file.copy("files/example.Rmd", bib_none)
+  fs::file_copy("files/example.Rmd", bib_none)
   bib_none_html <- render(bib_none, quiet = TRUE)
   expect_false(any(stringr::str_detect(readLines(bib_none_html),
                                        "<div id=\"refs\">")))
 
   # Add bibliography before session information
   bib_add <- file.path(tmp_dir, "bib-add.Rmd")
-  file.copy("files/test-wflow_html/bib-add.Rmd", bib_add)
+  fs::file_copy("files/test-wflow_html/bib-add.Rmd", bib_add)
   bib_add_html <- render(bib_add, quiet = TRUE)
   bib_add_lines <- readLines(bib_add_html)
   refs_line <- stringr::str_which(bib_add_lines, "<div id=\"refs\">")
@@ -355,7 +355,7 @@ test_that("add_bibliography adds bibliography to files", {
 
   # Don't add if user already manually added (double quotes)
   bib_dont_add_1 <- file.path(tmp_dir, "bib-dont-add-1.Rmd")
-  file.copy("files/test-wflow_html/bib-dont-add-1.Rmd", bib_dont_add_1)
+  fs::file_copy("files/test-wflow_html/bib-dont-add-1.Rmd", bib_dont_add_1)
   bib_dont_add_1_html <- render(bib_dont_add_1, quiet = TRUE)
   bib_dont_add_1_lines <- readLines(bib_dont_add_1_html)
   refs_line <- stringr::str_which(bib_dont_add_1_lines, "<div id=\"refs\">")
@@ -365,7 +365,7 @@ test_that("add_bibliography adds bibliography to files", {
 
   # Don't add if user already manually added (single quotes)
   bib_dont_add_2 <- file.path(tmp_dir, "bib-dont-add-2.Rmd")
-  file.copy("files/test-wflow_html/bib-dont-add-2.Rmd", bib_dont_add_2)
+  fs::file_copy("files/test-wflow_html/bib-dont-add-2.Rmd", bib_dont_add_2)
   bib_dont_add_2_html <- render(bib_dont_add_2, quiet = TRUE)
   bib_dont_add_2_lines <- readLines(bib_dont_add_2_html)
   refs_line <- stringr::str_which(bib_dont_add_2_lines, "<div id=[\"\']refs[\"\']>")

@@ -130,7 +130,7 @@ rm(r, rmd, rmd2, s, tmp_dir, current_commit, commit_to_display)
 # Test check_sessioninfo -------------------------------------------------------
 
 rmd <- tempfile("check-sessioninfo-", fileext = ".Rmd")
-file.copy("files/example.Rmd", rmd)
+fs::file_copy("files/example.Rmd", rmd)
 
 test_that("check_sessioninfo reports sessioninfo reported as an option", {
   observed <- workflowr:::check_sessioninfo(rmd, "sessionInfo()")

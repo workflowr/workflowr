@@ -18,8 +18,7 @@ rmd <- file.path(s$analysis, c("about.Rmd", "index.Rmd", "license.Rmd"))
 html <- workflowr:::to_html(rmd, outdir = s$docs)
 
 rmd_to_fail <- file.path(s$analysis, "error.Rmd")
-file.copy(from = "files/test-wflow_build/error.Rmd",
-          to = rmd_to_fail)
+fs::file_copy("files/test-wflow_build/error.Rmd", rmd_to_fail)
 
 # Load helper function local_no_gitconfig()
 source("helpers.R", local = TRUE)
@@ -136,7 +135,7 @@ test_that("wflow_publish automatically removes unused figure files", {
 
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
-  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
@@ -147,7 +146,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
   # Update the file such that the previous 2 chunks are now named, plus add a
   # 3rd plot chunk
-  file.copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
+  fs::file_copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
   publish_v02 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   expect_false(all(fs::file_exists(figs_analysis_v01)))
   expect_false(all(fs::file_exists(figs_docs_v01)))
@@ -185,7 +184,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
 
   # Publish a file that has 2 plots from 2 unnamed chunks
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
-  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
@@ -195,7 +194,7 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   expect_true(all(fs::file_exists(figs_docs_v01)))
   expect_true(all(figs_docs_v01 %in% publish_v01$step3$commit_files))
   # Update the file to have no plots
-  file.copy("files/test-wflow_build/seed.Rmd", file_w_figs, overwrite = TRUE)
+  fs::file_copy("files/test-wflow_build/seed.Rmd", file_w_figs, overwrite = TRUE)
   publish_v02 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   expect_false(all(fs::file_exists(figs_analysis_v01)))
   expect_false(all(fs::file_exists(figs_docs_v01)))

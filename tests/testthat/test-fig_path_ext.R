@@ -35,7 +35,7 @@ test_that("fig_path_ext has no effect when set to FALSE", {
 
   # Publish a file with figures
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
-  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
   published <- wflow_publish(file_w_figs, "A file with figures", view = FALSE,
                              project = site_dir)
   docs_fig <- file.path(s$docs, "figure", basename(file_w_figs), "unnamed-chunk-1-1.png")
@@ -84,7 +84,7 @@ test_that("fig_path_ext removes file extension in fig dir when set to FALSE", {
 
   # Publish a file with figures
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
-  file.copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
   published <- wflow_publish(file_w_figs, "A file with figures", view = FALSE,
                              project = site_dir)
   docs_fig <- file.path(s$docs, "figure",

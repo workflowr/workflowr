@@ -14,7 +14,7 @@ p <- wflow_paths(project = site_dir)
 # Create some fake R Markdown files
 rmd <- file.path(p$analysis, paste0(1:3, ".Rmd"))
 for (i in 1:3) {
-  file.copy("files/example.Rmd", rmd[i])
+  fs::file_copy("files/example.Rmd", rmd[i])
 }
 # Expected html files
 html <- workflowr:::to_html(rmd, outdir = p$docs)

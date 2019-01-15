@@ -29,8 +29,7 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   # Create an Rmd and a data file to be removed later. Add a chunk with a plot and
   # that is cached. Publish this analysis.
   rmd_published <- file.path(p$analysis, "published.Rmd")
-  file.copy(from = file.path(cwd, "files", "example.Rmd"),
-            to = rmd_published)
+  fs::file_copy(file.path(cwd, "files", "example.Rmd"), rmd_published)
   cat(chunk_w_plot, file = rmd_published, sep = "\n", append = TRUE)
   data_published <- file.path("data", "published.txt")
   fs::file_create(data_published)
@@ -44,7 +43,7 @@ if (identical(Sys.getenv("NOT_CRAN"), "true")) {
   # Create an Rmd and a data file to be removed later. Add a chunk with a plot and
   # that is cached. Build but do not publish this analysis.
   rmd_unpublished <- file.path(p$analysis, "unpublished.Rmd")
-  file.copy(from = rmd_published, to = rmd_unpublished)
+  fs::file_copy(rmd_published, rmd_unpublished)
   data_unpublished <- file.path("data", "unpublished.txt")
   fs::file_create(data_unpublished)
   suppressMessages(x <- wflow_build(rmd_unpublished, view = FALSE))

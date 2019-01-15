@@ -43,7 +43,7 @@ test_that("wflow_open changes the working directory to the knit directory", {
   on.exit(setwd(cwd))
   wflow_yml <- absolute(file.path(p$root, "_workflowr.yml"))
   wflow_copy <- tempfile()
-  file.copy(wflow_yml, wflow_copy)
+  fs::file_copy(wflow_yml, wflow_copy)
   on.exit(file.rename(wflow_copy, wflow_yml), add = TRUE)
 
   # Do not change working directory

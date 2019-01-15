@@ -53,7 +53,7 @@ is_fig_path_ext <- function(input) {
 
 #' create the path to the figure folder
 #'
-#' @param input the path to a RMarkdown file
+#' @param input the path to an R Markdown file
 #'
 #' @keywords internal
 create_figure_path <- function(input) {

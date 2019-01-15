@@ -177,7 +177,7 @@ wflow_rename <- function(files,
     logical_files_git <- files %in% files_committed
     files_to_commit <- c(files[logical_files_git], to[logical_files_git])
   } else {
-    files_to_commit <- NA
+    files_to_commit <- NA_character_
   }
 
   # rename files ---------------------------------------------------------------

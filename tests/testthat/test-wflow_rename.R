@@ -29,6 +29,28 @@ test_that("wflow_rename can rename one file", {
   expect_identical(undo$files_git, c(new, original))
 })
 
+test_that("wflow_rename can rename one file when no Git repo", {
+  git <- ".git"
+  git_tmp <- ".git-tmp"
+  on.exit(fs::file_move(git_tmp, git))
+  fs::file_move(git, git_tmp)
+
+  original <- "analysis/about.Rmd"
+  new <- "analysis/new.Rmd"
+
+  renamed <- wflow_rename(original, new, message = "Rename file")
+  expect_false(fs::file_exists(original))
+  expect_true(fs::file_exists(new))
+  expect_identical(renamed$files, original, new)
+  expect_identical(renamed$files_git, NA_character_)
+
+  undo <- wflow_rename(new, original, message = "Revert to original name")
+  expect_true(fs::file_exists(original))
+  expect_false(fs::file_exists(new))
+  expect_identical(undo$files, new)
+  expect_identical(undo$files_git, NA_character_)
+})
+
 test_that("wflow_rename can rename one directory", {
   original <- "code"
   new <- "scripts"
@@ -93,4 +115,47 @@ test_that("wflow_rename can handle a trailing slash in a directory name", {
   expect_identical(undo$files_git,
                    workflowr:::relative(c(file.path(new, "README.md"),
                                           file.path(original, "README.md"))))
+})
+
+test_that("wflow_rename can rename one Rmd file with HTML and figs", {
+
+  skip_on_cran()
+
+  original <- "analysis/about.Rmd"
+  new <- "analysis/new.Rmd"
+  wflow_publish(original, view = FALSE)
+  # Add a fake fig and commit it
+  dir_fig <- file.path(p$docs, workflowr:::create_figure_path(original))
+  fs::dir_create(dir_fig)
+  fig <- file.path(dir_fig, "fig.png")
+  file.create(fig)
+  add(r, fig)
+  commit(r, "Publish fake fig to accompany Rmd file to be renamed")
+  # Expected files
+  html <- workflowr:::to_html(original, outdir = p$docs)
+  html_new <- workflowr:::to_html(new, outdir = p$docs)
+  dir_fig_new <- file.path(p$docs, workflowr:::create_figure_path(new))
+  fig_new <- file.path(dir_fig_new, "fig.png")
+
+  renamed <- wflow_rename(original, new, message = "Rename file")
+
+  expect_false(fs::file_exists(original))
+  expect_true(fs::file_exists(new))
+  expect_false(fs::file_exists(html))
+  expect_true(fs::file_exists(html_new))
+  expect_false(fs::file_exists(fig))
+  expect_true(fs::file_exists(fig_new))
+  expect_identical(renamed$files_git, c(original, html, fig,
+                                        new, html_new, fig_new))
+
+  undo <- wflow_rename(new, original, message = "Revert to original name")
+
+  expect_true(fs::file_exists(original))
+  expect_false(fs::file_exists(new))
+  expect_true(fs::file_exists(html))
+  expect_false(fs::file_exists(html_new))
+  expect_true(fs::file_exists(fig))
+  expect_false(fs::file_exists(fig_new))
+  expect_identical(undo$files_git, c(new, html_new, fig_new,
+                                     original, html, fig))
 })

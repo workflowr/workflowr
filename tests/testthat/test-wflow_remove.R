@@ -1,6 +1,6 @@
 context("wflow_remove")
 
-# Setup -----------------------------------------------------------------------
+# Setup ------------------------------------------------------------------------
 
 library("git2r")
 
@@ -75,6 +75,9 @@ test_that("wflow_remove removes an unpublished Rmd file and its associated files
   actual <- wflow_remove(c(rmd_unpublished, data_unpublished))
   expect_false(any(fs::file_exists(c(rmd_unpublished, data_unpublished)),
                   fs::dir_exists(c(cache_unpublished, fig_docs_unpublished))))
+  # Test print method
+  expect_output(print(actual), rmd_unpublished)
+  expect_output(print(actual), data_unpublished)
 })
 
 test_that("wflow_remove removes a published Rmd file and its associated files", {
@@ -97,6 +100,10 @@ test_that("wflow_remove removes a published Rmd file and its associated files", 
   actual <- wflow_remove(c(rmd_published, data_published))
   expect_false(any(fs::file_exists(c(rmd_published, data_published)),
                    fs::dir_exists(c(cache_published, fig_docs_published))))
+  # Test print method
+  expect_output(print(actual), rmd_published)
+  expect_output(print(actual), data_published)
+  # Confirm a commit was made
   commit_latest <- commits(r)[[1]]
   expect_identical(git2r_slot(actual$commit, "sha"),
                    git2r_slot(commit_latest, "sha"))
@@ -165,6 +172,60 @@ test_that("wflow_remove can remove a file with a relative path from a subdir", {
   expect_false(fs::file_exists(rmd))
   s <- status(r)
   expect_equal(length(s$untracked) + length(s$unstaged) + length(s$staged), 0)
+})
+
+test_that("wflow_remove can remove figure file from analysis/", {
+  rmd <- file.path(p$analysis, "new.Rmd")
+  file.create(rmd)
+  dir_fig <- file.path(p$analysis, workflowr:::create_figure_path(rmd))
+  fs::dir_create(dir_fig)
+  fig <- file.path(dir_fig, "test.png")
+  file.create(fig)
+  expect_silent(actual <- wflow_remove(rmd))
+  expect_identical(actual$files, c(rmd, fig))
+  expect_false(fs::file_exists(rmd))
+  expect_false(fs::file_exists(fig))
+  expect_false(fs::dir_exists(dir_fig))
+
+  # Same thing, but from analysis/ subdirectory
+  rmd <- file.path(p$analysis, "new.Rmd")
+  file.create(rmd)
+  dir_fig <- file.path(p$analysis, workflowr:::create_figure_path(rmd))
+  fs::dir_create(dir_fig)
+  fig <- file.path(dir_fig, "test.png")
+  file.create(fig)
+  expect_silent(with_dir(p$analysis,
+                         actual <- wflow_remove(file.path("../analysis", basename(rmd)))))
+  expect_false(fs::file_exists(rmd))
+  expect_false(fs::file_exists(fig))
+  expect_false(fs::dir_exists(dir_fig))
+})
+
+test_that("wflow_remove can remove figure file from docs/", {
+  rmd <- file.path(p$analysis, "new.Rmd")
+  file.create(rmd)
+  dir_fig <- file.path(p$docs, workflowr:::create_figure_path(rmd))
+  fs::dir_create(dir_fig)
+  fig <- file.path(dir_fig, "test.png")
+  file.create(fig)
+  expect_silent(actual <- wflow_remove(rmd))
+  expect_identical(actual$files, c(rmd, fig))
+  expect_false(fs::file_exists(rmd))
+  expect_false(fs::file_exists(fig))
+  expect_false(fs::dir_exists(dir_fig))
+
+  # Same thing, but from docs/ subdirectory
+  rmd <- file.path(p$analysis, "new.Rmd")
+  file.create(rmd)
+  dir_fig <- file.path(p$docs, workflowr:::create_figure_path(rmd))
+  fs::dir_create(dir_fig)
+  fig <- file.path(dir_fig, "test.png")
+  file.create(fig)
+  expect_silent(with_dir(p$docs,
+                         actual <- wflow_remove(file.path("../analysis", basename(rmd)))))
+  expect_false(fs::file_exists(rmd))
+  expect_false(fs::file_exists(fig))
+  expect_false(fs::dir_exists(dir_fig))
 })
 
 # Test error handling ----------------------------------------------------------

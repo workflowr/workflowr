@@ -26,6 +26,8 @@
 #'
 #'   \item \bold{message}: The message describing the commit (if applicable).
 #'
+#'   \item \bold{git}: The input argument \code{git}.
+#'
 #'   \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
 #'   \item \bold{commit}:The object returned by
@@ -210,6 +212,7 @@ wflow_rename <- function(files,
   o <- list(files = files,
             to = to,
             message = message,
+            git = git,
             dry_run = dry_run,
             commit = commit,
             # Re-run relative() on files_to_commit to resolve any potential
@@ -229,7 +232,7 @@ print.wflow_rename <- function(x, ...) {
   }
   cat(sprintf("%s -> %s", x$files, x$to), sep = "\n")
 
-  if (length(x$files_git) > 0 && !is.na(x$files_git)) {
+  if (length(x$files_git) > 0 && !is.na(x$files_git) && x$git) {
     if (x$dry_run) {
       cat("\n", wrap("The following file(s) would be included in the Git commit:"),
           "\n\n", sep = "")

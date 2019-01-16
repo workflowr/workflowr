@@ -40,7 +40,7 @@ Invisibly returns a named character vector of the remote URLs.
 }
 \description{
 \code{wflow_git_remote} is a convenience function for managing remote
-repositories from R. By default is displays the current remote repositories
+repositories from R. By default it displays the current remote repositories
 (analogous to \code{git remote -v}). It can add a remote, remove a remote, or
 update the URL for an existing remote.
 }

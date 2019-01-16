@@ -14,12 +14,43 @@
 #'   you'll need to provide the path to the project directory.
 #'
 #'@export
-wflow_use_gitlab <- function(project = ".") {
+wflow_use_gitlab <- function(username = NULL, repository = NULL,
+                             navbar_link = TRUE,
+                             protocol = "https",
+                             domain = "gitlab.com",
+                             project = ".") {
+
+  # Check input arguments ------------------------------------------------------
+
+  if (!is.null(username))
+    if (!(is.character(username) && length(username) == 1))
+      stop("username must be NULL or a one element character vector: ", username)
+
+  if (!is.null(repository))
+    if (!(is.character(repository) && length(repository) == 1))
+      stop("repository must be NULL or a one element character vector: ", repository)
+
+  if (!(is.logical(navbar_link) && length(navbar_link) == 1))
+    stop("navbar_link must be a one-element logical vector")
+
+  if (!(is.character(project) && length(project) == 1))
+    stop("project must be a one-element character vector")
+
+  if (!fs::dir_exists(project)) {
+    stop("project directory does not exist.")
+  }
+
+  project <- absolute(project)
 
   # Status ---------------------------------------------------------------------
 
   s <- wflow_status(project = project)
+  # Convert to absolute paths to faciliate path manipulation below
+  s$analysis <- absolute(s$analysis)
+  s$docs <- absolute(s$docs)
+
   r <- git2r::repository(path = s$git)
+  remotes <- wflow_git_remote(verbose = FALSE, project = project)
 
   # Rename docs/ to public/ ----------------------------------------------------
 
@@ -72,7 +103,20 @@ wflow_use_gitlab <- function(project = ".") {
 
   # Commit changes -------------------------------------------------------------
 
-  git2r::commit(r, message = "Host with GitLab.")
+  # Obtain staged files
+  files_git <- git2r::status(r, staged = TRUE, unstaged = FALSE, untracked = FALSE)
+  files_git <- unlist(files_git$staged)
+  names(files_git) <- NULL
+  if (length(files_git) > 0) {
+    commit <- git2r::commit(r, message = "Host with GitLab.")
+  } else {
+    commit <- NA
+  }
 
-  return(renamed)
+  # Prepare output -------------------------------------------------------------
+
+  o <- list(renamed = renamed, files_git = files_git, commit = commit)
+  class(o) <- "wflow_use_gitlab"
+
+  return(invisible(o))
 }

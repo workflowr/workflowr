@@ -4,7 +4,9 @@
 \alias{wflow_use_gitlab}
 \title{wflow_use_gitlab}
 \usage{
-wflow_use_gitlab(project = ".")
+wflow_use_gitlab(username = NULL, repository = NULL,
+  navbar_link = TRUE, protocol = "https", domain = "gitlab.com",
+  project = ".")
 }
 \arguments{
 \item{project}{character (default: ".") By default the function assumes the

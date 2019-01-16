@@ -202,3 +202,16 @@ test_that("print.wflow_rename works with dry_run", {
   expect_output(print(renamed),
                 "The following file\\(s\\) would be included in the Git commit:")
 })
+
+test_that("print.wflow_rename works with `git = FALSE`", {
+  original <- "README.md"
+  new <- "new.md"
+
+  git_true <- wflow_rename(original, new, git = TRUE, dry_run = TRUE)
+  git_true_print_lines <- utils::capture.output(print(git_true))
+  expect_true("commit message:" %in% git_true_print_lines)
+
+  git_false <- wflow_rename(original, new, git = FALSE, dry_run = TRUE)
+  git_false_print_lines <- utils::capture.output(print(git_false))
+  expect_false("commit message:" %in% git_false_print_lines)
+})

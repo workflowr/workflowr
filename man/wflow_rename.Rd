@@ -38,6 +38,8 @@ An object of class \code{wflow_rename}, which is a list with the
 
   \item \bold{message}: The message describing the commit (if applicable).
 
+  \item \bold{git}: The input argument \code{git}.
+
   \item \bold{dry_run}: The input argument \code{dry_run}.
 
   \item \bold{commit}:The object returned by

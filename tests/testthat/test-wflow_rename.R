@@ -19,14 +19,34 @@ p <- wflow_paths()
 test_that("wflow_rename can rename one file", {
   original <- "analysis/about.Rmd"
   new <- "analysis/new.Rmd"
+
   renamed <- wflow_rename(original, new, message = "Rename file")
   expect_false(fs::file_exists(original))
   expect_true(fs::file_exists(new))
   expect_identical(renamed$files_git, c(original, new))
+  last_commit <- commits(r, n = 1)[[1]]
+  last_commit_mes <- workflowr:::git2r_slot(last_commit, "message")
+  last_commit_sha <- workflowr:::git2r_slot(last_commit, "sha")
+  expect_identical(last_commit_mes, "Rename file")
+  # Test print method
+  expect_output(print(renamed), sprintf("%s -> %s", original, new))
+  expect_output(print(renamed),
+                stringr::str_sub(last_commit_sha, start = 1, end = 7))
+  expect_output(print(renamed), "commit message:")
+
   undo <- wflow_rename(new, original, message = "Revert to original name")
   expect_true(fs::file_exists(original))
   expect_false(fs::file_exists(new))
   expect_identical(undo$files_git, c(new, original))
+  last_commit <- commits(r, n = 1)[[1]]
+  last_commit_mes <- workflowr:::git2r_slot(last_commit, "message")
+  last_commit_sha <- workflowr:::git2r_slot(last_commit, "sha")
+  expect_identical(last_commit_mes, "Revert to original name")
+  # Test print method
+  expect_output(print(undo), sprintf("%s -> %s", new, original))
+  expect_output(print(undo),
+                stringr::str_sub(last_commit_sha, start = 1, end = 7))
+  expect_output(print(renamed), "commit message:")
 })
 
 test_that("wflow_rename can rename one file when no Git repo", {
@@ -49,17 +69,24 @@ test_that("wflow_rename can rename one file when no Git repo", {
   expect_false(fs::file_exists(new))
   expect_identical(undo$files, new)
   expect_identical(undo$files_git, NA_character_)
+
+  # Test print method
+  print_lines <- utils::capture.output(print(undo))
+  expect_true(sprintf("%s -> %s", new, original) %in% print_lines)
+  expect_false("commit message:" %in% print_lines)
 })
 
 test_that("wflow_rename can rename one directory", {
   original <- "code"
   new <- "scripts"
+
   renamed <- wflow_rename(original, new, message = "Rename code directory")
   expect_false(fs::dir_exists(original))
   expect_true(fs::dir_exists(new))
   expect_identical(renamed$files_git,
                    c(file.path(original, "README.md"),
                      file.path(new, "README.md")))
+
   undo <- wflow_rename(new, original,
                        message = "Revert to original directory name")
   expect_true(fs::dir_exists(original))
@@ -84,6 +111,7 @@ test_that("wflow_rename can rename one directory from outside project", {
   expect_identical(renamed$files_git,
                    workflowr:::relative(c(file.path(original, "README.md"),
                               file.path(new, "README.md"))))
+
   undo <- wflow_rename(new, original,
                        message = "Revert to original directory name",
                        project = tdir)
@@ -102,12 +130,14 @@ test_that("wflow_rename can rename one directory from outside project", {
 test_that("wflow_rename can handle a trailing slash in a directory name", {
   original <- "code/"
   new <- "scripts/"
+
   renamed <- wflow_rename(original, new, message = "Rename code directory")
   expect_false(fs::dir_exists(original))
   expect_true(fs::dir_exists(new))
   expect_identical(renamed$files_git,
                    workflowr:::relative(c(file.path(original, "README.md"),
                                           file.path(new, "README.md"))))
+
   undo <- wflow_rename(new, original,
                        message = "Revert to original directory name")
   expect_true(fs::dir_exists(original))
@@ -158,4 +188,17 @@ test_that("wflow_rename can rename one Rmd file with HTML and figs", {
   expect_false(fs::file_exists(fig_new))
   expect_identical(undo$files_git, c(new, html_new, fig_new,
                                      original, html, fig))
+})
+
+# Test print.wflow_rename ------------------------------------------------------
+
+test_that("print.wflow_rename works with dry_run", {
+  original <- "README.md"
+  new <- "new.md"
+
+  renamed <- wflow_rename(original, new, dry_run = TRUE)
+  expect_output(print(renamed), "The following file\\(s\\) would be renamed:")
+  expect_output(print(renamed), sprintf("%s -> %s", original, new))
+  expect_output(print(renamed),
+                "The following file\\(s\\) would be included in the Git commit:")
 })

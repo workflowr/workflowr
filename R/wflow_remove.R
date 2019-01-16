@@ -202,7 +202,6 @@ wflow_remove <- function(files,
   return(o)
 }
 
-
 #' @export
 print.wflow_remove <- function(x, ...) {
   cat("Summary from wflow_remove\n\n")

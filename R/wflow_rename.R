@@ -122,6 +122,8 @@ wflow_rename <- function(files,
 
   # from and to must have same file extensions
 
+  # Rmd file in analyis/ must be renamed to same diretory
+
   # Gather R Markdown accessory files to rename --------------------------------
 
   # Are any of the specified files R Markdown files in the analysis directory?
@@ -215,4 +217,33 @@ wflow_rename <- function(files,
             files_git = relative(files_to_commit))
   class(o) <- "wflow_rename"
   return(o)
+}
+
+#' @export
+print.wflow_rename <- function(x, ...) {
+  cat("Summary from wflow_rename\n\n")
+  if (x$dry_run) {
+    cat(wrap("The following file(s) would be renamed:"), "\n\n")
+  } else {
+    cat(wrap("The following files(s) were renamed:"), "\n\n")
+  }
+  cat(sprintf("%s -> %s", x$files, x$to), sep = "\n")
+
+  if (length(x$files_git) > 0 && !is.na(x$files_git)) {
+    if (x$dry_run) {
+      cat("\n", wrap("The following file(s) would be included in the Git commit:"),
+          "\n\n", sep = "")
+    } else {
+      cat("\n", wrap(sprintf(
+        "The following file(s) were included in Git commit %s:",
+        stringr::str_sub(git2r_slot(x$commit, "sha"), start = 1, end = 7))),
+        "\n\n", sep = "")
+    }
+    cat(x$files_git, sep = "\n")
+    cat("\ncommit message:\n")
+    cat(x$message)
+    cat("\n")
+  }
+
+  return(invisible(x))
 }

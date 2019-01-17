@@ -1,19 +1,36 @@
-#' wflow_use_gitlab
+#' Deploy site with GitLab
 #'
-#' Automate setup for deploying website with GitLab:
+#' \code{wflow_use_gitlab} automates all the local configuration necesary to
+#' deploy your workflowr project with
+#' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
+#' However, you will need to manually login to your account and create the new
+#' repository on GitLab. The final step is to run \code{wflow_git_push} in the R
+#' console.
 #'
-#' 1. Rename docs/ to public/
-#' 2. Edit output_dir in _site.yml
-#' 3. Add link in navigation bar
-#' 4. Create .gitlab-ci.yml
-#' 5. Configure Git remote
+#' \code{wflow_use_gitlab} performs the following steps:
 #'
-#' https://docs.gitlab.com/ee/ci/yaml/README.html#pages
+#' \itemize{
 #'
-#' @param username character (default: NULL). The GitHub username for the remote
+#' \item Renames the website directory from \code{docs/} to \code{public/}
+#'
+#' \item Edits the setting \code{output_dir} in the file \code{_site.yml} to
+#' save the website files in \code{public/}
+#'
+#' \item Adds a link to the GitLab repository in the navigation bar
+#'
+#' \item Creates the required file \code{.gitlab-ci.yml}
+#'
+#' \item Configures the Git remote settings to use GitLab
+#'
+#' }
+#'
+#' For more details, read the documentation provided by
+#' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}
+#'
+#' @param username character (default: NULL). The GitLab username for the remote
 #'   repository.
-#' @param repository character (default: NULL). The name of the remote repository on
-#'   GitHub.
+#' @param repository character (default: NULL). The name of the remote
+#'   repository on GitLab.
 #' @param navbar_link logical (default: TRUE). Insert a link to the GitLab
 #'   repository into the navigation bar.
 #' @param protocol character (default: "https"). The protocol for communicating
@@ -27,9 +44,19 @@
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return Invisibly returns a list of class \code{wflow_git_push}. This is
+#' @return Invisibly returns a list of class \code{wflow_use_gitlab}. This is
 #'   currently for internal use only. Please open an Issue if you'd like to use
 #'   this information.
+#'
+#' @seealso \code{\link{wflow_git_push}}, \code{\link{wflow_git_remote}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#' wflow_use_gitlab("your-username", "name-of-repository")
+#' # Login with GitLab account and create new repository
+#' wflow_git_push()
+#' }
 #'
 #'@export
 wflow_use_gitlab <- function(username = NULL, repository = NULL,
@@ -67,11 +94,11 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     if (is.na(host)) {
       stop("You must specify the arguments username and repository.")
     } else {
-      host_parts <- stringr::str_split(host, "/")
+      host_parts <- stringr::str_split(host, "/")[[1]]
       username <- host_parts[length(host_parts) - 1]
       repository <- host_parts[length(host_parts)]
       message("username: ", username)
-      message("respository: ", respository)
+      message("respository: ", repository)
     }
   }
 

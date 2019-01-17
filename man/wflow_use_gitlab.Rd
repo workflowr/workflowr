@@ -2,18 +2,18 @@
 % Please edit documentation in R/wflow_use_gitlab.R
 \name{wflow_use_gitlab}
 \alias{wflow_use_gitlab}
-\title{wflow_use_gitlab}
+\title{Deploy site with GitLab}
 \usage{
 wflow_use_gitlab(username = NULL, repository = NULL,
   navbar_link = TRUE, protocol = "https", domain = "gitlab.com",
   project = ".")
 }
 \arguments{
-\item{username}{character (default: NULL). The GitHub username for the remote
+\item{username}{character (default: NULL). The GitLab username for the remote
 repository.}
 
-\item{repository}{character (default: NULL). The name of the remote repository on
-GitHub.}
+\item{repository}{character (default: NULL). The name of the remote
+repository on GitLab.}
 
 \item{navbar_link}{logical (default: TRUE). Insert a link to the GitLab
 repository into the navigation bar.}
@@ -32,18 +32,48 @@ current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
 }
 \value{
-Invisibly returns a list of class \code{wflow_git_push}. This is
+Invisibly returns a list of class \code{wflow_use_gitlab}. This is
   currently for internal use only. Please open an Issue if you'd like to use
   this information.
 }
 \description{
-Automate setup for deploying website with GitLab:
+\code{wflow_use_gitlab} automates all the local configuration necesary to
+deploy your workflowr project with
+\href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
+However, you will need to manually login to your account and create the new
+repository on GitLab. The final step is to run \code{wflow_git_push} in the R
+console.
 }
 \details{
-1. Rename docs/ to public/
-2. Edit output_dir in _site.yml
-3. Add link in navigation bar
-4. Create .gitlab-ci.yml
+\code{wflow_use_gitlab} performs the following steps:
 
-https://docs.gitlab.com/ee/ci/yaml/README.html#pages
+\itemize{
+
+\item Renames the website directory from \code{docs/} to \code{public/}
+
+\item Edits the setting \code{output_dir} in the file \code{_site.yml} to
+save the website files in \code{public/}
+
+\item Adds a link to the GitLab repository in the navigation bar
+
+\item Creates the required file \code{.gitlab-ci.yml}
+
+\item Configures the Git remote settings to use GitLab
+
+}
+
+For more details, read the documentation provided by
+\href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}
+}
+\examples{
+\dontrun{
+
+wflow_use_gitlab("your-username", "name-of-repository")
+# Login with GitLab account and create new repository
+wflow_git_push()
+}
+
+}
+\seealso{
+\code{\link{wflow_git_push}}, \code{\link{wflow_git_remote}}
 }

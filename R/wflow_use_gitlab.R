@@ -6,6 +6,7 @@
 #' 2. Edit output_dir in _site.yml
 #' 3. Add link in navigation bar
 #' 4. Create .gitlab-ci.yml
+#' 5. Configure Git remote
 #'
 #' https://docs.gitlab.com/ee/ci/yaml/README.html#pages
 #'
@@ -59,6 +60,23 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   project <- absolute(project)
 
+  # If username and/or repository are NULL, make sure that it can be guessed
+  # from current remote "origin"
+  host <- get_host_from_remote(path = project)
+  if (is.null(username) || is.null(repository)) {
+    if (is.na(host)) {
+      stop("You must specify the arguments username and repository.")
+    } else {
+      host_parts <- stringr::str_split(host, "/")
+      username <- host_parts[length(host_parts) - 1]
+      repository <- host_parts[length(host_parts)]
+      message("username: ", username)
+      message("respository: ", respository)
+    }
+  }
+
+  message("Summary from wflow_use_gitlab():")
+
   # Status ---------------------------------------------------------------------
 
   s <- wflow_status(project = project)
@@ -72,12 +90,13 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   # Rename docs/ to public/ ----------------------------------------------------
 
   if (basename(s$docs) == "public") {
-    message("The website directory is already named \"public\"")
+    message("* The website directory is already named public/")
     renamed <- NULL
   } else {
     public <- file.path(dirname(s$docs), "public")
     renamed <- wflow_rename(s$docs, public, git = FALSE, project = project)
     git2r::add(r, absolute(renamed$files_git))
+    message("* Created the website directory public/")
   }
 
   # Edit output_dir in _site.yml -----------------------------------------------
@@ -88,11 +107,12 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   }
   site_yml <- yaml::yaml.load_file(site_yml_fname)
   if (site_yml$output_dir == "../public") {
-    message("Output directory is already set to public/")
+    message("* Output directory is already set to public/")
   } else {
     site_yml$output_dir <- "../public"
     yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
+    message("* Set output directory to public/")
   }
 
   # Add link in navigation bar -------------------------------------------------
@@ -104,6 +124,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
                                        href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
+    message("* Added GitLab link to navigation bar")
   }
 
   # .gitlab-ci.yml -------------------------------------------------------------
@@ -112,10 +133,11 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   gitlab_yml <- gitlab[[".gitlab-ci.yml"]]
   gitlab_yml_fname <- file.path(s$root, ".gitlab-ci.yml")
   if (fs::file_exists(gitlab_yml_fname)) {
-    message(".gitlab-ci.yml file already exists")
+    message("* .gitlab-ci.yml file already exists")
   } else {
     cat(glue::glue(gitlab_yml), file = gitlab_yml_fname)
     git2r::add(r, gitlab_yml_fname)
+    message("* Created the file .gitlab-ci.yml")
   }
 
   # Commit changes -------------------------------------------------------------
@@ -126,14 +148,46 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   names(files_git) <- NULL
   if (length(files_git) > 0) {
     commit <- git2r::commit(r, message = "Host with GitLab.")
+    message("* Committed the changes to Git")
   } else {
     commit <- NA
   }
 
+  # Configure Git remote -------------------------------------------------------
+
+  # 3 possible scenarios:
+  #   1. Remote is already set correctly -> Do nothing
+  #   2. Remote "origin" is currently defined -> Update URL with set_url
+  #   3. Remote "origin" does not exist -> Add remote "origin"
+  url_anticipated <- create_remote_url(user = username, repo = repository,
+                                       protocol = protocol, domain = domain)
+  url_current <- remotes["origin"]
+  if (!is.na(url_current) && url_current == url_anticipated) {
+    config_remote <- NA
+    message("* Remote \"origin\" already set to ", remotes["origin"])
+  } else if ("origin" %in% names(remotes)) {
+    config_remote <- wflow_git_remote(remote = "origin", user = username,
+                                      repo = repository, protocol = protocol,
+                                      action = "set_url", domain = domain,
+                                      verbose = FALSE, project = project)
+    message("* Changed remote \"origin\" to ", config_remote["origin"])
+  } else {
+    config_remote <- wflow_git_remote(remote = "origin", user = username,
+                                      repo = repository, protocol = protocol,
+                                      action = "add", domain = domain,
+                                      verbose = FALSE, project = project)
+    message("* Set remote \"origin\" to ", config_remote["origin"])
+  }
+
   # Prepare output -------------------------------------------------------------
 
-  o <- list(renamed = renamed, files_git = files_git, commit = commit)
+  o <- list(renamed = renamed, files_git = files_git, commit = commit,
+            config_remote = config_remote)
   class(o) <- "wflow_use_gitlab"
+
+  message("\nGitLab configuration successful!\n")
+  message("To do: Create new repository at ", domain)
+  message("To do: Run wflow_git_push() to send your project to GitLab")
 
   return(invisible(o))
 }

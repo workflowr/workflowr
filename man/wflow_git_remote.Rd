@@ -18,7 +18,7 @@ repository.}
 GitHub.}
 
 \item{protocol}{character (default: "https"). The protocol for communicating
-with GitHub. Must be either "https" or "ssh".}
+with the Git hosting service (e.g. GitHub). Must be either "https" or "ssh".}
 
 \item{action}{character (default: "add"). The action to perform on the
 remotes. Must be one of "add", "remove", or "set_url". This argument is

@@ -9,9 +9,32 @@ wflow_use_gitlab(username = NULL, repository = NULL,
   project = ".")
 }
 \arguments{
+\item{username}{character (default: NULL). The GitHub username for the remote
+repository.}
+
+\item{repository}{character (default: NULL). The name of the remote repository on
+GitHub.}
+
+\item{navbar_link}{logical (default: TRUE). Insert a link to the GitLab
+repository into the navigation bar.}
+
+\item{protocol}{character (default: "https"). The protocol for communicating
+with GitLab. Must be either "https" or "ssh".}
+
+\item{domain}{character (default: "gitlab.com"). The domain of the remote
+host. You only need to change this if you are using custom GitLab instance
+hosted by your organization. For example, "git.rcc.uchicago.edu" is the
+domain for the GitLab instance hosted by the University of Chicago Research
+Computing Center.}
+
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
+}
+\value{
+Invisibly returns a list of class \code{wflow_git_push}. This is
+  currently for internal use only. Please open an Issue if you'd like to use
+  this information.
 }
 \description{
 Automate setup for deploying website with GitLab:

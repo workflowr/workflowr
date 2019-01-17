@@ -9,9 +9,26 @@
 #'
 #' https://docs.gitlab.com/ee/ci/yaml/README.html#pages
 #'
+#' @param username character (default: NULL). The GitHub username for the remote
+#'   repository.
+#' @param repository character (default: NULL). The name of the remote repository on
+#'   GitHub.
+#' @param navbar_link logical (default: TRUE). Insert a link to the GitLab
+#'   repository into the navigation bar.
+#' @param protocol character (default: "https"). The protocol for communicating
+#'   with GitLab. Must be either "https" or "ssh".
+#' @param domain character (default: "gitlab.com"). The domain of the remote
+#'   host. You only need to change this if you are using custom GitLab instance
+#'   hosted by your organization. For example, "git.rcc.uchicago.edu" is the
+#'   domain for the GitLab instance hosted by the University of Chicago Research
+#'   Computing Center.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
+#'
+#' @return Invisibly returns a list of class \code{wflow_git_push}. This is
+#'   currently for internal use only. Please open an Issue if you'd like to use
+#'   this information.
 #'
 #'@export
 wflow_use_gitlab <- function(username = NULL, repository = NULL,

@@ -21,7 +21,7 @@
 #' @param repo character (default: NULL). The name of the remote repository on
 #'   GitHub.
 #' @param protocol character (default: "https"). The protocol for communicating
-#'   with GitHub. Must be either "https" or "ssh".
+#'   with the Git hosting service (e.g. GitHub). Must be either "https" or "ssh".
 #' @param action character (default: "add"). The action to perform on the
 #'   remotes. Must be one of "add", "remove", or "set_url". This argument is
 #'   ignored if \code{remote = NULL}.

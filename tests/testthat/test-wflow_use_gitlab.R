@@ -47,7 +47,7 @@ test_that("wflow_use_gitlab automates local GitLab configuration", {
 
   # Confirm files were committed
   r <- git2r::repository(path = path)
-  recent_commit <- git2r::last_commit(r)
+  recent_commit <- git2r::commits(r, n = 1)[[1]]
   recent_commit_files <- workflowr:::obtain_files_in_commit(r, recent_commit)
   expect_true(workflowr:::absolute(site_yml_fname) %in% recent_commit_files)
   expect_true(workflowr:::absolute(gitlab_yml) %in% recent_commit_files)
@@ -128,7 +128,7 @@ test_that("wflow_use_gitlab works when site has been published", {
 
   # Confirm files were committed
   r <- git2r::repository(path = path)
-  recent_commit <- git2r::last_commit(r)
+  recent_commit <- git2r::commits(r, n = 1)[[1]]
   recent_commit_files <- workflowr:::obtain_files_in_commit(r, recent_commit)
   expect_true(workflowr:::absolute(site_yml_fname) %in% recent_commit_files)
   expect_true(workflowr:::absolute(gitlab_yml) %in% recent_commit_files)

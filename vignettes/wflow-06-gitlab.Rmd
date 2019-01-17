@@ -16,12 +16,10 @@ vignette: >
 
 By default workflowr assumes that the project will be hosted on GitHub, but this
 is not always the case. Users may prefer to use another service or have a
-private git repository hosting instance. This vignette details some of the steps
-required to host a workflowr project on GitLab. Similar steps will be required
-for other platforms but some of the specifics will be different.
-
-As these steps are not currently integrated into workflowr this vignette assumes
-a basic knowledge of using git from a command line interface.
+private git repository hosting instance. This vignette details how to host a
+workflowr project on GitLab. For more details, see the documentation for [GitLab
+Pages](https://docs.gitlab.com/ee/ci/yaml/README.html#pages). Similar steps will
+be required for other platforms but some of the specifics will be different.
 
 ## Step 0: Set up a project
 
@@ -30,122 +28,53 @@ this by following the first few steps of the instructions in the
 "Getting started" vignette. When you get to the section [Deploy the website](wflow-01-getting-started.html#deploy-the-website), follow
 the rest of the steps in this vignette.
 
-## Step 1: Set up a remote repository
+## Step 1: Create a remote repository on GitLab
 
 Log in to the GitLab instance you want to use and create a repository to host
-your project. You will need to know your user name and the repository name for
-the following steps (here we are going to use "myname" and "myproject") as well
-as a URL for the hosting instance. The example below assumes you are using
-GitLab.com. If instead you are using a custom instance of GitLab, you will need
-to change the value for the argument `domain` accordingly ^[For example, the
-University of Chicago hosts a GitLab instance for its researchers at
+your project (follow this [link](https://gitlab.com/projects/new) if you are
+using GitLab.com). We recommend setting the project to be Public so that others
+can inspect the code behind your results and extend your work.
+
+## Step 2: Configure your local workflowr project to use GitLab
+
+You will need to know your user name and the repository name for the following
+steps (here we are going to use "myname" and "myproject") as well as a URL for
+the hosting instance. The example below assumes you are using GitLab.com. If
+instead you are using a custom instance of GitLab, you will need to change the
+value for the argument `domain` accordingly ^[For example, the University of
+Chicago hosts a GitLab instance for its researchers at
 https://git.rcc.uchicago.edu/, which would require setting `domain =
 "git.rcc.uchicago.edu"`].
 
-```{r wflow-git-remote, eval=FALSE}
-wflow_git_remote(remote = "origin", user = "myname", repo = "myproject",
-                 domain = "gitlab.com")
+```{r wflow-use-gitlab, eval=FALSE}
+wflow_use_gitlab(username = "myname", repository = "myproject")
 ```
 
-We now want to connect our local git repository to the one we have just created
-on GitLab:
+The function `wflow_use_gitlab()` automates all the local configuration
+necessary to use GitLab. It changes the website directory from `docs/` to
+`public/`, it creates the GitLab-specific configuration file `.gitlab-ci.yml`
+with the necessary settings, and it connects the local Git repository to
+communicate with the remote respository on GitLab.
+
+## Step 3: Republish the analyses
+
+In order for the correct URLs to past versions to be inserted into the HTML
+pages, republish the analyses with `wflow_publish()`.
+
+```
+wflow_publish(republish = TRUE)
+```
+
+## Step 4: Push to GitLab
+
+As a final step, push the workflowr project to GitLab (you will be prompted for
+your GitLab username and password):
 
 ```{r wflow-git-push, eval=FALSE}
 wflow_git_push()
 ```
 
-If this step has worked correctly you should be able to refresh your GitLab
-page and see all the files in your workflowr project.
-
-## Step 2: Change the build directory
-
-By default workflowr stores produced HTML files in the `docs` directory but
-GitLab can only host files that are in a directory called `public`. To fix this
-we need to tell workflowr to change the directory name by editing the
-`_site.yml` file in the `analysis` directory. We want to change the line that
-says `output_dir: "../docs"` to `output_dir: "../public"`. The command below
-uses `sed` to do this but you could also do it in RStudio or your favourite text
-editor.
-
-```
-sed -i'.bk' s/docs/public/ analysis/_site.yml
-```
-
-We already have a directory called `docs` so we also need to tell git that we
-want to change the name:
-
-```
-git mv docs/ public/
-```
-
-## Step 3: Add a GitLab CI config file
-
-While we can easily set up web page hosting for GitHub using just the website
-interface for GitLab we need to do a bit more work. GitLab using their
-continuous integration system to manage building and hosting website so
-we need to provide a config file with instructions on how to do this. This
-file should be called `.gitlab-ci.yml` and be placed at the root of our project
-directory. Because our HTML pages have already been built by workflowr we don't
-actually need GitLab to run any code for us so our config file can be quite
-simple. Here is an example of what the config file should look like:
-
-```
-pages:
-    stage: deploy
-    script:
-        - echo 'Nothing to do...'
-    artifacts:
-        paths:
-            - public
-    only:
-        - master
-```
-
-> **NOTE:** If you are using a private GitLab instance you might also need to
-set up a GitLab runner and assign it to your project. Instructions on how to
-do that are outside the scope of this vignette.
-
-At this stage we should have everything we need to host our project. Let's
-commit what we have and push it to GitLab.
-
-```
-git add .gitlab-ci.yml
-git add analysis/_site.yml
-git commit -m "Switch to hosting with GitLab"
-git push origin master
-```
-
-We should only have to do this manually the first time, after that the normal
-`wflow_publish` function should work.
-
-If this has worked correctly should now be able to see your GitLab hosted
-workflowr project website! To find the link to the website go to your GitLab
-repository page and select "Pages" under the "Settings" menu on the left. If
-the link is missing or doesn't work the job to build the website may not have
-run successfully. You can check this by clicking on the "CI / CD" menu.
-
-## Step 4: Fixing the links
-
-If you look carefully at your new website you should notice that many of the
-links that are usually there are missing. This is a result of us not using the
-`wflow_git_remote` command earlier. To fix these links we need to add the
-following line to the `_workflowr.yml` file.
-
-```
-github: GITLAB_REPOSITORY_URL
-```
-
-Here GITLAB_REPOSITORY_URL should be a URL to your project GitLab repository,
-not the URL for your project website.
-
-To fix the links in our exisiting web pages we need to rebuild them. We can
-force workflowr to do this by setting the `republish` option in the 
-`wflow_publish` function to `TRUE`.
-
-```
-wflow_publish("_workflowr.yml", republish = TRUE)
-```
-
-Check your website to make sure you have links to previous versions of versions
-of code, figures etc. Note that the links to previous HTML documents on GitLab
-will not work with the current version of workflowr.
+If this step has worked correctly you should be able to refresh your GitLab page
+and see all the files in your workflowr project. You can view your site at
+https://myname.gitlab.io/myproject/, replacing with your username and project
+(note it may take a minute for the site to be deployed).

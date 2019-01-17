@@ -118,7 +118,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   if (basename(s$docs) == "public") {
     message("* The website directory is already named public/")
-    renamed <- NULL
+    renamed <- NA
   } else {
     public <- file.path(dirname(s$docs), "public")
     renamed <- wflow_rename(s$docs, public, git = FALSE, project = project)
@@ -142,18 +142,6 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     message("* Set output directory to public/")
   }
 
-  # Add link in navigation bar -------------------------------------------------
-
-  host <- get_host_from_remote(path = project)
-  if (!is.na(host)) {
-    site_yml$navbar$right <- list(list(icon = "fa-gitlab",
-                                       text = "Source code",
-                                       href = host))
-    yaml::write_yaml(site_yml, file = site_yml_fname)
-    git2r::add(r, site_yml_fname)
-    message("* Added GitLab link to navigation bar")
-  }
-
   # .gitlab-ci.yml -------------------------------------------------------------
 
   # The list `gitlab` is defined in R/infrastructure.R
@@ -165,19 +153,6 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     cat(glue::glue(gitlab_yml), file = gitlab_yml_fname)
     git2r::add(r, gitlab_yml_fname)
     message("* Created the file .gitlab-ci.yml")
-  }
-
-  # Commit changes -------------------------------------------------------------
-
-  # Obtain staged files
-  files_git <- git2r::status(r, staged = TRUE, unstaged = FALSE, untracked = FALSE)
-  files_git <- unlist(files_git$staged)
-  names(files_git) <- NULL
-  if (length(files_git) > 0) {
-    commit <- git2r::commit(r, message = "Host with GitLab.")
-    message("* Committed the changes to Git")
-  } else {
-    commit <- NA
   }
 
   # Configure Git remote -------------------------------------------------------
@@ -205,6 +180,32 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
                                       verbose = FALSE, project = project)
     message("* Set remote \"origin\" to ", config_remote["origin"])
   }
+
+  # Add link in navigation bar -------------------------------------------------
+
+  host <- get_host_from_remote(path = project)
+  if (navbar_link && !is.na(host)) {
+    site_yml$navbar$right <- list(list(icon = "fa-gitlab",
+                                       text = "Source code",
+                                       href = host))
+    yaml::write_yaml(site_yml, file = site_yml_fname)
+    git2r::add(r, site_yml_fname)
+    message("* Added GitLab link to navigation bar")
+  }
+
+  # Commit changes -------------------------------------------------------------
+
+  # Obtain staged files
+  files_git <- git2r::status(r, staged = TRUE, unstaged = FALSE, untracked = FALSE)
+  files_git <- unlist(files_git$staged)
+  names(files_git) <- NULL
+  if (length(files_git) > 0) {
+    commit <- git2r::commit(r, message = "Host with GitLab.")
+    message("* Committed the changes to Git")
+  } else {
+    commit <- NA
+  }
+
 
   # Prepare output -------------------------------------------------------------
 

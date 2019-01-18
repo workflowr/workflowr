@@ -10,10 +10,13 @@ wflow_use_gitlab(username = NULL, repository = NULL,
 }
 \arguments{
 \item{username}{character (default: NULL). The GitLab username for the remote
-repository.}
+repository. If not specified, workflowr will attempt to guess this from the
+current remote named "origin" if it had previously been configured.}
 
 \item{repository}{character (default: NULL). The name of the remote
-repository on GitLab.}
+repository on GitLab. If not specified, workflowr will attempt to guess
+this from the current remote named "origin" if it had previously been
+configured.}
 
 \item{navbar_link}{logical (default: TRUE). Insert a link to the GitLab
 repository into the navigation bar.}

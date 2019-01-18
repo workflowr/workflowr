@@ -162,7 +162,8 @@ test_that("wflow_use_gitlab can be run after wflow_git_remote", {
                               repo = repository, protocol = "https",
                               action = "add", domain = "gitlab.com",
                               verbose = FALSE, project = path)
-  x <- wflow_use_gitlab(username, repository, project = path)
+  # Purposefully have it guess username and repository from remote "origin"
+  x <- wflow_use_gitlab(project = path)
 
   expect_identical(x$config_remote, NA)
   remotes2 <- wflow_git_remote(verbose = FALSE, project = path)

@@ -154,16 +154,9 @@ get_versions <- function(input, output_dir, blobs, r, github) {
   if (is.na(github)) {
     blobs_file$Version <- shorten_sha(blobs_file$Version)
   } else {
-    # raw.githack.com URL is https://rawcdn.githack.com/user/repo/commit/path/file.html
-    # https://raw.githack.com/#faq
-    rawgithack <- "https://rawcdn.githack.com"
     blobs_file$Version <- ifelse(blobs_file$File == "html",
                                  # HTML preview URL
-                                 sprintf("<a href=\"%s/%s/%s/%s\" target=\"_blank\">%s</a>",
-                                         rawgithack,
-                                         stringr::str_replace(github, "https://github.com/", ""),
-                                         blobs_file$Version,
-                                         git_html, shorten_sha(blobs_file$Version)),
+                                 create_url_html(github, git_html, blobs_file$Version),
                                  # R Markdown GitHub URL
                                  sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
                                          github, blobs_file$Version, git_rmd,
@@ -573,6 +566,54 @@ detect_code <- function(input) {
   code_inline <- stringr::str_detect(code_inline_potential, "`r\\s+\\S+.*`")
 
   return(any(code_chunks) || any(code_inline))
+}
+
+# Create URL to past versions of HTML files.
+#
+# For workflowr projects hosted at GitHub.com or GitLab.com, the returned URL
+# will be to a CDN provided by raw.githack.com. The file is served as HTML for
+# convenient viewing of the results. If the project is hosted on a different
+# platform (e.g. Bitbucket or a custom GitLab instance), the returned URL will
+# be to the specific version of the HTML file in the repository (inconveniently
+# rendered as text).
+#
+# https://raw.githack.com/
+#
+# Examples:
+#
+# GitHub: https://github.com/user/repo/blob/commit/path/file.html
+# -> https://rawcdn.githack.com/user/repo/commit/path/file.html
+#
+# GitLab: https://gitlab.com/user/repo/blob/commit/path/file.html
+# -> https://glcdn.githack.com/user/repo/raw/commit/path/file.html
+#
+# GitLab custom: https://git.rcc.uchicago.edu/user/repo/blob/commit/path/file.html
+# -> https://git.rcc.uchicago.edu/user/repo/blob/commit/path/file.html
+#
+# Note: The full result includes the anchor tag:
+# <a href=\"https://rawcdn.githack.com/user/repo/commit/path/file.html\" target=\"_blank\">1st 7 characters of commit</a>
+create_url_html <- function(url_repo, html, sha) {
+  url_github <- "https://github.com/"
+  url_gitlab <- "https://gitlab.com/"
+  cdn_github <- "https://rawcdn.githack.com"
+  cdn_gitlab <- "https://glcdn.githack.com"
+
+  if (stringr::str_detect(url_repo, url_github)) {
+    url_html <- sprintf("<a href=\"%s/%s/%s/%s\" target=\"_blank\">%s</a>",
+                        cdn_github,
+                        stringr::str_replace(url_repo, url_github, ""),
+                        sha, html, shorten_sha(sha))
+  } else if (stringr::str_detect(url_repo, url_gitlab)) {
+    url_html <- sprintf("<a href=\"%s/%s/raw/%s/%s\" target=\"_blank\">%s</a>",
+                        cdn_gitlab,
+                        stringr::str_replace(url_repo, url_gitlab, ""),
+                        sha, html, shorten_sha(sha))
+  } else {
+    url_html <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
+                        url_repo, sha, html, shorten_sha(sha))
+  }
+
+  return(url_html)
 }
 
 shorten_sha <- function(sha) {

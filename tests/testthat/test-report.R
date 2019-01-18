@@ -395,6 +395,41 @@ test_that("detect_code returns FALSE for file with nothing even resembling code"
   expect_false(detect_code(fname))
 })
 
+# Test create_url_html ---------------------------------------------------------
+
+test_that("create_url_html returns CDN for GitHub.com", {
+  observed <- workflowr:::create_url_html("https://github.com/user/repo",
+                                          "path/file.html", "commit")
+  expected <- "<a href=\"https://rawcdn.githack.com/user/repo/commit/path/file.html\" target=\"_blank\">commit</a>"
+  expect_identical(observed, expected)
+
+  observed <- workflowr:::create_url_html("https://github.com/jdblischak/dc-bioc-limma",
+                                          "docs/index.html", "ef5ea09f1d2e12af8757d2d77a68e16466947a65")
+  expected <- "<a href=\"https://rawcdn.githack.com/jdblischak/dc-bioc-limma/ef5ea09f1d2e12af8757d2d77a68e16466947a65/docs/index.html\" target=\"_blank\">ef5ea09</a>"
+  expect_identical(observed, expected)
+})
+
+test_that("create_url_html returns CDN for GitLab.com", {
+  observed <- workflowr:::create_url_html("https://gitlab.com/user/repo",
+                                          "path/file.html", "commit")
+  expected <- "<a href=\"https://glcdn.githack.com/user/repo/raw/commit/path/file.html\" target=\"_blank\">commit</a>"
+  expect_identical(observed, expected)
+
+  observed <- workflowr:::create_url_html("https://gitlab.com/jdblischak/wflow-gitlab",
+                                          "public/index.html", "f3b96cfd498ad1b6fb177fa9ae5ad1a2e2ca7261")
+  expected <- "<a href=\"https://glcdn.githack.com/jdblischak/wflow-gitlab/raw/f3b96cfd498ad1b6fb177fa9ae5ad1a2e2ca7261/public/index.html\" target=\"_blank\">f3b96cf</a>"
+  expect_identical(observed, expected)
+})
+
+# https://git.rcc.uchicago.edu/ivy2/Graham_Introduction_to_Hadoop
+# https://git.rcc.uchicago.edu/user/repo
+test_that("create_url_html returns URL to repo for anything not standard GH/GL", {
+  observed <- workflowr:::create_url_html("https://git.rcc.uchicago.edu/user/repo",
+                                          "path/file.html", "commit")
+  expected <- "<a href=\"https://git.rcc.uchicago.edu/user/repo/blob/commit/path/file.html\" target=\"_blank\">commit</a>"
+  expect_identical(observed, expected)
+})
+
 # Test shorten_sha -------------------------------------------------------------
 
 test_that("Shorten sha creates 7 character string", {

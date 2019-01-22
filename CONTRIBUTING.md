@@ -41,7 +41,7 @@ documentation. `build.sh` is a convenience script for running `R CMD check`. The
 remaining directories are standard for R packages as described in the manual
 [Writing R Extensions][r-exts].
 
-## Release checklist
+## Release checklist (for maintainers)
 
 * Bump version in [DESCRIPTION](DESCRIPTION), [NEWS.md](NEWS.md), and
 [the test _workflowr.yml file](tests/testthat/files/test-wflow_update/post/_workflowr.yml)

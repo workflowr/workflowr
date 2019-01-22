@@ -13,3 +13,4 @@
 tar\.gz$
 ^cran-comments\.md$
 ^\.github$
+^CODE_OF_CONDUCT\.md$

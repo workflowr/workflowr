@@ -31,6 +31,7 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
 * [Installation](#installation)
 * [Quick start](#quick-start)
 * [Attribution](#attribution)
+* [Contributing](#contributing)
 
 ## Features
 
@@ -128,6 +129,14 @@ about the software that makes workflowr possible.
 
 Workflowr is available under the [MIT license][MIT]. Please run
 `citation("workflowr")` for proper attribution.
+
+## Contributing
+
+We welcome community contributions, especially improvements to documentation. To
+get started, please read the [contributing guidlines](CONTRIBUTING.md).
+Also, please note that this project is released with a [Contributor Code of
+Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to
+abide by its terms.
 
 [contributors]: https://github.com/jdblischak/workflowr/graphs/contributors
 [cran]: https://cran.r-project.org/package=workflowr

@@ -7,7 +7,8 @@
 #' repository on GitLab. The final step is to run \code{wflow_git_push} in the R
 #' console.
 #'
-#' \code{wflow_use_gitlab} performs the following steps:
+#' \code{wflow_use_gitlab} performs the following steps and then commits the
+#' changes:
 #'
 #' \itemize{
 #'
@@ -39,10 +40,10 @@
 #' @param protocol character (default: "https"). The protocol for communicating
 #'   with GitLab. Must be either "https" or "ssh".
 #' @param domain character (default: "gitlab.com"). The domain of the remote
-#'   host. You only need to change this if you are using custom GitLab instance
-#'   hosted by your organization. For example, "git.rcc.uchicago.edu" is the
-#'   domain for the GitLab instance hosted by the University of Chicago Research
-#'   Computing Center.
+#'   host. You only need to change this if you are using a custom GitLab
+#'   instance hosted by your organization. For example, "git.rcc.uchicago.edu"
+#'   is the domain for the GitLab instance hosted by the University of Chicago
+#'   Research Computing Center.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.

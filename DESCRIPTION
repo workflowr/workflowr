@@ -5,9 +5,12 @@ Date: 2019-01-09
 Version: 1.1.1.9001
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
-           email = "jdblischak@uchicago.edu"),
-    person("Peter", "Carbonetto", role = c("aut")),
-    person("Matthew", "Stephens", role = c("aut")),
+           email = "jdblischak@uchicago.edu",
+           comment = c(ORCID = "0000-0003-2634-9879")),
+    person("Peter", "Carbonetto", role = c("aut"),
+           comment = c(ORCID = "0000-0003-1144-6780")),
+    person("Matthew", "Stephens", role = c("aut"),
+           comment = c(ORCID = "0000-0001-5397-9257")),
     person("Luke", "Zappia", role = c("ctb"),
            comment = "Instructions for hosting with GitLab"),
     person("Pierre", "Formont", role = c("ctb"),

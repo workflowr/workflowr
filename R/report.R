@@ -236,8 +236,7 @@ get_versions_fig <- function(fig, r, github) {
     "
   <p>
   <button type=\"button\" class=\"btn btn-default btn-xs\"
-  data-toggle=\"collapse\" data-target=\"#{{id}}\"
-  style = \"display: block; margin: auto;\">
+  data-toggle=\"collapse\" data-target=\"#{{id}}\">
   Past versions of {{fig}}
   </button>
   </p>

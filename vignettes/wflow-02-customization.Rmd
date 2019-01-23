@@ -61,6 +61,63 @@ file using the new theme, and commits all the republished HTML pages.
 
 [rmd-themes]: http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style
 
+## Style with custom CSS
+
+For ultimate control of the style of your website, you can write [custom CSS rules to apply to the R Markdown files][custom-css]. For a workflowr project, follow these steps to get started:
+
+1. Create the file `analysis/style.css`
+1. Register the CSS file in `analysis/_site.yml`:
+    ```
+    output:
+      workflowr::wflow_html:
+        toc: true
+        toc_float: true
+        theme: cosmo
+        highlight: textmate
+        css: style.css
+    ```
+1. Run `wflow_build()` to preview the changes
+1. Once you are satisfied with the appearance of the site, publish the results
+    ```{r custom-css-publish, eval=FALSE}
+    wflow_publish(c("analysis/_site.yml", "analysis/style.css"),
+                  message = "Customize website style.",
+                  republish = TRUE)
+    ```
+
+[custom-css]: https://bookdown.org/yihui/rmarkdown/html-document.html#custom-css
+
+To specifically change the style of the workflowr components of the website, you
+can write your CSS rules to target the custom workflowr classes. The example CSS
+rules below demonstrate how to affect every workflowr button using the class
+`btn-workflowr` and also how to affect specific workflowr buttons using the more
+specialized classes.
+
+```
+/* Center workflowr buttons */
+.btn-workflowr {
+  display: block;
+  margin: auto;
+}
+
+
+/* Add red border around workflowr report button */
+.btn-workflowr-report {
+  border: red 5px solid;
+}
+
+
+/* Add blue border around workflowr past figure version buttons */
+.btn-workflowr-fig {
+  border: blue 5px solid;
+}
+
+
+/* Add purple border around workflowr session information button */
+.btn-workflowr-sessioninfo {
+  border: purple 5px solid;
+}
+```
+
 ## Customize the navigation bar
 
 The navigation bar appears on the top of each page. By default it includes links

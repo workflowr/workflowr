@@ -69,8 +69,8 @@ create_report <- function(input, output_dir, has_code, opts) {
   report <- paste(report_checks, report_versions, collapse = "\n")
   report <- glue::glue('
   <p>
-  <button type="button" class="btn btn-default" data-toggle="collapse"
-    data-target="#workflowr-report">
+  <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report"
+    data-toggle="collapse" data-target="#workflowr-report">
     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
     workflowr
     <span class="glyphicon {symbol}" aria-hidden="true"></span>
@@ -235,7 +235,7 @@ get_versions_fig <- function(fig, r, github) {
   template <-
     "
   <p>
-  <button type=\"button\" class=\"btn btn-default btn-xs\"
+  <button type=\"button\" class=\"btn btn-default btn-xs btn-workflowr btn-workflowr-fig\"
   data-toggle=\"collapse\" data-target=\"#{{id}}\">
   Past versions of {{fig}}
   </button>

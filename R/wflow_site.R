@@ -95,6 +95,12 @@ wflow_site <- function(input, encoding = getOption("encoding"), ...) {
           file.copy(fig_dir, fig_output_dir, recursive = TRUE)
           unlink(fig_dir, recursive = TRUE)
         }
+
+        # Copy CSS/Javascript files
+        files_css <- list.files(path = input, pattern = "css$", full.names = TRUE)
+        fs::file_copy(files_css, output_dir, overwrite = TRUE)
+        files_js <- list.files(path = input, pattern = "js$", full.names = TRUE)
+        fs::file_copy(files_js, output_dir, overwrite = TRUE)
       }
     }
 

@@ -306,7 +306,7 @@ wflow_html <- function(...) {
       <br>
       <br>
       <p>
-      <button type="button" class="btn btn-default"
+      <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo"
         data-toggle="collapse" data-target="#workflowr-sessioninfo"
         style = "display: block;">
         <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>

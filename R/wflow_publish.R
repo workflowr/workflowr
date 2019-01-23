@@ -238,7 +238,10 @@ wflow_publish <- function(
     dir_figure <- file.path(s2$docs, figs_path)
     site_libs <- file.path(s2$docs, "site_libs")
     docs_nojekyll <- file.path(s2$docs, ".nojekyll")
-    files_to_commit <- c(step2$html, dir_figure, site_libs, docs_nojekyll)
+    docs_css <- list.files(path = s2$docs, pattern = "css$", full.names = TRUE)
+    docs_js <- list.files(path = s2$docs, pattern = "js$", full.names = TRUE)
+    files_to_commit <- c(step2$html, dir_figure, site_libs, docs_nojekyll,
+                         docs_css, docs_js)
 
     # Call directly to internal function `wflow_git_commit_` to bypass input checks.
     # In a dry run, some files may not actually exist yet. Also, not every Rmd

@@ -409,8 +409,8 @@ warn_branch_mismatch <- function(remote_branch, local_branch) {
 #
 # remote - the name or URL of a remote repository
 # remote_avail - a named character vector of remote URLs
-# username - GitHub username or NULL
-# password - GitHub password or NULL
+# username - username or NULL
+# password - password or NULL
 # dry_run - logical
 authenticate_git <- function(remote, remote_avail, username = NULL,
                              password = NULL, dry_run = FALSE) {
@@ -443,7 +443,7 @@ authenticate_git <- function(remote, remote_avail, username = NULL,
   if (protocol == "https" && !dry_run) {
     if (is.null(username)) {
       if (interactive()) {
-        username <- readline("Please enter your GitHub username: ")
+        username <- readline("Please enter your username: ")
       } else {
         m <-
           "No username was specified. Either include the username in the
@@ -454,7 +454,7 @@ authenticate_git <- function(remote, remote_avail, username = NULL,
     }
     if (is.null(password)) {
       if (interactive()) {
-        password <- getPass::getPass("Please enter your GitHub password: ")
+        password <- getPass::getPass("Please enter your password: ")
       } else {
         m <-
           "No password was specified. Either include the password in the

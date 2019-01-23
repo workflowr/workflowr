@@ -5,7 +5,7 @@
 # Output: list with following components
 #  knit_root_dir - directory to execute code
 #  seed - random seed to set at beginning of each analysis
-#  github - URL to associated GitHub repository
+#  github - URL to associated remote repository (e.g. GitHub or GitLab)
 #  sessioninfo - Function to record session information
 #  fig_path_ext - figures directory with or without .Rmd
 wflow_options <- function(file) {

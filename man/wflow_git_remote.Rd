@@ -11,14 +11,15 @@ wflow_git_remote(remote = NULL, user = NULL, repo = NULL,
 \arguments{
 \item{remote}{character (default: NULL). The name of the remote.}
 
-\item{user}{character (default: NULL). The GitHub username for the remote
+\item{user}{character (default: NULL). The username for the remote
 repository.}
 
 \item{repo}{character (default: NULL). The name of the remote repository on
-GitHub.}
+the Git hosting service (e.g. GitHub or GitLab).}
 
 \item{protocol}{character (default: "https"). The protocol for communicating
-with the Git hosting service (e.g. GitHub). Must be either "https" or "ssh".}
+with the Git hosting service (e.g. GitHub or GitLab). Must be either
+"https" or "ssh".}
 
 \item{action}{character (default: "add"). The action to perform on the
 remotes. Must be one of "add", "remove", or "set_url". This argument is
@@ -45,28 +46,37 @@ repositories from R. By default it displays the current remote repositories
 update the URL for an existing remote.
 }
 \details{
-\code{wflow_git_remote} constructs a URL to a remote GitHub repository based on
-the input GitHub username, GitHub repository name, and protocol (https or
-ssh). It can add a remote (\code{action = "add"}), remove a remote
-(\code{action = "remove"}), or update the URL for an existing remote
-(\code{action = "set_url"}).
+\code{wflow_git_remote} constructs a URL to a remote repository based on the
+input username, repository name, protocol (https or ssh), and domain (e.g.
+"github.com" or "gitlab.com"). It can add a remote (\code{action = "add"}),
+remove a remote (\code{action = "remove"}), or update the URL for an existing
+remote (\code{action = "set_url"}).
 
 This function cannot change the name of an existing remote. To accomplish
-this, you could run Git from the command line (\code{git remote rename <old>
+this, you could run Git from the Terminal (\code{git remote rename <old>
 <new>}) or use \code{git2r::remote_rename} from R.
 }
 \examples{
 \dontrun{
+
 # Display the current remotes
 wflow_git_remote()
+
 # Add a remote called origin that points to the
 # GitHub repository example_repo owned by
 # the GitHub user example_user
 wflow_git_remote("origin", "example_user", "example_repo")
+
 # Remove the remote named upstream
 wflow_git_remote("upstream", action = "remove")
+
 # Change the protocol of the remote origin from https to ssh
 wflow_git_remote("origin", "example_user", "example_repo", protocol = "ssh",
               action = "set_url")
+
+# Add a remote called origin that points to the
+# GitLab repository example_repo owned by
+# the GitLab user example_user
+wflow_git_remote("origin", "example_user", "example_repo", domain = "gitlab.com")
 }
 }

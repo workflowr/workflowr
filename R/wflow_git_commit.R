@@ -137,9 +137,14 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
     # Files cannot be larger than 100MB
     sizes <- file.size(files) / 10^6
     if (any(sizes >= 100))
-      stop(wrap("All files to be committed must be less than 100 MB (this is
-      the max file size able to be pushed to GitHub). Run Git from the
-      commandline if you really want to commit these files."))
+      stop(wrap(
+      "All files to be committed must be less than 100 MB. This is the max
+      file size able to be pushed to GitHub, and is in general a good practice
+      to follow no matter what Git hosting service you are using. Large files
+      will make each push and pull take much longer and increase the risk of
+      the download timing out. Run Git directly in the Terminal if you really
+      want to commit these files."
+      ))
   }
 
   wflow_git_commit_(files = files, message = message, all = all,

@@ -91,7 +91,7 @@
 #'   \item{sessioninfo}{The function that is run to record the session
 #'   information. The default is \code{"sessionInfo()"}.}
 #'
-#'   \item{github}{The URL of the GitHub repository for creating links to past
+#'   \item{github}{The URL of the remote repository for creating links to past
 #'   results. If unspecified, the URL is guessed from the "git remote" settings
 #'   (see \code{\link{wflow_git_remote}}). Specifying this setting inside
 #'   \code{_workflowr.yml} is especially helpful if multiple users are

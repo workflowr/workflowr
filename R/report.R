@@ -157,7 +157,7 @@ get_versions <- function(input, output_dir, blobs, r, github) {
     blobs_file$Version <- ifelse(blobs_file$File == "html",
                                  # HTML preview URL
                                  create_url_html(github, git_html, blobs_file$Version),
-                                 # R Markdown GitHub URL
+                                 # R Markdown URL
                                  sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
                                          github, blobs_file$Version, git_rmd,
                                          shorten_sha(blobs_file$Version)))

@@ -15,11 +15,11 @@ See Details for the default behavior.}
 repository to pull from. If \code{NULL}, the name of the current local
 branch is used.}
 
-\item{username}{character (default: NULL). GitHub username. The user is
-prompted if necessary.}
+\item{username}{character (default: NULL). Username for online Git hosting
+service (e.g. GitHub or GitLab). The user is prompted if necessary.}
 
-\item{password}{character (default: NULL). GitHub password. The user is
-prompted if necessary.}
+\item{password}{character (default: NULL). Password for online Git hosting
+service (e.g. GitHub or GitLab). The user is prompted if necessary.}
 
 \item{dry_run}{logical (default: FALSE). Preview the proposed action but do
 not actually pull from the remote repository.}
@@ -38,7 +38,8 @@ An object of class \code{wflow_git_pull}, which is a list with the
 
 \item \bold{branch}: The branch of the remote repository.
 
-\item \bold{username}: GitHub username.
+\item \bold{username}: Username for online Git hosting service (e.g. GitHub
+or GitLab).
 
 \item \bold{merge_result}: The \code{git_merge_result} object returned by
 \link{git2r} (only included if \code{dry_run == FALSE}).
@@ -48,11 +49,11 @@ An object of class \code{wflow_git_pull}, which is a list with the
 }
 }
 \description{
-\code{wflow_git_pull} pulls the remote files from your remote repository on
-GitHub into your repository on your local machine. This is a convenience
-function to run Git commands from the R console instead of the Terminal. The
-same functionality can be acheived by running \code{git pull} in the
-Terminal.
+\code{wflow_git_pull} pulls the remote files from your remote repository
+online (e.g. GitHub or GitLab) into your repository on your local machine.
+This is a convenience function to run Git commands from the R console instead
+of the Terminal. The same functionality can be acheived by running \code{git
+pull} in the Terminal.
 }
 \details{
 \code{wflow_git_pull} tries to choose sensible defaults if the user does not

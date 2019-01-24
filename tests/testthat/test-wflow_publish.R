@@ -210,6 +210,25 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   fs::file_delete(file_w_figs)
 })
 
+test_that("wflow_publish commits CSS/JavaScript files", {
+
+  skip_on_cran()
+
+  files_support <- c("style1.css", "style2.css", "script1.js", "script2.js")
+  files_analysis <- file.path(s$analysis, files_support)
+  files_docs <- file.path(s$docs, files_support)
+
+  fs::file_create(files_analysis)
+  rmd <- file.path(s$analysis, "index.Rmd")
+  o <- wflow_publish(c(rmd, files_analysis), view = FALSE, project = site_dir)
+
+  # CSS and JS files should have been copied (not moved) to docs directory
+  expect_true(all(fs::file_exists(files_analysis)))
+  expect_true(all(fs::file_exists(files_docs)))
+  # CSS and JS files should have been committed in step 3
+  expect_true(all(files_docs %in% o$step3$commit_files))
+})
+
 test_that("wflow_publish commits new .nojekyll after docs/ name change", {
 
   skip_on_cran()

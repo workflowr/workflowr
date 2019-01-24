@@ -40,3 +40,26 @@ test_that("Passing a directory to wflow_site should build all Rmd files", {
   observed <- render_site(file.path(tmp_dir, "analysis"), quiet = TRUE)
   expect_true(all(fs::file_exists(html)))
 })
+
+test_that("wflow_site copies CSS and JavaScript files to output directory", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
+                           user.email = "test@email")
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  p <- workflowr:::wflow_paths(project = tmp_dir)
+  files_support <- c("style1.css", "style2.css", "script1.js", "script2.js")
+  files_analysis <- file.path(p$analysis, files_support)
+  files_docs <- file.path(p$docs, files_support)
+
+  fs::file_create(files_analysis)
+  render_site(p$analysis, quiet = TRUE)
+
+  # CSS and JS files should have been copied (not moved) to docs directory
+  expect_true(all(fs::file_exists(files_analysis)))
+  expect_true(all(fs::file_exists(files_docs)))
+})

@@ -63,7 +63,9 @@ file using the new theme, and commits all the republished HTML pages.
 
 ## Style with custom CSS
 
-For ultimate control of the style of your website, you can write [custom CSS rules to apply to the R Markdown files][custom-css]. For a workflowr project, follow these steps to get started:
+For ultimate control of the style of your website, you can write [custom CSS
+rules to apply to the R Markdown files][custom-css]. For a workflowr project,
+follow these steps to get started:
 
 1. Create the file `analysis/style.css`
 1. Register the CSS file in `analysis/_site.yml`:

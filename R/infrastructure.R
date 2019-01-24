@@ -170,7 +170,6 @@ div.section {
 </style>
 
 ',
-# Curly brackets need to be duplicated to pass through glue::glue
 footer = '
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see
@@ -179,9 +178,9 @@ the presentation more consistent at the cost of the webpage sometimes
 taking slightly longer to load. Note that this only works because the
 footer is added to webpages before the MathJax javascript. -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({{
-    "HTML-CSS": {{ availableFonts: ["TeX"] }}
-  }});
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
 </script>
 
 '

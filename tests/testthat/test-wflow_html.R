@@ -87,7 +87,6 @@ test_that("wflow_html can change the sesssioninfo from the YAML header", {
   expect_true(sum(stringr::str_detect(html_lines, "devtools::session_info")) == 1)
 })
 
-
 test_that("wflow_html can change the seed from the YAML header", {
 
   skip_on_cran()
@@ -214,7 +213,6 @@ test_that("The default knit_root_dir for a workflowr project can be analysis/", 
   expect_true(sum(stringr::str_detect(html_lines, basename(rmd))) == 1)
 })
 
-
 test_that("wflow_html can insert figures with or without Git repo present", {
 
   skip_on_cran()
@@ -252,7 +250,6 @@ test_that("wflow_html can insert figures with or without Git repo present", {
                                       "<img src=\"data:image/png;base64,")) == 1)
 })
 
-
 test_that("github URL in _workflowr.yml overrides git remote", {
 
   skip_on_cran()
@@ -279,6 +276,29 @@ test_that("github URL in _workflowr.yml overrides git remote", {
                                       "https://github.com/upstream/testrepo")))
   expect_false(any(stringr::str_detect(html_lines,
                                        "https://github.com/testuser/testrepo")))
+})
+
+test_that("wflow_html inserts custom header and footer", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  lines <- c("---",
+             "output: workflowr::wflow_html",
+             "---")
+  writeLines(lines, rmd)
+  html <- render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  html_lines <- readLines(html)
+  html_complete <- paste(html_lines, collapse = "\n")
+  expect_true(stringr::str_detect(html_complete,
+                                  stringr::fixed(workflowr:::includes$header)))
+  expect_true(stringr::str_detect(html_complete,
+                                  stringr::fixed(workflowr:::includes$footer)))
 })
 
 # Test plot_hook ---------------------------------------------------------------

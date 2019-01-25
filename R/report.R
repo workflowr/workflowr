@@ -313,6 +313,7 @@ check_vc <- function(input, r, s, github) {
    status <- paste(status, collapse = "\n")
    details <- paste(collpase = "\n",
 "
+<p>
 Great! You are using Git for version control. Tracking code development and
 connecting the code version to the results is critical for reproducibility.
 The version displayed above was the version of the Git repository at the time
@@ -324,11 +325,15 @@ use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only
 checks the R Markdown file, but you know if there are other scripts or data
 files that it depends on. Below is the status of the Git repository when the
 results were generated:
+</p>
 "
                 , status,
-"Note that any generated files, e.g. HTML, png, CSS, etc., are not included in
+"<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in
 this status report because it is ok for generated content to have uncommitted
-changes.")
+changes.
+</p>
+")
  } else {
    pass <- FALSE
    summary <- "<strong>Repository version:</strong> no version control"

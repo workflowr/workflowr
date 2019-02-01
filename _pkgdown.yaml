@@ -29,6 +29,8 @@ articles:
     - "`wflow-03-migrating`"
     - "`wflow-04-how-it-works`"
     - "`wflow-05-faq`"
+    - "`wflow-06-gitlab`"
+    - "`wflow-07-common-code`"
 
 reference:
   - title: "Main functions"

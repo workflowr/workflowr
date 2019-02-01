@@ -10,6 +10,7 @@ Git host, e.g. `domain = "gitlab.com"`
 * Convert table of past figure versions to a collapsable button (@xiangzhu, #120)
 * Collapse the reproducibility report (@timtrice, #110)
 * Remove the footer
+* Document how to share common code across analyses (@timtrice, #111, #142)
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 

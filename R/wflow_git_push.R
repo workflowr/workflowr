@@ -39,6 +39,9 @@
 #' @param force logical (default: FALSE). Force the push to the remote
 #'   repository. Do not use this if you are not 100\% sure of what it is doing.
 #'   Equivalent to: \code{git push -f}
+#' @param set_upstream logical (default: TRUE). Set the current local branch to
+#'   track the remote branch if it isn't already tracking one. This is likely
+#'   what you want. Equivalent to: \code{git push -u remote branch}
 #' @param dry_run logical (default: FALSE). Preview the proposed action but do
 #'   not actually push to the remote repository.
 #' @param project character (default: ".") By default the function assumes the
@@ -75,7 +78,8 @@
 #' @export
 wflow_git_push <- function(remote = NULL, branch = NULL,
                        username = NULL, password = NULL,
-                       force = FALSE, dry_run = FALSE, project = ".") {
+                       force = FALSE, set_upstream = TRUE,
+                       dry_run = FALSE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
@@ -93,6 +97,9 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
 
   if (!(is.logical(force) && length(force) == 1))
     stop("force must be a one-element logical vector")
+
+  if (!(is.logical(set_upstream) && length(set_upstream) == 1))
+    stop("set_upstream must be a one-element logical vector")
 
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
@@ -183,6 +190,12 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
                stop(wrap(reason), call. = FALSE)
              }
     )
+    # Set upstream tracking branch if it doesn't exist and `set_upstream=TRUE`
+    local_branch_object <- git2r_head(r)
+    if (is.null(git2r::branch_get_upstream(local_branch_object)) && set_upstream) {
+      git2r::branch_set_upstream(branch = local_branch_object,
+                                 name = paste(remote, branch, sep = "/"))
+    }
   }
 
   # Prepare output -------------------------------------------------------------

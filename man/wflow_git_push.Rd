@@ -5,7 +5,8 @@
 \title{Push files to remote repository}
 \usage{
 wflow_git_push(remote = NULL, branch = NULL, username = NULL,
-  password = NULL, force = FALSE, dry_run = FALSE, project = ".")
+  password = NULL, force = FALSE, set_upstream = TRUE,
+  dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{remote}{character (default: NULL). The name of the remote repository.
@@ -24,6 +25,10 @@ service (e.g. GitHub or GitLab). The user is prompted if necessary.}
 \item{force}{logical (default: FALSE). Force the push to the remote
 repository. Do not use this if you are not 100\% sure of what it is doing.
 Equivalent to: \code{git push -f}}
+
+\item{set_upstream}{logical (default: TRUE). Set the current local branch to
+track the remote branch if it isn't already tracking one. This is likely
+what you want. Equivalent to: \code{git push -u remote branch}}
 
 \item{dry_run}{logical (default: FALSE). Preview the proposed action but do
 not actually push to the remote repository.}

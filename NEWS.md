@@ -11,8 +11,11 @@ Git host, e.g. `domain = "gitlab.com"`
 * Collapse the reproducibility report (@timtrice, #110)
 * Remove the footer
 * Document how to share common code across analyses (@timtrice, #111, #142)
+* Have `wflow_git_push()` set the upstream tracking branch by default (see
+[git2r Issue 375][git2r-375])
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
+[git2r-375]: https://github.com/ropensci/git2r/issues/375
 
 # workflowr 1.1.1
 

@@ -23,14 +23,19 @@ across multiple R Markdown files. To avoid duplicated code across your files
 share common code:
 
 1. To share R code like function definitions, you can put this code in an R
-script and import in each file with the function `source()`
+script and import it in each file with the function `source()`
 
-1. To share common R Markdown text and code chunks, you can use [child documents](https://yihui.name/knitr/demo/child/).
+1. To share common R Markdown text and code chunks, you can use [child documents](https://yihui.name/knitr/demo/child/)
 
-1. To share common templates, you can use the knitr function `knit_expand()`
+1. To share common templates, you can use the function `knitr::knit_expand()`
 
 Each of these strategies is detailed below, with a special emphasis on how to
-use them within the workflowr framework. In order to source scripts or use child documentation, it is suggested you use the `here` package, available in CRAN or in [GitHub](https://github.com/r-lib/here). `here` helps to locate the root directory of your project regardless of the directory your script or analysis file is, making sourcing documents cleaner.
+use them within the workflowr framework. In order to source scripts or use child
+documents, it is suggested you use the [here][] package, which helps to locate
+the root directory of your project regardless of the directory your script or
+analysis file is, making sourcing documents cleaner.
+
+[here]: https://cran.r-project.org/package=here
 
 ## Overview of directories
 
@@ -50,103 +55,139 @@ from the root of the project directory would be `"code/common.R"`.
 
 ## Share R code with source()
 
-Normally when sourcing scripts you may only pass the script location as a string, perhaps using `file.path` to help. Because of how workflowr processes Rmd files, using the project root path (./) will generate a warning that the file does not exist, and an error that R cannot open the connection.
+If you have R code you want to re-use across multiple R Markdown files, the most
+straightforward option is to save this code in an R script, e.g.
+`code/functions.R`.
+
+Then in each R Markdown file that needs to use the code defined in that file,
+you can use `source()` to load it. If the code in your workflowr project is
+executed in the root of the project directory (which is the default behavior for
+new workflowr projects), then you would add the following chunk:
 
 ````
-`r ''````{r no-can-do}
-source("./code/functions.R")
+`r ''````{r shared-code}
+source("code/functions.R")
 ```
 ````
 
-````
-`r ''````{r no-can-two}
-source(file.path("./code/functions.R"))
-```
-````
-
-You must use a relative file path. For example, if your Rmd is in the analysis directory and your functions script is in the code directory, 
+On the other hand, if you have changed the value of `knit_root_dir` in the file
+`_workflowr.yml`, you need to ensure that the filepath to the R script is
+relative to this directory. For example, if you set `knit_root_dir: "analysis"`,
+you would use this code chunk:
 
 ````
-`r ''````{r can-do}
+`r ''````{r shared-code}
 source("../code/functions.R")
 ```
 ````
 
-````
-`r ''````{r can-do-two}
-source(file.path("../code/functions.R"))
-```
-````
-
-A cleaner solution is using the `here` package as it is always based off the project root. Additionally, it will help readability when using child documents as discussed below.
+To avoid having to figure out the correct relative path (or having to update it
+in the future if you were to change `knit_root_dir`), you can use `here::here()`
+as it is always based off the project root. Additionally, it will help
+readability when using child documents as discussed below.
 
 ````
-`r ''````{r now-were-cooking}
-source(here::here("./code/functions.R"))
+`r ''````{r shared-code}
+source(here::here("code/functions.R"))
 ```
 ````
 
 ## Share child documents with chunk option
 
-Using [child documents](https://yihui.name/knitr/demo/child/) in workflowr requires a slight difference, depending on your needs.
+To share text and code chunks across R Markdown files, you can use [child
+documents](https://yihui.name/knitr/demo/child/), a feature of the [knitr][]
+package.
 
-Let's say this is the content of your child document (which you have located in the *./analysis/child* directory):
+[knitr]: https://cran.r-project.org/package=knitr
+
+Here is a example of a simple R Markdown file that you can use to test this
+feature. Note that it contains an H2 header, some regular text, and a code
+chunk.
 
 ````
-# Child Document 1
+## Header in child document
 
-`r ''````{r child}
+Text in child document.
+
+`r ''````{r child-code-chunk}
 str(mtcars)
 ```
 ````
 
-You can reference this using the `here` package in your chunk options.
+You can save this child document anywhere in the workflowr project with one
+critical exception: it cannot be saved in the R Markdown directory (`analysis/`
+by default) with the file extension `.Rmd` or `.rmd`. This is because workflowr
+expects every R Markdown file in this directory to be a standalone analysis that
+has a 1:1 correspondence with an HTML file in the website directory (`docs/` by
+default). We recommend saving child documents in a subdirectory of the R
+Markdown directory, e.g. `analysis/child/ex-child.Rmd`.
+
+To include the content of the child document, you can reference it using
+`here::here()` in your chunk options.
 
 ````
-`r ''````{r parent, child = here::here("./analysis/child/child.Rmd")}
+`r ''````{r parent, child = here::here("analysis/child/ex-child.Rmd")}
 ```
 ````
 
-However, this fails if you wish to include plots. Let's look at another example, plotting the `iris` dataset.
-
-````
-## Child 2
-
-`r ''````{r child}
-iris %>% 
-  ggplot() + 
-  aes(x = Sepal.Length, y = Sepal.Width, color = Species) + 
-  geom_point()
-```
-````
-
-````
-`r ''````{r parent, child = here::here("./analysis/child/child2.Rmd")}
-```
-````
-
-Calling the child document as we did previously will not generate an error, but the plot will be missing. This is because it is left in the temp directories from where workflowr processes the Rmd files. In a situation like this, you would want to generate the plot within your parent Rmd or wrap it in a function.
+However, this fails if you wish to include plots in the code chunks of the child
+documents. It will not generate an error, but the plot will be missing ^[The
+reason for this is very technical and requires more understanding of how
+workflowr is implemented than is necessary to use it effectively in the majority
+of cases. Whenever workflowr builds an R Markdown file, it first copies it to a
+temporary directory so that it can inject extra code chunks that implement some
+of its reproducibility features. The figures in the child documents end up being
+saved there and then lost.]. In a situation like this, you would want to
+generate the plot within the parent R Markdown file or use
+`knitr::knit_expand()` as described in the next section.
 
 ## Share templates with knit_expand()
 
-`knitr::knit_expand` is another alternative to include child documents. Unlike the earlier examples, this will return plots and also allow you to pass parameters to your child document. 
+If you need to pass parameters to the code in your child document, then you can
+use `knitr::knit_expand()`. Also, this strategy has the added benefit that it
+can handle plots in the child document. However, this requires setting
+`knit_root_dir: "analysis"` in the file `_workflowr.yml` for plots to work
+properly.
 
-In the previous example, our plot wasn't returned because the image was left in the temp directory. However, we can assign the output to a variable and then print that output within our Rmd. 
+Below is an example child document with one variable to be expanded: `{{title}}`
+refers to a species in the iris data set. The value assigned will be used to
+filter the iris data set and label the section, chunk, and plot. We will refer
+to this file as `analysis/child/iris.Rmd`.
 
-The following example requires changing the `knit_root_dir` setting in the *./_workflowr.yml* file to your "analysis" directory.
+````
 
-Using the same Child 2 example above, we could write in our Rmd, 
+## {{title}}
+
+`r ''````{r plot_{{title}}}
+iris %>%
+  filter(Species == "{{title}}") %>%
+  ggplot() +
+  aes(x = Sepal.Length, y = Sepal.Width) +
+  geom_point() +
+  labs(title = "{{title}}")
+```
+````
+
+To generate a plot using the species `"setosa"`, you can expand the child
+document in a hidden code chunk:
 
 ````
 `r ''````{r, include = FALSE}
-src <- knitr::knit_expand(file = here::here("./analysis/child/child2.Rmd"))
+src <- knitr::knit_expand(file = here::here("analysis/child/iris.Rmd"),
+                          title = "setosa")
 ```
 ````
+
+and then later knit it using an inline code expression:
 
 `` `r
 knitr::knit(text = unlist(src))` ``
 
-The convenience of using `knitr::knit_expand` gives us flexibility to generate multiple plots, if we so desire, along with custom headers, figure labels and more. For example, if you want to generate a scatter plot for each Species in the `iris` datasets, you can call `knit_expand` within a `lapply` or `purrr::map` call; 
+The convenience of using `knitr::knit_expand()` gives you the flexibility to
+generate multiple plots along with custom headers, figure labels, and more. For
+example, if you want to generate a scatter plot for each Species in the `iris`
+datasets, you can call `knitr::knit_expand()` within a `lapply()` or
+`purrr::map()` call:
 
 ````
 `r ''````{r, include = FALSE}
@@ -154,7 +195,7 @@ src <- lapply(
   sort(unique(iris$Species)), 
   FUN = function(x) {
     knitr::knit_expand(
-      file = here::here(".", "analysis", "child", "child3.Rmd"), 
+      file = here::here("analysis/child/iris.Rmd"), 
       title = x
     )
   }
@@ -162,27 +203,16 @@ src <- lapply(
 ```
 ````
 
-Remember to use unlist `src` in an inline R expression as noted above.
+This example code loops through each unique `iris$Species` and sends it to the
+template as the variable `title`. `title` is inserted into the header, the chunk
+label, the `dplyr::filter()`, and the title of the plot. This generates three
+plots with custom plot titles and labels while keeping your analysis flow clean
+and simple.
 
-Your Child3 document would look similar to this:
+Remember to insert `knitr::knit(text = unlist(src))` in an inline R expression
+as noted above to knit the code in the desired location of your main document.
 
-````
-
-## Child C - {{title}}
-
-`r ''````{r plot_{{title}}}
-iris %>% 
-  filter(Species == "{{title}}") %>%
-  ggplot() + 
-  aes(x = Sepal.Length, y = Sepal.Width) + 
-  geom_point() + 
-  labs(title = "{{title}}")
-```
-````
-
-Using this example, we loop through each unique `iris$Species` and send it to the template as the variable `title`. `title` is inserted into the header, the chunk label, the `dplyr::filter` and as the title of the plot. This generates three plots with custom plot titles and labels while keeping our analysis flow clean and simple.
-
-Read the `knit_expand` vignette for more information.
+Read the `knitr::knit_expand()` vignette for more information.
 
 ```{r knit-expand-vignette}
 vignette("knit_expand", package = "knitr")

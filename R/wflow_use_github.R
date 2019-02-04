@@ -1,73 +1,68 @@
-#' Deploy site with GitLab
+#' Deploy site with GitHub
 #'
-#' \code{wflow_use_gitlab} automates all the local configuration necesary to
-#' deploy your workflowr project with
-#' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
-#' However, you will need to manually login to your account and create the new
-#' repository on GitLab. The final step is to run \code{wflow_git_push} in the R
-#' console.
+#' \code{wflow_use_github} automates all the local configuration necesary to
+#' deploy your workflowr project with \href{https://pages.github.com/}{GitHub
+#' Pages}. However, you will need to manually login to your account and create
+#' the new repository on GitHub. The final step is to run \code{wflow_git_push}
+#' in the R console.
 #'
-#' \code{wflow_use_gitlab} performs the following steps and then commits the
+#' \code{wflow_use_github} performs the following steps and then commits the
 #' changes:
 #'
 #' \itemize{
 #'
-#' \item Renames the website directory from \code{docs/} to \code{public/}
+#' \item Adds a link to the GitHub repository in the navigation bar
 #'
-#' \item Edits the setting \code{output_dir} in the file \code{_site.yml} to
-#' save the website files in \code{public/}
+#' \item Configures the Git remote settings to use GitHub
 #'
-#' \item Adds a link to the GitLab repository in the navigation bar
+#' \item (Only if necessary) Renames the website directory to \code{docs/}
 #'
-#' \item Creates the required file \code{.gitlab-ci.yml}
-#'
-#' \item Configures the Git remote settings to use GitLab
+#' \item (Only if necessary) Edits the setting \code{output_dir} in the file
+#' \code{_site.yml} to save the website files in \code{docs/}
 #'
 #' }
 #'
 #' For more details, read the documentation provided by
-#' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
+#' \href{https://pages.github.com/}{GitHub Pages}.
 #'
-#' @param username character (default: NULL). The GitLab username for the remote
+#' @param username character (default: NULL). The GitHub username for the remote
 #'   repository. If not specified, workflowr will attempt to guess this from the
 #'   current remote named "origin" if it had previously been configured.
 #' @param repository character (default: NULL). The name of the remote
-#'   repository on GitLab. If not specified, workflowr will attempt to guess
+#'   repository on GitHub. If not specified, workflowr will attempt to guess
 #'   this from the current remote named "origin" if it had previously been
 #'   configured.
-#' @param navbar_link logical (default: TRUE). Insert a link to the GitLab
+#' @param navbar_link logical (default: TRUE). Insert a link to the GitHub
 #'   repository into the navigation bar.
 #' @param protocol character (default: "https"). The protocol for communicating
-#'   with GitLab. Must be either "https" or "ssh".
-#' @param domain character (default: "gitlab.com"). The domain of the remote
-#'   host. You only need to change this if you are using a custom GitLab
-#'   instance hosted by your organization. For example, "git.rcc.uchicago.edu"
-#'   is the domain for the GitLab instance hosted by the University of Chicago
-#'   Research Computing Center.
+#'   with GitHub. Must be either "https" or "ssh".
+#' @param domain character (default: "github.com"). The domain of the remote
+#'   host. You only need to change this if your organization is using GitHub
+#'   Enterprise.
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
 #'
-#' @return Invisibly returns a list of class \code{wflow_use_gitlab}. This is
+#' @return Invisibly returns a list of class \code{wflow_use_github}. This is
 #'   currently for internal use only. Please open an Issue if you'd like to use
 #'   this information.
 #'
 #' @seealso \code{\link{wflow_git_push}}, \code{\link{wflow_git_remote}},
-#'          \code{\link{wflow_use_github}}
+#'          \code{\link{wflow_use_gitlab}}
 #'
 #' @examples
 #' \dontrun{
 #'
-#' wflow_use_gitlab("your-username", "name-of-repository")
-#' # Login with GitLab account and create new repository
+#' wflow_use_github("your-username", "name-of-repository")
+#' # Login with GitHub account and create new repository
 #' wflow_git_push()
 #' }
 #'
 #'@export
-wflow_use_gitlab <- function(username = NULL, repository = NULL,
+wflow_use_github <- function(username = NULL, repository = NULL,
                              navbar_link = TRUE,
                              protocol = "https",
-                             domain = "gitlab.com",
+                             domain = "github.com",
                              project = ".") {
 
   # Check input arguments ------------------------------------------------------
@@ -107,7 +102,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     }
   }
 
-  message("Summary from wflow_use_gitlab():")
+  message("Summary from wflow_use_github():")
 
   # Status ---------------------------------------------------------------------
 
@@ -121,14 +116,14 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   # Rename docs/ to public/ ----------------------------------------------------
 
-  if (basename(s$docs) == "public") {
-    message("* The website directory is already named public/")
+  if (basename(s$docs) == "docs") {
+    message("* The website directory is already named docs/")
     renamed <- NA
   } else {
-    public <- file.path(dirname(s$docs), "public")
-    renamed <- wflow_rename(s$docs, public, git = FALSE, project = project)
+    docs <- file.path(dirname(s$docs), "docs")
+    renamed <- wflow_rename(s$docs, docs, git = FALSE, project = project)
     git2r::add(r, absolute(renamed$files_git))
-    message("* Created the website directory public/")
+    message("* Created the website directory docs/")
   }
 
   # Edit output_dir in _site.yml -----------------------------------------------
@@ -138,26 +133,13 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     stop("The website configuration file _site.yml does not exist.")
   }
   site_yml <- yaml::yaml.load_file(site_yml_fname)
-  if (site_yml$output_dir == "../public") {
-    message("* Output directory is already set to public/")
+  if (site_yml$output_dir == "../docs") {
+    message("* Output directory is already set to docs/")
   } else {
-    site_yml$output_dir <- "../public"
+    site_yml$output_dir <- "../docs"
     yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
-    message("* Set output directory to public/")
-  }
-
-  # .gitlab-ci.yml -------------------------------------------------------------
-
-  # The list `gitlab` is defined in R/infrastructure.R
-  gitlab_yml <- gitlab[[".gitlab-ci.yml"]]
-  gitlab_yml_fname <- file.path(s$root, ".gitlab-ci.yml")
-  if (fs::file_exists(gitlab_yml_fname)) {
-    message("* .gitlab-ci.yml file already exists")
-  } else {
-    cat(glue::glue(gitlab_yml), file = gitlab_yml_fname)
-    git2r::add(r, gitlab_yml_fname)
-    message("* Created the file .gitlab-ci.yml")
+    message("* Set output directory to docs/")
   }
 
   # Configure Git remote -------------------------------------------------------
@@ -190,12 +172,12 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   host <- get_host_from_remote(path = project)
   if (navbar_link && !is.na(host)) {
-    site_yml$navbar$right <- list(list(icon = "fa-gitlab",
+    site_yml$navbar$right <- list(list(icon = "fa-github",
                                        text = "Source code",
                                        href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)
     git2r::add(r, site_yml_fname)
-    message("* Added GitLab link to navigation bar")
+    message("* Added GitHub link to navigation bar")
   }
 
   # Commit changes -------------------------------------------------------------
@@ -205,7 +187,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   files_git <- unlist(files_git$staged)
   names(files_git) <- NULL
   if (length(files_git) > 0) {
-    commit <- git2r::commit(r, message = "Host with GitLab.")
+    commit <- git2r::commit(r, message = "Host with GitHub.")
     message("* Committed the changes to Git")
   } else {
     commit <- NA
@@ -216,11 +198,11 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   o <- list(renamed = renamed, files_git = files_git, commit = commit,
             config_remote = config_remote)
-  class(o) <- "wflow_use_gitlab"
+  class(o) <- "wflow_use_github"
 
-  message("\nGitLab configuration successful!\n")
+  message("\nGitHub configuration successful!\n")
   message("To do: Create new repository at ", domain)
-  message("To do: Run wflow_git_push() to send your project to GitLab")
+  message("To do: Run wflow_git_push() to send your project to GitHub")
 
   return(invisible(o))
 }

@@ -48,6 +48,8 @@ reference:
       - wflow_git_pull
       - wflow_git_push
       - wflow_git_remote
+      - wflow_use_github
+      - wflow_use_gitlab
   - title: "Other functions"
     contents:
       - wflow_html

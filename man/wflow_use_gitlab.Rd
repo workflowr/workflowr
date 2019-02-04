@@ -67,7 +67,7 @@ save the website files in \code{public/}
 }
 
 For more details, read the documentation provided by
-\href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}
+\href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
 }
 \examples{
 \dontrun{
@@ -79,5 +79,6 @@ wflow_git_push()
 
 }
 \seealso{
-\code{\link{wflow_git_push}}, \code{\link{wflow_git_remote}}
+\code{\link{wflow_git_push}}, \code{\link{wflow_git_remote}},
+         \code{\link{wflow_use_github}}
 }

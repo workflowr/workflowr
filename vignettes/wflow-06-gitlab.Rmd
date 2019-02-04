@@ -76,5 +76,5 @@ wflow_git_push()
 
 If this step has worked correctly you should be able to refresh your GitLab page
 and see all the files in your workflowr project. You can view your site at
-https://myname.gitlab.io/myproject/, replacing with your username and project
-(note it may take a minute for the site to be deployed).
+`myname.gitlab.io/myproject/`, replacing with your username and project (note it
+may take a minute for the site to be deployed).

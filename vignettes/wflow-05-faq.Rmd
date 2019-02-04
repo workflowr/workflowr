@@ -44,13 +44,10 @@ builds][gh-troubleshooting].
 
 ## Can I make my workflowr website private?
 
-Short answer: Not if you use the default setup that hosts the site on GitHub
-Pages. For alternative setups, see the FAQ below on [sharing your workflowr
-site with the beaker browser][faq-beaker] or [hosting it in a
-password-protected s3 bucket.][faq-s3].
-
-[faq-beaker]: #can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion
-[faq-s3]: #can-i-password-protect-my-website
+Short answer: Not if you use the default setup that deploys the site on GitHub
+Pages. For alternative deployment options, see the vignette [Alternative
+strategies for deploying workflowr websites][vig-deploy]. It includes options
+for public or private websites.
 
 Long answer: Even if you create a private GitHub repository, the website it
 creates is still public. If you're not ready to publish your results online, you
@@ -64,7 +61,10 @@ with your close collaborators, and request that they not share it widely, your
 website is effectively private. That being said, being truly scooped in science
 is rare (at best) and openly sharing your work will help establish your
 expertise in the field (and furthermore establishes your priority), so you
-should consider keeping both your code and website public.
+should consider keeping both your code and website public. The main caveat to
+this advice is if you are analyzing data that contains sensitive or restricted
+information, in which case you should not use GitHub Pages or any other public
+deployment option.
 
 ## How can I include external images in my website?
 
@@ -127,73 +127,15 @@ provide a small reproducible example.
 
 ## Can I share workflowr websites directly with collaborators in a secure fashion?
 
-If your project contains senstive data that prevents you from publicly sharing
-the results, one alternative option is to self-host your workflowr website using
-[Beaker Browser][beaker]. This solution was contributed by [Josh
-Johnson][johnsonlab]. For more details, please read his [blog
-post][johnsonlab-blog] and the discussion in Issue [#59][].
-
-[Beaker Browser][beaker] allows website creation, cloning, modification, and
-publishing locally. After the site is ready, hitting "share" produces a unique
-[Dat project dat://][dat] hyperlink, for example:
-
-    dat://adef21aa8bbac5e93b0c20a97c6f57f93150cf4e7f5eb1eb522eb88e682309bc
-
-This dat:// link can then be shared and the site opened *all the while being
-hosted locally on the site producer's machine.* The particular example above is
-a site, produced in RStudio using workflowr, with placeholder content and R code
-chunks, compiled as usual.
-
-Security for your site is achieved with site encryption inherent in the Dat
-protocol (see "Security" on the [datproject docs page][dat-docs]), as well as
-the obscurity of the unique link. Beaker Browser saves your individual project
-sites in the folder `~/Sites`.
-
-To create a Beaker Browser version of your workflowr site:
-
-1. [Install][beaker-install] Beaker Browser and run it.
-1. Select "New Site" in the three-bar dropdown menu found to the right of the
-"omnibar" for web link entry, and enter its Title and (optional) a Description
-of the site. This creates a folder in the Beaker Browser `~/Sites` directory
-named for your Title, for example, "placeholder_workflowr", and populates the
-folder with a `dat.json` file.
-1. In the main Beaker Browser pane, use "Add Files" or "Open Folder" to copy the
-entire contents of the workflowr `docs/` folder to your new Beaker Browser site
-folder (see Symlink Synchronization, below).
-1. Once copied, the new site is ready to go. Pressing "Share" in the main Beaker
-Browser pane reveals the unique dat:// link generated for your Beaker Browser
-site. Sharing this link with anyone running Beaker Browser will allow them to
-access your workflowr HTML files...*directly from your computer*.
-
-Instead of having to manually copy your workflowr `docs/` directory to your
-Beaker Browser site directory, you can create a symlink from your workflowr
-`docs/` directory to the Beaker Browser site directory. The line below links the
-`docs/` directory of a hypothetical "workflowr-project" saved in `~/github/` to
-the hypothetical Beaker `placeholder_workflowr` subdirectory:
-
-    ln -s ~/github/workflowr-project/docs ~/Users/joshua/Sites/placeholder_workflowr
-
-The direct-sharing nature of the above workflow means that the host computer
-needs to be running for site access. Two alternative recommended by Beaker
-Browser developer [Paul Frazee][pfrazee] are [hashbase.io][] and the Beaker
-Browser subproject [dathttpd][]. While hosting Beaker Browser sites is outside
-of the scope of this direct sharing paradigm, each of these options has
-strengths. The former, hashbase.io (free account required), is a web-hosted
-central location for dat:// -linked content, removing the need for the host
-computer to be running. The latter dathttpd example is an additional
-server/self-hosting option that can be used if desired.
+Yes. Please see these [instructions][deploy-beaker] for deploying a workflowr
+project securely with [Beaker Browser][beaker].
 
 ## Can I password-protect my website?
 
-Another way to privately share your workflowr site is by uploading it
-to [Amazon s3][s3]. s3 is an object storage service for the Amazon cloud, and
-can be used to host static websites. Basic HTTP authentication can be
-accomplished using [CloudFront][cloudfront], Amazon's content delivery network,
-and [Lamba@Edge][lambda], which enables the execution of serverless functions
-to customize content delivered by the CDN. This [blog post][hackernoon]
-goes into more detail about what that all means. A more detailed guide to
-setting up the bucket is [here][kynatro]. Some templates for
-scripting the process are [here][dumrauf].
+Yes. Please see these [instructions][deploy-aws] for deploying a workflowr
+project with password-protection using [Amazon S3][s3].
+
+
 
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 
@@ -225,25 +167,14 @@ you.
 Workflowr should be capitalized at the beginning of a sentence, but otherwise
 the lowercase workflowr should be the preferred option.
 
-[#59]: https://github.com/jdblischak/workflowr/issues/59
 [beaker]: https://beakerbrowser.com/
-[beaker-install]: https://beakerbrowser.com/docs/install/
 [Bootstrap]: http://getbootstrap.com/
-[cloudfront]: https://aws.amazon.com/cloudfront/
-[dat]: https://datproject.org/
-[dat-docs]: https://docs.datproject.org/
-[dathttpd]: https://github.com/beakerbrowser/dathttpd
-[dumrauf]: https://github.com/dumrauf/serverless_static_website_with_basic_auth
+[deploy-aws]: wflow-08-deploy.html#amazon-s3-password-protected
+[deploy-beaker]: wflow-08-deploy.html#beaker-browser-secure-sharing
 [gh-pages]: https://pages.github.com/
 [gh-status]: https://twitter.com/githubstatus
 [gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
-[hackernoon]: https://hackernoon.com/serverless-password-protecting-a-static-website-in-an-aws-s3-bucket-bfaaa01b8666
-[hashbase.io]: https://hashbase.io
 [issues]: https://github.com/jdblischak/workflowr/issues
-[johnsonlab]: https://github.com/johnsonlab
-[johnsonlab-blog]: https://johnsonlab.github.io/blog-post-22/
-[kynatro]: http://kynatro.com/blog/2018/01/03/a-step-by-step-guide-to-creating-a-password-protected-s3-bucket/
-[lambda]: https://docs.aws.amazon.com/lambda/latest/dg/lambda-edge.html
-[pfrazee]: https://github.com/pfrazee
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [s3]: https://aws.amazon.com/s3/
+[vig-deploy]: wflow-08-deploy.html

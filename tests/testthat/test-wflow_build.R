@@ -285,6 +285,34 @@ test_that("wflow_build can display build log directly in R console with verbose"
   expect_true(length(x) > 0)
 })
 
+test_that("wflow_build reports working and knit directories", {
+
+  skip_on_cran()
+
+  expect_message(
+    wflow_build(rmd[2], view = FALSE, project = site_dir),
+    getwd())
+
+  expect_message(
+    wflow_build(rmd[2], view = FALSE, project = site_dir),
+    sprintf("Building %s in %s", rmd[2], site_dir))
+
+  # Should not output knit directory if it's the same as working directory
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  setwd(site_dir)
+  site_dir_new <- getwd()
+  rmd_new <- "analysis/index.Rmd"
+
+  expect_message(
+    wflow_build(rmd_new, view = FALSE, project = site_dir),
+    site_dir_new)
+
+  expect_message(
+    wflow_build(rmd_new, view = FALSE, project = site_dir),
+    sprintf("Building %s", rmd_new))
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_build fails if file outside of analysis/", {

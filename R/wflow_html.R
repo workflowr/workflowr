@@ -241,28 +241,6 @@ wflow_html <- function(...) {
 
     wflow_opts <- wflow_options(input)
 
-    # Get potential options from YAML header. These override the options
-    # specified in _workflowr.yml.
-    header <- rmarkdown::yaml_front_matter(input)
-    header_opts <- header$workflowr
-    for (opt in names(header_opts)) {
-      wflow_opts[[opt]] <- header_opts[[opt]]
-    }
-    # If knit_root_dir was specified as a relative path in the YAML header,
-    # interpret it as relative to the location of the file
-    if (!is.null(wflow_opts$knit_root_dir)) {
-      if (!fs::is_absolute_path(wflow_opts$knit_root_dir)) {
-        wflow_opts$knit_root_dir <- absolute(file.path(dirname(input),
-                                                       wflow_opts$knit_root_dir))
-      }
-    }
-
-    # If knit_root_dir hasn't been configured in _workflowr.yml or the YAML header,
-    # set it to the location of the original file
-    if (is.null(wflow_opts$knit_root_dir)) {
-      wflow_opts$knit_root_dir <- dirname(absolute(input))
-    }
-
     # Set the knit_root_dir option for rmarkdown::render. However, the user can
     # override the knit_root_dir option by passing it directly to render.
     if (is.null(e$knit_root_dir)) {
@@ -322,6 +300,7 @@ wflow_html <- function(...) {
       ')
       # If there is a bibliography, make sure it appears before the session
       # information
+      header <- rmarkdown::yaml_front_matter(input)
       if (!is.null(header$bibliography)) {
         sessioninfo <- add_bibliography(sessioninfo, lines_in)
       }

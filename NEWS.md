@@ -13,6 +13,9 @@ Git host, e.g. `domain = "gitlab.com"`
 * Document how to share common code across analyses (@timtrice, #111, #142)
 * Have `wflow_git_push()` set the upstream tracking branch by default (see
 [git2r Issue 375][git2r-375])
+* `wflow_build()` reports the current working directory. If the knit directory
+(where the code is executed) is different than the working directory,
+`wflow_build()` reports where the code in each file is being executed.
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375

@@ -36,6 +36,44 @@ wflow_options <- function(file) {
     }
   }
 
+  # If file exists, get potential options from YAML header. These override the
+  # options specified in _workflowr.yml.
+  if (fs::file_exists(file)) {
+    wflow_opts <- wflow_options_from_file(file, wflow_opts)
+  }
+
+  # If knit_root_dir hasn't been configured in _workflowr.yml or the YAML header,
+  # set it to the location of the original file
+  if (is.null(wflow_opts$knit_root_dir)) {
+    wflow_opts$knit_root_dir <- dirname(absolute(file))
+  }
+
+  return(wflow_opts)
+}
+
+# Check for potential workflowr options in YAML header
+#
+# file - path to existing R Markdown file
+# wflow_opts - list of workflowr options
+#
+# Returns updated list of workflowr options
+#
+# See wflow_options() and wflow_html() for more details
+wflow_options_from_file <- function(file, wflow_opts = list()) {
+  header <- rmarkdown::yaml_front_matter(file)
+  header_opts <- header$workflowr
+  for (opt in names(header_opts)) {
+    wflow_opts[[opt]] <- header_opts[[opt]]
+  }
+  # If knit_root_dir was specified as a relative path in the YAML header,
+  # interpret it as relative to the location of the file
+  if (!is.null(wflow_opts$knit_root_dir)) {
+    if (!fs::is_absolute_path(wflow_opts$knit_root_dir)) {
+      wflow_opts$knit_root_dir <- absolute(file.path(dirname(file),
+                                                     wflow_opts$knit_root_dir))
+    }
+  }
+
   return(wflow_opts)
 }
 

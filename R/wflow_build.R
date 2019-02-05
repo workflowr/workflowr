@@ -243,10 +243,18 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if (!dry_run) {
     n_files <- length(files_to_build)
     if (n_files > 0) {
+      wd <- getwd()
+      message(sprintf("Current working directory: %s", wd))
       message(sprintf("Building %i file(s):", n_files))
     }
     for (f in files_to_build) {
-      message("Building ", f)
+      # Determine knit directory
+      wflow_opts <- wflow_options(f)
+      if (wflow_opts$knit_root_dir != wd) {
+        message(sprintf("Building %s in %s", f, wflow_opts$knit_root_dir))
+      } else {
+        message("Building ", f)
+      }
       # Remove figure files to prevent accumulating outdated files
       path <- create_figure_path(f)
       figs_analysis <- file.path(p$analysis, path)

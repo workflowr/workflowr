@@ -47,6 +47,7 @@ if (!rmarkdown::pandoc_available()) {
 .project <- file.path(.tmp, "myproject")
 fs::dir_create(.project)
 opts_knit$set(root.dir = .project)
+opts_chunk$set(collapse = TRUE)
 ```
 
 The workflowr R package helps scientists organize their research in a way that
@@ -168,7 +169,7 @@ directories should never be removed from the workflowr project.
 implementing the data analyses for your project. It also contains a special R
 Markdown file, `index.Rmd`, that does not contain any R code, but will be used
 to generate `index.html`, the homepage for your website. In addition, this
-directory contains the important configuration files `_site.yml`, which you can
+directory contains the important configuration file `_site.yml`, which you can
 use to edit the theme, navigation bar, and other website aesthetics (for more
 details see the documentation on [R Markdown websites][rmd-website]). Do not
 delete `index.Rmd` or `_site.yml`.
@@ -292,7 +293,7 @@ of the R Markdown files to publish ^[Instead of listing each file individually,
 you can also pass [file globs](https://en.wikipedia.org/wiki/Glob_(programming))
 as input to any workflowr function, e.g. `wflow_publish("analysis/*Rmd",
 "Publish the initial files for myproject")`.]. The second is a message that will
-recorded by the version control system Git when it commits (i.e. saves a
+be recorded by the version control system Git when it commits (i.e. saves a
 snapshot of) these files. The more informative the commit message the better (so
 that future you knows what you were trying to accomplish).
 
@@ -336,38 +337,43 @@ At this point you have built a version-controlled website that exists on your
 local computer. The next step is to put your code on GitHub so that it can serve
 your website online.
 
-To do this, login to your account on GitHub and create a new repository
-following these [instructions][new-repo]. The screenshot below shows the menu in
-the topright of the webpage.
+First, you need to configure your local project for use use with GitHub. Pass
+your GitHub username and desired repository name to the workflowr function
+`wflow_use_github()`.
 
-![Create a new repository on GitHub.](github-new-repo.png)
+```{r wflow-use-github}
+wflow_use_github("myname", "myproject")
+```
 
-For the purposes of this
-tutorial, the code below assumes that the GitHub repository also has the name
+This had two main effects: 1) it configured Git to communicate with your future
+GitHub repository, and 2) it inserted a link to your future GitHub repository
+into the navigation bar (you'll need to run `wflow_build()` or `wflow_publish()`
+to observe this change).
+
+Second, you need to create the GitHub repository (you can skip this step if
+you've already created it). To do this, login to your account on GitHub and
+create a new repository following these [instructions][new-repo]. The screenshot
+below shows the menu in the topright of the webpage.
+
+<img src="github-new-repo.png" alt="Create a new repository on GitHub."
+  style="display: block; margin: auto; border: black 1px solid">
+
+<p class="caption" style="text-align: center;">
+Create a new repository on GitHub.
+</p>
+
+Note that in this tutorial the GitHub repository also has the name
 "myproject." This isn't strictly neccesary (you can name your GitHub repository
 whatever you like), but it's generally good organizational practice to use the
 same name for both your GitHub repository and the local directory on your
 computer.
 
-Next you need to tell your local Git repository about this new GitHub
-repository. Run the `wflow_git_remote()` command below in the R console, replacing
-"myname" with your GitHub username:
-
-```{r wflow-remotes}
-wflow_git_remote("origin", "myname", "myproject")
-```
-
-This creates the alias "origin" that points to your remote repository on
-GitHub^["origin" is the conventional name, but could be anything you wanted.].
-You only need to run this command once to add the remote repository.
-
-Now you can push your files to GitHub with the function
-`wflow_git_push()`^[Unfortunately this can fail for many different reasons. If
-you already regularly use `git push` in the Terminal, you will probably want to
-continue using this. If you don't have Git installed on your computer and thus
-must use `wflow_git_push()`, you can search the [git2r
-Issues](https://github.com/ropensci/git2r/issues) for troubleshooting ideas.].
-Run the following in the R console:
+Third, you need to send your files to GitHub. Push your files to GitHub with the
+function `wflow_git_push()`:^[Unfortunately this can fail for many different
+reasons. If you already regularly use `git push` in the Terminal, you will
+probably want to continue using this. If you don't have Git installed on your
+computer and thus must use `wflow_git_push()`, you can search the [git2r
+Issues](https://github.com/ropensci/git2r/issues) for troubleshooting ideas.]
 
 ```{r wflow-git-push}
 wflow_git_push(dry_run = TRUE)
@@ -381,13 +387,13 @@ keys](wflow-02-customization.html#setup-ssh-keys).]. Each time you make changes
 to your project, e.g. run `wflow_publish()`, you will need to run
 `wflow_git_push()` to send the changes to GitHub.
 
-Now that your code is on GitHub, you need to tell GitHub that you want the files
-in `docs/` to be published as a website. Go to Settings -> GitHub Pages and
-choose "master branch docs/ folder" as the Source
+Fourth, now that your code is on GitHub, you need to tell GitHub that you want
+the files in `docs/` to be published as a website. Go to Settings -> GitHub
+Pages and choose "master branch docs/ folder" as the Source
 ([instructions][publish-docs]). Using the hypothetical names above, the
-repository would be hosted at the URL `myname.github.io/myproject/`^[It
-may take a few minutes for the site to be rendered.]. If you scroll back down to
-the GitHub Pages section of the Settings page, you can click on the URL there.
+repository would be hosted at the URL `myname.github.io/myproject/`^[It may take
+a few minutes for the site to be rendered.]. If you scroll back down to the
+GitHub Pages section of the Settings page, you can click on the URL there.
 
 [new-repo]: https://help.github.com/articles/creating-a-new-repository/
 [publish-docs]: https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
@@ -416,13 +422,14 @@ again (this function can be run from the base directory of your project or any
 subdirectory).
 
 Check out your new file `first-analysis.html`. Near the top you will see the
-workflowr reproducibility report. You can click on any of the bullet points to
-learn more about the check, why it's important, and whether or not the file
-passed or failed. You'll notice that the first check failed because the R
-Markdown file had uncommitted changes. This is OK now since the file is a draft.
-Once you are ready to publish it to share with others, you can use
-`wflow_publish()` to ensure that any changes to the R Markdown file are
-committed to the Git repository prior to generating the results.
+workflowr reproducibility report. If you click on the button, the full menu will
+drop down. Click around to learn more about the reproducibility safety checks,
+why their important, and whether or not the file passed or failed each one.
+You'll notice that the first check failed because the R Markdown file had
+uncommitted changes. This is OK now since the file is a draft. Once you are
+ready to publish it to share with others, you can use `wflow_publish()` to
+ensure that any changes to the R Markdown file are committed to the Git
+repository prior to generating the results.
 
 In order to make it easier to navigate to your new file, you can include a link
 to it on the main index page. First open `analysis/index.Rmd` (optionally using
@@ -515,6 +522,9 @@ To learn more about workflowr, you can read the following vignettes:
 * [Migrating an existing project to use workflowr](wflow-03-migrating.html)
 * [How the workflowr package works](wflow-04-how-it-works.html)
 * [Frequently asked questions](wflow-05-faq.html)
+* [Hosting workflowr websites using GitLab](wflow-06-gitlab.html)
+* [Sharing common code across analyses](wflow-07-common-code.html)
+* [Alternative strategies for deploying workflowr websites](wflow-08-deploy.html)
 
 ## Further reading
 

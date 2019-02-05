@@ -330,6 +330,41 @@ test_that("wflow_html sends warning if fig.path is set by user", {
 
 })
 
+# Test cache_hook --------------------------------------------------------------
+
+test_that("wflow_html sends warning if chunk caches without autodep", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # If set in only only one chunk, only one warning should be generated
+  #
+  # one chunk has cache=TRUE (warning), another has cache=TRUE && autodep=TRUE
+  # (no warning), and the third has no options set (no warning).
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/cache-one-chunk.Rmd", rmd)
+  html <- render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  html_lines <- readLines(html)
+  expect_true(sum(stringr::str_detect(html_lines, "<strong>Warning:</strong>")) == 1)
+
+  # If cache=TRUE is set globally, a warning should be generated for each chunk
+  # that does not have autodep=TRUE.
+  #
+  # Expect 3 b/c 1 of 3 chunks has autodep=TRUE, plus added sessioninfo chunk
+  # (3 - 1 + 1)
+  rmd2 <- file.path(tmp_dir, "file2.Rmd")
+  fs::file_copy("files/test-wflow_html/cache-all-chunks.Rmd", rmd2)
+  html2 <- render(rmd2, quiet = TRUE)
+  expect_true(fs::file_exists(html2))
+  html_lines2 <- readLines(html2)
+  expect_true(sum(stringr::str_detect(html_lines2, "<strong>Warning:</strong>")) == 3)
+
+})
 
 # Test add_bibliography --------------------------------------------------------
 

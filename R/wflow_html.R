@@ -215,10 +215,31 @@ wflow_html <- function(...) {
                  collapse = "\n"))
   }
 
+  # This knit hook warns if a chunk has cache=TRUE, autodep=FALSE, depends=NULL
+  cache_hook <- function(x, options) {
+
+    if (options$cache && is.null(options$dependson) && !options$autodep) {
+      x <- glue::glue("{x}
+                      <div class=\"alert alert-warning\">
+                      <p><strong>Warning:</strong>
+                      The above code chunk cached its results, but it won't be
+                      re-run if previous chunks it depends on are updated. If
+                      you need to use cacheing, it is highly recommended to
+                      also set <code>autodep=TRUE</code> and/or a customize
+                      the option <code>dependson</code>. See the <a
+                      href=\"https://yihui.name/knitr/options/#cache\" >knitr
+                      cache options</a> for more details.
+                      </p>
+                      </div>")
+    }
+    return(x)
+  }
+
   knitr <- rmarkdown::knitr_options(opts_chunk = list(comment = NA,
                                                       fig.align = "center",
                                                       tidy = FALSE),
-                                    knit_hooks = list(plot = plot_hook),
+                                    knit_hooks = list(plot = plot_hook,
+                                                      chunk = cache_hook),
                                     opts_hooks = list(fig.path = hook_fig_path))
 
   # pre_knit function ----------------------------------------------------------

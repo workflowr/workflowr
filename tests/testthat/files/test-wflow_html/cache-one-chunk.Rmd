@@ -1,0 +1,19 @@
+---
+title: "Untitled"
+output: workflowr::wflow_html
+---
+
+In this example, a warning will be inserted only for the first chunk since it
+has `cache=TRUE` and `autodep=FALSE`.
+
+```{r plot-one, cache=TRUE}
+plot(1:10)
+```
+
+```{r plot-two, cache=TRUE, autodep=TRUE}
+plot(1:10)
+```
+
+```{r plot-three}
+plot(1:10)
+```

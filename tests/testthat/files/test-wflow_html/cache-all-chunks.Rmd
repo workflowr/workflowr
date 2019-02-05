@@ -1,0 +1,24 @@
+---
+title: "Untitled"
+output: workflowr::wflow_html
+---
+
+In this example, `cache=TRUE` is set globally, which should result in a warning
+for each chunk expect the third which has `autodep=TRUE`. The inserted
+sessioninfo chunk will also get a warning (thus 3 total).
+
+```{r setup}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+```{r plot-one}
+plot(1:10)
+```
+
+```{r plot-two}
+plot(1:10)
+```
+
+```{r plot-three, autodep=TRUE}
+plot(1:10)
+```

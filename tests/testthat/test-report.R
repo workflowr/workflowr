@@ -1,5 +1,9 @@
 context("report")
 
+# Setup ------------------------------------------------------------------------
+
+source("setup.R")
+
 # Test get_versions and get_versions_fig ---------------------------------------
 
 test_that("get_versions and get_versions_fig insert GitHub URL if available", {
@@ -334,6 +338,51 @@ test_that("check_rmd reports an unstaged Rmd file", {
 
 unlink(tmp_dir, recursive = TRUE)
 rm(r, rmd, s, tmp_dir)
+
+# Test create_report -----------------------------------------------------------
+
+test_that("create_report reports knit directory", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  input <- file.path(path, "analysis/index.Rmd")
+  output_dir <- file.path(path, "docs")
+  has_code <- TRUE
+  opts <- list(seed = 1, github = NA, sessioninfo = "sessionInfo()",
+               fig_path_ext = FALSE)
+
+  # In the project root
+  opts$knit_root_dir <- path
+  report <- create_report(input, output_dir, has_code, opts)
+  expected <- glue::glue("<code>{fs::path_file(path)}/</code>")
+  expect_true(stringr::str_detect(report, expected))
+
+  # In analysis
+  opts$knit_root_dir <- file.path(path, "analysis")
+  report <- create_report(input, output_dir, has_code, opts)
+  expected <- glue::glue("<code>{file.path(fs::path_file(path), \"analysis\")}/</code>")
+  expect_true(stringr::str_detect(report, expected))
+
+  # In code
+  opts$knit_root_dir <- file.path(path, "code")
+  report <- create_report(input, output_dir, has_code, opts)
+  expected <- glue::glue("<code>{file.path(fs::path_file(path), \"code\")}/</code>")
+  expect_true(stringr::str_detect(report, expected))
+
+  # In home directory
+  opts$knit_root_dir <- "~"
+  report <- create_report(input, output_dir, has_code, opts)
+  expected <- glue::glue("<code>~/</code>")
+  expect_true(stringr::str_detect(report, expected))
+
+  # In temp directory
+  opts$knit_root_dir <- fs::file_temp()
+  report <- create_report(input, output_dir, has_code, opts)
+  expected <- glue::glue("<code>{opts$knit_root_dir}/</code>")
+  expect_true(stringr::str_detect(report, expected))
+})
 
 # Test detect_code -------------------------------------------------------------
 

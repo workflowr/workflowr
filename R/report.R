@@ -48,14 +48,23 @@ create_report <- function(input, output_dir, has_code, opts) {
   </div>
   ')
 
-  # Format `knit_root_dir` to be a path relative to the directory that contains
-  # the workflowr project directory. Also add a trailing slash.
-  p <- wflow_paths(error_git = FALSE, project = input_dir)
+  # Format `knit_root_dir` for display in report.
   knit_root_print <- opts$knit_root_dir
-  if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
-    knit_root_print <- fs::path_rel(knit_root_print,
-                                    start = dirname(absolute(p$root)))
+  # If it is part of a workflowr project, construct a path relative to the
+  # directory that contains the workflowr project directory.
+  p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
+  if (class(p) != "try-error") {
+    if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
+      knit_root_print <- fs::path_rel(knit_root_print,
+                                      start = dirname(absolute(p$root)))
+    }
+  } else {
+    # Otherwise, just replace the home directory with ~
+    knit_root_print <- stringr::str_replace(knit_root_print,
+                                            fs::path_home(),
+                                            "~")
   }
+  # Add trailing slash
   if (!stringr::str_detect(knit_root_print, "/$")) {
     knit_root_print <- paste0(knit_root_print, "/")
   }

@@ -208,6 +208,66 @@ test_that("check_environment reports non-empty environment", {
   expect_true(grepl("long_variable_name", observed$details))
 })
 
+# Test check_cache -------------------------------------------------------------
+
+test_that("check_cache passes if no cached chunks present", {
+  x <- fs::file_temp()
+  fs::dir_create(x)
+  on.exit(fs::dir_delete(x))
+
+  rmd <- file.path(x, "test.Rmd")
+  fs::file_create(rmd)
+
+  observed <- workflowr:::check_cache(rmd)
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>Cache:</strong> none")
+})
+
+test_that("check_cache passes if empty cache directory", {
+  x <- fs::file_temp()
+  fs::dir_create(x)
+  on.exit(fs::dir_delete(x))
+
+  rmd <- file.path(x, "test.Rmd")
+  fs::file_create(rmd)
+
+  rmd_cache <- file.path(x, "test_cache")
+  fs::dir_create(rmd_cache)
+
+  observed <- workflowr:::check_cache(rmd)
+  expect_true(observed$pass)
+
+  rmd_cache_html <- file.path(rmd_cache, "html")
+  fs::dir_create(rmd_cache_html)
+
+  observed <- workflowr:::check_cache(rmd)
+  expect_true(observed$pass)
+})
+
+test_that("check_cache fails if cached chunks present", {
+  x <- fs::file_temp()
+  fs::dir_create(x)
+  on.exit(fs::dir_delete(x))
+
+  rmd <- file.path(x, "test.Rmd")
+  fs::file_create(rmd)
+
+  rmd_cache_html <- file.path(x, "test_cache/html")
+  fs::dir_create(rmd_cache_html, recursive = TRUE)
+
+  cached_chunk_1 <- file.path(rmd_cache_html, "chunk-name_29098n0b4h849.RData")
+  fs::file_create(cached_chunk_1)
+  cached_chunk_2 <- file.path(rmd_cache_html, "a_chunk_29098n0b4h849.RData")
+  fs::file_create(cached_chunk_2)
+
+  observed <- workflowr:::check_cache(rmd)
+  expect_false(observed$pass)
+  expect_identical(observed$summary, "<strong>Cache:</strong> detected")
+  expect_true(stringr::str_detect(observed$details, "<li>chunk-name</li>"))
+  expect_true(stringr::str_detect(observed$details, "<li>a_chunk</li>"))
+  expect_true(stringr::str_detect(observed$details, "<code>test_cache</code>"))
+})
+
 # Test check_rmd ---------------------------------------------------------------
 
 tmp_dir <- tempfile("test-check_rmd")

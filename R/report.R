@@ -30,6 +30,9 @@ create_report <- function(input, output_dir, has_code, opts) {
 
     # Check sessioninfo
     checks$result_sessioninfo <- check_sessioninfo(input, opts$sessioninfo)
+
+    # Check caching
+    checks$cache <- check_cache(input)
   }
 
   # Check version control
@@ -541,6 +544,42 @@ build the HTML.
 
   return(list(pass = pass, summary = summary, details = details))
 }
+
+check_cache <- function(input) {
+  # Check for cached chunks
+  input_cache <- fs::path_ext_remove(input)
+  input_cache <- glue::glue("{input_cache}_cache")
+  cached_chunks_files <- list.files(path = file.path(input_cache, "html"),
+                                    pattern = "RData$")
+
+  if (length(cached_chunks_files) == 0) {
+    pass <- TRUE
+    summary <- "<strong>Cache:</strong> none"
+    details <-
+      "
+Nice! There were no cached chunks for this analysis, so you can be confident
+that you successfully produced the results during this run.
+"
+  } else {
+    pass <- FALSE
+    summary <- "<strong>Cache:</strong> detected"
+
+    cached_chunks <- fs::path_file(cached_chunks_files)
+    cached_chunks <- stringr::str_replace(cached_chunks, "_[a-z0-9]+.RData$", "")
+    cached_chunks <- unique(cached_chunks)
+    cached_chunks <- paste0("<li>", cached_chunks, "</li>", collapse = "")
+
+    details <- glue::glue("
+The following chunks had caches available: <ul>{cached_chunks}</ul>
+To ensure reproducibility of the results, delete the cache directory
+<code>{fs::path_rel(input_cache, start = fs::path_dir(input))}</code>
+and re-run the analysis.
+")
+  }
+
+  return(list(pass = pass, summary = summary, details = details))
+}
+
 
 add_git_path <- function(x, r) {
   if (!is.null(x)) {

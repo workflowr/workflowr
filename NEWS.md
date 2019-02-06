@@ -15,7 +15,12 @@ Git host, e.g. `domain = "gitlab.com"`
 [git2r Issue 375][git2r-375])
 * `wflow_build()` reports the current working directory. If the knit directory
 (where the code is executed) is different than the working directory,
-`wflow_build()` reports where the code in each file is being executed.
+`wflow_build()` reports where the code in each file is being executed
+* A warning is inserted directly in the HTML file after any code chunk that is
+cached (`cache=TRUE`) but is not set to re-run if its upstream chunks are
+changed (`autodep=FALSE`)
+* Include a check in the reproducibility report that reports any existing cached
+chunks
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375

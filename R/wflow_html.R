@@ -224,7 +224,7 @@ wflow_html <- function(...) {
                       <p><strong>Warning:</strong>
                       The above code chunk cached its results, but it won't be
                       re-run if previous chunks it depends on are updated. If
-                      you need to use cacheing, it is highly recommended to
+                      you need to use caching, it is highly recommended to
                       also set <code>autodep=TRUE</code> and/or a customize
                       the option <code>dependson</code>. See the <a
                       href=\"https://yihui.name/knitr/options/#cache\" >knitr

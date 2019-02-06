@@ -21,6 +21,8 @@ cached (`cache=TRUE`) but is not set to re-run if its upstream chunks are
 changed (`autodep=FALSE`)
 * Include a check in the reproducibility report that reports any existing cached
 chunks
+* Report the knit directory (where the code was executed) in the workflowr
+report
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375

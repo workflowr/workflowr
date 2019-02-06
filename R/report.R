@@ -48,6 +48,18 @@ create_report <- function(input, output_dir, has_code, opts) {
   </div>
   ')
 
+  # Format `knit_root_dir` to be a path relative to the directory that contains
+  # the workflowr project directory. Also add a trailing slash.
+  p <- wflow_paths(error_git = FALSE, project = input_dir)
+  knit_root_print <- opts$knit_root_dir
+  if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
+    knit_root_print <- fs::path_rel(knit_root_print,
+                                    start = dirname(absolute(p$root)))
+  }
+  if (!stringr::str_detect(knit_root_print, "/$")) {
+    knit_root_print <- paste0(knit_root_print, "/")
+  }
+
   # Version history ------------------------------------------------------------
 
   if (uses_git) {
@@ -97,6 +109,12 @@ create_report <- function(input, output_dir, has_code, opts) {
     {sum(checks_passed)}
     <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
     {sum(!checks_passed)}
+    </p>
+    <p><strong>Knit directory:</strong>
+    <code>{knit_root_print}</code>
+    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+    title="This is the local directory in which the code in this file was executed.">
+    </span>
     </p>
     <p>
     This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>

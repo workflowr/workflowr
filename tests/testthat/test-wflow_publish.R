@@ -291,6 +291,23 @@ test_that("wflow_publish restores previous docs/ if build fails", {
   expect_identical(mtime_post, mtime_pre)
 })
 
+test_that("wflow_publish does *not* backup docs/ if it doesn't exist", {
+
+  skip_on_cran()
+
+  docs <- file.path(site_dir, "docs")
+  docs_tmp <- fs::file_temp("docs-")
+  on.exit(file.rename(docs_tmp, docs))
+  file.rename(docs, docs_tmp)
+  # It should no longer send a Warning about the directory not existing
+  expect_silent(suppressMessages(
+    published <- wflow_publish(rmd, view = FALSE, project = site_dir)
+  ))
+  # Remove the docs/ that was just created so that it can be restored on exit
+  unlink(docs, recursive = TRUE, force = TRUE)
+})
+
+
 test_that("wflow_publish throws an error if user.name and user.email are not set", {
 
   skip_on_cran()

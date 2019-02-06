@@ -271,10 +271,10 @@ test_that("wflow_paths throws error if output_dir field not set in _site.yml", {
   expect_error(wflow_paths(project = site_dir), "output_dir")
 })
 
-test_that("wflow_paths throws warning if docs/ directory is missing", {
+test_that("wflow_paths does *not* throw warning if docs/ directory is missing", {
   docs <- file.path(site_dir, "docs")
-  docs_tmp <- file.path(tempdir(), "docs")
+  docs_tmp <- fs::file_temp("docs-")
   on.exit(file.rename(docs_tmp, docs))
   file.rename(docs, docs_tmp)
-  expect_warning(wflow_paths(project = site_dir), "Run wflow_build()")
+  expect_silent(wflow_paths(project = site_dir))
 })

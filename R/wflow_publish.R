@@ -204,17 +204,19 @@ wflow_publish <- function(
   if (length(files_to_build) > 0) {
     # Create a backup copy of the docs/ directory. If either step 2 (build the
     # HTML) or step 3 (commit the HTML) fails, delete docs/ and restore backup
-    docs_backup <- tempfile(pattern = sprintf("docs-backup-%s-",
-                                              format(Sys.time(),
-                                                     "%Y-%m-%d-%Hh-%Mm-%Ss")))
-    fs::dir_create(docs_backup)
-    docs_backup <- absolute(docs_backup)
-    file.copy(from = file.path(s1$docs, "."), to = docs_backup,
-              recursive = TRUE, copy.date = TRUE)
-    on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
-    on.exit(fs::dir_create(s1$docs), add = TRUE)
-    on.exit(file.copy(from = file.path(docs_backup, "."), to = s1$docs,
-                      recursive = TRUE, copy.date = TRUE), add = TRUE)
+    if (fs::dir_exists(s1$docs) && !dry_run) {
+      docs_backup <- tempfile(pattern = sprintf("docs-backup-%s-",
+                                                format(Sys.time(),
+                                                       "%Y-%m-%d-%Hh-%Mm-%Ss")))
+      fs::dir_create(docs_backup)
+      docs_backup <- absolute(docs_backup)
+      file.copy(from = file.path(s1$docs, "."), to = docs_backup,
+                recursive = TRUE, copy.date = TRUE)
+      on.exit(unlink(s1$docs, recursive = TRUE), add = TRUE)
+      on.exit(fs::dir_create(s1$docs), add = TRUE)
+      on.exit(file.copy(from = file.path(docs_backup, "."), to = s1$docs,
+                        recursive = TRUE, copy.date = TRUE), add = TRUE)
+    }
 
     step2 <- wflow_build(files = files_to_build, make = FALSE,
                          update = update, republish = republish,

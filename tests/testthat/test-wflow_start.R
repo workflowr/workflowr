@@ -183,9 +183,8 @@ test_that("wflow_start does not overwrite an existing .git directory and does no
   git2r::add(r, fake_file)
   git2r::commit(r, message = "The first commit")
   fake_untracked <- file.path(site_dir, "untracked.txt")
-  expect_warning(wflow_start(site_dir, existing = TRUE,
-                             change_wd = FALSE),
-                 "A .git directory already exists in")
+  expect_silent(wflow_start(site_dir, existing = TRUE,
+                            change_wd = FALSE))
   log <- git2r::commits(r)
   expect_true(length(log) == 2)
   expect_false(fake_untracked %in%
@@ -552,8 +551,7 @@ test_that("print.wflow_start works with existing Git repo", {
   expect_identical(p_dry_run[6], "- Files will be commited with Git")
 
   # Actual run
-  actual_run <- expect_warning(wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE),
-                               paste("A .git directory already exists in", tmp_dir))
+  actual_run <- expect_silent(wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE))
   p_actual_run <- utils::capture.output(actual_run)
   expect_identical(p_actual_run[1], "wflow_start:")
   expect_identical(p_actual_run[2],

@@ -61,9 +61,6 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
               variable output_dir in the file _site.yml"),
          call. = FALSE)
   o$docs <- absolute(file.path(o$analysis, output_dir))
-  if (!fs::dir_exists(o$docs)) {
-    warning("Unable to locate docs directory. Run wflow_build() to create it.")
-  }
 
   # Git repository
   r <- try(git2r::repository(o$root, discover = TRUE), silent = TRUE)

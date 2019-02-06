@@ -342,9 +342,7 @@ wflow_start <- function(directory,
 
   # Configure Git repository
   if (git && !dry_run) {
-    if (git2r::in_repository(directory)) {
-      warning("A .git directory already exists in ", directory)
-    } else {
+    if (!git2r::in_repository(directory)) {
       git2r::init(directory)
     }
     repo <- git2r::repository(directory)

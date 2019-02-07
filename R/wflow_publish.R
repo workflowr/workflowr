@@ -70,6 +70,7 @@ wflow_publish <- function(
   update = FALSE,
   republish = FALSE,
   view = interactive(),
+  delete_cache = FALSE,
   seed = 12345,
   verbose = FALSE,
   # general
@@ -116,6 +117,9 @@ wflow_publish <- function(
 
   if (!(is.logical(view) && length(view) == 1))
     stop("view must be a one-element logical vector")
+
+  if (!(is.logical(delete_cache) && length(delete_cache) == 1))
+    stop("delete_cache must be a one-element logical vector")
 
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
@@ -220,7 +224,8 @@ wflow_publish <- function(
 
     step2 <- wflow_build(files = files_to_build, make = FALSE,
                          update = update, republish = republish,
-                         view = view, clean_fig_files = TRUE, seed = seed,
+                         view = view, clean_fig_files = TRUE,
+                         delete_cache = delete_cache, seed = seed,
                          local = FALSE, verbose = verbose,
                          dry_run = dry_run, project = project)
     s2 <- wflow_status(project = project)

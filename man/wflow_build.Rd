@@ -6,8 +6,8 @@
 \usage{
 wflow_build(files = NULL, make = is.null(files), update = FALSE,
   republish = FALSE, view = interactive(), clean_fig_files = FALSE,
-  seed = 12345, log_dir = NULL, verbose = FALSE, local = FALSE,
-  dry_run = FALSE, project = ".")
+  delete_cache = FALSE, seed = 12345, log_dir = NULL,
+  verbose = FALSE, local = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in
@@ -46,6 +46,9 @@ and their names. However, if you are caching chunks during code
 development, this could cause figures to disappear. Note that
 \code{\link{wflow_publish}} uses \code{clean_fig_files = TRUE} to ensure
 the results can be reproduced.}
+
+\item{delete_cache}{logical (default: FALSE). Delete the cache directory (if
+it exists) for each R Markdown file prior to building it.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
 file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
@@ -91,6 +94,8 @@ An object of class \code{wflow_build}, which is a list with the
    \item \bold{view}: The input argument \code{view}
 
    \item \bold{clean_fig_files}: The input argument \code{clean_fig_files}
+
+   \item \bold{delete_cache}: The input argument \code{delete_cache}
 
    \item \bold{seed}: The input argument \code{seed}
 

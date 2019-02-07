@@ -65,6 +65,8 @@
 #'   development, this could cause figures to disappear. Note that
 #'   \code{\link{wflow_publish}} uses \code{clean_fig_files = TRUE} to ensure
 #'   the results can be reproduced.
+#' @param delete_cache logical (default: FALSE). Delete the cache directory (if
+#'   it exists) for each R Markdown file prior to building it.
 #' @param seed numeric (default: 12345). The seed to set before building each
 #'   file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
 #'   here has no effect if you are using \code{\link{wflow_html}} as the output
@@ -102,6 +104,8 @@
 #'    \item \bold{view}: The input argument \code{view}
 #'
 #'    \item \bold{clean_fig_files}: The input argument \code{clean_fig_files}
+#'
+#'    \item \bold{delete_cache}: The input argument \code{delete_cache}
 #'
 #'    \item \bold{seed}: The input argument \code{seed}
 #'
@@ -142,7 +146,7 @@
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
                         update = FALSE, republish = FALSE, view = interactive(),
-                        clean_fig_files = FALSE,
+                        clean_fig_files = FALSE, delete_cache = FALSE,
                         seed = 12345, log_dir = NULL, verbose = FALSE,
                         local = FALSE, dry_run = FALSE, project = ".") {
 
@@ -179,6 +183,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!(is.logical(clean_fig_files) && length(clean_fig_files) == 1))
     stop("clean_fig_files must be a one-element logical vector")
+
+  if (!(is.logical(delete_cache) && length(delete_cache) == 1))
+    stop("delete_cache must be a one-element logical vector")
 
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
@@ -277,6 +284,12 @@ wflow_build <- function(files = NULL, make = is.null(files),
         figs_docs <- file.path(p$docs, path)
         unlink(figs_docs, recursive = TRUE)
       }
+      # Delete the cache directory
+      if (delete_cache) {
+        dir_cache <- fs::path_ext_remove(f)
+        dir_cache <- glue::glue("{dir_cache}_cache")
+        if (fs::dir_exists(dir_cache)) fs::dir_delete(dir_cache)
+      }
       if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)
       } else {
@@ -312,7 +325,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   o <- list(files = files, make = make,
             update = update, republish = republish, view = view,
-            clean_fig_files = clean_fig_files,
+            clean_fig_files = clean_fig_files, delete_cache = delete_cache,
             seed = seed, log_dir = log_dir, verbose = verbose,
             local = local, dry_run = dry_run,
             built = files_to_build,
@@ -330,6 +343,7 @@ print.wflow_build <- function(x, ...) {
   if (x$update) cat(" update: TRUE")
   if (x$republish) cat(" republish: TRUE")
   if (x$clean_fig_files) cat(" clean_fig_files: TRUE")
+  if (x$delete_cache) cat(" delete_cache: TRUE")
   cat("\n\n")
 
   if (length(x$built) == 0) {

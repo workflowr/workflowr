@@ -6,8 +6,8 @@
 \usage{
 wflow_publish(files = NULL, message = NULL, all = FALSE,
   force = FALSE, update = FALSE, republish = FALSE,
-  view = interactive(), seed = 12345, verbose = FALSE,
-  dry_run = FALSE, project = ".")
+  view = interactive(), delete_cache = FALSE, seed = 12345,
+  verbose = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). R Markdown files and other files to
@@ -39,6 +39,9 @@ setting in \code{_site.yml}.}
 with \code{\link{wflow_view}} after building files. If only one file is
 built, it is opened. If more than one file is built, the main index page is
 opened. Not applicable if no files are built or if \code{dry_run = TRUE}.}
+
+\item{delete_cache}{logical (default: FALSE). Delete the cache directory (if
+it exists) for each R Markdown file prior to building it.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
 file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set

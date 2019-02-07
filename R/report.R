@@ -600,7 +600,9 @@ that you successfully produced the results during this run.
 The following chunks had caches available: <ul>{cached_chunks}</ul>
 To ensure reproducibility of the results, delete the cache directory
 <code>{fs::path_rel(input_cache, start = fs::path_dir(input))}</code>
-and re-run the analysis.
+and re-run the analysis. To have workflowr automatically delete the cache
+directory prior to building the file, set <code>delete_cache = TRUE</code>
+when running <code>wflow_build()</code> or <code>wflow_publish()</code>.
 ")
   }
 

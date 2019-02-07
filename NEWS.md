@@ -29,6 +29,10 @@ for iterative development when plots from cached chunks may not be regenerated
 during a build. However, `clean_fig_files` is fixed to `TRUE` for
 `wflow_publish()` to ensure that the final results are produced during the
 build (@lazappi, #113).
+* Add argument `delete_cache` to `wflow_build()`/`wflow_publish()`. The defult
+is `FALSE`, but if set to `TRUE` it will delete the cache directory prior to
+building each R Markdown file. This helps ensure reproducibility of the
+published results.
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375

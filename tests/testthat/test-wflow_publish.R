@@ -162,11 +162,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   expect_false(length(current_status$staged) > 0)
   expect_false(length(current_status$unstaged) > 0)
   # Cleanup
-  fs::file_delete(file_w_figs)
-  unlink(file.path(s$analysis, "figure", basename(file_w_figs)),
-         recursive = TRUE, force = TRUE)
-  unlink(file.path(s$docs, "figure", basename(file_w_figs)),
-         recursive = TRUE, force = TRUE)
+  wflow_remove(file_w_figs, project = site_dir)
 })
 
 # This tests the edge case where a file had one or more figures but then gets
@@ -203,7 +199,40 @@ test_that("wflow_publish removes unused figure files even if directory no longer
   expect_false(length(current_status$staged) > 0)
   expect_false(length(current_status$unstaged) > 0)
   # Cleanup
-  fs::file_delete(file_w_figs)
+  wflow_remove(file_w_figs, project = site_dir)
+})
+
+test_that("wflow_publish deletes cache when delete_cache = TRUE", {
+
+  skip_on_cran()
+
+  # Build a file that has cached chunks
+  file_w_cache <- file.path(s$analysis, "cache.Rmd")
+  fs::file_copy("files/test-wflow_html/cache-all-chunks.Rmd", file_w_cache)
+  publish_v01 <- wflow_publish(file_w_cache, view = FALSE, project = site_dir)
+  dir_cache <- fs::path_ext_remove(file_w_cache)
+  dir_cache <- glue::glue("{dir_cache}_cache")
+  expect_true(fs::dir_exists(dir_cache))
+
+  # By default, cache directory is not affected
+  dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
+  publish_v02 <- wflow_publish(file_w_cache, view = FALSE, project = site_dir)
+  expect_false(publish_v02$step2$delete_cache)
+  expect_true(fs::dir_exists(dir_cache))
+  dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time
+  expect_equal(dir_cache_mod_post, dir_cache_mod_pre)
+
+  # delete_cache deletes cache directory prior to building (it gets re-created)
+  dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
+  publish_v03 <- wflow_publish(file_w_cache, view = FALSE, delete_cache = TRUE,
+                               project = site_dir)
+  expect_true(publish_v03$step2$delete_cache)
+  expect_true(fs::dir_exists(dir_cache))
+  dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time
+  expect_true(dir_cache_mod_post > dir_cache_mod_pre)
+
+  # Cleanup
+  wflow_remove(file_w_cache, project = site_dir)
 })
 
 test_that("wflow_publish commits CSS/JavaScript files", {

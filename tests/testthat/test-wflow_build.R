@@ -267,9 +267,7 @@ test_that("wflow_build removes unused figure files if clean_fig_files = TRUE", {
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v02)))
   # Cleanup
-  fs::file_delete(file_w_figs)
-  unlink(file.path(s$analysis, "figure", basename(file_w_figs)), recursive = TRUE)
-  unlink(file.path(s$docs, "figure", basename(file_w_figs)), recursive = TRUE)
+  wflow_remove(file_w_figs, project = site_dir)
 })
 
 test_that("wflow_build does not remove unused figure files if clean_fig_files = FALSE", {
@@ -303,9 +301,40 @@ test_that("wflow_build does not remove unused figure files if clean_fig_files = 
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v02)))
   # Cleanup
-  fs::file_delete(file_w_figs)
-  unlink(file.path(s$analysis, "figure", basename(file_w_figs)), recursive = TRUE)
-  unlink(file.path(s$docs, "figure", basename(file_w_figs)), recursive = TRUE)
+  wflow_remove(file_w_figs, project = site_dir)
+})
+
+test_that("wflow_build deletes cache when delete_cache = TRUE", {
+
+  skip_on_cran()
+
+  # Build a file that has cached chunks
+  file_w_cache <- file.path(s$analysis, "cache.Rmd")
+  fs::file_copy("files/test-wflow_html/cache-all-chunks.Rmd", file_w_cache)
+  build_v01 <- wflow_build(file_w_cache, view = FALSE, project = site_dir)
+  dir_cache <- fs::path_ext_remove(file_w_cache)
+  dir_cache <- glue::glue("{dir_cache}_cache")
+  expect_true(fs::dir_exists(dir_cache))
+
+  # By default, cache directory is not affected
+  dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
+  build_v02 <- wflow_build(file_w_cache, view = FALSE, project = site_dir)
+  expect_false(build_v02$delete_cache)
+  expect_true(fs::dir_exists(dir_cache))
+  dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time
+  expect_equal(dir_cache_mod_post, dir_cache_mod_pre)
+
+  # delete_cache deletes cache directory prior to building (it gets re-created)
+  dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
+  build_v03 <- wflow_build(file_w_cache, view = FALSE, delete_cache = TRUE,
+                           project = site_dir)
+  expect_true(build_v03$delete_cache)
+  expect_true(fs::dir_exists(dir_cache))
+  dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time
+  expect_true(dir_cache_mod_post > dir_cache_mod_pre)
+
+  # Cleanup
+  wflow_remove(file_w_cache, project = site_dir)
 })
 
 test_that("wflow_build can display build log directly in R console with verbose", {

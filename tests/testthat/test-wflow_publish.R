@@ -125,10 +125,6 @@ test_that("wflow_publish can be used to commit non-Rmd files instead of wflow_gi
   expect_true(is.null(o$step3))
 })
 
-# wflow_publish no longer needs to remove unused figures in analysis/ because
-# wflow_site() moves them. Thus the lines confirming their original existence
-# are commented out below. However, it still needs to remove the figure files in
-# docs/ and commit the changes, which is tested below.
 test_that("wflow_publish automatically removes unused figure files", {
 
   skip_on_cran()
@@ -139,7 +135,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   publish_v01 <- wflow_publish(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  # expect_true(all(fs::file_exists(figs_analysis_v01))) # see wflow_site()
+  expect_false(all(fs::file_exists(figs_analysis_v01))) # moved by wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v01)))
@@ -152,7 +148,7 @@ test_that("wflow_publish automatically removes unused figure files", {
   expect_false(all(fs::file_exists(figs_docs_v01)))
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("named1-1.png", "named2-1.png", "named3-1.png"))
-  # expect_true(all(fs::file_exists(figs_analysis_v02))) # see wflow_site()
+  expect_false(all(fs::file_exists(figs_analysis_v02))) # moved by wflow_site()
   figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v02)))

@@ -5,9 +5,9 @@
 \title{Build the site}
 \usage{
 wflow_build(files = NULL, make = is.null(files), update = FALSE,
-  republish = FALSE, view = interactive(), seed = 12345,
-  log_dir = NULL, verbose = FALSE, local = FALSE, dry_run = FALSE,
-  project = ".")
+  republish = FALSE, view = interactive(), clean_fig_files = FALSE,
+  seed = 12345, log_dir = NULL, verbose = FALSE, local = FALSE,
+  dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in
@@ -37,6 +37,15 @@ setting in \code{_site.yml}.}
 with \code{\link{wflow_view}} after building files. If only one file is
 built, it is opened. If more than one file is built, the main index page is
 opened. Not applicable if no files are built or if \code{dry_run = TRUE}.}
+
+\item{clean_fig_files}{logical (default: FALSE). Delete existing figure files
+for each R Markdown file prior to building it. This ensures that only
+relevant figure files are saved. As you develop an analysis, it is easy to
+generate lots of unused plots due to changes in the number of code chunks
+and their names. However, if you are caching chunks during code
+development, this could cause figures to disappear. Note that
+\code{\link{wflow_publish}} uses \code{clean_fig_files = TRUE} to ensure
+the results can be reproduced.}
 
 \item{seed}{numeric (default: 12345). The seed to set before building each
 file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
@@ -80,6 +89,8 @@ An object of class \code{wflow_build}, which is a list with the
    \item \bold{republish}: The input argument \code{republish}
 
    \item \bold{view}: The input argument \code{view}
+
+   \item \bold{clean_fig_files}: The input argument \code{clean_fig_files}
 
    \item \bold{seed}: The input argument \code{seed}
 

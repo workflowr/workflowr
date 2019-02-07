@@ -238,12 +238,41 @@ test_that("wflow_build accepts custom directory to save log files", {
   expect_identical(expected, actual$log_dir)
 })
 
-# This test is outdated now that the site generator, wflow_site, moves the
-# figure files to docs/. Thus the tests to make sure the figure files in
-# analysis/ existed in the first place are commented out. However, it is still
-# important that these figure files are removed, which this still tests.
-# Furthermore it tests that unused files are removed from docs/.
-test_that("wflow_build automatically removes unused figure files", {
+test_that("wflow_build removes unused figure files if clean_fig_files = TRUE", {
+
+  skip_on_cran()
+
+  # Build a file that has 2 plots from 2 unnamed chunks
+  file_w_figs <- file.path(s$analysis, "fig.Rmd")
+  fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
+  build_v01 <- wflow_build(file_w_figs, view = FALSE, clean_fig_files = TRUE,
+                           project = site_dir)
+  figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
+                                 c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
+  expect_false(all(fs::file_exists(figs_analysis_v01))) # moved by wflow_site()
+  figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
+                             c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
+  expect_true(all(fs::file_exists(figs_docs_v01)))
+  # Update the file such that the previous 2 chunks are now named, plus add a
+  # 3rd plot chunk
+  fs::file_copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
+  build_v02 <- wflow_build(file_w_figs, view = FALSE, clean_fig_files = TRUE,
+                           project = site_dir)
+  expect_false(all(fs::file_exists(figs_analysis_v01)))
+  expect_false(all(fs::file_exists(figs_docs_v01)))
+  figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
+                                 c("named1-1.png", "named2-1.png", "named3-1.png"))
+  expect_false(all(fs::file_exists(figs_analysis_v02))) # moved by wflow_site()
+  figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
+                             c("named1-1.png", "named2-1.png", "named3-1.png"))
+  expect_true(all(fs::file_exists(figs_docs_v02)))
+  # Cleanup
+  fs::file_delete(file_w_figs)
+  unlink(file.path(s$analysis, "figure", basename(file_w_figs)), recursive = TRUE)
+  unlink(file.path(s$docs, "figure", basename(file_w_figs)), recursive = TRUE)
+})
+
+test_that("wflow_build does not remove unused figure files if clean_fig_files = FALSE", {
 
   skip_on_cran()
 
@@ -253,7 +282,7 @@ test_that("wflow_build automatically removes unused figure files", {
   build_v01 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
   figs_analysis_v01 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
-  # expect_true(all(fs::file_exists(figs_analysis_v01))) # see wflow_site()
+  expect_false(all(fs::file_exists(figs_analysis_v01))) # moved by wflow_site()
   figs_docs_v01 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("unnamed-chunk-1-1.png", "unnamed-chunk-2-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v01)))
@@ -262,10 +291,14 @@ test_that("wflow_build automatically removes unused figure files", {
   fs::file_copy("files/test-wflow_build/figure-v02.Rmd", file_w_figs, overwrite = TRUE)
   build_v02 <- wflow_build(file_w_figs, view = FALSE, project = site_dir)
   expect_false(all(fs::file_exists(figs_analysis_v01)))
-  expect_false(all(fs::file_exists(figs_docs_v01)))
+
+  # This line is the critical difference from the previous test. The outdated
+  # figure files are still there since clean_fig_files = FALSE by default.
+  expect_true(all(fs::file_exists(figs_docs_v01)))
+
   figs_analysis_v02 <- file.path(s$analysis, "figure", basename(file_w_figs),
                                  c("named1-1.png", "named2-1.png", "named3-1.png"))
-  # expect_true(all(fs::file_exists(figs_analysis_v02))) # see wflow_site()
+  expect_false(all(fs::file_exists(figs_analysis_v02))) # moved by wflow_site()
   figs_docs_v02 <- file.path(s$docs, "figure", basename(file_w_figs),
                              c("named1-1.png", "named2-1.png", "named3-1.png"))
   expect_true(all(fs::file_exists(figs_docs_v02)))

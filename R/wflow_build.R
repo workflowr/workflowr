@@ -57,6 +57,14 @@
 #'   with \code{\link{wflow_view}} after building files. If only one file is
 #'   built, it is opened. If more than one file is built, the main index page is
 #'   opened. Not applicable if no files are built or if \code{dry_run = TRUE}.
+#' @param clean_fig_files logical (default: FALSE). Delete existing figure files
+#'   for each R Markdown file prior to building it. This ensures that only
+#'   relevant figure files are saved. As you develop an analysis, it is easy to
+#'   generate lots of unused plots due to changes in the number of code chunks
+#'   and their names. However, if you are caching chunks during code
+#'   development, this could cause figures to disappear. Note that
+#'   \code{\link{wflow_publish}} uses \code{clean_fig_files = TRUE} to ensure
+#'   the results can be reproduced.
 #' @param seed numeric (default: 12345). The seed to set before building each
 #'   file. Passed to \code{\link{set.seed}}. \bold{DEPRECATED:} The seed set
 #'   here has no effect if you are using \code{\link{wflow_html}} as the output
@@ -92,6 +100,8 @@
 #'    \item \bold{republish}: The input argument \code{republish}
 #'
 #'    \item \bold{view}: The input argument \code{view}
+#'
+#'    \item \bold{clean_fig_files}: The input argument \code{clean_fig_files}
 #'
 #'    \item \bold{seed}: The input argument \code{seed}
 #'
@@ -132,6 +142,7 @@
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
                         update = FALSE, republish = FALSE, view = interactive(),
+                        clean_fig_files = FALSE,
                         seed = 12345, log_dir = NULL, verbose = FALSE,
                         local = FALSE, dry_run = FALSE, project = ".") {
 
@@ -165,6 +176,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!(is.logical(view) && length(view) == 1))
     stop("view must be a one-element logical vector")
+
+  if (!(is.logical(clean_fig_files) && length(clean_fig_files) == 1))
+    stop("clean_fig_files must be a one-element logical vector")
 
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
@@ -256,11 +270,13 @@ wflow_build <- function(files = NULL, make = is.null(files),
         message("Building ", f)
       }
       # Remove figure files to prevent accumulating outdated files
-      path <- create_figure_path(f)
-      figs_analysis <- file.path(p$analysis, path)
-      unlink(figs_analysis, recursive = TRUE)
-      figs_docs <- file.path(p$docs, path)
-      unlink(figs_docs, recursive = TRUE)
+      if (clean_fig_files) {
+        path <- create_figure_path(f)
+        figs_analysis <- file.path(p$analysis, path)
+        unlink(figs_analysis, recursive = TRUE)
+        figs_docs <- file.path(p$docs, path)
+        unlink(figs_docs, recursive = TRUE)
+      }
       if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)
       } else {
@@ -296,6 +312,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   o <- list(files = files, make = make,
             update = update, republish = republish, view = view,
+            clean_fig_files = clean_fig_files,
             seed = seed, log_dir = log_dir, verbose = verbose,
             local = local, dry_run = dry_run,
             built = files_to_build,
@@ -312,6 +329,7 @@ print.wflow_build <- function(x, ...) {
   if (x$make) cat(" make: TRUE")
   if (x$update) cat(" update: TRUE")
   if (x$republish) cat(" republish: TRUE")
+  if (x$clean_fig_files) cat(" clean_fig_files: TRUE")
   cat("\n\n")
 
   if (length(x$built) == 0) {

@@ -23,6 +23,12 @@ changed (`autodep=FALSE`)
 chunks
 * Report the knit directory (where the code was executed) in the workflowr
 report
+* Add argument `clean_fig_files` to `wflow_build()`. The default for
+`wflow_build()` is `FALSE`, so that old figures are not removed. This is useful
+for iterative development when plots from cached chunks may not be regenerated
+during a build. However, `clean_fig_files` is fixed to `TRUE` for
+`wflow_publish()` to ensure that the final results are produced during the
+build (@lazappi, #113).
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375

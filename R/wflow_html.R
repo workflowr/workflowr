@@ -225,11 +225,14 @@ wflow_html <- function(...) {
                       The above code chunk cached its results, but it won't be
                       re-run if previous chunks it depends on are updated. If
                       you need to use caching, it is highly recommended to
-                      also set <code>autodep=TRUE</code> and/or a customize
-                      the option <code>dependson</code> (using either of these
-                      will remove this warning). See the <a
-                      href=\"https://yihui.name/knitr/options/#cache\" >knitr
-                      cache options</a> for more details.
+                      also set <code>knitr::opts_chunk$set(autodep =
+                      TRUE)</code> at the top of the file (in a chunk that is
+                      not cached). Alternatively, you can customize the option
+                      <code>dependson</code> for each individual chunk that is
+                      cached. Using either <code>autodep</code> or
+                      <code>dependson</code> will remove this warning. See the
+                      <a href=\"https://yihui.name/knitr/options/#cache\"
+                      >knitr cache options</a> for more details.
                       </p>
                       </div>")
     }

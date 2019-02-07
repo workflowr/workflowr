@@ -226,7 +226,8 @@ wflow_html <- function(...) {
                       re-run if previous chunks it depends on are updated. If
                       you need to use caching, it is highly recommended to
                       also set <code>autodep=TRUE</code> and/or a customize
-                      the option <code>dependson</code>. See the <a
+                      the option <code>dependson</code> (using either of these
+                      will remove this warning). See the <a
                       href=\"https://yihui.name/knitr/options/#cache\" >knitr
                       cache options</a> for more details.
                       </p>

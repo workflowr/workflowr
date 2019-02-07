@@ -5,8 +5,8 @@
 \title{Start a new workflowr project}
 \usage{
 wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
-  overwrite = FALSE, change_wd = TRUE, dry_run = FALSE,
-  user.name = NULL, user.email = NULL)
+  overwrite = FALSE, change_wd = TRUE, disable_remote = FALSE,
+  dry_run = FALSE, user.name = NULL, user.email = NULL)
 }
 \arguments{
 \item{directory}{character. The directory where the workflowr
@@ -47,6 +47,16 @@ overwritten or still contain the original content).}
 \item{change_wd}{logical (default: \code{TRUE}). Change the working
 directory to the \code{directory}.}
 
+\item{disable_remote}{logical (default: \code{FALSE}). Create a Git
+\href{https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks}{pre-push
+hook} that prevents pushing to a remote Git repository (i.e. using
+\code{\link{wflow_git_push}}). This is useful for extremely confidential
+projects that cannot be shared via an online Git hosting service (e.g.
+GitHub or GitLab). The hook is saved in the file
+\code{.git/hooks/pre-push}. If you change your mind and want to push the
+repository, you can delete that file. Note that this option is only
+available if \code{git = TRUE}.}
+
 \item{dry_run}{logical (default: \code{FALSE}). When \code{dry_run
 = TRUE}, the actions are previewed without executing them.}
 
@@ -83,6 +93,8 @@ An object of class \code{wflow_start}, which is a list with the
    \item{overwrite}{The input argument \code{overwrite}.}
 
    \item{change_wd}{The input argument \code{change_wd}.}
+
+   \item{disable_remote}{The input argument \code{disable_remote}.}
 
    \item{dry_run}{The input argument \code{dry_run}.}
 

@@ -186,6 +186,21 @@ footer is added to webpages before the MathJax javascript. -->
 '
 )
 
+extras <- list(
+  disable_remote = '
+#!/bin/bash
+
+# This hook prevents pushing to a remote repository, which is ideal for a
+# project containing confidential data. It was created by wflow_start() with the
+# argument disable_remote = TRUE. If you decide you want to be able to push this
+# repository, delete this file.
+
+echo "This is a confidential project. Do not push the files to a remote server"
+exit 1
+
+'
+)
+
 # wflow_use_gitlab() -----------------------------------------------------------
 
 gitlab <- list(`.gitlab-ci.yml` = '

@@ -388,3 +388,22 @@ test_that("status_to_df and df_to_status can handle empty status", {
   # Revert to git_status
   expect_identical(workflowr:::df_to_status(observed), input)
 })
+
+# Test file_is_executable ------------------------------------------------------
+
+test_that("file_executable returns FALSE for non-executable file", {
+  f <- fs::file_temp()
+  fs::file_create(f)
+  on.exit(fs::file_delete(f))
+
+  expect_false(workflowr:::file_is_executable(f))
+})
+
+test_that("file_executable returns TRUE for executable file", {
+  f <- fs::file_temp()
+  fs::file_create(f)
+  on.exit(fs::file_delete(f))
+  fs::file_chmod(f, "a+x")
+
+  expect_true(workflowr:::file_is_executable(f))
+})

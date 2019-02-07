@@ -270,7 +270,6 @@ test_that("wflow_start can handle relative paths to non-existent directories", {
   expect_true(fs::file_exists("../upstream/upstream.Rproj"))
 })
 
-
 test_that("wflow_start can handle deeply nested paths that need to be created", {
 
   # Create and move to a temp directory
@@ -403,6 +402,29 @@ test_that("wflow_start fails early if directory does not exist and `existing = T
                "Directory does not exist. Set existing = FALSE to create a new directory for the workflowr files.")
   expect_false(fs::dir_exists(site_dir))
 
+})
+
+
+test_that("wflow_start creates a pre-push hook when disable_remote = TRUE", {
+
+  # start project in a tempdir
+  site_dir <- tempfile("test-start-")
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE), add = TRUE)
+
+  wflow_start(site_dir, disable_remote = TRUE,
+              user.name = "Test Name", user.email = "test@email")
+  site_dir <- workflowr:::absolute(site_dir)
+
+  pre_push_file <- ".git/hooks/pre-push"
+  expect_true(fs::file_exists(pre_push_file))
+  expect_true(workflowr:::file_is_executable(pre_push_file))
+
+  # Confirm the pre-push hook stops execution
+  remote <- wflow_use_github("user", "repo")
+  expect_error(wflow_git_push(username = "username", password = "password"),
+               glue::glue("Execution stopped by {pre_push_file}"))
 })
 
 # Test print.wflow_start -------------------------------------------------------

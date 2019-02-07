@@ -33,9 +33,13 @@ build (@lazappi, #113).
 is `FALSE`, but if set to `TRUE` it will delete the cache directory prior to
 building each R Markdown file. This helps ensure reproducibility of the
 published results.
+* Add argument `disable_remote` to `wflow_start()`. It creates a Git [pre-push
+hook][pre-push-hook] that disables the ability to push to a remote repository.
+Useful for confidential projects (@rgayler, #141)
 
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375
+[pre-push-hook]: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
 
 # workflowr 1.1.1
 

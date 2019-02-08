@@ -1,0 +1,25 @@
+---
+title: "A file with global caching"
+output: workflowr::wflow_html
+---
+
+```{r setup}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
+```{r plot-one}
+plot(1:10)
+```
+
+```{r plot-two, cache=FALSE}
+plot(1:10)
+```
+
+```{r plot-three}
+plot(1:10)
+```
+
+```{r test}
+labels <- workflowr:::wflow_dependson()
+saveRDS(labels, file = "labels.rds")
+```

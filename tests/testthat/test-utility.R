@@ -415,3 +415,46 @@ test_that("file_executable returns TRUE for executable file", {
 
   expect_true(workflowr:::file_is_executable(f))
 })
+
+# Test wflow_dependson ---------------------------------------------------------
+
+test_that("wflow_dependson returns labels of cached chunks", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  # If no caching is used, dependson=NULL.
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/dependson-cache-none.Rmd", rmd)
+  html <- render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  rds <- file.path(tmp_dir, "labels.rds")
+  labels <- readRDS(rds)
+  expect_null(labels)
+
+  # If global cache=FALSE, but specific chunks have cache=TRUE, only depend on
+  # these chunks.
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/dependson-cache-local.Rmd", rmd,
+                overwrite = TRUE)
+  html <- render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  rds <- file.path(tmp_dir, "labels.rds")
+  labels <- readRDS(rds)
+  expect_identical(labels, c("plot-one", "plot-two"))
+
+  # If global cache=TRUE, depend on all chunks except those with cache=FALSE.
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/dependson-cache-global.Rmd", rmd,
+                overwrite = TRUE)
+  html <- render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  rds <- file.path(tmp_dir, "labels.rds")
+  labels <- readRDS(rds)
+  expect_identical(labels, c("setup", "plot-one", "plot-three",
+                             "session-info-chunk-inserted-by-workflowr"))
+})

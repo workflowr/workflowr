@@ -1,0 +1,21 @@
+---
+title: "A file with no caching"
+output: workflowr::wflow_html
+---
+
+```{r plot-one}
+plot(1:10)
+```
+
+```{r plot-two}
+plot(1:10)
+```
+
+```{r plot-three}
+plot(1:10)
+```
+
+```{r test}
+labels <- workflowr:::wflow_dependson()
+saveRDS(labels, file = "labels.rds")
+```

@@ -278,3 +278,53 @@ file_is_executable <- function(f) {
 
   return(FALSE)
 }
+
+# Automatically try to determine the best setting for knitr's dependson chunk
+# option based on the caching status of other chunks in the document.
+#
+# Usage: Set dependson=workflowr:::wflow_dependson() for a given chunk
+#
+# Desired behavior:
+#   * If any other cached chunks are invalidated and re-executed, this chunk
+#     should also be re-executed.
+#   * If all the cached chunks in a document are read from the cache, also read
+#     this chunk from the cache.
+#   * Avoid as many knitr warnings as possible about depending on non-cached
+#     chunks. These are harmless, but avoiding these demonstrates that the
+#     function is using dependson as it is intended to be used.
+#
+# Long term goal: Use this with the sessionInfo() chunk inserted by workflowr
+#
+# Warning: knitr caching is complicated. Make sure to test this function's
+# behavior for your setup before relying on it for anything important.
+#
+# https://yihui.name/knitr/options/#cache
+# https://yihui.name/knitr/demo/cache/
+# https://stackoverflow.com/a/47055058/2483477
+# https://stackoverflow.com/questions/25436389/dependson-option-does-not-work-in-knitr
+#
+wflow_dependson <- function() {
+
+  cache_global <- knitr::opts_chunk$get("cache")
+
+  # If cache=TRUE is set globally, depend on all chunks except those that are
+  # explicitly labeled cache=FALSE.
+  if (cache_global) {
+    labels_all <- knitr::all_labels()
+    labels_cache_false <- knitr::all_labels(expression(cache == FALSE))
+    labels <- setdiff(labels_all, labels_cache_false)
+    # Remove label of current chunk
+    label_self <- knitr::opts_current$get(name = "label")
+    labels <- setdiff(labels, label_self)
+    # Remove the set.seed chunk inserted by workflowr b/c it can't be cached
+    labels <- setdiff(labels, "seed-set-by-workflowr")
+    if (length(labels) > 0) return(labels)
+  }
+
+  # If specific chunks are cached, depend on these
+  labels_cache_true <- knitr::all_labels(expression(cache == TRUE))
+  if (length(labels_cache_true) > 0) return(labels_cache_true)
+
+  # If the document doesn't use caching, don't use dependson.
+  return(NULL)
+}

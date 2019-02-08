@@ -215,7 +215,7 @@ wflow_html <- function(...) {
                  collapse = "\n"))
   }
 
-  # This knit hook warns if a chunk has cache=TRUE, autodep=FALSE, depends=NULL
+  # This knit hook warns if a chunk has cache=TRUE, autodep=FALSE, dependson=NULL
   cache_hook <- function(x, options) {
 
     if (options$cache && is.null(options$dependson) && !options$autodep) {

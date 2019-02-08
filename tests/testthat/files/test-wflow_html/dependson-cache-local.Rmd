@@ -1,0 +1,21 @@
+---
+title: "A file with only a few specific cached chunks (local caching)"
+output: workflowr::wflow_html
+---
+
+```{r plot-one, cache=TRUE}
+plot(1:10)
+```
+
+```{r plot-two, cache=TRUE, autodep=TRUE}
+plot(1:10)
+```
+
+```{r plot-three}
+plot(1:10)
+```
+
+```{r test, cache=FALSE}
+labels <- workflowr:::wflow_dependson()
+saveRDS(labels, file = "labels.rds")
+```

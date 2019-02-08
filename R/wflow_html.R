@@ -145,81 +145,100 @@
 #' @return An \code{\link[rmarkdown]{output_format}} object to pass to
 #' \code{\link[rmarkdown]{render}}.
 #'
+#' @seealso \code{\link{wflow_pre_knit}}, \code{\link{wflow_post_knit}},
+#'          \code{\link{wflow_pre_processor}}
+#'
 #' @import rmarkdown
 #'
 #' @export
 #'
 wflow_html <- function(...) {
 
-  # knitr options --------------------------------------------------------------
+  knitr <- rmarkdown::knitr_options(opts_chunk = list(comment = NA,
+                                                      fig.align = "center",
+                                                      tidy = FALSE),
+                                    knit_hooks = list(plot = plot_hook,
+                                                      chunk = cache_hook),
+                                    opts_hooks = list(fig.path = hook_fig_path))
 
-  # Save the figures in "figure/<basename-of-Rmd-file>/"
-  # https://yihui.name/knitr/hooks/#option-hooks
-  hook_fig_path <- function(options) {
-    # Record the original figure path. If it was set by the user, a warning will
-    # be inserted into the document by the knit hook `plot_hook` to notify that
-    # the setting was ignored.
-    options$fig.path.orig <- options$fig.path
+  o <- rmarkdown::output_format(knitr = knitr,
+                                pandoc = pandoc_options(to = "html"),
+                                pre_knit = wflow_pre_knit,
+                                post_knit = wflow_post_knit,
+                                pre_processor = wflow_pre_processor,
+                                base_format = rmarkdown::html_document(...))
+  return(o)
+}
 
-    input <- knitr::current_input()
-    options$fig.path <- create_figure_path(input)
-    # Requires trailing slash
-    options$fig.path <- paste0(options$fig.path, .Platform$file.sep)
-    return(options)
+# knitr options ----------------------------------------------------------------
+
+# Save the figures in "figure/<basename-of-Rmd-file>/"
+# https://yihui.name/knitr/hooks/#option-hooks
+hook_fig_path <- function(options) {
+  # Record the original figure path. If it was set by the user, a warning will
+  # be inserted into the document by the knit hook `plot_hook` to notify that
+  # the setting was ignored.
+  options$fig.path.orig <- options$fig.path
+
+  input <- knitr::current_input()
+  options$fig.path <- create_figure_path(input)
+  # Requires trailing slash
+  options$fig.path <- paste0(options$fig.path, .Platform$file.sep)
+  return(options)
+}
+
+# This knit hook inserts a table of previous versions of the figure
+plot_hook <- function(x, options) {
+
+  # Inserts a Bootstrap warning into the HTML file if user set custom fig.path
+  # which gets ignored by workflowr
+  wflow_hook_plot_md <- function(x, options) {
+    expected <- paste0(tools::file_path_sans_ext(knitr::current_input()),
+                       "_files", .Platform$file.sep, "figure-html",
+                       .Platform$file.sep)
+    if (options$fig.path.orig == expected) {
+      return(knitr::hook_plot_md(x, options))
+    }
+
+    fig_path_warning <- "<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr."
+    return(glue::glue("{knitr::hook_plot_md(x, options)}
+                      <div class=\"alert alert-warning\">
+                      {fig_path_warning}
+                      </div>"))
   }
 
-  # This knit hook inserts a table of previous versions of the figure
-  plot_hook <- function(x, options) {
-
-    # Inserts a Bootstrap warning into the HTML file if user set custom fig.path
-    # which gets ignored by workflowr
-    wflow_hook_plot_md <- function(x, options) {
-      expected <- paste0(tools::file_path_sans_ext(knitr::current_input()),
-                         "_files", .Platform$file.sep, "figure-html",
-                         .Platform$file.sep)
-      if (options$fig.path.orig == expected) {
-        return(knitr::hook_plot_md(x, options))
-      }
-
-      fig_path_warning <- "<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr."
-      return(glue::glue("{knitr::hook_plot_md(x, options)}
-                        <div class=\"alert alert-warning\">
-                        {fig_path_warning}
-                        </div>"))
-    }
-
-    # Exit early if there is no Git repository
-    if (!git2r::in_repository(".")) {
-      return(wflow_hook_plot_md(x, options))
-    }
-
-    r <- git2r::repository(".", discover = TRUE)
-
-    input <- file.path(getwd(), x)
-
-    # Need to refactor obtaining workflowr options
-    github = get_host_from_remote(getwd())
-    output_dir <- get_output_dir(directory = getwd())
-    if (!is.null(output_dir)) {
-      input <- file.path(output_dir, x)
-    }
-
-    fig_versions <- get_versions_fig(fig = input, r = r, github = github)
-
-    # Exit early if no previous versions of the figure are available
-    if (fig_versions == "") {
-      return(wflow_hook_plot_md(x, options))
-    }
-
-    return(paste(c(wflow_hook_plot_md(x, options), fig_versions),
-                 collapse = "\n"))
+  # Exit early if there is no Git repository
+  if (!git2r::in_repository(".")) {
+    return(wflow_hook_plot_md(x, options))
   }
 
-  # This knit hook warns if a chunk has cache=TRUE, autodep=FALSE, dependson=NULL
-  cache_hook <- function(x, options) {
+  r <- git2r::repository(".", discover = TRUE)
 
-    if (options$cache && is.null(options$dependson) && !options$autodep) {
-      x <- glue::glue("{x}
+  input <- file.path(getwd(), x)
+
+  # Need to refactor obtaining workflowr options
+  github = get_host_from_remote(getwd())
+  output_dir <- get_output_dir(directory = getwd())
+  if (!is.null(output_dir)) {
+    input <- file.path(output_dir, x)
+  }
+
+  fig_versions <- get_versions_fig(fig = input, r = r, github = github)
+
+  # Exit early if no previous versions of the figure are available
+  if (fig_versions == "") {
+    return(wflow_hook_plot_md(x, options))
+  }
+
+  return(paste(c(wflow_hook_plot_md(x, options), fig_versions),
+               collapse = "\n"))
+}
+
+# This knit hook warns if a chunk has cache=TRUE, autodep=FALSE, dependson=NULL
+cache_hook <- function(x, options) {
+
+  if (options$cache && is.null(options$dependson) && !options$autodep) {
+    x <- glue::glue("{x}
                       <div class=\"alert alert-warning\">
                       <p><strong>Warning:</strong>
                       The above code chunk cached its results, but it won't be
@@ -235,77 +254,87 @@ wflow_html <- function(...) {
                       >knitr cache options</a> for more details.
                       </p>
                       </div>")
-    }
-    return(x)
   }
+  return(x)
+}
 
-  knitr <- rmarkdown::knitr_options(opts_chunk = list(comment = NA,
-                                                      fig.align = "center",
-                                                      tidy = FALSE),
-                                    knit_hooks = list(plot = plot_hook,
-                                                      chunk = cache_hook),
-                                    opts_hooks = list(fig.path = hook_fig_path))
+# pre_knit function ------------------------------------------------------------
 
-  # pre_knit function ----------------------------------------------------------
-
+#' pre_knit function for workflowr
+#'
+#' This is the \code{pre_knit} function that \code{\link{wflow_html}} passes to
+#' the function \code{\link[rmarkdown]{output_format}} from the package
+#' \link{rmarkdown}. For advanced usage only.
+#'
+#' If you'd like to insert the workflowr reproducibility report into other R
+#' Markdown output formats such as \code{blogdown::html_page}, you can use
+#' \code{wflow_pre_knit}.
+#'
+#' @param input Name of R Markdown file
+#' @param ... currently ignored
+#'
+#' @seealso \code{\link{wflow_html}}, \code{\link{wflow_post_knit}},
+#'          \code{\link{wflow_pre_processor}}
+#'
+#' @export
+wflow_pre_knit <- function(input, ...) {
   # This function copies the R Markdown file to a temporary directory and then
   # modifies it.
-  pre_knit <- function(input, ...) {
 
-    # Access parent environment. Have to go up 2 frames because of the function
-    # that combines pre_knit function from the current and base output_formats.
-    #
-    # Inspired by rmarkdowntown by Romain François
-    # https://github.com/romainfrancois/rmarkdowntown/blob/deef97a5cd6f0592318ecc6e78c6edd7612eb449/R/html_document2.R#L12
-    frames <- sys.frames()
-    e <- frames[[length(frames) - 2]]
+  # Access parent environment. Have to go up 2 frames because of the function
+  # that combines pre_knit function from the current and base output_formats.
+  #
+  # Inspired by rmarkdowntown by Romain François
+  # https://github.com/romainfrancois/rmarkdowntown/blob/deef97a5cd6f0592318ecc6e78c6edd7612eb449/R/html_document2.R#L12
+  frames <- sys.frames()
+  e <- frames[[length(frames) - 2]]
 
-    lines_in <- readLines(input)
-    tmpfile <- file.path(tempdir(), basename(input))
-    e$knit_input <- tmpfile
+  lines_in <- readLines(input)
+  tmpfile <- file.path(tempdir(), basename(input))
+  e$knit_input <- tmpfile
 
-    wflow_opts <- wflow_options(input)
+  wflow_opts <- wflow_options(input)
 
-    # Set the knit_root_dir option for rmarkdown::render. However, the user can
-    # override the knit_root_dir option by passing it directly to render.
-    if (is.null(e$knit_root_dir)) {
-      e$knit_root_dir <- wflow_opts$knit_root_dir
-    } else {
-      wflow_opts$knit_root_dir <- e$knit_root_dir
-    }
+  # Set the knit_root_dir option for rmarkdown::render. However, the user can
+  # override the knit_root_dir option by passing it directly to render.
+  if (is.null(e$knit_root_dir)) {
+    e$knit_root_dir <- wflow_opts$knit_root_dir
+  } else {
+    wflow_opts$knit_root_dir <- e$knit_root_dir
+  }
 
-    # Find the end of the YAML header for inserting new lines
-    header_delims <- stringr::str_which(lines_in, "^-{3}|^\\.{3}")
-    if (length(header_delims) >= 2) {
-      header_end <- header_delims[2]
-      header_lines <- lines_in[seq(header_end)]
-    } else {
-      # A valid R Markdown file does not require a YAML header
-      header_end <- 0
-      header_lines <- NULL
-    }
+  # Find the end of the YAML header for inserting new lines
+  header_delims <- stringr::str_which(lines_in, "^-{3}|^\\.{3}")
+  if (length(header_delims) >= 2) {
+    header_end <- header_delims[2]
+    header_lines <- lines_in[seq(header_end)]
+  } else {
+    # A valid R Markdown file does not require a YAML header
+    header_end <- 0
+    header_lines <- NULL
+  }
 
-    # Get output directory if it exists
-    output_dir <- get_output_dir(directory = dirname(input))
+  # Get output directory if it exists
+  output_dir <- get_output_dir(directory = dirname(input))
 
-    has_code <- detect_code(input)
+  has_code <- detect_code(input)
 
-    report <- create_report(input, output_dir, has_code, wflow_opts)
+  report <- create_report(input, output_dir, has_code, wflow_opts)
 
-    # Set seed at beginning
-    if (has_code && is.numeric(wflow_opts$seed) && length(wflow_opts$seed) == 1) {
-      seed_chunk <- c("",
-                      "```{r seed-set-by-workflowr, echo = FALSE}",
-                      sprintf("set.seed(%d)", wflow_opts$seed),
-                      "```",
-                      "")
-    } else {
-      seed_chunk <- ""
-    }
+  # Set seed at beginning
+  if (has_code && is.numeric(wflow_opts$seed) && length(wflow_opts$seed) == 1) {
+    seed_chunk <- c("",
+                    "```{r seed-set-by-workflowr, echo = FALSE}",
+                    sprintf("set.seed(%d)", wflow_opts$seed),
+                    "```",
+                    "")
+  } else {
+    seed_chunk <- ""
+  }
 
-    # Add session information at the end
-    if (has_code && wflow_opts$sessioninfo != "") {
-      sessioninfo <- glue::glue('
+  # Add session information at the end
+  if (has_code && wflow_opts$sessioninfo != "") {
+    sessioninfo <- glue::glue('
       <br>
       <br>
       <p>
@@ -323,90 +352,24 @@ wflow_html <- function(...) {
       ```
       </div>
       ')
-      # If there is a bibliography, make sure it appears before the session
-      # information
-      header <- rmarkdown::yaml_front_matter(input)
-      if (!is.null(header$bibliography)) {
-        sessioninfo <- add_bibliography(sessioninfo, lines_in)
-      }
-    } else {
-      sessioninfo <- ""
+    # If there is a bibliography, make sure it appears before the session
+    # information
+    header <- rmarkdown::yaml_front_matter(input)
+    if (!is.null(header$bibliography)) {
+      sessioninfo <- add_bibliography(sessioninfo, lines_in)
     }
-
-    lines_out <- c(header_lines,
-                   report,
-                   "",
-                   seed_chunk,
-                   lines_in[(header_end + 1):length(lines_in)],
-                   sessioninfo)
-
-    writeLines(lines_out, tmpfile)
+  } else {
+    sessioninfo <- ""
   }
 
-  # post_knit function ---------------------------------------------------------
+  lines_out <- c(header_lines,
+                 report,
+                 "",
+                 seed_chunk,
+                 lines_in[(header_end + 1):length(lines_in)],
+                 sessioninfo)
 
-  # This function adds the navigation bar for websites defined in either
-  # _navbar.html or _site.yml. Below I just fix the path to the input file that
-  # I had changed for pre_knit and then execute the post_knit from
-  # rmarkdown::html_document.
-  post_knit <- function(metadata, input_file, runtime, encoding, ...) {
-
-    # Change the input_file back to its original so that the post_knit defined
-    # in rmarkdown::html_document() can find the navbar defined in _site.yml.
-    input_file_original <- file.path(getwd(), basename(input_file))
-    # I tried to find a better solution than directly calling it myself (since
-    # it is run afterwards anyways since html_document() is the base format),
-    # but nothing I tried worked.
-    rmarkdown::html_document()$post_knit(metadata, input_file_original,
-                                         runtime, encoding, ...)
-  }
-
-  # pre_processor function -----------------------------------------------------
-
-  # Pass additional arguments to Pandoc. I use this to add a custom header
-  # (--include-before-body) and footer (--include-after-body). The template text
-  # for these are in the list `includes` defined in R/infrastructure.R.
-  pre_processor <- function(metadata, input_file, runtime, knit_meta,
-                            files_dir, output_dir) {
-    # header
-    fname_header <- tempfile("header", fileext = ".html")
-    writeLines(includes$header, con = fname_header)
-
-    # footer
-    fname_footer <- tempfile("footer", fileext = ".html")
-    writeLines(includes$footer, con = fname_footer)
-
-    # Pandoc 2+ sends a warning if there is no title and uses the filename
-    # without the extension to set the pagetitle (this is the text that is
-    # displayed in the browser tab). Here I avoid this error by always
-    # explicitly setting the pagetitle argument. This is overkill, since it is
-    # only relevant when running pandoc 2+ with not title, but this is easier. I
-    # sent a more principled way to handle this to rmarkdown, and it will be
-    # available in the next release.
-    #
-    # https://github.com/rstudio/rmarkdown/pull/1355
-    if (is.null(metadata$title)) {
-      pagetitle <- input_file
-    } else {
-      pagetitle <- metadata$title
-    }
-
-    # Pandoc args
-    args <- c("--include-before-body", fname_header,
-              "--include-after-body", fname_footer,
-              "--metadata", paste0("pagetitle=", pagetitle))
-    return(args)
-  }
-
-  # Return ---------------------------------------------------------------------
-
-  o <- rmarkdown::output_format(knitr = knitr,
-                                pandoc = pandoc_options(to = "html"),
-                                pre_knit = pre_knit,
-                                post_knit = post_knit,
-                                pre_processor = pre_processor,
-                                base_format = rmarkdown::html_document(...))
-  return(o)
+  writeLines(lines_out, tmpfile)
 }
 
 # Add the bibliography prior to the session information, but only if they
@@ -425,4 +388,106 @@ add_bibliography <- function(sessioninfo, lines) {
     sessioninfo <- c("", "<div id=\"refs\"></div>", "", sessioninfo)
   }
   return(sessioninfo)
+}
+
+# post_knit function -----------------------------------------------------------
+
+#' post_knit function for workflowr
+#'
+#' This is the \code{post_knit} function that \code{\link{wflow_html}} passes to
+#' the function \code{\link[rmarkdown]{output_format}} from the package
+#' \link{rmarkdown}. For advanced usage only.
+#'
+#' If you'd like to combine workflowr with another R Markdown output format, you
+#' may need to use \code{wflow_post_knit}. This function fixes the path to the R
+#' Markdown file (which is manipulated by \code{\link{wflow_pre_knit}}).
+#'
+#' @param metadata The metadata specified in the YAML header of the R Markdown
+#'   file
+#' @param input_file Name of R Markdown file
+#' @param ... arguments passed to the \code{post_knit} function of
+#'   \code{rmarkdown::\link[rmarkdown]{html_document}}
+#'
+#' @inheritParams rmarkdown::render
+#'
+#' @seealso \code{\link{wflow_html}}, \code{\link{wflow_pre_knit}},
+#'          \code{\link{wflow_pre_processor}}
+#'
+#' @export
+wflow_post_knit <- function(metadata, input_file, runtime, encoding, ...) {
+  # This function adds the navigation bar for websites defined in either
+  # _navbar.html or _site.yml. Below I just fix the path to the input file that
+  # I had changed for pre_knit and then execute the post_knit from
+  # rmarkdown::html_document.
+
+  # Change the input_file back to its original so that the post_knit defined
+  # in rmarkdown::html_document() can find the navbar defined in _site.yml.
+  input_file_original <- file.path(getwd(), basename(input_file))
+  # I tried to find a better solution than directly calling it myself (since
+  # it is run afterwards anyways since html_document() is the base format),
+  # but nothing I tried worked.
+  rmarkdown::html_document()$post_knit(metadata, input_file_original,
+                                       runtime, encoding, ...)
+}
+
+# pre_processor function -----------------------------------------------------
+
+
+#' pre_processor function for workflowr
+#'
+#' This is the \code{pre_processor} function that \code{\link{wflow_html}}
+#' passes to the function \code{\link[rmarkdown]{output_format}} from the
+#' package \link{rmarkdown}. For advanced usage only.
+#'
+#' If you'd like to combine workflowr with another R Markdown output format, you
+#' may need to use \code{wflow_pre_processor}. This function only has minor
+#' effects on the style of the resulting HTML page, and is not essential for
+#' using workflowr.
+#'
+#' @param input_file Name of Markdown file created by
+#'   \code{knitr::\link[knitr]{knit}} to be passed to
+#'   \href{https://pandoc.org/}{pandoc}
+#' @param files_dir Directory for saving intermediate files
+#'
+#' @inheritParams rmarkdown::render
+#' @inheritParams wflow_post_knit
+#'
+#' @seealso \code{\link{wflow_html}}, \code{\link{wflow_pre_knit}},
+#'          \code{\link{wflow_post_knit}}
+#'
+#' @export
+wflow_pre_processor <- function(metadata, input_file, runtime, knit_meta,
+                                files_dir, output_dir) {
+  # Pass additional arguments to Pandoc. I use this to add a custom header
+  # (--include-before-body) and footer (--include-after-body). The template text
+  # for these are in the list `includes` defined in R/infrastructure.R.
+
+  # header
+  fname_header <- tempfile("header", fileext = ".html")
+  writeLines(includes$header, con = fname_header)
+
+  # footer
+  fname_footer <- tempfile("footer", fileext = ".html")
+  writeLines(includes$footer, con = fname_footer)
+
+  # Pandoc 2+ sends a warning if there is no title and uses the filename
+  # without the extension to set the pagetitle (this is the text that is
+  # displayed in the browser tab). Here I avoid this error by always
+  # explicitly setting the pagetitle argument. This is overkill, since it is
+  # only relevant when running pandoc 2+ with not title, but this is easier. I
+  # sent a more principled way to handle this to rmarkdown, and it will be
+  # available in the next release.
+  #
+  # https://github.com/rstudio/rmarkdown/pull/1355
+  if (is.null(metadata$title)) {
+    pagetitle <- input_file
+  } else {
+    pagetitle <- metadata$title
+  }
+
+  # Pandoc args
+  args <- c("--include-before-body", fname_header,
+            "--include-after-body", fname_footer,
+            "--metadata", paste0("pagetitle=", pagetitle))
+  return(args)
 }

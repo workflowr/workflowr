@@ -37,7 +37,11 @@ published results.
 hook][pre-push-hook] that disables the ability to push to a remote repository.
 Useful for confidential projects. Currently only available for Linux and macOS.
 (@rgayler, #141)
+* Refactor and export the individual functions of `wflow_html()` to facilitate
+integrating workflowr features into other R Markdown output formats such as
+[blogdown][] (@docmanny, #126)
 
+[blogdown]: https://github.com/rstudio/blogdown
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
 [git2r-375]: https://github.com/ropensci/git2r/issues/375
 [pre-push-hook]: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks

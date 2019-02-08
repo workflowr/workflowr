@@ -1,5 +1,8 @@
 context("wflow_git_commit")
 
+# Temporarily skip to view other errors on winbuilder
+skip_on_cran()
+
 # Setup -----------------------------------------------------------------------
 
 library("git2r")
@@ -15,7 +18,7 @@ s <- wflow_status(project = site_dir)
 # Load helper function local_no_gitconfig()
 source("helpers.R", local = TRUE)
 
-# Test wflow_git_commit ------------------------------------------------------------
+# Test wflow_git_commit --------------------------------------------------------
 
 test_that("wflow_git_commit can commit one new file", {
   f1 <- file.path(site_dir, "f1.txt")

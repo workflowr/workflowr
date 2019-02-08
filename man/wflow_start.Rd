@@ -55,7 +55,8 @@ projects that cannot be shared via an online Git hosting service (e.g.
 GitHub or GitLab). The hook is saved in the file
 \code{.git/hooks/pre-push}. If you change your mind and want to push the
 repository, you can delete that file. Note that this option is only
-available if \code{git = TRUE}.}
+available if \code{git = TRUE}. Note that this is currently only supported
+for Linux and macOS.}
 
 \item{dry_run}{logical (default: \code{FALSE}). When \code{dry_run
 = TRUE}, the actions are previewed without executing them.}

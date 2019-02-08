@@ -404,8 +404,10 @@ test_that("wflow_start fails early if directory does not exist and `existing = T
 
 })
 
-
 test_that("wflow_start creates a pre-push hook when disable_remote = TRUE", {
+
+  if (.Platform$OS.type == "windows")
+    skip("disable_remote not available on Windows")
 
   # start project in a tempdir
   site_dir <- tempfile("test-start-")
@@ -426,6 +428,20 @@ test_that("wflow_start creates a pre-push hook when disable_remote = TRUE", {
   expect_error(wflow_git_push(username = "username", password = "password"),
                glue::glue("Execution stopped by {pre_push_file}"))
 })
+
+test_that("wflow_start throws error for disable_remote = TRUE on Windows", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  # start project in a tempdir
+  site_dir <- tempfile("test-start-")
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE), add = TRUE)
+
+  expect_error(wflow_start(site_dir, change_wd = FALSE, disable_remote = TRUE,
+                           user.name = "Test Name", user.email = "test@email"),
+               "disable_remote is not available on Windows")
+})
+
 
 # Test print.wflow_start -------------------------------------------------------
 

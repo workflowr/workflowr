@@ -273,12 +273,8 @@ df_to_status <- function(d) {
 # https://github.com/r-lib/fs/issues/172
 file_is_executable <- function(f) {
   stopifnot(fs::file_exists(f))
-  perms <- fs::file_info(f)$permissions
-  perms <- as.character(perms)
-  perms <- stringr::str_split_fixed(perms, "", n = 9)
-  perms <- as.character(perms)
-  if (perms[3] == "x" || perms[6] == "x" || perms[9] == "x") {
-    return(TRUE)
-  }
+
+  if (fs::file_access(f, mode = "execute")) return(TRUE)
+
   return(FALSE)
 }

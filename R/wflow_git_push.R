@@ -152,10 +152,10 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
 
   if (!dry_run) {
     # First check for and execute any pre-push hooks. libgit2 does not support
-    # this.
+    # this. Only supported on unix-alike systems.
     pre_push_file <- file.path(git2r_workdir(r), ".git/hooks/pre-push")
     pre_push_file_rel <- fs::path_rel(pre_push_file, start = getwd())
-    if (fs::file_exists(pre_push_file)) {
+    if (fs::file_exists(pre_push_file) && .Platform$OS.type != "windows") {
       message(glue::glue("Executing pre-push hook in {pre_push_file_rel}"))
       hook <- suppressWarnings(system(pre_push_file, intern = TRUE))
       message(hook)

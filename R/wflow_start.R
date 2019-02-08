@@ -165,7 +165,8 @@
 #'   GitHub or GitLab). The hook is saved in the file
 #'   \code{.git/hooks/pre-push}. If you change your mind and want to push the
 #'   repository, you can delete that file. Note that this option is only
-#'   available if \code{git = TRUE}.
+#'   available if \code{git = TRUE}. Note that this is currently only supported
+#'   for Linux and macOS.
 #'
 #' @param dry_run logical (default: \code{FALSE}). When \code{dry_run
 #'   = TRUE}, the actions are previewed without executing them.
@@ -297,9 +298,14 @@ wflow_start <- function(directory,
     check_git_config(path = directory, "`wflow_start` with `git = TRUE`")
   }
 
-  # Do not allow git=FALSE and disable_remote = TRUE
+  # Do not allow git = FALSE and disable_remote = TRUE
   if (!git && disable_remote) {
     stop("disable_remote is only available if git=TRUE")
+  }
+
+  # Do not allow disable_remote = TRUE on Windows
+  if (disable_remote && .Platform$OS.type == "windows") {
+    stop("disable_remote is not available on Windows")
   }
 
   # Create directory if it doesn't already exist

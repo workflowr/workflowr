@@ -392,6 +392,10 @@ test_that("status_to_df and df_to_status can handle empty status", {
 # Test file_is_executable ------------------------------------------------------
 
 test_that("file_executable returns FALSE for non-executable file", {
+
+  if (.Platform$OS.type == "windows")
+    skip("File permissions are different on Windows")
+
   f <- fs::file_temp()
   fs::file_create(f)
   on.exit(fs::file_delete(f))
@@ -400,6 +404,10 @@ test_that("file_executable returns FALSE for non-executable file", {
 })
 
 test_that("file_executable returns TRUE for executable file", {
+
+  if (.Platform$OS.type == "windows")
+    skip("File permissions are different on Windows")
+
   f <- fs::file_temp()
   fs::file_create(f)
   on.exit(fs::file_delete(f))

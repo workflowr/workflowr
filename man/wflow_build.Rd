@@ -19,8 +19,8 @@ argument \code{make} below). Supports file
 \item{make}{logical (default: \code{is.null(files)}). When \code{make =
 TRUE}, build any files that have been modified more recently than their
 corresponding HTML files (inspired by
-\href{https://www.gnu.org/software/make/}{GNU Make}). This is the default
-action if no files are specified.}
+\href{https://en.wikipedia.org/wiki/Make_(software)}{Make}). This is the
+default action if no files are specified.}
 
 \item{update}{logical (default: FALSE). Build any files that have been
 committed more recently than their corresponding HTML files (and do not

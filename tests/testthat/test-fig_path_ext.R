@@ -33,6 +33,8 @@ test_that("fig_path_ext has no effect when set to FALSE", {
     stringr::str_sub(workflowr:::create_figure_path(rmd[1]), start = -4),
     ".Rmd")
 
+  skip_on_cran()
+
   # Publish a file with figures
   file_w_figs <- file.path(s$analysis, "fig.Rmd")
   fs::file_copy("files/test-wflow_build/figure-v01.Rmd", file_w_figs)
@@ -54,7 +56,7 @@ test_that("fig_path_ext has no effect when set to FALSE", {
 site_dir <- tempfile("test-fig_path_ext-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
                              user.email = "test@email"))
-on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+on.exit(unlink(site_dir, recursive = TRUE, force = TRUE), add = TRUE)
 site_dir <- workflowr:::absolute(site_dir)
 
 s <- wflow_status(project = site_dir)
@@ -81,6 +83,8 @@ test_that("fig_path_ext removes file extension in fig dir when set to FALSE", {
   expect_identical(
     basename(workflowr:::create_figure_path(rmd[1])),
     basename(tools::file_path_sans_ext(rmd[1])))
+
+  skip_on_cran()
 
   # Publish a file with figures
   file_w_figs <- file.path(s$analysis, "fig.Rmd")

@@ -285,10 +285,15 @@ wflow_build <- function(files = NULL, make = is.null(files),
         unlink(figs_docs, recursive = TRUE)
       }
       # Delete the cache directory
-      if (delete_cache) {
-        dir_cache <- fs::path_ext_remove(f)
-        dir_cache <- glue::glue("{dir_cache}_cache")
-        if (fs::dir_exists(dir_cache)) fs::dir_delete(dir_cache)
+      dir_cache <- fs::path_ext_remove(f)
+      dir_cache <- glue::glue("{dir_cache}_cache")
+      if (fs::dir_exists(dir_cache)) {
+        if (delete_cache) {
+          fs::dir_delete(dir_cache)
+          message("  - Note: Deleted the cache directory before building")
+        } else {
+          message("  - Note: This file has a cache directory")
+        }
       }
       if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)

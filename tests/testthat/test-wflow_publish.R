@@ -216,7 +216,10 @@ test_that("wflow_publish deletes cache when delete_cache = TRUE", {
 
   # By default, cache directory is not affected
   dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
-  publish_v02 <- wflow_publish(file_w_cache, view = FALSE, project = site_dir)
+  expect_message(
+    publish_v02 <- wflow_publish(file_w_cache, view = FALSE, project = site_dir),
+    "  - Note: This file has a cache directory"
+  )
   expect_false(publish_v02$step2$delete_cache)
   expect_true(fs::dir_exists(dir_cache))
   dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time
@@ -224,8 +227,11 @@ test_that("wflow_publish deletes cache when delete_cache = TRUE", {
 
   # delete_cache deletes cache directory prior to building (it gets re-created)
   dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
-  publish_v03 <- wflow_publish(file_w_cache, view = FALSE, delete_cache = TRUE,
-                               project = site_dir)
+  expect_message(
+    publish_v03 <- wflow_publish(file_w_cache, view = FALSE, delete_cache = TRUE,
+                                 project = site_dir),
+    "  - Note: Deleted the cache directory before building"
+  )
   expect_true(publish_v03$step2$delete_cache)
   expect_true(fs::dir_exists(dir_cache))
   dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time

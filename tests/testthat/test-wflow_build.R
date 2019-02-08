@@ -318,7 +318,10 @@ test_that("wflow_build deletes cache when delete_cache = TRUE", {
 
   # By default, cache directory is not affected
   dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
-  build_v02 <- wflow_build(file_w_cache, view = FALSE, project = site_dir)
+  expect_message(
+    build_v02 <- wflow_build(file_w_cache, view = FALSE, project = site_dir),
+    "  - Note: This file has a cache directory"
+  )
   expect_false(build_v02$delete_cache)
   expect_true(fs::dir_exists(dir_cache))
   dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time
@@ -326,8 +329,11 @@ test_that("wflow_build deletes cache when delete_cache = TRUE", {
 
   # delete_cache deletes cache directory prior to building (it gets re-created)
   dir_cache_mod_pre <- fs::file_info(dir_cache)$modification_time
-  build_v03 <- wflow_build(file_w_cache, view = FALSE, delete_cache = TRUE,
-                           project = site_dir)
+  expect_message(
+    build_v03 <- wflow_build(file_w_cache, view = FALSE, delete_cache = TRUE,
+                             project = site_dir),
+    "  - Note: Deleted the cache directory before building"
+  )
   expect_true(build_v03$delete_cache)
   expect_true(fs::dir_exists(dir_cache))
   dir_cache_mod_post <- fs::file_info(dir_cache)$modification_time

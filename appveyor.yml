@@ -52,7 +52,6 @@ environment:
     platform: x86
     R_ARCH: i386
 
-
 build_script:
   - travis-tool.sh install_deps
 
@@ -62,7 +61,8 @@ test_script:
 on_failure:
   - 7z a failure.zip *.Rcheck\*
   - appveyor PushArtifact failure.zip
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# Uncomment the line below to stall AppVeyor on failure for debugging
+# - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 artifacts:
   - path: '*.Rcheck\**\*.log'

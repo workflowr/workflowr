@@ -128,7 +128,7 @@ resolve_symlink_ <- function(path) {
 
   # Recursive case
   return(fs::path_join(c(
-    resolve_symlink(fs::path_join(parts[-len])),
+    resolve_symlink_(fs::path_join(parts[-len])),
     parts[len])))
 }
 

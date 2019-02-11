@@ -5,7 +5,7 @@ context("winbuilder")
 test_that("fs::dir_exists returns FALSE for non-existent directories starting at root", {
   expect_false(fs::dir_exists("/a/b/c"))
   expect_identical(dirname("/x"), "/")
-  expect_identical(fs::path_abs(dirname("/x")), path_abs("/"))
+  expect_identical(fs::path_abs(dirname("/x")), fs::path_abs("/"))
 })
 
 test_that("git2r can add and commit a file", {
@@ -23,4 +23,11 @@ test_that("git2r can add and commit a file", {
   git2r::add(repo, "example.txt")
   commit_1 <- git2r::commit(repo, "First commit message")
   expect_identical(class(commit_1), "git_commit")
+})
+
+test_that("Obtain winbuilder environment variables", {
+  expect_identical(Sys.getenv("HOMEDRIVE"), "D:")
+  expect_identical(Sys.getenv("USERPROFILE"), "D:\\win\\user")
+  expect_identical(Sys.getenv("HOMEPATH"), "\\win\\user")
+  expect_identical(resolve_symlink("/x/y/z"), "/x/y/z")
 })

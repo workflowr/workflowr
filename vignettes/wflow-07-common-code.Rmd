@@ -178,7 +178,9 @@ src <- knitr::knit_expand(file = here::here("analysis/child/iris.Rmd"),
 ```
 ````
 
-and then later knit it using an inline code expression:
+and then later knit it using an inline code expression^[Before calling
+`knitr::knit()`, you'll need to load the dplyr and ggplot2 packages to run the
+code in this example child document.]:
 
 `` `r
 knitr::knit(text = unlist(src))` ``

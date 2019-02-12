@@ -2,8 +2,8 @@ context("winbuilder")
 
 # Attempting to diagnose winbuilder-specific errors
 
-if (!(.Platform$OS.type == "windows" && Sys.getenv("USERPROFILE") == "C:\\Users\\CRAN"))
-  skip("Only relevant on winbuilder")
+# if (!(.Platform$OS.type == "windows" && Sys.getenv("USERPROFILE") == "C:\\Users\\CRAN"))
+#   skip("Only relevant on winbuilder")
 
 test_that("git2r can add and commit a file", {
 
@@ -77,45 +77,22 @@ test_that("wflow_git_commit can add and commit a file using a relative path", {
   expect_identical(class(commit_1), "git_commit")
 })
 
-test_that("Obtain winbuilder info on temp directory", {
-  expect_identical(tempdir(), "What is the temporary directory path?")
-  x <- tempfile()
-  expect_identical(x, "What is an example tempfile?")
-  fs::file_create(x)
-  expect_identical(workflowr:::absolute(x), "What is an example tempfile after absolute?")
-  expect_true(fs::file_exists(workflowr:::absolute(x)))
-  expect_identical(workflowr:::relative(x), "What is an example tempfile after relative?")
-  expect_true(fs::file_exists(workflowr:::relative(x)))
-  expect_identical(workflowr:::absolute(workflowr:::relative(x)), "What is an example tempfile after relative and absolute?")
-  expect_true(fs::file_exists(workflowr:::absolute(workflowr:::relative(x))))
-})
-
-test_that("Obtain winbuilder info on temp directory (fs)", {
-  x <- fs::file_temp()
-  expect_identical(x, "(fs) What is an example tempfile?")
-  fs::file_create(x)
-  expect_identical(fs::path_abs(x), "What is an example tempfile after path_abs?")
-  expect_true(fs::file_exists(fs::path_abs(x)))
-  expect_identical(fs::path_rel(x), "What is an example tempfile after path_rel?")
-  expect_true(fs::file_exists(fs::path_rel(x)))
-  expect_identical(fs::path_abs(fs::path_rel(x)), "What is an example tempfile after path_rel and path_abs?")
-  expect_true(fs::file_exists(fs::path_abs(fs::path_rel(x))))
-})
-
-test_that("Obtain winbuilder working and home directories", {
-
-  expect_identical(getwd(), "Working directory?")
-  expect_identical(fs::path_wd(), "Working directory? (fs)")
-  expect_identical(fs::path_home(), "Home directory?")
-  expect_identical(fs::path_home_r(), "Home directory? (R def.)")
-  expect_identical(R.home(), "R home directory?")
-})
-
-test_that("Test fs", {
+test_that("Test fs::dir_exists with absolute paths", {
   f <- fs::file_temp()
   expect_identical(fs::path_abs(fs::path_rel(f)), f)
   fs::dir_create(f)
   expect_true(fs::dir_exists(f))
   expect_true(fs::dir_exists(paste0(f, "/")))
   expect_true(fs::dir_exists(paste0(f, "\\")))
+  fs::dir_delete(f)
+})
+
+test_that("Test fs::dir_exists with relative paths", {
+  f <- "testing"
+  expect_identical(fs::path_abs(fs::path_rel(f)), fs::path_abs(f))
+  fs::dir_create(f)
+  expect_true(fs::dir_exists(f))
+  expect_true(fs::dir_exists(paste0(f, "/")))
+  expect_true(fs::dir_exists(paste0(f, "\\")))
+  fs::dir_delete(f)
 })

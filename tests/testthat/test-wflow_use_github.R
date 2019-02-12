@@ -48,17 +48,6 @@ test_that("wflow_use_github can be used post GitLab", {
   gitlab <- wflow_use_gitlab(username, repository, project = path)
   s <- wflow_status(project = path)
 
-  expect_identical(s$analysis, "What is the analysis dir?")
-  expect_identical(workflowr:::absolute(s$analysis),
-                   "What is the absolute path to the analysis dir?")
-  expect_identical(fs::path_abs(s$analysis),
-                   "What is the absolute path to the analysis dir? (fs)")
-  expect_identical(getwd(), "What is the current working dir?")
-  wflow_build(file.path(s$analysis, "*Rmd"), dry_run = TRUE, project = path)
-  built <- wflow_build(file.path(s$analysis, "*Rmd"), project = path)
-  expect_identical(paste(built$built, collapse = "   "),
-                         "Which Rmd files were built?")
-
   published <- wflow_publish(file.path(s$analysis, "*Rmd"), view = FALSE,
                              project = path, dry_run = TRUE)
 

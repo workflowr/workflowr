@@ -49,12 +49,8 @@ test_that("wflow_use_gitlab automates local GitLab configuration", {
   r <- git2r::repository(path = path)
   recent_commit <- git2r::commits(r, n = 1)[[1]]
   recent_commit_files <- workflowr:::obtain_files_in_commit(r, recent_commit)
-  expect_identical(paste(recent_commit_files, collapse = "   "),
-                   "Which files were recently committed?")
   expect_true(workflowr:::absolute(site_yml_fname) %in% recent_commit_files)
   expect_true(workflowr:::absolute(gitlab_yml) %in% recent_commit_files)
-  expect_identical(paste(readLines(site_yml_fname), collapse = " \n "),
-                   "What does _site.yml contain?")
 })
 
 test_that("wflow_use_gitlab throws error if username/repository not set", {

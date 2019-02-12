@@ -105,19 +105,6 @@ test_that("wflow_rename can rename one directory from outside project", {
   original <- file.path(tdir, "code")
   new <- file.path(tdir, "scripts")
 
-  expect_identical(tdir, "What is the path to the temporary directory?")
-  expect_identical(workflowr:::absolute(tdir), "What is the absolute path to the temporary directory?")
-
-  expect_identical(fs::path_abs(tdir), "What is the absolute path to the temporary directory? (fs)")
-
-  expect_identical(original, "What is the path to the code directory?")
-  expect_identical(workflowr:::absolute(original), "What is the absolute path to the code directory?")
-  expect_identical(fs::path_abs(original), "What is the absolute path to the code directory? (fs)")
-
-  expect_identical(new, "What is the path to the scripts directory?")
-  expect_identical(workflowr:::absolute(new), "What is the absolute path to the scripts directory?")
-  expect_identical(fs::path_abs(new), "What is the absolute path to the scripts directory? (fs)")
-
   renamed <- wflow_rename(original, new, message = "Rename code directory",
                           project = tdir)
   expect_false(fs::dir_exists(original))
@@ -145,6 +132,7 @@ test_that("wflow_rename can handle a trailing slash in a directory name", {
   original <- "code/"
   new <- "scripts/"
 
+  expect_true(fs::dir_exists(fs::path(original)))
   expect_true(fs::dir_exists(original))
 
   renamed <- wflow_rename(original, new, message = "Rename code directory")

@@ -23,14 +23,71 @@ test_that("git2r can add and commit a file", {
   expect_identical(class(commit_1), "git_commit")
 })
 
+test_that("wflow_git_commit can add and commit a file using an absolute path", {
+
+  if (packageVersion("git2r") <= as.numeric_version("0.21.0"))
+    skip("requires S3 version of git2r")
+
+  site_dir <- tempfile("test-wflow_git_commit-")
+  suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
+                               user.email = "test@email"))
+  site_dir <- workflowr:::absolute(site_dir)
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+  r <- git2r::repository(path = site_dir)
+  s <- wflow_status(project = site_dir)
+
+  writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             file.path(site_dir, "example.txt"))
+  git2r::add(r, "example.txt")
+  commit_1 <- git2r::commit(r, "First commit message")
+  expect_identical(class(commit_1), "git_commit")
+
+  writeLines("overwrite",
+             file.path(site_dir, "example.txt"))
+  o <- wflow_git_commit(file.path(site_dir, "example.txt"), project = site_dir)
+
+  commit_2 <- o$commit
+  expect_identical(class(commit_1), "git_commit")
+})
+
+test_that("wflow_git_commit can add and commit a file using a relative path", {
+
+  if (packageVersion("git2r") <= as.numeric_version("0.21.0"))
+    skip("requires S3 version of git2r")
+
+  site_dir <- tempfile("test-wflow_git_commit-")
+  suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",
+                               user.email = "test@email"))
+  site_dir <- workflowr:::relative(site_dir)
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+  r <- git2r::repository(path = site_dir)
+  s <- wflow_status(project = site_dir)
+
+  writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             file.path(site_dir, "example.txt"))
+  git2r::add(r, "example.txt")
+  commit_1 <- git2r::commit(r, "First commit message")
+  expect_identical(class(commit_1), "git_commit")
+
+  writeLines("overwrite",
+             file.path(site_dir, "example.txt"))
+  o <- wflow_git_commit(file.path(site_dir, "example.txt"), project = site_dir)
+
+  commit_2 <- o$commit
+  expect_identical(class(commit_1), "git_commit")
+})
+
 test_that("Obtain winbuilder info on temp directory", {
   expect_identical(tempdir(), "What is the temporary directory path?")
   x <- tempfile()
   expect_identical(x, "What is an example tempfile?")
   fs::file_create(x)
   expect_identical(workflowr:::absolute(x), "What is an example tempfile after absolute?")
+  expect_true(fs::file_exists(workflowr:::absolute(x)))
   expect_identical(workflowr:::relative(x), "What is an example tempfile after relative?")
+  expect_true(fs::file_exists(workflowr:::relative(x)))
   expect_identical(workflowr:::absolute(workflowr:::relative(x)), "What is an example tempfile after relative and absolute?")
+  expect_true(fs::file_exists(workflowr:::absolute(workflowr:::relative(x))))
 })
 
 test_that("Obtain winbuilder info on temp directory (fs)", {
@@ -38,6 +95,27 @@ test_that("Obtain winbuilder info on temp directory (fs)", {
   expect_identical(x, "(fs) What is an example tempfile?")
   fs::file_create(x)
   expect_identical(fs::path_abs(x), "What is an example tempfile after path_abs?")
+  expect_true(fs::file_exists(fs::path_abs(x)))
   expect_identical(fs::path_rel(x), "What is an example tempfile after path_rel?")
+  expect_true(fs::file_exists(fs::path_rel(x)))
   expect_identical(fs::path_abs(fs::path_rel(x)), "What is an example tempfile after path_rel and path_abs?")
+  expect_true(fs::file_exists(fs::path_abs(fs::path_rel(x))))
+})
+
+test_that("Obtain winbuilder working and home directories", {
+
+  expect_identical(getwd(), "Working directory?")
+  expect_identical(fs::path_wd(), "Working directory? (fs)")
+  expect_identical(fs::path_home(), "Home directory?")
+  expect_identical(fs::path_home_r(), "Home directory? (R def.)")
+  expect_identical(R.home(), "R home directory?")
+})
+
+test_that("Test fs", {
+  f <- fs::file_temp()
+  expect_identical(fs::path_abs(fs::path_rel(f)), f)
+  fs::dir_create(f)
+  expect_true(fs::dir_exists(f))
+  expect_true(fs::dir_exists(paste0(f, "/")))
+  expect_true(fs::dir_exists(paste0(f, "\\")))
 })

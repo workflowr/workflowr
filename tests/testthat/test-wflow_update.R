@@ -55,6 +55,10 @@ test_that("wflow_update can update to workflowr 1.0", {
   expect_identical("Update to 1.0", git_commit$message)
   expect_identical(tolower(sort(workflowr:::absolute(git_commit$commit_files))),
                    tolower(expected))
+  expect_identical(paste(tolower(sort(workflowr:::absolute(git_commit$commit_files))), collapse = "   "),
+                   "What were the obtained file names?")
+  expect_identical(paste(tolower(expected), collapse = "   "),
+                   "What were the expected file names?")
 
   # Confirm that subsequent calls to wflow_update have no effect
   files_dry_post <- wflow_update(project = tmp_dir)
@@ -63,6 +67,12 @@ test_that("wflow_update can update to workflowr 1.0", {
   expect_identical(files_updated_post, character(0))
   s <- git2r::status(r)
   expect_null(unlist(s))
+  expect_identical(paste(unlist(s$untracked), collapse = "  "),
+                     "What are the untracked files?")
+  expect_identical(paste(unlist(s$unstaged), collapse = "  "),
+                     "What are the unstaged files?")
+  expect_identical(paste(unlist(s$staged), collapse = "  "),
+                     "What are the staged files?")
 
   skip_on_cran()
 

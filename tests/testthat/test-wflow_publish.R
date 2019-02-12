@@ -68,6 +68,13 @@ test_that("wflow_publish can `republish`", {
 
 # Commit decoy file. Should not be affected by `update = TRUE` b/c it has not
 # been published.
+expect_identical(rmd_decoy, "What is the path to rmd_decoy?")
+expect_identical(workflowr:::absolute(rmd_decoy),
+                 "What is the absolute path to rmd_decoy?")
+expect_identical(fs::path_abs(rmd_decoy),
+                 "What is the absolute path to rmd_decoy? (fs)")
+expect_identical(paste(unlist(git2r::status(r)$untracked), collapse = "  "),
+                 "Is rmd_decoy an untracked file?")
 wflow_git_commit(rmd_decoy, "Commit decoy Rmd", project = site_dir)
 
 test_that("wflow_publish can `update`", {

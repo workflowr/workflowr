@@ -23,6 +23,24 @@ test_that("git2r can add and commit a file", {
   expect_identical(class(commit_1), "git_commit")
 })
 
+test_that("git2r can add and commit a file using an absolute path", {
+
+  if (packageVersion("git2r") <= as.numeric_version("0.21.0"))
+    skip("requires S3 version of git2r")
+
+  # Adapting the example from ?git2r::commit
+  path <- tempfile(pattern = "git2r-")
+  dir.create(path)
+  path <- workflowr:::absolute(path)
+  repo <- git2r::init(path)
+  git2r::config(repo, user.name = "Alice", user.email = "alice@example.org")
+  writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             file.path(path, "example.txt"))
+  git2r::add(repo, file.path(path, "example.txt"))
+  commit_1 <- git2r::commit(repo, "First commit message")
+  expect_identical(class(commit_1), "git_commit")
+})
+
 test_that("wflow_git_commit can add and commit a file using an absolute path", {
 
   if (packageVersion("git2r") <= as.numeric_version("0.21.0"))
@@ -99,7 +117,8 @@ test_that("Test fs::dir_exists with relative paths", {
 
 test_that("workflowr can interchange absolute/relative paths on winbuilder", {
   f <- tempfile()
-  expect_identical(workflowr:::absolute(workflowr:::relative(f)), f)
+  expect_identical(workflowr:::absolute(workflowr:::relative(f)),
+                   workflowr:::absolute(f))
   file.create(f)
   expect_true(file.exists(f))
   expect_true(file.exists(workflowr:::absolute(workflowr:::relative(f))))

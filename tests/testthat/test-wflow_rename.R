@@ -132,6 +132,7 @@ test_that("wflow_rename can handle a trailing slash in a directory name", {
   original <- "code/"
   new <- "scripts/"
 
+  expect_identical(workflowr:::absolute(getwd()), tdir)
   expect_true(fs::dir_exists(fs::path(original)))
   expect_true(fs::dir_exists(original))
 

@@ -198,10 +198,14 @@ wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
       error = function(e) {
         if (stringr::str_detect(e$message, "Nothing added to commit")) {
           reason <- "Commit failed because no files were added."
+          if (!is.null(files)) {
+            reason <- c(reason, " Attempted to commit the following files:\n",
+                        paste(absolute(files), collapse = "\n"))
+          }
         } else {
           reason <- "Commit failed for unknown reason."
         }
-        stop(wrap(reason, " Any untracked files must manually specified even if
+        stop(wrap(reason, "\n\nAny untracked files must manually specified even if
                   `all = TRUE`."), call. = FALSE)
       }
     )

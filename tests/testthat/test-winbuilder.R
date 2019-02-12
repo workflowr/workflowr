@@ -96,3 +96,11 @@ test_that("Test fs::dir_exists with relative paths", {
   expect_true(fs::dir_exists(paste0(f, "\\")))
   fs::dir_delete(f)
 })
+
+test_that("workflowr can interchange absolute/relative paths on winbuilder", {
+  f <- tempfile()
+  expect_identical(workflowr:::absolute(workflowr:::relative(f)), f)
+  file.create(f)
+  expect_true(file.exists(f))
+  expect_true(file.exists(workflowr:::absolute(workflowr:::relative(f))))
+})

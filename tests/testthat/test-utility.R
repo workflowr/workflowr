@@ -261,7 +261,52 @@ test_that("relative can resolve symlinks", {
   expect_equal(workflowr:::relative(nonexist), "x/y/z")
 })
 
-# Test get_host_from_remote --------------------------------------------------
+# Test toupper_win_drive -------------------------------------------------------
+
+test_that("toupper_win_drive capitalizes lowercase Windows drives", {
+  expect_equal(workflowr:::toupper_win_drive("a:/a/b/c"), "A:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("b:/a/b/c"), "B:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("c:/a/b/c"), "C:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("d:/a/b/c"), "D:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("x:/a/b/c"), "X:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("y:/a/b/c"), "Y:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("z:/a/b/c"), "Z:/a/b/c")
+})
+
+test_that("toupper_win_drive is vectorized", {
+  expect_equal(workflowr:::toupper_win_drive(c("c:/a/b/c", "d:/a/b/c")),
+               c("C:/a/b/c", "D:/a/b/c"))
+})
+
+test_that("toupper_win_drive ignores Unix-like paths", {
+  expect_equal(workflowr:::toupper_win_drive("/a/b/c"), "/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("/tmp"), "/tmp")
+  expect_equal(workflowr:::toupper_win_drive("/"), "/")
+})
+
+test_that("toupper_win_drive ignores relative paths", {
+  expect_equal(workflowr:::toupper_win_drive(".."), "..")
+  expect_equal(workflowr:::toupper_win_drive("./tmp"), "./tmp")
+  expect_equal(workflowr:::toupper_win_drive("../../a/b/c"), "../../a/b/c")
+})
+
+test_that("toupper_win_drive has no effect if drive is already capitalized", {
+  expect_equal(workflowr:::toupper_win_drive("A:/a/b/c"), "A:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("B:/a/b/c"), "B:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("C:/a/b/c"), "C:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("D:/a/b/c"), "D:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("X:/a/b/c"), "X:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("Y:/a/b/c"), "Y:/a/b/c")
+  expect_equal(workflowr:::toupper_win_drive("Z:/a/b/c"), "Z:/a/b/c")
+})
+
+test_that("toupper_win_drive ignores any potential drive that is not a single letter", {
+  expect_equal(workflowr:::toupper_win_drive("1:/"), "1:/")
+  expect_equal(workflowr:::toupper_win_drive("abc:/"), "abc:/")
+  expect_equal(workflowr:::toupper_win_drive("/a:/b/c"), "/a:/b/c")
+})
+
+# Test get_host_from_remote ----------------------------------------------------
 
 tmp_dir <- tempfile("test-get_host_from_remote")
 fs::dir_create(tmp_dir)

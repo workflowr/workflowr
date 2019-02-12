@@ -67,6 +67,8 @@ absolute <- function(path) {
   newpath <- fs::path_abs(newpath)
   # Expand ~ using R's definition of user directory
   newpath <- fs::path_expand_r(newpath)
+  # Ensure Windows Drive is uppercase
+  newpath <- toupper_win_drive(newpath)
   # Resolve symlinks
   newpath <- resolve_symlink(newpath)
   newpath <- as.character(newpath)
@@ -327,4 +329,12 @@ wflow_dependson <- function() {
 
   # If the document doesn't use caching, don't use dependson.
   return(NULL)
+}
+
+# Ensure that Windows drive is capitalized
+#
+# Motivation: getwd() on winbuilder returns d:/ but tempdir() returns D:/. This
+# causes problems when creating relative paths.
+toupper_win_drive <- function(path) {
+  stringr::str_replace(path, "^([a-z]):/", toupper)
 }

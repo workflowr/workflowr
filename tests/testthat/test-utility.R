@@ -237,6 +237,49 @@ test_that("relative handles NA and NULL", {
   expect_identical(actual, expected)
 })
 
+test_that("relative returns absolute path when path and start on different Windows drive", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  path = "D:/temp/file"
+  start = "C:/Users/CRAN"
+  expected <- path
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relative returns relative path when path and start on same Windows drive", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  path = "C:/temp/file"
+  start = "C:/Users/CRAN"
+  expected <- "../../temp/file"
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relative throws error when paths have different Windows drive", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  path = c("C:/temp/file", "D:/temp/file")
+  start = "C:/Users/CRAN"
+  expect_error(workflowr:::relative(path, start),
+               "All paths must be on the same Windows drive")
+})
+
+test_that("relative can handle Windows drives on winbuilder", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  path = c("D:/temp/file1", "D:/temp/file2")
+  start = "c:/Users/CRAN"
+  expected <- path
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
+})
+
 # Test resolve_symlink ---------------------------------------------------------
 
 test_that("absolute can resolve symlinks", {
@@ -304,6 +347,14 @@ test_that("toupper_win_drive ignores any potential drive that is not a single le
   expect_equal(workflowr:::toupper_win_drive("1:/"), "1:/")
   expect_equal(workflowr:::toupper_win_drive("abc:/"), "abc:/")
   expect_equal(workflowr:::toupper_win_drive("/a:/b/c"), "/a:/b/c")
+})
+
+# Test get_win_drive -----------------------------------------------------------
+
+test_that("get_win_drive returns the Windows drive", {
+  expect_equal(get_win_drive("C:/a/b/c"), "C:")
+  expect_equal(get_win_drive("D:/a/b/c"), "D:")
+  expect_equal(get_win_drive(c("C:/a/b/c", "D:/a/b/c")), c("C:", "D:"))
 })
 
 # Test get_host_from_remote ----------------------------------------------------

@@ -94,6 +94,19 @@ relative <- function(path, start = getwd()) {
   # First resolve any symlinks
   newpath <- absolute(newpath)
   start <- absolute(start)
+
+  # Handle any issues with Windows drives
+  if (.Platform$OS.type == "windows") {
+    # Require that all files are on the same Windows drive
+    drive <- unique(get_win_drive(newpath))
+    if (length(drive) != 1) {
+      stop("All paths must be on the same Windows drive", call. = FALSE)
+    }
+    # If path and start are on different drives, return the absolute path
+    drive_start <- get_win_drive(start)
+    if (drive != drive_start) return(newpath)
+  }
+
   # Convert to relative path
   newpath <- fs::path_rel(newpath, start = start)
   newpath <- as.character(newpath)
@@ -337,4 +350,14 @@ wflow_dependson <- function() {
 # causes problems when creating relative paths.
 toupper_win_drive <- function(path) {
   stringr::str_replace(path, "^([a-z]):/", toupper)
+}
+
+# Return the Windows drive. Called by relative().
+#
+# > get_win_drive(c("C:/a/b/c", "D:/a/b/c"))
+# [1] "C:" "D:"
+get_win_drive <- function(path) {
+  drive <- fs::path_split(path)
+  drive <- vapply(drive, function(x) x[1], FUN.VALUE = character(1))
+  return(drive)
 }

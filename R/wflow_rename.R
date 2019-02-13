@@ -232,7 +232,7 @@ print.wflow_rename <- function(x, ...) {
   }
   cat(sprintf("%s -> %s", x$files, x$to), sep = "\n")
 
-  if (length(x$files_git) > 0 && !is.na(x$files_git) && x$git) {
+  if (length(x$files_git) > 0 && !all(is.na(x$files_git)) && x$git) {
     if (x$dry_run) {
       cat("\n", wrap("The following file(s) would be included in the Git commit:"),
           "\n\n", sep = "")

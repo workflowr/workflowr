@@ -99,6 +99,7 @@ relative <- function(path, start = getwd()) {
   if (.Platform$OS.type == "windows") {
     # Require that all files are on the same Windows drive
     drive <- unique(get_win_drive(newpath))
+    drive <- drive[!is.na(drive)]
     if (length(drive) != 1) {
       stop("All paths must be on the same Windows drive", call. = FALSE)
     }

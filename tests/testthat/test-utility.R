@@ -138,64 +138,64 @@ test_that("absolute returns NA for NA", {
 # Test relative ----------------------------------------------------------------
 
 test_that("relative returns subdirectory", {
-  path = "/test/location/project"
-  start = "/test/location"
+  path <- "/test/location/project"
+  start <- "/test/location"
   expected <- "project"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative returns nested subdirectories", {
-  path = "/test/location/project/sub1/sub2"
-  start = "/test/location"
+  path <- "/test/location/project/sub1/sub2"
+  start <- "/test/location"
   expected <- "project/sub1/sub2"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative returns upstream directory", {
-  path = "/test"
-  start = "/test/location"
+  path <- "/test"
+  start <- "/test/location"
   expected <- ".."
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative returns multiple upstream directories", {
-  path = "/test"
-  start = "/test/location/project"
+  path <- "/test"
+  start <- "/test/location/project"
   expected <- "../.."
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative returns . when directories are the same", {
-  path = "/test/location/project"
-  start = "/test/location/project"
+  path <- "/test/location/project"
+  start <- "/test/location/project"
   expected <- "."
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative returns files in upstream directories", {
-  path = "/test/location/project/sub1/file"
-  start = "/test/location/project/sub2"
+  path <- "/test/location/project/sub1/file"
+  start <- "/test/location/project/sub2"
   expected <- "../sub1/file"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative can handle tilde for home directory", {
-  path = "~/test/location/project/sub1/file"
-  start = "~/test/location/project/sub2"
+  path <- "~/test/location/project/sub1/file"
+  start <- "~/test/location/project/sub2"
   expected <- "../sub1/file"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
 
 test_that("relative can handle a tilde in an absolute path", {
-  path = "/test/location/project/sub1/file~"
-  start = "/test/location/project/sub2"
+  path <- "/test/location/project/sub1/file~"
+  start <- "/test/location/project/sub2"
   expected <- "../sub1/file~"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
@@ -210,8 +210,8 @@ test_that("relative returns NA for NA", {
 })
 
 test_that("relative works on vector input", {
-  path = c("/test", "/test/location/subdir")
-  start = "/test/location"
+  path <- c("/test", "/test/location/subdir")
+  start <- "/test/location"
   expected <- c("..", "subdir")
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
@@ -220,8 +220,8 @@ test_that("relative works on vector input", {
 test_that("relative works on relative paths to existing files", {
   fs::dir_create("x/y/z")
   on.exit(unlink("x", recursive = TRUE, force = TRUE))
-  path = c("x", "x/y/z")
-  start = "./x/y"
+  path <- c("x", "x/y/z")
+  start <- "./x/y"
   expected <- c("..", "z")
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
@@ -230,8 +230,8 @@ test_that("relative works on relative paths to existing files", {
 test_that("relative handles NA and NULL", {
   expect_null(workflowr:::relative(NULL))
   expect_identical(NA, workflowr:::relative(NA))
-  path = c("/test", NA, NULL, "/test/location/subdir")
-  start = "/test/location"
+  path <- c("/test", NA, NULL, "/test/location/subdir")
+  start <- "/test/location"
   expected <- c("..", NA, NULL, "subdir")
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
@@ -241,8 +241,8 @@ test_that("relative returns absolute path when path and start on different Windo
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path = "D:/temp/file"
-  start = "C:/Users/CRAN"
+  path <- "D:/temp/file"
+  start <- "C:/Users/CRAN"
   expected <- path
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
@@ -252,8 +252,8 @@ test_that("relative returns relative path when path and start on same Windows dr
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path = "C:/temp/file"
-  start = "C:/Users/CRAN"
+  path <- "C:/temp/file"
+  start <- "C:/Users/CRAN"
   expected <- "../../temp/file"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
@@ -263,8 +263,8 @@ test_that("relative throws error when paths have different Windows drive", {
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path = c("C:/temp/file", "D:/temp/file")
-  start = "C:/Users/CRAN"
+  path <- c("C:/temp/file", "D:/temp/file")
+  start <- "C:/Users/CRAN"
   expect_error(workflowr:::relative(path, start),
                "All paths must be on the same Windows drive")
 })
@@ -273,8 +273,36 @@ test_that("relative can handle Windows drives on winbuilder", {
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path = c("D:/temp/file1", "D:/temp/file2")
-  start = "c:/Users/CRAN"
+  path <- c("D:/temp/file1", "D:/temp/file2")
+  start <- "c:/Users/CRAN"
+  expected <- path
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
+})
+
+test_that("relative handles NA and NULL with Windows drives", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  path <- c("C:/temp/file1", NA, NULL, "C:/temp/file2")
+  start <- "C:/Users/CRAN"
+  expected <- c("../../temp/file1", NA, "../../temp/file2")
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
+
+  path <- c("D:/temp/file1", NA, NULL, "D:/temp/file2")
+  start <- "C:/Users/CRAN"
+  expected <- path
+  actual <- workflowr:::relative(path, start)
+  expect_identical(actual, expected)
+
+  path <- c("C:/temp/file", NA, NULL, "D:/temp/file")
+  start <- "C:/Users/CRAN"
+  expect_error(workflowr:::relative(path, start),
+               "All paths must be on the same Windows drive")
+
+  path <- c("D:/temp/file1", NA, NULL, "D:/temp/file2")
+  start <- "c:/Users/CRAN"
   expected <- path
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)

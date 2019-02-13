@@ -123,18 +123,16 @@ test_that("wflow_rename can rename one directory from outside project", {
                                           file.path(original, "README.md"))))
 })
 
-
-# wflow_rename checks that all files exists with fs::file_exists(). On Linux and
-# macOS this is fine because both fs::file_exists("dir") and fs::file_exists("dir/")
-# return TRUE. However, on Windows this is not the case: fs::file_exists("dir")
-# returns TRUE and fs::file_exists("dir/") returns FALSE.
+# In the past I've had some issues with fs::file_exists()/fs::dir_exists() and
+# trailing slashes in filepaths. I no longer observe this issue, and this test
+# will catch it if it comes back.
 test_that("wflow_rename can handle a trailing slash in a directory name", {
   original <- "code/"
   new <- "scripts/"
 
   expect_identical(workflowr:::absolute(getwd()), tdir)
-  expect_true(fs::dir_exists(fs::path(original)))
-  expect_true(fs::dir_exists(original))
+  expect_true(fs::dir_exists(original),
+              info = glue::glue("wd is {fs::path_wd()} and contains \n{paste(fs::dir_ls(), collapse = '\n')}"))
 
   renamed <- wflow_rename(original, new, message = "Rename code directory")
   expect_false(fs::dir_exists(original))

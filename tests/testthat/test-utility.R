@@ -241,7 +241,7 @@ test_that("relative returns absolute path when path and start on different Windo
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path <- "D:/temp/file"
+  path <- "D:/a/file"
   start <- "C:/Users/CRAN"
   expected <- path
   actual <- workflowr:::relative(path, start)
@@ -252,9 +252,9 @@ test_that("relative returns relative path when path and start on same Windows dr
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path <- "C:/temp/file"
+  path <- "C:/a/file"
   start <- "C:/Users/CRAN"
-  expected <- "../../temp/file"
+  expected <- "../../a/file"
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 })
@@ -263,7 +263,7 @@ test_that("relative throws error when paths have different Windows drive", {
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path <- c("C:/temp/file", "D:/temp/file")
+  path <- c("C:/a/file", "D:/a/file")
   start <- "C:/Users/CRAN"
   expect_error(workflowr:::relative(path, start),
                "All paths must be on the same Windows drive")
@@ -273,7 +273,7 @@ test_that("relative can handle Windows drives on winbuilder", {
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path <- c("D:/temp/file1", "D:/temp/file2")
+  path <- c("D:/a/file1", "D:/a/file2")
   start <- "c:/Users/CRAN"
   expected <- path
   actual <- workflowr:::relative(path, start)
@@ -284,24 +284,24 @@ test_that("relative handles NA and NULL with Windows drives", {
 
   if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
 
-  path <- c("C:/temp/file1", NA, NULL, "C:/temp/file2")
+  path <- c("C:/a/file1", NA, NULL, "C:/a/file2")
   start <- "C:/Users/CRAN"
-  expected <- c("../../temp/file1", NA, "../../temp/file2")
+  expected <- c("../../a/file1", NA, "../../a/file2")
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 
-  path <- c("D:/temp/file1", NA, NULL, "D:/temp/file2")
+  path <- c("D:/a/file1", NA, NULL, "D:/a/file2")
   start <- "C:/Users/CRAN"
   expected <- path
   actual <- workflowr:::relative(path, start)
   expect_identical(actual, expected)
 
-  path <- c("C:/temp/file", NA, NULL, "D:/temp/file")
+  path <- c("C:/a/file", NA, NULL, "D:/a/file")
   start <- "C:/Users/CRAN"
   expect_error(workflowr:::relative(path, start),
                "All paths must be on the same Windows drive")
 
-  path <- c("D:/temp/file1", NA, NULL, "D:/temp/file2")
+  path <- c("D:/a/file1", NA, NULL, "D:/a/file2")
   start <- "c:/Users/CRAN"
   expected <- path
   actual <- workflowr:::relative(path, start)

@@ -184,7 +184,7 @@ wflow_remove <- function(files,
   # Commit removed files -------------------------------------------------------
 
   if (use_git && !dry_run && length(files_to_remove_from_git) > 0) {
-    git2r::add(r, absolute(files_to_remove_from_git))
+    git2r_add(r, files_to_remove_from_git)
     git2r::commit(r, message = message)
     commit <- git2r::commits(r, n = 1)[[1]]
   } else {

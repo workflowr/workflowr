@@ -75,7 +75,7 @@ test_that("check_vc reports Git repo even if no commits", {
                    "<strong>Repository version:</strong> No commits yet")
 })
 
-git2r::add(r, rmd)
+workflowr:::git2r_add(r, rmd)
 git2r::commit(r, "Add rmd")
 s <- git2r::status(r, ignored = TRUE)
 current_commit <- git2r_slot(git2r::commits(r)[[1]], "sha")
@@ -303,7 +303,7 @@ test_that("check_rmd reports an ignored Rmd file", {
   expect_true(grepl("ignored", observed$details))
 })
 
-git2r::add(r, rmd)
+workflowr:::git2r_add(r, rmd)
 s <- git2r::status(r, ignored = TRUE)
 
 test_that("check_rmd reports a staged Rmd file", {

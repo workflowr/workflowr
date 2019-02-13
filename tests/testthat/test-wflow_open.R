@@ -210,7 +210,7 @@ test_that("wflow_open sends warning if used in workflowrBeta project", {
   git2r::init(tmp_dir)
   r <- git2r::repository(tmp_dir)
   git2r::config(r, user.name = "Test Name", user.email = "test@email")
-  git2r::add(r, ".")
+  workflowr:::git2r_add(r, ".")
   git2r::commit(r, "Initial commit.")
 
   rmd <- file.path(tmp_dir, "analysis", "new.Rmd")

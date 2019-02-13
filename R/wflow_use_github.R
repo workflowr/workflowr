@@ -122,7 +122,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   } else {
     docs <- file.path(dirname(s$docs), "docs")
     renamed <- wflow_rename(s$docs, docs, git = FALSE, project = project)
-    git2r::add(r, absolute(renamed$files_git))
+    git2r_add(r, renamed$files_git)
     message("* Created the website directory docs/")
   }
 
@@ -138,7 +138,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   } else {
     site_yml$output_dir <- "../docs"
     yaml::write_yaml(site_yml, file = site_yml_fname)
-    git2r::add(r, site_yml_fname)
+    git2r_add(r, site_yml_fname)
     message("* Set output directory to docs/")
   }
 
@@ -176,7 +176,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
                                        text = "Source code",
                                        href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)
-    git2r::add(r, site_yml_fname)
+    git2r_add(r, site_yml_fname)
     message("* Added GitHub link to navigation bar")
   }
 

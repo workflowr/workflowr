@@ -1,8 +1,5 @@
 context("wflow_git_commit")
 
-# Temporarily skip to view other errors on winbuilder
-skip_on_cran()
-
 # Setup -----------------------------------------------------------------------
 
 library("git2r")

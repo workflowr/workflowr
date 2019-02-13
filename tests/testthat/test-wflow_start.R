@@ -180,7 +180,7 @@ test_that("wflow_start does not overwrite an existing .git directory and does no
   git2r::config(r, user.name = "Test Name", user.email = "test@email")
   fake_file <- file.path(site_dir, "file.txt")
   fs::file_create(fake_file)
-  git2r::add(r, fake_file)
+  workflowr:::git2r_add(r, fake_file)
   git2r::commit(r, message = "The first commit")
   fake_untracked <- file.path(site_dir, "untracked.txt")
   expect_silent(wflow_start(site_dir, existing = TRUE,
@@ -569,7 +569,7 @@ test_that("print.wflow_start works with existing Git repo", {
   config(repo, user.name = "Test Name", user.email = "test@email")
   f <- file.path(tmp_dir, "file")
   fs::file_create(f)
-  git2r::add(repo, f)
+  workflowr:::git2r_add(repo, f)
   git2r::commit(repo, "initial commit")
 
   # Dry run

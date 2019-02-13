@@ -127,7 +127,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   } else {
     public <- file.path(dirname(s$docs), "public")
     renamed <- wflow_rename(s$docs, public, git = FALSE, project = project)
-    git2r::add(r, absolute(renamed$files_git))
+    git2r_add(r, renamed$files_git)
     message("* Created the website directory public/")
   }
 
@@ -143,7 +143,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   } else {
     site_yml$output_dir <- "../public"
     yaml::write_yaml(site_yml, file = site_yml_fname)
-    git2r::add(r, site_yml_fname)
+    git2r_add(r, site_yml_fname)
     message("* Set output directory to public/")
   }
 
@@ -156,7 +156,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     message("* .gitlab-ci.yml file already exists")
   } else {
     cat(glue::glue(gitlab_yml), file = gitlab_yml_fname)
-    git2r::add(r, gitlab_yml_fname)
+    git2r_add(r, gitlab_yml_fname)
     message("* Created the file .gitlab-ci.yml")
   }
 
@@ -194,7 +194,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
                                        text = "Source code",
                                        href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)
-    git2r::add(r, site_yml_fname)
+    git2r_add(r, site_yml_fname)
     message("* Added GitLab link to navigation bar")
   }
 

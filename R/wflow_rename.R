@@ -200,7 +200,7 @@ wflow_rename <- function(files,
   # Commit renamed files -------------------------------------------------------
 
   if (use_git && !dry_run && length(files_to_commit) > 0) {
-    git2r::add(r, absolute(files_to_commit))
+    git2r_add(r, files_to_commit)
     git2r::commit(r, message = message)
     commit <- git2r::commits(r, n = 1)[[1]]
   } else {

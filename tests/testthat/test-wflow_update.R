@@ -1,10 +1,5 @@
 context("wflow_update")
 
-# Note: Had to convert file paths to lower case b/c win-builder returns "d:" for
-# the observed and "D:" for the expected files even though they both pass
-# through workflowr:::absolute. Hard to debug since this doesn't happen locally
-# or on AppVeyor.
-
 # Test wflow_update ------------------------------------------------------------
 
 test_that("wflow_update can update to workflowr 1.0", {
@@ -32,13 +27,13 @@ test_that("wflow_update can update to workflowr 1.0", {
   # wflow_update().
   expected <- sort(expected)
   files_dry <- wflow_update(project = tmp_dir)
-  expect_identical(tolower(workflowr:::absolute(files_dry)),
-                   tolower(expected))
+  expect_identical(workflowr:::absolute(files_dry),
+                   workflowr:::absolute(expected))
 
   # Update the files
   files_updated <- wflow_update(dry_run = FALSE, project = tmp_dir)
-  expect_identical(tolower(workflowr:::absolute(files_updated)),
-                   tolower(expected))
+  expect_identical(workflowr:::absolute(files_updated),
+                   workflowr:::absolute(expected))
 
   # Confirm files are updated correctly
   lines_expected <- Map(readLines, list.files("files/test-wflow_update/post",
@@ -53,8 +48,8 @@ test_that("wflow_update can update to workflowr 1.0", {
   git_commit <- wflow_git_commit(file.path(tmp_dir, "_workflowr.yml"),
                                  "Update to 1.0", all = TRUE, project = tmp_dir)
   expect_identical("Update to 1.0", git_commit$message)
-  expect_identical(tolower(sort(workflowr:::absolute(git_commit$commit_files))),
-                   tolower(expected))
+  expect_identical(sort(workflowr:::absolute(git_commit$commit_files)),
+                   workflowr:::absolute(expected))
 
   # Confirm that subsequent calls to wflow_update have no effect
   files_dry_post <- wflow_update(project = tmp_dir)
@@ -71,8 +66,8 @@ test_that("wflow_update can update to workflowr 1.0", {
   html <- workflowr:::to_html(rmd, outdir = file.path(tmp_dir, "docs"))
   publish <- wflow_publish(rmd, "Publish updated files", view = FALSE,
                            project = tmp_dir)
-  expect_identical(tolower(workflowr:::absolute(publish$step2$built)),
-                   tolower(rmd))
-  expect_true(all(tolower(html) %in%
-                  tolower(workflowr:::absolute(publish$step3$commit_files))))
+  expect_identical(workflowr:::absolute(publish$step2$built),
+                   workflowr:::absolute(rmd))
+  expect_true(all(workflowr:::absolute(html) %in%
+                  workflowr:::absolute(publish$step3$commit_files)))
 })

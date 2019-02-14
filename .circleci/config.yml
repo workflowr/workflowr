@@ -4,6 +4,9 @@ jobs:
     working_directory: /workflowr
     docker:
       - image: rocker/r-apt:bionic
+    branches:
+      only:
+        - circleci
     steps:
       - checkout
       - run:

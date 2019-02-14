@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    working_directory: /workflowr
+    docker:
+      - image: rocker/r-apt:bionic
+    steps:
+      - checkout
+      - run:
+          command: apt-get update && apt-get install -y r-cran-devtools
+      - run:
+          command: r -e "devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"
+      - run:
+          command: bash build.sh --no-manual
+      - store_artifacts:
+          path: workflowr.Rcheck/

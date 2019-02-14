@@ -1,50 +1,122 @@
-# workflowr 1.1.1.9001
+# workflowr 1.2.0
 
-* Add instructions for hosting workflowr website with GitLab (@lazappi in #112)
+This release overhauls the layout of the reproducibility report, adds support
+for GitLab, introduces some safety checks and warnings related to caching,
+provides more documentation, and more.
+
+## Full support for GitLab
+
+While it has always been possible to host workflowr projects using platforms
+other than GitHub, it was less convenient and not all the features were
+supported. With this release, a workflowr project hosted on GitLab has all the
+same features as a workflowr project hosted on GitHub, including links to past
+versions of the R Markdown, HTML, and figure files. It's also possible to use
+workflowr with GitHub Enterprise or a custom GitLab instance, but you'll have to
+coordinate with your administrators to make sure it's possible to host the
+website.
+
+* Create vignette "Hosting workflowr websites using GitLab" (written with
+@lazappi, #112)
 * Add argument `domain` to `wflow_git_remote()` to allow specifying any remote
 Git host, e.g. `domain = "gitlab.com"`
-* Insert warning into HTML if user configures the knitr chunk option
-`fig.path`, which workflowr ignores (idea from @lazappi in #114)
-* Improve formatting of tables using [Bootstrap table classes][bootstrap-tables]
-* Collapse the "Session information" chunk (@xiangzhu, #120)
-* Convert table of past figure versions to a collapsable button (@xiangzhu, #120)
-* Collapse the reproducibility report (@timtrice, #110)
+* Create function `wflow_use_gitlab()` to automate GitLab setup
+
+## Reproducibility report and other layout changes
+
+The layout of the reproducibility report and other content that workflowr
+inserts in the HTML output has been overhauled to be both highly informative but
+also collapsed by default. This way the information is there if you need it, but
+otherwise is minimally distracting.
+
+* Collapse the reproducibility report (suggested by @timtrice, #110)
+* Collapse the "Session information" chunk (suggested by @xiangzhu, #120)
+* Convert table of past figure versions to a collapsable button (suggested by
+@xiangzhu, #120)
+* Improve formatting of tables of past version of files using [Bootstrap table
+classes][bootstrap-tables]
 * Remove the footer
-* Document how to share common code across analyses (@timtrice, #111, #142)
-* Have `wflow_git_push()` set the upstream tracking branch by default (see
-[git2r Issue 375][git2r-375])
-* `wflow_build()` reports the current working directory. If the knit directory
-(where the code is executed) is different than the working directory,
-`wflow_build()` reports where the code in each file is being executed
+* Report the knit directory (where the code was executed) in the workflowr
+report
+* Link to workflowr GitHub repository no longer automatically inserted into
+navigation bar. Use either `wflow_use_github()` or `wflow_use_gitlab()` to
+insert a link to your workflowr project into the navigation bar
+
+## Improved support for caching
+
+A popular knitr/rmarkdown feature is caching slow-running chunks. This can be
+problematic for workflowr because it assumes that the results are newly created
+when `wflow_publish()` publishes the results with a given version of the code.
+In this release, workflowr now provides warnings, safety checks, and some
+convience arguments for safely using caching.
+
+* Include a check in the reproducibility report that reports any existing cached
+chunks
 * A warning is inserted directly in the HTML file after any code chunk that is
 cached (`cache=TRUE`) but is not set to re-run if its upstream chunks are
 changed (`autodep=FALSE`)
-* Include a check in the reproducibility report that reports any existing cached
-chunks
-* Report the knit directory (where the code was executed) in the workflowr
-report
 * Add argument `clean_fig_files` to `wflow_build()`. The default for
 `wflow_build()` is `FALSE`, so that old figures are not removed. This is useful
 for iterative development when plots from cached chunks may not be regenerated
 during a build. However, `clean_fig_files` is fixed to `TRUE` for
 `wflow_publish()` to ensure that the final results are produced during the
-build (@lazappi, #113).
+build (suggested by @lazappi, #113)
 * Add argument `delete_cache` to `wflow_build()`/`wflow_publish()`. The defult
 is `FALSE`, but if set to `TRUE` it will delete the cache directory prior to
 building each R Markdown file. This helps ensure reproducibility of the
-published results.
+published results
+* Have `wflow_build()` send message about status of cache directory
+
+## Documentation
+
+In addition to the new vignette on GitLab, this release has multiple other new
+vignettes plus updates to existing ones.
+
+* Add vignette "Sharing common code across analyses"
+(written with @timtrice, #111, #142)
+* Add vignette "Alternative strategies for deploying workflowr websites"
+    * Password-protected site with Amazon S3 (written by @edavidaja, #124)
+    * Secure sharing with Beaker Browser (written by @johnsonlab, #59, #65)
+* Update getting started vignette to use new function `wflow_use_github()`
+* Add section "Style with custom CSS" to customization vignette
+* Add FAQ entry "How can I include external images in my website?"
+* Add code of conduct
+
+## Miscellaneous
+
+* Improve support for hosting on Shiny Server. Setting the option
+`fig_path_ext: false` in `_workflowr.yml` removes the file extension from the
+figure subdirectories, allowing them to be viewed on Shiny Server (implemented
+by @Tutuchan, #119, #122)
+* Insert warning into HTML if user configures the knitr chunk option
+`fig.path`, which workflowr ignores (idea from @lazappi, #114)
 * Add argument `disable_remote` to `wflow_start()`. It creates a Git [pre-push
 hook][pre-push-hook] that disables the ability to push to a remote repository.
-Useful for confidential projects. Currently only available for Linux and macOS.
-(@rgayler, #141)
+Useful for confidential projects. Currently only available for Linux and macOS
+(suggested by @rgayler, #141)
 * Refactor and export the individual functions of `wflow_html()` to facilitate
 integrating workflowr features into other R Markdown output formats such as
-[blogdown][] (@docmanny, #126)
+[blogdown][] (suggested by @docmanny, #126)
+* New function `wflow_rename()` to rename files and directories, including
+committing the change with Git
+* Use [fs][] internally to improve cross-platform handling of file paths
+* Have `wflow_publish()`/`wflow_git_commit()` fail early if any of the files
+have merge conflicts
+* Switch from [rawgit][] to [raw.githack][] to serve past versions of HTML files
+(#134)
+* Have `wflow_git_push()` set the upstream tracking branch by default (see
+[git2r Issue 375][git2r-375])
+* Have `wflow_build()` report the current working directory. If the knit
+directory (where the code is executed) is different than the working directory,
+have `wflow_build()` report where the code in each file is being executed
+* As usual, some minor bug fixes, improved error handling, and more tests
 
 [blogdown]: https://github.com/rstudio/blogdown
 [bootstrap-tables]: https://www.w3schools.com/bootstrap/bootstrap_tables.asp
+[fs]: https://github.com/r-lib/fs
 [git2r-375]: https://github.com/ropensci/git2r/issues/375
 [pre-push-hook]: https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+[rawgit]: https://rawgit.com/
+[raw.githack]: https://raw.githack.com/
 
 # workflowr 1.1.1
 
@@ -94,7 +166,7 @@ long-running code chunks (idea from @pcarbo)
 
 * Dramatically increase speed of `wflow_status()`/`wflow_publish()` by using
 `git2r::odb_blobs()` to obtain past commit times of files (if these functions
-are stil slow for you, try running `git gc` in the Terminal)
+are still slow for you, try running `git gc` in the Terminal)
 * Make workflowr compatible with latest release of [git2r][] as well as previous
 versions
 * Move rmarkdown from Depends to Imports. Unlike earlier versions, it's no

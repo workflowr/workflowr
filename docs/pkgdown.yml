@@ -1,5 +1,5 @@
-pandoc: 1.19.2.1
-pkgdown: 1.1.0
+pandoc: 1.19.2.4
+pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   wflow-01-getting-started: wflow-01-getting-started.html
@@ -7,4 +7,7 @@ articles:
   wflow-03-migrating: wflow-03-migrating.html
   wflow-04-how-it-works: wflow-04-how-it-works.html
   wflow-05-faq: wflow-05-faq.html
+  wflow-06-gitlab: wflow-06-gitlab.html
+  wflow-07-common-code: wflow-07-common-code.html
+  wflow-08-deploy: wflow-08-deploy.html
 

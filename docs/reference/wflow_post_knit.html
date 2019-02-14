@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract a commit from a Git repository — extract_commit • workflowr</title>
+<title>post_knit function for workflowr — wflow_post_knit • workflowr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,11 @@
 
 
 
-<meta property="og:title" content="Extract a commit from a Git repository — extract_commit" />
+<meta property="og:title" content="post_knit function for workflowr — wflow_post_knit" />
 
-<meta property="og:description" content="extract_commit extracts the 7-digit SHA1 identifier and message for a
-specified commit." />
+<meta property="og:description" content="This is the post_knit function that wflow_html passes to
+the function output_format from the package
+rmarkdown. For advanced usage only." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,60 +110,75 @@ specified commit." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract a commit from a Git repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/git.R'><code>R/git.R</code></a></small>
-    <div class="hidden name"><code>extract_commit.Rd</code></div>
+    <h1>post_knit function for workflowr</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_html.R'><code>R/wflow_html.R</code></a></small>
+    <div class="hidden name"><code>wflow_post_knit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>extract_commit</code> extracts the 7-digit SHA1 identifier and message for a
-specified commit.</p>
+    <p>This is the <code>post_knit</code> function that <code><a href='wflow_html.html'>wflow_html</a></code> passes to
+the function <code><a href='https://www.rdocumentation.org/packages/rmarkdown/topics/output_format'>output_format</a></code> from the package
+rmarkdown. For advanced usage only.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>extract_commit</span>(<span class='no'>path</span>, <span class='no'>num</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_post_knit</span>(<span class='no'>metadata</span>, <span class='no'>input_file</span>, <span class='no'>runtime</span>, <span class='no'>encoding</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>character. Specify the path to a directory that is a Git
-repository (or any subdirectory of the Git repository).</p></td>
+      <th>metadata</th>
+      <td><p>The metadata specified in the YAML header of the R Markdown
+file</p></td>
     </tr>
     <tr>
-      <th>num</th>
-      <td><p>numeric. The number of the commit to extract in reverse
-chronological order. In other words, 1 is the most recent commit, 2 is the
-second most recent commit, etc.</p></td>
+      <th>input_file</th>
+      <td><p>Name of R Markdown file</p></td>
+    </tr>
+    <tr>
+      <th>runtime</th>
+      <td><p>The runtime target for rendering. The <code>static</code> option
+produces output intended for static files; <code>shiny</code> produces output
+suitable for use in a Shiny document (see <code>run</code>). The default,
+<code>auto</code>, allows the <code>runtime</code> target specified in the YAML metadata
+to take precedence, and renders for a <code>static</code> runtime target otherwise.</p></td>
+    </tr>
+    <tr>
+      <th>encoding</th>
+      <td><p>The encoding of the input file. See <code><a href='https://www.rdocumentation.org/packages/base/topics/connections'>file</a></code> for
+more information.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>arguments passed to the <code>post_knit</code> function of
+<code>rmarkdown::<a href='https://www.rdocumentation.org/packages/rmarkdown/topics/html_document'>html_document</a></code></p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A list with the named elements <code>sha1</code> and <code>message</code> (both
-  characters). If a Git repository is not found at <code>path</code>, both are
-  <code>NA</code>.</p>
+    <p>If you'd like to combine workflowr with another R Markdown output format, you
+may need to use <code>wflow_post_knit</code>. This function fixes the path to the R
+Markdown file (which is manipulated by <code><a href='wflow_pre_knit.html'>wflow_pre_knit</a></code>).</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='wflow_html.html'>wflow_html</a></code>, <code><a href='wflow_pre_knit.html'>wflow_pre_knit</a></code>,
+         <code><a href='wflow_pre_processor.html'>wflow_pre_processor</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Most recent commit</span>
-<span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>1</span>)
-<span class='co'># Penultimate commit</span>
-<span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>2</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

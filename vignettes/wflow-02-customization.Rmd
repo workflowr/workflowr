@@ -123,10 +123,10 @@ specialized classes.
 ## Customize the navigation bar
 
 The navigation bar appears on the top of each page. By default it includes links
-to `index.html` (Home), `about.html` (About), `license.html` (License), and the 
-workflowr repository (the GitHub icon). This is all specified in
-`analysis/_site.yml`. To start, replace the URL to the workflowr GitHub
-repository with the URL to your GitHub repository.
+to `index.html` (Home), `about.html` (About), and `license.html` (License). This
+is all specified in `analysis/_site.yml`. If you run either `wflow_use_github()`
+or `wflow_use_gitlab()`, a link to your source code on GitHub or GitLab will be
+added to the navigation bar.
 
 If you have other important pages, you can add them as well. For example, to add
 the text "The main result" which links to `main-result.html`, you would add the

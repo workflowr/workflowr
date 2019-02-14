@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract a commit from a Git repository — extract_commit • workflowr</title>
+<title>Rename files and directories — wflow_rename • workflowr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,12 @@
 
 
 
-<meta property="og:title" content="Extract a commit from a Git repository — extract_commit" />
+<meta property="og:title" content="Rename files and directories — wflow_rename" />
 
-<meta property="og:description" content="extract_commit extracts the 7-digit SHA1 identifier and message for a
-specified commit." />
+<meta property="og:description" content="wflow_rename renames files and directories. If the file to be renamed
+is an R Markdown file, the corresponding HTML and other related files are
+also renamed. If the workflowr project uses Git, wflow_rename commits
+the changes." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,50 +111,91 @@ specified commit." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract a commit from a Git repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/git.R'><code>R/git.R</code></a></small>
-    <div class="hidden name"><code>extract_commit.Rd</code></div>
+    <h1>Rename files and directories</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_rename.R'><code>R/wflow_rename.R</code></a></small>
+    <div class="hidden name"><code>wflow_rename.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>extract_commit</code> extracts the 7-digit SHA1 identifier and message for a
-specified commit.</p>
+    <p><code>wflow_rename</code> renames files and directories. If the file to be renamed
+is an R Markdown file, the corresponding HTML and other related files are
+also renamed. If the workflowr project uses Git, <code>wflow_rename</code> commits
+the changes.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>extract_commit</span>(<span class='no'>path</span>, <span class='no'>num</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_rename</span>(<span class='no'>files</span>, <span class='no'>to</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>character. Specify the path to a directory that is a Git
-repository (or any subdirectory of the Git repository).</p></td>
+      <th>files</th>
+      <td><p>character. Files to be renamed. Supports file
+<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
     </tr>
     <tr>
-      <th>num</th>
-      <td><p>numeric. The number of the commit to extract in reverse
-chronological order. In other words, 1 is the most recent commit, 2 is the
-second most recent commit, etc.</p></td>
+      <th>to</th>
+      <td><p>character. New names for the files. Must be the same length as
+<code>files</code>.</p></td>
+    </tr>
+    <tr>
+      <th>message</th>
+      <td><p>character (default: NULL). A commit message.</p></td>
+    </tr>
+    <tr>
+      <th>git</th>
+      <td><p>logical (default: TRUE). Commit the changes (only applicable if
+Git repository is present).</p></td>
+    </tr>
+    <tr>
+      <th>dry_run</th>
+      <td><p>logical (default: FALSE). Preview the files to be renamed but
+do not actually rename them.</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with the named elements <code>sha1</code> and <code>message</code> (both
-  characters). If a Git repository is not found at <code>path</code>, both are
-  <code>NA</code>.</p>
+    <p>An object of class <code>wflow_rename</code>, which is a list with the
+  following elements:</p>
+<p></p><ul>
+<li><p><b>files</b>: The relative path(s) to the renamed file(s).</p></li>
+<li><p><b>to</b>: The new relative path(s) to rename the file(s).</p></li>
+<li><p><b>message</b>: The message describing the commit (if applicable).</p></li>
+<li><p><b>git</b>: The input argument <code>git</code>.</p></li>
+<li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
+<li><p><b>commit</b>:The object returned by
+  git2r::<code><a href='https://www.rdocumentation.org/packages/git2r/topics/commit'>commit</a></code> (only included if <code>dry_run
+  == FALSE</code>).</p></li>
+<li><p><b>files_git</b>: The relative path(s) to the file(s) renamed from
+  the Git repository.</p></li>
+</ul>
+
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='wflow_git_commit.html'>wflow_git_commit</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Most recent commit</span>
-<span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>1</span>)
-<span class='co'># Penultimate commit</span>
-<span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>2</span>)
-<span class='co'># }</span></pre>
+<span class='co'># rename a single file</span>
+<span class='fu'>wflow_rename</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"analysis/new.Rmd"</span>, <span class='st'>"rename old analysis."</span>)
+<span class='co'># rename multiple files</span>
+<span class='fu'>wflow_rename</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"output/small-data.txt"</span>),
+             <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"analysis/new.Rmd"</span>, <span class='st'>"output/new-data.txt"</span>),
+             <span class='st'>"rename old analysis and its associated data."</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -160,6 +203,8 @@ second most recent commit, etc.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

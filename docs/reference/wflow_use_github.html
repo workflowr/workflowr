@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract a commit from a Git repository — extract_commit • workflowr</title>
+<title>Deploy site with GitHub — wflow_use_github • workflowr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,13 @@
 
 
 
-<meta property="og:title" content="Extract a commit from a Git repository — extract_commit" />
+<meta property="og:title" content="Deploy site with GitHub — wflow_use_github" />
 
-<meta property="og:description" content="extract_commit extracts the 7-digit SHA1 identifier and message for a
-specified commit." />
+<meta property="og:description" content="wflow_use_github automates all the local configuration necesary to
+deploy your workflowr project with GitHub
+Pages. However, you will need to manually login to your account and create
+the new repository on GitHub. The final step is to run wflow_git_push
+in the R console." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -109,50 +112,98 @@ specified commit." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract a commit from a Git repository</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/git.R'><code>R/git.R</code></a></small>
-    <div class="hidden name"><code>extract_commit.Rd</code></div>
+    <h1>Deploy site with GitHub</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_use_github.R'><code>R/wflow_use_github.R</code></a></small>
+    <div class="hidden name"><code>wflow_use_github.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>extract_commit</code> extracts the 7-digit SHA1 identifier and message for a
-specified commit.</p>
+    <p><code>wflow_use_github</code> automates all the local configuration necesary to
+deploy your workflowr project with <a href='https://pages.github.com/'>GitHub
+Pages</a>. However, you will need to manually login to your account and create
+the new repository on GitHub. The final step is to run <code>wflow_git_push</code>
+in the R console.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>extract_commit</span>(<span class='no'>path</span>, <span class='no'>num</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_use_github</span>(<span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repository</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>navbar_link</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>, <span class='kw'>domain</span> <span class='kw'>=</span> <span class='st'>"github.com"</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>path</th>
-      <td><p>character. Specify the path to a directory that is a Git
-repository (or any subdirectory of the Git repository).</p></td>
+      <th>username</th>
+      <td><p>character (default: NULL). The GitHub username for the remote
+repository. If not specified, workflowr will attempt to guess this from the
+current remote named "origin" if it had previously been configured.</p></td>
     </tr>
     <tr>
-      <th>num</th>
-      <td><p>numeric. The number of the commit to extract in reverse
-chronological order. In other words, 1 is the most recent commit, 2 is the
-second most recent commit, etc.</p></td>
+      <th>repository</th>
+      <td><p>character (default: NULL). The name of the remote
+repository on GitHub. If not specified, workflowr will attempt to guess
+this from the current remote named "origin" if it had previously been
+configured.</p></td>
+    </tr>
+    <tr>
+      <th>navbar_link</th>
+      <td><p>logical (default: TRUE). Insert a link to the GitHub
+repository into the navigation bar.</p></td>
+    </tr>
+    <tr>
+      <th>protocol</th>
+      <td><p>character (default: "https"). The protocol for communicating
+with GitHub. Must be either "https" or "ssh".</p></td>
+    </tr>
+    <tr>
+      <th>domain</th>
+      <td><p>character (default: "github.com"). The domain of the remote
+host. You only need to change this if your organization is using GitHub
+Enterprise.</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with the named elements <code>sha1</code> and <code>message</code> (both
-  characters). If a Git repository is not found at <code>path</code>, both are
-  <code>NA</code>.</p>
+    <p>Invisibly returns a list of class <code>wflow_use_github</code>. This is
+  currently for internal use only. Please open an Issue if you'd like to use
+  this information.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>wflow_use_github</code> performs the following steps and then commits the
+changes:</p>
+<ul>
+<li><p>Adds a link to the GitHub repository in the navigation bar</p></li>
+<li><p>Configures the Git remote settings to use GitHub</p></li>
+<li><p>(Only if necessary) Renames the website directory to <code>docs/</code></p></li>
+<li><p>(Only if necessary) Edits the setting <code>output_dir</code> in the file
+<code>_site.yml</code> to save the website files in <code>docs/</code></p></li>
+</ul>
+    <p>For more details, read the documentation provided by
+<a href='https://pages.github.com/'>GitHub Pages</a>.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='wflow_git_push.html'>wflow_git_push</a></code>, <code><a href='wflow_git_remote.html'>wflow_git_remote</a></code>,
+         <code><a href='wflow_use_gitlab.html'>wflow_use_gitlab</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Most recent commit</span>
-<span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>1</span>)
-<span class='co'># Penultimate commit</span>
-<span class='fu'>extract_commit</span>(<span class='st'>"."</span>, <span class='fl'>2</span>)
-<span class='co'># }</span></pre>
+<span class='fu'>wflow_use_github</span>(<span class='st'>"your-username"</span>, <span class='st'>"name-of-repository"</span>)
+<span class='co'># Login with GitHub account and create new repository</span>
+<span class='fu'><a href='wflow_git_push.html'>wflow_git_push</a></span>()
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -160,6 +211,10 @@ second most recent commit, etc.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

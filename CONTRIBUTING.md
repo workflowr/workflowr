@@ -76,11 +76,19 @@ points. Run ` git tag -l -n9` for past examples. Push with `git push origin
 * Make a release. On GitHub, go to Releases -> Tags -> Edit release notes. Name
 the release "workflowr x.x.x" and copy-paste the Markdown entry from
 [NEWS.md](NEWS.md).
+* Build tarball with `R CMD build .` and upload to [CRAN submission
+site][cran-submit]. You will receive an email to request confirmation, then an
+email confirming the package was submitted, and then an email with the test
+results. Once it is accepted to CRAN, monitor the [check results][check-results]
+for any surpise errors. Also, these builds are when the binaries are built for
+Windows and macOS, so they aren't available until they are finished.
 
 [appveyor]: https://ci.appveyor.com
+[check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html
 [Codecov]: https://codecov.io/
 [contribute]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011
 [covr]: https://github.com/jimhester/covr
+[cran-submit]: https://cran.r-project.org/submit.html
 [git-tutorial]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668
 [hadley]: http://hadley.nz/
 [pkgdown]: https://github.com/r-lib/pkgdown

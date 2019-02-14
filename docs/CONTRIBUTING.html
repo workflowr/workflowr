@@ -189,7 +189,8 @@ git merge dev
 git push origin master</code></pre>
 </li>
 <li>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html" class="uri">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</li>
-<li><p>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html" class="uri">NEWS.md</a>.</p></li>
+<li>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html" class="uri">NEWS.md</a>.</li>
+<li><p>Build tarball with <code>R CMD build .</code> and upload to <a href="https://cran.r-project.org/submit.html">CRAN submission site</a>. You will receive an email to request confirmation, then an email confirming the package was submitted, and then an email with the test results. Once it is accepted to CRAN, monitor the <a href="https://cran.r-project.org/web/checks/check_results_workflowr.html">check results</a> for any surpise errors. Also, these builds are when the binaries are built for Windows and macOS, so they aren’t available until they are finished.</p></li>
 </ul>
 </div>
 </div>

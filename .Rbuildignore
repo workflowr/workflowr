@@ -16,3 +16,4 @@ tar\.gz$
 ^CODE_OF_CONDUCT\.md$
 ^Meta$
 ^doc$
+^\.circleci$

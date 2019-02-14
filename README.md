@@ -7,6 +7,8 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=master&svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr)
 [![CircleCI](https://circleci.com/gh/jdblischak/workflowr/tree/master.svg?style=svg)](https://circleci.com/gh/jdblischak/workflowr/tree/master)
 
+<img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">
+
 The workflowr R package helps researchers organize their analyses in a way that
 promotes effective project management, reproducibility, collaboration, and
 sharing of results. Workflowr combines literate programming (knitr and

@@ -1,3 +1,5 @@
+# workflowr 1.2.0.9000
+
 # workflowr 1.2.0
 
 This release overhauls the layout of the reproducibility report, adds support

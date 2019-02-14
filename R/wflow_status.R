@@ -59,6 +59,8 @@
 #'
 #' \item \bold{mod_unstaged}: The R Markdown file has unstaged modifications.
 #'
+#' \item \bold{conflicted}: The R Markdown file has merge conflicts.
+#'
 #' \item \bold{mod_staged}: The R Markdown file has staged modifications.
 #'
 #' \item \bold{tracked}: The R Markdown file is tracked by Git.

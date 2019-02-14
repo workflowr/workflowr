@@ -42,6 +42,18 @@ test_that("wflow_status identifies Git directory.", {
   expect_true(fs::dir_exists(expected))
 })
 
+test_that("wflow_status returns data frame of logical values on Rmd files.", {
+  expect_is(s$status, "data.frame")
+  for (column in colnames(s$status)) {
+    expect_is(s$status[, column], "logical")
+  }
+  expect_is(rownames(s$status), "character")
+  expect_identical(colnames(s$status),
+                   c("ignored", "mod_unstaged", "conflicted", "mod_staged",
+                     "tracked", "committed", "published", "mod_committed",
+                     "modified", "unpublished", "scratch"))
+})
+
 # Skip on CRAN. See ?testthat::skip_on_cran, which only works inside of unit
 # test functions.
 if (identical(Sys.getenv("NOT_CRAN"), "true")) {

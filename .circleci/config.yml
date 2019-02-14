@@ -1,3 +1,7 @@
+# Some of the CRAN servers have pandoc installed and some do not, thus any test
+# that builds an R Markdown file needs to be skipped with skip_on_cran(). This
+# CI build does not have pandoc installed, so it will identify any tests that
+# require pandoc but aren't skipped.
 version: 2
 jobs:
   build:
@@ -20,7 +24,7 @@ jobs:
           name: Install package dependencies
           command: r -e "devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"
       - run:
-          name: Build and check
+          name: Build and check (without pandoc)
           command: bash build.sh --no-examples --no-manual
       - store_artifacts:
           path: workflowr.Rcheck/

@@ -113,7 +113,7 @@
 <li>Shareable
 <ul>
 <li>Creates a website to present your research results</li>
-<li>Documents how to host your website for free via <a href="https://pages.github.com/">GitHub Pages</a>
+<li>Documents how to host your website for free via <a href="https://pages.github.com/">GitHub Pages</a> or <a href="https://about.gitlab.com/product/pages/">GitLab Pages</a>
 </li>
 <li>Creates links to past versions of results</li>
 </ul>
@@ -138,13 +138,13 @@
 <p>Install workflowr from <a href="https://cran.r-project.org/package=workflowr">CRAN</a>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</code></pre></div>
 </li>
-<li><p>Create an account on <a href="https://github.com">GitHub</a></p></li>
+<li><p>Create an account on <a href="https://github.com">GitHub</a> or <a href="https://gitlab.com">GitLab</a></p></li>
 </ol>
 </div>
 <div id="quick-start" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start" class="anchor"></a>Quick start</h2>
-<pre><code><a href="https://www.rdocumentation.org/packages/base/topics/library">library("workflowr")
+<pre><code>library("workflowr")
 
 # Configure Git (only need to do once per computer)
 wflow_git_config(user.name = "Full Name", user.email = "email@domain")
@@ -164,10 +164,10 @@ wflow_build()
 wflow_build()
 
 # Publish the site, i.e. version the source code and HTML results
-wflow_publish("analysis/*", "Start my new project")</a></code></pre>
+wflow_publish("analysis/*", "Start my new project")</code></pre>
 <p><strong>Next steps:</strong></p>
 <ol>
-<li><p>Read the full <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html">Getting started vignette</a> to learn how to share your results online via GitHub</p></li>
+<li><p>Read the full <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html">Getting started vignette</a> to learn how to share your results online</p></li>
 <li><p>Read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html">customization vignette</a> for ideas on how to customize your research website</p></li>
 <li><p>Read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html">migrating vignette</a> for how to integrate workflowr into your existing project</p></li>
 </ol>

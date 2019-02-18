@@ -49,7 +49,8 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
     * Sets the same seed for random number generation for each analysis
 * Shareable
     * Creates a website to present your research results
-    * Documents how to host your website for free via [GitHub Pages][]
+    * Documents how to host your website for free via [GitHub Pages][] or
+    [GitLab Pages][]
     * Creates links to past versions of results
 
 To see a workflowr website in action, see this [video demonstration][video].
@@ -72,7 +73,7 @@ For related tools, see [r-project-workflows][].
     install.packages("workflowr")
     ```
 
-1. Create an account on [GitHub][gh]
+1. Create an account on [GitHub][gh] or [GitLab][gl]
 
 ## Quick start
 
@@ -103,7 +104,7 @@ wflow_publish("analysis/*", "Start my new project")
 **Next steps:**
 
 1. Read the full [Getting started vignette][vig-start] to learn how to share
-your results online via GitHub
+your results online
 
 1. Read the [customization vignette][vig-custom] for ideas on how to customize
 your research website
@@ -145,9 +146,11 @@ abide by its terms.
 [cran]: https://cran.r-project.org/package=workflowr
 [divvy]: https://stephenslab.github.io/wflow-divvy/
 [gh]: https://github.com
+[gl]: https://gitlab.com
 [git]: https://git-scm.com/
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
+[GitLab Pages]: https://about.gitlab.com/product/pages/
 [issues]: https://github.com/jdblischak/workflowr/issues
 [knitr]: https://github.com/yihui/knitr
 [lsun]: https://github.com/LSun

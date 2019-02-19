@@ -49,6 +49,8 @@ Suggests:
     covr,
     devtools,
     testthat,
-    withr
+    withr,
+    spelling
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
+Language: en-US

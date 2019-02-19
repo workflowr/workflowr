@@ -78,7 +78,7 @@
             <h3 class="subtitle">workflowr version 1.2.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-02-14</h4>
+            <h4 class="date">2019-02-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-05-faq.Rmd"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -145,7 +145,7 @@
 <div id="why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="section level2">
 <h2 class="hasAnchor">
 <a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="anchor"></a>Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</h2>
-<p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> is designed to have the same functionality as the Knit HTML button in RStudio, namely that it knits the HTML file in a separate R session to avoid any clashes with variables or pacakges in use in the current R session. However, the technical implementations are not identical, and thus informally we have noticed the behavior of the two options occassionally differs. At the moment, we believe that if the file results in an error when using <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, the file needs to be fixed, regardless of whether the file is able to be built with the RStudio button. If you have a use case that you think should be supported by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a> and provide a small reproducible example.</p>
+<p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> is designed to have the same functionality as the Knit HTML button in RStudio, namely that it knits the HTML file in a separate R session to avoid any clashes with variables or packages in use in the current R session. However, the technical implementations are not identical, and thus informally we have noticed the behavior of the two options occasionally differs. At the moment, we believe that if the file results in an error when using <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, the file needs to be fixed, regardless of whether the file is able to be built with the RStudio button. If you have a use case that you think should be supported by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a> and provide a small reproducible example.</p>
 </div>
 <div id="can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion" class="section level2">
 <h2 class="hasAnchor">

@@ -112,11 +112,11 @@
 <p>Now you are ready to start your first workflowr project! <code><a href="../reference/wflow_start.html">wflow_start("myproject")</a></code> creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and initializes a Git repository with the initial commit already made.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</code></pre></div>
 <pre><code>## wflow_start:
-## - New directory created at C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject
+## - New directory created at /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject
 ## - Project name is "myproject"
-## - Working directory changed to C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject
-## - Git repo initiated at C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject
-## - Files were committed in version 5e11e28</code></pre>
+## - Working directory changed to /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject
+## - Git repo initiated at /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject
+## - Files were committed in version 8ac460e</code></pre>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> created the following directory structure in <code>myproject/</code>:</p>
 <pre><code>myproject/
 ├── .gitignore
@@ -162,7 +162,7 @@
 <p>You will notice that the <code>docs/</code> directory is currently empty. That is because we have not yet generated the website from the <code>analysis/</code> files. This is what we will do next.</p>
 <p>To build the website, run the function <code><a href="../reference/wflow_build.html">wflow_build()</a></code> in the R console:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</code></pre></div>
-<pre><code>## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject
+<pre><code>## Current working directory: /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject
 ## Building 3 file(s):
 ## Building analysis/about.Rmd
 ## Building analysis/index.Rmd
@@ -179,8 +179,7 @@
 ## docs/index.html
 ## docs/license.html
 ## 
-## Log files saved in
-## C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/workflowr</code></pre>
+## Log files saved in /tmp/RtmpR3lvVm/workflowr</code></pre>
 <p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files). Lastly, it displays the website in the RStudio Viewer or default web browser.</p>
 <p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice">Makefile</a> (<code>make = TRUE</code> is the default when no input files are provided), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built (and no files are displayed).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()
@@ -220,7 +219,7 @@
 <p>This alerts us that our project has 3 R Markdown files, and they are all unpublished (“Unp”). Furthermore, it instructs how to publish them: use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>. The first argument to <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is a character vector of the R Markdown files to publish <a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. The second is a message that will be recorded by the version control system Git when it commits (i.e. saves a snapshot of) these files. The more informative the commit message the better (so that future you knows what you were trying to accomplish).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/about.Rmd"</span>, <span class="st">"analysis/license.Rmd"</span>),
               <span class="st">"Publish the initial files for myproject"</span>)</code></pre></div>
-<pre><code>## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject
+<pre><code>## Current working directory: /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject
 ## Building 3 file(s):
 ## Building analysis/index.Rmd
 ## Building analysis/about.Rmd
@@ -236,7 +235,7 @@
 ##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd 
 ##   $ git commit -m "Publish the initial files for myproject" 
 ## 
-## The following file(s) were included in commit 1a2a781:
+## The following file(s) were included in commit 092476c:
 ## analysis/about.Rmd
 ## analysis/index.Rmd
 ## analysis/license.Rmd
@@ -255,8 +254,7 @@
 ## docs/about.html
 ## docs/license.html
 ## 
-## Log files saved in
-## C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/workflowr
+## Log files saved in /tmp/RtmpR3lvVm/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -267,7 +265,7 @@
 ##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs docs/.nojekyll 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 259a039:
+## The following file(s) were included in commit bdf5bdf:
 ## docs/about.html
 ## docs/index.html
 ## docs/license.html
@@ -279,7 +277,7 @@
 <ul>
 <li><p><strong>Step 1:</strong> Commits the 3 R Markdown files using the custom commit message</p></li>
 <li><p><strong>Step 2:</strong> Builds the HTML files using <code><a href="../reference/wflow_build.html">wflow_build()</a></code></p></li>
-<li><p><strong>Step 3:</strong> Commits the 3 HTML files plus the files that specify the style of the website (e.g. CSS and Javascript files)</p></li>
+<li><p><strong>Step 3:</strong> Commits the 3 HTML files plus the files that specify the style of the website (e.g. CSS and JavaScript files)</p></li>
 </ul>
 <p>Performing these 3 steps ensures that the HTML files are always in sync with the latest versions of the R Markdown files. Performing these steps manually would be tedious and error-prone (e.g. an HTML file may have been built with an outdated version of an R Markdown file). However, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> makes it easy to keep the pages of your site in sync.</p>
 <p>Now when you run <code><a href="../reference/wflow_status.html">wflow_status()</a></code>, it reports that all the files are published and up-to-date.</p>
@@ -313,7 +311,7 @@
 <p class="caption" style="text-align: center;">
 Create a new repository on GitHub.
 </p>
-<p>Note that in this tutorial the GitHub repository also has the name “myproject.” This isn’t strictly neccesary (you can name your GitHub repository whatever you like), but it’s generally good organizational practice to use the same name for both your GitHub repository and the local directory on your computer.</p>
+<p>Note that in this tutorial the GitHub repository also has the name “myproject.” This isn’t strictly necessary (you can name your GitHub repository whatever you like), but it’s generally good organizational practice to use the same name for both your GitHub repository and the local directory on your computer.</p>
 <p>Third, you need to send your files to GitHub. Push your files to GitHub with the function <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>:<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_git_push.html">wflow_git_push</a></span>(<span class="dt">dry_run =</span> <span class="ot">TRUE</span>)
 ## Summary from wflow_git_push
@@ -333,8 +331,8 @@ Create a new repository on GitHub.
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/first-analysis.Rmd"</span>)</code></pre></div>
 <pre><code>## wflow_open:
 ## - New file(s):
-##   C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject/analysis/first-analysis.Rmd
-## - Same working directory: C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject</code></pre>
+##   /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject/analysis/first-analysis.Rmd
+## - Same working directory: /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject</code></pre>
 <p>Now you are ready to start writing! Go ahead and add some example code. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> again (this function can be run from the base directory of your project or any subdirectory).</p>
 <p>Check out your new file <code>first-analysis.html</code>. Near the top you will see the workflowr reproducibility report. If you click on the button, the full menu will drop down. Click around to learn more about the reproducibility safety checks, why their important, and whether or not the file passed or failed each one. You’ll notice that the first check failed because the R Markdown file had uncommitted changes. This is OK now since the file is a draft. Once you are ready to publish it to share with others, you can use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> to ensure that any changes to the R Markdown file are committed to the Git repository prior to generating the results.</p>
 <p>In order to make it easier to navigate to your new file, you can include a link to it on the main index page. First open <code>analysis/index.Rmd</code> (optionally using <code><a href="../reference/wflow_open.html">wflow_open()</a></code>). Second paste the following line into <code>index.Rmd</code>:</p>
@@ -363,7 +361,7 @@ Create a new repository on GitHub.
 <p>To publish the new analysis and the updated index page, again use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/first-analysis.Rmd"</span>),
               <span class="st">"Add my first analysis"</span>)</code></pre></div>
-<pre><code>## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/wflow-01-getting-started-39cc3c9818e1/myproject
+<pre><code>## Current working directory: /tmp/RtmpR3lvVm/wflow-01-getting-started-6f073efecc/myproject
 ## Building 2 file(s):
 ## Building analysis/index.Rmd
 ## Building analysis/first-analysis.Rmd
@@ -378,7 +376,7 @@ Create a new repository on GitHub.
 ##   $ git add analysis/index.Rmd analysis/first-analysis.Rmd 
 ##   $ git commit -m "Add my first analysis" 
 ## 
-## The following file(s) were included in commit 102e4b5:
+## The following file(s) were included in commit 0e8957e:
 ## analysis/first-analysis.Rmd
 ## analysis/index.Rmd
 ## 
@@ -395,8 +393,7 @@ Create a new repository on GitHub.
 ## docs/index.html
 ## docs/first-analysis.html
 ## 
-## Log files saved in
-## C:/Users/john/AppData/Local/Temp/RtmpMbKr6g/workflowr
+## Log files saved in /tmp/RtmpR3lvVm/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -407,7 +404,7 @@ Create a new repository on GitHub.
 ##   $ git add docs/index.html docs/first-analysis.html docs/figure/index.Rmd docs/figure/first-analysis.Rmd docs/site_libs docs/.nojekyll 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit bc23ec8:
+## The following file(s) were included in commit 7049264:
 ## docs/first-analysis.html
 ## docs/index.html
 ## docs/site_libs/font-awesome-5.1.0/

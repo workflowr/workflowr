@@ -47,7 +47,7 @@ repository (so you always know which version of the code produced the results
 contained in that particular file). These options are controlled by the settings
 in `_workflowr.yml`. It also provides a custom site generator `wflow_site()`
 that enables `wflow_html()` to work with R Markdown websites. These options are
-contolled in `analysis/_site.yml`.
+controlled in `analysis/_site.yml`.
 
 [R]: https://cran.r-project.org/
 [knitr]: http://yihui.name/knitr/

@@ -116,9 +116,9 @@ some ideas that are simple to implement. Check out the documentation for
 
 `wflow_build()` is designed to have the same functionality as the Knit HTML
 button in RStudio, namely that it knits the HTML file in a separate R session to
-avoid any clashes with variables or pacakges in use in the current R session.
+avoid any clashes with variables or packages in use in the current R session.
 However, the technical implementations are not identical, and thus informally we
-have noticed the behavior of the two options occassionally differs. At the
+have noticed the behavior of the two options occasionally differs. At the
 moment, we believe that if the file results in an error when using
 `wflow_build()`, the file needs to be fixed, regardless of whether the file is
 able to be built with the RStudio button. If you have a use case that you think

@@ -7,7 +7,7 @@
 is_fig_path_ext(input)
 }
 \arguments{
-\item{input}{the path to a RMarkdown file}
+\item{input}{the path to an R Markdown file}
 }
 \description{
 check the fig_path_ext option

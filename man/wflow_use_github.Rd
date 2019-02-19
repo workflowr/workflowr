@@ -38,7 +38,7 @@ Invisibly returns a list of class \code{wflow_use_github}. This is
   this information.
 }
 \description{
-\code{wflow_use_github} automates all the local configuration necesary to
+\code{wflow_use_github} automates all the local configuration necessary to
 deploy your workflowr project with \href{https://pages.github.com/}{GitHub
 Pages}. However, you will need to manually login to your account and create
 the new repository on GitHub. The final step is to run \code{wflow_git_push}

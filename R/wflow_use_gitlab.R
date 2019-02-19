@@ -1,6 +1,6 @@
 #' Deploy site with GitLab
 #'
-#' \code{wflow_use_gitlab} automates all the local configuration necesary to
+#' \code{wflow_use_gitlab} automates all the local configuration necessary to
 #' deploy your workflowr project with
 #' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
 #' However, you will need to manually login to your account and create the new
@@ -112,7 +112,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   # Status ---------------------------------------------------------------------
 
   s <- wflow_status(project = project)
-  # Convert to absolute paths to faciliate path manipulation below
+  # Convert to absolute paths to facilitate path manipulation below
   s$analysis <- absolute(s$analysis)
   s$docs <- absolute(s$docs)
 

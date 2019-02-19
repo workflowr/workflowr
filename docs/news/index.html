@@ -148,12 +148,12 @@
 <div id="improved-support-for-caching" class="section level2">
 <h2 class="hasAnchor">
 <a href="#improved-support-for-caching" class="anchor"></a>Improved support for caching</h2>
-<p>A popular knitr/rmarkdown feature is caching slow-running chunks. This can be problematic for workflowr because it assumes that the results are newly created when <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> publishes the results with a given version of the code. In this release, workflowr now provides warnings, safety checks, and some convience arguments for safely using caching.</p>
+<p>A popular knitr/rmarkdown feature is caching slow-running chunks. This can be problematic for workflowr because it assumes that the results are newly created when <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> publishes the results with a given version of the code. In this release, workflowr now provides warnings, safety checks, and some convenience arguments for safely using caching.</p>
 <ul>
 <li>Include a check in the reproducibility report that reports any existing cached chunks</li>
 <li>A warning is inserted directly in the HTML file after any code chunk that is cached (<code>cache=TRUE</code>) but is not set to re-run if its upstream chunks are changed (<code>autodep=FALSE</code>)</li>
 <li>Add argument <code>clean_fig_files</code> to <code><a href="../reference/wflow_build.html">wflow_build()</a></code>. The default for <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is <code>FALSE</code>, so that old figures are not removed. This is useful for iterative development when plots from cached chunks may not be regenerated during a build. However, <code>clean_fig_files</code> is fixed to <code>TRUE</code> for <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> to ensure that the final results are produced during the build (suggested by <a href='https://github.com/lazappi'>@lazappi</a>, <a href='https://github.com/jdblischak/workflowr/issues/113'>#113</a>)</li>
-<li>Add argument <code>delete_cache</code> to <code><a href="../reference/wflow_build.html">wflow_build()</a></code>/<code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>. The defult is <code>FALSE</code>, but if set to <code>TRUE</code> it will delete the cache directory prior to building each R Markdown file. This helps ensure reproducibility of the published results</li>
+<li>Add argument <code>delete_cache</code> to <code><a href="../reference/wflow_build.html">wflow_build()</a></code>/<code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>. The default is <code>FALSE</code>, but if set to <code>TRUE</code> it will delete the cache directory prior to building each R Markdown file. This helps ensure reproducibility of the published results</li>
 <li>Have <code><a href="../reference/wflow_build.html">wflow_build()</a></code> send message about status of cache directory</li>
 </ul>
 </div>
@@ -223,7 +223,7 @@
 <li>The argument <code>files</code> now requires correct paths to existing R Markdown or HTML files. Previously, <code><a href="../reference/wflow_view.html">wflow_view()</a></code> would guess the correct path. While convenient, it was also potentially confusing since it was inconsistent with the other workflowr functions</li>
 <li>The argument <code>latest</code> is no longer mutually-exclusive with <code>files</code>. If the most recently modified HTML is different than those specified by <code>files</code>, they will all be opened for viewing</li>
 <li>S3 print method</li>
-<li>Do not attemt to open HTML files with <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseURL">browseURL()</a></code> if <code><a href="https://www.rdocumentation.org/packages/base/topics/options">getOption("browser")</a></code> does not provide a default option</li>
+<li>Do not attempt to open HTML files with <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseURL">browseURL()</a></code> if <code><a href="https://www.rdocumentation.org/packages/base/topics/options">getOption("browser")</a></code> does not provide a default option</li>
 </ul>
 </li>
 </ul>
@@ -280,7 +280,7 @@ wflow_update()</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#details" class="anchor"></a>Details</h2>
 <ul>
-<li>Introduce <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and <code><a href="../reference/wflow_site.html">wflow_site()</a></code> to overhaul the reproduciblity features of workflowr</li>
+<li>Introduce <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and <code><a href="../reference/wflow_site.html">wflow_site()</a></code> to overhaul the reproducibility features of workflowr</li>
 <li>Improve API consistency:
 <ul>
 <li>
@@ -294,7 +294,7 @@ wflow_update()</a></code></pre>
 <li>Remove some less commonly used infrastructure files</li>
 <li>Remove template infrastructure: <code><a href="../reference/wflow_open.html">wflow_open()</a></code> and <code>wflow_convert()</code>
 </li>
-<li>Reimplement <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to udpate a pre-1.0 workflowr project to a post-1.0 project</li>
+<li>Reimplement <code><a href="../reference/wflow_update.html">wflow_update()</a></code> to update a pre-1.0 workflowr project to a post-1.0 project</li>
 <li>Remove <code>create_links_page()</code> (not widely used, if at all)</li>
 <li>Note in documentation that setting the seed via <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is ignored if using <code><a href="../reference/wflow_html.html">wflow_html()</a></code>
 </li>
@@ -314,7 +314,7 @@ wflow_update()</a></code></pre>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> now views the website by default if run interactively (<code>view = interactive()</code>) just like <code><a href="../reference/wflow_build.html">wflow_build()</a></code></p></li>
 <li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
 <li><p>Fix minor bug that affected the error message produced for a failed push or pull using the SSH protocol</p></li>
-<li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code><a href="https://www.rdocumentation.org/packages/git2r/topics/push">git2r::push()</a></code> or <code><a href="https://www.rdocumentation.org/packages/git2r/topics/pull">git2r::pull()</a></code> is reported to faciliate troubleshooting</p></li>
+<li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code><a href="https://www.rdocumentation.org/packages/git2r/topics/push">git2r::push()</a></code> or <code><a href="https://www.rdocumentation.org/packages/git2r/topics/pull">git2r::pull()</a></code> is reported to facilitate troubleshooting</p></li>
 <li><p>Multiple other internal changes to make workflowr more robust</p></li>
 </ul>
 </div>
@@ -384,7 +384,7 @@ wflow_update()</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#log-files" class="anchor"></a>Log files</h2>
 <ul>
-<li>The log files by default are now written to the directory returned by <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code> instead of to <code>/tmp/workflowr</code>. This prevents failures due to permission issues when mutliple workflowr users try to use the same machine (e.g. a compute node on a HPC cluster) (<a href='https://github.com/jdblischak/workflowr/issues/86'>#86</a>)</li>
+<li>The log files by default are now written to the directory returned by <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code> instead of to <code>/tmp/workflowr</code>. This prevents failures due to permission issues when multiple workflowr users try to use the same machine (e.g. a compute node on a HPC cluster) (<a href='https://github.com/jdblischak/workflowr/issues/86'>#86</a>)</li>
 </ul>
 </div>
 <div id="miscellaneous-2" class="section level2">
@@ -417,7 +417,7 @@ wflow_update()</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#miscellaneous-3" class="anchor"></a>Miscellaneous</h2>
 <ul>
-<li>Added FAQ on sharing workflowr sites securely using Beaker Browswer (<a href='https://github.com/johnsonlab'>@johnsonlab</a> in <a href='https://github.com/jdblischak/workflowr/issues/59'>#59</a> &amp; <a href='https://github.com/jdblischak/workflowr/issues/65'>#65</a>)</li>
+<li>Added FAQ on sharing workflowr sites securely using Beaker Browser (<a href='https://github.com/johnsonlab'>@johnsonlab</a> in <a href='https://github.com/jdblischak/workflowr/issues/59'>#59</a> &amp; <a href='https://github.com/jdblischak/workflowr/issues/65'>#65</a>)</li>
 <li>Added .Rprofile to automatically load workflowr (<a href='https://github.com/vanAmsterdam'>@vanAmsterdam</a> in <a href='https://github.com/jdblischak/workflowr/issues/73'>#73</a>)</li>
 <li>Added FAQ about website not displaying (<a href='https://github.com/jdblischak/workflowr/issues/70'>#70</a>)</li>
 <li>Added tag to footer.html to adjust MathJax settings so that all math formulae are shown using TeX fonts only. This will make the presentation more consistent at the cost of the webpage sometimes taking slightly longer to load. (<a href='https://github.com/pcarbo'>@pcarbo</a>)</li>
@@ -517,7 +517,7 @@ wflow_update()</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#wflow_build-1" class="anchor"></a>wflow_build</h2>
 <ul>
-<li><p>By default, <code><a href="../reference/wflow_build.html">wflow_build()</a></code> runs in “Make”-mode, only building R Markdown files that have been updated more recently than their corresponding HTML files. If instead files are specfically stated, those files will be built.</p></li>
+<li><p>By default, <code><a href="../reference/wflow_build.html">wflow_build()</a></code> runs in “Make”-mode, only building R Markdown files that have been updated more recently than their corresponding HTML files. If instead files are specifically stated, those files will be built.</p></li>
 <li><p>By default, R Markdown files are now built each in their own separate R session (similar in function to the “Knit HTML” button in RStudio). This prevents undesirable behavior like sharing variables and loaded packages across separate files. Set <code>local = TRUE</code> to build the files in the local R console (useful for debugging, but otherwise discouraged).</p></li>
 <li><p>By default, the seed for random number generation is set to the arbitrary number <code>12345</code> (using <code><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed()</a></code>). This ensures that any code that produces random numbers will be reproducible.</p></li>
 </ul>
@@ -541,7 +541,7 @@ wflow_update()</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#miscellaneous-6" class="anchor"></a>Miscellaneous</h2>
 <ul>
-<li><p>All workflowr functions should now accept the file extesion <code>.rmd</code> in addition to <code>.Rmd</code> (Issue <a href='https://github.com/jdblischak/workflowr/issues/10'>#10</a>)</p></li>
+<li><p>All workflowr functions should now accept the file extension <code>.rmd</code> in addition to <code>.Rmd</code> (Issue <a href='https://github.com/jdblischak/workflowr/issues/10'>#10</a>)</p></li>
 <li><p>Replaced the shared argument <code>path</code> with <code>project</code> to clarify that this argument specifies the path to a directory in the workflowr project</p></li>
 <li><p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> now includes <code>docs/.nojekyll</code></p></li>
 <li><p>Change dependency to R &gt;= 3.2.5 (Issue <a href='https://github.com/jdblischak/workflowr/issues/32'>#32</a>)</p></li>
@@ -620,7 +620,7 @@ wflow_update()</a></code></pre>
 <ul>
 <li><p>Second alpha release. Major API overhaul.</p></li>
 <li><p>Improved naming of functions: <code>start_project</code> -&gt; <code>wflow_start</code>, <code>open_rmd</code> -&gt; <code>wflow_open</code>, <code>build_site</code> -&gt; <code>wflow_build</code>, <code>commit_site</code> -&gt; <code>wflow_commit</code>, <code>create_results</code> -&gt; <code>create_links_page</code></p></li>
-<li><p><code>wflow_commit</code> can optionally add and commit provided files (argument is <code>commit_files</code>) before re-building website and commiting HTML files</p></li>
+<li><p><code>wflow_commit</code> can optionally add and commit provided files (argument is <code>commit_files</code>) before re-building website and committing HTML files</p></li>
 <li><p><code>wflow_open</code> accepts multiple filenames</p></li>
 <li><p>Both <code>wflow_build</code> and <code>wflow_commit</code> have the argument <code>all</code> to optionally build all the HTML files</p></li>
 </ul>

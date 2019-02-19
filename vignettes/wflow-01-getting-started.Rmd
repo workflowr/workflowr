@@ -320,7 +320,7 @@ wflow_publish(c("analysis/index.Rmd", "analysis/about.Rmd", "analysis/license.Rm
 * **Step 2:** Builds the HTML files using `wflow_build()`
 
 * **Step 3:** Commits the 3 HTML files plus the files that specify the style of
-the website (e.g. CSS and Javascript files)
+the website (e.g. CSS and JavaScript files)
 
 Performing these 3 steps ensures that the HTML files are always in sync with the
 latest versions of the R Markdown files. Performing these steps manually would
@@ -369,7 +369,7 @@ Create a new repository on GitHub.
 </p>
 
 Note that in this tutorial the GitHub repository also has the name
-"myproject." This isn't strictly neccesary (you can name your GitHub repository
+"myproject." This isn't strictly necessary (you can name your GitHub repository
 whatever you like), but it's generally good organizational practice to use the
 same name for both your GitHub repository and the local directory on your
 computer.

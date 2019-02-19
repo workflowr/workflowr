@@ -40,7 +40,7 @@ Invisibly returns a list of class \code{wflow_use_gitlab}. This is
   this information.
 }
 \description{
-\code{wflow_use_gitlab} automates all the local configuration necesary to
+\code{wflow_use_gitlab} automates all the local configuration necessary to
 deploy your workflowr project with
 \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
 However, you will need to manually login to your account and create the new

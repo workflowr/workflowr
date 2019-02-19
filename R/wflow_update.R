@@ -49,7 +49,7 @@
 #' @examples
 #' \dontrun{
 #'
-#' # Preview the files to be udpated
+#' # Preview the files to be updated
 #' wflow_update()
 #' # Update the files
 #' wflow_update(dry_run = FALSE)

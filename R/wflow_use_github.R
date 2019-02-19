@@ -1,6 +1,6 @@
 #' Deploy site with GitHub
 #'
-#' \code{wflow_use_github} automates all the local configuration necesary to
+#' \code{wflow_use_github} automates all the local configuration necessary to
 #' deploy your workflowr project with \href{https://pages.github.com/}{GitHub
 #' Pages}. However, you will need to manually login to your account and create
 #' the new repository on GitHub. The final step is to run \code{wflow_git_push}
@@ -107,7 +107,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   # Status ---------------------------------------------------------------------
 
   s <- wflow_status(project = project)
-  # Convert to absolute paths to faciliate path manipulation below
+  # Convert to absolute paths to facilitate path manipulation below
   s$analysis <- absolute(s$analysis)
   s$docs <- absolute(s$docs)
 

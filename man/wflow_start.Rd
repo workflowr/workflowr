@@ -26,7 +26,7 @@ files be committed with Git? If \code{git = TRUE} and no existing
 Git repository is detected, \code{wflow_start} will initialize the
 repository and make an initial commit. If a Git repository already
 exists in the chosen directory, \code{wflow_start} any newly
-created or modified files will be commited to the existing
+created or modified files will be committed to the existing
 repository.}
 
 \item{existing}{logical (default: \code{FALSE}). Indicate whether
@@ -109,7 +109,7 @@ An object of class \code{wflow_start}, which is a list with the
 }
 \description{
 \code{wflow_start} creates a directory with the essential files for
-a workflowr project. The default behaviour is to add these files to
+a workflowr project. The default behavior is to add these files to
 a new directory, but it is also possible to populate an existing
 directory. By default, the working directory is changed to the
 workflowr project directory.

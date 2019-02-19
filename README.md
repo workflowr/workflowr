@@ -137,7 +137,7 @@ Workflowr is available under the [MIT license][MIT]. Please run
 ## Contributing
 
 We welcome community contributions, especially improvements to documentation. To
-get started, please read the [contributing guidlines](CONTRIBUTING.md).
+get started, please read the [contributing guidelines](CONTRIBUTING.md).
 Also, please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to
 abide by its terms.

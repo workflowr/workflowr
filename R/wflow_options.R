@@ -79,7 +79,7 @@ wflow_options_from_file <- function(file, wflow_opts = list()) {
 
 #' check the fig_path_ext option
 #'
-#' @param input the path to a RMarkdown file
+#' @param input the path to an R Markdown file
 #'
 #' @keywords internal
 is_fig_path_ext <- function(input) {

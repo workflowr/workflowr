@@ -1,0 +1,14 @@
+Name: Build workflowr
+Description: Run wflow_build()
+Binding: wflow_build
+Interactive: false
+
+Name: Publish workflowr
+Description: Run wflow_publish()
+Binding: wflow_publish
+Interactive: false
+
+Name: Get workflowr status
+Description: Run wflow_status()
+Binding: wflow_status
+Interactive: false

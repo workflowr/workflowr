@@ -81,7 +81,9 @@ site][cran-submit]. You will receive an email to request confirmation, then an
 email confirming the package was submitted, and then an email with the test
 results. Once it is accepted to CRAN, monitor the [check results][check-results]
 for any surpise errors. Also, these builds are when the binaries are built for
-Windows and macOS, so they aren't available until they are finished.
+Windows and macOS, so they aren't available until they are finished. You will
+receive an email once all the Windows binaries are available for download
+(devel, release, oldrel).
 
 [appveyor]: https://ci.appveyor.com
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html

@@ -1,5 +1,12 @@
 # workflowr 1.2.0.9000
 
+* Create [RStudio Addins][rstudio-addins] for `wflow_build()`, `wflow_status()`,
+and `wflow_view()`. For extra convenience, you can [bind the addins to keyboard
+shortcuts][rstudio-addins-shortcuts].
+
+[rstudio-addins]: https://rstudio.github.io/rstudioaddins/
+[rstudio-addins-shortcuts]: https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts
+
 # workflowr 1.2.0
 
 This release overhauls the layout of the reproducibility report, adds support

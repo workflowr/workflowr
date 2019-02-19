@@ -1,14 +1,14 @@
-Name: Build workflowr
-Description: Run wflow_build()
+Name: Build
+Description: Build workflowr website with wflow_build()
 Binding: wflow_build
-Interactive: false
+Interactive: true
 
-Name: Publish workflowr
-Description: Run wflow_publish()
-Binding: wflow_publish
-Interactive: false
-
-Name: Get workflowr status
-Description: Run wflow_status()
+Name: Status
+Description: Get status of workflowr project with wflow_status()
 Binding: wflow_status
-Interactive: false
+Interactive: true
+
+Name: View
+Description: View workflowr website with wflow_view()
+Binding: wflow_view
+Interactive: true

@@ -7,6 +7,11 @@ shortcuts][rstudio-addins-shortcuts].
 [rstudio-addins]: https://rstudio.github.io/rstudioaddins/
 [rstudio-addins-shortcuts]: https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts
 
+
+
+
+*`wflow_build()` fails early if pandoc is not installed (@zaynaib, #75)
+
 # workflowr 1.2.0
 
 This release overhauls the layout of the reproducibility report, adds support

@@ -413,3 +413,11 @@ test_that("wflow_build throws error if given directory input", {
   expect_error(wflow_build(d, project = site_dir),
                "files cannot include a path to a directory")
 })
+
+test_that("wflow_build throws error if pandoc is not installed", {
+  if(rmarkdown::pandoc_available())skip("skipped because pandoc is installed")
+    expect_error(wflow_build(project = site_dir),
+               'Pandoc is not installed.')
+})
+
+

@@ -212,7 +212,7 @@ print.wflow_remove <- function(x, ...) {
   }
   cat(x$files, sep = "\n")
 
-  if (length(x$files_git) > 0 && !is.na(x$files_git)) {
+  if (length(x$files_git) > 0 && !all(is.na(x$files_git))) {
     if (x$dry_run) {
       cat("\n", wrap("The following would be removed from the Git repo:"),
           "\n\n", sep = "")

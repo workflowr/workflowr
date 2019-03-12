@@ -154,11 +154,13 @@
 #'
 wflow_html <- function(...) {
 
+  cache_hook_final <- get_cache_hook()
+
   knitr <- rmarkdown::knitr_options(opts_chunk = list(comment = NA,
                                                       fig.align = "center",
                                                       tidy = FALSE),
                                     knit_hooks = list(plot = plot_hook,
-                                                      chunk = cache_hook),
+                                                      chunk = cache_hook_final),
                                     opts_hooks = list(fig.path = hook_fig_path))
 
   o <- rmarkdown::output_format(knitr = knitr,
@@ -256,6 +258,61 @@ cache_hook <- function(x, options) {
                       </div>")
   }
   return(x)
+}
+
+# Access the default chunk hook function from knitr because it isn't exported.
+knitr_hook_chunk <- function() {
+
+  input <- c("```{r get-chunk-hook, comment=NA, echo=FALSE}",
+             "body(knitr::knit_hooks$get('chunk'))",
+             "```")
+  outfile <- tempfile(fileext = ".md")
+  on.exit(fs::file_delete(outfile))
+  knitr::knit(text = input, output = outfile, quiet = TRUE, envir = new.env())
+  output <- readLines(outfile)
+  output <- stringr::str_subset(output, "```", negate = TRUE)
+  f <- function(x, options) {}
+  body(f) <- parse(text = output)
+  fence_char <- "`"
+  fence <- "```"
+  return(f)
+}
+
+# An altertive version that runs `knit` inside of an environment for more
+# isolation. However, doesn't seem necessary.
+# knitr_hook_chunk <- function() {
+#
+#   e <- new.env()
+#
+#   evalq({
+#     input <- c("```{r get-chunk-hook comment=NA, echo=FALSE}",
+#                  "body(knitr::knit_hooks$get('chunk'))",
+#                  "```")
+#     outfile <- tempfile(fileext = ".md")
+#     on.exit(fs::file_delete(outfile))
+#     knitr::knit(text = input, output = outfile, quiet = TRUE, envir = new.env())
+#     output <- readLines(outfile)
+#     output <- stringr::str_subset(output, "```", negate = TRUE)
+#     fence_char <- "`"
+#     fence <- "```"
+#     f <- function(x, options) {}
+#     body(f) <- parse(text = output)
+#   }, envir = e)
+#
+#   return(get("f", envir = e))
+# }
+
+# First run the chunk through knitr's default markdown chunk function
+get_cache_hook <- function() {
+
+  default_hook_chunk <- knitr_hook_chunk()
+  wflow_hook_chunk <- cache_hook
+
+  result <- function(x, options) {
+    x <- default_hook_chunk(x, options)
+    wflow_hook_chunk(x, options)
+  }
+  return(result)
 }
 
 # pre_knit function ------------------------------------------------------------

@@ -301,6 +301,42 @@ test_that("wflow_html inserts custom header and footer", {
                                   stringr::fixed(workflowr:::includes$footer)))
 })
 
+test_that("wflow_html preserves knitr chunk option collapse", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/collapse.Rmd", rmd)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  html_lines <- readLines(html)
+  html_complete <- paste(html_lines, collapse = "\n")
+
+  # Test collapse=TRUE
+  expected_collapse <- "getwd\\(\\)\n#\\s"
+  expect_true(stringr::str_detect(html_complete, expected_collapse))
+})
+
+test_that("wflow_html does not support knitr chunk option indent", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/indent.Rmd", rmd)
+  expect_error(rmarkdown::render(rmd, quiet = TRUE),
+               "The hidden knitr chunk option `indent` cannot be used with workflowr.")
+  expect_error(rmarkdown::render(rmd, quiet = TRUE), "test-indent")
+  expect_error(rmarkdown::render(rmd, quiet = TRUE), basename(rmd))
+})
+
 # Test plot_hook ---------------------------------------------------------------
 
 test_that("wflow_html sends warning if fig.path is set by user", {

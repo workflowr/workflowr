@@ -1,0 +1,12 @@
+---
+output: workflowr::wflow_html
+---
+
+The hidden knitr [chunk option][chunk-options] `indent` cannot be used with
+workflowr. It is only useful for pure markdown output.
+
+[chunk-options]: https://yihui.name/knitr/options/
+
+```{r test-indent, indent="  "}
+print("this chunk should be indented")
+```

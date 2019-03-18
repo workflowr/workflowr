@@ -278,30 +278,6 @@ knitr_hook_chunk <- function() {
   return(f)
 }
 
-# An altertive version that runs `knit` inside of an environment for more
-# isolation. However, doesn't seem necessary.
-# knitr_hook_chunk <- function() {
-#
-#   e <- new.env()
-#
-#   evalq({
-#     input <- c("```{r get-chunk-hook comment=NA, echo=FALSE}",
-#                  "body(knitr::knit_hooks$get('chunk'))",
-#                  "```")
-#     outfile <- tempfile(fileext = ".md")
-#     on.exit(fs::file_delete(outfile))
-#     knitr::knit(text = input, output = outfile, quiet = TRUE, envir = new.env())
-#     output <- readLines(outfile)
-#     output <- stringr::str_subset(output, "```", negate = TRUE)
-#     fence_char <- "`"
-#     fence <- "```"
-#     f <- function(x, options) {}
-#     body(f) <- parse(text = output)
-#   }, envir = e)
-#
-#   return(get("f", envir = e))
-# }
-
 # First run the chunk through knitr's default markdown chunk function
 get_cache_hook <- function() {
 
@@ -309,6 +285,14 @@ get_cache_hook <- function() {
   wflow_hook_chunk <- cache_hook
 
   result <- function(x, options) {
+
+    # Cannot currently use hidden knitr option `indent`, which is mainly useful
+    # for markdown output anways
+    if (!is.null(options$indent))
+      stop("The hidden knitr chunk option `indent` cannot be used with workflowr.\n",
+           glue::glue("It was set for the chunk labeled \"{options$label}\" in {knitr::current_input()}"),
+           call. = FALSE)
+
     x <- default_hook_chunk(x, options)
     wflow_hook_chunk(x, options)
   }

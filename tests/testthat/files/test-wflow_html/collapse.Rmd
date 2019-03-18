@@ -1,0 +1,10 @@
+---
+output: workflowr::wflow_html
+---
+
+The output of `getwd()` should be included in the same code chunk, preceded by a
+`#`.
+
+```{r test-getwd, collapse=TRUE, comment="#"}
+getwd()
+```

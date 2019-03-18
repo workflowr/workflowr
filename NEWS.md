@@ -9,7 +9,8 @@ shortcuts][rstudio-addins-shortcuts].
 
 *`wflow_build()` fails early if pandoc is not installed (@zaynaib, #75)
 
-* Fix support for knitr chunk option `collapse` (reported by @pcarbo, #149)
+* Fix support for knitr chunk option `collapse` and `indent` (reported by
+@pcarbo, #149)
 
 # workflowr 1.2.0
 

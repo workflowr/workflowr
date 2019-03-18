@@ -14,7 +14,7 @@ test_that("wflow_html sets custom knitr chunk options", {
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
   fs::file_copy("files/test-wflow_html/opts_chunk.Rmd", rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   observed <- readRDS(file.path(tmp_dir, "opts_chunk.rds"))
   expect_identical(observed$comment, NA)
@@ -36,7 +36,7 @@ test_that("wflow_html can set knit_root_dir in YAML header", {
   fs::dir_create(sub_dir)
   rmd <- file.path(sub_dir, "file.Rmd")
   fs::file_copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   expect_false(fs::file_exists(file.path(sub_dir, "knit_root_dir.txt")))
   expect_true(fs::file_exists(file.path(tmp_dir, "knit_root_dir.txt")))
@@ -58,7 +58,7 @@ test_that("knit_root_dir can be overridden by command-line render argument", {
   fs::dir_create(sub_dir)
   rmd <- file.path(sub_dir, "file.Rmd")
   fs::file_copy("files/test-wflow_html/knit_root_dir.Rmd", rmd)
-  html <- render(rmd, quiet = TRUE, knit_root_dir = dirname(rmd))
+  html <- rmarkdown::render(rmd, quiet = TRUE, knit_root_dir = dirname(rmd))
   expect_true(fs::file_exists(html))
   expect_true(fs::file_exists(file.path(sub_dir, "knit_root_dir.txt")))
   expect_false(fs::file_exists(file.path(tmp_dir, "knit_root_dir.txt")))
@@ -81,7 +81,7 @@ test_that("wflow_html can change the sesssioninfo from the YAML header", {
              "",
              "`r 1 + 1`")
   writeLines(lines, rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "devtools::session_info")) == 1)
@@ -104,7 +104,7 @@ test_that("wflow_html can change the seed from the YAML header", {
              "",
              "`r round(rnorm(1), 5)`")
   writeLines(lines, rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   set.seed(1)
@@ -123,7 +123,7 @@ test_that("wflow_html does not require a YAML header", {
   rmd <- file.path(tmp_dir, "file.Rmd")
   lines <- c("some text")
   writeLines(lines, rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "some text")) == 1)
@@ -148,7 +148,7 @@ test_that("wflow_html reads _workflowr.yml in the same directory, but can be ove
              "",
              "`r round(rnorm(1), 5)`")
   writeLines(lines, rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   set.seed(5)
@@ -164,7 +164,7 @@ test_that("wflow_html reads _workflowr.yml in the same directory, but can be ove
              "",
              "`r round(rnorm(1), 5)`")
   writeLines(lines, rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   html_lines <- readLines(html)
   set.seed(1)
   expect_true(sum(stringr::str_detect(html_lines,
@@ -183,7 +183,7 @@ test_that("The default knit_root_dir for a workflowr project is the root directo
   rmd <- file.path(tmp_dir, "analysis",  "file.Rmd")
   lines <- c("`r getwd()`")
   writeLines(lines, rmd)
-  html <- render_site(rmd, quiet = TRUE)
+  html <- rmarkdown::render_site(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, tmp_dir)) == 1)
@@ -207,7 +207,7 @@ test_that("The default knit_root_dir for a workflowr project can be analysis/", 
   rmd <- file.path(tmp_dir, "analysis",  "file.Rmd")
   lines <- c("`r getwd()`")
   writeLines(lines, rmd)
-  html <- render_site(rmd, quiet = TRUE)
+  html <- rmarkdown::render_site(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, basename(rmd))) == 1)
@@ -232,7 +232,7 @@ test_that("wflow_html can insert figures with or without Git repo present", {
   writeLines(lines, rmd)
 
   # Without Git repo
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   expect_true(fs::file_exists(file.path(tmp_dir, "figure", basename(rmd),
                                     "chunkname-1.png")))
@@ -244,7 +244,7 @@ test_that("wflow_html can insert figures with or without Git repo present", {
   fs::file_delete(html)
   # With Git repo
   git2r::init(tmp_dir)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines,
                                       "<img src=\"data:image/png;base64,")) == 1)
@@ -269,7 +269,7 @@ test_that("github URL in _workflowr.yml overrides git remote", {
       file = file.path(tmp_dir, "_workflowr.yml"), append = TRUE)
 
   rmd <- file.path(tmp_dir, "analysis", "index.Rmd")
-  html <- render_site(rmd, quiet = TRUE)
+  html <- rmarkdown::render_site(rmd, quiet = TRUE)
 
   html_lines <- readLines(html)
   expect_true(any(stringr::str_detect(html_lines,
@@ -291,7 +291,7 @@ test_that("wflow_html inserts custom header and footer", {
              "output: workflowr::wflow_html",
              "---")
   writeLines(lines, rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   html_complete <- paste(html_lines, collapse = "\n")
@@ -321,7 +321,7 @@ test_that("wflow_html preserves knitr chunk option collapse", {
   expect_true(stringr::str_detect(html_complete, expected_collapse))
 })
 
-test_that("wflow_html does not support knitr chunk option indent", {
+test_that("wflow_html preserves knitr chunk option indent", {
 
   skip_on_cran()
 
@@ -331,10 +331,14 @@ test_that("wflow_html does not support knitr chunk option indent", {
   on.exit(unlink(tmp_dir, recursive = TRUE))
   rmd <- file.path(tmp_dir, "file.Rmd")
   fs::file_copy("files/test-wflow_html/indent.Rmd", rmd)
-  expect_error(rmarkdown::render(rmd, quiet = TRUE),
-               "The hidden knitr chunk option `indent` cannot be used with workflowr.")
-  expect_error(rmarkdown::render(rmd, quiet = TRUE), "test-indent")
-  expect_error(rmarkdown::render(rmd, quiet = TRUE), basename(rmd))
+  html <- rmarkdown::render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  html_lines <- readLines(html)
+  html_complete <- paste(html_lines, collapse = "\n")
+
+  # Test indent="  "
+  expected_indent <- "r   print\\(&quot;this chunk should be indented&quot;\\)"
+  expect_true(stringr::str_detect(html_complete, expected_indent))
 })
 
 # Test plot_hook ---------------------------------------------------------------
@@ -351,7 +355,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
   # If set in only only one chunk, only one warning should be generated
   rmd <- file.path(tmp_dir, "file.Rmd")
   fs::file_copy("files/test-wflow_html/fig-path-one-chunk.Rmd", rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "<code>fig.path</code>")) == 1)
@@ -359,7 +363,7 @@ test_that("wflow_html sends warning if fig.path is set by user", {
   # If set globally, a warning should be generated for each plot (in this case 3)
   rmd2 <- file.path(tmp_dir, "file2.Rmd")
   fs::file_copy("files/test-wflow_html/fig-path-all-chunks.Rmd", rmd2)
-  html2 <- render(rmd2, quiet = TRUE)
+  html2 <- rmarkdown::render(rmd2, quiet = TRUE)
   expect_true(fs::file_exists(html2))
   html_lines2 <- readLines(html2)
   expect_true(sum(stringr::str_detect(html_lines2, "<code>fig.path</code>")) == 3)
@@ -383,7 +387,7 @@ test_that("wflow_html sends warning if chunk caches without autodep", {
   # (no warning), and the third has no options set (no warning).
   rmd <- file.path(tmp_dir, "file.Rmd")
   fs::file_copy("files/test-wflow_html/cache-one-chunk.Rmd", rmd)
-  html <- render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "<strong>Warning:</strong>")) == 1)
@@ -395,7 +399,7 @@ test_that("wflow_html sends warning if chunk caches without autodep", {
   # (3 - 1 + 1)
   rmd2 <- file.path(tmp_dir, "file2.Rmd")
   fs::file_copy("files/test-wflow_html/cache-all-chunks.Rmd", rmd2)
-  html2 <- render(rmd2, quiet = TRUE)
+  html2 <- rmarkdown::render(rmd2, quiet = TRUE)
   expect_true(fs::file_exists(html2))
   html_lines2 <- readLines(html2)
   expect_true(sum(stringr::str_detect(html_lines2, "<strong>Warning:</strong>")) == 3)
@@ -431,14 +435,14 @@ test_that("add_bibliography adds bibliography to files", {
   # Don't add bibliography when not specified in YAML header
   bib_none <- file.path(tmp_dir, "bib-none.Rmd")
   fs::file_copy("files/example.Rmd", bib_none)
-  bib_none_html <- render(bib_none, quiet = TRUE)
+  bib_none_html <- rmarkdown::render(bib_none, quiet = TRUE)
   expect_false(any(stringr::str_detect(readLines(bib_none_html),
                                        "<div id=\"refs\">")))
 
   # Add bibliography before session information
   bib_add <- file.path(tmp_dir, "bib-add.Rmd")
   fs::file_copy("files/test-wflow_html/bib-add.Rmd", bib_add)
-  bib_add_html <- render(bib_add, quiet = TRUE)
+  bib_add_html <- rmarkdown::render(bib_add, quiet = TRUE)
   bib_add_lines <- readLines(bib_add_html)
   refs_line <- stringr::str_which(bib_add_lines, "<div id=\"refs\">")
   sinfo_line <- stringr::str_which(bib_add_lines, "sessionInfo()")
@@ -447,7 +451,7 @@ test_that("add_bibliography adds bibliography to files", {
   # Don't add if user already manually added (double quotes)
   bib_dont_add_1 <- file.path(tmp_dir, "bib-dont-add-1.Rmd")
   fs::file_copy("files/test-wflow_html/bib-dont-add-1.Rmd", bib_dont_add_1)
-  bib_dont_add_1_html <- render(bib_dont_add_1, quiet = TRUE)
+  bib_dont_add_1_html <- rmarkdown::render(bib_dont_add_1, quiet = TRUE)
   bib_dont_add_1_lines <- readLines(bib_dont_add_1_html)
   refs_line <- stringr::str_which(bib_dont_add_1_lines, "<div id=\"refs\">")
   expect_true(length(refs_line) == 1)
@@ -457,7 +461,7 @@ test_that("add_bibliography adds bibliography to files", {
   # Don't add if user already manually added (single quotes)
   bib_dont_add_2 <- file.path(tmp_dir, "bib-dont-add-2.Rmd")
   fs::file_copy("files/test-wflow_html/bib-dont-add-2.Rmd", bib_dont_add_2)
-  bib_dont_add_2_html <- render(bib_dont_add_2, quiet = TRUE)
+  bib_dont_add_2_html <- rmarkdown::render(bib_dont_add_2, quiet = TRUE)
   bib_dont_add_2_lines <- readLines(bib_dont_add_2_html)
   refs_line <- stringr::str_which(bib_dont_add_2_lines, "<div id=[\"\']refs[\"\']>")
   expect_true(length(refs_line) == 1)

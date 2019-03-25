@@ -29,18 +29,18 @@ wflow_toc <- function(gh_url = "https://jdblischak.github.io", proj_url = "workf
       url = file.path(root,url)
     ) %>%
     dplyr::mutate(
-      name = purrr::map(path,~ readr::read_lines(.) %>%
+      name_used = purrr::map(path,~ readr::read_lines(.) %>%
                           stringr::str_subset(title_regexp) %>%
                           stringr::str_match_all(title_regexp)
       )
     ) %>%
     tidyr::unnest() %>%
     dplyr::mutate(
-      name = purrr::map_chr(name, ~.[,2])
+      name_used = purrr::map_chr(name_used, ~.[,2])
     ) %>%
-    dplyr::select(url, name, dplyr::everything()) %>%
+    dplyr::select(url, name_used, dplyr::everything()) %>%
     dplyr::mutate(
-      link = glue::glue("1. [{name}]({url})")
+      link = glue::glue("1. [{name_used}]({url})")
     ) %>%
     .$link %>%
     clipr::write_clip()

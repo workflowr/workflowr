@@ -76,9 +76,9 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="workflowr-organized-reproducible-shareable-data-science-in-r" class="section level1">
+<div id="workflowr-organized--reproducible--shareable-data-science-in-r" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#workflowr-organized-reproducible-shareable-data-science-in-r" class="anchor"></a>workflowr: organized + reproducible + shareable data science in R</h1></div>
+<a href="#workflowr-organized--reproducible--shareable-data-science-in-r" class="anchor"></a>workflowr: organized + reproducible + shareable data science in R</h1></div>
 
 <p>The workflowr R package helps researchers organize their analyses in a way that promotes effective project management, reproducibility, collaboration, and sharing of results. Workflowr combines literate programming (knitr and rmarkdown) and version control (Git, via git2r) to generate a website containing time-stamped, versioned, and documented results. Any R user can quickly and easily adopt workflowr.</p>
 <p>For more details, see the <a href="https://jdblischak.github.io/workflowr/">online documentation</a>. For an example, see the <a href="https://stephenslab.github.io/wflow-divvy/">Divvy data exploration project</a>. To keep up-to-date with the latest workflowr developments, please join the <a href="https://groups.google.com/forum/#!forum/workflowr-announce">workflowr-announce</a> mailing list (low-volume, read-only). For bugs reports, feature requests, and questions, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
@@ -135,7 +135,7 @@
 </li>
 <li>
 <p>Install workflowr from <a href="https://cran.r-project.org/package=workflowr">CRAN</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</a></code></pre></div>
 </li>
 <li><p>Create an account on <a href="https://github.com">GitHub</a></p></li>
 </ol>
@@ -143,7 +143,7 @@
 <div id="quick-start" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start" class="anchor"></a>Quick start</h2>
-<pre><code><a href="https://www.rdocumentation.org/packages/base/topics/library">library("workflowr")
+<pre><code>library("workflowr")
 
 # Configure Git (only need to do once per computer)
 wflow_git_config(user.name = "Full Name", user.email = "email@domain")
@@ -163,7 +163,7 @@ wflow_build()
 wflow_build()
 
 # Publish the site, i.e. version the source code and HTML results
-wflow_publish("analysis/*", "Start my new project")</a></code></pre>
+wflow_publish("analysis/*", "Start my new project")</code></pre>
 <p><strong>Next steps:</strong></p>
 <ol>
 <li><p>Read the full <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html">Getting started vignette</a> to learn how to share your results online via GitHub</p></li>

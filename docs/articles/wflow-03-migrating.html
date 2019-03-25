@@ -78,7 +78,7 @@
             <h3 class="subtitle">workflowr version 1.2.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-02-13</h4>
+            <h4 class="date">2019-03-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-03-migrating.Rmd"><code>vignettes/wflow-03-migrating.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-03-migrating.Rmd</code></div>
@@ -91,38 +91,38 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This vignette is for those users that already have an existing project and wish to incorporate workflowr to create a research website. Migrating an existing project to use workflowr varies from straightforward to difficult depending on the scenario and your comfort level with Git. This vignette assumes that you have the background knowledge of workflowr explained in the <a href="wflow-01-getting-started.html">Getting started</a> vignette. Even if you have no need for a new workflowr project, please run through that vignette first as an exercise to familiarize yourself with the workflowr philosophy and functions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"wflow-01-getting-started"</span>, <span class="st">"workflowr"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"wflow-01-getting-started"</span>, <span class="st">"workflowr"</span>)</a></code></pre></div>
 </div>
 <div id="scenario-i-have-a-collection-of-r-markdown-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-a-collection-of-r-markdown-files" class="anchor"></a>Scenario: I have a collection of R Markdown files</h2>
 <p>If you have a collection of R Markdown files, but no version control or other files, the most straightforward solution would be to create a workflowr project in a new directory and then move the R Markdown files to the <code>analysis/</code> subdirectory. In the hypothetical example below, the original R Markdown files are located in the directory <code>~/projects/misc/</code> and the workflowr project will be created in the new directory <code>~/projects/new-project/</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)
-<span class="co"># Create project directory and change working directory to this location</span>
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/new-project"</span>)
-<span class="co"># Copy the files to the analysis subdirectory of the workflowr project</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.copy</a></span>(<span class="dt">from =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.glob">Sys.glob</a></span>(<span class="st">"~/projects/misc/*Rmd"</span>), <span class="dt">to =</span> <span class="st">"analysis"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># Create project directory and change working directory to this location</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/new-project"</span>)</a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># Copy the files to the analysis subdirectory of the workflowr project</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.copy</a></span>(<span class="dt">from =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.glob">Sys.glob</a></span>(<span class="st">"~/projects/misc/*Rmd"</span>), <span class="dt">to =</span> <span class="st">"analysis"</span>)</a></code></pre></div>
 <p>Next run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to see if your files run without error. Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</a></code></pre></div>
 </div>
 <div id="scenario-i-have-a-collection-of-r-markdown-files-and-other-project-infrastructure" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-a-collection-of-r-markdown-files-and-other-project-infrastructure" class="anchor"></a>Scenario: I have a collection of R Markdown files and other project infrastructure</h2>
 <p>If your project already has lots of infrastructure, it is most convenient to add the workflowr files directory to your already existing directory. This is controlled with the argument <code>existing</code>. In the hypothetical example below, the existing project is located at <code>~/projects/mature-project/</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/mature-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/mature-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>By default <code><a href="../reference/wflow_start.html">wflow_start()</a></code> will not overwrite your existing files (e.g. if you already have a <code>README.md</code>). If you’d prefer to overwrite your files with the default workflowr files, set <code>overwrite = TRUE</code>.</p>
 <p>To add your R Markdown files to the research website, you can move them to the subdirectory <code>analysis/</code> (note you can do this before or after running <code><a href="../reference/wflow_start.html">wflow_start()</a></code>).</p>
 <p>Next run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to see if your files run without error. Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</a></code></pre></div>
 </div>
 <div id="scenario-i-have-an-r-package" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-an-r-package" class="anchor"></a>Scenario: I have an R package</h2>
 <p>If your project is organized as an R package, you can still add a website using workflowr. In the hypothetical example below, the existing package is located at <code>~/projects/my-package/</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/my-package"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/my-package"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>You’ll want R to ignore the workflowr directories when building the R package. Thus add the following to the <code>.Rbuildignore</code> file:</p>
 <pre><code>^analysis$
@@ -138,15 +138,15 @@
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-an-old-worklowr-project" class="anchor"></a>Scenario: I have an old worklowr project</h2>
 <p>If you created a workflowr project prior to its release to CRAN (any version less than 1.0), you can migrate the project to use the 1.0+ features by running <code><a href="../reference/wflow_update.html">wflow_update()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install the latest version from CRAN</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)
-<span class="co"># Preview the files that would be changed</span>
-<span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>()
-<span class="co"># Update the files</span>
-<span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>(<span class="dt">dry_run =</span> <span class="ot">FALSE</span>)
-<span class="co"># Republish your analyses with the latest features</span>
-<span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Install the latest version from CRAN</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co"># Preview the files that would be changed</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>()</a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co"># Update the files</span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>(<span class="dt">dry_run =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co"># Republish your analyses with the latest features</span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="dt">republish =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>A few notes:</p>
 <ol style="list-style-type: decimal">
 <li><p>You do <em>not</em> have to upgrade if you don’t want. To continue using the Beta version of workflowr, follow the <a href="https://github.com/jdblischak/workflowrBeta#quick-start">workflowrBeta installation instructions</a>.</p></li>

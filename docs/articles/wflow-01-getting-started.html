@@ -78,7 +78,7 @@
             <h3 class="subtitle">workflowr version 1.2.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-02-13</h4>
+            <h4 class="date">2019-03-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-01-getting-started.Rmd"><code>vignettes/wflow-01-getting-started.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-01-getting-started.Rmd</code></div>
@@ -95,28 +95,28 @@
 <p>A workflowr project has two key components:</p>
 <ol style="list-style-type: decimal">
 <li><p>An R Markdown-based website. This consists of a configuration file (<code>_site.yml</code>), a collection of R Markdown files, and their corresponding HTML files.</p></li>
-<li><p>A Git repository. Git is a <a href="https://en.wikipedia.org/wiki/Version_control">version control system</a> that helps track code development<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. Workflowr is able to run the basic Git commands, so there is no need to install Git prior to using workflowr.</p></li>
+<li><p>A Git repository. Git is a <a href="https://en.wikipedia.org/wiki/Version_control">version control system</a> that helps track code development<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Workflowr is able to run the basic Git commands, so there is no need to install Git prior to using workflowr.</p></li>
 </ol>
 <p>One of the main goals of workflowr is to help make your research more transparent and reproducible. This is achieved by displaying multiple “reproducibility checks” at the top of each analysis, including the unique identifier that Git assigns a snapshot of your code (or “commit” as Git calls it), so you always know which version of the code produced the results.</p>
 </div>
 <div id="start-the-project" class="section level2">
 <h2 class="hasAnchor">
 <a href="#start-the-project" class="anchor"></a>Start the project</h2>
-<p>To start a new project, open R (or RStudio) and load the workflowr package (note that all the code in this vignette should be run directly in the R console, i.e. do <strong>not</strong> try to run workflowr functions inside of R Markdown documents).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)
-## This is workflowr version 1.2.0
-## Run ?workflowr for help getting started</code></pre></div>
+<p>To start a new project, open R (or RStudio) and load the workflowr package (note that all the code in this vignette should be run directly in the R console, i.e. do <strong>not</strong> try to run workflowr functions inside of R Markdown documents).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co">## This is workflowr version 1.2.0</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co">## Run ?workflowr for help getting started</span></a></code></pre></div>
 <p>If you have never created a Git repository on your computer before, you need to run the following command to tell Git your name and email. Git uses this information to assign the changes you make to the code to you (analogous to how Track Changes in a Microsoft Office Word document assigns your changes to you). You do not need to use the exact same name and email as you used for your GitHub account. Also, you only need to run this command once per computer, and all subsequent workflowr projects will use this information (you can also update it at any time by re-running the command with different input).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Replace the example text with your information</span>
-<span class="kw"><a href="../reference/wflow_git_config.html">wflow_git_config</a></span>(<span class="dt">user.name =</span> <span class="st">"Your Name"</span>, <span class="dt">user.email =</span> <span class="st">"email@domain"</span>)</code></pre></div>
-<p>Now you are ready to start your first workflowr project! <code><a href="../reference/wflow_start.html">wflow_start("myproject")</a></code> creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and initializes a Git repository with the initial commit already made.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># Replace the example text with your information</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw"><a href="../reference/wflow_git_config.html">wflow_git_config</a></span>(<span class="dt">user.name =</span> <span class="st">"Your Name"</span>, <span class="dt">user.email =</span> <span class="st">"email@domain"</span>)</a></code></pre></div>
+<p>Now you are ready to start your first workflowr project! <code><a href="../reference/wflow_start.html">wflow_start("myproject")</a></code> creates a directory called <code>myproject/</code> that contains all the files to get started. It also changes the working directory to <code>myproject/</code><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and initializes a Git repository with the initial commit already made.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"myproject"</span>)</a></code></pre></div>
 <pre><code>## wflow_start:
-## - New directory created at /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject
+## - New directory created at C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject
 ## - Project name is "myproject"
-## - Working directory changed to /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject
-## - Git repo initiated at /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject
-## - Files were committed in version 9f539ae</code></pre>
+## - Working directory changed to C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject
+## - Git repo initiated at C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject
+## - Files were committed in version 644deaf</code></pre>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> created the following directory structure in <code>myproject/</code>:</p>
 <pre><code>myproject/
 ├── .gitignore
@@ -144,9 +144,9 @@
 </ul>
 <ul>
 <li>
-<code>docs/</code>: This directory contains all the HTML files for your website. The HTML files are built from the R Markdown files in <code>analysis/</code>. Furthermore, any figures created by the R Markdown files are saved here. Each of these figures is saved according to the following pattern: <code>docs/figure/&lt;insert Rmd filename&gt;/&lt;insert chunk name&gt;-#.png</code>, where <code>#</code> corresponds to which of the plots the chunk generated (since one chunk can produce an arbitrary number of plots)<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</li>
+<code>docs/</code>: This directory contains all the HTML files for your website. The HTML files are built from the R Markdown files in <code>analysis/</code>. Furthermore, any figures created by the R Markdown files are saved here. Each of these figures is saved according to the following pattern: <code>docs/figure/&lt;insert Rmd filename&gt;/&lt;insert chunk name&gt;-#.png</code>, where <code>#</code> corresponds to which of the plots the chunk generated (since one chunk can produce an arbitrary number of plots)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</li>
 </ul>
-<p>The workflowr-specific configuration file is <code>_workflowr.yml</code>. It will apply the workflowr reproducibility checks consistently across all your R Markdown files. The most critical setting is <code>knit_root_dir</code>, which determines the directory where the files in <code>analysis/</code> will be executed. The default is to execute the code in the root of the project where <code>_workflowr.yml</code> is located (i.e. <code>"."</code>). To instead execute the code from <code>analysis/</code>, change the setting to <code>knit_root_dir: "analysis"</code>. See <code><a href="../reference/wflow_html.html">?wflow_html</a></code> for more details.</p>
+<p>The workflowr-specific configuration file is <code>_workflowr.yml</code>. It will apply the workflowr reproducibility checks consistently across all your R Markdown files. The most critical setting is <code>knit_root_dir</code>, which determines the directory where the files in <code>analysis/</code> will be executed. The default is to execute the code in the root of the project where <code>_workflowr.yml</code> is located (i.e. <code>"."</code>). To instead execute the code from <code>analysis/</code>, change the setting to <code>knit_root_dir: "analysis"</code>. See <code><a href="../reference/wflow_html.html">?wflow_html</a></code> for more details.</p>
 <p>Also required is the RStudio project file, in this example <code>myproject.Rproj</code>. Even if you are not using RStudio, do not delete this file because the workflowr functions rely on it to determine the root directory of the project.</p>
 <p>The <strong>optional</strong> directories are <code>data/</code>, <code>code/</code>, and <code>output/</code>. These directories are suggestions for organizing your data analysis project, but can be removed if you do not find them useful.</p>
 <ul>
@@ -161,8 +161,8 @@
 <a href="#build-the-website" class="anchor"></a>Build the website</h2>
 <p>You will notice that the <code>docs/</code> directory is currently empty. That is because we have not yet generated the website from the <code>analysis/</code> files. This is what we will do next.</p>
 <p>To build the website, run the function <code><a href="../reference/wflow_build.html">wflow_build()</a></code> in the R console:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</code></pre></div>
-<pre><code>## Current working directory: /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</a></code></pre></div>
+<pre><code>## Current working directory: C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject
 ## Building 3 file(s):
 ## Building analysis/about.Rmd
 ## Building analysis/index.Rmd
@@ -179,47 +179,48 @@
 ## docs/index.html
 ## docs/license.html
 ## 
-## Log files saved in /tmp/RtmpJIBuya/workflowr</code></pre>
+## Log files saved in
+## C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/workflowr</code></pre>
 <p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files). Lastly, it displays the website in the RStudio Viewer or default web browser.</p>
 <p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice">Makefile</a> (<code>make = TRUE</code> is the default when no input files are provided), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built (and no files are displayed).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()
-## Summary from wflow_build
-## 
-## Settings:
-##  make: TRUE
-## 
-## No files to build</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="../reference/wflow_build.html">wflow_build</a></span>()</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="co">## Summary from wflow_build</span></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co">## Settings:</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">##  make: TRUE</span></a>
+<a class="sourceLine" id="cb8-6" title="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">## No files to build</span></a></code></pre></div>
 <p>To view the site without first building any files, run <code><a href="../reference/wflow_view.html">wflow_view()</a></code>, which by default displays the file <code>docs/index.html</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_view.html">wflow_view</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw"><a href="../reference/wflow_view.html">wflow_view</a></span>()</a></code></pre></div>
 <p>This is how you can view your site right on your local machine. Go ahead and edit the files <code>index.Rmd</code>, <code>about.Rmd</code>, and <code>license.Rmd</code> to describe your project. Then run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to re-build the HTML files and display them in the RStudio Viewer or your browser.</p>
 </div>
 <div id="publish-the-website" class="section level2">
 <h2 class="hasAnchor">
 <a href="#publish-the-website" class="anchor"></a>Publish the website</h2>
 <p>workflowr makes an important distinction between R Markdown files that are published versus unpublished. A published file is included in the website online; whereas, the HTML file of an unpublished R Markdown file is only able to be viewed on the local computer. Since the project was just started, there are no published files. To view the status of the workflowr project, run <code><a href="../reference/wflow_status.html">wflow_status()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_status.html">wflow_status</a></span>()
-## Status of 3 files
-## 
-## Totals:
-##  3 Unpublished
-## 
-## The following files require attention:
-## 
-## Unp analysis/about.Rmd
-## Unp analysis/index.Rmd
-## Unp analysis/license.Rmd
-## 
-## Key: Unp = Unpublished
-## 
-## To publish your changes as part of your website, use
-## `wflow_publish()`.
-## 
-## To commit your changes without publishing them yet, use
-## `wflow_git_commit()`.</code></pre></div>
-<p>This alerts us that our project has 3 R Markdown files, and they are all unpublished (“Unp”). Furthermore, it instructs how to publish them: use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>. The first argument to <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is a character vector of the R Markdown files to publish <a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>. The second is a message that will be recorded by the version control system Git when it commits (i.e. saves a snapshot of) these files. The more informative the commit message the better (so that future you knows what you were trying to accomplish).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/about.Rmd"</span>, <span class="st">"analysis/license.Rmd"</span>),
-              <span class="st">"Publish the initial files for myproject"</span>)</code></pre></div>
-<pre><code>## Current working directory: /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="../reference/wflow_status.html">wflow_status</a></span>()</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="co">## Status of 3 files</span></a>
+<a class="sourceLine" id="cb10-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="co">## Totals:</span></a>
+<a class="sourceLine" id="cb10-5" title="5"><span class="co">##  3 Unpublished</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">## The following files require attention:</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-9" title="9"><span class="co">## Unp analysis/about.Rmd</span></a>
+<a class="sourceLine" id="cb10-10" title="10"><span class="co">## Unp analysis/index.Rmd</span></a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co">## Unp analysis/license.Rmd</span></a>
+<a class="sourceLine" id="cb10-12" title="12"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-13" title="13"><span class="co">## Key: Unp = Unpublished</span></a>
+<a class="sourceLine" id="cb10-14" title="14"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-15" title="15"><span class="co">## To publish your changes as part of your website, use</span></a>
+<a class="sourceLine" id="cb10-16" title="16"><span class="co">## `wflow_publish()`.</span></a>
+<a class="sourceLine" id="cb10-17" title="17"><span class="co">## </span></a>
+<a class="sourceLine" id="cb10-18" title="18"><span class="co">## To commit your changes without publishing them yet, use</span></a>
+<a class="sourceLine" id="cb10-19" title="19"><span class="co">## `wflow_git_commit()`.</span></a></code></pre></div>
+<p>This alerts us that our project has 3 R Markdown files, and they are all unpublished (“Unp”). Furthermore, it instructs how to publish them: use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>. The first argument to <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is a character vector of the R Markdown files to publish <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>. The second is a message that will be recorded by the version control system Git when it commits (i.e. saves a snapshot of) these files. The more informative the commit message the better (so that future you knows what you were trying to accomplish).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/about.Rmd"</span>, <span class="st">"analysis/license.Rmd"</span>),</a>
+<a class="sourceLine" id="cb11-2" title="2">              <span class="st">"Publish the initial files for myproject"</span>)</a></code></pre></div>
+<pre><code>## Current working directory: C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject
 ## Building 3 file(s):
 ## Building analysis/index.Rmd
 ## Building analysis/about.Rmd
@@ -235,7 +236,7 @@
 ##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd 
 ##   $ git commit -m "Publish the initial files for myproject" 
 ## 
-## The following file(s) were included in commit 2157198:
+## The following file(s) were included in commit 60d3ab4:
 ## analysis/about.Rmd
 ## analysis/index.Rmd
 ## analysis/license.Rmd
@@ -254,7 +255,8 @@
 ## docs/about.html
 ## docs/license.html
 ## 
-## Log files saved in /tmp/RtmpJIBuya/workflowr
+## Log files saved in
+## C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -265,7 +267,7 @@
 ##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs docs/.nojekyll 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 5a7a4f4:
+## The following file(s) were included in commit cd9d327:
 ## docs/about.html
 ## docs/index.html
 ## docs/license.html
@@ -281,30 +283,30 @@
 </ul>
 <p>Performing these 3 steps ensures that the HTML files are always in sync with the latest versions of the R Markdown files. Performing these steps manually would be tedious and error-prone (e.g. an HTML file may have been built with an outdated version of an R Markdown file). However, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> makes it easy to keep the pages of your site in sync.</p>
 <p>Now when you run <code><a href="../reference/wflow_status.html">wflow_status()</a></code>, it reports that all the files are published and up-to-date.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_status.html">wflow_status</a></span>()
-## Status of 3 files
-## 
-## Totals:
-##  3 Published
-## 
-## Files are up-to-date</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw"><a href="../reference/wflow_status.html">wflow_status</a></span>()</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="co">## Status of 3 files</span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">## Totals:</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="co">##  3 Published</span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">## </span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="co">## Files are up-to-date</span></a></code></pre></div>
 </div>
 <div id="deploy-the-website" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deploy-the-website" class="anchor"></a>Deploy the website</h2>
 <p>At this point you have built a version-controlled website that exists on your local computer. The next step is to put your code on GitHub so that it can serve your website online.</p>
 <p>First, you need to configure your local project for use use with GitHub. Pass your GitHub username and desired repository name to the workflowr function <code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_use_github.html">wflow_use_github</a></span>(<span class="st">"myname"</span>, <span class="st">"myproject"</span>)
-## Summary from wflow_use_github():
-## * The website directory is already named docs/
-## * Output directory is already set to docs/
-## * Set remote "origin" to https://github.com/myname/myproject.git
-## * Added GitHub link to navigation bar
-## * Committed the changes to Git
-## 
-## GitHub configuration successful!
-## To do: Create new repository at github.com
-## To do: Run wflow_git_push() to send your project to GitHub</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw"><a href="../reference/wflow_use_github.html">wflow_use_github</a></span>(<span class="st">"myname"</span>, <span class="st">"myproject"</span>)</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">## Summary from wflow_use_github():</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="co">## * The website directory is already named docs/</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">## * Output directory is already set to docs/</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co">## * Set remote "origin" to https://github.com/myname/myproject.git</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="co">## * Added GitHub link to navigation bar</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">## * Committed the changes to Git</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="co">## </span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="co">## GitHub configuration successful!</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="co">## To do: Create new repository at github.com</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="co">## To do: Run wflow_git_push() to send your project to GitHub</span></a></code></pre></div>
 <p>This had two main effects: 1) it configured Git to communicate with your future GitHub repository, and 2) it inserted a link to your future GitHub repository into the navigation bar (you’ll need to run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> to observe this change).</p>
 <p>Second, you need to create the GitHub repository (you can skip this step if you’ve already created it). To do this, login to your account on GitHub and create a new repository following these <a href="https://help.github.com/articles/creating-a-new-repository/">instructions</a>. The screenshot below shows the menu in the topright of the webpage.</p>
 <p><img src="github-new-repo.png" alt="Create a new repository on GitHub." style="display: block; margin: auto; border: black 1px solid"></p>
@@ -312,56 +314,56 @@
 Create a new repository on GitHub.
 </p>
 <p>Note that in this tutorial the GitHub repository also has the name “myproject.” This isn’t strictly neccesary (you can name your GitHub repository whatever you like), but it’s generally good organizational practice to use the same name for both your GitHub repository and the local directory on your computer.</p>
-<p>Third, you need to send your files to GitHub. Push your files to GitHub with the function <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>:<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_git_push.html">wflow_git_push</a></span>(<span class="dt">dry_run =</span> <span class="ot">TRUE</span>)
-## Summary from wflow_git_push
-## 
-## Pushing to the branch "master" of the remote repository "origin" 
-## 
-## The following Git command would be run:
-## 
-##   $ git push origin master</code></pre></div>
-<p>Using <code>dry_run = TRUE</code> previews what the function will do. Remove this argument to actually push to GitHub. You will be prompted to enter your GitHub username and password for authentication<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>. Each time you make changes to your project, e.g. run <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>, you will need to run <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> to send the changes to GitHub.</p>
-<p>Fourth, now that your code is on GitHub, you need to tell GitHub that you want the files in <code>docs/</code> to be published as a website. Go to Settings -&gt; GitHub Pages and choose “master branch docs/ folder” as the Source (<a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch">instructions</a>). Using the hypothetical names above, the repository would be hosted at the URL <code>myname.github.io/myproject/</code><a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a>. If you scroll back down to the GitHub Pages section of the Settings page, you can click on the URL there.</p>
+<p>Third, you need to send your files to GitHub. Push your files to GitHub with the function <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>:<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw"><a href="../reference/wflow_git_push.html">wflow_git_push</a></span>(<span class="dt">dry_run =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">## Summary from wflow_git_push</span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="co">## Pushing to the branch "master" of the remote repository "origin" </span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co">## The following Git command would be run:</span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co">## </span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="co">##   $ git push origin master</span></a></code></pre></div>
+<p>Using <code>dry_run = TRUE</code> previews what the function will do. Remove this argument to actually push to GitHub. You will be prompted to enter your GitHub username and password for authentication<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>. Each time you make changes to your project, e.g. run <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>, you will need to run <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> to send the changes to GitHub.</p>
+<p>Fourth, now that your code is on GitHub, you need to tell GitHub that you want the files in <code>docs/</code> to be published as a website. Go to Settings -&gt; GitHub Pages and choose “master branch docs/ folder” as the Source (<a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch">instructions</a>). Using the hypothetical names above, the repository would be hosted at the URL <code>myname.github.io/myproject/</code><a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. If you scroll back down to the GitHub Pages section of the Settings page, you can click on the URL there.</p>
 </div>
 <div id="add-a-new-analysis-file" class="section level2">
 <h2 class="hasAnchor">
 <a href="#add-a-new-analysis-file" class="anchor"></a>Add a new analysis file</h2>
 <p>Now that you have a functioning website, the next step is to start analyzing data! Create a new R Markdown file, save it as <code>analysis/first-analysis.Rmd</code>, and open it in your preferred text editor (e.g. RStudio). Alternatively, you can use the convenience function <code><a href="../reference/wflow_open.html">wflow_open()</a></code>, which will create the file (and open it if you are using RStudio):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/first-analysis.Rmd"</span>)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/first-analysis.Rmd"</span>)</a></code></pre></div>
 <pre><code>## wflow_open:
 ## - New file(s):
-##   /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject/analysis/first-analysis.Rmd
-## - Same working directory: /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject</code></pre>
+##   C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject/analysis/first-analysis.Rmd
+## - Same working directory: C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject</code></pre>
 <p>Now you are ready to start writing! Go ahead and add some example code. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> again (this function can be run from the base directory of your project or any subdirectory).</p>
 <p>Check out your new file <code>first-analysis.html</code>. Near the top you will see the workflowr reproducibility report. If you click on the button, the full menu will drop down. Click around to learn more about the reproducibility safety checks, why their important, and whether or not the file passed or failed each one. You’ll notice that the first check failed because the R Markdown file had uncommitted changes. This is OK now since the file is a draft. Once you are ready to publish it to share with others, you can use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> to ensure that any changes to the R Markdown file are committed to the Git repository prior to generating the results.</p>
 <p>In order to make it easier to navigate to your new file, you can include a link to it on the main index page. First open <code>analysis/index.Rmd</code> (optionally using <code><a href="../reference/wflow_open.html">wflow_open()</a></code>). Second paste the following line into <code>index.Rmd</code>:</p>
 <pre><code>Click on this [link](first-analysis.html) to see my results.</code></pre>
 <p>This uses the Markdown syntax for creating a hyperlink (for a quick reference guide in RStudio click “Help” -&gt; “Markdown Quick Reference”). You specify the HTML version of the file since this is what comprises the website. Click Knit (or run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> again) to check that the link works.</p>
 <p>Now run <code><a href="../reference/wflow_status.html">wflow_status()</a></code> again. As expected, two files need attention. <code>index.Rmd</code> has status “Mod” for modified. This means it is a published file that has subsequently been modified. <code>first-analysis.Rmd</code> has status “Scr” for Scratch. This means not only is the HTML not published, but the R Markdown file is not yet being tracked by Git.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_status.html">wflow_status</a></span>()
-## Status of 4 files
-## 
-## Totals:
-##  3 Published (1 Modified)
-##  1 Scratch
-## 
-## The following files require attention:
-## 
-## Mod analysis/index.Rmd
-## Scr analysis/first-analysis.Rmd
-## 
-## Key: Mod = Modified, Scr = Scratch (Untracked)
-## 
-## To publish your changes as part of your website, use
-## `wflow_publish()`.
-## 
-## To commit your changes without publishing them yet, use
-## `wflow_git_commit()`.</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw"><a href="../reference/wflow_status.html">wflow_status</a></span>()</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="co">## Status of 4 files</span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb19-4" title="4"><span class="co">## Totals:</span></a>
+<a class="sourceLine" id="cb19-5" title="5"><span class="co">##  3 Published (1 Modified)</span></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="co">##  1 Scratch</span></a>
+<a class="sourceLine" id="cb19-7" title="7"><span class="co">## </span></a>
+<a class="sourceLine" id="cb19-8" title="8"><span class="co">## The following files require attention:</span></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="co">## Mod analysis/index.Rmd</span></a>
+<a class="sourceLine" id="cb19-11" title="11"><span class="co">## Scr analysis/first-analysis.Rmd</span></a>
+<a class="sourceLine" id="cb19-12" title="12"><span class="co">## </span></a>
+<a class="sourceLine" id="cb19-13" title="13"><span class="co">## Key: Mod = Modified, Scr = Scratch (Untracked)</span></a>
+<a class="sourceLine" id="cb19-14" title="14"><span class="co">## </span></a>
+<a class="sourceLine" id="cb19-15" title="15"><span class="co">## To publish your changes as part of your website, use</span></a>
+<a class="sourceLine" id="cb19-16" title="16"><span class="co">## `wflow_publish()`.</span></a>
+<a class="sourceLine" id="cb19-17" title="17"><span class="co">## </span></a>
+<a class="sourceLine" id="cb19-18" title="18"><span class="co">## To commit your changes without publishing them yet, use</span></a>
+<a class="sourceLine" id="cb19-19" title="19"><span class="co">## `wflow_git_commit()`.</span></a></code></pre></div>
 <p>To publish the new analysis and the updated index page, again use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/first-analysis.Rmd"</span>),
-              <span class="st">"Add my first analysis"</span>)</code></pre></div>
-<pre><code>## Current working directory: /tmp/RtmpJIBuya/wflow-01-getting-started-206c7d9dce9f/myproject
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/first-analysis.Rmd"</span>),</a>
+<a class="sourceLine" id="cb20-2" title="2">              <span class="st">"Add my first analysis"</span>)</a></code></pre></div>
+<pre><code>## Current working directory: C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/wflow-01-getting-started-154a45e667ef/myproject
 ## Building 2 file(s):
 ## Building analysis/index.Rmd
 ## Building analysis/first-analysis.Rmd
@@ -376,7 +378,7 @@ Create a new repository on GitHub.
 ##   $ git add analysis/index.Rmd analysis/first-analysis.Rmd 
 ##   $ git commit -m "Add my first analysis" 
 ## 
-## The following file(s) were included in commit a18fba3:
+## The following file(s) were included in commit fc31161:
 ## analysis/first-analysis.Rmd
 ## analysis/index.Rmd
 ## 
@@ -393,7 +395,8 @@ Create a new repository on GitHub.
 ## docs/index.html
 ## docs/first-analysis.html
 ## 
-## Log files saved in /tmp/RtmpJIBuya/workflowr
+## Log files saved in
+## C:/Users/lijiaxiang/AppData/Local/Temp/RtmpOizzBK/workflowr
 ## 
 ## **Step 3: Commit HTML files**
 ## 
@@ -404,13 +407,13 @@ Create a new repository on GitHub.
 ##   $ git add docs/index.html docs/first-analysis.html docs/figure/index.Rmd docs/figure/first-analysis.Rmd docs/site_libs docs/.nojekyll 
 ##   $ git commit -m "Build site." 
 ## 
-## The following file(s) were included in commit 3ef11fb:
+## The following file(s) were included in commit 6c03c46:
 ## docs/first-analysis.html
 ## docs/index.html
 ## docs/site_libs/font-awesome-5.1.0/
 ## docs/site_libs/jqueryui-1.11.4/
 ## docs/site_libs/tocify-1.9.1/</code></pre>
-<p>Lastly, push the changes to GitHub with <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code><a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a> to deploy these latest changes to the website.</p>
+<p>Lastly, push the changes to GitHub with <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code><a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> to deploy these latest changes to the website.</p>
 </div>
 <div id="the-workflow" class="section level2">
 <h2 class="hasAnchor">
@@ -426,41 +429,41 @@ Create a new repository on GitHub.
 </ol>
 <p>This ensures that the code version recorded at the top of an HTML file corresponds to the state of the Git repository at the time it was built.</p>
 <p>The only exception to this workflow is if you are updating the aesthetics of your website (e.g. anytime you make edits to <code>analysis/_site.yml</code>). In this case you’ll want to update all the published HTML files, regardless of whether or not their corresponding R Markdown files have been updated. To republish every HTML page, run <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> with <code>republish = TRUE</code>. This behavior is only previewed below by specifying <code>dry_run = TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="dt">republish =</span> <span class="ot">TRUE</span>, <span class="dt">dry_run =</span> <span class="ot">TRUE</span>)
-## Summary from wflow_publish
-## 
-## **Step 1: Commit analysis files**
-## 
-## Summary from wflow_git_commit
-## 
-## The following would be attempted: 
-## 
-##   $ git add analysis/_site.yml 
-##   $ git commit -m "wflow_publish(\"analysis/_site.yml\", republish = TRUE, dry_run =\nTRUE)" 
-## 
-## **Step 2: Build HTML files**
-## 
-## Summary from wflow_build
-## 
-## Settings:
-##  republish: TRUE clean_fig_files: TRUE
-## 
-## The following would be built externally each in their own fresh R
-## session: 
-## 
-## docs/about.html
-## docs/first-analysis.html
-## docs/index.html
-## docs/license.html
-## 
-## **Step 3: Commit HTML files**
-## 
-## Summary from wflow_git_commit
-## 
-## The following would be attempted: 
-## 
-##   $ git add docs/about.html docs/first-analysis.html docs/index.html docs/license.html docs/figure/about.Rmd docs/figure/first-analysis.Rmd docs/figure/index.Rmd docs/figure/license.Rmd docs/site_libs docs/.nojekyll 
-##   $ git commit -m "Build site."</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="dt">republish =</span> <span class="ot">TRUE</span>, <span class="dt">dry_run =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="co">## Summary from wflow_publish</span></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="co">## **Step 1: Commit analysis files**</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="co">## Summary from wflow_git_commit</span></a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="co">## The following would be attempted: </span></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="co">##   $ git add analysis/_site.yml </span></a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="co">##   $ git commit -m "wflow_publish(\"analysis/_site.yml\", republish = TRUE, dry_run =\nTRUE)" </span></a>
+<a class="sourceLine" id="cb22-12" title="12"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-13" title="13"><span class="co">## **Step 2: Build HTML files**</span></a>
+<a class="sourceLine" id="cb22-14" title="14"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-15" title="15"><span class="co">## Summary from wflow_build</span></a>
+<a class="sourceLine" id="cb22-16" title="16"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-17" title="17"><span class="co">## Settings:</span></a>
+<a class="sourceLine" id="cb22-18" title="18"><span class="co">##  republish: TRUE clean_fig_files: TRUE</span></a>
+<a class="sourceLine" id="cb22-19" title="19"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-20" title="20"><span class="co">## The following would be built externally each in their own fresh R</span></a>
+<a class="sourceLine" id="cb22-21" title="21"><span class="co">## session: </span></a>
+<a class="sourceLine" id="cb22-22" title="22"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-23" title="23"><span class="co">## docs/about.html</span></a>
+<a class="sourceLine" id="cb22-24" title="24"><span class="co">## docs/first-analysis.html</span></a>
+<a class="sourceLine" id="cb22-25" title="25"><span class="co">## docs/index.html</span></a>
+<a class="sourceLine" id="cb22-26" title="26"><span class="co">## docs/license.html</span></a>
+<a class="sourceLine" id="cb22-27" title="27"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-28" title="28"><span class="co">## **Step 3: Commit HTML files**</span></a>
+<a class="sourceLine" id="cb22-29" title="29"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-30" title="30"><span class="co">## Summary from wflow_git_commit</span></a>
+<a class="sourceLine" id="cb22-31" title="31"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-32" title="32"><span class="co">## The following would be attempted: </span></a>
+<a class="sourceLine" id="cb22-33" title="33"><span class="co">## </span></a>
+<a class="sourceLine" id="cb22-34" title="34"><span class="co">##   $ git add docs/about.html docs/first-analysis.html docs/index.html docs/license.html docs/figure/about.Rmd docs/figure/first-analysis.Rmd docs/figure/index.Rmd docs/figure/license.Rmd docs/site_libs docs/.nojekyll </span></a>
+<a class="sourceLine" id="cb22-35" title="35"><span class="co">##   $ git commit -m "Build site."</span></a></code></pre></div>
 </div>
 <div id="next-steps" class="section level2">
 <h2 class="hasAnchor">
@@ -486,14 +489,14 @@ Create a new repository on GitHub.
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>There are many ways to use Git: in the Terminal, in the RStudio Git pane, or another Git graphical user interface (GUI) (see <a href="https://git-scm.com/download/gui/linux">here</a> for GUI options).<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>If you’re using RStudio, you can alternatively create a new workflowr project using the RStudio project template. Go to <code>File</code> -&gt; <code>New Project...</code> and select <code>workflowr project</code> from the list of project types. In the future you can return to your project by choosing <code>Open Project...</code> and selecting the file <code>myproject.Rproj</code>. This will set the correct working directory in the R console, switch the file navigator to the project, and configure the Git pane.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Because of this requirement, you can’t customize the knitr option <code>fig.path</code> (which controls where figure files are saved) in any R Markdown file that is part of a workflowr project. If you do set it, it will be ignored and workflowr will insert a warning into the HTML file to alert you.<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>Instead of listing each file individually, you can also pass <a href="https://en.wikipedia.org/wiki/Glob_(programming)">file globs</a> as input to any workflowr function, e.g. <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/*Rmd", "Publish the initial files for myproject")</a></code>.<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>Unfortunately this can fail for many different reasons. If you already regularly use <code>git push</code> in the Terminal, you will probably want to continue using this. If you don’t have Git installed on your computer and thus must use <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, you can search the <a href="https://github.com/ropensci/git2r/issues">git2r Issues</a> for troubleshooting ideas.<a href="#fnref5">↩</a></p></li>
-<li id="fn6"><p>If you’d prefer to use SSH keys for authentication, please see the section <a href="wflow-02-customization.html#setup-ssh-keys">Setup SSH keys</a>.<a href="#fnref6">↩</a></p></li>
-<li id="fn7"><p>It may take a few minutes for the site to be rendered.<a href="#fnref7">↩</a></p></li>
-<li id="fn8"><p>Alternatively you can run <code>git push</code> in the Terminal or use the RStudio Git Pane.<a href="#fnref8">↩</a></p></li>
+<li id="fn1"><p>There are many ways to use Git: in the Terminal, in the RStudio Git pane, or another Git graphical user interface (GUI) (see <a href="https://git-scm.com/download/gui/linux">here</a> for GUI options).<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>If you’re using RStudio, you can alternatively create a new workflowr project using the RStudio project template. Go to <code>File</code> -&gt; <code>New Project...</code> and select <code>workflowr project</code> from the list of project types. In the future you can return to your project by choosing <code>Open Project...</code> and selecting the file <code>myproject.Rproj</code>. This will set the correct working directory in the R console, switch the file navigator to the project, and configure the Git pane.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Because of this requirement, you can’t customize the knitr option <code>fig.path</code> (which controls where figure files are saved) in any R Markdown file that is part of a workflowr project. If you do set it, it will be ignored and workflowr will insert a warning into the HTML file to alert you.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Instead of listing each file individually, you can also pass <a href="https://en.wikipedia.org/wiki/Glob_(programming)">file globs</a> as input to any workflowr function, e.g. <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/*Rmd", "Publish the initial files for myproject")</a></code>.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>Unfortunately this can fail for many different reasons. If you already regularly use <code>git push</code> in the Terminal, you will probably want to continue using this. If you don’t have Git installed on your computer and thus must use <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, you can search the <a href="https://github.com/ropensci/git2r/issues">git2r Issues</a> for troubleshooting ideas.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>If you’d prefer to use SSH keys for authentication, please see the section <a href="wflow-02-customization.html#setup-ssh-keys">Setup SSH keys</a>.<a href="#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>It may take a few minutes for the site to be rendered.<a href="#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn8"><p>Alternatively you can run <code>git push</code> in the Terminal or use the RStudio Git Pane.<a href="#fnref8" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
   </div>

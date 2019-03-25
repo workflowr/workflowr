@@ -123,7 +123,7 @@ test_that("wflow_html does not require a YAML header", {
   rmd <- file.path(tmp_dir, "file.Rmd")
   lines <- c("some text")
   writeLines(lines, rmd)
-  html <- rmarkdown::render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, output_format = wflow_html(), quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines, "some text")) == 1)

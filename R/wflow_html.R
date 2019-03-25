@@ -496,24 +496,24 @@ wflow_pre_processor <- function(metadata, input_file, runtime, knit_meta,
   fname_footer <- tempfile("footer", fileext = ".html")
   writeLines(includes$footer, con = fname_footer)
 
-  # Pandoc 2+ sends a warning if there is no title and uses the filename
-  # without the extension to set the pagetitle (this is the text that is
-  # displayed in the browser tab). Here I avoid this error by always
-  # explicitly setting the pagetitle argument. This is overkill, since it is
-  # only relevant when running pandoc 2+ with not title, but this is easier. I
-  # sent a more principled way to handle this to rmarkdown, and it will be
-  # available in the next release.
-  #
-  # https://github.com/rstudio/rmarkdown/pull/1355
-  if (is.null(metadata$title)) {
-    pagetitle <- input_file
-  } else {
-    pagetitle <- metadata$title
-  }
-
   # Pandoc args
   args <- c("--include-before-body", fname_header,
-            "--include-after-body", fname_footer,
-            "--metadata", paste0("pagetitle=", pagetitle))
+            "--include-after-body", fname_footer)
+
+  # Pandoc 2+ sends a warning if there is no title and uses the filename without
+  # the extension to set the pagetitle (this is the text that is displayed in
+  # the browser tab). I sent a fix upstreamt to rmarkdown, and it was included
+  # in version 1.10. Thus my workflowr-specific fix below should only be
+  # implemented for previous versions of rmarkdown. Otherwise, both rmarkdown
+  # and workflowr set pagetitle via --metadata, and apparently pandoc can't
+  # handle this and sends the warning.
+  #
+  # https://github.com/rstudio/rmarkdown/pull/1355
+  if (is.null(metadata$title) && is.null(metadata$pagetitle) &&
+      utils::packageVersion("rmarkdown") < as.numeric_version("1.10")) {
+    pagetitle <- input_file
+    args <- c(args, "--metadata", paste0("pagetitle=", pagetitle))
+  }
+
   return(args)
 }

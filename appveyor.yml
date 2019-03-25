@@ -30,6 +30,8 @@ before_test:
       if (-Not (Test-Path "C:\Program Files (x86)\Pandoc\")) {
         cinst pandoc
       }
+  - ps: choco uninstall pandoc
+  - ps: cinst pandoc --version 1.19.2.1
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - pandoc -v
 

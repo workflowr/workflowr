@@ -30,7 +30,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     callr,
-    fs (>= 1.2.4),
+    fs,
     getPass,
     git2r,
     glue,
@@ -43,7 +43,13 @@ Imports:
     tools,
     utils,
     whisker,
-    yaml
+    yaml,
+    dplyr,
+    purrr,
+    readr,
+    tidyr,
+    clipr,
+    here
 RoxygenNote: 6.1.1
 Suggests:
     covr,

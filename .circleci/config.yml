@@ -22,12 +22,25 @@ jobs:
             apt-get install -y r-cran-devtools
             # System dependencies
             apt-get install -y libxml2-dev qpdf
-            # R packages with longer compilation times
+            # R packages available from c2d4u3.5
+            # (can't install rmarkdown since that would install pandoc)
+            apt-get install -y r-cran-callr \
+                               r-cran-covr \
+                               r-cran-fs \
+                               r-cran-git2r \
+                               r-cran-glue \
+                               r-cran-knitr \
+                               r-cran-rprojroot \
+                               r-cran-rstudioapi \
+                               r-cran-stringr \
+                               r-cran-testthat \
+                               r-cran-whisker \
+                               r-cran-withr \
+                               r-cran-yaml
+            # Dependencies of package spelling (it's not available from c2d4u3.5)
             apt-get install -y r-cran-commonmark \
                                r-cran-hunspell \
-                               r-cran-stringr \
-                               r-cran-xml2 \
-                               r-cran-yaml
+                               r-cran-xml2
       - run:
           name: Install package dependencies
           command: r -e "devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"

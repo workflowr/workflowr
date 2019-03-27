@@ -349,12 +349,11 @@ test_that("wflow_html preserves knitr chunk option indent", {
   fs::file_copy("files/test-wflow_html/indent.Rmd", rmd)
   html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
-  html_lines <- readLines(html)
-  html_complete <- paste(html_lines, collapse = "\n")
-
-  # Test indent="  "
-  expected_indent <- "r   print\\(&quot;this chunk should be indented&quot;\\)"
-  expect_true(stringr::str_detect(html_complete, expected_indent))
+  md <- fs::path_ext_set(html, "md")
+  expect_true(fs::file_exists(md))
+  md_lines <- readLines(md)
+  expect_true("  1 + 1" %in% md_lines)
+  expect_true("  [1] 2" %in% md_lines)
 })
 
 # Test plot_hook ---------------------------------------------------------------

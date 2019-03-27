@@ -19,7 +19,7 @@ jobs:
           name: Install devtools
           command: |
             apt-get update
-            apt-get install -y r-cran-devtools r-cran-stringr libxml2-dev
+            apt-get install -y r-cran-devtools r-cran-stringr libxml2-dev qpdf
       - run:
           name: Install package dependencies
           command: r -e "devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"

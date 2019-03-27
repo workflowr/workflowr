@@ -301,6 +301,22 @@ test_that("wflow_html inserts custom header and footer", {
                                   stringr::fixed(workflowr:::includes$footer)))
 })
 
+test_that("wflow_html respects html_document() argument keep_md", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/keep_md.Rmd", rmd)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  md <- fs::path_ext_set(html, "md")
+  expect_true(fs::file_exists(md))
+})
+
 test_that("wflow_html preserves knitr chunk option collapse", {
 
   skip_on_cran()

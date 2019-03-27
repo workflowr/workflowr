@@ -163,8 +163,13 @@ wflow_html <- function(...) {
                                                       chunk = cache_hook_final),
                                     opts_hooks = list(fig.path = hook_fig_path))
 
+  # Have to explicitly pass on keep_md to output_format()
+  opts <- list(...)
+  if (!is.null(opts$keep_md)) keep_md <- opts$keep_md else keep_md <- FALSE
+
   o <- rmarkdown::output_format(knitr = knitr,
                                 pandoc = pandoc_options(to = "html"),
+                                keep_md = keep_md,
                                 pre_knit = wflow_pre_knit,
                                 post_knit = wflow_post_knit,
                                 pre_processor = wflow_pre_processor,

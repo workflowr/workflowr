@@ -12,6 +12,11 @@ shortcuts][rstudio-addins-shortcuts].
 * Fix support for knitr chunk option `collapse` and `indent` (reported by
 @pcarbo, #149)
 
+* Fix support for rmarkdown option `keep_md` (see [rmarkdown
+#1558][rmarkdown-1558])
+
+[rmarkdown-1558]: https://github.com/rstudio/rmarkdown/issues/1558
+
 # workflowr 1.2.0
 
 This release overhauls the layout of the reproducibility report, adds support

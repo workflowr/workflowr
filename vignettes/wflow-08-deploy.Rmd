@@ -116,7 +116,7 @@ please read his [blog post][johnsonlab-blog] and the discussion in Issue
 [beaker-install]: https://beakerbrowser.com/install/
 [dat]: https://datproject.org/
 [dat-docs]: https://docs.datproject.org/
-[dat-security]: https://docs.datproject.org/security
+[dat-security]: https://docs.datproject.org/docs/security-faq
 [dathttpd]: https://github.com/beakerbrowser/dathttpd
 [hashbase.io]: https://hashbase.io
 [johnsonlab]: https://github.com/johnsonlab

@@ -17,38 +17,29 @@
 #' @import clipr
 #' @import here
 #' @import rmarkdown
+#' @import tibble
 #' @export
 
 wflow_toc <- function(analysis_dir = "analysis", docs_dir = "docs") {
-  rmd_regexp <- '\\.Rmd$'
-  html_regexp <- '\\.html$'
+  s <- wflow_status()
+  s$status %>%
+    tibble::rownames_to_column(var = 'rmd_path') %>%
+    dplyr::filter(published) %>%
 
-  df_rmd <- fs::dir_info(here::here(analysis_dir), type = 'file', regexp = rmd_regexp) %>%
-    dplyr::transmute(
-      path,
-      url = basename(path),
-      join_key = stringr::str_remove_all(url, rmd_regexp)
-    ) %>%
-    dplyr::mutate(name = purrr::map(path,~ rmarkdown::yaml_front_matter(.)$title)) %>%
+    dplyr::mutate(html_path = map_chr(rmd_path, to_html, outdir = s$docs),
+                  html_path = map_chr(html_path, fs::path_file)) %>%
+
+    dplyr::mutate(name = purrr::map(rmd_path,~ rmarkdown::yaml_front_matter(.)$title)) %>%
     filter(!map_lgl(name, is_null)) %>%
     tidyr::unnest() %>%
-    dplyr::select(join_key, name)
 
-  df_html <- fs::dir_info(here::here(docs_dir), type = 'file', regexp = html_regexp) %>%
-    dplyr::transmute(url = basename(path),
-                     join_key = stringr::str_remove_all(url, html_regexp)
-    )
-  df_html %>%
-    dplyr::left_join(df_rmd,
-              by = 'join_key') %>%
     dplyr::mutate(
-      name = ifelse(is.na(name), url, name)
+      name = ifelse(is.na(name), html_path, name)
     ) %>%
     dplyr::mutate(
-      link = glue::glue("1. [{name}]({url})")
+      link = glue::glue("1. [{name}]({html_path})")
     ) %>%
     .$link %>%
     clipr::write_clip()
   message('The table of content of your project is on the clipboard.')
-
 }

@@ -19,7 +19,8 @@
 #' @export
 
 wflow_toc <- function(gh_url = "https://jdblischak.github.io", proj_url = "workflowr") {
-  root <- file.path(gh_url,proj_url)
+  # root <- file.path(gh_url,proj_url)
+  root <- '.'
   title_regexp <- glue::glue("<title>([\\p{Han}A-z\\.\\s-]+)</title>",
                              .open = '<<',
                              .close = '>>')

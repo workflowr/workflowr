@@ -19,25 +19,31 @@
 #' @import rmarkdown
 #' @export
 
-wflow_toc <- function(url = '.') {
-  title_regexp <- glue::glue("<title>([\\p{Han}A-z\\.\\s-]+)</title>",
-                             .open = '<<',
-                             .close = '>>')
-  fs::dir_info(here::here("docs"), type = 'file', regexp = '\\.html$') %>%
-    dplyr::mutate(
-      url = basename(path)
+wflow_toc <- function(analysis_dir = "analysis", docs_dir = "docs") {
+  rmd_regexp <- '\\.Rmd$'
+  html_regexp <- '\\.html$'
+
+  df_rmd <- fs::dir_info(here::here(analysis_dir), type = 'file', regexp = rmd_regexp) %>%
+    dplyr::transmute(
+      path,
+      url = basename(path),
+      join_key = stringr::str_remove_all(url, rmd_regexp)
     ) %>%
-    dplyr::mutate(
-      name = purrr::map(path,~ readr::read_lines(.) %>%
-                          stringr::str_subset(title_regexp) %>%
-                          stringr::str_match_all(title_regexp)
-      )
-    ) %>%
+    dplyr::mutate(name = purrr::map(path,~ rmarkdown::yaml_front_matter(.)$title)) %>%
+    filter(!map_lgl(name, is_null)) %>%
     tidyr::unnest() %>%
-    dplyr::mutate(
-      name = purrr::map_chr(name, ~.[,2])
+    select(join_key, name)
+
+  df_html <- fs::dir_info(here::here(docs_dir), type = 'file', regexp = html_regexp) %>%
+    dplyr::transmute(url = basename(path),
+                     join_key = stringr::str_remove_all(url, html_regexp)
+    )
+  df_html %>%
+    left_join(df_rmd,
+              by = 'join_key') %>%
+    mutate(
+      name = ifelse(is.na(name), url, name)
     ) %>%
-    dplyr::select(url, name, dplyr::everything()) %>%
     dplyr::mutate(
       link = glue::glue("1. [{name}]({url})")
     ) %>%

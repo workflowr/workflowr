@@ -32,16 +32,16 @@ wflow_toc <- function(analysis_dir = "analysis", docs_dir = "docs") {
     dplyr::mutate(name = purrr::map(path,~ rmarkdown::yaml_front_matter(.)$title)) %>%
     filter(!map_lgl(name, is_null)) %>%
     tidyr::unnest() %>%
-    select(join_key, name)
+    dplyr::select(join_key, name)
 
   df_html <- fs::dir_info(here::here(docs_dir), type = 'file', regexp = html_regexp) %>%
     dplyr::transmute(url = basename(path),
                      join_key = stringr::str_remove_all(url, html_regexp)
     )
   df_html %>%
-    left_join(df_rmd,
+    dplyr::left_join(df_rmd,
               by = 'join_key') %>%
-    mutate(
+    dplyr::mutate(
       name = ifelse(is.na(name), url, name)
     ) %>%
     dplyr::mutate(

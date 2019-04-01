@@ -16,18 +16,16 @@
 #' @import tidyr
 #' @import clipr
 #' @import here
+#' @import rmarkdown
 #' @export
 
-wflow_toc <- function(gh_url = "https://jdblischak.github.io", proj_url = "workflowr") {
-  # root <- file.path(gh_url,proj_url)
-  root <- '.'
+wflow_toc <- function(url = '.') {
   title_regexp <- glue::glue("<title>([\\p{Han}A-z\\.\\s-]+)</title>",
                              .open = '<<',
                              .close = '>>')
   fs::dir_info(here::here("docs"), type = 'file', regexp = '\\.html$') %>%
     dplyr::mutate(
-      url = basename(path),
-      url = file.path(root,url)
+      url = basename(path)
     ) %>%
     dplyr::mutate(
       name = purrr::map(path,~ readr::read_lines(.) %>%

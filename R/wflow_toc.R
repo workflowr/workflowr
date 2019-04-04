@@ -21,25 +21,20 @@
 #' @export
 
 wflow_toc <- function(project = ".") {
-  s <- wflow_status(project = project)
-  s$status %>%
-    tibble::rownames_to_column(var = 'rmd_path') %>%
-    dplyr::filter(published) %>%
-
-    dplyr::mutate(html_path = map_chr(rmd_path, to_html, outdir = s$docs),
-                  html_path = map_chr(html_path, fs::path_file)) %>%
-
-    dplyr::mutate(name = purrr::map(rmd_path,~ rmarkdown::yaml_front_matter(.)$title)) %>%
-    filter(!map_lgl(name, is_null)) %>%
-    tidyr::unnest() %>%
-
-    dplyr::mutate(
-      name = ifelse(is.na(name), html_path, name)
-    ) %>%
-    dplyr::mutate(
-      link = glue::glue("1. [{name}]({html_path})")
-    ) %>%
-    .$link %>%
-    clipr::write_clip()
+  s <- wflow_status(project = ".")
+  df<- s$status
+  df$rmd_path <- rownames(df)
+  df <- df[df$published]
+  df$html_path <- to_html(df$rmd_path,outdir = s$docs) %>% basename()
+  file_name <- sapply(df$rmd_path, function(x) rmarkdown::yaml_front_matter(x)$title) %>%
+    unlist() %>%
+    na.omit() %>%
+    as.data.frame() %>%
+    `names<-`('name')
+  file_name$rmd_path <- rownames(file_name)
+  df <- df %>% dplyr::inner_join(file_name, by = 'rmd_path')
+  df$name <- ifelse(is.na(df$name), df$html_path, as.character(df$name))
+  df$link <- paste0("1. [",df$name,"](",df$html_path,")")
+  clipr::write_clip(df$link)
   message('The table of content of your project is on the clipboard.')
 }

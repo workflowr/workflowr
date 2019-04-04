@@ -8,16 +8,9 @@
 #' @param proj_url character. The project name.
 #'
 #' @return text character. The list of table of content in the markdown syntax.
-#' @import fs
-#' @import glue
 #' @import dplyr
-#' @import purrr
-#' @import readr
-#' @import tidyr
 #' @import clipr
-#' @import here
 #' @import rmarkdown
-#' @import tibble
 #' @export
 
 wflow_toc <- function(project = ".") {

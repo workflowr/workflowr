@@ -20,8 +20,8 @@
 #' @import tibble
 #' @export
 
-wflow_toc <- function(analysis_dir = "analysis", docs_dir = "docs") {
-  s <- wflow_status()
+wflow_toc <- function(project = ".") {
+  s <- wflow_status(project = project)
   s$status %>%
     tibble::rownames_to_column(var = 'rmd_path') %>%
     dplyr::filter(published) %>%

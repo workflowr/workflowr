@@ -35,6 +35,13 @@ wflow_toc <- function(project = ".") {
   df <- df %>% dplyr::inner_join(file_name, by = 'rmd_path')
   df$name <- ifelse(is.na(df$name), df$html_path, as.character(df$name))
   df$link <- paste0("1. [",df$name,"](",df$html_path,")")
-  clipr::write_clip(df$link)
-  message('The table of content of your project is on the clipboard.')
+
+  # output
+  # if (requireNamespace("clipr", quietly = TRUE)) {
+  if (FALSE) {
+    clipr::write_clip(df$link)
+    message('The table of content of your project is on the clipboard.')
+  } else {
+    paste0(df$link,collapse = "\n") %>% cat
+  }
 }

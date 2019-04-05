@@ -1,18 +1,16 @@
-#' Add a table of content on the clipboard
+#' Create table of contents
 #'
-#' \code{wfow_toc} add a table of content on the clipboard. The users can paste it
-#' in the \code{index.Rmd} document. The table of content includes all \code{html} document
-#' in the \code{docs} directory the users want to display.
+#' \code{wfow_toc} creates a table of contents of the published R Markdown
+#' files. The output is in markdown format, so you can paste it into a document
+#' such as \code{index.Rmd}. If the R package clipr is installed, the table of
+#' contents is copied to the clipboard. Otherwise the output is printed to the R
+#' console.
 #'
-#' @param gh_url character. The Github Pages root directory.
-#' @param proj_url character. The project name.
+#' @inheritParams wflow_git_commit
 #'
-#' @return text character. The list of table of content in the markdown syntax.
-#' @import dplyr
-#' @import clipr
-#' @import rmarkdown
+#' @return Invisibly returns the table of contents as a character vector.
+#'
 #' @export
-
 wflow_toc <- function(project = ".") {
   s <- wflow_status(project = project)
   rmd <- rownames(s$status)[s$status$published]
@@ -25,7 +23,7 @@ wflow_toc <- function(project = ".") {
   # output
   if (requireNamespace("clipr", quietly = TRUE)) {
     clipr::write_clip(toc)
-    message('The table of content of your project is on the clipboard.')
+    message("The table of content of your project is on the clipboard.")
   } else {
     message(paste0(toc, collapse = "\n"))
   }

@@ -2,20 +2,22 @@
 % Please edit documentation in R/wflow_toc.R
 \name{wflow_toc}
 \alias{wflow_toc}
-\title{Add a table of content on the clipboard}
+\title{Create table of contents}
 \usage{
 wflow_toc(project = ".")
 }
 \arguments{
-\item{gh_url}{character. The Github Pages root directory.}
-
-\item{proj_url}{character. The project name.}
+\item{project}{character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.}
 }
 \value{
-text character. The list of table of content in the markdown syntax.
+Invisibly returns the table of contents as a character vector.
 }
 \description{
-\code{wfow_toc} add a table of content on the clipboard. The users can paste it
-in the \code{index.Rmd} document. The table of content includes all \code{html} document
-in the \code{docs} directory the users want to display.
+\code{wfow_toc} creates a table of contents of the published R Markdown
+files. The output is in markdown format, so you can paste it into a document
+such as \code{index.Rmd}. If the R package clipr is installed, the table of
+contents is copied to the clipboard. Otherwise the output is printed to the R
+console.
 }

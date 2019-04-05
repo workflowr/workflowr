@@ -30,13 +30,13 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     callr,
-    fs,
+    fs (>= 1.2.4),
     getPass,
     git2r,
     glue,
     knitr (>= 1.18),
     methods,
-    rmarkdown,
+    rmarkdown (>= 1.7),
     rprojroot,
     rstudioapi,
     stringr (>= 1.1.0),

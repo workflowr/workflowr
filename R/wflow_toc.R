@@ -17,7 +17,7 @@ wflow_toc <- function(project = ".") {
   s <- wflow_status(project = ".")
   df<- s$status
   df$rmd_path <- rownames(df)
-  df <- df[df$published]
+  df <- df[df$published, ]
   df$html_path <- basename(to_html(df$rmd_path,outdir = s$docs))
   file_name <- sapply(df$rmd_path, function(x) rmarkdown::yaml_front_matter(x)$title) %>%
     unlist() %>%

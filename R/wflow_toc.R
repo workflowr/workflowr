@@ -14,7 +14,7 @@
 #' @export
 
 wflow_toc <- function(project = ".") {
-  s <- wflow_status(project = ".")
+  s <- wflow_status(project = project)
   df<- s$status
   df$rmd_path <- rownames(df)
   df <- df[df$published, ]
@@ -34,8 +34,8 @@ wflow_toc <- function(project = ".") {
     clipr::write_clip(df$link)
     message('The table of content of your project is on the clipboard.')
   } else {
-    # paste0(df$link,collapse = "\n") %>% cat
-    return(invisible(df$link))
-    # return a vector invisibly
+    message(paste0(df$link, collapse = "\n"))
   }
+
+  return(invisible(df$link))
 }

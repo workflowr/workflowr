@@ -44,20 +44,15 @@ Imports:
     utils,
     whisker,
     yaml,
-    dplyr,
-    purrr,
-    readr,
-    tidyr,
-    clipr,
-    here,
-    tibble
+    dplyr
 RoxygenNote: 6.1.1
 Suggests:
     covr,
     devtools,
     testthat,
     withr,
-    spelling
+    spelling,
+    clipr
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
 Language: en-US

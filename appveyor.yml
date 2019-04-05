@@ -13,7 +13,7 @@ install:
   ps: Bootstrap
 
 cache:
-  - C:\RLibrary
+  - C:\RLibrary -> DESCRIPTION
   - C:\Program Files (x86)\Pandoc\
 
 # Adapt as necessary starting from here
@@ -30,6 +30,7 @@ before_test:
       if (-Not (Test-Path "C:\Program Files (x86)\Pandoc\")) {
         cinst pandoc
       }
+  - ps: choco install pandoc --version 1.19.1 --allow-downgrade
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - pandoc -v
 

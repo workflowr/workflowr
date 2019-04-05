@@ -1,5 +1,7 @@
 ---
-output: workflowr::wflow_html
+output:
+  workflowr::wflow_html:
+    keep_md: true
 ---
 
 The hidden knitr [chunk option][chunk-options] `indent` indents the code and
@@ -9,5 +11,5 @@ prevent users from setting it if they wish.
 [chunk-options]: https://yihui.name/knitr/options/
 
 ```{r test-indent, indent="  "}
-print("this chunk should be indented")
+1 + 1
 ```

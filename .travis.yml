@@ -4,6 +4,7 @@ language: r
 sudo: false
 cache: packages
 latex: false
+pandoc_version: 1.19.2.1
 
 env:
   global:

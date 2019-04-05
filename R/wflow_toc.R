@@ -15,27 +15,32 @@
 
 wflow_toc <- function(project = ".") {
   s <- wflow_status(project = project)
-  df<- s$status
-  df$rmd_path <- rownames(df)
-  df <- df[df$published, ]
-  df$html_path <- basename(to_html(df$rmd_path,outdir = s$docs))
-  file_name <- sapply(df$rmd_path, function(x) rmarkdown::yaml_front_matter(x)$title) %>%
-    unlist() %>%
-    na.omit() %>%
-    as.data.frame() %>%
-    `names<-`('name')
-  file_name$rmd_path <- rownames(file_name)
-  df <- df %>% dplyr::inner_join(file_name, by = 'rmd_path')
-  df$name <- ifelse(is.na(df$name), df$html_path, as.character(df$name))
-  df$link <- paste0("1. [",df$name,"](",df$html_path,")")
+  rmd <- rownames(s$status)[s$status$published]
+  html <- to_html(basename(rmd))
+  titles <- vapply(rmd, get_rmd_title, character(1))
+  titles <- ifelse(is.na(titles), basename(rmd), titles)
+  toc <- glue::glue("1. [{titles}]({html})")
+  toc <- as.character(toc)
 
   # output
   if (requireNamespace("clipr", quietly = TRUE)) {
-    clipr::write_clip(df$link)
+    clipr::write_clip(toc)
     message('The table of content of your project is on the clipboard.')
   } else {
-    message(paste0(df$link, collapse = "\n"))
+    message(paste0(toc, collapse = "\n"))
   }
 
-  return(invisible(df$link))
+  return(invisible(toc))
+}
+
+# Obtains the title in the YAML header of an R Markdown file. If not set,
+# returns NA_character_.
+get_rmd_title <- function(x) {
+  stopifnot(fs::file_exists(x))
+  header <- rmarkdown::yaml_front_matter(x)
+  if (is.null(header$title)) {
+    return(NA_character_)
+  } else {
+    return(header$title)
+  }
 }

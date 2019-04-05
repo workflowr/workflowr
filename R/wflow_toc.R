@@ -21,7 +21,7 @@ wflow_toc <- function(project = ".") {
   toc <- as.character(toc)
 
   # output
-  if (requireNamespace("clipr", quietly = TRUE)) {
+  if (requireNamespace("clipr", quietly = TRUE) && interactive()) {
     clipr::write_clip(toc)
     message("The table of content of your project is on the clipboard.")
   } else {

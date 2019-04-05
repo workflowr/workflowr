@@ -30,11 +30,12 @@ wflow_toc <- function(project = ".") {
   df$link <- paste0("1. [",df$name,"](",df$html_path,")")
 
   # output
-  # if (requireNamespace("clipr", quietly = TRUE)) {
-  if (FALSE) {
+  if (requireNamespace("clipr", quietly = TRUE)) {
     clipr::write_clip(df$link)
     message('The table of content of your project is on the clipboard.')
   } else {
-    paste0(df$link,collapse = "\n") %>% cat
+    # paste0(df$link,collapse = "\n") %>% cat
+    return(invisible(df$link))
+    # return a vector invisibly
   }
 }

@@ -4,9 +4,12 @@
 \alias{wflow_toc}
 \title{Create table of contents}
 \usage{
-wflow_toc(project = ".")
+wflow_toc(ignore_nav_bar = TRUE, project = ".")
 }
 \arguments{
+\item{ignore_nav_bar}{logical (default: TRUE). Ignore any HTML files included
+as links in the navigation bar.}
+
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}

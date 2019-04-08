@@ -6,23 +6,24 @@
 #' contents is copied to the clipboard. Otherwise the output is printed to the R
 #' console.
 #'
+#' @param ignore_nav_bar logical (default: TRUE). Ignore any HTML files included
+#'   as links in the navigation bar.
 #' @inheritParams wflow_git_commit
 #'
 #' @return Invisibly returns the table of contents as a character vector.
 #'
 #' @export
-wflow_toc <- function(project = ".", ignore_nav_bar = TRUE) {
+wflow_toc <- function(ignore_nav_bar = TRUE, project = ".") {
   s <- wflow_status(project = project)
   rmd <- rownames(s$status)[s$status$published]
   html <- to_html(basename(rmd))
 
   # Obtains the toc except the documents in the navigation bar.
-  ignore_file <-
-    yaml::read_yaml(file.path(s$analysis, "_site.yml"))$navbar$left %>%
-    sapply(`[[`, 'href')
-  html_in_nav <- html %in% ignore_file
-
   if (ignore_nav_bar) {
+    yml <- yaml::read_yaml(file.path(s$analysis, "_site.yml"))
+    navbar <- unlist(c(yml$navbar$left, yml$navbar$right))
+    html_in_nav <- html %in% navbar
+
     html <- html[!html_in_nav]
     rmd <- rmd[!html_in_nav]
   }

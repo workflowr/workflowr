@@ -11,9 +11,22 @@
 #' @return Invisibly returns the table of contents as a character vector.
 #'
 #' @export
-wflow_toc <- function(project = ".") {
+wflow_toc <- function(project = ".", ignore_nav_bar = TRUE) {
   s <- wflow_status(project = project)
   rmd <- rownames(s$status)[s$status$published]
+
+  # Obtains the toc except the documents in the navigation bar.
+  ignore_file <-
+    yaml::read_yaml(here::here("analysis/_site.yml"))$navbar$left %>%
+    sapply(`[[`, 'href') %>%
+    stringr::str_replace("\\.html$", "\\.Rmd")
+
+  rmd <- if (ignore_nav_bar) {
+    setdiff(rmd,ignore_file)
+  } else {
+    rmd
+  }
+
   html <- to_html(basename(rmd))
   titles <- vapply(rmd, get_rmd_title, character(1))
   titles <- ifelse(is.na(titles), basename(rmd), titles)

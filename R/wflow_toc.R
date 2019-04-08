@@ -14,20 +14,19 @@
 wflow_toc <- function(project = ".", ignore_nav_bar = TRUE) {
   s <- wflow_status(project = project)
   rmd <- rownames(s$status)[s$status$published]
+  html <- to_html(basename(rmd))
 
   # Obtains the toc except the documents in the navigation bar.
   ignore_file <-
-    yaml::read_yaml(here::here("analysis/_site.yml"))$navbar$left %>%
-    sapply(`[[`, 'href') %>%
-    stringr::str_replace("\\.html$", "\\.Rmd")
+    yaml::read_yaml(file.path(s$analysis, "_site.yml"))$navbar$left %>%
+    sapply(`[[`, 'href')
+  html_in_nav <- html %in% ignore_file
 
-  rmd <- if (ignore_nav_bar) {
-    setdiff(rmd,ignore_file)
-  } else {
-    rmd
+  if (ignore_nav_bar) {
+    html <- html[!html_in_nav]
+    rmd <- rmd[!html_in_nav]
   }
 
-  html <- to_html(basename(rmd))
   titles <- vapply(rmd, get_rmd_title, character(1))
   titles <- ifelse(is.na(titles), basename(rmd), titles)
   toc <- glue::glue("1. [{titles}]({html})")

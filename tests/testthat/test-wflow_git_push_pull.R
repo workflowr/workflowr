@@ -225,6 +225,28 @@ test_that("wflow_git_pull can run in dry-run mode", {
   expect_true("Using the HTTPS protocol" %in% utils::capture.output(result))
 })
 
+test_that("wflow_git_push/pull fail early if try to use SSH protocol when not supported", {
+
+  wflow_git_remote(remote = "testssh", user = "user", repo = "repo",
+                   protocol = "ssh", project = site_dir)
+
+  if (git2r::libgit2_features()$ssh) {
+    expect_silent(wflow_git_push(remote = "testssh", dry_run = TRUE,
+                                 project = site_dir))
+    expect_silent(wflow_git_pull(remote = "testssh", dry_run = TRUE,
+                                 project = site_dir))
+  } else {
+    expect_error(wflow_git_push(remote = "testssh", dry_run = TRUE,
+                                project = site_dir),
+                 "You cannot use the SSH protocol")
+    expect_error(wflow_git_pull(remote = "testssh", dry_run = TRUE,
+                                project = site_dir),
+                 "You cannot use the SSH protocol")
+  }
+
+  wflow_git_remote(remote = "testssh", action = "remove", project = site_dir)
+})
+
 # Test print.wflow_git_pull ----------------------------------------------------
 
 # Pass fake "wflow_git_pull" objects to see if it makes the right decisions

@@ -64,6 +64,9 @@
 #'
 #' \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
+#' \item \bold{protocol}: The authentication protocol for the remote repository
+#' (either \code{"https"} or \code{"ssh"}.
+#'
 #' }
 #'
 #' @examples
@@ -137,16 +140,9 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   warn_branch_mismatch(remote_branch = branch,
                        local_branch = git2r_slot(git_head, "name"))
 
-  # Obtain authentication ------------------------------------------------------
+  # Determine protocol ---------------------------------------------------------
 
-  credentials <- authenticate_git(remote = remote, remote_avail = remote_avail,
-                                  username = username, password = password,
-                                  dry_run = dry_run)
-  if (class(credentials) == "cred_user_pass") {
-    protocol <- "https"
-  } else {
-    protocol <- "ssh"
-  }
+  protocol <- get_remote_protocol(remote = remote, remote_avail = remote_avail)
 
   if (protocol == "ssh" && !git2r::libgit2_features()$ssh) {
     stop(wrap(
@@ -161,6 +157,12 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
       "  libssh2 (Homebrew package on OS X)"
       , call. = FALSE)
   }
+
+  # Obtain authentication ------------------------------------------------------
+
+  credentials <- authenticate_git(protocol = protocol,
+                                  username = username, password = password,
+                                  dry_run = dry_run)
 
   # Push! ----------------------------------------------------------------------
 
@@ -229,7 +231,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   # Prepare output -------------------------------------------------------------
 
   o <- list(remote = remote, branch = branch, username = username,
-            force = force, dry_run = dry_run)
+            force = force, dry_run = dry_run, protocol = protocol)
   class(o) <- "wflow_git_push"
   return(o)
 }
@@ -241,6 +243,8 @@ print.wflow_git_push <- function(x, ...) {
   cat(wrap(sprintf(
     "Pushing to the branch \"%s\" of the remote repository \"%s\"",
     x$branch, x$remote)), "\n\n")
+
+  cat(glue::glue("Using the {toupper(x$protocol)} protocol\n\n"))
 
   if (x$dry_run) {
     cat("The following Git command would be run:\n\n")

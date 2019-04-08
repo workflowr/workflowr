@@ -405,28 +405,22 @@ warn_branch_mismatch <- function(remote_branch, local_branch) {
   }
 }
 
-# Authenticate with Git using either HTTPS or SSH
+# Determine if using HTTPS or SSH protocol
 #
 # remote - the name or URL of a remote repository
 # remote_avail - a named character vector of remote URLs
-# username - username or NULL
-# password - password or NULL
-# dry_run - logical
-authenticate_git <- function(remote, remote_avail, username = NULL,
-                             password = NULL, dry_run = FALSE) {
+#
+# Return either "https" or "ssh"
+get_remote_protocol <- function(remote, remote_avail) {
   if (!(is.character(remote) && is.character(remote_avail)))
     stop("remote and remote_avail must be character vectors")
-  if (!(is.null(username) || (is.character(username) && length(username) == 1)))
-    stop("username must be NULL or a one-element character vector")
-  if (!(is.null(password) || (is.character(password) && length(password) == 1)))
-    stop("password must be NULL or a one-element character vector")
 
-  # Determine if using HTTPS or SSH protocol
   if (remote %in% names(remote_avail)) {
     url <- remote_avail[remote]
   } else {
     url <- remote
   }
+
   if (stringr::str_sub(url, 1, 5) == "https") {
     protocol <- "https"
   } else if (stringr::str_sub(url, 1, 4) == "git@") {
@@ -439,6 +433,24 @@ authenticate_git <- function(remote, remote_avail, username = NULL,
     via the command line interface."
     stop(wrap(m), call. = FALSE)
   }
+
+  return(protocol)
+}
+
+# Authenticate with Git using either HTTPS or SSH
+#
+# protocol - either "https" or "ssh"
+# username - username or NULL
+# password - password or NULL
+# dry_run - logical
+authenticate_git <- function(protocol, username = NULL,
+                             password = NULL, dry_run = FALSE) {
+  if (!protocol %in% c("https", "ssh"))
+    stop("protocol must be either \"https\" or \"ssh\"")
+  if (!(is.null(username) || (is.character(username) && length(username) == 1)))
+    stop("username must be NULL or a one-element character vector")
+  if (!(is.null(password) || (is.character(password) && length(password) == 1)))
+    stop("password must be NULL or a one-element character vector")
 
   if (protocol == "https" && !dry_run) {
     if (is.null(username)) {

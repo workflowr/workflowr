@@ -54,6 +54,9 @@ or GitLab).
 
 \item \bold{dry_run}: The input argument \code{dry_run}.
 
+\item \bold{protocol}: The authentication protocol for the remote repository
+(either \code{"https"} or \code{"ssh"}.
+
 }
 }
 \description{

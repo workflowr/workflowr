@@ -148,6 +148,20 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
     protocol <- "ssh"
   }
 
+  if (protocol == "ssh" && !git2r::libgit2_features()$ssh) {
+    stop(wrap(
+      "You cannot use the SSH protocol for authentication on this machine because
+      git2r/libgit2 was not built with SSH support. You can either switch to
+      using the HTTPS protocol for authentication (see ?wflow_git_remote) or
+      re-install git2r after installing libSSH2."),
+      "\n\nFrom the git2r documentation:\n\n",
+      "To build with SSH support, please install:\n",
+      "  libssh2-1-dev (package on e.g. Debian and Ubuntu)\n",
+      "  libssh2-devel (package on e.g. Fedora, CentOS and RHEL)\n",
+      "  libssh2 (Homebrew package on OS X)"
+      , call. = FALSE)
+  }
+
   # Push! ----------------------------------------------------------------------
 
   if (!dry_run) {

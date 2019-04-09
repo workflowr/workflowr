@@ -51,7 +51,7 @@ jobs:
           name: Session information and installed package versions
           command: |
             r -e 'sessionInfo()'
-            r -e 'installed.packages(fields = c("Package", "Version"))'
+            r -e 'print(installed.packages()[, c("Package", "Version")])'
       - run:
           name: Build and check (without pandoc)
           command: bash build.sh --no-examples --no-manual

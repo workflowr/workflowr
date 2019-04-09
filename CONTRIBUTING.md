@@ -6,9 +6,9 @@ Here are some guidelines to help make it easier to merge your Pull Request:
 * For potentially large changes, please open an Issue first to discuss
 * Please submit Pull Requests to the "dev" branch
 * Please follow the [Hadley style guide][style]
-* Run `devtools::test()` to run the tests
-* (Optional) Execute the file [document.R](document.R) to update the
-documentation
+* Please run the file [contribute.R](contribute.R) to check your changes
+* (Optional) Run `devtools::test()` to run the tests
+* (Optional) Add new test(s) in `tests/testthat/`
 
 If you're new to submitting Pull Requests, please read the section [Contribute
 to other projects][contribute] in the tutorial [A quick introduction to version

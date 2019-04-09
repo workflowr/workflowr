@@ -17,3 +17,4 @@ tar\.gz$
 ^Meta$
 ^doc$
 ^\.circleci$
+^contribute\.R$

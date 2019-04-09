@@ -90,7 +90,6 @@ create_report <- function(input, output_dir, has_code, opts) {
   } else {
     symbol <- "glyphicon-exclamation-sign text-danger"
   }
-  report <- paste(report_checks, report_versions, collapse = "\n")
   report <- glue::glue('
   <p>
   <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report"
@@ -104,8 +103,8 @@ create_report <- function(input, output_dir, has_code, opts) {
   <div id="workflowr-report" class="collapse">
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
-    <li><a data-toggle="tab" href="#report">
-    Report <span class="glyphicon {symbol}" aria-hidden="true"></span>
+    <li><a data-toggle="tab" href="#checks">
+    Checks <span class="glyphicon {symbol}" aria-hidden="true"></span>
     </a></li>
     <li><a data-toggle="tab" href="#versions">Past versions</a></li>
   </ul>
@@ -129,13 +128,13 @@ create_report <- function(input, output_dir, has_code, opts) {
     This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
     analysis was created with <a
     href="https://github.com/jdblischak/workflowr">workflowr</a> (version
-    {packageVersion("workflowr")}). The <em>Report</em> tab describes the
+    {packageVersion("workflowr")}). The <em>Checks</em> tab describes the
     reproducibility checks that were applied when the results were created.
     The <em>Past versions</em> tab lists the development history.
     </p>
   <hr>
   </div>
-  <div id="report" class="tab-pane fade">
+  <div id="checks" class="tab-pane fade">
     {report_checks}
   <hr>
   </div>

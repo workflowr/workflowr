@@ -45,6 +45,7 @@ branches:
 before_install:
   - git config --global user.name "Travis CI"
   - git config --global user.email "testing@fake.domain"
+  - R -e 'source("https://install-github.me/r-lib/remotes")'
 
 after_success:
   - test $R_CODECOV && Rscript -e "covr::codecov()"

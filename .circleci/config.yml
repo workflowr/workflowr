@@ -48,6 +48,11 @@ jobs:
           name: Install package dependencies
           command: r -e "devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"
       - run:
+          name: Session information and installed package versions
+          command: |
+            r -e 'sessionInfo()'
+            r -e 'installed.packages(fields = c("Package", "Version"))'
+      - run:
           name: Build and check (without pandoc)
           command: bash build.sh --no-examples --no-manual
       - store_artifacts:

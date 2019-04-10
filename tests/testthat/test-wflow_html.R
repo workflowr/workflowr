@@ -356,6 +356,28 @@ test_that("wflow_html preserves knitr chunk option indent", {
   expect_true("  [1] 2" %in% md_lines)
 })
 
+test_that("wflow_html adds spacing between final text and sinfo button", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  fs::file_copy("files/test-wflow_html/sessioninfo-spacing.Rmd", rmd)
+  html <- rmarkdown::render(rmd, quiet = TRUE)
+  expect_true(fs::file_exists(html))
+  html_lines <- readLines(html)
+
+  final_sentence <- stringr::str_which(html_lines, "final sentence")
+  expect_identical(html_lines[final_sentence], "<p>final sentence</p>")
+  expect_identical(html_lines[final_sentence + 1], "<br>")
+  expect_identical(html_lines[final_sentence + 2], "<p>")
+  expect_identical(stringr::str_sub(html_lines[final_sentence + 3], 2, 7),
+                   "button")
+})
+
 # Test plot_hook ---------------------------------------------------------------
 
 test_that("wflow_html sends warning if fig.path is set by user", {

@@ -367,7 +367,6 @@ wflow_pre_knit <- function(input, ...) {
   if (has_code && wflow_opts$sessioninfo != "") {
     sessioninfo <- glue::glue('
       <br>
-      <br>
       <p>
       <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo"
         data-toggle="collapse" data-target="#workflowr-sessioninfo"
@@ -394,10 +393,13 @@ wflow_pre_knit <- function(input, ...) {
   }
 
   lines_out <- c(header_lines,
+                 "",
                  report,
                  "",
                  seed_chunk,
+                 "",
                  lines_in[(header_end + 1):length(lines_in)],
+                 "",
                  sessioninfo)
 
   writeLines(lines_out, tmpfile)
@@ -462,7 +464,6 @@ wflow_post_knit <- function(metadata, input_file, runtime, encoding, ...) {
 }
 
 # pre_processor function -----------------------------------------------------
-
 
 #' pre_processor function for workflowr
 #'

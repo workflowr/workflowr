@@ -59,6 +59,9 @@
 #'
 #' \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
+#' \item \bold{protocol}: The authentication protocol for the remote repository
+#' (either \code{"https"} or \code{"ssh"}.
+#'
 #' }
 #'
 #' @examples
@@ -124,16 +127,29 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   warn_branch_mismatch(remote_branch = branch,
                        local_branch = git2r_slot(git_head, "name"))
 
+  # Determine protocol ---------------------------------------------------------
+
+  protocol <- get_remote_protocol(remote = remote, remote_avail = remote_avail)
+
+  if (protocol == "ssh" && !git2r::libgit2_features()$ssh) {
+    stop(wrap(
+      "You cannot use the SSH protocol for authentication on this machine because
+      git2r/libgit2 was not built with SSH support. You can either switch to
+      using the HTTPS protocol for authentication (see ?wflow_git_remote) or
+      re-install git2r after installing libSSH2."),
+      "\n\nFrom the git2r documentation:\n\n",
+      "To build with SSH support, please install:\n",
+      "  libssh2-1-dev (package on e.g. Debian and Ubuntu)\n",
+      "  libssh2-devel (package on e.g. Fedora, CentOS and RHEL)\n",
+      "  libssh2 (Homebrew package on OS X)"
+      , call. = FALSE)
+  }
+
   # Obtain authentication ------------------------------------------------------
 
-  credentials <- authenticate_git(remote = remote, remote_avail = remote_avail,
+  credentials <- authenticate_git(protocol = protocol,
                                   username = username, password = password,
                                   dry_run = dry_run)
-  if (class(credentials) == "cred_user_pass") {
-    protocol <- "https"
-  } else {
-    protocol <- "ssh"
-  }
 
   # Pull! ----------------------------------------------------------------------
 
@@ -181,7 +197,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   # Prepare output -------------------------------------------------------------
 
   o <- list(remote = remote, branch = branch, username = username,
-            merge_result = merge_result, dry_run = dry_run)
+            merge_result = merge_result, dry_run = dry_run, protocol = protocol)
   class(o) <- "wflow_git_pull"
   return(o)
 }
@@ -193,6 +209,8 @@ print.wflow_git_pull <- function(x, ...) {
   cat(wrap(sprintf(
     "Pulling from the branch \"%s\" of the remote repository \"%s\"",
     x$branch, x$remote)), "\n\n")
+
+  cat(glue::glue("Using the {toupper(x$protocol)} protocol\n\n"))
 
   if (x$dry_run) {
     cat("The following Git command would be run:\n\n")

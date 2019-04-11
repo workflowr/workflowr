@@ -1,4 +1,3 @@
-
 # workflowr 1.2.0.9000
 
 * Add the function `wflow_toc` to build a table of content in a Rmd document (implemented by @JiaxiangBU, #151)

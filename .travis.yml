@@ -4,7 +4,7 @@ language: r
 sudo: false
 cache: packages
 latex: false
-pandoc_version: 1.19.2.1
+pandoc_version: 2.3.1
 
 env:
   global:
@@ -22,6 +22,7 @@ matrix:
     - os: linux
       r: release
       r_github_packages: ropensci/git2r@v0.21.0
+      pandoc_version: 1.19.2.1
     - os: linux
       r: devel
       warnings_are_errors: false
@@ -47,4 +48,4 @@ before_install:
   - git config --global user.email "testing@fake.domain"
 
 after_success:
-  - test $R_CODECOV && Rscript -e "covr::codecov()"
+  - travis_wait 30 test $R_CODECOV && Rscript -e "covr::codecov()"

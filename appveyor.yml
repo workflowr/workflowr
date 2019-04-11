@@ -36,11 +36,15 @@ before_test:
 
 environment:
   global:
-    # Reduce build time by only using binary packages
-    #USE_RTOOLS: true
-    PKGTYPE: win.binary
     # Do not skip tests with skip_on_cran()
     NOT_CRAN: true
+
+    # Reduce build time by only using binary packages
+    # 2019-04-11: Unfortunately can't do this at the moment. The newly released
+    # devtools requires rcmdcheck >= 1.3.2, but it failed the Windows builds
+    # on CRAN, so is not available as a binary download.
+    USE_RTOOLS: true
+    #PKGTYPE: win.binary
 
   matrix:
   # 64-bit

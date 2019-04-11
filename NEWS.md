@@ -1,6 +1,7 @@
 # workflowr 1.2.0.9000
 
-* Add the function `wflow_toc` to build a table of content in a Rmd document (@JiaxiangBU, #151)
+* Add the function `wflow_toc()` to build a table of contents of the published R
+Markdown files in a workflowr project (@JiaxiangBU, #151, #155)
 
 * Create [RStudio Addins][rstudio-addins] for `wflow_build()`, `wflow_status()`,
 and `wflow_view()`. For extra convenience, you can [bind the addins to keyboard

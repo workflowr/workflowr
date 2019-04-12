@@ -70,6 +70,8 @@ site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
+editor_options:
+  chunk_output_type: console
 ---
 
 Welcome to my research website.
@@ -81,6 +83,8 @@ title: "About"
 output:
   workflowr::wflow_html:
     toc: false
+editor_options:
+  chunk_output_type: console
 ---
 
 Describe your project.
@@ -92,6 +96,8 @@ title: "License"
 output:
   workflowr::wflow_html:
     toc: false
+editor_options:
+  chunk_output_type: console
 ---
 
 What license are you using for your code? See [choosealicense.com][choose] for

@@ -198,6 +198,8 @@ wflow_open <- function(files,
                            author: \"{yaml_author}\"
                            date: \"{yaml_date}\"
                            output: workflowr::wflow_html
+                           editor_options:
+                             chunk_output_type: console
                            ---")
     boilerplate <- c("",
                      "## Introduction",

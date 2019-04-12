@@ -17,3 +17,8 @@ Name: Publish
 Description: Publish workflowr website with wflow_publish()
 Binding: wflow_publish_addin
 Interactive: true
+
+Name: Table of contents
+Description: Paste a table of contents of workflowr analyses
+Binding: wflow_toc_addin
+Interactive: false

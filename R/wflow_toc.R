@@ -36,6 +36,26 @@
 #'
 #' @export
 wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".") {
+
+  # Check input arguments ------------------------------------------------------
+
+  if (!(is.logical(ignore_nav_bar) && length(ignore_nav_bar) == 1))
+    stop("ignore_nav_bar must be a one-element logical vector")
+
+  if (!(is.logical(clipboard) && length(clipboard) == 1))
+    stop("clipboard must be a one-element logical vector")
+
+  if (!(is.character(project) && length(project) == 1))
+    stop("project must be a one-element character vector")
+
+  if (!fs::dir_exists(project)) {
+    stop("project directory does not exist.")
+  }
+
+  project <- absolute(project)
+
+  # Create table of contents ---------------------------------------------------
+
   s <- wflow_status(project = project)
   rmd <- rownames(s$status)[s$status$published]
   html <- to_html(basename(rmd))
@@ -55,7 +75,8 @@ wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".") {
   toc <- glue::glue("1. [{titles}]({html})")
   toc <- as.character(toc)
 
-  # output
+  # Output ---------------------------------------------------------------------
+
   write_to_clip <- clipboard &&
                    requireNamespace("clipr", quietly = TRUE) &&
                    interactive() &&
@@ -81,4 +102,22 @@ get_rmd_title <- function(x) {
   } else {
     return(header$title)
   }
+}
+
+wflow_toc_addin <- function() {
+  if (is.null(rstudioapi::getSourceEditorContext()))
+    stop("wflow_toc() addin: No file open. Please open a file to paste the table of contents.",
+         call. = FALSE)
+
+  toc <- suppressMessages(wflow_toc(clipboard = FALSE))
+
+  if (length(toc) == 0)
+    stop(wrap(
+      "wflow_toc() addin: Couldn't find any published files", "(that aren't part
+      of the navigation bar). Use wflow_publish() first."),
+         call. = FALSE)
+
+  toc_single <- paste(toc, collapse = "\n")
+  toc_single <- paste0(toc_single, "\n")
+  rstudioapi::insertText(toc_single)
 }

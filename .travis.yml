@@ -47,5 +47,9 @@ before_install:
   - git config --global user.name "Travis CI"
   - git config --global user.email "testing@fake.domain"
 
+script:
+  - R CMD build .
+  - travis_wait 30 R CMD check *tar.gz
+
 after_success:
   - travis_wait 30 test $R_CODECOV && Rscript -e "covr::codecov()"

@@ -1,23 +1,24 @@
-
-# img(src = "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/hex-workflowr.png", height = "50px")
-
-# library(shiny)
-
+# RStudio Addin (Shiny Gadget) for wflow_publish().
 wflow_publish_addin <- function() {
 
-  # check for shiny and miniUI
-  # Check working directory
+  if (!requireNamespace("miniUI", quietly = TRUE))
+    stop("The miniUI package is required to use this RStudio addin.\n",
+         "Please install with install.packages(\"miniUI\")",
+         call. = FALSE)
 
   s <- wflow_status()
-  wd <- getwd()
+
+  flower_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/flower-purple.png"
+  logo_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/logo-workflowr-inverse.png"
 
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar("Publish workflowr website",
-                           right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)),
+                           right = miniUI::miniTitleBarButton("done", "Publish",
+                                                              primary = TRUE)),
     miniUI::miniContentPanel(
       shiny::sidebarLayout(position = "right",
         shiny::sidebarPanel(
-          shiny::h3("Options"),
+          shiny::h3(shiny::img(src = flower_url, height = "50px"), "Options"),
           shiny::checkboxInput("all", "all", value = FALSE),
           shiny::checkboxInput("force", "force", value = FALSE),
           shiny::checkboxInput("update", "update", value = FALSE),

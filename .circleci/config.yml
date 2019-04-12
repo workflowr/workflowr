@@ -28,13 +28,16 @@ jobs:
             # R packages available from c2d4u3.5
             # (can't install rmarkdown since that would install pandoc)
             apt-get install -y r-cran-callr \
+                               r-cran-clipr \
                                r-cran-covr \
                                r-cran-fs \
                                r-cran-git2r \
                                r-cran-glue \
                                r-cran-knitr \
+                               r-cran-miniui \
                                r-cran-rprojroot \
                                r-cran-rstudioapi \
+                               r-cran-shiny \
                                r-cran-stringr \
                                r-cran-testthat \
                                r-cran-whisker \

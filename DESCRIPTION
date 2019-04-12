@@ -40,7 +40,7 @@ Imports:
     methods,
     rmarkdown (>= 1.7),
     rprojroot,
-    rstudioapi,
+    rstudioapi (>= 0.5),
     stringr (>= 1.1.0),
     tools,
     utils,
@@ -48,12 +48,14 @@ Imports:
     yaml
 RoxygenNote: 6.1.1
 Suggests:
+    clipr,
     covr,
     devtools,
-    testthat,
-    withr,
+    miniUI (>= 0.1.1),
+    shiny (>= 0.13),
     spelling,
-    clipr
+    testthat,
+    withr
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
 Language: en-US

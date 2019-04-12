@@ -12,3 +12,8 @@ Name: View
 Description: View workflowr website with wflow_view()
 Binding: wflow_view
 Interactive: true
+
+Name: Publish
+Description: Publish workflowr website with wflow_publish()
+Binding: wflow_publish_addin
+Interactive: true

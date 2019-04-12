@@ -1,7 +1,7 @@
 
 # img(src = "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/hex-workflowr.png", height = "50px")
 
-library(shiny)
+# library(shiny)
 
 wflow_publish_addin <- function() {
 
@@ -15,30 +15,30 @@ wflow_publish_addin <- function() {
     miniUI::gadgetTitleBar("Publish workflowr website",
                            right = miniUI::miniTitleBarButton("done", "Publish", primary = TRUE)),
     miniUI::miniContentPanel(
-    sidebarLayout(position = "right",
-      sidebarPanel(
-        h3("Options"),
-        checkboxInput("all", "all", value = FALSE),
-        checkboxInput("force", "force", value = FALSE),
-        checkboxInput("update", "update", value = FALSE),
-        checkboxInput("republish", "republish", value = FALSE),
-        checkboxInput("delete_cache", "delete_cache", value = FALSE),
-        checkboxInput("dry_run", "dry_run", value = FALSE)
+      shiny::sidebarLayout(position = "right",
+        shiny::sidebarPanel(
+          shiny::h3("Options"),
+          shiny::checkboxInput("all", "all", value = FALSE),
+          shiny::checkboxInput("force", "force", value = FALSE),
+          shiny::checkboxInput("update", "update", value = FALSE),
+          shiny::checkboxInput("republish", "republish", value = FALSE),
+          shiny::checkboxInput("delete_cache", "delete_cache", value = FALSE),
+          shiny::checkboxInput("dry_run", "dry_run", value = FALSE)
+        ),
+        shiny::mainPanel(
+          shiny::selectInput(inputId = "files",
+                             label = "Select files to publish:",
+                             choices = rownames(s$status),
+                             selected = NULL,
+                             multiple = TRUE),
+          shiny::textAreaInput(inputId = "message",
+                        label = "Describe the changes you made",
+                        placeholder = "Enter your commit message")
+        )
       ),
-      mainPanel(
-        shiny::selectInput(inputId = "files",
-                           label = "Select files to publish:",
-                           choices = rownames(s$status),
-                           selected = NULL,
-                           multiple = TRUE),
-        textAreaInput(inputId = "message",
-                      label = "Describe the changes you made",
-                      placeholder = "Enter your commit message")
-      )
-    ),
-    shiny::p("Click the Publish button to execute the following command:"),
-    shiny::verbatimTextOutput("cmd_to_run")
-  )
+      shiny::p("Click the Publish button to execute the following command:"),
+      shiny::verbatimTextOutput("cmd_to_run")
+    )
   )
   server <- function(input, output, session) {
 

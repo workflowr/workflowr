@@ -52,4 +52,4 @@ script:
   - travis_wait 30 R CMD check --as-cran --no-examples --no-manual *tar.gz
 
 after_success:
-  - travis_wait 30 test $R_CODECOV && Rscript -e "covr::codecov()"
+  - test $R_CODECOV && travis_wait 30 Rscript -e "covr::codecov()"

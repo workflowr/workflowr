@@ -44,8 +44,16 @@
 #' \item \bold{git}: The relative path to the \code{.git} directory that
 #' contains the history of the Git repository.
 #'
+#' \item \bold{site_yml}: \code{TRUE} if the configuration file \code{_site.yml}
+#' has uncommitted changes, otherwise \code{FALSE}.
+#'
+#' \item \bold{wflow_yml}: \code{TRUE} if the configuration file
+#' \code{_workflowr.yml} has uncommitted changes, otherwise \code{FALSE}. If the
+#' file does not exist, the result is \code{NULL}. If the file was recently
+#' deleted and not yet committed to Git, then it will be \code{TRUE}.
+#'
 #' \item \bold{status}: A data frame with detailed information on the status of
-#' each file (see below).
+#' each R Markdown file (see below).
 #'
 #' }
 #'
@@ -136,7 +144,7 @@ wflow_status <- function(files = NULL, project = ".") {
   if (length(files_analysis) == 0)
     stop("files did not include any analysis files")
 
-  # Obtain status of each file
+  # Obtain status of each R Markdown file
   r <- git2r::repository(o$git)
   s <- git2r::status(r, ignored = TRUE)
   s_df <- status_to_df(s)
@@ -180,6 +188,17 @@ wflow_status <- function(files = NULL, project = ".") {
   #
   # Scratch file. Any untracked file that is not specifically ignored.
   scratch <- !tracked & !ignored
+
+  # Determine if _site.yml has been edited
+  o$site_yml <- FALSE
+  site_yml_path <- relative(file.path(o$analysis, "_site.yml"))
+  if (site_yml_path %in% s_df$file) o$site_yml <- TRUE
+
+  # Determine if _workflowr.yml has been edited
+  o$wflow_yml <- FALSE
+  wflow_yml_path <- relative(file.path(o$root, "_workflowr.yml"))
+  if (!file.exists(wflow_yml_path)) o$wflow_yml <- NULL
+  if (wflow_yml_path %in% s_df$file) o$wflow_yml <- TRUE
 
   o$status <- data.frame(ignored, mod_unstaged, conflicted, mod_staged, tracked,
                          committed, published, mod_committed, modified,
@@ -242,6 +261,16 @@ To commit your changes without publishing them yet, use `wflow_git_commit()`.",
     cat(wrap(m))
   }
   cat("\n")
+
+  if (x$site_yml) {
+    site_yml_path <- relative(file.path(x$analysis, "_site.yml"))
+    cat(glue::glue("\n\nThe config file {site_yml_path} has been edited.\n\n"))
+  }
+
+  if (!is.null(x$wflow_yml) && x$wflow_yml) {
+    wflow_yml_path <- relative(file.path(x$root, "_workflowr.yml"))
+    cat(glue::glue("\n\nThe config file {wflow_yml_path} has been edited.\n\n"))
+  }
 
   # It's a convention for S3 print methods to invisibly return the original
   # object, e.g. base::print.summaryDefault and stats:::print.lm. I don't

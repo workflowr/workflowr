@@ -7,6 +7,8 @@ wflow_publish_addin <- function() {
          call. = FALSE)
 
   s <- wflow_status()
+  site_yml_path <- relative(file.path(s$analysis, "_site.yml"))
+  wflow_yml_path <- relative(file.path(s$root, "_workflowr.yml"))
 
   flower_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/flower-purple.png"
   logo_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/logo-workflowr-inverse.png"
@@ -32,6 +34,12 @@ wflow_publish_addin <- function() {
                              choices = rownames(s$status),
                              selected = NULL,
                              multiple = TRUE),
+          shiny::checkboxInput("site_yml",
+                               glue::glue("Include {site_yml_path}"),
+                               value = s$site_yml),
+          shiny::checkboxInput("wflow_yml",
+                               glue::glue("Include {wflow_yml_path}"),
+                               value = !is.null(s$wflow_yml) && s$wflow_yml),
           shiny::textAreaInput(inputId = "message",
                         label = "Describe the changes you made",
                         placeholder = "Enter your commit message")
@@ -45,9 +53,13 @@ wflow_publish_addin <- function() {
 
     cmd <- shiny::reactive({
 
+      files <- c(input$files)
+      if (input$site_yml) files <- c(site_yml_path, files)
+      if (input$wflow_yml) files <- c(wflow_yml_path, files)
+
       cmd_parts <- c(" workflowr::wflow_publish(")
-      if (!is.null(input$files)) {
-        files_string <- paste(utils::capture.output(dput(input$files)), collapse = "")
+      if (!is.null(files)) {
+        files_string <- paste(utils::capture.output(dput(files)), collapse = "")
         cmd_parts <- c(cmd_parts, glue::glue("\n   files = {files_string},", .trim = FALSE))
       }
       if (input$message != "") cmd_parts <- c(cmd_parts, glue::glue("\n   message = \"{input$message}\",", .trim = FALSE))

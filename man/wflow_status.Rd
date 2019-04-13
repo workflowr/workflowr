@@ -33,8 +33,16 @@ files and figures.
 \item \bold{git}: The relative path to the \code{.git} directory that
 contains the history of the Git repository.
 
+\item \bold{site_yml}: \code{TRUE} if the configuration file \code{_site.yml}
+has uncommitted changes, otherwise \code{FALSE}.
+
+\item \bold{wflow_yml}: \code{TRUE} if the configuration file
+\code{_workflowr.yml} has uncommitted changes, otherwise \code{FALSE}. If the
+file does not exist, the result is \code{NULL}. If the file was recently
+deleted and not yet committed to Git, then it will be \code{TRUE}.
+
 \item \bold{status}: A data frame with detailed information on the status of
-each file (see below).
+each R Markdown file (see below).
 
 }
 

@@ -188,6 +188,42 @@ test_that("wflow_status detects files with extension .rmd", {
   expect_identical(rownames(s_rmd$status), lowercase)
 })
 
+test_that("wflow_status detects uncommitted changes in configuration files", {
+  s_config <- wflow_status(project = site_dir)
+  expect_false(s_config$site_yml)
+  expect_false(s_config$wflow_yml)
+
+  site_yml_path <- file.path(s$analysis, "_site.yml")
+  site_yml_tmp <- fs::file_temp()
+  fs::file_copy(site_yml_path, site_yml_tmp)
+  on.exit(fs::file_move(site_yml_tmp, site_yml_path))
+  site_yml <- yaml::yaml.load_file(site_yml_path)
+  site_yml$key <- "value"
+  yaml::write_yaml(site_yml, file = site_yml_path)
+
+  s_config <- wflow_status(project = site_dir)
+  expect_true(s_config$site_yml)
+  expect_false(s_config$wflow_yml)
+
+  wflow_yml_path <- file.path(s$root, "_workflowr.yml")
+  wflow_yml_tmp <- fs::file_temp()
+  fs::file_copy(wflow_yml_path, wflow_yml_tmp)
+  on.exit(fs::file_move(wflow_yml_tmp, wflow_yml_path), add = TRUE)
+  wflow_yml <- yaml::yaml.load_file(wflow_yml_path)
+  wflow_yml$key <- "value"
+  yaml::write_yaml(wflow_yml, file = wflow_yml_path)
+
+  s_config <- wflow_status(project = site_dir)
+  expect_true(s_config$site_yml)
+  expect_true(s_config$wflow_yml)
+
+  fs::file_delete(wflow_yml_path)
+
+  s_config <- wflow_status(project = site_dir)
+  expect_true(s_config$site_yml)
+  expect_true(s_config$wflow_yml) # still true because "deleted" in git status
+})
+
 # Warnings and Errors ----------------------------------------------------------
 
 test_that("wflow_status throws error if not in workflowr project.", {

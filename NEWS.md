@@ -20,6 +20,9 @@ shortcuts][rstudio-addins-shortcuts].
 
 [rmarkdown-1558]: https://github.com/rstudio/rmarkdown/issues/1558
 
+* New function `wflow_rename_proj()` to rename workflowr project throughout all
+the project files (idea from  @frm1789 and @kbroman, #148)
+
 # workflowr 1.2.0
 
 This release overhauls the layout of the reproducibility report, adds support

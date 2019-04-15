@@ -151,8 +151,8 @@ wflow_rename_proj <- function(name,
     staged <- git2r::status(r)$staged
     if (length(staged) > 0) {
       commit_rename <- git2r::commit(r, paste("Rename project to", name))
-      message("* Committed changes in ",
-              stringr::str_sub(commit_rename$sha, 1, 7))
+      sha <- git2r_slot(commit_rename, "sha")
+      message("* Committed changes in ", stringr::str_sub(sha, 1, 7))
     } else {
       message("* No changes to commit")
     }
@@ -163,14 +163,19 @@ wflow_rename_proj <- function(name,
 
   # Rename project directory ---------------------------------------------------
 
-
   dir_path <- absolute(s$root)
   dir_path_parts <- fs::path_split(dir_path)[[1]]
   dir_path_parts[[length(dir_path_parts)]] <- name
   dir_path_new <- fs::path_join(dir_path_parts)
+  dir_path_new <- as.character(dir_path_new)
 
   if (directory) {
     if (dir_path != dir_path_new) {
+      wd <- absolute(getwd())
+      if (wd == dir_path) { # Cannot rename current directory in Windows
+        setwd(fs::path_temp())
+        on.exit(setwd(dir_path_new))
+      }
       fs::file_move(dir_path, dir_path_new)
       message("* Renamed project directory: ", dir_path_new)
     } else {

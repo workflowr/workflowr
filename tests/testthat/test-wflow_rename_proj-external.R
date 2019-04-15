@@ -1,27 +1,24 @@
-context("wflow_rename_proj")
+context("wflow_rename_proj-external")
+
+# Test wflow_rename_proj() when run from outside a workflowr project.
 
 # Setup ------------------------------------------------------------------------
 
 source("setup.R")
 
 path <- test_setup()
-wd <- setwd(path)
+wd <- absolute(getwd())
 
-wflow_use_gitlab("user", "repo")
+wflow_use_gitlab("user", "repo", project = path)
 newname <- "new"
-path_new <- wflow_rename_proj(newname)
-on.exit(setwd(wd))
+path_new <- wflow_rename_proj(newname, project = path)
 on.exit(test_teardown(path_new), add = TRUE)
-s <- wflow_status()
+s <- wflow_status(project = path_new)
 
-# Test wflow_rename_proj() -----------------------------------------------------
+# Test wflow_rename_proj() (from external directory) ---------------------------
 
-test_that("wflow_rename_proj() returns a character vector", {
-  expect_is(path_new, "character")
-})
-
-test_that("Current working directory is the newly renamed directory", {
-  expect_identical(absolute(getwd()), path_new)
+test_that("wflow_rename_proj() does not change the working directory if run from outside project", {
+  expect_identical(wd, absolute(getwd()))
 })
 
 test_that("wflow_rename_proj() renames RStudio Project file", {
@@ -30,7 +27,7 @@ test_that("wflow_rename_proj() renames RStudio Project file", {
 })
 
 test_that("wflow_rename_proj() updates remote URL", {
-  remote_avail <- wflow_git_remote()
+  remote_avail <- wflow_git_remote(project = path_new)
   origin <- remote_avail["origin"]
   names(origin) <- NULL
   expected <- paste0("https://gitlab.com/user/new.git")
@@ -53,24 +50,23 @@ test_that("wflow_rename_proj() renames README title", {
 })
 
 test_that("wflow_rename_proj() commits changes", {
-  r <- git2r::repository()
+  r <- git2r::repository(path = path_new)
   commit <- git2r::commits(r, n = 1)[[1]]
   commit_message <- workflowr:::git2r_slot(commit, "message")
   expect_identical(commit_message, paste("Rename project to", newname))
 })
 
 test_that("wflow_rename_proj() renames project directory", {
-  wd <- getwd()
-  expect_identical(basename(wd), newname)
+  expect_identical(basename(path_new), newname)
 })
 
 test_that("wflow_rename_proj() can be re-run without error", {
-  expect_message(wflow_rename_proj(newname),
+  expect_message(wflow_rename_proj(newname, project = path_new),
                  "RStudio Project file already named")
 
-  expect_message(wflow_rename_proj(newname),
+  expect_message(wflow_rename_proj(newname, project = path_new),
                  "No changes to commit")
 
-  expect_message(wflow_rename_proj(newname),
+  expect_message(wflow_rename_proj(newname, project = path_new),
                  "Project directory already named:")
 })

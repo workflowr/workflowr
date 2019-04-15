@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove files — wflow_remove • workflowr</title>
+<title>Create table of contents — wflow_toc • workflowr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,14 @@
 
 
 
-<meta property="og:title" content="Remove files — wflow_remove" />
+<meta property="og:title" content="Create table of contents — wflow_toc" />
 
-<meta property="og:description" content="wflow_remove removes files. If the file to be removed is an R Markdown
-file, the corresponding HTML and other related files are also removed. If the
-workflowr project uses Git, wflow_remove commits the changes." />
+<meta property="og:description" content="wfow_toc creates a table of contents of the published R Markdown
+files. The output is in markdown format, so you can paste it into a document
+such as index.Rmd. If the R package
+clipr is installed, the
+table of contents is copied to the clipboard. Otherwise the output is sent to
+the R console." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,43 +113,38 @@ workflowr project uses Git, wflow_remove commits the changes." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove files</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_remove.R'><code>R/wflow_remove.R</code></a></small>
-    <div class="hidden name"><code>wflow_remove.Rd</code></div>
+    <h1>Create table of contents</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_toc.R'><code>R/wflow_toc.R</code></a></small>
+    <div class="hidden name"><code>wflow_toc.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>wflow_remove</code> removes files. If the file to be removed is an R Markdown
-file, the corresponding HTML and other related files are also removed. If the
-workflowr project uses Git, <code>wflow_remove</code> commits the changes.</p>
+    <p><code>wfow_toc</code> creates a table of contents of the published R Markdown
+files. The output is in markdown format, so you can paste it into a document
+such as <code>index.Rmd</code>. If the R package
+<a href='https://cran.r-project.org/package=clipr'>clipr</a> is installed, the
+table of contents is copied to the clipboard. Otherwise the output is sent to
+the R console.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>wflow_remove</span>(<span class='no'>files</span>, <span class='kw'>message</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>git</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_toc</span>(<span class='kw'>ignore_nav_bar</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>clipboard</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>files</th>
-      <td><p>character. Files to be removed. Supports file
-<a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+      <th>ignore_nav_bar</th>
+      <td><p>logical (default: TRUE). Ignore any HTML files included
+as links in the navigation bar.</p></td>
     </tr>
     <tr>
-      <th>message</th>
-      <td><p>character (default: NULL). A commit message.</p></td>
-    </tr>
-    <tr>
-      <th>git</th>
-      <td><p>logical (default: TRUE). Commit the changes (only applicable if
-Git repository is present).</p></td>
-    </tr>
-    <tr>
-      <th>dry_run</th>
-      <td><p>logical (default: FALSE). Preview the files to be removed but
-do not actually remove them.</p></td>
+      <th>clipboard</th>
+      <td><p>logical (default: TRUE) Attempt to copy table of contents to
+clipboard. Only relevant if
+<a href='https://cran.r-project.org/package=clipr'>clipr</a> package is installed
+and the system keyboard is available.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -158,34 +156,23 @@ you'll need to provide the path to the project directory.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>wflow_remove</code>, which is a list with the
-  following elements:</p>
-<p></p><ul>
-<li><p><b>files</b>: The relative path(s) to the removed file(s).</p></li>
-<li><p><b>message</b>: The message describing the commit (if applicable).</p></li>
-<li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
-<li><p><b>commit</b>:The object returned by
-  git2r::<code><a href='https://www.rdocumentation.org/packages/git2r/topics/commit'>commit</a></code> (only included if <code>dry_run
-  == FALSE</code>).</p></li>
-<li><p><b>files_git</b>: The relative path(s) to the file(s) removed from
-  the Git repository.</p></li>
+    <p>Invisibly returns the table of contents as a character vector.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The default behavior is to attempt to copy the table of contents to the
+clipboard for easy pasting into an R Markdown document. If this isn't working
+for you, you can try the following:</p>
+<ul>
+<li><p>Check that the clipr package is installed:
+<code><a href='https://www.rdocumentation.org/packages/utils/topics/install.packages'>install.packages("clipr")</a></code></p></li>
+<li><p>Check that the system keyboard is writable. Run
+<code><a href='https://www.rdocumentation.org/packages/clipr/topics/clipr_available'>clipr_available</a></code> and <code><a href='https://www.rdocumentation.org/packages/clipr/topics/clipr_available'>dr_clipr</a></code>.</p></li>
+<li><p>If it's still not working, set <code>keyboard = FALSE</code> to send the
+table of contents to the R console to manually copy-paste.</p></li>
 </ul>
-
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='wflow_git_commit.html'>wflow_git_commit</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Remove a single file</span>
-<span class='fu'>wflow_remove</span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"Remove old analysis."</span>)
-<span class='co'># Remove multiple files</span>
-<span class='fu'>wflow_remove</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"analysis/file.Rmd"</span>, <span class='st'>"output/small-data.txt"</span>),
-             <span class='st'>"Remove old analysis and its associated data."</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -194,10 +181,8 @@ you'll need to provide the path to the project directory.</p></td>
       
       <li><a href="#value">Value</a></li>
 
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#details">Details</a></li>
+          </ul>
 
   </div>
 </div>

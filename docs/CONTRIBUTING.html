@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -116,8 +116,10 @@
 <li>Please submit Pull Requests to the “dev” branch</li>
 <li>Please follow the <a href="http://adv-r.had.co.nz/Style.html">Hadley style guide</a>
 </li>
-<li>Run <code><a href="https://www.rdocumentation.org/packages/devtools/topics/test">devtools::test()</a></code> to run the tests</li>
-<li>(Optional) Execute the file <a href="document.R" class="uri">document.R</a> to update the documentation</li>
+<li>Please run the file <a href="contribute.R">contribute.R</a> to check your changes</li>
+<li>(Optional) Run <code><a href="https://www.rdocumentation.org/packages/devtools/topics/test">devtools::test()</a></code> to run the tests</li>
+<li>(Optional) Add new test(s) in <code>tests/testthat/</code>
+</li>
 </ul>
 <p>If you’re new to submitting Pull Requests, please read the section <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011">Contribute to other projects</a> in the tutorial <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668">A quick introduction to version control with Git and GitHub</a>.</p>
 <div id="explanation-of-branches" class="section level2">
@@ -150,22 +152,22 @@
 <h2 class="hasAnchor">
 <a href="#release-checklist-for-maintainers" class="anchor"></a>Release checklist (for maintainers)</h2>
 <ul>
-<li>Bump version in <a href="DESCRIPTION" class="uri">DESCRIPTION</a>, <a href="NEWS.html" class="uri">NEWS.md</a>, and <a href="tests/testthat/files/test-wflow_update/post/_workflowr.yml">the test _workflowr.yml file</a>
+<li>Bump version in <a href="DESCRIPTION">DESCRIPTION</a>, <a href="NEWS.html">NEWS.md</a>, and <a href="tests/testthat/files/test-wflow_update/post/_workflowr.yml">the test _workflowr.yml file</a>
 </li>
-<li>Bump date in <a href="DESCRIPTION" class="uri">DESCRIPTION</a>
+<li>Bump date in <a href="DESCRIPTION">DESCRIPTION</a>
 </li>
-<li>Update <a href="NEWS.html" class="uri">NEWS.md</a>: Check <code>git log</code> and make sure to reference GitHub Issues/PRs</li>
-<li>Run <a href="document.R" class="uri">document.R</a> to update Rd files, install the package locally, and build the online documentation with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>
+<li>Update <a href="NEWS.html">NEWS.md</a>: Check <code>git log</code> and make sure to reference GitHub Issues/PRs</li>
+<li>Run <a href="document.R">document.R</a> to update Rd files, install the package locally, and build the online documentation with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>
 </li>
-<li>Run <a href="build.sh" class="uri">build.sh</a> to confirm tests pass locally</li>
+<li>Run <a href="build.sh">build.sh</a> to confirm tests pass locally</li>
 <li>Test on <a href="https://r-hub.github.io/rhub/">rhub</a>:
 <ul>
-<li>Have to validate email first with <code><a href="https://www.rdocumentation.org/packages/rhub/topics/validate_email">rhub::validate_email()</a></code>. Copy-paste token from email into R console.</li>
-<li>Check on Ubuntu with <code><a href="https://www.rdocumentation.org/packages/rhub/topics/check_shortcuts">rhub::check_on_ubuntu()</a></code>
+<li>Have to validate email first with <code><a href="https://r-hub.github.io/rhub/reference/validate_email.html">rhub::validate_email()</a></code>. Copy-paste token from email into R console.</li>
+<li>Check on Ubuntu with <code><a href="https://r-hub.github.io/rhub/reference/check_shortcuts.html">rhub::check_on_ubuntu()</a></code>
 </li>
-<li>Check on macOS with <code><a href="https://www.rdocumentation.org/packages/rhub/topics/check_shortcuts">rhub::check_on_macos()</a></code>
+<li>Check on macOS with <code><a href="https://r-hub.github.io/rhub/reference/check_shortcuts.html">rhub::check_on_macos()</a></code>
 </li>
-<li>Check on Windows with <code><a href="https://www.rdocumentation.org/packages/rhub/topics/check_shortcuts">rhub::check_on_windows()</a></code>
+<li>Check on Windows with <code><a href="https://r-hub.github.io/rhub/reference/check_shortcuts.html">rhub::check_on_windows()</a></code>
 </li>
 </ul>
 </li>
@@ -177,20 +179,16 @@
 </li>
 </ul>
 </li>
-<li>Update <a href="cran-comments.html" class="uri">cran-comments.md</a>
+<li>Update <a href="cran-comments.html">cran-comments.md</a>
 </li>
 <li>Commit with <code>git commit -am "Bump version: x.x.x.9xxx -&gt; x.x.x and re-build docs."</code>
 </li>
 <li>Push with <code>git push origin dev</code> and wait for CI builds to pass</li>
-<li>
-<p>Merge into master:</p>
-<pre><code>git checkout master
-git merge dev
-git push origin master</code></pre>
+<li>Merge into master: <code>git checkout master   git merge dev   git push origin master</code>
 </li>
-<li>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html" class="uri">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</li>
-<li>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html" class="uri">NEWS.md</a>.</li>
-<li><p>Build tarball with <code>R CMD build .</code> and upload to <a href="https://cran.r-project.org/submit.html">CRAN submission site</a>. You will receive an email to request confirmation, then an email confirming the package was submitted, and then an email with the test results. Once it is accepted to CRAN, monitor the <a href="https://cran.r-project.org/web/checks/check_results_workflowr.html">check results</a> for any surpise errors. Also, these builds are when the binaries are built for Windows and macOS, so they aren’t available until they are finished. You will receive an email once all the Windows binaries are available for download (devel, release, oldrel).</p></li>
+<li>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</li>
+<li>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html">NEWS.md</a>.</li>
+<li>Build tarball with <code>R CMD build .</code> and upload to <a href="https://cran.r-project.org/submit.html">CRAN submission site</a>. You will receive an email to request confirmation, then an email confirming the package was submitted, and then an email with the test results. Once it is accepted to CRAN, monitor the <a href="https://cran.r-project.org/web/checks/check_results_workflowr.html">check results</a> for any surpise errors. Also, these builds are when the binaries are built for Windows and macOS, so they aren’t available until they are finished. You will receive an email once all the Windows binaries are available for download (devel, release, oldrel).</li>
 </ul>
 </div>
 </div>

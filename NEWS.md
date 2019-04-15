@@ -1,27 +1,69 @@
-# workflowr 1.2.0.9000
+# workflowr 1.3.0
 
-* Add the function `wflow_toc()` to build a table of contents of the published R
+This minor release of workflowr introduces two new functions, RStudio Addins,
+and various minor improvements.
+
+## New functions
+
+* The new function `wflow_toc()` builds a table of contents of the published R
 Markdown files in a workflowr project (@JiaxiangBU, #151, #155)
 
-* Create [RStudio Addins][rstudio-addins] for `wflow_build()`, `wflow_status()`,
-and `wflow_view()`. For extra convenience, you can [bind the addins to keyboard
-shortcuts][rstudio-addins-shortcuts].
+* The new function `wflow_rename_proj()` renames a workflowr project throughout
+all its project files (idea from  @frm1789 and @kbroman, #148)
+
+## RStudio Addins
+
+[RStudio Addins][rstudio-addins] allow you to execute R code via the RStudio
+Addins menu. For extra convenience, you can [bind the addins to keyboard
+shortcuts][rstudio-addins-shortcuts]. The following workflowr functions have
+addins:
+
+* `wflow_build()`
+* `wflow_publish()`
+* `wflow_status()`
+* `wflow_toc()`
+* `wflow_view()`
+
+Note that the addin for `wflow_publish()` is a Shiny Gadget that enables you to
+interactively choose which files to publish and write a detailed commit message
+(assistance from @zaynaib and @argdata, #143).
 
 [rstudio-addins]: https://rstudio.github.io/rstudioaddins/
 [rstudio-addins-shortcuts]: https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts
 
-*`wflow_build()` fails early if pandoc is not installed (@zaynaib, #75)
+## Minor improvements and bug fixes
+
+* `wflow_build()` fails early if pandoc is not installed (@zaynaib, #75)
+
+* `wflow_git_push()`/`wflow_git_pull()` fail early if user tries to use SSH
+authentication when it is not supported by the current installation of
+git2r/libgit2 (#144)
 
 * Fix support for knitr chunk option `collapse` and `indent` (reported by
 @pcarbo, #149)
 
-* Fix support for rmarkdown option `keep_md` (see [rmarkdown
-#1558][rmarkdown-1558])
+* Fix support for rmarkdown option `keep_md` (see
+[rmarkdown Issue 1558][rmarkdown-1558])
 
 [rmarkdown-1558]: https://github.com/rstudio/rmarkdown/issues/1558
 
-* New function `wflow_rename_proj()` to rename workflowr project throughout all
-the project files (idea from  @frm1789 and @kbroman, #148)
+* Skip tests that only fail on CRAN servers (this is why there are no macOS
+binaries for 1.2.0)
+
+* Add a GitHub Pull Request template
+
+* Rename reproducibility tab "Report" to "Checks" (idea from @pcarbo)
+
+* Fix spacing issue with session information button (reported by @pcarbo, #157)
+
+* `wflow_status()` reports if the configuration files `_workflowr.yml` and
+`_site.yml` have been edited
+
+* Disable inline code chunks by default in R Markdown files created by
+workflowr. Document how to use inline code chunks in the [FAQ][faq] (discussed
+with @rgayler and @Robinlovelace , #140)
+
+[faq]: ../articles/wflow-05-faq.html
 
 # workflowr 1.2.0
 

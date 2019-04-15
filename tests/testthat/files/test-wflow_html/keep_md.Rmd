@@ -1,0 +1,5 @@
+---
+output:
+  workflowr::wflow_html:
+    keep_md: true
+---

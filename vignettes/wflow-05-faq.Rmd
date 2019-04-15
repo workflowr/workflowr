@@ -116,9 +116,9 @@ some ideas that are simple to implement. Check out the documentation for
 
 `wflow_build()` is designed to have the same functionality as the Knit HTML
 button in RStudio, namely that it knits the HTML file in a separate R session to
-avoid any clashes with variables or pacakges in use in the current R session.
+avoid any clashes with variables or packages in use in the current R session.
 However, the technical implementations are not identical, and thus informally we
-have noticed the behavior of the two options occassionally differs. At the
+have noticed the behavior of the two options occasionally differs. At the
 moment, we believe that if the file results in an error when using
 `wflow_build()`, the file needs to be fixed, regardless of whether the file is
 able to be built with the RStudio button. If you have a use case that you think
@@ -134,8 +134,6 @@ project securely with [Beaker Browser][beaker].
 
 Yes. Please see these [instructions][deploy-aws] for deploying a workflowr
 project with password-protection using [Amazon S3][s3].
-
-
 
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 
@@ -158,6 +156,78 @@ since they are not being distributed with the single file.
 1. An R Markdown file that can be converted to HTML is not guaranteed to be
 converted to PDF. You'll need to ensure that you have LaTeX installed on your
 computer and avoid complicated characters and/or syntax.
+
+## Can I use R notebooks with workflowr?
+
+Yes! You can use RStudio's notebook features while you interactively develop
+your analysis, either directly using the output format
+`rmarkdown::html_notebook()` or indirectly with "inline code chunks" in your R
+Markdown files. However, you need to take a few precautions to make sure your
+notebook-style usage is compatible with the workflowr options.
+
+First note that the R Markdown files created by `wflow_start()` and
+`wflow_open()` include the lines below in the YAML header. These purposefully
+disable inline code chunks to proactively prevent any potential
+incompatibilities with workflowr. To activate inline code chunks, you can either
+delete these two lines or replace `console` with `inline`.
+
+```
+editor_options:
+  chunk_output_type: console
+```
+
+Second, note that the working directory of the inline code chunks can be
+different than the working directory of the R console. This is very
+counterintuitive, but the working directory of the inline code chunks is set by
+the "Knit Directory" setting in RStudio. The setting of "Knit Directory" may be
+different in your collaborator's version of RStudio, or even your own RStudio
+installed on a different computer. Thus it's not a good idea to rely on this
+value. Instead, you can explicitly specify the working directory to be used for
+the inline code chunks by setting the knitr option `root.dir` in a chunk called
+`setup`, which RStudio treats specially. Adding the code chunk below to your R
+Markdown file will cause all the inline code chunks to be executed from the root
+of the project directory. This is consistent with the default workflowr setting.
+
+````markdown
+`r ''````{r setup}
+knitr::opts_knit$set(root.dir = "..")
+```
+````
+
+If you change the value of `knit_root_dir` in `_workflowr.yml`, then you would
+need to change the value of `root.dir` in the setup chunk accordingly. Warning
+that this is fragile, i.e. trying to change `root.dir` to any arbitrary
+directory may result in an error. If you're going to use inline code chunks,
+it's best two follow one of the following options:
+
+1. Execute code in the root of the project directory (the default workflowr
+setting). Don't change `knit_root_dir` in `_workflowr.yml`. Add the setup chunk
+defined above to your R Markdown files. Note that this setup chunk will affect
+RStudio but not the workflowr functions `wflow_build()` or `wflow_publish()`.
+
+2. Execute code in the R Markdown directory (named `analysis/` by default).
+Delete the `knit_root_dir` entry in `_workflowr.yml`. Don't explicitly set
+`root.dir` in a setup code chunk in your R Markdown files. Ensure that the
+RStudio setting "Knit Directory" is set to "Document Directory".
+
+Third, note that if you are using `html_notebook()`, any settings you specify
+for it will be ignored when you run `wflow_build()` or `wflow_publish()`. This
+is because the settings in `_site.yml` override them. If you wish to change the
+setting of one particular notebook file, as opposed to every file in your
+project, you can set it with `workflowr::wflow_html()`. For example, if you want
+to enable folding of code chunks and disable the table of contents for only this
+file, you could use the following YAML header.
+
+```
+---
+title: "Using R Notebook with workflowr"
+output:
+  html_notebook: default
+  workflowr::wflow_html:
+    toc: false
+    code_folding: show
+---
+```
 
 ## How should I pronounce and spell workflowr?
 

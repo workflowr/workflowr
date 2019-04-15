@@ -57,6 +57,8 @@ reference:
       - wflow_open
       - wflow_remove
       - wflow_rename
+      - wflow_rename_proj
       - wflow_site
+      - wflow_toc
       - wflow_update
       - wflow_view

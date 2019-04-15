@@ -1,3 +1,70 @@
+# workflowr 1.3.0
+
+This minor release of workflowr introduces two new functions, RStudio Addins,
+and various minor improvements.
+
+## New functions
+
+* The new function `wflow_toc()` builds a table of contents of the published R
+Markdown files in a workflowr project (@JiaxiangBU, #151, #155)
+
+* The new function `wflow_rename_proj()` renames a workflowr project throughout
+all its project files (idea from  @frm1789 and @kbroman, #148)
+
+## RStudio Addins
+
+[RStudio Addins][rstudio-addins] allow you to execute R code via the RStudio
+Addins menu. For extra convenience, you can [bind the addins to keyboard
+shortcuts][rstudio-addins-shortcuts]. The following workflowr functions have
+addins:
+
+* `wflow_build()`
+* `wflow_publish()`
+* `wflow_status()`
+* `wflow_toc()`
+* `wflow_view()`
+
+Note that the addin for `wflow_publish()` is a Shiny Gadget that enables you to
+interactively choose which files to publish and write a detailed commit message
+(assistance from @zaynaib and @argdata, #143).
+
+[rstudio-addins]: https://rstudio.github.io/rstudioaddins/
+[rstudio-addins-shortcuts]: https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts
+
+## Minor improvements and bug fixes
+
+* `wflow_build()` fails early if pandoc is not installed (@zaynaib, #75)
+
+* `wflow_git_push()`/`wflow_git_pull()` fail early if user tries to use SSH
+authentication when it is not supported by the current installation of
+git2r/libgit2 (#144)
+
+* Fix support for knitr chunk option `collapse` and `indent` (reported by
+@pcarbo, #149)
+
+* Fix support for rmarkdown option `keep_md` (see
+[rmarkdown Issue 1558][rmarkdown-1558])
+
+[rmarkdown-1558]: https://github.com/rstudio/rmarkdown/issues/1558
+
+* Skip tests that only fail on CRAN servers (this is why there are no macOS
+binaries for 1.2.0)
+
+* Add a GitHub Pull Request template
+
+* Rename reproducibility tab "Report" to "Checks" (idea from @pcarbo)
+
+* Fix spacing issue with session information button (reported by @pcarbo, #157)
+
+* `wflow_status()` reports if the configuration files `_workflowr.yml` and
+`_site.yml` have been edited
+
+* Disable inline code chunks by default in R Markdown files created by
+workflowr. Document how to use inline code chunks in the [FAQ][faq] (discussed
+with @rgayler and @Robinlovelace , #140)
+
+[faq]: ../articles/wflow-05-faq.html
+
 # workflowr 1.2.0
 
 This release overhauls the layout of the reproducibility report, adds support
@@ -47,7 +114,7 @@ A popular knitr/rmarkdown feature is caching slow-running chunks. This can be
 problematic for workflowr because it assumes that the results are newly created
 when `wflow_publish()` publishes the results with a given version of the code.
 In this release, workflowr now provides warnings, safety checks, and some
-convience arguments for safely using caching.
+convenience arguments for safely using caching.
 
 * Include a check in the reproducibility report that reports any existing cached
 chunks
@@ -60,7 +127,7 @@ for iterative development when plots from cached chunks may not be regenerated
 during a build. However, `clean_fig_files` is fixed to `TRUE` for
 `wflow_publish()` to ensure that the final results are produced during the
 build (suggested by @lazappi, #113)
-* Add argument `delete_cache` to `wflow_build()`/`wflow_publish()`. The defult
+* Add argument `delete_cache` to `wflow_build()`/`wflow_publish()`. The default
 is `FALSE`, but if set to `TRUE` it will delete the cache directory prior to
 building each R Markdown file. This helps ensure reproducibility of the
 published results
@@ -159,7 +226,7 @@ long-running code chunks (idea from @pcarbo)
     most recently modified HTML is different than those specified by `files`,
     they will all be opened for viewing
     * S3 print method
-    * Do not attemt to open HTML files with `browseURL()` if
+    * Do not attempt to open HTML files with `browseURL()` if
     `getOption("browser")` does not provide a default option
 
 ## Internal changes
@@ -235,14 +302,14 @@ wflow_update()
 
 ## Details
 
-* Introduce `wflow_html()` and `wflow_site()` to overhaul the reproduciblity
+* Introduce `wflow_html()` and `wflow_site()` to overhaul the reproducibility
 features of workflowr
 * Improve API consistency:
     * `wflow_commit()` -> `wflow_git_commit()`
     * `wflow_remotes()` -> `wflow_git_remote()`
 * Remove some less commonly used infrastructure files
 * Remove template infrastructure: `wflow_open()` and `wflow_convert()`
-* Reimplement `wflow_update()` to udpate a pre-1.0 workflowr project to a
+* Reimplement `wflow_update()` to update a pre-1.0 workflowr project to a
 post-1.0 project
 * Remove `create_links_page()` (not widely used, if at all)
 * Note in documentation that setting the seed via `wflow_build()` or
@@ -272,7 +339,7 @@ pull using the SSH protocol
 
 * When `wflow_git_push()` or `wflow_git_pull()` fails for an unknown reason, the
 exact error message from `git2r::push()` or `git2r::pull()` is reported to
-faciliate troubleshooting
+facilitate troubleshooting
 
 * Multiple other internal changes to make workflowr more robust
 
@@ -329,7 +396,7 @@ have the necessary configuration (#87, #88)
 
 * The log files by default are now written to the directory returned by
 `tempdir()` instead of to `/tmp/workflowr`. This prevents failures due to
-permission issues when mutliple workflowr users try to use the same machine
+permission issues when multiple workflowr users try to use the same machine
 (e.g. a compute node on a HPC cluster) (#86)
 
 ## Miscellaneous
@@ -354,7 +421,7 @@ Start and Getting Started vignette have been updated to reflect this.
 
 ## Miscellaneous
 
-* Added FAQ on sharing workflowr sites securely using Beaker Browswer
+* Added FAQ on sharing workflowr sites securely using Beaker Browser
 (@johnsonlab in #59 & #65)
 * Added .Rprofile to automatically load workflowr (@vanAmsterdam in #73)
 * Added FAQ about website not displaying (#70)
@@ -450,7 +517,7 @@ re-built HTML files.
 
 * By default, `wflow_build()` runs in "Make"-mode, only building R Markdown 
 files that have been updated more recently than their corresponding HTML files. 
-If instead files are specfically stated, those files will be built.
+If instead files are specifically stated, those files will be built.
 
 * By default, R Markdown files are now built each in their own separate R 
 session (similar in function to the "Knit HTML" button in RStudio). This
@@ -480,7 +547,7 @@ commit R Markdown files that are tracked by Git.
 
 ## Miscellaneous
 
-* All workflowr functions should now accept the file extesion `.rmd` in addition
+* All workflowr functions should now accept the file extension `.rmd` in addition
 to `.Rmd` (Issue #10)
 
 * Replaced the shared argument `path` with `project` to clarify that this
@@ -542,7 +609,7 @@ Users should run `wflow_build()` instead. `wflow_update()` removes the build spe
 
 * Improved naming of functions: `start_project` -> `wflow_start`, `open_rmd` -> `wflow_open`, `build_site` -> `wflow_build`, `commit_site` -> `wflow_commit`, `create_results` -> `create_links_page`
 
-* `wflow_commit` can optionally add and commit provided files (argument is `commit_files`) before re-building website and commiting HTML files
+* `wflow_commit` can optionally add and commit provided files (argument is `commit_files`) before re-building website and committing HTML files
 
 * `wflow_open` accepts multiple filenames
 

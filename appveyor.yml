@@ -6,14 +6,14 @@ init:
   - git config --global user.email "testing@fake.domain"
   - ps: |
           $ErrorActionPreference = "Stop"
-          Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
+          Invoke-WebRequest http://raw.githubusercontent.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
           Import-Module '..\appveyor-tool.ps1'
 
 install:
   ps: Bootstrap
 
 cache:
-  - C:\RLibrary
+  - C:\RLibrary -> DESCRIPTION
   - C:\Program Files (x86)\Pandoc\
 
 # Adapt as necessary starting from here
@@ -30,16 +30,21 @@ before_test:
       if (-Not (Test-Path "C:\Program Files (x86)\Pandoc\")) {
         cinst pandoc
       }
+  - ps: choco install pandoc --version 1.19.1 --allow-downgrade
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - pandoc -v
 
 environment:
   global:
-    # Reduce build time by only using binary packages
-    #USE_RTOOLS: true
-    PKGTYPE: win.binary
     # Do not skip tests with skip_on_cran()
     NOT_CRAN: true
+
+    # Reduce build time by only using binary packages
+    # 2019-04-11: Unfortunately can't do this at the moment. The newly released
+    # devtools requires rcmdcheck >= 1.3.2, but it failed the Windows builds
+    # on CRAN, so is not available as a binary download.
+    USE_RTOOLS: true
+    #PKGTYPE: win.binary
 
   matrix:
   # 64-bit

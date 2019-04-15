@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -151,8 +151,14 @@ project (i.e. contains the RStudio .Rproj file).</p></li>
 files and figures.</p></li>
 <li><p><b>git</b>: The relative path to the <code>.git</code> directory that
 contains the history of the Git repository.</p></li>
+<li><p><b>site_yml</b>: <code>TRUE</code> if the configuration file <code>_site.yml</code>
+has uncommitted changes, otherwise <code>FALSE</code>.</p></li>
+<li><p><b>wflow_yml</b>: <code>TRUE</code> if the configuration file
+<code>_workflowr.yml</code> has uncommitted changes, otherwise <code>FALSE</code>. If the
+file does not exist, the result is <code>NULL</code>. If the file was recently
+deleted and not yet committed to Git, then it will be <code>TRUE</code>.</p></li>
 <li><p><b>status</b>: A data frame with detailed information on the status of
-each file (see below).</p></li>
+each R Markdown file (see below).</p></li>
 </ul>
 
 <p>The data frame <code>status</code> contains the following non-mutually exclusive

@@ -6,9 +6,9 @@ Here are some guidelines to help make it easier to merge your Pull Request:
 * For potentially large changes, please open an Issue first to discuss
 * Please submit Pull Requests to the "dev" branch
 * Please follow the [Hadley style guide][style]
-* Run `devtools::test()` to run the tests
-* (Optional) Execute the file [document.R](document.R) to update the
-documentation
+* Please run the file [contribute.R](contribute.R) to check your changes
+* (Optional) Run `devtools::test()` to run the tests
+* (Optional) Add new test(s) in `tests/testthat/`
 
 If you're new to submitting Pull Requests, please read the section [Contribute
 to other projects][contribute] in the tutorial [A quick introduction to version
@@ -81,7 +81,9 @@ site][cran-submit]. You will receive an email to request confirmation, then an
 email confirming the package was submitted, and then an email with the test
 results. Once it is accepted to CRAN, monitor the [check results][check-results]
 for any surpise errors. Also, these builds are when the binaries are built for
-Windows and macOS, so they aren't available until they are finished.
+Windows and macOS, so they aren't available until they are finished. You will
+receive an email once all the Windows binaries are available for download
+(devel, release, oldrel).
 
 [appveyor]: https://ci.appveyor.com
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html

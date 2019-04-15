@@ -1,0 +1,15 @@
+---
+output:
+  workflowr::wflow_html:
+    keep_md: true
+---
+
+The hidden knitr [chunk option][chunk-options] `indent` indents the code and
+output. This is only useful for pure markdown output, but workflowr will not
+prevent users from setting it if they wish.
+
+[chunk-options]: https://yihui.name/knitr/options/
+
+```{r test-indent, indent="  "}
+1 + 1
+```

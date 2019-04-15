@@ -462,7 +462,7 @@ test_that("print.wflow_start works with change_wd = FALSE", {
                    paste("- Working directory will continue to be", getwd()))
   expect_identical(stringr::str_sub(p_dry_run[5], 1, 31),
                    "- Git repo will be initiated at")
-  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+  expect_identical(p_dry_run[6], "- Files will be committed with Git")
 
   # Actual run
   actual_run <- wflow_start(tmp_dir, change_wd = FALSE,
@@ -502,7 +502,7 @@ test_that("print.wflow_start works with change_wd = FALSE and git = FALSE", {
                    paste("- Working directory will continue to be", getwd()))
   expect_identical(p_dry_run[5],
                    "- Git repo will not be initiated")
-  expect_identical(p_dry_run[6], "- Files will not be commited with Git")
+  expect_identical(p_dry_run[6], "- Files will not be committed with Git")
 
   # Actual run
   actual_run <- wflow_start(tmp_dir, change_wd = FALSE, git = FALSE)
@@ -538,7 +538,7 @@ test_that("print.wflow_start works with change_wd = FALSE and existing = TRUE", 
                    paste("- Working directory will continue to be", getwd()))
   expect_identical(stringr::str_sub(p_dry_run[5], 1, 31),
                    "- Git repo will be initiated at")
-  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+  expect_identical(p_dry_run[6], "- Files will be committed with Git")
 
   # Actual run
   actual_run <- wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE,
@@ -586,7 +586,7 @@ test_that("print.wflow_start works with existing Git repo", {
                    paste("- Working directory will continue to be", getwd()))
   expect_identical(p_dry_run[5],
                    paste("- Git repo already present at", git2r_workdir(r)))
-  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+  expect_identical(p_dry_run[6], "- Files will be committed with Git")
 
   # Actual run
   actual_run <- expect_silent(wflow_start(tmp_dir, existing = TRUE, change_wd = FALSE))
@@ -624,7 +624,7 @@ test_that("print.wflow_start works with change_wd = TRUE", {
                    paste("- Working directory will be changed to", tmp_dir))
   expect_identical(stringr::str_sub(p_dry_run[5], 1, 31),
                    "- Git repo will be initiated at")
-  expect_identical(p_dry_run[6], "- Files will be commited with Git")
+  expect_identical(p_dry_run[6], "- Files will be committed with Git")
 
   # Actual run
   actual_run <- wflow_start(tmp_dir, user.name = "Test Name", user.email = "test@email")

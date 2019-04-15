@@ -216,6 +216,13 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   project <- absolute(project)
 
+  # Check to see if pandoc is installed
+  if(!rmarkdown::pandoc_available())
+    stop("Pandoc is not installed. Please use RStudio or install pandoc manually")
+
+  if(rmarkdown::pandoc_version() >= 2 && utils::packageVersion("rmarkdown") < 1.7)
+    stop("pandoc 2+ requires rmarkdown version >= 1.7. Please update your rmarkdown package")
+
   # Obtain files to consider ---------------------------------------------------
 
   p <- wflow_paths(project = project)

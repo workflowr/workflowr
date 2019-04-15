@@ -46,13 +46,16 @@ or GitLab).
 
 \item \bold{dry_run}: The input argument \code{dry_run}.
 
+\item \bold{protocol}: The authentication protocol for the remote repository
+(either \code{"https"} or \code{"ssh"}.
+
 }
 }
 \description{
 \code{wflow_git_pull} pulls the remote files from your remote repository
 online (e.g. GitHub or GitLab) into your repository on your local machine.
 This is a convenience function to run Git commands from the R console instead
-of the Terminal. The same functionality can be acheived by running \code{git
+of the Terminal. The same functionality can be achieved by running \code{git
 pull} in the Terminal.
 }
 \details{

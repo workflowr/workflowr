@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -80,9 +80,9 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#workflowr-organized-reproducible-shareable-data-science-in-r" class="anchor"></a>workflowr: organized + reproducible + shareable data science in R</h1></div>
 
+<p><img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px"></p>
 <p>The workflowr R package helps researchers organize their analyses in a way that promotes effective project management, reproducibility, collaboration, and sharing of results. Workflowr combines literate programming (knitr and rmarkdown) and version control (Git, via git2r) to generate a website containing time-stamped, versioned, and documented results. Any R user can quickly and easily adopt workflowr.</p>
 <p>For more details, see the <a href="https://jdblischak.github.io/workflowr/">online documentation</a>. For an example, see the <a href="https://stephenslab.github.io/wflow-divvy/">Divvy data exploration project</a>. To keep up-to-date with the latest workflowr developments, please join the <a href="https://groups.google.com/forum/#!forum/workflowr-announce">workflowr-announce</a> mailing list (low-volume, read-only). For bugs reports, feature requests, and questions, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
-<p>For those with existing workflowr projects (pre-1.0.0), see <code><a href="reference/wflow_update.html">?wflow_update</a></code> if you’re interested in updating your project to use the latest features. If you like your current project the way it is, you can continue to use workflowr as you have been by getting the latest bug fixes from <a href="https://github.com/jdblischak/workflowrBeta">workflowrBeta</a>.</p>
 <ul>
 <li><a href="#features">Features</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -112,7 +112,7 @@
 <li>Shareable
 <ul>
 <li>Creates a website to present your research results</li>
-<li>Documents how to host your website for free via <a href="https://pages.github.com/">GitHub Pages</a>
+<li>Documents how to host your website for free via <a href="https://pages.github.com/">GitHub Pages</a> or <a href="https://about.gitlab.com/product/pages/">GitLab Pages</a>
 </li>
 <li>Creates links to past versions of results</li>
 </ul>
@@ -135,9 +135,9 @@
 </li>
 <li>
 <p>Install workflowr from <a href="https://cran.r-project.org/package=workflowr">CRAN</a>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</a></code></pre></div>
 </li>
-<li><p>Create an account on <a href="https://github.com">GitHub</a></p></li>
+<li><p>Create an account on <a href="https://github.com">GitHub</a> or <a href="https://gitlab.com">GitLab</a></p></li>
 </ol>
 </div>
 <div id="quick-start" class="section level2">
@@ -166,7 +166,7 @@ wflow_build()
 wflow_publish("analysis/*", "Start my new project")</a></code></pre>
 <p><strong>Next steps:</strong></p>
 <ol>
-<li><p>Read the full <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html">Getting started vignette</a> to learn how to share your results online via GitHub</p></li>
+<li><p>Read the full <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html">Getting started vignette</a> to learn how to share your results online</p></li>
 <li><p>Read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html">customization vignette</a> for ideas on how to customize your research website</p></li>
 <li><p>Read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html">migrating vignette</a> for how to integrate workflowr into your existing project</p></li>
 </ol>
@@ -182,7 +182,7 @@ wflow_publish("analysis/*", "Start my new project")</a></code></pre>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h2>
-<p>We welcome community contributions, especially improvements to documentation. To get started, please read the <a href="CONTRIBUTING.html">contributing guidlines</a>. Also, please note that this project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
+<p>We welcome community contributions, especially improvements to documentation. To get started, please read the <a href="CONTRIBUTING.html">contributing guidelines</a>. Also, please note that this project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
@@ -219,11 +219,12 @@ wflow_publish("analysis/*", "Start my new project")</a></code></pre>
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/jdblischak/workflowr"><img src="https://travis-ci.org/jdblischak/workflowr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://codecov.io/gh/jdblischak/workflowr"><img src="https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://ci.appveyor.com/project/jdblischak/workflowr"><img src="https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 <li><a href="https://cran.r-project.org/package=workflowr"><img src="https://www.r-pkg.org/badges/version/workflowr" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=workflowr"><img src="https://cranlogs.r-pkg.org/badges/workflowr" alt="CRAN downloads"></a></li>
+<li><a href="https://codecov.io/gh/jdblischak/workflowr"><img src="https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://travis-ci.org/jdblischak/workflowr"><img src="https://travis-ci.org/jdblischak/workflowr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/jdblischak/workflowr"><img src="https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://circleci.com/gh/jdblischak/workflowr/tree/master"><img src="https://circleci.com/gh/jdblischak/workflowr/tree/master.svg?style=svg" alt="CircleCI"></a></li>
 </ul>
 </div>
 </div>

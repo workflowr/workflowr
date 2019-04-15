@@ -19,7 +19,7 @@ deploying the workflowr website using the service [GitHub Pages][gh-pages]
 because it is quick and convenient. However, the static website created by
 workflowr can be deployed using any strategy you like. Below are instructions
 for deploying the workflowr website contributed by other workflowr users. If you
-would like to contribute intructions for another deployment strategy, please
+would like to contribute instructions for another deployment strategy, please
 fork the [workflowr repository][workflowr] on GitHub and add your instructions
 to this file on the "dev" branch. If you need any assistance with this, please
 don't hesitate to open an [Issue][wflow-issues].
@@ -53,7 +53,7 @@ Contributed by E. David Aja ([edavidaja][]).
 
 ## Beaker Browser (secure sharing)
 
-If your project contains senstive data that prevents you from publicly sharing
+If your project contains sensitive data that prevents you from publicly sharing
 the results, one alternative option is to self-host your workflowr website using
 [Beaker Browser][beaker].
 
@@ -116,7 +116,7 @@ please read his [blog post][johnsonlab-blog] and the discussion in Issue
 [beaker-install]: https://beakerbrowser.com/install/
 [dat]: https://datproject.org/
 [dat-docs]: https://docs.datproject.org/
-[dat-security]: https://docs.datproject.org/security
+[dat-security]: https://docs.datproject.org/docs/security-faq
 [dathttpd]: https://github.com/beakerbrowser/dathttpd
 [hashbase.io]: https://hashbase.io
 [johnsonlab]: https://github.com/johnsonlab

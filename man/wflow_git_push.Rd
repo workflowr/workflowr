@@ -54,13 +54,16 @@ or GitLab).
 
 \item \bold{dry_run}: The input argument \code{dry_run}.
 
+\item \bold{protocol}: The authentication protocol for the remote repository
+(either \code{"https"} or \code{"ssh"}.
+
 }
 }
 \description{
 \code{wflow_git_push} pushes the local files on your machine to your remote
 repository on a remote Git hosting service (e.g. GitHub or GitLab). This is a
 convenience function to run Git commands from the R console instead of the
-Terminal. The same functionality can be acheived by running \code{git push}
+Terminal. The same functionality can be achieved by running \code{git push}
 in the Terminal.
 }
 \details{

@@ -1,0 +1,76 @@
+context("wflow_rename_proj")
+
+# Setup ------------------------------------------------------------------------
+
+source("setup.R")
+
+path <- test_setup()
+wd <- setwd(path)
+
+wflow_use_gitlab("user", "repo")
+newname <- "new"
+path_new <- wflow_rename_proj(newname)
+on.exit(setwd(wd))
+on.exit(test_teardown(path_new), add = TRUE)
+s <- wflow_status()
+
+# Test wflow_rename_proj() -----------------------------------------------------
+
+test_that("wflow_rename_proj() returns a character vector", {
+  expect_is(path_new, "character")
+})
+
+test_that("Current working directory is the newly renamed directory", {
+  expect_identical(absolute(getwd()), path_new)
+})
+
+test_that("wflow_rename_proj() renames RStudio Project file", {
+  rproj <- file.path(s$root, paste0(newname, ".Rproj"))
+  expect_true(fs::file_exists(rproj))
+})
+
+test_that("wflow_rename_proj() updates remote URL", {
+  remote_avail <- wflow_git_remote()
+  origin <- remote_avail["origin"]
+  names(origin) <- NULL
+  expected <- paste0("https://gitlab.com/user/new.git")
+  expect_identical(origin, expected)
+})
+
+test_that("wflow_rename_proj() renames navbar title", {
+  site_yml_fname <- file.path(s$analysis, "_site.yml")
+  site_yml <- yaml::yaml.load_file(site_yml_fname)
+  expect_identical(site_yml$name, newname)
+  expect_identical(site_yml$navbar$title, newname)
+})
+
+test_that("wflow_rename_proj() renames README title", {
+  readme_fname <- file.path(s$root, "README.md")
+  readme_title_expected <- paste("#", newname)
+  readme_lines <- readLines(readme_fname)
+  readme_title_observed <- readme_lines[1]
+  expect_identical(readme_title_observed, readme_title_expected)
+})
+
+test_that("wflow_rename_proj() commits changes", {
+  r <- git2r::repository()
+  commit <- git2r::commits(r, n = 1)[[1]]
+  commit_message <- workflowr:::git2r_slot(commit, "message")
+  expect_identical(commit_message, paste("Rename project to", newname))
+})
+
+test_that("wflow_rename_proj() renames project directory", {
+  wd <- getwd()
+  expect_identical(basename(wd), newname)
+})
+
+test_that("wflow_rename_proj() can be re-run without error", {
+  expect_message(wflow_rename_proj(newname),
+                 "RStudio Project file already named")
+
+  expect_message(wflow_rename_proj(newname),
+                 "No changes to commit")
+
+  expect_message(wflow_rename_proj(newname),
+                 "Project directory already named:")
+})

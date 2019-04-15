@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
       </span>
     </div>
 
@@ -75,10 +75,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Alternative strategies for deploying workflowr websites</h1>
-            <h3 class="subtitle">workflowr version 1.2.0</h3>
+            <h3 class="subtitle">workflowr version 1.3.0</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-02-13</h4>
+            <h4 class="date">2019-04-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-08-deploy.Rmd"><code>vignettes/wflow-08-deploy.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-08-deploy.Rmd</code></div>
@@ -90,7 +90,7 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>The <a href="wflow-01-getting-started.html">Getting Started vignette</a> provides instructions for deploying the workflowr website using the service <a href="https://pages.github.com/">GitHub Pages</a> because it is quick and convenient. However, the static website created by workflowr can be deployed using any strategy you like. Below are instructions for deploying the workflowr website contributed by other workflowr users. If you would like to contribute intructions for another deployment strategy, please fork the <a href="https://github.com/jdblischak/workflowr">workflowr repository</a> on GitHub and add your instructions to this file on the “dev” branch. If you need any assistance with this, please don’t hesitate to open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
+<p>The <a href="wflow-01-getting-started.html">Getting Started vignette</a> provides instructions for deploying the workflowr website using the service <a href="https://pages.github.com/">GitHub Pages</a> because it is quick and convenient. However, the static website created by workflowr can be deployed using any strategy you like. Below are instructions for deploying the workflowr website contributed by other workflowr users. If you would like to contribute instructions for another deployment strategy, please fork the <a href="https://github.com/jdblischak/workflowr">workflowr repository</a> on GitHub and add your instructions to this file on the “dev” branch. If you need any assistance with this, please don’t hesitate to open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a>.</p>
 </div>
 <div id="amazon-s3-password-protected" class="section level2">
 <h2 class="hasAnchor">
@@ -101,11 +101,11 @@
 <div id="beaker-browser-secure-sharing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#beaker-browser-secure-sharing" class="anchor"></a>Beaker Browser (secure sharing)</h2>
-<p>If your project contains senstive data that prevents you from publicly sharing the results, one alternative option is to self-host your workflowr website using <a href="https://beakerbrowser.com/">Beaker Browser</a>.</p>
+<p>If your project contains sensitive data that prevents you from publicly sharing the results, one alternative option is to self-host your workflowr website using <a href="https://beakerbrowser.com/">Beaker Browser</a>.</p>
 <p><a href="https://beakerbrowser.com/">Beaker Browser</a> allows website creation, cloning, modification, and publishing locally. After the site is ready, hitting “share” produces a unique <a href="https://datproject.org/">Dat project dat://</a> hyperlink, for example:</p>
 <pre><code>dat://adef21aa8bbac5e93b0c20a97c6f57f93150cf4e7f5eb1eb522eb88e682309bc</code></pre>
 <p>This dat:// link can then be shared and the site opened <em>all the while being hosted locally on the site producer’s machine.</em> The particular example above is a site, produced in RStudio using workflowr, with placeholder content and R code chunks, compiled as usual.</p>
-<p>Security for your site is achieved with site encryption inherent in the Dat protocol (see <a href="https://docs.datproject.org/security">Security</a> on the <a href="https://docs.datproject.org/">datproject docs page</a>), as well as the obscurity of the unique link. Beaker Browser saves your individual project sites in the folder <code>~/Sites</code>.</p>
+<p>Security for your site is achieved with site encryption inherent in the Dat protocol (see <a href="https://docs.datproject.org/docs/security-faq">Security</a> on the <a href="https://docs.datproject.org/">datproject docs page</a>), as well as the obscurity of the unique link. Beaker Browser saves your individual project sites in the folder <code>~/Sites</code>.</p>
 <p>To create a Beaker Browser version of your workflowr site:</p>
 <ol style="list-style-type: decimal">
 <li>

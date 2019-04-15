@@ -1,10 +1,13 @@
 # workflowr: organized + reproducible + shareable data science in R
 
-[![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
-[![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=master&svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr)
 [![CRAN status](https://www.r-pkg.org/badges/version/workflowr)](https://cran.r-project.org/package=workflowr)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
+[![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
+[![Travis-CI Build Status](https://travis-ci.org/jdblischak/workflowr.svg?branch=master)](https://travis-ci.org/jdblischak/workflowr)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=master&svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr)
+[![CircleCI](https://circleci.com/gh/jdblischak/workflowr/tree/master.svg?style=svg)](https://circleci.com/gh/jdblischak/workflowr/tree/master)
+
+<img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">
 
 The workflowr R package helps researchers organize their analyses in a way that
 promotes effective project management, reproducibility, collaboration, and
@@ -19,13 +22,7 @@ with the latest workflowr developments, please join the [workflowr-announce][]
 mailing list (low-volume, read-only). For bugs reports, feature requests, and
 questions, please open an [Issue][issues].
 
-For those with existing workflowr projects (pre-1.0.0), see `?wflow_update` if
-you're interested in updating your project to use the latest features. If you
-like your current project the way it is, you can continue to use workflowr as
-you have been by getting the latest bug fixes from [workflowrBeta][].
-
 [workflowr-announce]: https://groups.google.com/forum/#!forum/workflowr-announce
-[workflowrBeta]: https://github.com/jdblischak/workflowrBeta
 
 * [Features](#features)
 * [Installation](#installation)
@@ -46,7 +43,8 @@ you have been by getting the latest bug fixes from [workflowrBeta][].
     * Sets the same seed for random number generation for each analysis
 * Shareable
     * Creates a website to present your research results
-    * Documents how to host your website for free via [GitHub Pages][]
+    * Documents how to host your website for free via [GitHub Pages][] or
+    [GitLab Pages][]
     * Creates links to past versions of results
 
 To see a workflowr website in action, see this [video demonstration][video].
@@ -69,7 +67,7 @@ For related tools, see [r-project-workflows][].
     install.packages("workflowr")
     ```
 
-1. Create an account on [GitHub][gh]
+1. Create an account on [GitHub][gh] or [GitLab][gl]
 
 ## Quick start
 
@@ -100,7 +98,7 @@ wflow_publish("analysis/*", "Start my new project")
 **Next steps:**
 
 1. Read the full [Getting started vignette][vig-start] to learn how to share
-your results online via GitHub
+your results online
 
 1. Read the [customization vignette][vig-custom] for ideas on how to customize
 your research website
@@ -133,7 +131,7 @@ Workflowr is available under the [MIT license][MIT]. Please run
 ## Contributing
 
 We welcome community contributions, especially improvements to documentation. To
-get started, please read the [contributing guidlines](CONTRIBUTING.md).
+get started, please read the [contributing guidelines](CONTRIBUTING.md).
 Also, please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to
 abide by its terms.
@@ -142,9 +140,11 @@ abide by its terms.
 [cran]: https://cran.r-project.org/package=workflowr
 [divvy]: https://stephenslab.github.io/wflow-divvy/
 [gh]: https://github.com
+[gl]: https://gitlab.com
 [git]: https://git-scm.com/
 [git2r]: https://cran.r-project.org/web/packages/git2r/index.html
 [GitHub Pages]: https://pages.github.com/
+[GitLab Pages]: https://about.gitlab.com/product/pages/
 [issues]: https://github.com/jdblischak/workflowr/issues
 [knitr]: https://github.com/yihui/knitr
 [lsun]: https://github.com/LSun

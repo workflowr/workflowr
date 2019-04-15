@@ -34,7 +34,7 @@ An object of class \code{wflow_git_config}, which is a list with the
 \description{
 \code{wflow_git_config} configures the global Git settings on the current
 machine. This is a convenience function to run Git commands from the R
-console instead of the Terminal. The same functionality can be acheived by
+console instead of the Terminal. The same functionality can be achieved by
 running \code{git config} in the Terminal.
 }
 \details{

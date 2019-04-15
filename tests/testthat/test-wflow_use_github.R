@@ -40,6 +40,9 @@ test_that("wflow_use_github automates local GitHub configuration", {
 })
 
 test_that("wflow_use_github can be used post GitLab", {
+
+  skip_on_cran()
+
   path <- test_setup()
   on.exit(test_teardown(path))
   username <- "testuser"

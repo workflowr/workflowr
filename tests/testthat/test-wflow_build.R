@@ -383,17 +383,6 @@ test_that("wflow_build reports working and knit directories", {
 
 # Test error handling ----------------------------------------------------------
 
-test_that("wflow_build fails if file outside of analysis/", {
-  rmd_outside <- file.path(s$root, "outside.Rmd")
-  fs::file_create(rmd_outside)
-  # When passing one invalid file
-  expect_error(wflow_build(rmd_outside, project = site_dir),
-               "Only files in the analysis directory can be built with wflow_build.")
-  # When passing one invalid file with other valid files
-  expect_error(wflow_build(c(rmd, rmd_outside), project = site_dir),
-               "Only files in the analysis directory can be built with wflow_build.")
-})
-
 test_that("wflow_build fails early for bad files", {
   expect_error(wflow_build(character(), project = site_dir),
                "files must be NULL or a character vector of filenames")
@@ -412,4 +401,28 @@ test_that("wflow_build throws error if given directory input", {
   on.exit(unlink(d, recursive = TRUE, force = TRUE))
   expect_error(wflow_build(d, project = site_dir),
                "files cannot include a path to a directory")
+})
+
+test_that("wflow_build fails if file outside of analysis/", {
+
+  # If pandoc is *not* installed, the error message will be about this.
+  if(!rmarkdown::pandoc_available())
+    skip("skipped because pandoc is *not* installed")
+
+  rmd_outside <- file.path(s$root, "outside.Rmd")
+  fs::file_create(rmd_outside)
+  # When passing one invalid file
+  expect_error(wflow_build(rmd_outside, project = site_dir),
+               "Only files in the analysis directory can be built with wflow_build.")
+  # When passing one invalid file with other valid files
+  expect_error(wflow_build(c(rmd, rmd_outside), project = site_dir),
+               "Only files in the analysis directory can be built with wflow_build.")
+})
+
+test_that("wflow_build throws error if pandoc is not installed", {
+  if(rmarkdown::pandoc_available())
+    skip("skipped because pandoc is installed")
+
+  expect_error(wflow_build(project = site_dir),
+               'Pandoc is not installed.')
 })

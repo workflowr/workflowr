@@ -1,8 +1,8 @@
 Package: workflowr
 Type: Package
 Title: A Framework for Reproducible and Collaborative Data Science
-Date: 2019-02-13
-Version: 1.2.0
+Date: 2019-04-15
+Version: 1.3.0
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu",
@@ -16,7 +16,9 @@ Authors@R: c(
     person("Pierre", "Formont", role = c("ctb"),
            comment = "Support for hosting with Shiny Server"),
     person("Tim", "Trice", role = c("ctb"),
-           comment = "Instructions for sharing common code"))
+           comment = "Instructions for sharing common code"),
+    person("Jiaxiang", "Li", role = c("ctb"),
+           comment = "Function wflow_toc() to create table of contents"))
 Description: Provides a workflow for your analysis projects by combining
   literate programming ('knitr' and 'rmarkdown') and version control
   ('Git', via 'git2r') to generate a website containing time-stamped,
@@ -38,7 +40,7 @@ Imports:
     methods,
     rmarkdown (>= 1.7),
     rprojroot,
-    rstudioapi,
+    rstudioapi (>= 0.5),
     stringr (>= 1.1.0),
     tools,
     utils,
@@ -46,9 +48,14 @@ Imports:
     yaml
 RoxygenNote: 6.1.1
 Suggests:
+    clipr,
     covr,
     devtools,
+    miniUI (>= 0.1.1),
+    shiny (>= 0.13),
+    spelling,
     testthat,
     withr
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
+Language: en-US

@@ -1,6 +1,11 @@
 #' Update a workflowr project
 #'
-#' Update an existing workflowr project to workflowr 1.0.
+#' Update an existing workflowr project to workflowr 1.0. If you have an
+#' existing project built with a beta version of workflowr (pre-1.0.0), you can
+#' use \code{wflow_update} to obtain the latest features. However, if you like
+#' your current project the way it is, you can continue to use workflowr as you
+#' have been by getting the latest bug fixes from
+#' \href{https://jdblischak.github.io/workflowrBeta/}{workflowrBeta}.
 #'
 #' By default, \code{wflow_update} is run in \code{dry_run} mode so that no
 #' unwanted changes are made. Here's how to update an existing project to
@@ -49,7 +54,7 @@
 #' @examples
 #' \dontrun{
 #'
-#' # Preview the files to be udpated
+#' # Preview the files to be updated
 #' wflow_update()
 #' # Update the files
 #' wflow_update(dry_run = FALSE)

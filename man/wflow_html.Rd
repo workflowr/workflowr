@@ -23,7 +23,7 @@ documentation} for the available options), and 2) configure the workflowr
 reproducibility features (typically specified in a file named
 \code{_workflowr.yml}). \code{wflow_html} is intended to be used to generate
 webpages for a workflowr website, but it can also be used outside a workflowr
-project to implement reproducibilty features for single R Markdown documents.
+project to implement reproducibility features for single R Markdown documents.
 }
 \section{HTML formatting}{
 

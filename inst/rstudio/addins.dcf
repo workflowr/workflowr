@@ -1,0 +1,24 @@
+Name: Build
+Description: Build workflowr website with wflow_build()
+Binding: wflow_build
+Interactive: true
+
+Name: Status
+Description: Get status of workflowr project with wflow_status()
+Binding: wflow_status
+Interactive: true
+
+Name: View
+Description: View workflowr website with wflow_view()
+Binding: wflow_view
+Interactive: true
+
+Name: Publish
+Description: Publish workflowr website with wflow_publish()
+Binding: wflow_publish_addin
+Interactive: true
+
+Name: Table of contents
+Description: Paste a table of contents of workflowr analyses
+Binding: wflow_toc_addin
+Interactive: false

@@ -1,7 +1,7 @@
 #' Start a new workflowr project
 #'
 #' \code{wflow_start} creates a directory with the essential files for
-#' a workflowr project. The default behaviour is to add these files to
+#' a workflowr project. The default behavior is to add these files to
 #' a new directory, but it is also possible to populate an existing
 #' directory. By default, the working directory is changed to the
 #' workflowr project directory.
@@ -131,13 +131,13 @@
 #'   \code{"my-wflow-project"}. The project name is displayed on the
 #'   website's navigation bar and in the \code{README.md} file.
 #'
-#' @param git logical (default: \code{TRUE}). Should the workflowr
-#'   files be committed with Git? If \code{git = TRUE} and no existing
-#'   Git repository is detected, \code{wflow_start} will initialize the
-#'   repository and make an initial commit. If a Git repository already
-#'   exists in the chosen directory, \code{wflow_start} any newly
-#'   created or modified files will be commited to the existing
-#'   repository.
+#' @param git logical (default: \code{TRUE}). Should the workflowr files be
+#'   committed with Git? If \code{git = TRUE} and no existing Git repository is
+#'   detected, \code{wflow_start} will initialize the repository and make an
+#'   initial commit. If a Git repository already exists in the chosen directory,
+#'   \code{wflow_start} will commit any newly created or modified files to the
+#'   existing repository (also need to set \code{existing = TRUE}). If \code{git
+#'   = FALSE}, \code{wflow_start} will not perform any Git commands.
 #'
 #' @param existing logical (default: \code{FALSE}). Indicate whether
 #'   \code{directory} already exists. This argument is added to prevent
@@ -439,9 +439,9 @@ print.wflow_start <- function(x, ...) {
       cat(sprintf("- Git repo will not be initiated\n", x$directory))
     }
     if (x$git) {
-      cat("- Files will be commited with Git\n")
+      cat("- Files will be committed with Git\n")
     } else {
-      cat("- Files will not be commited with Git\n")
+      cat("- Files will not be committed with Git\n")
     }
     if (x$disable_remote) {
       cat("- Pushing to remote repository will be disabled\n")

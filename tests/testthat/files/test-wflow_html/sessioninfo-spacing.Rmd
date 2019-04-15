@@ -1,0 +1,12 @@
+---
+output: workflowr::wflow_html
+---
+
+Test that the final line of text of a file is surrounded by `p` elements, and
+that there is one `br` element between it and the session information button.
+
+```{r code-chunk}
+1 + 1
+```
+
+final sentence

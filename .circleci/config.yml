@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Session information and installed package versions
           command: |
-            r -e 'sessionInfo()'
+            r -e 'print(sessionInfo())'
             r -e 'print(installed.packages()[, c("Package", "Version")])'
       - run:
           name: Build and check (without pandoc)

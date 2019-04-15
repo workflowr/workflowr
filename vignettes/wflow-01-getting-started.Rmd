@@ -485,7 +485,13 @@ the RStudio Git Pane.] to deploy these latest changes to the website.
 
 ## The workflow
 
-This is the general workflow:
+This is the general workflow:^[Note that some workflowr functions are also
+available as [RStudio Addins][rstudio-addins]. You may prefer these compared to
+running the commands in the R console, especially since you can [bind the addins
+to keyboard shortcuts][rstudio-addins-shortcuts].]
+
+[rstudio-addins]: https://rstudio.github.io/rstudioaddins/
+[rstudio-addins-shortcuts]: https://rstudio.github.io/rstudioaddins/#keyboard-shorcuts
 
 1. Open a new or existing R Markdown file in `analysis/` (optionally using
 `wflow_open()`)

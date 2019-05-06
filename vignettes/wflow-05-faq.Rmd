@@ -74,23 +74,35 @@ files to be displayed in your webpages, follow these steps:
 
 1. Create an assets directory to include any file that should be part of the
 website but is not created by the R Markdown files in `analysis/`:
+
     ```
-   dir.create("docs/assets")
+    dir.create("docs/assets")
     ```
 1. Move the image file(s) to `docs/assets/`
 1. In the R Markdown file, refer to the image file(s) using the relative path
 from `docs/` (because this is where the HTML files are located), e.g.:
+
     ```
-   ![](assets/external.png)
+    ![](assets/external.png)
     ```
+    Alternatively, you could use `knitr::include_graphics()` inside of an R code
+    chunk, which will automatically center the image and also follow the knitr
+    chunk options `out.width` and `out.height`:
+
+    ```
+    knitr::include_graphics("assets/external.png")
+    ```
+    Note that the image will not be previewed in the R Markdown file inside of
+    RStudio because it is in a different directory than the R Markdown file.
 1. Run `wflow_build()` to confirm the external image file(s) are properly
 displayed
 1. Use `wflow_git_commit()` to commit the file(s) to the Git repo (so that they
 get pushed to GitHub):
+
     ```
-   wflow_git_commit("docs/assets/external.png", "Add external image of ...")
-   # If you are adding multiple files, you could use a file glob
-   wflow_git_commit("docs/assets/*.png", "Add external images of ...")
+    wflow_git_commit("docs/assets/external.png", "Add external image of ...")
+    # If you are adding multiple files, you could use a file glob
+    wflow_git_commit("docs/assets/*.png", "Add external images of ...")
     ```
 1. Run `wflow_publish()` on the R Markdown file that contains the external
 image file(s)

@@ -46,6 +46,9 @@ environment:
     USE_RTOOLS: true
     #PKGTYPE: win.binary
 
+    # Allow remotes to update curl/git2r/pkgbuild by not relying on them
+    R_REMOTES_STANDALONE: true
+
   matrix:
   # 64-bit
   - R_VERSION: release

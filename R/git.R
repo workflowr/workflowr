@@ -490,3 +490,20 @@ authenticate_git <- function(protocol, username = NULL,
   }
   return(credentials)
 }
+
+# Throw error if Git repository is locked
+check_git_lock <- function(r) {
+  stopifnot(class(r) == "git_repository")
+
+  index_lock <- file.path(git2r_workdir(r), ".git/index.lock")
+  if (fs::file_exists(index_lock)) {
+    stop(call. = FALSE, wrap(
+      "The Git repository is locked. This can happen if a Git command
+      previously crashed or if multiple Git commands were executed at the same
+      time. To fix this, you need to delete the file .git/index.lock. You can
+      do this by running the following in the R console:"),
+      "\n\n",
+      glue::glue("file.remove(\"{index_lock}\")")
+    )
+  }
+}

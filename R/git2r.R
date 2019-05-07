@@ -66,6 +66,10 @@ git2r_workdir <- function(x) {
 # Cover all edge cases by passing original paths, absolute paths, and paths that
 # are relative to root of Git repo.
 git2r_add <- function(r, files, force = FALSE) {
+
+  # Confirm that Git repository isn't locked
+  check_git_lock(r)
+
   git2r::add(r, files, force = force)
   git2r::add(r, absolute(files), force = force)
   git2r::add(r, relative(files, start = git2r_workdir(r)), force = force)

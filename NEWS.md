@@ -1,6 +1,7 @@
 # workflowr 1.3.0.9000
 
-
+* Check if Git repository is locked and produce error message that explains how
+to fix it (idea from @brimittleman)
 
 # workflowr 1.3.0
 

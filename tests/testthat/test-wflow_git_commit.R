@@ -244,3 +244,19 @@ test_that("wflow_git_commit fails early if merge conflicts detected", {
   # Attempt to publish
   expect_error(wflow_publish(rmd, project = x), rmd)
 })
+
+test_that("wflow_git_commit fails if Git repository is locked", {
+
+  file_to_commit <- file.path(site_dir, "file")
+  fs::file_create(file_to_commit)
+  on.exit(wflow_remove(file_to_commit, project = site_dir))
+
+  index_lock <- file.path(workflowr:::git2r_workdir(r), ".git/index.lock")
+  fs::file_create(index_lock)
+
+  expect_error(wflow_git_commit(file_to_commit, project = site_dir),
+               "The Git repository is locked")
+  expect_error(wflow_git_commit(file_to_commit, project = site_dir), index_lock)
+  fs::file_delete(index_lock)
+  expect_silent(wflow_git_commit(file_to_commit, project = site_dir))
+})

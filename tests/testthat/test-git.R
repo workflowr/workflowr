@@ -5,6 +5,8 @@ context("git")
 # Load helper function local_no_gitconfig()
 source("helpers.R", local = TRUE)
 
+source("setup.R", local = TRUE)
+
 # Test get_committed_files and obtain_files_in_commit --------------------------
 
 # Create temp Git directory
@@ -88,4 +90,21 @@ test_that("check_git_config throws an error when user.name and user.email are no
   custom_message <- "fname"
   expect_error(workflowr:::check_git_config(".", custom_message = custom_message),
                custom_message)
+})
+
+# Test check_git_lock ----------------------------------------------------------
+
+test_that("check_git_lock throws error only when Git repository is locked", {
+
+  path <- test_setup()
+  on.exit(test_teardown(path))
+  r <- git2r::repository(path)
+
+  expect_silent(workflowr:::check_git_lock(r))
+  index_lock <- file.path(workflowr:::git2r_workdir(r), ".git/index.lock")
+  fs::file_create(index_lock)
+  expect_error(workflowr:::check_git_lock(r), "The Git repository is locked")
+  expect_error(workflowr:::check_git_lock(r), index_lock)
+  fs::file_delete(index_lock)
+  expect_silent(workflowr:::check_git_lock(r))
 })

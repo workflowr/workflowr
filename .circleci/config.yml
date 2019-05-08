@@ -217,7 +217,7 @@ jobs:
           name: Install knitr 1.18 and rmarkdown 1.7
           command: |
             r -e 'remotes::install_version("knitr", "1.18", upgrade = FALSE)'
-            r -e 'remotes::install_version("rmarkdown", "1.7, upgrade = FALSE")'
+            r -e 'remotes::install_version("rmarkdown", "1.7", upgrade = FALSE)'
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R

@@ -13,6 +13,7 @@
 #'   built (step 2) and their output HTML and figures will be subsequently
 #'   committed (step 3). Supports file
 #'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
+#'   The files are always built in the order they are listed.
 #' @inheritParams wflow_git_commit
 #' @inheritParams wflow_build
 #'

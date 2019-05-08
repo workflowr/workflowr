@@ -14,7 +14,8 @@ wflow_publish(files = NULL, message = NULL, all = FALSE,
 be added and committed with Git (step 1). Any R Markdown files will also be
 built (step 2) and their output HTML and figures will be subsequently
 committed (step 3). Supports file
-\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
+\href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
+The files are always built in the order they are listed.}
 
 \item{message}{character (default: NULL). A commit message.}
 

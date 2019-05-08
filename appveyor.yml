@@ -2,8 +2,6 @@
 
 # Download script file from GitHub
 init:
-  - git config --global user.name "Travis CI"
-  - git config --global user.email "testing@fake.domain"
   - ps: |
           $ErrorActionPreference = "Stop"
           Invoke-WebRequest http://raw.githubusercontent.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
@@ -14,14 +12,9 @@ install:
 
 cache:
   - C:\RLibrary -> DESCRIPTION
-  - C:\Program Files (x86)\Pandoc\
+  - C:\Program Files (x86)\Pandoc\ -> DESCRIPTION
 
 # Adapt as necessary starting from here
-
-branches:
-  only:
-    - master
-    - dev
 
 # Install Pandoc
 # source: https://github.com/krlmlr/r-appveyor/issues/82#issuecomment-261695154
@@ -30,7 +23,7 @@ before_test:
       if (-Not (Test-Path "C:\Program Files (x86)\Pandoc\")) {
         cinst pandoc
       }
-  - ps: choco install pandoc --version 1.19.1 --allow-downgrade
+#  - ps: choco install pandoc --version 1.19.1 --allow-downgrade
   - ps: $env:Path += ";C:\Program Files (x86)\Pandoc\"
   - pandoc -v
 
@@ -54,11 +47,6 @@ environment:
   - R_VERSION: release
     platform: x64
     R_ARCH: x64
-
-  # 32-bit
-  - R_VERSION: release
-    platform: x86
-    R_ARCH: i386
 
 build_script:
   - travis-tool.sh install_deps

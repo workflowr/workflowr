@@ -4,15 +4,10 @@
 # require pandoc but aren't skipped.
 version: 2
 jobs:
-  build:
+  pandocless:
     working_directory: /workflowr
     docker:
       - image: rocker/r-apt:bionic
-    branches:
-      only:
-        - master
-        - dev
-        - circleci
     steps:
       - restore_cache:
           keys:
@@ -64,3 +59,39 @@ jobs:
           key: cache
           paths:
             - "/usr/local/lib/R/site-library"
+  release:
+    docker:
+      - image: rocker/r-ver:3.6.0
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: |
+            apt-get update
+            apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev qpdf wget zlib1g-dev
+      - run:
+          name: Install pandoc
+          command: |
+            wget https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb
+            dpkg -i pandoc-*-amd64.deb
+      - run:
+          name: Install package dependencies
+          command: |
+            r -e 'if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")'
+            r -e 'remotes::install_deps(dependencies = TRUE)'
+      - run:
+          name: Session information and installed package versions
+          command: |
+            r -e 'print(rmarkdown::pandoc_version())'
+            r -e 'print(sessionInfo())'
+            r -e 'print(installed.packages()[, c("Package", "Version")])'
+      - run:
+          name: Build and check
+          command: bash build.sh --no-examples --no-manual
+      - store_artifacts:
+          path: workflowr.Rcheck/
+workflows:
+  version: 2
+  all:
+    jobs:
+      - release

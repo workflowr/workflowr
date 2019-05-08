@@ -196,7 +196,7 @@ jobs:
   rmd_1.7:
     environment:
       NOT_CRAN: true
-      PANDOC: 2.7
+      PANDOC: 2.3
     docker:
       - image: rocker/r-ver:3.6.0
     steps:
@@ -216,8 +216,8 @@ jobs:
       - run:
           name: Install knitr 1.18 and rmarkdown 1.7
           command: |
-            r -e 'remotes::install_version("knitr", "1.18")'
-            r -e 'remotes::install_version("rmarkdown", "1.7")'
+            r -e 'remotes::install_version("knitr", "1.18", upgrade = FALSE)'
+            r -e 'remotes::install_version("rmarkdown", "1.7, upgrade = FALSE")'
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R

@@ -25,10 +25,11 @@ dev           | development branch - submit Pull Requests here
 
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by
 [Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the
-documentation is built with [roxygen2][], the online package documentation is
-created with [pkgdown][], continuous integration testing is performed for Linux
-and macOS by [Travis CI][travis] and for Windows by [AppVeyor][appveyor], and
-code coverage is calculated with [covr][] and [Codecov][].
+documentation is built with [roxygen2][], and the online package documentation
+is created with [pkgdown][]. Continuous integration testing is performed for
+Linux by [CircleCI][circleci], for macOS by [Travis CI][travis], and for Windows
+by [AppVeyor][appveyor]. Code coverage is calculated with [covr][] and
+[Codecov][].
 
 The template files used by `wflow_start()` to populate a new project are defined
 in the list `templates` in the file `R/infrastructure.R`. The [RStudio project
@@ -87,6 +88,7 @@ receive an email once all the Windows binaries are available for download
 
 [appveyor]: https://ci.appveyor.com
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html
+[circleci]: https://circleci.com
 [Codecov]: https://codecov.io/
 [contribute]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011
 [covr]: https://github.com/jimhester/covr

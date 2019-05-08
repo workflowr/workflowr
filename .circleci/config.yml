@@ -61,7 +61,6 @@ jobs:
             - "/usr/local/lib/R/site-library"
   release:
     environment:
-      CACHE_ID: release
       NOT_CRAN: true
       PANDOC: 2.7
     docker:
@@ -69,7 +68,7 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CACHE_ID }}
+            - cache-{{ .Environment.CIRCLE_JOB }}
       - checkout
       - run:
           name: Install system dependencies
@@ -89,12 +88,11 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: cache-{{ .Environment.CACHE_ID }}
+          key: cache-{{ .Environment.CIRCLE_JOB }}
           paths:
             - "/usr/local/lib/R/site-library"
   devel:
     environment:
-      CACHE_ID: devel
       NOT_CRAN: true
       PANDOC: 2.7
     docker:
@@ -102,7 +100,7 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CACHE_ID }}
+            - cache-{{ .Environment.CIRCLE_JOB }}
       - checkout
       - run:
           name: Install system dependencies
@@ -122,12 +120,11 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: cache-{{ .Environment.CACHE_ID }}
+          key: cache-{{ .Environment.CIRCLE_JOB }}
           paths:
             - "/usr/local/lib/R/site-library"
   oldrel:
     environment:
-      CACHE_ID: oldrel
       NOT_CRAN: true
       PANDOC: 2.7
     docker:
@@ -135,7 +132,7 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CACHE_ID }}
+            - cache-{{ .Environment.CIRCLE_JOB }}
       - checkout
       - run:
           name: Install system dependencies
@@ -155,7 +152,7 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: cache-{{ .Environment.CACHE_ID }}
+          key: cache-{{ .Environment.CIRCLE_JOB }}
           paths:
             - "/usr/local/lib/R/site-library"
 workflows:

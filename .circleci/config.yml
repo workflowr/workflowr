@@ -4,61 +4,6 @@
 # require pandoc but aren't skipped.
 version: 2
 jobs:
-  pandocless:
-    working_directory: /workflowr
-    docker:
-      - image: rocker/r-apt:bionic
-    steps:
-      - restore_cache:
-          keys:
-            - cache
-      - checkout
-      - run:
-          name: Install devtools (and other dependencies) via APT
-          command: |
-            apt-get update
-            apt-get install -y r-cran-devtools
-            # System dependencies
-            apt-get install -y libxml2-dev qpdf
-            # R packages available from c2d4u3.5
-            # (can't install rmarkdown since that would install pandoc)
-            apt-get install -y r-cran-callr \
-                               r-cran-clipr \
-                               r-cran-covr \
-                               r-cran-fs \
-                               r-cran-git2r \
-                               r-cran-glue \
-                               r-cran-knitr \
-                               r-cran-miniui \
-                               r-cran-rprojroot \
-                               r-cran-rstudioapi \
-                               r-cran-shiny \
-                               r-cran-stringr \
-                               r-cran-testthat \
-                               r-cran-whisker \
-                               r-cran-withr \
-                               r-cran-yaml
-            # Dependencies of package spelling (it's not available from c2d4u3.5)
-            apt-get install -y r-cran-commonmark \
-                               r-cran-hunspell \
-                               r-cran-xml2
-      - run:
-          name: Install package dependencies
-          command: r -e "devtools::install_deps(dependencies = TRUE, upgrade = FALSE)"
-      - run:
-          name: Session information and installed package versions
-          command: |
-            r -e 'print(sessionInfo())'
-            r -e 'print(installed.packages()[, c("Package", "Version")])'
-      - run:
-          name: Build and check (without pandoc)
-          command: bash build.sh --no-examples --no-manual
-      - store_artifacts:
-          path: workflowr.Rcheck/
-      - save_cache:
-          key: cache
-          paths:
-            - "/usr/local/lib/R/site-library"
   release:
     environment:
       NOT_CRAN: true
@@ -155,6 +100,65 @@ jobs:
           key: cache-{{ .Environment.CIRCLE_JOB }}
           paths:
             - "/usr/local/lib/R/site-library"
+  pandocless:
+    docker:
+      - image: rocker/r-ver:3.6.0
+    steps:
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_JOB }}
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: bash .circleci/install-system.sh
+      - run:
+          name: Install package dependencies
+          command: r .circleci/install-r-pkgs.R
+      - run:
+          name: Session information and installed package versions
+          command: r -p .circleci/session-info.R
+      - run:
+          name: Build and check
+          command: bash .circleci/check.sh
+      - store_artifacts:
+          path: workflowr.Rcheck/
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_JOB }}
+          paths:
+            - "/usr/local/lib/R/site-library"
+  pandoc_one:
+    environment:
+      NOT_CRAN: true
+      PANDOC: 1.19
+    docker:
+      - image: rocker/r-ver:3.6.0
+    steps:
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_JOB }}
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: bash .circleci/install-system.sh
+      - run:
+          name: Install pandoc
+          command: bash .circleci/install-pandoc.sh $PANDOC
+      - run:
+          name: Install package dependencies
+          command: r .circleci/install-r-pkgs.R
+      - run:
+          name: Session information and installed package versions
+          command: r -p .circleci/session-info.R
+      - run:
+          name: Build and check
+          command: bash .circleci/check.sh
+      - store_artifacts:
+          path: workflowr.Rcheck/
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_JOB }}
+          paths:
+            - "/usr/local/lib/R/site-library"
+
 workflows:
   version: 2
   all:
@@ -162,3 +166,5 @@ workflows:
       - release
       - devel
       - oldrel
+      - pandocless
+      - pandoc_one

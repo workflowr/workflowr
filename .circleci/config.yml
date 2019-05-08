@@ -158,7 +158,76 @@ jobs:
           key: cache-{{ .Environment.CIRCLE_JOB }}
           paths:
             - "/usr/local/lib/R/site-library"
-
+  git2r_0.21.0:
+    environment:
+      NOT_CRAN: true
+      PANDOC: 2.7
+    docker:
+      - image: rocker/r-ver:3.6.0
+    steps:
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_JOB }}
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: bash .circleci/install-system.sh
+      - run:
+          name: Install pandoc
+          command: bash .circleci/install-pandoc.sh $PANDOC
+      - run:
+          name: Install package dependencies
+          command: r .circleci/install-r-pkgs.R
+      - run:
+          name: Install git2r 0.21.0
+          command: r -e 'remotes::install_version("git2r", "0.21.0")'
+      - run:
+          name: Session information and installed package versions
+          command: r -p .circleci/session-info.R
+      - run:
+          name: Build and check
+          command: bash .circleci/check.sh
+      - store_artifacts:
+          path: workflowr.Rcheck/
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_JOB }}
+          paths:
+            - "/usr/local/lib/R/site-library"
+  rmd_1.7:
+    environment:
+      NOT_CRAN: true
+      PANDOC: 2.7
+    docker:
+      - image: rocker/r-ver:3.6.0
+    steps:
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_JOB }}
+      - checkout
+      - run:
+          name: Install system dependencies
+          command: bash .circleci/install-system.sh
+      - run:
+          name: Install pandoc
+          command: bash .circleci/install-pandoc.sh $PANDOC
+      - run:
+          name: Install package dependencies
+          command: r .circleci/install-r-pkgs.R
+      - run:
+          name: Install rmarkdown 1.7
+          command: r -e 'remotes::install_version("rmarkdown", "1.7")'
+      - run:
+          name: Session information and installed package versions
+          command: r -p .circleci/session-info.R
+      - run:
+          name: Build and check
+          command: bash .circleci/check.sh
+      - store_artifacts:
+          path: workflowr.Rcheck/
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_JOB }}
+          paths:
+            - "/usr/local/lib/R/site-library"
 workflows:
   version: 2
   all:
@@ -168,3 +237,5 @@ workflows:
       - oldrel
       - pandocless
       - pandoc_one
+      - git2r_0.21.0
+      - rmd_1.7

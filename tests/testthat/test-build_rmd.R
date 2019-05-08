@@ -15,8 +15,14 @@ file.copy("files/test-wflow_build/.", tmp_dir, recursive = TRUE)
 
 # Create empty website files to satisfy rmarkdown::render_site (called by
 # build_rmd). HTML files written to _site/
-fs::file_create(file.path(tmp_dir, "_site.yml"))
 fs::file_create(file.path(tmp_dir, "index.Rmd"))
+# Note: _site.yml cannot be empty for rmarkdown 1.7 b/c of the behavior of the
+# internal function patch_html_document_options(). This was fixed starting in
+# 1.8. Since workflowr would fail earlier if the file was empty, it doesn't make
+# sense to test it empty.
+# https://github.com/rstudio/rmarkdown/blob/v1.7/R/render_site.R#L425
+yaml::write_yaml(list(output = list(html_document = list())),
+                 file = fs::file_create(file.path(tmp_dir, "_site.yml")))
 
 setwd(tmp_dir)
 

@@ -214,8 +214,10 @@ jobs:
           name: Install package dependencies
           command: r .circleci/install-r-pkgs.R
       - run:
-          name: Install rmarkdown 1.7
-          command: r -e 'remotes::install_version("rmarkdown", "1.7")'
+          name: Install knitr 1.18 and rmarkdown 1.7
+          command: |
+            r -e 'remotes::install_version("knitr", "1.18")'
+            r -e 'remotes::install_version("rmarkdown", "1.7")'
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R

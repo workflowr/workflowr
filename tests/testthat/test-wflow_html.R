@@ -474,14 +474,14 @@ test_that("add_bibliography adds bibliography to files", {
   fs::file_copy("files/example.Rmd", bib_none)
   bib_none_html <- rmarkdown::render(bib_none, quiet = TRUE)
   expect_false(any(stringr::str_detect(readLines(bib_none_html),
-                                       "<div id=\"refs\">")))
+                                       "<div.*id=\"refs\".*>")))
 
   # Add bibliography before session information
   bib_add <- file.path(tmp_dir, "bib-add.Rmd")
   fs::file_copy("files/test-wflow_html/bib-add.Rmd", bib_add)
   bib_add_html <- rmarkdown::render(bib_add, quiet = TRUE)
   bib_add_lines <- readLines(bib_add_html)
-  refs_line <- stringr::str_which(bib_add_lines, "<div id=\"refs\">")
+  refs_line <- stringr::str_which(bib_add_lines, "<div.*id=\"refs\".*>")
   sinfo_line <- stringr::str_which(bib_add_lines, "sessionInfo()")
   expect_true(refs_line < sinfo_line)
 
@@ -490,7 +490,7 @@ test_that("add_bibliography adds bibliography to files", {
   fs::file_copy("files/test-wflow_html/bib-dont-add-1.Rmd", bib_dont_add_1)
   bib_dont_add_1_html <- rmarkdown::render(bib_dont_add_1, quiet = TRUE)
   bib_dont_add_1_lines <- readLines(bib_dont_add_1_html)
-  refs_line <- stringr::str_which(bib_dont_add_1_lines, "<div id=\"refs\">")
+  refs_line <- stringr::str_which(bib_dont_add_1_lines, "<div.*id=\"refs\".*>")
   expect_true(length(refs_line) == 1)
   sinfo_line <- stringr::str_which(bib_dont_add_1_lines, "sessionInfo()")
   expect_true(refs_line < sinfo_line)
@@ -500,7 +500,7 @@ test_that("add_bibliography adds bibliography to files", {
   fs::file_copy("files/test-wflow_html/bib-dont-add-2.Rmd", bib_dont_add_2)
   bib_dont_add_2_html <- rmarkdown::render(bib_dont_add_2, quiet = TRUE)
   bib_dont_add_2_lines <- readLines(bib_dont_add_2_html)
-  refs_line <- stringr::str_which(bib_dont_add_2_lines, "<div id=[\"\']refs[\"\']>")
+  refs_line <- stringr::str_which(bib_dont_add_2_lines, "<div.*id=[\"\']refs[\"\'].*>")
   expect_true(length(refs_line) == 1)
   sinfo_line <- stringr::str_which(bib_dont_add_2_lines, "sessionInfo()")
   expect_true(refs_line < sinfo_line)

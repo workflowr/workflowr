@@ -196,7 +196,7 @@ jobs:
   rmd_1.7:
     environment:
       NOT_CRAN: true
-      PANDOC: 2.3
+      PANDOC: 2.7
     docker:
       - image: rocker/r-ver:3.6.0
     steps:

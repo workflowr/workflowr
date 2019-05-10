@@ -15,7 +15,8 @@ options(warn = 1)
 # Check required packages ------------------------------------------------------
 
 message("* Checking that required dependencies are installed")
-pkgs <- c("devtools", "git2r", "roxygen2", "spelling", "stringr", "testthat", "withr")
+pkgs <- c("devtools", "fs", "git2r", "roxygen2", "spelling", "stringr",
+          "testthat", "withr")
 installed <- rownames(installed.packages())
 
 for (p in pkgs) {
@@ -40,30 +41,43 @@ if (!git2r::in_repository()) {
 }
 
 r <- git2r::repository()
-b <- git2r::repository_head(r)$name
-if (b == "master") {
-  warning("You are currently on the master branch.",
-          " Please switch to the dev branch with:",
-          "\n\ngit checkout dev")
-}
+# b <- git2r::repository_head(r)$name
 
 remote_avail <- git2r::remotes(r)
 if (!"origin" %in% remote_avail) {
-  warning("There is no remote named origin")
+  warning("There is no remote named origin", call. = FALSE)
 } else {
   origin <- git2r::remote_url(r, "origin")
   if (stringr::str_detect(origin, "jdblischak/workflowr.git$")) {
     warning("The remote origin is set to the main workflowr repository.",
-            "\nDid you fork the repository on GitHub and then clone your fork?")
+            "\nDid you fork the repository on GitHub and then clone your fork?",
+            call. = FALSE)
   }
 }
 
 # Update documentation ---------------------------------------------------------
 
 message("* Updating documentation")
-devtools::document(roclets = c('rd', 'collate', 'namespace'))
+o <- utils::capture.output(suppressMessages(
+  devtools::document(roclets = c('rd', 'collate', 'namespace'))
+))
+
+# Notify to commit any changes to documentation files
+status <- git2r::status(r)
+changed <- c(unlist(status$unstaged), unlist(status$staged))
+docs <- c("DESCRIPTION", fs::dir_ls("man/"), "NAMESPACE")
+for (f in docs) {
+  if (f %in% changed) {
+    cat("To do: Please commit changes to", f, "\n")
+  }
+}
 
 # Check package ----------------------------------------------------------------
 
-message("* Checking package")
-devtools::check(document = FALSE, args = "--no-tests", error_on = "error")
+message("* Checking package (this might take a few minutes)")
+devtools::check(document = FALSE, args = "--no-tests", quiet = TRUE,
+                error_on = "error")
+
+# Finish -----------------------------------------------------------------------
+
+message("* Congrats! Please commit your changes, push them to GitHub, and open a Pull Request")

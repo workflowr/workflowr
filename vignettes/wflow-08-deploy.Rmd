@@ -21,7 +21,7 @@ workflowr can be deployed using any strategy you like. Below are instructions
 for deploying the workflowr website contributed by other workflowr users. If you
 would like to contribute instructions for another deployment strategy, please
 fork the [workflowr repository][workflowr] on GitHub and add your instructions
-to this file on the "dev" branch. If you need any assistance with this, please
+to this file. If you need any assistance with this, please
 don't hesitate to open an [Issue][wflow-issues].
 
 [gh-pages]: https://pages.github.com/

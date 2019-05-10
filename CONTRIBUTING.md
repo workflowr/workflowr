@@ -4,7 +4,6 @@ Thanks for your interest in contributing to workflowr.
 Here are some guidelines to help make it easier to merge your Pull Request:
 
 * For potentially large changes, please open an Issue first to discuss
-* Please submit Pull Requests to the "dev" branch
 * Please follow the [Hadley style guide][style]
 * Please run the file [contribute.R](contribute.R) to check your changes
 * (Optional) Run `devtools::test()` to run the tests
@@ -13,13 +12,6 @@ Here are some guidelines to help make it easier to merge your Pull Request:
 If you're new to submitting Pull Requests, please read the section [Contribute
 to other projects][contribute] in the tutorial [A quick introduction to version
 control with Git and GitHub][git-tutorial].
-
-## Explanation of branches
-
-branch name   | purpose
-------------- | -------------
-master        | stable branch for end users
-dev           | development branch - submit Pull Requests here
 
 ## More about this repository
 
@@ -64,13 +56,7 @@ and build the online documentation with [pkgdown][]
 * Update [cran-comments.md](cran-comments.md)
 * Commit with `git commit -am "Bump version: x.x.x.9xxx -> x.x.x and re-build
 docs."`
-* Push with `git push origin dev` and wait for CI builds to pass
-* Merge into master:
-    ```
-    git checkout master
-    git merge dev
-    git push origin master
-    ```
+* Push with `git push origin master` and wait for CI builds to pass
 * Tag with `git tag -a vx.x.x`. Summarize [NEWS.md](NEWS.md) entry into bullet
 points. Run ` git tag -l -n9` for past examples. Push with `git push origin
 --tags`.

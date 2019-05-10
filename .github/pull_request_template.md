@@ -10,7 +10,7 @@
 
 [conduct]: https://github.com/jdblischak/workflowr/blob/master/CODE_OF_CONDUCT.md
 [contributing]: https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.md
-[contribute.R]: https://github.com/jdblischak/workflowr/blob/master/CONTRIBUTING.R
+[contribute.R]: https://github.com/jdblischak/workflowr/blob/master/contribute.R
 
 ## Details
 

@@ -33,11 +33,10 @@ environment:
     NOT_CRAN: true
 
     # Reduce build time by only using binary packages
-    # 2019-04-11: Unfortunately can't do this at the moment. The newly released
-    # devtools requires rcmdcheck >= 1.3.2, but it failed the Windows builds
-    # on CRAN, so is not available as a binary download.
-    USE_RTOOLS: true
-    #PKGTYPE: win.binary
+    PKGTYPE: win.binary
+    #USE_RTOOLS: true
+    # Warning: May have to temporarily switch the above options if a minimum
+    # required version of a package is not available as a binary
 
     # Allow remotes to update curl/git2r/pkgbuild by not relying on them
     R_REMOTES_STANDALONE: true

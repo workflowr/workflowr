@@ -10,13 +10,11 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
 
   skip_on_cran()
 
-  tmp_dir <- tempfile()
-  tmp_start <- wflow_start(tmp_dir, change_wd = FALSE, user.name = "Test Name",
-                             user.email = "test@email")
-  tmp_dir <- workflowr:::absolute(tmp_dir)
-  on.exit(unlink(tmp_dir, recursive = TRUE))
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
 
-  rmd <- file.path(tmp_dir, "analysis", "file.Rmd")
+  rmd <- file.path(path, "analysis", "file.Rmd")
   lines <- c("---",
              "output: workflowr::wflow_html",
              "---",
@@ -28,18 +26,18 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
 
   # Add remote
   tmp_remote <- wflow_git_remote("origin", "testuser", "testrepo",
-                                 verbose = FALSE, project = tmp_dir)
+                                 verbose = FALSE, project = path)
 
   # Go through a few commit cycles
   for (i in 1:3) {
     cat("edit", file = rmd, append = TRUE)
-    tmp_publish <- wflow_publish(rmd, view = FALSE, project = tmp_dir)
+    tmp_publish <- wflow_publish(rmd, view = FALSE, project = path)
   }
 
-  r <- git2r::repository(tmp_dir)
+  r <- git2r::repository(path)
   blobs <- git2r::odb_blobs(r)
-  output_dir <- workflowr:::get_output_dir(file.path(tmp_dir, "analysis/"))
-  github <- workflowr:::get_host_from_remote(tmp_dir)
+  output_dir <- workflowr:::get_output_dir(file.path(path, "analysis/"))
+  github <- workflowr:::get_host_from_remote(path)
   versions <- workflowr:::get_versions(input = rmd, output_dir, blobs, r, github)
   expect_true(any(stringr::str_detect(versions, github)))
   fig <- file.path(output_dir, "figure", basename(rmd), "chunkname-1.png")
@@ -47,6 +45,69 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
   expect_true(any(stringr::str_detect(versions_fig, github)))
 })
 
+test_that("get_versions_fig converts spaces to dashes for HTML ID", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- c("---",
+             "output: workflowr::wflow_html",
+             "---",
+             "",
+             "```{r chunk-name}",
+             "plot(1:10)",
+             "```",
+             "",
+             "```{r chunk name}",
+             "plot(11:20)",
+             "```")
+  writeLines(lines, rmd)
+
+  # Add remote
+  tmp_remote <- wflow_git_remote("origin", "testuser", "testrepo",
+                                 verbose = FALSE, project = path)
+
+  # Commit twice so that past versions table is generated
+  tmp_publish <- wflow_publish(rmd, view = FALSE, project = path)
+  tmp_publish <- wflow_publish(rmd, view = FALSE, project = path)
+
+  r <- git2r::repository(path)
+  output_dir <- workflowr:::get_output_dir(file.path(path, "analysis/"))
+  github <- workflowr:::get_host_from_remote(path)
+
+  # The figure file without spaces should be displayed as normal
+  fig <- file.path(output_dir, "figure", basename(rmd), "chunk-name-1.png")
+  versions_fig <- get_versions_fig(fig, r, github)
+  versions_fig_lines <- stringr::str_split(versions_fig, "\\n")[[1]]
+  data_target <- stringr::str_subset(versions_fig_lines,
+                                      'data-target=\"#fig-chunk-name-1\"')
+  expect_true(length(data_target) == 1)
+  div_id <- stringr::str_subset(versions_fig_lines,
+                                'id=\"fig-chunk-name-1\"')
+  expect_true(length(div_id) == 1)
+  fig_display_name <- stringr::str_subset(versions_fig_lines,
+                                          ' chunk-name-1.png')
+  expect_true(length(fig_display_name) == 1)
+
+  # The figure file with spaces should be quoted and have spaces replaced with
+  # dashes for data-target and id.
+  fig <- file.path(output_dir, "figure", basename(rmd), "chunk name-1.png")
+  versions_fig <- get_versions_fig(fig, r, github)
+  versions_fig_lines <- stringr::str_split(versions_fig, "\\n")[[1]]
+  data_target <- stringr::str_subset(versions_fig_lines,
+                                     'data-target=\"#fig-no-spaces-chunk-name-1\"')
+  expect_true(length(data_target) == 1)
+  div_id <- stringr::str_subset(versions_fig_lines,
+                                'id=\"fig-no-spaces-chunk-name-1\"')
+  expect_true(length(div_id) == 1)
+  fig_display_name <- stringr::str_subset(versions_fig_lines,
+                                          ' &quot;chunk name-1.png&quot;')
+  expect_true(length(fig_display_name) == 1)
+})
 
 # Test check_vc ----------------------------------------------------------------
 

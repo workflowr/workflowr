@@ -261,6 +261,17 @@ get_versions_fig <- function(fig, r, github) {
   blobs_file <- blobs_file[order(blobs_file$Date, decreasing = TRUE), ]
   blobs_file$Date <- as.Date(blobs_file$Date)
 
+  fig <- basename(fig)
+  id <- paste0("fig-", tools::file_path_sans_ext(basename(fig)))
+  # An HTML ID cannot contain spaces. If filename has spaces, quote the figure
+  # name and convert spaces in ID to dashes. Also insert text in case there is a
+  # similar chunk name that already uses dashes instead of spaces.
+  if (stringr::str_detect(fig, "\\s")) {
+    fig <- paste0('"', fig, '"')
+    id <- stringr::str_replace_all(id, "\\s", "-")
+    id <- stringr::str_replace(id, "fig-", "fig-no-spaces-")
+  }
+
   template <-
     "
   <p>
@@ -293,8 +304,7 @@ get_versions_fig <- function(fig, r, github) {
   </div>
   </div>
   "
-  data <- list(fig = basename(fig),
-               id = paste0("fig-", tools::file_path_sans_ext(basename(fig))),
+  data <- list(fig = fig, id = id,
                blobs_file = unname(whisker::rowSplit(blobs_file)))
   text <- whisker::whisker.render(template, data)
 

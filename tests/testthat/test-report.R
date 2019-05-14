@@ -613,3 +613,95 @@ test_that("shorten_sha is vectorized", {
   expected <- c("1234567", "abcdefg")
   expect_identical(observed, expected)
 })
+
+# Test detect_abs_path ---------------------------------------------------------
+
+test_that("detect_abs_path detects absolute file paths in quotations", {
+  # double quotes
+  expect_identical(
+    detect_abs_path(c("x <- readLines(\"/home/jdb-work/repos/workflowr/R/git.R\")",
+                      "files <- c(\"/a/b/c\", \"/d/e/f\", \"/h/i/j\")")),
+    c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
+
+  # single quotes
+  expect_identical(
+    detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
+                      "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
+    c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
+
+})
+
+test_that("detect_abs_path detects absolute file paths in markdown links", {
+  expect_identical(
+    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/index.html)"),
+    "/home/jdb-work/repos/workflowr/docs/index.html")
+
+  expect_identical(
+    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/authors.html) and [another](/home/jdb-work/repos/workflowr/docs/index.html)"),
+    c("/home/jdb-work/repos/workflowr/docs/authors.html",
+      "/home/jdb-work/repos/workflowr/docs/index.html"))
+})
+
+test_that("detect_abs_path ignores relative paths", {
+  expect_identical(
+    detect_abs_path(c("x <- readLines(\"R/git.R\")",
+                      "files <- c(\"a/b/c\", \"./d/e/f\", \"../h/i/j\")")),
+    character(0))
+
+  expect_identical(
+    detect_abs_path("[this file](docs/authors.html) and [another](docs/index.html)"),
+    character(0))
+})
+
+test_that("detect_abs_path detects absolute file paths with tilde in quotations", {
+  # double quotes
+  expect_identical(
+    detect_abs_path(c("x <- readLines(\"/home/jdb-work/repos/workflowr/R/git.R\")",
+                      "files <- c(\"/a/b/c\", \"/d/e/f\", \"/h/i/j\")")),
+    c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
+
+  # single quotes
+  expect_identical(
+    detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
+                      "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
+    c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
+
+})
+
+test_that("detect_abs_path detects absolute file paths with tilde in markdown links", {
+  expect_identical(
+    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/index.html)"),
+    "/home/jdb-work/repos/workflowr/docs/index.html")
+
+  expect_identical(
+    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/authors.html) and [another](/home/jdb-work/repos/workflowr/docs/index.html)"),
+    c("/home/jdb-work/repos/workflowr/docs/authors.html",
+      "/home/jdb-work/repos/workflowr/docs/index.html"))
+})
+
+
+test_that("detect_abs_path detects Windows absolute file paths in quotations", {
+  # double quotes
+  expect_identical(
+    detect_abs_path(c("x <- readLines(\"C:/home/jdb-work/repos/workflowr/R/git.R\")",
+                      "files <- c(\"C:/a/b/c\", \"c:\\d\\e\\f\", \"D:/h/i/j\")")),
+    c("C:/home/jdb-work/repos/workflowr/R/git.R", "C:/a/b/c", "c:\\d\\e\\f", "D:/h/i/j"))
+
+  # single quotes
+  expect_identical(
+    detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
+                      "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
+    c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
+
+})
+
+test_that("detect_abs_path detects Windows absolute file paths in markdown links", {
+  expect_identical(
+    detect_abs_path("[this file](C:/home/jdb-work/repos/workflowr/docs/index.html)"),
+    "C:/home/jdb-work/repos/workflowr/docs/index.html")
+
+  expect_identical(
+    detect_abs_path("[this file](C:/home/jdb-work/repos/workflowr/docs/authors.html) and [another](d:/home/jdb-work/repos/workflowr/docs/index.html)"),
+    c("C:/home/jdb-work/repos/workflowr/docs/authors.html",
+      "d:/home/jdb-work/repos/workflowr/docs/index.html"))
+})

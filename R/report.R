@@ -700,3 +700,27 @@ create_url_html <- function(url_repo, html, sha) {
 shorten_sha <- function(sha) {
   stringr::str_sub(sha, 1, 7)
 }
+
+# Detect absolute file paths in a character vector
+#
+# Detects Unix and Windows file paths. Paths must be surrounded by quotations
+# (for use in R code) or by parentheses (for use as markdown links)
+#
+# Returns a character vector of all potential absolute paths
+detect_abs_path <- function(string) {
+  path_regex <- c("[\",\'](/.+?)[\",\']", # Unix path surrounded by ' or "
+                  "\\[.+?\\]\\((/.+?)\\)", # Unix path surrounded by parens (for links),
+                  "[\",\']([a-z,A-Z]:.+?)[\",\']", # Windows path surrounded by ' or "
+                  "\\[.+?\\]\\(([a-z,A-Z]:.+?)\\)", # Windows path surrounded by parens (for links),
+                  "[\",\'](~.+?)[\",\']", # Path with tilde surrounded by ' or "
+                  "\\[.+?\\]\\((~.+?)\\)" # Path with tilde surrounded by parens (for links).
+                  # Note: These won't work as URLs, but user may not know this.
+  )
+  paths <- list()
+  for (re in path_regex) {
+    paths <- c(paths, stringr::str_match_all(string, re))
+  }
+  paths <- Reduce(rbind, paths)[, 2]
+
+  return(paths)
+}

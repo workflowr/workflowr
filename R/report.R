@@ -711,17 +711,13 @@ shorten_sha <- function(sha) {
 # Detect absolute file paths in a character vector
 #
 # Detects Unix and Windows file paths. Paths must be surrounded by quotations
-# (for use in R code) or by parentheses (for use as markdown links)
+# as they would appear in R code.
 #
 # Returns a character vector of all potential absolute paths
 detect_abs_path <- function(string) {
   path_regex <- c("[\",\'](/.+?)[\",\']", # Unix path surrounded by ' or "
-                  "\\[.+?\\]\\((/.+?)\\)", # Unix path surrounded by parens (for links),
                   "[\",\']([a-z,A-Z]:.+?)[\",\']", # Windows path surrounded by ' or "
-                  "\\[.+?\\]\\(([a-z,A-Z]:.+?)\\)", # Windows path surrounded by parens (for links),
-                  "[\",\'](~.+?)[\",\']", # Path with tilde surrounded by ' or "
-                  "\\[.+?\\]\\((~.+?)\\)" # Path with tilde surrounded by parens (for links).
-                  # Note: These won't work as URLs, but user may not know this.
+                  "[\",\'](~.+?)[\",\']" # Path with tilde surrounded by ' or "
   )
   paths <- list()
   for (re in path_regex) {

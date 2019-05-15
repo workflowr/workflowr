@@ -631,25 +631,10 @@ test_that("detect_abs_path detects absolute file paths in quotations", {
 
 })
 
-test_that("detect_abs_path detects absolute file paths in markdown links", {
-  expect_identical(
-    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/index.html)"),
-    "/home/jdb-work/repos/workflowr/docs/index.html")
-
-  expect_identical(
-    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/authors.html) and [another](/home/jdb-work/repos/workflowr/docs/index.html)"),
-    c("/home/jdb-work/repos/workflowr/docs/authors.html",
-      "/home/jdb-work/repos/workflowr/docs/index.html"))
-})
-
 test_that("detect_abs_path ignores relative paths", {
   expect_identical(
     detect_abs_path(c("x <- readLines(\"R/git.R\")",
                       "files <- c(\"a/b/c\", \"./d/e/f\", \"../h/i/j\")")),
-    character(0))
-
-  expect_identical(
-    detect_abs_path("[this file](docs/authors.html) and [another](docs/index.html)"),
     character(0))
 })
 
@@ -668,18 +653,6 @@ test_that("detect_abs_path detects absolute file paths with tilde in quotations"
 
 })
 
-test_that("detect_abs_path detects absolute file paths with tilde in markdown links", {
-  expect_identical(
-    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/index.html)"),
-    "/home/jdb-work/repos/workflowr/docs/index.html")
-
-  expect_identical(
-    detect_abs_path("[this file](/home/jdb-work/repos/workflowr/docs/authors.html) and [another](/home/jdb-work/repos/workflowr/docs/index.html)"),
-    c("/home/jdb-work/repos/workflowr/docs/authors.html",
-      "/home/jdb-work/repos/workflowr/docs/index.html"))
-})
-
-
 test_that("detect_abs_path detects Windows absolute file paths in quotations", {
   # double quotes
   expect_identical(
@@ -693,17 +666,6 @@ test_that("detect_abs_path detects Windows absolute file paths in quotations", {
                       "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
     c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
 
-})
-
-test_that("detect_abs_path detects Windows absolute file paths in markdown links", {
-  expect_identical(
-    detect_abs_path("[this file](C:/home/jdb-work/repos/workflowr/docs/index.html)"),
-    "C:/home/jdb-work/repos/workflowr/docs/index.html")
-
-  expect_identical(
-    detect_abs_path("[this file](C:/home/jdb-work/repos/workflowr/docs/authors.html) and [another](d:/home/jdb-work/repos/workflowr/docs/index.html)"),
-    c("C:/home/jdb-work/repos/workflowr/docs/authors.html",
-      "d:/home/jdb-work/repos/workflowr/docs/index.html"))
 })
 
 # Test get_proj_dir ------------------------------------------------------------
@@ -720,6 +682,11 @@ test_that("get_proj_dir find project directory", {
   subdir3 <- file.path(subdir2, "subdir3")
   subdir4 <- file.path(subdir3, "subdir4")
   fs::dir_create(subdir4)
+  # Resolve macOS symlinks now that directories exist
+  subdir1 <- workflowr:::absolute(subdir1)
+  subdir2 <- workflowr:::absolute(subdir2)
+  subdir3 <- workflowr:::absolute(subdir3)
+  subdir4 <- workflowr:::absolute(subdir4)
 
   # If no proj files, return same directory
   expected <- subdir4
@@ -815,13 +782,13 @@ test_that("check_paths suggests paths relative to knit_root_dir", {
   observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
   expect_false(observed$pass)
   expect_true(stringr::str_detect(observed$details, " data/test.txt "))
-  expect_true(stringr::str_detect(observed$details, " docs/index.html "))
+  expect_false(stringr::str_detect(observed$details, " docs/index.html "))
   expect_true(stringr::str_detect(observed$details, " analysis/code.R "))
   # Change knit_root_dir to analysis
   observed <- workflowr:::check_paths(input = rmd,
                                       knit_root_dir = fs::path_dir(rmd))
   expect_false(observed$pass)
   expect_true(stringr::str_detect(observed$details, " \\.\\./data/test.txt "))
-  expect_true(stringr::str_detect(observed$details, " \\.\\./docs/index.html "))
+  expect_false(stringr::str_detect(observed$details, " \\.\\./docs/index.html "))
   expect_true(stringr::str_detect(observed$details, " code.R "))
 })

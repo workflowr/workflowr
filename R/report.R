@@ -33,6 +33,9 @@ create_report <- function(input, output_dir, has_code, opts) {
 
     # Check caching
     checks$cache <- check_cache(input)
+
+    # Check for absolute paths
+    checks$paths <- check_paths(input, opts$knit_root_dir)
   }
 
   # Check version control
@@ -723,4 +726,45 @@ detect_abs_path <- function(string) {
   paths <- Reduce(rbind, paths)[, 2]
 
   return(paths)
+}
+
+# Check for absolute paths that should be relative paths
+#
+# Looks for absolute paths between quotation marks (to detect strings in code)
+# and between parentheses (to detect links in Markdown syntax). The paths have
+# to exist and be within the same project.
+check_paths <- function(input, knit_root_dir) {
+  lines <- readLines(input)
+  paths <- detect_abs_path(lines)
+
+  # Only keep existing file paths
+  paths <- paths[fs::file_exists(paths)]
+
+  # Because fs doesn't remove the ~
+  paths <- absolute(paths)
+  if (length(paths) > 0) {
+    internal <- vapply(paths, fs::path_has_parent, logical(1),
+                       parent = knit_root_dir)
+    paths <- paths[internal]
+  }
+
+  if (length(paths) == 0) {
+    pass <- TRUE
+    summary <- "<strong>File paths:</strong> relative"
+    details <-
+      "
+Great job! Using relative paths to the files within your workflowr project
+makes it easier to run your code on other machines.
+"
+  } else {
+    pass <- FALSE
+    summary <- "<strong>File paths:</strong> absolute"
+    details <-
+      "
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to
+run your code on a different machine.
+"
+  }
+
+  return(list(pass = pass, summary = summary, details = details))
 }

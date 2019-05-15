@@ -705,3 +705,35 @@ test_that("detect_abs_path detects Windows absolute file paths in markdown links
     c("C:/home/jdb-work/repos/workflowr/docs/authors.html",
       "d:/home/jdb-work/repos/workflowr/docs/index.html"))
 })
+
+# Test check_paths -------------------------------------------------------------
+
+test_that("check_paths detects absolute paths", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  f <- file.path(path, "data/test.txt")
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- glue::glue("
+                      ---
+                      output: workflowr::wflow_html
+                      ---
+
+                      ```{{r chunkname}}
+                      x <- read.table(\"{f}\")
+                      ```")
+
+  writeLines(lines, rmd)
+
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_true(observed$pass)
+
+  fs::file_create(f)
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_false(observed$pass)
+})

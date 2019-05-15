@@ -469,16 +469,15 @@ For reproduciblity it's best to always run the code in an empty environment.
     summary <- "<strong>Environment:</strong> objects present"
     details <-
 "
-The global environment had objects present when the code in the R Markdown
+<p>The global environment had objects present when the code in the R Markdown
 file was run. These objects can affect the analysis in your R Markdown file in
 unknown ways. For reproduciblity it's best to always run the code in an empty
 environment. Use <code>wflow_publish</code> or <code>wflow_build</code> to
-ensure that the code is always run in an empty environment.
+ensure that the code is always run in an empty environment.</p>
 "
     objects_table <- create_objects_table(envir)
     details <- paste(collapse = "\n",
                      details,
-                     "<br><br>",
                      "<p>The following objects were defined in the global
                      environment when these results were created:</p>",
                      objects_table)
@@ -495,10 +494,15 @@ create_objects_table <- function(env) {
                   function(x) format(utils::object.size(env[[x]]), units = "auto"),
                   character(1))
   df <- data.frame(Name = objects, Class = classes, Size = sizes)
+  table <- convert_df_to_html_table(df)
+  return(table)
+}
+
+convert_df_to_html_table <- function(df) {
   table <- knitr::kable(df, format = "html", row.names = FALSE)
   # Add table formatting
   table <- stringr::str_replace(table, "<table>",
-            "<table class=\"table table-condensed table-hover\">")
+                                "<table class=\"table table-condensed table-hover\">")
   return(as.character(table))
 }
 
@@ -742,6 +746,8 @@ check_paths <- function(input, knit_root_dir) {
   paths <- detect_abs_path(lines)
   # Because fs doesn't remove the ~
   paths <- absolute(paths)
+  # Remove any duplicates
+  paths <- unique(paths)
 
   # Only keep existing file paths
   paths <- paths[fs::file_exists(paths)]
@@ -763,11 +769,18 @@ makes it easier to run your code on other machines.
   } else {
     pass <- FALSE
     summary <- "<strong>File paths:</strong> absolute"
-    details <-
-      "
-Using absolute paths to the files within your workflowr project makes it difficult for you and others to
-run your code on a different machine.
-"
+    # List the absolute paths and the suggested relative paths (need to be
+    # relative to knit_root_dir)
+    paths_df <- data.frame(absolute = paths,
+                           relative = relative(paths, start = knit_root_dir))
+    paths_df_html <- convert_df_to_html_table(paths_df)
+    details <- glue::glue("
+<p>Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine. Change
+the absolute path(s) below to the suggested relative path(s) to make your code
+more reproducible.</p>
+{paths_df_html}
+")
   }
 
   return(list(pass = pass, summary = summary, details = details))

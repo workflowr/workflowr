@@ -706,38 +706,7 @@ test_that("detect_abs_path detects Windows absolute file paths in markdown links
       "d:/home/jdb-work/repos/workflowr/docs/index.html"))
 })
 
-# Test check_paths -------------------------------------------------------------
-
-test_that("check_paths detects absolute paths", {
-
-  # Setup functions from setup.R
-  path <- test_setup()
-  on.exit(test_teardown(path))
-
-  f <- file.path(path, "data/test.txt")
-
-  rmd <- file.path(path, "analysis", "file.Rmd")
-  lines <- glue::glue("
-                      ---
-                      output: workflowr::wflow_html
-                      ---
-
-                      ```{{r chunkname}}
-                      x <- read.table(\"{f}\")
-                      ```")
-
-  writeLines(lines, rmd)
-
-  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
-  expect_true(observed$pass)
-
-  fs::file_create(f)
-  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
-  expect_false(observed$pass)
-})
-
 # Test get_proj_dir ------------------------------------------------------------
-
 
 test_that("get_proj_dir find project directory", {
 
@@ -779,4 +748,80 @@ test_that("get_proj_dir find project directory", {
   expected <- subdir3
   observed <- workflowr:::get_proj_dir(subdir4)
   expect_identical(observed, expected)
+})
+
+# Test check_paths -------------------------------------------------------------
+
+test_that("check_paths detects absolute paths", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  f <- file.path(path, "data/test.txt")
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- glue::glue("
+                      ---
+                      output: workflowr::wflow_html
+                      ---
+
+                      ```{{r chunkname}}
+                      x <- read.table(\"{f}\")
+                      ```")
+  writeLines(lines, rmd)
+
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_true(observed$pass)
+
+  fs::file_create(f)
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_false(observed$pass)
+  expect_true(stringr::str_detect(observed$details, "\\bdata/test.txt\\b"))
+})
+
+
+test_that("check_paths suggests paths relative to knit_root_dir", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  f_data <- file.path(path, "data/test.txt")
+  f_html <- file.path(path, "docs/index.html")
+  f_code <- file.path(path, "analysis/code.R")
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- glue::glue("
+                      ---
+                      output: workflowr::wflow_html
+                      ---
+
+                      [Home]({f_html})
+
+                      ```{{r chunkname}}
+                      source(\"{f_code}\")
+                      x <- read.table(\"{f_data}\")
+                      ```
+                      ")
+  writeLines(lines, rmd)
+
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_true(observed$pass)
+
+  fs::file_create(f_data)
+  fs::file_create(f_html)
+  fs::file_create(f_code)
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_false(observed$pass)
+  expect_true(stringr::str_detect(observed$details, " data/test.txt "))
+  expect_true(stringr::str_detect(observed$details, " docs/index.html "))
+  expect_true(stringr::str_detect(observed$details, " analysis/code.R "))
+  # Change knit_root_dir to analysis
+  observed <- workflowr:::check_paths(input = rmd,
+                                      knit_root_dir = fs::path_dir(rmd))
+  expect_false(observed$pass)
+  expect_true(stringr::str_detect(observed$details, " \\.\\./data/test.txt "))
+  expect_true(stringr::str_detect(observed$details, " \\.\\./docs/index.html "))
+  expect_true(stringr::str_detect(observed$details, " code.R "))
 })

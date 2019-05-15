@@ -710,8 +710,6 @@ test_that("detect_abs_path detects Windows absolute file paths in markdown links
 
 test_that("check_paths detects absolute paths", {
 
-  skip_on_cran()
-
   # Setup functions from setup.R
   path <- test_setup()
   on.exit(test_teardown(path))
@@ -736,4 +734,49 @@ test_that("check_paths detects absolute paths", {
   fs::file_create(f)
   observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
   expect_false(observed$pass)
+})
+
+# Test get_proj_dir ------------------------------------------------------------
+
+
+test_that("get_proj_dir find project directory", {
+
+  path <- fs::file_temp()
+  fs::dir_create(path)
+  on.exit(test_teardown(path))
+
+  # Create nested subdirectories, and progressively add root files
+  subdir1 <- file.path(path, "subdir1")
+  subdir2 <- file.path(subdir1, "subdir2")
+  subdir3 <- file.path(subdir2, "subdir3")
+  subdir4 <- file.path(subdir3, "subdir4")
+  fs::dir_create(subdir4)
+
+  # If no proj files, return same directory
+  expected <- subdir4
+  observed <- workflowr:::get_proj_dir(subdir4)
+  expect_identical(observed, expected)
+
+  # If _workflowr.yml in subdir1, return subdir1
+  wflow_yml_file <- file.path(subdir1, "_workflowr.yml")
+  fs::file_create(wflow_yml_file)
+  expected <- subdir1
+  observed <- workflowr:::get_proj_dir(subdir4)
+  expect_identical(observed, expected)
+
+  # If .git/ in subdir2, return subdir2
+  git_dir <- file.path(subdir2, ".git/")
+  fs::dir_create(git_dir)
+  expected <- subdir2
+  observed <- workflowr:::get_proj_dir(subdir4)
+  expect_identical(observed, expected)
+
+  # If *Rproj in subdir3, return subdir3
+  rproj_file <- file.path(subdir3, "subdir3.Rproj")
+  fs::file_create(rproj_file)
+  # Criteria includes "contents matching `^Version: ` in the first line"
+  writeLines("Version: ", con = rproj_file)
+  expected <- subdir3
+  observed <- workflowr:::get_proj_dir(subdir4)
+  expect_identical(observed, expected)
 })

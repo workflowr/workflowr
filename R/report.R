@@ -734,17 +734,21 @@ detect_abs_path <- function(string) {
 # and between parentheses (to detect links in Markdown syntax). The paths have
 # to exist and be within the same project.
 check_paths <- function(input, knit_root_dir) {
+
+  # Can't assume a workflowr just because they are using wflow_html().
+  proj_dir <- get_proj_dir(knit_root_dir)
+
   lines <- readLines(input)
   paths <- detect_abs_path(lines)
+  # Because fs doesn't remove the ~
+  paths <- absolute(paths)
 
   # Only keep existing file paths
   paths <- paths[fs::file_exists(paths)]
 
-  # Because fs doesn't remove the ~
-  paths <- absolute(paths)
   if (length(paths) > 0) {
     internal <- vapply(paths, fs::path_has_parent, logical(1),
-                       parent = knit_root_dir)
+                       parent = proj_dir)
     paths <- paths[internal]
   }
 
@@ -767,4 +771,34 @@ run your code on a different machine.
   }
 
   return(list(pass = pass, summary = summary, details = details))
+}
+
+# If uncertain if this is a workflowr project, search for these files in the
+# following order to attempt to find root of current project.
+#
+# *.Rproj
+# .git/
+# _workflowr.yml
+#
+# If none of these are present, return the input directory.
+get_proj_dir <- function(directory) {
+
+  # RStudio project file, .Rproj
+  proj_dir <- try(rprojroot::find_rstudio_root_file(path = directory),
+                silent = TRUE)
+  if (class(proj_dir) != "try-error") return(proj_dir)
+
+  # .git/
+  proj_dir <- try(rprojroot::find_root_file(criterion = rprojroot::is_git_root,
+                                            path = directory),
+                  silent = TRUE)
+  if (class(proj_dir) != "try-error") return(proj_dir)
+
+  # _workflowr.yml file
+  proj_dir <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),
+                                       path = directory),
+                  silent = TRUE)
+  if (class(proj_dir) != "try-error") return(proj_dir)
+
+  return(directory)
 }

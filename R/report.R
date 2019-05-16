@@ -784,7 +784,16 @@ makes it easier to run your code on other machines.
     # List the absolute paths and the suggested relative paths (need to be
     # relative to knit_root_dir)
     paths_df <- data.frame(absolute = names(paths),
-                           relative = relative(paths, start = knit_root_dir))
+                           relative = relative(paths, start = knit_root_dir),
+                           stringsAsFactors = FALSE)
+    # If the original absolute path uses backslashes on Windows, use backslashes
+    # for the suggested relative path. Also display double backslashes as it
+    # would appear in R code.
+    paths_w_backslash <- stringr::str_detect(paths_df$absolute, "\\\\")
+    paths_df$relative[paths_w_backslash] <- stringr::str_replace_all(paths_df$relative[paths_w_backslash],
+                                                                     "/", "\\\\\\\\\\\\\\\\")
+    paths_df$absolute[paths_w_backslash] <- stringr::str_replace_all(paths_df$absolute[paths_w_backslash],
+                                                                     "\\\\\\\\", "\\\\\\\\\\\\\\\\")
     paths_df_html <- convert_df_to_html_table(paths_df)
     details <- glue::glue("
 <p>Using absolute paths to the files within your workflowr project makes it

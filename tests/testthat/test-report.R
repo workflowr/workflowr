@@ -854,3 +854,47 @@ test_that("check_paths displays original formatting of paths", {
   expect_true(stringr::str_detect(observed$details, f_data))
   expect_true(stringr::str_detect(observed$details, " data/test.txt "))
 })
+
+test_that("check_paths displays original formatting of Windows paths", {
+
+  if (.Platform$OS.type != "windows") skip("Only relevant on Windows")
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  f_data <- file.path(path, "data/test.txt")
+  # Make the drive lowercase
+  f_data <- paste0(tolower(stringr::str_sub(f_data, 1, 1)),
+                   stringr::str_sub(f_data, 2))
+  f_code <- file.path(path, "analysis/code.R")
+  # Use backslashes (getting it to actually display \\ in the Rmd is a pain)
+  f_code <- stringr::str_replace_all(f_code, "/", "\\\\\\\\")
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- glue::glue("
+                      ---
+                      output: workflowr::wflow_html
+                      ---
+
+                      ```{{r chunkname}}
+                      source(\"{f_code}\")
+                      x <- read.table(\"{f_data}\")
+                      ```
+                      ")
+  writeLines(lines, rmd)
+
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_true(observed$pass)
+
+  fs::file_create(f_data)
+  fs::file_create(f_code)
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_false(observed$pass)
+  expect_true(stringr::str_detect(observed$details, f_data))
+  expect_true(stringr::str_detect(observed$details, " data/test.txt "))
+  # Because using \ in a regex is a pain, always have to double it
+  f_code_regex <- stringr::str_replace_all(f_code, "\\\\", "\\\\\\\\\\\\\\\\")
+  expect_true(stringr::str_detect(observed$details, f_code_regex))
+  expect_true(stringr::str_detect(observed$details, " analysis\\\\\\\\\\\\\\\\code.R "))
+})

@@ -8,6 +8,7 @@
 # https://cran.r-project.org/web/packages/googlesheets/vignettes/managing-auth-tokens.html
 # https://developer.github.com/apps/building-oauth-apps/understanding-scopes-for-oauth-apps/
 # https://developer.github.com/v3/#parameters
+# https://stackoverflow.com/questions/55000237/json-array-in-body-parameter-of-httrpost
 
 username <- "jdblischak"
 repository <- "test-httr"
@@ -31,7 +32,9 @@ httr::stop_for_status(req)
 httr::content(req)
 
 # Create the repository
-gh::gh("POST /user/repos", name = repository)
+# replicate gh::gh("POST /user/repos", name = repository) with httr
+httr::POST("https://api.github.com/user/repos", gtoken,
+           body = list(name = repository), encode = "json", httr::verbose())
 
 # Confirm the repository exists
 req <- httr::GET(glue::glue("https://api.github.com/repos/{username}/{repository}"), gtoken)

@@ -887,7 +887,7 @@ test_that("check_paths displays original formatting of Windows paths", {
                       output: workflowr::wflow_html
                       ---
 
-                      ```{{r chunkname}}
+                      ```{{r chunkname, eval=FALSE}}
                       source(\"{f_code}\")
                       x <- read.table(\"{f_data}\")
                       ```
@@ -902,4 +902,12 @@ test_that("check_paths displays original formatting of Windows paths", {
   f_code_regex <- stringr::str_replace_all(f_code, "\\\\", "\\\\\\\\\\\\\\\\")
   expect_true(stringr::str_detect(observed$details, f_code_regex))
   expect_true(stringr::str_detect(observed$details, " analysis\\\\\\\\\\\\\\\\code.R "))
+
+  skip_on_cran()
+
+  # Make sure wflow_html() can render this (not actually execute the code chunk
+  # though, since those files don't exist). I've had some sporadic pandoc errors
+  # that are difficult to reproduce.
+  expect_silent(html <- rmarkdown::render(rmd, quiet = TRUE))
+  expect_true(fs::file_exists(html))
 })

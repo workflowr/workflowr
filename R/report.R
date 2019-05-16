@@ -746,7 +746,7 @@ detect_abs_path <- function(string) {
 #
 # Looks for absolute paths between quotation marks (to detect strings in code)
 # and between parentheses (to detect links in Markdown syntax). The paths have
-# to exist and be within the same project.
+# to be within the same project.
 check_paths <- function(input, knit_root_dir) {
 
   # Can't assume a workflowr just because they are using wflow_html().
@@ -760,9 +760,6 @@ check_paths <- function(input, knit_root_dir) {
   names(paths) <- paths_original
   # Remove any duplicates
   paths <- paths[!duplicated(paths)]
-
-  # Only keep existing file paths
-  paths <- paths[fs::file_exists(paths)]
 
   if (length(paths) > 0) {
     internal <- vapply(paths, fs::path_has_parent, logical(1),

@@ -770,12 +770,32 @@ test_that("check_paths detects absolute paths", {
   writeLines(lines, rmd)
 
   observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
-  expect_true(observed$pass)
-
-  fs::file_create(f)
-  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
   expect_false(observed$pass)
   expect_true(stringr::str_detect(observed$details, "\\bdata/test.txt\\b"))
+})
+
+test_that("check_paths ignores relative paths", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  f <- file.path(path, "data/test.txt")
+  f <- workflowr:::relative(f, start = path)
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- glue::glue("
+                      ---
+                      output: workflowr::wflow_html
+                      ---
+
+                      ```{{r chunkname}}
+                      x <- read.table(\"{f}\")
+                      ```")
+  writeLines(lines, rmd)
+
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_true(observed$pass)
 })
 
 test_that("check_paths suggests paths relative to knit_root_dir", {
@@ -803,12 +823,6 @@ test_that("check_paths suggests paths relative to knit_root_dir", {
                       ")
   writeLines(lines, rmd)
 
-  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
-  expect_true(observed$pass)
-
-  fs::file_create(f_data)
-  fs::file_create(f_html)
-  fs::file_create(f_code)
   observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
   expect_false(observed$pass)
   expect_true(stringr::str_detect(observed$details, " data/test.txt "))
@@ -846,10 +860,6 @@ test_that("check_paths displays original formatting of paths", {
   writeLines(lines, rmd)
 
   observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
-  expect_true(observed$pass)
-
-  fs::file_create(f_data)
-  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
   expect_false(observed$pass)
   expect_true(stringr::str_detect(observed$details, f_data))
   expect_true(stringr::str_detect(observed$details, " data/test.txt "))
@@ -884,11 +894,6 @@ test_that("check_paths displays original formatting of Windows paths", {
                       ")
   writeLines(lines, rmd)
 
-  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
-  expect_true(observed$pass)
-
-  fs::file_create(f_data)
-  fs::file_create(f_code)
   observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
   expect_false(observed$pass)
   expect_true(stringr::str_detect(observed$details, f_data))

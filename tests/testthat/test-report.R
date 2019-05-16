@@ -778,7 +778,6 @@ test_that("check_paths detects absolute paths", {
   expect_true(stringr::str_detect(observed$details, "\\bdata/test.txt\\b"))
 })
 
-
 test_that("check_paths suggests paths relative to knit_root_dir", {
 
   # Setup functions from setup.R
@@ -822,4 +821,36 @@ test_that("check_paths suggests paths relative to knit_root_dir", {
   expect_true(stringr::str_detect(observed$details, " \\.\\./data/test.txt "))
   expect_false(stringr::str_detect(observed$details, " \\.\\./docs/index.html "))
   expect_true(stringr::str_detect(observed$details, " code.R "))
+})
+
+test_that("check_paths displays original formatting of paths", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  f_data <- file.path(path, "data/test.txt")
+  # Add extra trailing slashes
+  f_data <- paste0(f_data, "////")
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- glue::glue("
+                      ---
+                      output: workflowr::wflow_html
+                      ---
+
+                      ```{{r chunkname}}
+                      x <- read.table(\"{f_data}\")
+                      ```
+                      ")
+  writeLines(lines, rmd)
+
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_true(observed$pass)
+
+  fs::file_create(f_data)
+  observed <- workflowr:::check_paths(input = rmd, knit_root_dir = path)
+  expect_false(observed$pass)
+  expect_true(stringr::str_detect(observed$details, f_data))
+  expect_true(stringr::str_detect(observed$details, " data/test.txt "))
 })

@@ -755,9 +755,11 @@ check_paths <- function(input, knit_root_dir) {
   lines <- readLines(input)
   paths <- detect_abs_path(lines)
   # Because fs doesn't remove the ~
+  paths_original <- paths
   paths <- absolute(paths)
+  names(paths) <- paths_original
   # Remove any duplicates
-  paths <- unique(paths)
+  paths <- paths[!duplicated(paths)]
 
   # Only keep existing file paths
   paths <- paths[fs::file_exists(paths)]
@@ -781,7 +783,7 @@ makes it easier to run your code on other machines.
     summary <- "<strong>File paths:</strong> absolute"
     # List the absolute paths and the suggested relative paths (need to be
     # relative to knit_root_dir)
-    paths_df <- data.frame(absolute = paths,
+    paths_df <- data.frame(absolute = names(paths),
                            relative = relative(paths, start = knit_root_dir))
     paths_df_html <- convert_df_to_html_table(paths_df)
     details <- glue::glue("

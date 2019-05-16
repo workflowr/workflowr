@@ -614,59 +614,90 @@ test_that("shorten_sha is vectorized", {
   expect_identical(observed, expected)
 })
 
-# Test detect_abs_path ---------------------------------------------------------
+# Test workflowr:::detect_abs_path ---------------------------------------------------------
 
-test_that("detect_abs_path detects absolute file paths in quotations", {
+test_that("workflowr:::detect_abs_path detects absolute file paths in quotations", {
   # double quotes
   expect_identical(
-    detect_abs_path(c("x <- readLines(\"/home/jdb-work/repos/workflowr/R/git.R\")",
+    workflowr:::detect_abs_path(c("x <- readLines(\"/home/jdb-work/repos/workflowr/R/git.R\")",
                       "files <- c(\"/a/b/c\", \"/d/e/f\", \"/h/i/j\")")),
     c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
 
   # single quotes
   expect_identical(
-    detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
+    workflowr:::detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
                       "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
     c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
 
 })
 
-test_that("detect_abs_path ignores relative paths", {
+test_that("workflowr:::detect_abs_path ignores relative paths", {
   expect_identical(
-    detect_abs_path(c("x <- readLines(\"R/git.R\")",
+    workflowr:::detect_abs_path(c("x <- readLines(\"R/git.R\")",
                       "files <- c(\"a/b/c\", \"./d/e/f\", \"../h/i/j\")")),
     character(0))
 })
 
-test_that("detect_abs_path detects absolute file paths with tilde in quotations", {
+test_that("workflowr:::detect_abs_path detects absolute file paths with tilde in quotations", {
   # double quotes
   expect_identical(
-    detect_abs_path(c("x <- readLines(\"/home/jdb-work/repos/workflowr/R/git.R\")",
+    workflowr:::detect_abs_path(c("x <- readLines(\"/home/jdb-work/repos/workflowr/R/git.R\")",
                       "files <- c(\"/a/b/c\", \"/d/e/f\", \"/h/i/j\")")),
     c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
 
   # single quotes
   expect_identical(
-    detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
+    workflowr:::detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
                       "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
     c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
 
 })
 
-test_that("detect_abs_path detects Windows absolute file paths in quotations", {
+test_that("workflowr:::detect_abs_path detects Windows absolute file paths in quotations", {
   # double quotes
   expect_identical(
-    detect_abs_path(c("x <- readLines(\"C:/home/jdb-work/repos/workflowr/R/git.R\")",
+    workflowr:::detect_abs_path(c("x <- readLines(\"C:/home/jdb-work/repos/workflowr/R/git.R\")",
                       "files <- c(\"C:/a/b/c\", \"c:\\d\\e\\f\", \"D:/h/i/j\")")),
     c("C:/home/jdb-work/repos/workflowr/R/git.R", "C:/a/b/c", "c:\\d\\e\\f", "D:/h/i/j"))
 
   # single quotes
   expect_identical(
-    detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
+    workflowr:::detect_abs_path(c("x <- readLines('/home/jdb-work/repos/workflowr/R/git.R\')",
                       "files <- c('/a/b/c', '/d/e/f', '/h/i/j')")),
     c("/home/jdb-work/repos/workflowr/R/git.R", "/a/b/c", "/d/e/f", "/h/i/j"))
 
 })
+
+test_that("workflowr:::detect_abs_path ignores non-paths", {
+  expect_identical(
+    workflowr:::detect_abs_path(c("the volume is about \"~1 mL\"",
+                      "Just a letter and a colon 'a:'")),
+    character(0))
+})
+
+test_that("workflowr:::detect_abs_path ignores non-paths", {
+  expect_identical(
+    workflowr:::detect_abs_path(c("the volume is about \"~1 mL\"",
+                                  "Just a letter and a colon 'a:'")),
+    character(0))
+})
+
+test_that("workflowr:::detect_abs_path distinguishes paths from non-paths", {
+  # Using my particular definition of paths to detect (e.g. has to be in
+  # quotation marks)
+
+  expect_setequal(
+    workflowr:::detect_abs_path(
+      c("\"/a/b/c\"", "'/a/b/c'", "\"~/a/b/c\"", "\"~\\a\\b\\c\"", "\"C:/a/b/c\"", "\"C:\\a\\b\\c\"")),
+    c("/a/b/c", "/a/b/c", "~/a/b/c", "~\\a\\b\\c", "C:/a/b/c", "C:\\a\\b\\c"))
+
+  # Non-paths to ignore
+  expect_identical(
+    workflowr:::detect_abs_path(c("/a/b/c", "\"~a\"", "\"C:a/b/c\"", "\"~\"")),
+    character(0))
+
+})
+
 
 # Test get_proj_dir ------------------------------------------------------------
 

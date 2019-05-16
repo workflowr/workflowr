@@ -714,10 +714,24 @@ shorten_sha <- function(sha) {
 # as they would appear in R code.
 #
 # Returns a character vector of all potential absolute paths
+#
+# Returns: "/a/b/c", '/a/b/c', "~/a/b/c", "~\\a\\b\\c", "C:/a/b/c", "C:\\a\\b\\c"
+# Ignores: /a/b/c, "~a", "C:a/b/c", "~"
+#
+# **Warning:** The identified paths may not be returned in the input order
+# because the order depends on the order of the regexes that are used to search
+# for paths.
+#
+# Note: Since this checks the entire document, including non-code, I made it
+# stringent. For example, it ignores "~" and "C:". These are technically valid
+# paths, but it's unlikely that workflowr will be able to provide useful advice
+# if these are actually being used as paths. Also, they could be in non-code
+# sections. A potential way to improve this check is to first extract the code
+# from the document and/or remove comments.
 detect_abs_path <- function(string) {
   path_regex <- c("[\",\'](/.+?)[\",\']", # Unix path surrounded by ' or "
-                  "[\",\']([a-z,A-Z]:.+?)[\",\']", # Windows path surrounded by ' or "
-                  "[\",\'](~.+?)[\",\']" # Path with tilde surrounded by ' or "
+                  "[\",\']([a-z,A-Z]:[/,\\\\].+?)[\",\']", # Windows path surrounded by ' or "
+                  "[\",\'](~[/,\\\\].+?)[\",\']" # Path with tilde surrounded by ' or "
   )
   paths <- list()
   for (re in path_regex) {

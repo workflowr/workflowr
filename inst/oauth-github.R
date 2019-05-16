@@ -31,6 +31,12 @@ req <- httr::GET(glue::glue("https://api.github.com/repos/{username}/{repository
 httr::stop_for_status(req)
 httr::content(req)
 
+# Checking all the user's repositories is paginated, so better to just fail
+# quickly by trying to access it directly
+req_repos <- httr::GET("https://api.github.com/user/repos", token)
+httr::stop_for_status(req_repos)
+content_repos <- httr::content(req_repos)
+
 # Create the repository
 # replicate gh::gh("POST /user/repos", name = repository) with httr
 httr::POST("https://api.github.com/user/repos", gtoken,

@@ -193,7 +193,6 @@ wflow_use_github <- function(username = NULL, repository = NULL,
     commit <- NA
   }
 
-
   # Prepare output -------------------------------------------------------------
 
   o <- list(renamed = renamed, files_git = files_git, commit = commit,
@@ -205,4 +204,56 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   message("To do: Run wflow_git_push() to send your project to GitHub")
 
   return(invisible(o))
+}
+
+# Create GitHub repository
+create_gh_repo <- function(username, repository) {
+
+  # Authenticate with GitHub
+  app <- httr::oauth_app("github",
+                         key = "274d4ff47ea4ed91d66a",
+                         secret = "20261c8f17c6876bec2ad890f1aeadf0e1646dc3")
+
+  oauth_token <- httr::oauth2.0_token(httr::oauth_endpoints("github"),
+                                      app,
+                                      scope = c("public_repo"),
+                                      cache = FALSE)
+  token <- httr::config(token =  oauth_token)
+
+  # Ensure they haven't exceeded their rate limit
+  req_rate <- httr::GET("https://api.github.com/rate_limit", token)
+  httr::stop_for_status(req_rate)
+  content_rate <- httr::content(req_rate)
+  if (content_rate$resources$core$remaining < 5) {
+    warning("You've exceeded your rate limit for the GitHub API.",
+            " Please try again later.")
+    return(NULL)
+  }
+
+  # Confirm the repository doesn't exist
+  req_exist <- httr::GET(glue::glue("https://api.github.com/repos/{username}/{repository}"),
+                         token)
+  status_exist <- httr::http_status(req_exist)
+  if (status_exist$reason != "Not Found") {
+    warning(glue::glue("Repository {repository} already exists for user {username}"))
+    return(NULL)
+  }
+
+  # Create the repository
+  req_create <- httr::POST("https://api.github.com/user/repos", token,
+                           body = list(name = repository), encode = "json")
+  httr::stop_for_status(req_create)
+
+  # Confirm the repository exists
+  req_confirm <- httr::GET(glue::glue("https://api.github.com/repos/{username}/{repository}"),
+                           token)
+  status_confirm <- httr::http_status(req_confirm)
+  if (status_confirm$category != "Success") {
+    warning(glue::glue("Failed to create repository {repository}. Reason: {status_confirm$reason}"))
+    return(NULL)
+  }
+
+  # Return the full URL to new repository
+  content_confirm <- httr::content(req_confirm)
+  return(content_confirm$html_url)
 }

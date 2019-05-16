@@ -36,6 +36,7 @@ Imports:
     getPass,
     git2r,
     glue,
+    httr,
     knitr (>= 1.18),
     methods,
     rmarkdown (>= 1.7),

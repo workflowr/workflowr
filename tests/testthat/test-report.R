@@ -318,7 +318,7 @@ test_that("check_cache fails if cached chunks present", {
   fs::file_create(rmd)
 
   rmd_cache_html <- file.path(x, "test_cache/html")
-  fs::dir_create(rmd_cache_html, recursive = TRUE)
+  fs::dir_create(rmd_cache_html)
 
   cached_chunk_1 <- file.path(rmd_cache_html, "chunk-name_29098n0b4h849.RData")
   fs::file_create(cached_chunk_1)

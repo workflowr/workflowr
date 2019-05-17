@@ -193,6 +193,20 @@ wflow_use_github <- function(username = NULL, repository = NULL,
     commit <- NA
   }
 
+  # Create GitHub repository ---------------------------------------------------
+
+  if (interactive()) {
+    cat("The repository can be automatically created for you if you authenticate with GitHub.\n")
+    ans <- readline("Authenticate with GitHub? (y/n) ")
+    if (tolower(ans) == "y") {
+      message(glue::glue("Creating repository {repository}"))
+      repo_url <- create_gh_repo(username, repository)
+      if (!is.null(getOption("browser"))) utils::browseURL(repo_url)
+    } else {
+      message("To do: Create new repository at ", domain)
+    }
+  }
+
   # Prepare output -------------------------------------------------------------
 
   o <- list(renamed = renamed, files_git = files_git, commit = commit,
@@ -200,7 +214,6 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   class(o) <- "wflow_use_github"
 
   message("\nGitHub configuration successful!\n")
-  message("To do: Create new repository at ", domain)
   message("To do: Run wflow_git_push() to send your project to GitHub")
 
   return(invisible(o))
@@ -235,8 +248,9 @@ create_gh_repo <- function(username, repository) {
                          token)
   status_exist <- httr::http_status(req_exist)
   if (status_exist$reason != "Not Found") {
-    warning(glue::glue("Repository {repository} already exists for user {username}"))
-    return(NULL)
+    warning(glue::glue("Repository {repository} already exists for user {username}"),
+            call. = FALSE, immediate. = TRUE)
+    return(glue::glue("https://github.com/{username}/{repository}"))
   }
 
   # Create the repository

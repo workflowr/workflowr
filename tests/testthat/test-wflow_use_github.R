@@ -87,26 +87,73 @@ test_that("wflow_use_github can be used post GitLab", {
                     basename(recent_commit_files)))
 })
 
-test_that("wflow_use_github throws error if username/repository not set", {
+test_that("wflow_use_github throws error if username not set", {
   path <- test_setup()
   on.exit(test_teardown(path))
   username <- "testuser"
   repository <- "testrepo"
 
   expect_error(
-    wflow_use_github(username = NULL, repository = repository, project = path),
-    "You must specify the arguments username and repository."
-  )
-
-  expect_error(
-    wflow_use_github(username = username, repository = NULL, project = path),
-    "You must specify the arguments username and repository."
-  )
-
-  expect_error(
     wflow_use_github(project = path),
-    "You must specify the arguments username and repository."
+    "Unable to guess username. Please specify this argument."
   )
+
+  expect_error(
+    wflow_use_github(username = NULL, repository = repository, project = path),
+    "Unable to guess username. Please specify this argument."
+  )
+})
+
+test_that("wflow_use_github sets correct username", {
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  # Use value for remote named "origin"
+  wflow_git_remote(remote = "origin", user = "testuser", repo = "testrepo",
+                   project = path)
+  x1 <- wflow_use_github(project = path)
+  expect_identical(x1$username, "testuser")
+  origin <- wflow_git_remote(project = path)["origin"]
+  expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
+                                    x1$username, x1$repository))
+
+  # Will override based on input argument
+  x2 <- wflow_use_github(username = "argument", project = path)
+  expect_identical(x2$username, "argument")
+  origin <- wflow_git_remote(project = path)["origin"]
+  expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
+                                    x2$username, x2$repository))
+})
+
+test_that("wflow_use_github sets correct repository", {
+  path <- test_setup()
+  on.exit(test_teardown(path))
+  username <- "testuser"
+
+  # Default is to use name or root workflowr directory
+  x1 <- wflow_use_github(username = username, project = path)
+  expect_identical(x1$repository, fs::path_file(path))
+  origin <- wflow_git_remote(project = path)["origin"]
+  expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
+                            username, x1$repository))
+
+  # Will override with value for remote named "origin"
+  wflow_git_remote(remote = "origin", user = username,
+                   repo = "not-the-same-as-project-root-dir",
+                   action = "set_url", project = path)
+  x2 <- wflow_use_github(username = username, project = path)
+  expect_identical(x2$repository, "not-the-same-as-project-root-dir")
+  origin <- wflow_git_remote(project = path)["origin"]
+  expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
+                                    username, x2$repository))
+
+  # Will override based on input argument
+  x3 <- wflow_use_github(username = username, repository = "testrepo",
+                         project = path)
+  expect_identical(x3$repository, "testrepo")
+  origin <- wflow_git_remote(project = path)["origin"]
+  expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
+                                    username, x3$repository))
 })
 
 test_that("wflow_use_github can disable navbar_link", {

@@ -2,9 +2,7 @@
 #'
 #' \code{wflow_use_github} automates all the local configuration necessary to
 #' deploy your workflowr project with \href{https://pages.github.com/}{GitHub
-#' Pages}. However, you will need to manually login to your account and create
-#' the new repository on GitHub. The final step is to run \code{wflow_git_push}
-#' in the R console.
+#' Pages}. Optionally, it can also create the new repository on GitHub and push the files to GitHub.
 #'
 #' \code{wflow_use_github} performs the following steps and then commits the
 #' changes:
@@ -13,7 +11,8 @@
 #'
 #' \item Adds a link to the GitHub repository in the navigation bar
 #'
-#' \item Configures the Git remote settings to use GitHub
+#' \item Configures the Git remote settings to use GitHub (via
+#' \code{\link{wflow_git_remote}})
 #'
 #' \item (Only if necessary) Renames the website directory to \code{docs/}
 #'
@@ -22,16 +21,49 @@
 #'
 #' }
 #'
-#' For more details, read the documentation provided by
-#' \href{https://pages.github.com/}{GitHub Pages}.
+#' Furthermore, \code{wflow_use_github} will prompt you to request permission to
+#' perform the following steps:
 #'
-#' @param username character (default: NULL). The GitHub username for the remote
-#'   repository. If not specified, workflowr will attempt to guess this from the
-#'   current remote named "origin" if it had previously been configured.
+#' \itemize{
+#'
+#' \item (Optional) Creates the new repository on GitHub. If you accept, your
+#' browser will open for you to provide authorization. If you are not logged
+#' into GitHub, you will be prompted to login. Then you will be asked to give
+#' permission to the workflowr-oauth-app to create the new repository for you on
+#' your behalf. This will allow \code{wflow_use_github}, running on your own
+#' machine, to create your new repository. Once \code{wflow_use_github}
+#' finishes, workflowr can no longer access your GitHub account.
+#'
+#' \item (Optional) Pushes the files to GitHub (via
+#' \code{\link{wflow_git_push}}). Don't worry if this step fails. If it does,
+#' run \code{git push origin master} in your terminal.
+#'
+#' }
+#'
+#' If you choose to not allow workflowr to create the repository for you, then
+#' you will have to complete these final two steps manually. First, login to
+#' your account and create the new repository on GitHub. Second, run
+#' \code{wflow_git_push} in the R console or \code{git push origin master}.
+#'
+#' @param username character (default: NULL). The GitHub account associated with
+#'   the GitHub repository. This is likely your personal GitHub username, but it
+#'   could also be the name of a GitHub organization you belong to. It will be
+#'   combined with the arguments \code{repository} and \code{domain} to
+#'   determine the URL of the new repository, e.g. the default is
+#'   https://github.com/username/repository. It will be combined with the
+#'   arguments \code{repository}, \code{domain}, and \code{protocol} to
+#'   determine the URL for Git to use to push and pull from GitHub, e.g. the
+#'   default is https://github.com/username/repository.git. If \code{username}
+#'   is not specified, \code{wflow_use_github} will first attempt to guess it
+#'   from the current setting for the remote URL named "origin". If you haven't
+#'   previously configured a remote for this workflowr project (or you are
+#'   unsure what that means), then you should specify your GitHub username when
+#'   calling this function.
 #' @param repository character (default: NULL). The name of the remote
-#'   repository on GitHub. If not specified, workflowr will attempt to guess
-#'   this from the current remote named "origin" if it had previously been
-#'   configured.
+#'   repository on GitHub. If not specified, workflowr will guess the name of
+#'   the repository. First, it will check the current setting for the remote URL
+#'   named "origin". Second, it will use the name of the root directory of the
+#'   workflowr project.
 #' @param navbar_link logical (default: TRUE). Insert a link to the GitHub
 #'   repository into the navigation bar.
 #' @param protocol character (default: "https"). The protocol for communicating
@@ -87,23 +119,6 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   project <- absolute(project)
 
-  # If username and/or repository are NULL, make sure that it can be guessed
-  # from current remote "origin"
-  host <- get_host_from_remote(path = project)
-  if (is.null(username) || is.null(repository)) {
-    if (is.na(host)) {
-      stop("You must specify the arguments username and repository.")
-    } else {
-      host_parts <- stringr::str_split(host, "/")[[1]]
-      username <- host_parts[length(host_parts) - 1]
-      repository <- host_parts[length(host_parts)]
-      message("username: ", username)
-      message("respository: ", repository)
-    }
-  }
-
-  message("Summary from wflow_use_github():")
-
   # Status ---------------------------------------------------------------------
 
   s <- wflow_status(project = project)
@@ -113,6 +128,33 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   r <- git2r::repository(path = s$git)
   remotes <- wflow_git_remote(verbose = FALSE, project = project)
+
+  message("Summary from wflow_use_github():")
+
+  # Determine username and repository ------------------------------------------
+
+  # guess based on current remote "origin"
+  host <- get_host_from_remote(path = project) # returns NA if unavailable
+  host_parts <- stringr::str_split(host, "/")[[1]]
+
+  if (is.null(username)) {
+    if (is.na(host)) {
+      stop("Unable to guess username. Please specify this argument.")
+    } else {
+      username <- host_parts[length(host_parts) - 1]
+    }
+  }
+  message("username: ", username)
+
+  if (is.null(repository)) {
+    if (is.na(host)) {
+      # Use root directory name
+       repository <- fs::path_file(absolute(s$root))
+    } else {
+      repository <- host_parts[length(host_parts)]
+    }
+  }
+  message("respository: ", repository)
 
   # Rename docs/ to public/ ----------------------------------------------------
 
@@ -195,7 +237,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   # Create GitHub repository ---------------------------------------------------
 
-  if (interactive()) {
+  if (FALSE && interactive()) {
     cat("The repository can be automatically created for you if you authenticate with GitHub.\n")
     ans <- readline("Authenticate with GitHub? (y/n) ")
     if (tolower(ans) == "y") {
@@ -209,7 +251,8 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   # Prepare output -------------------------------------------------------------
 
-  o <- list(renamed = renamed, files_git = files_git, commit = commit,
+  o <- list(username = username, repository = repository,
+            renamed = renamed, files_git = files_git, commit = commit,
             config_remote = config_remote)
   class(o) <- "wflow_use_github"
 

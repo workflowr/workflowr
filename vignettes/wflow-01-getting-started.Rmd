@@ -353,9 +353,7 @@ wflow_use_github("myname", "myproject")
 
 ```{r wflow-use-github-hidden, echo=FALSE}
 # Don't want to try to authenticate on GitHub
-wflow_publish(c("analysis/index.Rmd", "analysis/about.Rmd", "analysis/license.Rmd"),
-              "Publish the initial files for myproject",
-              create_on_github = FALSE)
+wflow_use_github("myname", "myproject", create_on_github = FALSE)
 ```
 
 This had two main effects: 1) it configured Git to communicate with your future

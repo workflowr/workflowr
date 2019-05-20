@@ -424,7 +424,7 @@ test_that("wflow_start creates a pre-push hook when disable_remote = TRUE", {
   expect_true(workflowr:::file_is_executable(pre_push_file))
 
   # Confirm the pre-push hook stops execution
-  remote <- wflow_use_github("user", "repo")
+  remote <- wflow_use_github("user", "repo", create_on_github = FALSE)
   expect_error(wflow_git_push(username = "username", password = "password"),
                glue::glue("Execution stopped by {pre_push_file}"))
 })

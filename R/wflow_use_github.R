@@ -66,6 +66,10 @@
 #'   workflowr project.
 #' @param navbar_link logical (default: TRUE). Insert a link to the GitHub
 #'   repository into the navigation bar.
+#' @param create_on_github logical (default: NULL). Should workflowr create the
+#'   repository on GitHub? This requires logging into your GitHub account to
+#'   authenticate workflowr to act on your behalf. The default behavior is to
+#'   ask the user.
 #' @param protocol character (default: "https"). The protocol for communicating
 #'   with GitHub. Must be either "https" or "ssh".
 #' @param domain character (default: "github.com"). The domain of the remote
@@ -93,6 +97,7 @@
 #'@export
 wflow_use_github <- function(username = NULL, repository = NULL,
                              navbar_link = TRUE,
+                             create_on_github = NULL,
                              protocol = "https",
                              domain = "github.com",
                              project = ".") {
@@ -109,6 +114,10 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   if (!(is.logical(navbar_link) && length(navbar_link) == 1))
     stop("navbar_link must be a one-element logical vector")
+
+  if (!is.null(create_on_github))
+    if (!(is.logical(create_on_github) && length(create_on_github) == 1))
+      stop("create_on_github must be NULL or a one element character vector: ", create_on_github)
 
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
@@ -237,16 +246,29 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   # Create GitHub repository ---------------------------------------------------
 
-  if (FALSE && interactive()) {
-    cat("The repository can be automatically created for you if you authenticate with GitHub.\n")
-    ans <- readline("Authenticate with GitHub? (y/n) ")
+  repo_created <- FALSE
+
+  if (is.null(create_on_github) && interactive()) {
+    cat(wrap(
+      "The GitHub repository can be automatically created for you if you
+      authorize workflowr to do so. This requires logging into GitHub and
+      enabling the workflowr-oauth-app access to your account.\n"
+    ))
+    ans <- readline(glue::glue(
+      "Enable workflowr to create the repository {repository} for the account {username}? (y/n) "))
     if (tolower(ans) == "y") {
-      message(glue::glue("Creating repository {repository}"))
-      repo_url <- create_gh_repo(username, repository)
-      if (!is.null(getOption("browser"))) utils::browseURL(repo_url)
-    } else {
-      message("To do: Create new repository at ", domain)
+      create_on_github <- TRUE
     }
+  }
+
+  if (is.null(create_on_github)) create_on_github <- FALSE
+
+  if (create_on_github) {
+    repo_url <- create_gh_repo(username, repository)
+    if (!is.null(getOption("browser"))) utils::browseURL(repo_url)
+    repo_created <- TRUE
+  } else {
+    message("To do: Create new repository at ", domain)
   }
 
   # Prepare output -------------------------------------------------------------
@@ -256,7 +278,12 @@ wflow_use_github <- function(username = NULL, repository = NULL,
             config_remote = config_remote)
   class(o) <- "wflow_use_github"
 
-  message("\nGitHub configuration successful!\n")
+  if (repo_created) {
+    message("\nGitHub configuration successful!\n")
+  } else {
+    message("\nLocal GitHub configuration successful!\n")
+  }
+
   message("To do: Run wflow_git_push() to send your project to GitHub")
 
   return(invisible(o))
@@ -270,6 +297,8 @@ create_gh_repo <- function(username, repository) {
                          key = "274d4ff47ea4ed91d66a",
                          secret = "20261c8f17c6876bec2ad890f1aeadf0e1646dc3")
 
+  message(glue::glue(
+    "Requesting authorization for workflowr app to access GitHub account {username}"))
   oauth_token <- httr::oauth2.0_token(httr::oauth_endpoints("github"),
                                       app,
                                       scope = c("public_repo"),
@@ -297,6 +326,7 @@ create_gh_repo <- function(username, repository) {
   }
 
   # Create the repository
+  message(glue::glue("Creating repository {repository}"))
   req_create <- httr::POST("https://api.github.com/user/repos", token,
                            body = list(name = repository), encode = "json")
   httr::stop_for_status(req_create)

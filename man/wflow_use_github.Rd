@@ -5,8 +5,8 @@
 \title{Deploy site with GitHub}
 \usage{
 wflow_use_github(username = NULL, repository = NULL,
-  navbar_link = TRUE, protocol = "https", domain = "github.com",
-  project = ".")
+  navbar_link = TRUE, create_on_github = NULL, protocol = "https",
+  domain = "github.com", project = ".")
 }
 \arguments{
 \item{username}{character (default: NULL). The GitHub account associated with
@@ -32,6 +32,11 @@ workflowr project.}
 
 \item{navbar_link}{logical (default: TRUE). Insert a link to the GitHub
 repository into the navigation bar.}
+
+\item{create_on_github}{logical (default: NULL). Should workflowr create the
+repository on GitHub? This requires logging into your GitHub account to
+authenticate workflowr to act on your behalf. The default behavior is to
+ask the user.}
 
 \item{protocol}{character (default: "https"). The protocol for communicating
 with GitHub. Must be either "https" or "ssh".}

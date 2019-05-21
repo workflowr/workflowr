@@ -297,6 +297,9 @@ create_gh_repo <- function(username, repository) {
                          key = "274d4ff47ea4ed91d66a",
                          secret = "20261c8f17c6876bec2ad890f1aeadf0e1646dc3")
 
+  # Set user agent
+  ua <- httr::user_agent("https://github.com/jdblischak/workflowr")
+
   message(glue::glue(
     "Requesting authorization for workflowr app to access GitHub account {username}"))
   oauth_token <- httr::oauth2.0_token(httr::oauth_endpoints("github"),
@@ -306,7 +309,7 @@ create_gh_repo <- function(username, repository) {
   token <- httr::config(token =  oauth_token)
 
   # Ensure they haven't exceeded their rate limit
-  req_rate <- httr::GET("https://api.github.com/rate_limit", token)
+  req_rate <- httr::GET("https://api.github.com/rate_limit", token, ua)
   httr::stop_for_status(req_rate)
   content_rate <- httr::content(req_rate)
   if (content_rate$resources$core$remaining < 5) {
@@ -317,7 +320,7 @@ create_gh_repo <- function(username, repository) {
 
   # Confirm the repository doesn't exist
   req_exist <- httr::GET(glue::glue("https://api.github.com/repos/{username}/{repository}"),
-                         token)
+                         token, ua)
   status_exist <- httr::http_status(req_exist)
   if (status_exist$reason != "Not Found") {
     warning(glue::glue("Repository {repository} already exists for user {username}"),
@@ -327,13 +330,13 @@ create_gh_repo <- function(username, repository) {
 
   # Create the repository
   message(glue::glue("Creating repository {repository}"))
-  req_create <- httr::POST("https://api.github.com/user/repos", token,
+  req_create <- httr::POST("https://api.github.com/user/repos", token, ua,
                            body = list(name = repository), encode = "json")
   httr::stop_for_status(req_create)
 
   # Confirm the repository exists
   req_confirm <- httr::GET(glue::glue("https://api.github.com/repos/{username}/{repository}"),
-                           token)
+                           token, ua)
   status_confirm <- httr::http_status(req_confirm)
   if (status_confirm$category != "Success") {
     warning(glue::glue("Failed to create repository {repository}. Reason: {status_confirm$reason}"))

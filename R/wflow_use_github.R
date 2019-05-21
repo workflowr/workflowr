@@ -294,8 +294,8 @@ create_gh_repo <- function(username, repository) {
 
   # Authenticate with GitHub
   app <- httr::oauth_app("github",
-                         key = "274d4ff47ea4ed91d66a",
-                         secret = "20261c8f17c6876bec2ad890f1aeadf0e1646dc3")
+                         key = "341566cfd0c8017ba5ac",
+                         secret = "ac5e6d52e3bf71e4535149622f053b9f00f2e155")
 
   # Set user agent
   ua <- httr::user_agent("https://github.com/jdblischak/workflowr")

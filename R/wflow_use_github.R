@@ -210,7 +210,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
                                       repo = repository, protocol = protocol,
                                       action = "set_url", domain = domain,
                                       verbose = FALSE, project = project)
-    message("* Changed remote \"origin\" to ", config_remote["origin"])
+    message("* Overwrote previous remote \"origin\" to ", config_remote["origin"])
   } else {
     config_remote <- wflow_git_remote(remote = "origin", user = username,
                                       repo = repository, protocol = protocol,
@@ -249,13 +249,14 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   repo_created <- FALSE
 
   if (is.null(create_on_github) && interactive()) {
-    cat(wrap(
-      "The GitHub repository can be automatically created for you if you
-      authorize workflowr to do so. This requires logging into GitHub and
-      enabling the workflowr-oauth-app access to your account.\n"
-    ))
+    cat("\n", wrap(glue::glue(
+      "The GitHub repository {repository} can be automatically created for the
+      account {username} if you authorize workflowr to do so. This requires
+      logging into GitHub and enabling the workflowr-oauth-app access to the
+      account."
+    )), "\n", sep = "")
     ans <- readline(glue::glue(
-      "Enable workflowr to create the repository {repository} for the account {username}? (y/n) "))
+      "Enable workflowr to create {username}/{repository}? (y/n) "))
     if (tolower(ans) == "y") {
       create_on_github <- TRUE
     }
@@ -267,8 +268,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
     repo_url <- create_gh_repo(username, repository)
     if (!is.null(getOption("browser"))) utils::browseURL(repo_url)
     repo_created <- TRUE
-  } else {
-    message("To do: Create new repository at ", domain)
+    message(glue::glue("*  Created {username}/{repository}"))
   }
 
   # Prepare output -------------------------------------------------------------
@@ -278,13 +278,11 @@ wflow_use_github <- function(username = NULL, repository = NULL,
             config_remote = config_remote)
   class(o) <- "wflow_use_github"
 
-  if (repo_created) {
-    message("\nGitHub configuration successful!\n")
-  } else {
-    message("\nLocal GitHub configuration successful!\n")
+  if (!repo_created) {
+    message(glue::glue("To do: Create {username}/{repository} at {domain}"))
   }
 
-  message("To do: Run wflow_git_push() to send your project to GitHub")
+  message("To do: Run wflow_git_push() to push your project to GitHub")
 
   return(invisible(o))
 }

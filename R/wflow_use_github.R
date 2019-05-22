@@ -278,7 +278,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   if (create_on_github) {
     repo_url <- create_gh_repo(username, repository)
-    if (!is.null(getOption("browser"))) utils::browseURL(repo_url)
+    if (check_browser()) utils::browseURL(repo_url)
     repo_created <- TRUE
     message(glue::glue("*  Created {username}/{repository}"))
   }

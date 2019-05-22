@@ -300,3 +300,22 @@ test_that("wflow_use_github works with different domain", {
                     sprintf("https://git.rcc.uchicago.edu/%s/%s.git",
                             username, repository))
 })
+
+test_that("wflow_use_github does not create repository for custom domain", {
+  path <- test_setup()
+  on.exit(test_teardown(path))
+  username <- "testuser"
+  repository <- "testrepo"
+  domain <- "git.rcc.uchicago.edu"
+
+  expect_message(
+    wflow_use_github(username, repository, domain = domain, project = path),
+    sprintf("To do: Create %s/%s at %s", username, repository, domain)
+  )
+
+  expect_warning(
+    wflow_use_github(username, repository, domain = domain,
+                     create_on_github = TRUE, project = path),
+    "workflowr can only create a repository on github.com"
+  )
+})

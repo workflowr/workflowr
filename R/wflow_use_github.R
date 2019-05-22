@@ -2,7 +2,9 @@
 #'
 #' \code{wflow_use_github} automates all the local configuration necessary to
 #' deploy your workflowr project with \href{https://pages.github.com/}{GitHub
-#' Pages}. Optionally, it can also create the new repository on GitHub and push the files to GitHub.
+#' Pages}. Optionally, it can also create the new repository on GitHub and push
+#' the files to GitHub (only applies to public repositories hosted on
+#' github.com).
 #'
 #' \code{wflow_use_github} performs the following steps and then commits the
 #' changes:
@@ -69,7 +71,9 @@
 #' @param create_on_github logical (default: NULL). Should workflowr create the
 #'   repository on GitHub? This requires logging into your GitHub account to
 #'   authenticate workflowr to act on your behalf. The default behavior is to
-#'   ask the user.
+#'   ask the user. Note that this only works for public repositories on
+#'   github.com. If you want to create a private repository or are using GitHub
+#'   Enterprise, you will need to manually create the repository.
 #' @param protocol character (default: "https"). The protocol for communicating
 #'   with GitHub. Must be either "https" or "ssh".
 #' @param domain character (default: "github.com"). The domain of the remote
@@ -247,6 +251,14 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   # Create GitHub repository ---------------------------------------------------
 
   repo_created <- FALSE
+
+  # Do not create repo if the domain is not github.com
+  if (domain != "github.com") {
+    if (isTRUE(create_on_github))
+      warning("workflowr can only create a repository on github.com",
+              call. = FALSE, immediate. = TRUE)
+    create_on_github <- FALSE
+  }
 
   if (is.null(create_on_github) && interactive()) {
     cat("\n", wrap(glue::glue(

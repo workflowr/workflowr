@@ -292,37 +292,25 @@ check_branch <- function(git_head) {
 
 # Check remote repository.
 #
-# If there are no remotes available, confirm that the remote provided is a URL.
+# If there are no remotes available, throw an error.
 #
 # If a remote is specified, confirm it exists.
 #
 # remote - character vector or NULL
 # remote_avail - a named character vector of remote URLs
 check_remote <- function(remote, remote_avail) {
+
   if (!(is.null(remote) || is.character(remote)))
     stop("remote must be NULL or character vector")
+
   if (!is.character(remote_avail))
     stop("remote_avail must be a character vector")
 
-  # Fail early if no remotes (and the remote argument isn't a URL)
+  # If there are no remotes available, throw an error.
   if (length(remote_avail) == 0) {
-    if (is.null(remote)) {
-      m <-
-        "No remote repositories are available. Run ?wflow_git_remote to learn how
-        to configure this."
-      stop(wrap(m), call. = FALSE)
-    } else if (any(stringr::str_detect(remote, c("https", "git@")))) {
-      m <-
-        "Instead of specifying the URL to the remote repository, you can save
-        it as a remote. Run ?wflow_git_remote for details."
-      warning(wrap(m), call. = FALSE)
-      return()
-    } else {
-      m <-
-        "You have specifed a remote, but this remote repository has no remotes
-        set. Run ?wflow_git_remote to learn how to configure this."
-      stop(wrap(m), call. = FALSE)
-    }
+    m <- "No remote repositories are available. Run ?wflow_git_remote to learn
+          how to configure this."
+    stop(wrap(m), call. = FALSE)
   }
 
   # Fail early if remote is specified but doesn't exist
@@ -407,7 +395,11 @@ warn_branch_mismatch <- function(remote_branch, local_branch) {
 
 # Determine if using HTTPS or SSH protocol
 #
-# remote - the name or URL of a remote repository
+# remote - the name or URL of a remote repository. Note: The upstream function
+# wflow_git_push()/pull() no longer accept direct URLs to a remote repository.
+# However, I'm leaving this functionality in this function since it doesn't hurt
+# anything and could be potentially useful in the future.
+#
 # remote_avail - a named character vector of remote URLs
 #
 # Return either "https" or "ssh"

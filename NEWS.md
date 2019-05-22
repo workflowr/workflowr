@@ -2,6 +2,14 @@
 
 * Add FAQ entry on installing packages in a workflowr project (idea from
 @xiangzhu, #160)
+* `wflow_git_push()` and `wflow_git_pull()` no longer accept direct URLs to
+remote repositories. The argument `remote` must be `NULL` or the name of an
+existing remote. The support for direct URLs was likely rarely used since it is
+rarely used with Git as well, and it likely never worked given how the
+underlying functions from [git2r][] work.
+
+[git2r]: https://cran.r-project.org/package=git2r
+
 * Open repository in browser after running `wflow_git_push()` (idea from
 @pcarbo)
 * Add reproducibility check to detect absolute paths to internal project files

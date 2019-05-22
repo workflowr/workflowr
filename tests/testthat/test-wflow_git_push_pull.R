@@ -31,24 +31,15 @@ test_that("check_branch fails if HEAD does *not* point to a branch", {
 
 # Test check_remote ------------------------------------------------------------
 
-test_that("check_remote sends warning if remote is HTTPS URL", {
-  expect_warning(check_remote("https://github.com/user/repo.git", character()),
-                 "Instead of specifying the URL to the remote repository")
-})
-
-test_that("check_remote sends warning if remote is SSH URL", {
-  expect_warning(check_remote("git@github.com:user/repo.git", character()),
-                 "Instead of specifying the URL to the remote repository")
-})
-
-test_that("check_remote fails if remote not specified and no remote repositories", {
+test_that("check_remote throws error if no remote repositories available", {
   expect_error(check_remote(NULL, character()),
                "No remote repositories are available")
-})
-
-test_that("check_remote fails if remote is specified and no remote repositories", {
   expect_error(check_remote("origin", character()),
-               "You have specifed a remote")
+               "No remote repositories are available")
+  expect_error(check_remote("https://github.com/user/repo.git", character()),
+               "No remote repositories are available.")
+  expect_error(check_remote("git@github.com:user/repo.git", character()),
+               "No remote repositories are available.")
 })
 
 # Add a remote
@@ -58,6 +49,10 @@ remote_avail <- wflow_git_remote("origin", "user", "repo", verbose = FALSE,
 test_that("check_remote fails if remote is not one of the available repositories", {
   expect_error(check_remote("random", remote_avail),
                "The remote you specified is not one of the remotes available")
+  expect_error(check_remote("https://github.com/user/repo.git", remote_avail),
+               "No remote repositories are available.")
+  expect_error(check_remote("git@github.com:user/repo.git", remote_avail),
+               "No remote repositories are available.")
 })
 
 test_that("check_remote passes if remote is one of the available repositories", {

@@ -50,9 +50,9 @@ test_that("check_remote fails if remote is not one of the available repositories
   expect_error(check_remote("random", remote_avail),
                "The remote you specified is not one of the remotes available")
   expect_error(check_remote("https://github.com/user/repo.git", remote_avail),
-               "No remote repositories are available.")
+               "The remote you specified is not one of the remotes available")
   expect_error(check_remote("git@github.com:user/repo.git", remote_avail),
-               "No remote repositories are available.")
+               "The remote you specified is not one of the remotes available")
 })
 
 test_that("check_remote passes if remote is one of the available repositories", {

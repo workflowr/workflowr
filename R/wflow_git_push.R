@@ -42,6 +42,10 @@
 #' @param set_upstream logical (default: TRUE). Set the current local branch to
 #'   track the remote branch if it isn't already tracking one. This is likely
 #'   what you want. Equivalent to: \code{git push -u remote branch}
+#' @param view logical (default: TRUE). Open the URL to the repository in the
+#'   browser. Ignored if \code{dry_run = TRUE}. Also note that this only works
+#'   if the option \code{browser} is set, which you can check with
+#'   \code{getOption("browser")}.
 #' @param dry_run logical (default: FALSE). Preview the proposed action but do
 #'   not actually push to the remote repository.
 #' @param project character (default: ".") By default the function assumes the
@@ -62,6 +66,10 @@
 #'
 #' \item \bold{force}: The input argument \code{force}.
 #'
+#' \item \bold{set_upstream}: The input argument \code{set_upstream}.
+#'
+#' \item \bold{view}: The input argument \code{view}.
+#'
 #' \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
 #' \item \bold{protocol}: The authentication protocol for the remote repository
@@ -79,10 +87,9 @@
 #' }
 #'
 #' @export
-wflow_git_push <- function(remote = NULL, branch = NULL,
-                       username = NULL, password = NULL,
-                       force = FALSE, set_upstream = TRUE,
-                       dry_run = FALSE, project = ".") {
+wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
+                           password = NULL, force = FALSE, set_upstream = TRUE,
+                           view = TRUE, dry_run = FALSE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
@@ -103,6 +110,9 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
 
   if (!(is.logical(set_upstream) && length(set_upstream) == 1))
     stop("set_upstream must be a one-element logical vector")
+
+  if (!(is.logical(view) && length(view) == 1))
+    stop("view must be a one-element logical vector")
 
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
@@ -231,8 +241,20 @@ wflow_git_push <- function(remote = NULL, branch = NULL,
   # Prepare output -------------------------------------------------------------
 
   o <- list(remote = remote, branch = branch, username = username,
-            force = force, dry_run = dry_run, protocol = protocol)
+            force = force, set_upstream = set_upstream, view = view,
+            dry_run = dry_run, protocol = protocol)
   class(o) <- "wflow_git_push"
+
+  browser <- check_browser()
+  if (view && browser && !dry_run) {
+    remote_url <- remote_avail[remote]
+    # Remove trailing .git
+    remote_url <- stringr::str_replace(remote_url, "\\.git$", "")
+    # If SSH, replace with HTTPS URL
+    remote_url <- stringr::str_replace(remote_url, "^git@(.+):", "https://\\1/")
+    utils::browseURL(remote_url)
+  }
+
   return(o)
 }
 

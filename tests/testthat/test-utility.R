@@ -582,3 +582,22 @@ test_that("wflow_dependson returns labels of cached chunks", {
   expect_identical(labels, c("setup", "plot-one", "plot-three",
                              "session-info-chunk-inserted-by-workflowr"))
 })
+
+# Test check_browser -----------------------------------------------------------
+
+test_that("check_browser returns TRUE for valid browser options", {
+  withr::with_options(list(browser = "xdg-open"),
+                      expect_true(workflowr:::check_browser()))
+  withr::with_options(list(browser = "firefox"),
+                      expect_true(workflowr:::check_browser()))
+  # This function is the default option inside RStudio
+  withr::with_options(list(browser = function(url) .Call("rs_browseURL", url)),
+                      expect_true(workflowr:::check_browser()))
+})
+
+test_that("check_browser returns FALSE for invalid browser options", {
+  withr::with_options(list(browser = NULL),
+                      expect_false(workflowr:::check_browser()))
+  withr::with_options(list(browser = ""),
+                      expect_false(workflowr:::check_browser()))
+})

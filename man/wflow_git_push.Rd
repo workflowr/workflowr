@@ -5,7 +5,7 @@
 \title{Push files to remote repository}
 \usage{
 wflow_git_push(remote = NULL, branch = NULL, username = NULL,
-  password = NULL, force = FALSE, set_upstream = TRUE,
+  password = NULL, force = FALSE, set_upstream = TRUE, view = TRUE,
   dry_run = FALSE, project = ".")
 }
 \arguments{
@@ -30,6 +30,11 @@ Equivalent to: \code{git push -f}}
 track the remote branch if it isn't already tracking one. This is likely
 what you want. Equivalent to: \code{git push -u remote branch}}
 
+\item{view}{logical (default: TRUE). Open the URL to the repository in the
+browser. Ignored if \code{dry_run = TRUE}. Also note that this only works
+if the option \code{browser} is set, which you can check with
+\code{getOption("browser")}.}
+
 \item{dry_run}{logical (default: FALSE). Preview the proposed action but do
 not actually push to the remote repository.}
 
@@ -51,6 +56,10 @@ An object of class \code{wflow_git_push}, which is a list with the
 or GitLab).
 
 \item \bold{force}: The input argument \code{force}.
+
+\item \bold{set_upstream}: The input argument \code{set_upstream}.
+
+\item \bold{view}: The input argument \code{view}.
 
 \item \bold{dry_run}: The input argument \code{dry_run}.
 

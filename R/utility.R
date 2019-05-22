@@ -362,3 +362,21 @@ get_win_drive <- function(path) {
   drive <- vapply(drive, function(x) x[1], FUN.VALUE = character(1))
   return(drive)
 }
+
+# Return TRUE if getOption("browser") is properly set. Required for opening URLs
+# via browseURL().
+#
+# This can either be an R function that accepts a URL or a string with the
+# name of the system program to invoke (e.g. "firefox"). If it is NULL or "",
+# it won't work.
+check_browser <- function() {
+  browser_opt <- getOption("browser")
+
+  if (is.null(browser_opt)) return(FALSE)
+
+  if (is.function(browser_opt)) return(TRUE)
+
+  if (nchar(browser_opt) > 0) return(TRUE)
+
+  return(FALSE)
+}

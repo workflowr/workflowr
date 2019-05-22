@@ -167,20 +167,7 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
   # If no option is set for browser, browseURL will throw an error. This is
   # disastrous if wflow_view was called from wflow_publish because it resets
   # everything it had done if there is an error.
-
-  browser_opt <- getOption("browser")
-  # This can either be an R function that accepts a URL or a string with the
-  # name of the system program to invoke (e.g. "firefox"). If it is NULL or "",
-  # it won't work.
-  if (is.null(browser_opt)) {
-    browser <- FALSE
-  } else if (is.function(browser_opt)) {
-    browser <- TRUE
-  } else if (nchar(browser_opt) > 0) {
-    browser <- TRUE
-  } else {
-    browser <- FALSE
-  }
+  browser <- check_browser()
 
   # View files -----------------------------------------------------------------
 

@@ -112,11 +112,21 @@ test_that("merge returns git_merge_result", {
   expect_identical(git2r_slot(m3, "sha"),
                    git2r_slot(commits(r)[[1]], "sha"))
 
-  # Merge conflicting branch, which should create a merge conflict
+  # Merge conflicting branch with unstaged changes
+  writeLines("unstaged change\n", con = f2)
   m4 <- git2r_merge(r, "b4")
   expect_equivalent(class(m4), "git_merge_result")
   expect_identical(git2r_slot(m4, "up_to_date"), FALSE)
   expect_identical(git2r_slot(m4, "fast_forward"), FALSE)
-  expect_identical(git2r_slot(m4, "conflicts"), TRUE)
+  expect_identical(git2r_slot(m4, "conflicts"), FALSE)
   expect_identical(git2r_slot(m4, "sha"), NA_character_)
+  checkout(r, path = "f2.txt")
+
+  # Merge conflicting branch, which should create a merge conflict
+  m5 <- git2r_merge(r, "b4")
+  expect_equivalent(class(m5), "git_merge_result")
+  expect_identical(git2r_slot(m5, "up_to_date"), FALSE)
+  expect_identical(git2r_slot(m5, "fast_forward"), FALSE)
+  expect_identical(git2r_slot(m5, "conflicts"), TRUE)
+  expect_identical(git2r_slot(m5, "sha"), NA_character_)
 })

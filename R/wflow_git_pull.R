@@ -247,6 +247,12 @@ print.wflow_git_pull <- function(x, ...) {
         use Git from the Terminal to resolve these conflicts manually. Run
         `git status` in the Terminal to get started."
       ), "\n", sep = "")
+    } else if (!git2r_slot(x$merge_result, "up_to_date")) {
+      cat("\n", wrap(
+        "The pull **failed** because you have local changes to your files that
+        would be overwritten by pulling the latest versions of the files. You
+        need to do first commit or discard these changes and then pull again."
+      ), "\n", sep = "")
     }
   }
 

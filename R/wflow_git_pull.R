@@ -249,9 +249,10 @@ print.wflow_git_pull <- function(x, ...) {
       ), "\n", sep = "")
     } else if (!git2r_slot(x$merge_result, "up_to_date")) {
       cat("\n", wrap(
-        "The pull **failed** because you have local changes to your files that
-        would be overwritten by pulling the latest versions of the files. You
-        need to do first commit or discard these changes and then pull again."
+        "The pull **failed** because you have made local changes to your files
+        that would be overwritten by pulling the latest versions of the files.
+        You need to first commit or discard these changes and then pull
+        again."
       ), "\n", sep = "")
     }
   }

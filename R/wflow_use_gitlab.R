@@ -30,13 +30,25 @@
 #' For more details, read the documentation provided by
 #' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
 #'
-#' @param username character (default: NULL). The GitLab username for the remote
-#'   repository. If not specified, workflowr will attempt to guess this from the
-#'   current remote named "origin" if it had previously been configured.
+#' @param username character (default: NULL). The GitLab account associated with
+#'   the GitLab repository. This is likely your personal GitLab username, but it
+#'   could also be the name of a GitLab organization you belong to. It will be
+#'   combined with the arguments \code{repository} and \code{domain} to
+#'   determine the URL of the new repository, e.g. the default is
+#'   https://gitlab.com/username/repository. It will be combined with the
+#'   arguments \code{repository}, \code{domain}, and \code{protocol} to
+#'   determine the URL for Git to use to push and pull from GitLab, e.g. the
+#'   default is https://gitlab.com/username/repository.git. If \code{username}
+#'   is not specified, \code{wflow_use_gitlab} will first attempt to guess it
+#'   from the current setting for the remote URL named "origin". If you haven't
+#'   previously configured a remote for this workflowr project (or you are
+#'   unsure what that means), then you should specify your GitLab username when
+#'   calling this function.
 #' @param repository character (default: NULL). The name of the remote
-#'   repository on GitLab. If not specified, workflowr will attempt to guess
-#'   this from the current remote named "origin" if it had previously been
-#'   configured.
+#'   repository on GitLab. If not specified, workflowr will guess the name of
+#'   the repository. First, it will check the current setting for the remote URL
+#'   named "origin". Second, it will use the name of the root directory of the
+#'   workflowr project.
 #' @param navbar_link logical (default: TRUE). Insert a link to the GitLab
 #'   repository into the navigation bar.
 #' @param protocol character (default: "https"). The protocol for communicating
@@ -94,23 +106,6 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   project <- absolute(project)
 
-  # If username and/or repository are NULL, make sure that it can be guessed
-  # from current remote "origin"
-  host <- get_host_from_remote(path = project)
-  if (is.null(username) || is.null(repository)) {
-    if (is.na(host)) {
-      stop("You must specify the arguments username and repository.")
-    } else {
-      host_parts <- stringr::str_split(host, "/")[[1]]
-      username <- host_parts[length(host_parts) - 1]
-      repository <- host_parts[length(host_parts)]
-      message("username: ", username)
-      message("respository: ", repository)
-    }
-  }
-
-  message("Summary from wflow_use_gitlab():")
-
   # Status ---------------------------------------------------------------------
 
   s <- wflow_status(project = project)
@@ -120,6 +115,33 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   r <- git2r::repository(path = s$git)
   remotes <- wflow_git_remote(verbose = FALSE, project = project)
+
+  message("Summary from wflow_use_gitlab():")
+
+  # Determine username and repository ------------------------------------------
+
+  # guess based on current remote "origin"
+  host <- get_host_from_remote(path = project) # returns NA if unavailable
+  host_parts <- stringr::str_split(host, "/")[[1]]
+
+  if (is.null(username)) {
+    if (is.na(host)) {
+      stop("Unable to guess username. Please specify this argument.")
+    } else {
+      username <- host_parts[length(host_parts) - 1]
+    }
+  }
+  message("username: ", username)
+
+  if (is.null(repository)) {
+    if (is.na(host)) {
+      # Use root directory name
+      repository <- fs::path_file(absolute(s$root))
+    } else {
+      repository <- host_parts[length(host_parts)]
+    }
+  }
+  message("respository: ", repository)
 
   # Rename docs/ to public/ ----------------------------------------------------
 
@@ -216,7 +238,8 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   # Prepare output -------------------------------------------------------------
 
-  o <- list(renamed = renamed, files_git = files_git, commit = commit,
+  o <- list(username = username, repository = repository,
+            renamed = renamed, files_git = files_git, commit = commit,
             config_remote = config_remote)
   class(o) <- "wflow_use_gitlab"
 

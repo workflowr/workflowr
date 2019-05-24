@@ -2,6 +2,9 @@
 
 * Add FAQ entry on installing packages in a workflowr project (idea from
 @xiangzhu, #160)
+* `wflow_use_github()`/`wflow_use_gitlab()` provide better guesses if the
+arguments `username` or `repository` are left blank. If `repository` is `NULL`,
+it is set to the name of the workflowr project directory (idea from @pcarbo).
 * `wflow_git_push()` and `wflow_git_pull()` no longer accept direct URLs to
 remote repositories. The argument `remote` must be `NULL` or the name of an
 existing remote. The support for direct URLs was likely rarely used since it is

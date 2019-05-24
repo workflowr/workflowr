@@ -43,9 +43,11 @@ Invisibly returns a list of class \code{wflow_use_gitlab}. This is
 \code{wflow_use_gitlab} automates all the local configuration necessary to
 deploy your workflowr project with
 \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
-However, you will need to manually login to your account and create the new
-repository on GitLab. The final step is to run \code{wflow_git_push} in the R
-console.
+Afterwards, you will need to run \code{wflow_git_push} in the R console (or
+\code{git push} in the terminal) to push the code to GitLab. Note that this
+will also create the repository if it doesn't exist yet (this requires GitLab
+10.5 or greater). Alternatively, you could manually login to your account and
+create the new repository on GitLab prior to pushing.
 }
 \details{
 \code{wflow_use_gitlab} performs the following steps and then commits the

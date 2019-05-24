@@ -291,7 +291,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   class(o) <- "wflow_use_github"
 
   if (!repo_created) {
-    message(glue::glue("To do: Create {username}/{repository} at {domain}"))
+    message(glue::glue("To do: Create {username}/{repository} at {domain} (if it doesn't already exist)"))
   }
 
   message("To do: Run wflow_git_push() to push your project to GitHub")

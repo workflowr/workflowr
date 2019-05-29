@@ -323,9 +323,7 @@ get_versions_df <- function(files, r) {
   message <- vapply(commits_path, function(x) x$message, character(1))
 
   # Only keep the first line of the commit message
-  message <- vapply(message,
-                    function(x) stringr::str_split(x, "\n")[[1]][1],
-                    character(1))
+  message <- vapply(message, get_first_line, character(1))
 
   df_versions <- data.frame(File = names(commits_path), Version = version,
                             Author = author, Date = as.POSIXct(date),

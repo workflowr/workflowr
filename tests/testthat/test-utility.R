@@ -601,3 +601,21 @@ test_that("check_browser returns FALSE for invalid browser options", {
   withr::with_options(list(browser = ""),
                       expect_false(workflowr:::check_browser()))
 })
+
+# Test get_first_line ----------------------------------------------------------
+
+test_that("get_first_line returns the first line", {
+  messages <- c(
+    "Only has 1 line",
+    "Short title
+    line 2
+    line 3",
+    "This is a much longer title as you can observe by its length...
+
+    some more notes"
+  )
+
+  observed <- workflowr:::get_first_line(messages)
+  expect_identical(observed, c("Only has 1 line", "Short title",
+                               "This is a much longer title as you can observe by its length..."))
+})

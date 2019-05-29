@@ -155,47 +155,33 @@ get_versions <- function(input, output_dir, r, github) {
 
   rmd <- relative(input, start = git2r_workdir(r))
   html <- to_html(rmd, outdir = output_dir)
+  html <- relative(html, start = git2r_workdir(r))
 
-  commits_rmd <- git2r::commits(r, path = rmd)
-  commits_html <- git2r::commits(r, path = html)
-  commits_path <- c(commits_rmd, commits_html)
+  df_versions <- get_versions_df(c(rmd, html), r)
 
   # Exit early if there are no past versions
-  if (length(commits_path) == 0) {
+  if (length(df_versions) == 0) {
     text <-
       "<p>There are no past versions. Publish this analysis with
       <code>wflow_publish()</code> to start tracking its development.</p>"
     return(text)
   }
 
-  file <- c(rep("Rmd", length(commits_rmd)), rep("html", length(commits_html)))
-  version <- vapply(commits_path, function(x) x$sha, character(1))
-  author <- vapply(commits_path, function(x) x$author$name, character(1))
-  date <- vapply(commits_path, function(x) as.character(x$author$when),
-                 character(1))
-  message <- vapply(commits_path, function(x) x$message, character(1))
-
-  # Only keep the first line of the commit message
-  message <- vapply(message,
-                    function(x) stringr::str_split(message, "\n")[[1]][1],
-                    character(1))
+  df_versions$File <- ifelse(df_versions$File == rmd, "Rmd", "html")
 
   if (is.na(github)) {
-    version <- shorten_sha(version)
+    df_versions$Version <- shorten_sha(df_versions$Version)
   } else {
-    version <- ifelse(file == "html",
-                      # HTML preview URL
-                      create_url_html(github, html, version),
-                      # R Markdown URL
-                      sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
-                              github, version, rmd, shorten_sha(version)))
+    df_versions$Version <- ifelse(df_versions$File == "html",
+                                  # HTML preview URL
+                                  create_url_html(github, html, df_versions$Version),
+                                  # R Markdown URL
+                                  sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
+                                          github, df_versions$Version, rmd,
+                                          shorten_sha(df_versions$Version)))
   }
 
-  df_versions <- data.frame(File = file, Version = version, Author = author,
-                            Date = as.POSIXct(date), Message = message,
-                            stringsAsFactors = FALSE)
-  df_versions <- df_versions[order(df_versions$Date, decreasing = TRUE), ]
-  df_versions$Date <- as.Date(df_versions$Date)
+  df_versions <- df_versions[, c("File", "Version", "Author", "Date", "Message")]
 
   template <-
 "
@@ -238,28 +224,22 @@ on the hyperlinks in the table below to view them.</p>
 get_versions_fig <- function(fig, r, github) {
   fig <- relative(fig, start = git2r_workdir(r))
 
-  commits_path <- git2r::commits(r, path = fig)
+  df_versions <- get_versions_df(fig, r)
 
   # Exit early if there are no past versions
-  if (length(commits_path) == 0) {
+  if (length(df_versions) == 0) {
     return("")
   }
 
-  version <- vapply(commits_path, function(x) x$sha, character(1))
-  author <- vapply(commits_path, function(x) x$author$name, character(1))
-  date <- vapply(commits_path,
-                 function(x) as.character(as.Date(as.POSIXct(x$author$when))),
-                 character(1))
-
   if (is.na(github)) {
-    version <- shorten_sha(version)
+    df_versions$Version <- shorten_sha(df_versions$Version)
   } else {
-    version <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
-                       github, version, fig, shorten_sha(version))
+    df_versions$Version <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
+                                   github, df_versions$Version, fig,
+                                   shorten_sha(df_versions$Version))
   }
 
-  df_versions <- data.frame(Version = version, Author = author, Date = date,
-                            stringsAsFactors = FALSE)
+  df_versions <- df_versions[, c("Version", "Author", "Date")]
 
   fig <- basename(fig)
   id <- paste0("fig-", tools::file_path_sans_ext(basename(fig)))
@@ -310,6 +290,51 @@ get_versions_fig <- function(fig, r, github) {
 
   return(text)
 
+}
+
+# Return a data frame of past versions
+#
+# files - paths relative to Git repository
+# r - git_repository
+#
+# If no past versions, returns empty data frame
+get_versions_df <- function(files, r) {
+
+  if (any(fs::is_absolute_path(files)))
+    stop("File paths must be relative to Git repository at ",
+         git2r_workdir(r))
+
+  commits_path <- list()
+  for (f in files) {
+    commits_f <- git2r::commits(r, path = f)
+    names(commits_f) <- rep(f, length(commits_f))
+    commits_path <- c(commits_path, commits_f)
+  }
+
+  # Exit early if there are no past versions
+  if (length(commits_path) == 0) {
+    return(data.frame())
+  }
+
+  version <- vapply(commits_path, function(x) x$sha, character(1))
+  author <- vapply(commits_path, function(x) x$author$name, character(1))
+  date <- vapply(commits_path, function(x) as.character(x$author$when),
+                 character(1))
+  message <- vapply(commits_path, function(x) x$message, character(1))
+
+  # Only keep the first line of the commit message
+  message <- vapply(message,
+                    function(x) stringr::str_split(x, "\n")[[1]][1],
+                    character(1))
+
+  df_versions <- data.frame(File = names(commits_path), Version = version,
+                            Author = author, Date = as.POSIXct(date),
+                            Message = message, stringsAsFactors = FALSE)
+  df_versions <- df_versions[order(df_versions$Date, decreasing = TRUE), ]
+  df_versions$Date <- as.Date(df_versions$Date)
+  rownames(df_versions) <- seq_len(nrow(df_versions))
+
+  return(df_versions)
 }
 
 check_vc <- function(input, r, s, github) {

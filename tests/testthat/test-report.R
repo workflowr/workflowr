@@ -4,6 +4,82 @@ context("report")
 
 source("setup.R")
 
+# Test get_versions_df ---------------------------------------------------------
+
+test_that("get_versions_df returns data frame of commits for file(s)", {
+
+  arguments <- names(formals(git2r::commits))
+
+  if (!"path" %in% arguments) skip("Tests new argument commits(path)")
+
+  path <- fs::path_temp()
+  on.exit(test_teardown(path))
+  r <- git2r::init(path)
+  git2r::config(r, user.name = "Test User", user.email = "testing")
+
+  f1 <- file.path(path, "f1.txt")
+  f2 <- file.path(path, "f2.txt")
+
+  cat("line 1\n", file = f1)
+  git2r::add(r, f1)
+  c1 <- git2r::commit(r, "The first commit to f1")
+  Sys.sleep(1)
+
+  cat("line 1\n", file = f2)
+  git2r::add(r, f2)
+  c2 <- git2r::commit(r, "The first commit to f2")
+  Sys.sleep(1)
+
+  cat("line 2\n", file = f1, append = TRUE)
+  git2r::add(r, f1)
+  c3 <- git2r::commit(r, "The second commit to f1")
+  Sys.sleep(1)
+
+  cat("line 2\n", file = f2, append = TRUE)
+  git2r::add(r, f2)
+  c4 <- git2r::commit(r, "The second commit to f2")
+  Sys.sleep(1)
+
+  versions_f1 <- workflowr:::get_versions_df("f1.txt", r)
+
+  expect_true(all(versions_f1$File == "f1.txt"))
+  expect_identical(versions_f1$Version, c(c3$sha, c1$sha))
+  expect_true(all(versions_f1$Author == "Test User"))
+  expect_identical(versions_f1$Date, c(as.Date(as.POSIXct(c3$author$when)),
+                                       as.Date(as.POSIXct(c1$author$when))))
+  expect_identical(versions_f1$Message, c(c3$message, c1$message))
+
+  versions_f2 <- workflowr:::get_versions_df("f2.txt", r)
+
+  expect_true(all(versions_f2$File == "f2.txt"))
+  expect_identical(versions_f2$Version, c(c4$sha, c2$sha))
+  expect_true(all(versions_f2$Author == "Test User"))
+  expect_identical(versions_f2$Date, c(as.Date(as.POSIXct(c4$author$when)),
+                                       as.Date(as.POSIXct(c2$author$when))))
+  expect_identical(versions_f2$Message, c(c4$message, c2$message))
+
+  versions_f1_f2 <- workflowr:::get_versions_df(c("f1.txt", "f2.txt"), r)
+
+  expect_true(all(versions_f1_f2$File == c("f2.txt", "f1.txt", "f2.txt", "f1.txt")))
+  expect_identical(versions_f1_f2$Version, c(c4$sha, c3$sha, c2$sha, c1$sha))
+  expect_true(all(versions_f1_f2$Author == "Test User"))
+  expect_identical(versions_f1_f2$Date, c(as.Date(as.POSIXct(c4$author$when)),
+                                          as.Date(as.POSIXct(c3$author$when)),
+                                          as.Date(as.POSIXct(c2$author$when)),
+                                          as.Date(as.POSIXct(c1$author$when))))
+  expect_identical(versions_f1_f2$Message, c(c4$message, c3$message,
+                                             c2$message, c1$message))
+
+  # Reversing the input file order should have no effect
+  versions_f2_f1 <- workflowr:::get_versions_df(c("f2.txt", "f1.txt"), r)
+  expect_identical(versions_f2_f1, versions_f1_f2)
+
+  expect_identical(workflowr:::get_versions_df("non-existent", r), data.frame())
+
+  expect_error(workflowr:::get_versions_df(f1, r),
+               "File paths must be relative")
+})
+
 # Test get_versions and get_versions_fig ---------------------------------------
 
 test_that("get_versions and get_versions_fig insert GitHub URL if available", {

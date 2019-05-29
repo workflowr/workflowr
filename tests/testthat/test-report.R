@@ -35,10 +35,9 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
   }
 
   r <- git2r::repository(path)
-  blobs <- git2r::odb_blobs(r)
   output_dir <- workflowr:::get_output_dir(file.path(path, "analysis/"))
   github <- workflowr:::get_host_from_remote(path)
-  versions <- workflowr:::get_versions(input = rmd, output_dir, blobs, r, github)
+  versions <- workflowr:::get_versions(input = rmd, output_dir, r, github)
   expect_true(any(stringr::str_detect(versions, github)))
   fig <- file.path(output_dir, "figure", basename(rmd), "chunkname-1.png")
   versions_fig <- get_versions_fig(fig, r, github)

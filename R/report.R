@@ -234,35 +234,30 @@ on the hyperlinks in the table below to view them.</p>
 # Get versions table for figures. Needs to be refactored to share code with
 # get_versions.
 get_versions_fig <- function(fig, r, github) {
-  fig <- absolute(fig)
-  blobs <- git2r::odb_blobs(r)
-  blobs$fname <- ifelse(blobs$path == "", blobs$name,
-                        file.path(blobs$path, blobs$name))
-  blobs$fname_abs <- file.path(git2r_workdir(r), blobs$fname)
-  blobs_file <- blobs[blobs$fname_abs == fig, ]
-  # Ignore blobs that don't map to commits (caused by `git commit --amend`)
-  git_log <- git2r::commits(r)
-  git_log_sha <- vapply(git_log, function(x) git2r_slot(x, "sha"), character(1))
-  blobs_file <- blobs_file[blobs_file$commit %in% git_log_sha, ]
+  fig <- relative(fig, start = git2r_workdir(r))
+
+  commits_path <- git2r::commits(r, path = fig)
 
   # Exit early if there are no past versions
-  if (nrow(blobs_file) == 0) {
+  if (length(commits_path) == 0) {
     return("")
   }
 
+  version <- vapply(commits_path, function(x) x$sha, character(1))
+  author <- vapply(commits_path, function(x) x$author$name, character(1))
+  date <- vapply(commits_path,
+                 function(x) as.character(as.Date(as.POSIXct(x$author$when))),
+                 character(1))
+
   if (is.na(github)) {
-    blobs_file$commit <- shorten_sha(blobs_file$commit)
+    version <- shorten_sha(version)
   } else {
-    blobs_file$commit <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
-                                 github, blobs_file$commit,
-                                 blobs_file$fname,
-                                 shorten_sha(blobs_file$commit))
+    version <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
+                       github, version, fig, shorten_sha(version))
   }
 
-  blobs_file <- blobs_file[, c("commit", "author", "when")]
-  colnames(blobs_file) <- c("Version", "Author", "Date")
-  blobs_file <- blobs_file[order(blobs_file$Date, decreasing = TRUE), ]
-  blobs_file$Date <- as.Date(blobs_file$Date)
+  df_versions <- data.frame(Version = version, Author = author, Date = date,
+                            stringsAsFactors = FALSE)
 
   fig <- basename(fig)
   id <- paste0("fig-", tools::file_path_sans_ext(basename(fig)))
@@ -295,20 +290,20 @@ get_versions_fig <- function(fig, r, github) {
   </tr>
   </thead>
   <tbody>
-  {{#blobs_file}}
+  {{#df_versions}}
   <tr>
   <td>{{{Version}}}</td>
   <td>{{Author}}</td>
   <td>{{Date}}</td>
   </tr>
-  {{/blobs_file}}
+  {{/df_versions}}
   </tbody>
   </table>
   </div>
   </div>
   "
   data <- list(fig = fig, id = id,
-               blobs_file = unname(whisker::rowSplit(blobs_file)))
+               df_versions = unname(whisker::rowSplit(df_versions)))
   text <- whisker::whisker.render(template, data)
 
   return(text)

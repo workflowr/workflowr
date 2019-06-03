@@ -147,6 +147,47 @@ project securely with [Beaker Browser][beaker].
 Yes. Please see these [instructions][deploy-aws] for deploying a workflowr
 project with password-protection using [Amazon S3][s3].
 
+## How should I install packages to use with a workflowr project?
+
+When you start a new workflowr project with `wflow_start()`, it automatically
+creates a local `.Rprofile` file that only affects your R session when you run R
+from within your workflowr project. This is why you see the following lines each
+time you open R:
+
+```
+Loading .Rprofile for the current workflowr project
+This is workflowr version 1.3.0
+Run ?workflowr for help getting started
+>
+```
+
+This is intended to be a convenience so that you don't have to type
+`library(workflowr)` every time you return to your project (or restart your R
+session). However, the downside is that this has the potential to cause problems
+when you install new packages. If you attempt to install one of the packages
+that workflowr depends on, or if you attempt to install a package that then
+updates one of these dependencies, this may cause an error. For example, here is
+a typical error caused by updating git2r when the workflowr package is loaded:
+
+```
+Error: package or namespace load failed for ‘git2r’ in get(method, envir = home):
+ lazy-load database '/usr/local/lib/R/site-library/git2r/R/git2r.rdb' is corrupt
+In addition: Warning message:
+In get(method, envir = home) : internal error -3 in R_decompress1
+```
+
+The short term solution is to restart your current R session, which should fix
+everything. In the long term, if you start to get this type of error often, you
+can try one of the following strategies:
+
+1. Always restart your R session after installing new packages
+(Ctrl/Command+Shift+F10 in RStudio)
+1. Open R from a directory that is not a workflowr project when installing new
+packages
+1. Delete `.Rprofile` with `wflow_remove(".Rprofile")` and manually load
+workflowr with `library(workflowr)` every time you start a new R session
+
+
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 
 Yes! If you'd like to create a single HTML or PDF file to distribute an isolated

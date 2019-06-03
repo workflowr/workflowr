@@ -78,7 +78,7 @@
             <h3 class="subtitle">workflowr version 1.3.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-05-06</h4>
+            <h4 class="date">2019-06-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-05-faq.Rmd"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -159,15 +159,35 @@ wflow_git_commit("docs/assets/*.png", "Add external images of ...")</a></code></
 <a href="#can-i-password-protect-my-website" class="anchor"></a>Can I password-protect my website?</h2>
 <p>Yes. Please see these <a href="wflow-08-deploy.html#amazon-s3-password-protected">instructions</a> for deploying a workflowr project with password-protection using <a href="https://aws.amazon.com/s3/">Amazon S3</a>.</p>
 </div>
+<div id="how-should-i-install-packages-to-use-with-a-workflowr-project" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-should-i-install-packages-to-use-with-a-workflowr-project" class="anchor"></a>How should I install packages to use with a workflowr project?</h2>
+<p>When you start a new workflowr project with <code><a href="../reference/wflow_start.html">wflow_start()</a></code>, it automatically creates a local <code>.Rprofile</code> file that only affects your R session when you run R from within your workflowr project. This is why you see the following lines each time you open R:</p>
+<pre><code>Loading .Rprofile for the current workflowr project
+This is workflowr version 1.3.0
+Run ?workflowr for help getting started
+&gt;</code></pre>
+<p>This is intended to be a convenience so that you don’t have to type <code><a href="https://www.rdocumentation.org/packages/base/topics/library">library(workflowr)</a></code> every time you return to your project (or restart your R session). However, the downside is that this has the potential to cause problems when you install new packages. If you attempt to install one of the packages that workflowr depends on, or if you attempt to install a package that then updates one of these dependencies, this may cause an error. For example, here is a typical error caused by updating git2r when the workflowr package is loaded:</p>
+<pre><code>Error: package or namespace load failed for ‘git2r’ in get(method, envir = home):
+ lazy-load database '/usr/local/lib/R/site-library/git2r/R/git2r.rdb' is corrupt
+In addition: Warning message:
+In get(method, envir = home) : internal error -3 in R_decompress1</code></pre>
+<p>The short term solution is to restart your current R session, which should fix everything. In the long term, if you start to get this type of error often, you can try one of the following strategies:</p>
+<ol style="list-style-type: decimal">
+<li>Always restart your R session after installing new packages (Ctrl/Command+Shift+F10 in RStudio)</li>
+<li>Open R from a directory that is not a workflowr project when installing new packages</li>
+<li>Delete <code>.Rprofile</code> with <code><a href="../reference/wflow_remove.html">wflow_remove(".Rprofile")</a></code> and manually load workflowr with <code><a href="https://www.rdocumentation.org/packages/base/topics/library">library(workflowr)</a></code> every time you start a new R session</li>
+</ol>
+</div>
 <div id="can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files" class="anchor"></a>Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</h2>
 <p>Yes! If you’d like to create a single HTML or PDF file to distribute an isolated analysis from your project, you can directly run the <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> function <code>render</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"rmarkdown"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># Create analysis/file.html</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/html_document">html_document</a></span>())</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># Create analysis/file.pdf</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/pdf_document">pdf_document</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"rmarkdown"</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># Create analysis/file.html</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/html_document">html_document</a></span>())</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co"># Create analysis/file.pdf</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/render">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/rmarkdown/topics/pdf_document">pdf_document</a></span>())</a></code></pre></div>
 <p>There are two main caveats to this:</p>
 <ol style="list-style-type: decimal">
 <li>Internal links to other HTML pages in your workflowr site will be broken since they are not being distributed with the single file.</li>
@@ -182,9 +202,9 @@ wflow_git_commit("docs/assets/*.png", "Add external images of ...")</a></code></
 <pre><code>editor_options:
   chunk_output_type: console</code></pre>
 <p>Second, note that the working directory of the inline code chunks can be different than the working directory of the R console. This is very counterintuitive, but the working directory of the inline code chunks is set by the “Knit Directory” setting in RStudio. The setting of “Knit Directory” may be different in your collaborator’s version of RStudio, or even your own RStudio installed on a different computer. Thus it’s not a good idea to rely on this value. Instead, you can explicitly specify the working directory to be used for the inline code chunks by setting the knitr option <code>root.dir</code> in a chunk called <code>setup</code>, which RStudio treats specially. Adding the code chunk below to your R Markdown file will cause all the inline code chunks to be executed from the root of the project directory. This is consistent with the default workflowr setting.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="bn">```{r setup}</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="bn">knitr::opts_knit$set(root.dir = "..")</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="bn">```{r setup}</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="bn">knitr::opts_knit$set(root.dir = "..")</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
 <p>If you change the value of <code>knit_root_dir</code> in <code>_workflowr.yml</code>, then you would need to change the value of <code>root.dir</code> in the setup chunk accordingly. Warning that this is fragile, i.e. trying to change <code>root.dir</code> to any arbitrary directory may result in an error. If you’re going to use inline code chunks, it’s best two follow one of the following options:</p>
 <ol style="list-style-type: decimal">
 <li><p>Execute code in the root of the project directory (the default workflowr setting). Don’t change <code>knit_root_dir</code> in <code>_workflowr.yml</code>. Add the setup chunk defined above to your R Markdown files. Note that this setup chunk will affect RStudio but not the workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</p></li>
@@ -221,6 +241,7 @@ output:
       <li><a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button">Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</a></li>
       <li><a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion">Can I share workflowr websites directly with collaborators in a secure fashion?</a></li>
       <li><a href="#can-i-password-protect-my-website">Can I password-protect my website?</a></li>
+      <li><a href="#how-should-i-install-packages-to-use-with-a-workflowr-project">How should I install packages to use with a workflowr project?</a></li>
       <li><a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files">Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</a></li>
       <li><a href="#can-i-use-r-notebooks-with-workflowr">Can I use R notebooks with workflowr?</a></li>
       <li><a href="#how-should-i-pronounce-and-spell-workflowr">How should I pronounce and spell workflowr?</a></li>

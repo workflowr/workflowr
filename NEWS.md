@@ -1,5 +1,7 @@
 # workflowr 1.3.0.9000
 
+* Add FAQ entry on installing packages in a workflowr project (idea from
+@xiangzhu, #160)
 * Add reproducibility check to detect absolute paths to internal project files
 that should be specified as relative paths.
 * Check if Git repository is locked and produce error message that explains how

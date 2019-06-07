@@ -1,5 +1,39 @@
-# workflowr 1.3.0.9000
+# workflowr 1.4.0
 
+This minor release of workflowr features further GitHub integration, a new
+reproducibility check, and various improvements and bug fixes.
+
+## New features
+
+* The initial GitHub setup always included the manual step of creating the
+GitHub repository, but this is no longer the case! When you run
+`wflow_use_github("username")`, it will offer to create the new GitHub
+repository for you. If you sign-in to GitHub via your web browser and grant
+workflowr permission, it will be created automatically.
+
+* Absolute paths to files on your local computer are not reproducible. If you or
+someone else tries to execute the code on a different machine, it will fail. Now
+workflowr will automatically search for absolute paths to files that are inside
+of the workflowr project. If it detects any, it will fail the reproducibility
+check, and provide you with the equivalent relative paths to use.
+
+* Now every time you push your latest changes with `wflow_git_push()`, a new
+browser tab will automatically be opened to your online repository (idea from
+@pcarbo)
+
+## Minor improvements and bug fixes
+
+* Mention `knitr::include_graphics()` as an option for including external images
+(idea from @Zepeng-Mu, #162)
+* Check if Git repository is locked and produce error message that explains how
+to fix it (idea from @brimittleman)
+* Document that `wflow_build()` and `wflow_publish()` build the files in the
+given order if they are provided explicitly to the argument `files` (idea from
+@antass and @pcarbo, #164)
+* Handle spaces in chunk names for HTML targets. If a chunk name contains a
+space, the name of the figure file will also has a space. This broke the
+accompanying link for the HTML button with the table of previous versions of the
+figure. Now the spaces are removed in the HTML link.
 * Add FAQ entry on installing packages in a workflowr project (idea from
 @xiangzhu, #160)
 * `wflow_use_github()`/`wflow_use_gitlab()` provide better guesses if the
@@ -10,15 +44,11 @@ remote repositories. The argument `remote` must be `NULL` or the name of an
 existing remote. The support for direct URLs was likely rarely used since it is
 rarely used with Git as well, and it likely never worked given how the
 underlying functions from [git2r][] work.
+* Document in the GitLab vignette that the repository will be automatically
+created the first time the repository is pushed with `wflow_git_push()` (this is
+a feature unique to GitLab)
 
 [git2r]: https://cran.r-project.org/package=git2r
-
-* Open repository in browser after running `wflow_git_push()` (idea from
-@pcarbo)
-* Add reproducibility check to detect absolute paths to internal project files
-that should be specified as relative paths.
-* Check if Git repository is locked and produce error message that explains how
-to fix it (idea from @brimittleman)
 
 # workflowr 1.3.0
 

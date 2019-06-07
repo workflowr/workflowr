@@ -499,10 +499,8 @@ create_objects_table <- function(env) {
 }
 
 convert_df_to_html_table <- function(df) {
-  table <- knitr::kable(df, format = "html", row.names = FALSE)
-  # Add table formatting
-  table <- stringr::str_replace(table, "<table>",
-                                "<table class=\"table table-condensed table-hover\">")
+  table <- knitr::kable(df, format = "html", row.names = FALSE,
+                        table.attr = "class=\"table table-condensed table-hover\"")
   return(as.character(table))
 }
 

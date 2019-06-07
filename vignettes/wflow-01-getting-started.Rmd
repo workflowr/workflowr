@@ -343,28 +343,41 @@ your website online. If you are using GitLab, switch to the vignette [Hosting
 workflowr websites using GitLab](wflow-06-gitlab.html) and then continue with
 the next section.
 
-First, you need to configure your local project for use use with GitHub. Pass
-your GitHub username and desired repository name to the workflowr function
-`wflow_use_github()`.
+All the required setup can be performed by the workflowr function
+`wflow_use_github()`. The only required argument is your GitHub username^[The
+default is to name the GitHub repository using the same name as the directory
+that contains the workflowr project. This is likely what you used with
+`wflow_start()`, which in this case was `"myproject"`. If you'd prefer the
+GitHub repository to have a different name, you can pass the argument
+`repository = "other-name"`.]:
 
 ```{r wflow-use-github, eval=FALSE}
-wflow_use_github("myname", "myproject")
+wflow_use_github("myname")
 ```
 
 ```{r wflow-use-github-hidden, echo=FALSE}
 # Don't want to try to authenticate on GitHub
-wflow_use_github("myname", "myproject", create_on_github = FALSE)
+wflow_use_github("myname", create_on_github = FALSE)
 ```
 
-This had two main effects: 1) it configured Git to communicate with your future
-GitHub repository, and 2) it inserted a link to your future GitHub repository
-into the navigation bar (you'll need to run `wflow_build()` or `wflow_publish()`
-to observe this change).
+This has two main effects on your local machine: 1) it configures Git to
+communicate with your future GitHub repository, and 2) it inserts a link to your
+future GitHub repository into the navigation bar (you'll need to run
+`wflow_build()` or `wflow_publish()` to observe this change). Furthermore,
+`wflow_use_github()` will prompt you to ask if you'd like to authorize workflowr
+to automatically create the repository on GitHub. If you agree, a browser tab
+will open, and you will need to authenticate with your username and password,
+and then give permission to the "workflowr-oauth-app" to access your
+account^[This sounds scarier than it actually is. The "workflowr-oauth-app" is
+simply a formality for GitHub to grant authorization. The "app" itself is the R
+code running on your local machine. Once `wflow_use_github()` finishes, the
+authorization is deleted, and nothing (and no one) can access your account].
 
-Second, you need to create the GitHub repository (you can skip this step if
-you've already created it). To do this, login to your account on GitHub and
-create a new repository following these [instructions][new-repo]. The screenshot
-below shows the menu in the topright of the webpage.
+If you decline the offer from `wflow_use_github()` to automatically create the
+GitHub repository, you need to manually create it. To do this, login to your
+account on GitHub and create a new repository following these
+[instructions][new-repo]. The screenshot below shows the menu in the topright of
+the webpage.
 
 <img src="github-new-repo.png" alt="Create a new repository on GitHub."
   style="display: block; margin: auto; border: black 1px solid">
@@ -379,7 +392,7 @@ whatever you like), but it's generally good organizational practice to use the
 same name for both your GitHub repository and the local directory on your
 computer.
 
-Third, you need to send your files to GitHub. Push your files to GitHub with the
+Next, you need to send your files to GitHub. Push your files to GitHub with the
 function `wflow_git_push()`:^[Unfortunately this can fail for many different
 reasons. If you already regularly use `git push` in the Terminal, you will
 probably want to continue using this. If you don't have Git installed on your
@@ -398,7 +411,7 @@ keys](wflow-02-customization.html#setup-ssh-keys).]. Each time you make changes
 to your project, e.g. run `wflow_publish()`, you will need to run
 `wflow_git_push()` to send the changes to GitHub.
 
-Fourth, now that your code is on GitHub, you need to tell GitHub that you want
+Lastly, now that your code is on GitHub, you need to tell GitHub that you want
 the files in `docs/` to be published as a website. Go to Settings -> GitHub
 Pages and choose "master branch docs/ folder" as the Source
 ([instructions][publish-docs]). Using the hypothetical names above, the

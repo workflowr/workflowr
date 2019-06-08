@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -109,6 +109,37 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="workflowr-1-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#workflowr-1-4-0" class="anchor"></a>workflowr 1.4.0<small> Unreleased </small>
+</h1>
+<p>This minor release of workflowr features further GitHub integration, a new reproducibility check, and various improvements and bug fixes.</p>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
+<ul>
+<li><p>The initial GitHub setup always included the manual step of creating the GitHub repository, but this is no longer the case! When you run <code><a href="../reference/wflow_use_github.html">wflow_use_github("username")</a></code>, it will offer to create the new GitHub repository for you. If you sign-in to GitHub via your web browser and grant workflowr permission, it will be created automatically.</p></li>
+<li><p>Absolute paths to files on your local computer are not reproducible. If you or someone else tries to execute the code on a different machine, it will fail. Now workflowr will automatically search for absolute paths to files that are inside of the workflowr project. If it detects any, it will fail the reproducibility check, and provide you with the equivalent relative paths to use.</p></li>
+<li><p>Now every time you push your latest changes with <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, a new browser tab will automatically be opened to your online repository (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
+</ul>
+</div>
+<div id="minor-improvements-and-bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
+<ul>
+<li>Mention <code><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">knitr::include_graphics()</a></code> as an option for including external images (idea from <a href='https://github.com/Zepeng-Mu'>@Zepeng-Mu</a>, <a href='https://github.com/jdblischak/workflowr/issues/162'>#162</a>)</li>
+<li>Check if Git repository is locked and produce error message that explains how to fix it (idea from <a href='https://github.com/brimittleman'>@brimittleman</a>)</li>
+<li>Document that <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> build the files in the given order if they are provided explicitly to the argument <code>files</code> (idea from <a href='https://github.com/antass'>@antass</a> and <a href='https://github.com/pcarbo'>@pcarbo</a>, <a href='https://github.com/jdblischak/workflowr/issues/164'>#164</a>)</li>
+<li>Handle spaces in chunk names for HTML targets. If a chunk name contains a space, the name of the figure file will also has a space. This broke the accompanying link for the HTML button with the table of previous versions of the figure (because it uses the filename to be unique). Now the spaces are removed in the HTML link.</li>
+<li>Add FAQ entry on installing packages in a workflowr project (idea from <a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/160'>#160</a>)</li>
+<li>
+<code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code>/<code><a href="../reference/wflow_use_gitlab.html">wflow_use_gitlab()</a></code> provide better guesses if the arguments <code>username</code> or <code>repository</code> are left blank. If <code>repository</code> is <code>NULL</code>, it is set to the name of the workflowr project directory (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>).</li>
+<li>
+<code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> and <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> no longer accept direct URLs to remote repositories. The argument <code>remote</code> must be <code>NULL</code> or the name of an existing remote. The support for direct URLs was likely rarely used since it is rarely used with Git as well, and it likely never worked given how the underlying functions from <a href="https://cran.r-project.org/package=git2r">git2r</a> work.</li>
+<li>Document in the GitLab vignette that the repository will be automatically created the first time the repository is pushed with <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> (this is a feature unique to GitLab)</li>
+</ul>
+</div>
+</div>
     <div id="workflowr-1-3-0" class="section level1">
 <h1 class="page-header">
 <a href="#workflowr-1-3-0" class="anchor"></a>workflowr 1.3.0<small> 2019-04-15 </small>
@@ -135,9 +166,9 @@
 </ul>
 <p>Note that the addin for <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is a Shiny Gadget that enables you to interactively choose which files to publish and write a detailed commit message (assistance from <a href='https://github.com/zaynaib'>@zaynaib</a> and <a href='https://github.com/argdata'>@argdata</a>, <a href='https://github.com/jdblischak/workflowr/issues/143'>#143</a>).</p>
 </div>
-<div id="minor-improvements-and-bug-fixes" class="section level2">
+<div id="minor-improvements-and-bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
+<a href="#minor-improvements-and-bug-fixes-1" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li><p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> fails early if pandoc is not installed (<a href='https://github.com/zaynaib'>@zaynaib</a>, <a href='https://github.com/jdblischak/workflowr/issues/75'>#75</a>)</p></li>
 <li><p><code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>/<code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fail early if user tries to use SSH authentication when it is not supported by the current installation of git2r/libgit2 (<a href='https://github.com/jdblischak/workflowr/issues/144'>#144</a>)</p></li>
@@ -150,7 +181,7 @@
 <li><p>Rename reproducibility tab “Report” to “Checks” (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
 <li><p>Fix spacing issue with session information button (reported by <a href='https://github.com/pcarbo'>@pcarbo</a>, <a href='https://github.com/jdblischak/workflowr/issues/157'>#157</a>)</p></li>
 <li><p><code><a href="../reference/wflow_status.html">wflow_status()</a></code> reports if the configuration files <code>_workflowr.yml</code> and <code>_site.yml</code> have been edited</p></li>
-<li><p>Disable inline code chunks by default in R Markdown files created by workflowr. Document how to use inline code chunks in the <a href="../articles/wflow-05-faq.html">FAQ</a> (discussed with <a href='https://github.com/rgayler'>@rgayler</a> and <a href='https://github.com/Robinlovelace'>@Robinlovelace</a> , <a href='https://github.com/jdblischak/workflowr/issues/140'>#140</a>)</p></li>
+<li><p>Disable inline code chunks by default in R Markdown files created by workflowr. Document how to use inline code chunks in the <a href="https://jdblischak.github.io/workflowr/articles/wflow-05-faq.html">FAQ</a> (discussed with <a href='https://github.com/rgayler'>@rgayler</a> and <a href='https://github.com/Robinlovelace'>@Robinlovelace</a> , <a href='https://github.com/jdblischak/workflowr/issues/140'>#140</a>)</p></li>
 </ul>
 </div>
 </div>
@@ -246,9 +277,9 @@
 </h1>
 <p>workflowr 1.1.0 is a maintenance release. It includes some minor new features, improved error handling, and bug fixes. Critically, it makes workflowr compatible with the latest release of <a href="https://cran.r-project.org/package=git2r">git2r</a>.</p>
 <p>The most noticeable changes are 1) <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> are now much faster, especially if your project has many R Markdown files and/or many Git commits, 2) the rmarkdown package is no longer loaded automatically when you load workflowr, and 3) the new function <code><a href="../reference/wflow_open.html">wflow_open()</a></code> (based on a previous version in <a href="https://github.com/jdblischak/workflowrBeta">workflowrBeta</a>) to open new or existing R Markdown files.</p>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li>Resurrect <code><a href="../reference/wflow_open.html">wflow_open()</a></code>. Since there is no longer a workflowr template in workflowr 1.0+, it creates a file with a minimal YAML header (<a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/107'>#107</a>)</li>
 <li>Add bibliography before session information (reported by <a href='https://github.com/docmanny'>@docmanny</a>, <a href='https://github.com/jdblischak/workflowr/issues/102'>#102</a>)</li>
@@ -688,6 +719,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-1-4-0">1.4.0</a></li>
         <li><a href="#workflowr-1-3-0">1.3.0</a></li>
         <li><a href="#workflowr-1-2-0">1.2.0</a></li>
         <li><a href="#workflowr-1-1-1">1.1.1</a></li>

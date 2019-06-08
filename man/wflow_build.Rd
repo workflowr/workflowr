@@ -153,7 +153,7 @@ Under the hood, \code{wflow_build} is a wrapper for
 \examples{
 \dontrun{
 
-# Build any files which have modified
+# Build any files which have been modified
 wflow_build() # equivalent to wflow_build(make = TRUE)
 # Build a single file
 wflow_build("file.Rmd")

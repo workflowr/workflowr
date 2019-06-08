@@ -67,7 +67,7 @@ in the Terminal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@ in the Terminal.</p>
     </div>
 
     <pre class="usage"><span class='fu'>wflow_git_push</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>branch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>password</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>set_upstream</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>password</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>set_upstream</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -168,6 +168,13 @@ track the remote branch if it isn't already tracking one. This is likely
 what you want. Equivalent to: <code>git push -u remote branch</code></p></td>
     </tr>
     <tr>
+      <th>view</th>
+      <td><p>logical (default: TRUE). Open the URL to the repository in the
+browser. Ignored if <code>dry_run = TRUE</code>. Also note that this only works
+if the option <code>browser</code> is set, which you can check with
+<code><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption("browser")</a></code>.</p></td>
+    </tr>
+    <tr>
       <th>dry_run</th>
       <td><p>logical (default: FALSE). Preview the proposed action but do
 not actually push to the remote repository.</p></td>
@@ -190,6 +197,8 @@ you'll need to provide the path to the project directory.</p></td>
 <li><p><b>username</b>: Username for online Git hosting service (e.g. GitHub
 or GitLab).</p></li>
 <li><p><b>force</b>: The input argument <code>force</code>.</p></li>
+<li><p><b>set_upstream</b>: The input argument <code>set_upstream</code>.</p></li>
+<li><p><b>view</b>: The input argument <code>view</code>.</p></li>
 <li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
 <li><p><b>protocol</b>: The authentication protocol for the remote repository
 (either <code>"https"</code> or <code>"ssh"</code>.</p></li>

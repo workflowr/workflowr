@@ -35,9 +35,11 @@
 <meta property="og:description" content="wflow_use_gitlab automates all the local configuration necessary to
 deploy your workflowr project with
 GitLab Pages.
-However, you will need to manually login to your account and create the new
-repository on GitLab. The final step is to run wflow_git_push in the R
-console." />
+Afterwards, you will need to run wflow_git_push in the R console (or
+git push in the terminal) to push the code to GitLab. Note that this
+will also create the repository if it doesn't exist yet (this requires GitLab
+10.5 or greater). Alternatively, you could manually login to your account and
+create the new repository on GitLab prior to pushing." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +70,7 @@ console." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -123,9 +125,11 @@ console." />
     <p><code>wflow_use_gitlab</code> automates all the local configuration necessary to
 deploy your workflowr project with
 <a href='https://docs.gitlab.com/ee/ci/yaml/README.html#pages'>GitLab Pages</a>.
-However, you will need to manually login to your account and create the new
-repository on GitLab. The final step is to run <code>wflow_git_push</code> in the R
-console.</p>
+Afterwards, you will need to run <code>wflow_git_push</code> in the R console (or
+<code>git push</code> in the terminal) to push the code to GitLab. Note that this
+will also create the repository if it doesn't exist yet (this requires GitLab
+10.5 or greater). Alternatively, you could manually login to your account and
+create the new repository on GitLab prior to pushing.</p>
     
     </div>
 
@@ -138,16 +142,28 @@ console.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>username</th>
-      <td><p>character (default: NULL). The GitLab username for the remote
-repository. If not specified, workflowr will attempt to guess this from the
-current remote named "origin" if it had previously been configured.</p></td>
+      <td><p>character (default: NULL). The GitLab account associated with
+the GitLab repository. This is likely your personal GitLab username, but it
+could also be the name of a GitLab organization you belong to. It will be
+combined with the arguments <code>repository</code> and <code>domain</code> to
+determine the URL of the new repository, e.g. the default is
+https://gitlab.com/username/repository. It will be combined with the
+arguments <code>repository</code>, <code>domain</code>, and <code>protocol</code> to
+determine the URL for Git to use to push and pull from GitLab, e.g. the
+default is https://gitlab.com/username/repository.git. If <code>username</code>
+is not specified, <code>wflow_use_gitlab</code> will first attempt to guess it
+from the current setting for the remote URL named "origin". If you haven't
+previously configured a remote for this workflowr project (or you are
+unsure what that means), then you should specify your GitLab username when
+calling this function.</p></td>
     </tr>
     <tr>
       <th>repository</th>
       <td><p>character (default: NULL). The name of the remote
-repository on GitLab. If not specified, workflowr will attempt to guess
-this from the current remote named "origin" if it had previously been
-configured.</p></td>
+repository on GitLab. If not specified, workflowr will guess the name of
+the repository. First, it will check the current setting for the remote URL
+named "origin". Second, it will use the name of the root directory of the
+workflowr project.</p></td>
     </tr>
     <tr>
       <th>navbar_link</th>

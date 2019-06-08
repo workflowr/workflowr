@@ -18,8 +18,8 @@ of the workflowr project. If it detects any, it will fail the reproducibility
 check, and provide you with the equivalent relative paths to use.
 
 * Now every time you push your latest changes with `wflow_git_push()`, a new
-browser tab will automatically be opened to your online repository (idea from
-@pcarbo)
+browser tab will automatically be opened to your online repository
+(idea from @pcarbo)
 
 ## Minor improvements and bug fixes
 
@@ -33,7 +33,8 @@ given order if they are provided explicitly to the argument `files` (idea from
 * Handle spaces in chunk names for HTML targets. If a chunk name contains a
 space, the name of the figure file will also has a space. This broke the
 accompanying link for the HTML button with the table of previous versions of the
-figure. Now the spaces are removed in the HTML link.
+figure (because it uses the filename to be unique). Now the spaces are removed
+in the HTML link.
 * Add FAQ entry on installing packages in a workflowr project (idea from
 @xiangzhu, #160)
 * `wflow_use_github()`/`wflow_use_gitlab()` provide better guesses if the

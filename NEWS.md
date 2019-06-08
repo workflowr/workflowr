@@ -115,7 +115,7 @@ binaries for 1.2.0)
 workflowr. Document how to use inline code chunks in the [FAQ][faq] (discussed
 with @rgayler and @Robinlovelace , #140)
 
-[faq]: ../articles/wflow-05-faq.html
+[faq]: https://jdblischak.github.io/workflowr/articles/wflow-05-faq.html
 
 # workflowr 1.2.0
 

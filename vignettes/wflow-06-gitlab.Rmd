@@ -35,7 +35,7 @@ the rest of the steps in this vignette.
 **Note:** You can skip this step if you'd like because GitLab will automatically
 create the new repository after you push it in Step 4 below. This
 [feature][push-to-create-a-new-project] was introduced in [GitLab
-10.5][gitlab-10.5], released in Febrary 2018.
+10.5][gitlab-10.5], released in February 2018.
 
 [push-to-create-a-new-project]: https://docs.gitlab.com/ee/gitlab-basics/create-project.html#push-to-create-a-new-project
 [gitlab-10.5]: https://about.gitlab.com/2018/02/22/gitlab-10-5-released/

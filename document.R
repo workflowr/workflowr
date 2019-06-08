@@ -17,5 +17,5 @@ unlink("docs/articles/*R")
 pkgdown::build_site()
 
 # Delete empty directories
-file.remove("Meta")
-file.remove("doc")
+unlink("Meta")
+unlink("doc")

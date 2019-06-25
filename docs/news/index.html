@@ -16,13 +16,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,6 +46,7 @@
 <![endif]-->
 
 
+
   </head>
 
   <body>
@@ -60,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
       </span>
     </div>
 
@@ -89,7 +92,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jdblischak/workflowr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -100,6 +103,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -109,6 +113,11 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="workflowr-1-4-0-9000" class="section level1">
+<h1 class="page-header">
+<a href="#workflowr-1-4-0-9000" class="anchor"></a>workflowr 1.4.0.9000<small> Unreleased </small>
+</h1>
+</div>
     <div id="workflowr-1-4-0" class="section level1">
 <h1 class="page-header">
 <a href="#workflowr-1-4-0" class="anchor"></a>workflowr 1.4.0<small> Unreleased </small>
@@ -127,7 +136,7 @@
 <h2 class="hasAnchor">
 <a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
-<li>Mention <code><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">knitr::include_graphics()</a></code> as an option for including external images (idea from <a href='https://github.com/Zepeng-Mu'>@Zepeng-Mu</a>, <a href='https://github.com/jdblischak/workflowr/issues/162'>#162</a>)</li>
+<li>Mention <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> as an option for including external images (idea from <a href='https://github.com/Zepeng-Mu'>@Zepeng-Mu</a>, <a href='https://github.com/jdblischak/workflowr/issues/162'>#162</a>)</li>
 <li>Check if Git repository is locked and produce error message that explains how to fix it (idea from <a href='https://github.com/brimittleman'>@brimittleman</a>)</li>
 <li>Document that <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> build the files in the given order if they are provided explicitly to the argument <code>files</code> (idea from <a href='https://github.com/antass'>@antass</a> and <a href='https://github.com/pcarbo'>@pcarbo</a>, <a href='https://github.com/jdblischak/workflowr/issues/164'>#164</a>)</li>
 <li>Handle spaces in chunk names for HTML targets. If a chunk name contains a space, the name of the figure file will also has a space. This broke the accompanying link for the HTML button with the table of previous versions of the figure (because it uses the filename to be unique). Now the spaces are removed in the HTML link.</li>
@@ -294,7 +303,7 @@
 <li>The argument <code>files</code> now requires correct paths to existing R Markdown or HTML files. Previously, <code><a href="../reference/wflow_view.html">wflow_view()</a></code> would guess the correct path. While convenient, it was also potentially confusing since it was inconsistent with the other workflowr functions</li>
 <li>The argument <code>latest</code> is no longer mutually-exclusive with <code>files</code>. If the most recently modified HTML is different than those specified by <code>files</code>, they will all be opened for viewing</li>
 <li>S3 print method</li>
-<li>Do not attempt to open HTML files with <code><a href="https://www.rdocumentation.org/packages/utils/topics/browseURL">browseURL()</a></code> if <code><a href="https://www.rdocumentation.org/packages/base/topics/options">getOption("browser")</a></code> does not provide a default option</li>
+<li>Do not attempt to open HTML files with <code><a href="https://rdrr.io/r/utils/browseURL.html">browseURL()</a></code> if <code><a href="https://rdrr.io/r/base/options.html">getOption("browser")</a></code> does not provide a default option</li>
 </ul>
 </li>
 </ul>
@@ -303,7 +312,7 @@
 <h2 class="hasAnchor">
 <a href="#internal-changes" class="anchor"></a>Internal changes</h2>
 <ul>
-<li>Dramatically increase speed of <code><a href="../reference/wflow_status.html">wflow_status()</a></code>/<code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> by using <code><a href="https://www.rdocumentation.org/packages/git2r/topics/odb_blobs">git2r::odb_blobs()</a></code> to obtain past commit times of files (if these functions are still slow for you, try running <code>git gc</code> in the Terminal)</li>
+<li>Dramatically increase speed of <code><a href="../reference/wflow_status.html">wflow_status()</a></code>/<code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> by using <code><a href="https://rdrr.io/pkg/git2r/man/odb_blobs.html">git2r::odb_blobs()</a></code> to obtain past commit times of files (if these functions are still slow for you, try running <code>git gc</code> in the Terminal)</li>
 <li>Make workflowr compatible with latest release of <a href="https://cran.r-project.org/package=git2r">git2r</a> as well as previous versions</li>
 <li>Move rmarkdown from Depends to Imports. Unlike earlier versions, it’s no longer necessary to call rmarkdown functions directly when using workflowr (which was the original intention of attaching rmarkdown). Also there is the potential for problems to arise from the order in which packages are loaded in a user’s R session (described <a href="https://github.com/leeper/Depends">here</a>)</li>
 </ul>
@@ -336,7 +345,7 @@
 <a href="#workflowr-1-0-0" class="anchor"></a>workflowr 1.0.0<small> Unreleased </small>
 </h1>
 <p>The 1.0.0 release is a major change. Instead of relying on the external code chunks in <code>chunks.R</code> to implement the reproducibility features, workflowr 1.0.0 replaces <code>chunks.R</code> with the output format <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code>. This enables a much more informative reproducibility report to be created.</p>
-<pre><code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports"># Install from GitHub
+<pre><code><a href="https://rdrr.io/pkg/devtools/man/reexports.html"># Install from GitHub
 devtools::install_github("jdblischak/workflowr")
 
 # Start a new project to test out the new features
@@ -383,9 +392,9 @@ wflow_update()</a></code></pre>
 </h1>
 <ul>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> now views the website by default if run interactively (<code>view = interactive()</code>) just like <code><a href="../reference/wflow_build.html">wflow_build()</a></code></p></li>
-<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
+<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://rdrr.io/pkg/devtools/man/reexports.html">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
 <li><p>Fix minor bug that affected the error message produced for a failed push or pull using the SSH protocol</p></li>
-<li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code><a href="https://www.rdocumentation.org/packages/git2r/topics/push">git2r::push()</a></code> or <code><a href="https://www.rdocumentation.org/packages/git2r/topics/pull">git2r::pull()</a></code> is reported to facilitate troubleshooting</p></li>
+<li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code><a href="https://rdrr.io/pkg/git2r/man/push.html">git2r::push()</a></code> or <code><a href="https://rdrr.io/pkg/git2r/man/pull.html">git2r::pull()</a></code> is reported to facilitate troubleshooting</p></li>
 <li><p>Multiple other internal changes to make workflowr more robust</p></li>
 </ul>
 </div>
@@ -455,7 +464,7 @@ wflow_update()</a></code></pre>
 <h2 class="hasAnchor">
 <a href="#log-files" class="anchor"></a>Log files</h2>
 <ul>
-<li>The log files by default are now written to the directory returned by <code><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir()</a></code> instead of to <code>/tmp/workflowr</code>. This prevents failures due to permission issues when multiple workflowr users try to use the same machine (e.g. a compute node on a HPC cluster) (<a href='https://github.com/jdblischak/workflowr/issues/86'>#86</a>)</li>
+<li>The log files by default are now written to the directory returned by <code><a href="https://rdrr.io/r/base/tempfile.html">tempdir()</a></code> instead of to <code>/tmp/workflowr</code>. This prevents failures due to permission issues when multiple workflowr users try to use the same machine (e.g. a compute node on a HPC cluster) (<a href='https://github.com/jdblischak/workflowr/issues/86'>#86</a>)</li>
 </ul>
 </div>
 <div id="miscellaneous-2" class="section level2">
@@ -579,7 +588,7 @@ wflow_update()</a></code></pre>
 <a href="#wflow_publish" class="anchor"></a>wflow_publish</h2>
 <ul>
 <li><p>This new function replaces the previous functionality of <code>wflow_commit()</code>. The basic interface is much simpler.</p></li>
-<li><p><code><a href="../reference/wflow_publish.html">wflow_publish("analysis/file.Rmd")</a></code> will 1) commit <code>analysis/file.Rmd</code>, 2) build <code>analysis/file.Rmd</code> in its own separate R session with <code><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed(12345)</a></code>, and 3) commit <code>docs/file.html</code> and any generated figures. These 3 steps are referred to as “publishing a file”.</p></li>
+<li><p><code><a href="../reference/wflow_publish.html">wflow_publish("analysis/file.Rmd")</a></code> will 1) commit <code>analysis/file.Rmd</code>, 2) build <code>analysis/file.Rmd</code> in its own separate R session with <code><a href="https://rdrr.io/r/base/Random.html">set.seed(12345)</a></code>, and 3) commit <code>docs/file.html</code> and any generated figures. These 3 steps are referred to as “publishing a file”.</p></li>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish(all = TRUE)</a></code> will publish all tracked analysis files, analogous to <code>git commit -a</code>.</p></li>
 <li><p>To change the theme or make some other change to the entire site, run <code><a href="../reference/wflow_publish.html">wflow_publish("analysis/_site.yml", republish = TRUE)</a></code>, which will 1) commit the configuration file <code>analysis/_site.yml</code>, 2) re-build all the previously published analysis files using the new configuration options, and 3) commit the re-built HTML files.</p></li>
 </ul>
@@ -590,7 +599,7 @@ wflow_update()</a></code></pre>
 <ul>
 <li><p>By default, <code><a href="../reference/wflow_build.html">wflow_build()</a></code> runs in “Make”-mode, only building R Markdown files that have been updated more recently than their corresponding HTML files. If instead files are specifically stated, those files will be built.</p></li>
 <li><p>By default, R Markdown files are now built each in their own separate R session (similar in function to the “Knit HTML” button in RStudio). This prevents undesirable behavior like sharing variables and loaded packages across separate files. Set <code>local = TRUE</code> to build the files in the local R console (useful for debugging, but otherwise discouraged).</p></li>
-<li><p>By default, the seed for random number generation is set to the arbitrary number <code>12345</code> (using <code><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed()</a></code>). This ensures that any code that produces random numbers will be reproducible.</p></li>
+<li><p>By default, the seed for random number generation is set to the arbitrary number <code>12345</code> (using <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code>). This ensures that any code that produces random numbers will be reproducible.</p></li>
 </ul>
 </div>
 <div id="wflow_commit" class="section level2">
@@ -719,6 +728,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-1-4-0-9000">1.4.0.9000</a></li>
         <li><a href="#workflowr-1-4-0">1.4.0</a></li>
         <li><a href="#workflowr-1-3-0">1.3.0</a></li>
         <li><a href="#workflowr-1-2-0">1.2.0</a></li>
@@ -746,19 +756,23 @@ wflow_update()</a></code></pre>
 
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by John Blischak, Peter Carbonetto, Matthew Stephens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

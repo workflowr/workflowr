@@ -284,8 +284,15 @@ output:
 
 ## How should I pronounce and spell workflowr?
 
-You can say "workflowr + er" or "workflowr + R", whichever is more natural to
-you.
+There are multiple options for pronouncing workflowr:
+
+1. workflow + er
+1. workflow + R
+1. work + flower
+
+I (John) started primarily saying "workflow + er" but have more recently
+transitioned to saying "workflow + R" more often. You can choose whichever is
+most natural to you.
 
 Workflowr should be capitalized at the beginning of a sentence, but otherwise
 the lowercase workflowr should be the preferred option.

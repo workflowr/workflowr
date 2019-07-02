@@ -84,6 +84,10 @@ jobs:
       - run:
           name: Install package dependencies
           command: r .circleci/install-r-pkgs.R
+      # Hot fix required b/c getOption("repos") is set to https://mran.microsoft.com/snapshot/2019-04-26
+      - run:
+          name: Install latest version of git2r
+          command: r -e 'install.packages("git2r", repos = "https://cran.rstudio.com/", dependencies = FALSE)'
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R

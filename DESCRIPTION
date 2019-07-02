@@ -33,7 +33,7 @@ Imports:
     callr,
     fs (>= 1.2.4),
     getPass,
-    git2r,
+    git2r (>= 0.26.0),
     glue,
     httr,
     knitr (>= 1.18),

@@ -1,153 +1,154 @@
 
 create_report <- function(input, output_dir, has_code, opts) {
+  report <- ""
+  if (is.null(opts$suppress_reports) || isFALSE(opts$suppress_reports)) {
+    input <- absolute(input)
+    input_dir <- dirname(input)
 
-  input <- absolute(input)
-  input_dir <- dirname(input)
-
-  uses_git <- git2r::in_repository(input_dir)
-  if (uses_git) {
-    r <- git2r::repository(input_dir, discover = TRUE)
-    s <- git2r::status(r, ignored = TRUE)
-  } else {
-    r <- NULL
-    s <- NULL
-  }
-
-  # workflowr checks -----------------------------------------------------------
-  checks <- list()
-
-  # Check R Markdown status
-  if (uses_git) {
-    checks$result_rmd <- check_rmd(input, r, s)
-  }
-
-  if (has_code) {
-    # Check environment
-    checks$result_environment <- check_environment()
-
-    # Check seed
-    checks$result_seed <- check_seed(opts$seed)
-
-    # Check sessioninfo
-    checks$result_sessioninfo <- check_sessioninfo(input, opts$sessioninfo)
-
-    # Check caching
-    checks$cache <- check_cache(input)
-
-    # Check for absolute paths
-    checks$paths <- check_paths(input, opts$knit_root_dir)
-  }
-
-  # Check version control
-  checks$result_vc <- check_vc(input, r, s, opts$github)
-
-  # Formatting checks ----------------------------------------------------------
-
-  checks_formatted <- Map(format_check, checks)
-  checks_formatted_string <- paste(unlist(checks_formatted), collapse = "\n")
-  report_checks <- glue::glue('
-  <div class="panel-group" id="workflowr-checks">
-    {checks_formatted_string}
-  </div>
-  ')
-
-  # Format `knit_root_dir` for display in report.
-  knit_root_print <- opts$knit_root_dir
-  # If it is part of a workflowr project, construct a path relative to the
-  # directory that contains the workflowr project directory.
-  p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
-  if (class(p) != "try-error") {
-    if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
-      knit_root_print <- fs::path_rel(knit_root_print,
-                                      start = dirname(absolute(p$root)))
+    uses_git <- git2r::in_repository(input_dir)
+    if (uses_git) {
+      r <- git2r::repository(input_dir, discover = TRUE)
+      s <- git2r::status(r, ignored = TRUE)
+    } else {
+      r <- NULL
+      s <- NULL
     }
-  } else {
-    # Otherwise, just replace the home directory with ~
-    knit_root_print <- stringr::str_replace(knit_root_print,
-                                            fs::path_home(),
-                                            "~")
-  }
-  # Add trailing slash
-  if (!stringr::str_detect(knit_root_print, "/$")) {
-    knit_root_print <- paste0(knit_root_print, "/")
-  }
 
-  # Version history ------------------------------------------------------------
+    # workflowr checks ------------------------------------------------------
+    checks <- list()
 
-  if (uses_git) {
-    versions <- get_versions(input, output_dir, r, opts$github)
-    report_versions <- versions
-  } else {
-    report_versions <-
-      "<p>This project is not being versioned with Git. To obtain the full
-      reproducibility benefits of using workflowr, please see
-      <code>?wflow_start</code>.</p>"
-  }
+    # Check R Markdown status
+    if (uses_git) {
+      checks$result_rmd <- check_rmd(input, r, s)
+    }
 
-  # Return ---------------------------------------------------------------------
+    if (has_code) {
+      # Check environment
+      checks$result_environment <- check_environment()
 
-  checks_passed <- vapply(checks, function(x) x$pass, FUN.VALUE = logical(1))
-  if (all(checks_passed)) {
-    symbol <- "glyphicon-ok text-success"
-  } else {
-    symbol <- "glyphicon-exclamation-sign text-danger"
-  }
-  report <- glue::glue('
-  <p>
-  <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report"
-    data-toggle="collapse" data-target="#workflowr-report">
-    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-    workflowr
-    <span class="glyphicon {symbol}" aria-hidden="true"></span>
-  </button>
-  </p>
+      # Check seed
+      checks$result_seed <- check_seed(opts$seed)
 
-  <div id="workflowr-report" class="collapse">
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
-    <li><a data-toggle="tab" href="#checks">
-    Checks <span class="glyphicon {symbol}" aria-hidden="true"></span>
-    </a></li>
-    <li><a data-toggle="tab" href="#versions">Past versions</a></li>
-  </ul>
+      # Check sessioninfo
+      checks$result_sessioninfo <- check_sessioninfo(input, opts$sessioninfo)
 
-  <div class="tab-content">
-  <div id="summary" class="tab-pane fade in active">
-    <p><strong>Last updated:</strong> {Sys.Date()}</p>
-    <p><strong>Checks:</strong>
-    <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-    {sum(checks_passed)}
-    <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
-    {sum(!checks_passed)}
-    </p>
-    <p><strong>Knit directory:</strong>
-    <code>{knit_root_print}</code>
-    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
-    title="This is the local directory in which the code in this file was executed.">
-    </span>
-    </p>
+      # Check caching
+      checks$cache <- check_cache(input)
+
+      # Check for absolute paths
+      checks$paths <- check_paths(input, opts$knit_root_dir)
+    }
+
+    # Check version control
+    checks$result_vc <- check_vc(input, r, s, opts$github)
+
+    # Formatting checks -----------------------------------------------------
+
+    checks_formatted <- Map(format_check, checks)
+    checks_formatted_string <- paste(unlist(checks_formatted), collapse = "\n")
+    report_checks <- glue::glue('
+    <div class="panel-group" id="workflowr-checks">
+      {checks_formatted_string}
+    </div>
+    ')
+
+    # Format `knit_root_dir` for display in report.
+    knit_root_print <- opts$knit_root_dir
+    # If it is part of a workflowr project, construct a path relative to the
+    # directory that contains the workflowr project directory.
+    p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
+    if (class(p) != "try-error") {
+      if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
+        knit_root_print <- fs::path_rel(knit_root_print,
+                                        start = dirname(absolute(p$root)))
+      }
+    } else {
+      # Otherwise, just replace the home directory with ~
+      knit_root_print <- stringr::str_replace(knit_root_print,
+                                              fs::path_home(),
+                                              "~")
+    }
+    # Add trailing slash
+    if (!stringr::str_detect(knit_root_print, "/$")) {
+      knit_root_print <- paste0(knit_root_print, "/")
+    }
+
+    # Version history --------------------------------------------------------
+
+    if (uses_git) {
+      versions <- get_versions(input, output_dir, r, opts$github)
+      report_versions <- versions
+    } else {
+      report_versions <-
+        "<p>This project is not being versioned with Git. To obtain the full
+        reproducibility benefits of using workflowr, please see
+        <code>?wflow_start</code>.</p>"
+    }
+
+    # Return -----------------------------------------------------------------
+
+    checks_passed <- vapply(checks, function(x) x$pass, FUN.VALUE = logical(1))
+    if (all(checks_passed)) {
+      symbol <- "glyphicon-ok text-success"
+    } else {
+      symbol <- "glyphicon-exclamation-sign text-danger"
+    }
+    report <- glue::glue('
     <p>
-    This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
-    analysis was created with <a
-    href="https://github.com/jdblischak/workflowr">workflowr</a> (version
-    {packageVersion("workflowr")}). The <em>Checks</em> tab describes the
-    reproducibility checks that were applied when the results were created.
-    The <em>Past versions</em> tab lists the development history.
+    <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report"
+      data-toggle="collapse" data-target="#workflowr-report">
+      <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+      workflowr
+      <span class="glyphicon {symbol}" aria-hidden="true"></span>
+    </button>
     </p>
-  <hr>
-  </div>
-  <div id="checks" class="tab-pane fade">
-    {report_checks}
-  <hr>
-  </div>
-  <div id="versions" class="tab-pane fade">
-    {report_versions}
-  <hr>
-  </div>
-  </div>
-  </div>
-  ')
 
+    <div id="workflowr-report" class="collapse">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#summary">Summary</a></li>
+      <li><a data-toggle="tab" href="#checks">
+      Checks <span class="glyphicon {symbol}" aria-hidden="true"></span>
+      </a></li>
+      <li><a data-toggle="tab" href="#versions">Past versions</a></li>
+    </ul>
+
+    <div class="tab-content">
+    <div id="summary" class="tab-pane fade in active">
+      <p><strong>Last updated:</strong> {Sys.Date()}</p>
+      <p><strong>Checks:</strong>
+      <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+      {sum(checks_passed)}
+      <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+      {sum(!checks_passed)}
+      </p>
+      <p><strong>Knit directory:</strong>
+      <code>{knit_root_print}</code>
+      <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+      title="This is the local directory in which the code in this file was executed.">
+      </span>
+      </p>
+      <p>
+      This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+      analysis was created with <a
+      href="https://github.com/jdblischak/workflowr">workflowr</a> (version
+      {packageVersion("workflowr")}). The <em>Checks</em> tab describes the
+      reproducibility checks that were applied when the results were created.
+      The <em>Past versions</em> tab lists the development history.
+      </p>
+    <hr>
+    </div>
+    <div id="checks" class="tab-pane fade">
+      {report_checks}
+    <hr>
+    </div>
+    <div id="versions" class="tab-pane fade">
+      {report_versions}
+    <hr>
+    </div>
+    </div>
+    </div>
+    ')
+  }
   return(report)
 }
 

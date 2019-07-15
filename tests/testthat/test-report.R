@@ -515,6 +515,12 @@ test_that("create_report reports knit directory", {
   report <- create_report(input, output_dir, has_code, opts)
   expected <- glue::glue("<code>{opts$knit_root_dir}/</code>")
   expect_true(stringr::str_detect(report, expected))
+
+  # Suppress the reports
+  opts$suppress_reports <- TRUE
+  report <- create_report(input, output_dir, has_code, opts)
+  expected <- '<div id="workflowr-report" class="collapse">'
+  expect_false(stringr::str_detect(report, expected))
 })
 
 # Test detect_code -------------------------------------------------------------

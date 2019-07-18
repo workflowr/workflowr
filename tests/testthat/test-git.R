@@ -113,16 +113,13 @@ test_that("check_git_lock throws error only when Git repository is locked", {
 
 test_that("commits(path) returns commits in reverse chronological order", {
 
-  arguments <- names(formals(git2r::commits))
-
-  if (!"path" %in% arguments) skip("Tests new argument commits(path)")
-
   # Uses the workflowr git log for testing
   if (!git2r::in_repository()) skip("Requires the workflowr Git repository")
 
   r <- git2r::repository()
 
   files <- c("README.md", "vignettes/wflow-07-common-code.Rmd")
+  files <- file.path(git2r::workdir(r), files)
 
   for (f in files) {
     commits_path <- git2r::commits(r, path = f)

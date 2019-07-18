@@ -10,8 +10,6 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
 
   arguments <- names(formals(git2r::commits))
 
-  if (!"path" %in% arguments) skip("Tests new argument commits(path)")
-
   path <- fs::path_temp()
   on.exit(test_teardown(path))
   r <- git2r::init(path)

@@ -114,7 +114,7 @@ test_that("get_versions and get_versions_fig insert GitHub URL if available", {
   versions <- workflowr:::get_versions(input = rmd, output_dir, r, github)
   expect_true(any(stringr::str_detect(versions, github)))
   fig <- file.path(output_dir, "figure", basename(rmd), "chunkname-1.png")
-  versions_fig <- get_versions_fig(fig, r, github)
+  versions_fig <- workflowr:::get_versions_fig(fig, r, github)
   expect_true(any(stringr::str_detect(versions_fig, github)))
 })
 
@@ -154,7 +154,7 @@ test_that("get_versions_fig converts spaces to dashes for HTML ID", {
 
   # The figure file without spaces should be displayed as normal
   fig <- file.path(output_dir, "figure", basename(rmd), "chunk-name-1.png")
-  versions_fig <- get_versions_fig(fig, r, github)
+  versions_fig <- workflowr:::get_versions_fig(fig, r, github)
   versions_fig_lines <- stringr::str_split(versions_fig, "\\n")[[1]]
   data_target <- stringr::str_subset(versions_fig_lines,
                                       'data-target=\"#fig-chunk-name-1\"')
@@ -169,7 +169,7 @@ test_that("get_versions_fig converts spaces to dashes for HTML ID", {
   # The figure file with spaces should be quoted and have spaces replaced with
   # dashes for data-target and id.
   fig <- file.path(output_dir, "figure", basename(rmd), "chunk name-1.png")
-  versions_fig <- get_versions_fig(fig, r, github)
+  versions_fig <- workflowr:::get_versions_fig(fig, r, github)
   versions_fig_lines <- stringr::str_split(versions_fig, "\\n")[[1]]
   data_target <- stringr::str_subset(versions_fig_lines,
                                      'data-target=\"#fig-no-spaces-chunk-name-1\"')
@@ -212,7 +212,7 @@ test_that("check_vc reports Git repo even if no commits", {
 workflowr:::git2r_add(r, rmd)
 git2r::commit(r, "Add rmd")
 s <- git2r::status(r, ignored = TRUE)
-current_commit <- git2r_slot(git2r::commits(r)[[1]], "sha")
+current_commit <- workflowr:::git2r_slot(git2r::commits(r)[[1]], "sha")
 commit_to_display <- workflowr:::shorten_sha(current_commit)
 
 test_that("check_vc reports Git repo", {

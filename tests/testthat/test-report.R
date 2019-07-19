@@ -8,9 +8,8 @@ source("setup.R")
 
 test_that("get_versions_df returns data frame of commits for file(s)", {
 
-  arguments <- names(formals(git2r::commits))
-
-  path <- fs::path_temp()
+  path <- fs::file_temp()
+  fs::dir_create(path)
   on.exit(test_teardown(path))
   r <- git2r::init(path)
   git2r::config(r, user.name = "Test User", user.email = "testing")

@@ -7,6 +7,12 @@
 # wflow_start() ----------------------------------------------------------------
 
 templates <- list(
+  .gitattributes = '
+# Include R Markdown files in GitHub language statistics
+# https://github.com/github/linguist#detectable
+*.[Rr]md linguist-detectable=true
+
+',
   .gitignore = '
 .Rproj.user
 .Rhistory

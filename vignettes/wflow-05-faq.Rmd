@@ -155,6 +155,28 @@ saved in an organzided fashion (i.e. the file path is still something like
 `docs/figure/file.Rmd/chunk-name.ext`). Furthermore, `wflow_publish()` will
 automatically version the figure files regardless of the file extension.
 
+A similar option to the one above is to have two separate code chunks. The
+advantage of this more verbose option is that you can specify different chunk
+names (and thus different filenames) and also set different `fig.width` and
+`fig.height` for the website and paper versions. By setting `include=FALSE` for
+the second chunk, neither the code nor the PDF figure file is displayed in the
+web page.
+
+````
+```{r plot-for-paper}`r ''`
+library(ggplot2)
+data(mtcars)
+p <- ggplot(mtcars, aes(x = mpg, y = disp)) + geom_point()
+p
+```
+````
+
+````
+```{r figure1A, include=FALSE, dev='pdf', fig.height=3, fig.width=9}`r ''`
+p
+```
+````
+
 However, for the most control, you can always save the figure manually, e.g.
 using `ggsave()`. For example, the example chunk below creates a 10x10 inch PNG
 file that is automatically versioned by workflowr, but also uses `ggsave()` to

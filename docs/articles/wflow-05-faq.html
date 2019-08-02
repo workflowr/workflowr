@@ -80,7 +80,7 @@
             <h3 class="subtitle">workflowr version 1.4.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-08-01</h4>
+            <h4 class="date">2019-08-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-05-faq.Rmd"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -159,6 +159,16 @@ p &lt;- ggplot(mtcars, aes(x = mpg, y = disp)) + geom_point()
 p
 ```</code></pre>
 <p>The main advantage of the above approaches is that the figure files are still saved in an organzided fashion (i.e. the file path is still something like <code>docs/figure/file.Rmd/chunk-name.ext</code>). Furthermore, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> will automatically version the figure files regardless of the file extension.</p>
+<p>A similar option to the one above is to have two separate code chunks. The advantage of this more verbose option is that you can specify different chunk names (and thus different filenames) and also set different <code>fig.width</code> and <code>fig.height</code> for the website and paper versions. By setting <code>include=FALSE</code> for the second chunk, neither the code nore the PDF figure file is displayed in the web page.</p>
+<pre><code>```{r plot-for-paper}
+library(ggplot2)
+data(mtcars)
+p &lt;- ggplot(mtcars, aes(x = mpg, y = disp)) + geom_point()
+p
+```</code></pre>
+<pre><code>```{r figure1A, include=FALSE, dev='pdf', fig.height=3, fig.width=9}
+p
+```</code></pre>
 <p>However, for the most control, you can always save the figure manually, e.g. using <code>ggsave()</code>. For example, the example chunk below creates a 10x10 inch PNG file that is automatically versioned by workflowr, but also uses <code>ggsave()</code> to save a 5x5 inch PDF file in the subdirectory <code>paper/</code> (which would need to be manually committed by the user, e.g. with <code><a href="../reference/wflow_git_commit.html">wflow_git_commit()</a></code>):</p>
 <pre><code>```{r plot-for-paper, fig.width=10, fig.height=10}
 library(ggplot2)
@@ -217,11 +227,11 @@ In get(method, envir = home) : internal error -3 in R_decompress1</code></pre>
 <h2 class="hasAnchor">
 <a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files" class="anchor"></a>Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</h2>
 <p>Yes! If you’d like to create a single HTML or PDF file to distribute an isolated analysis from your project, you can directly run the <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> function <code>render</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rmarkdown"</span>)</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Create analysis/file.html</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/html_document.html">html_document</a></span>())</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co"># Create analysis/file.pdf</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/pdf_document.html">pdf_document</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rmarkdown"</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Create analysis/file.html</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/html_document.html">html_document</a></span>())</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># Create analysis/file.pdf</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/pdf_document.html">pdf_document</a></span>())</a></code></pre></div>
 <p>There are two main caveats to this:</p>
 <ol style="list-style-type: decimal">
 <li>Internal links to other HTML pages in your workflowr site will be broken since they are not being distributed with the single file.</li>
@@ -236,9 +246,9 @@ In get(method, envir = home) : internal error -3 in R_decompress1</code></pre>
 <pre><code>editor_options:
   chunk_output_type: console</code></pre>
 <p>Second, note that the working directory of the inline code chunks can be different than the working directory of the R console. This is very counterintuitive, but the working directory of the inline code chunks is set by the “Knit Directory” setting in RStudio. The setting of “Knit Directory” may be different in your collaborator’s version of RStudio, or even your own RStudio installed on a different computer. Thus it’s not a good idea to rely on this value. Instead, you can explicitly specify the working directory to be used for the inline code chunks by setting the knitr option <code>root.dir</code> in a chunk called <code>setup</code>, which RStudio treats specially. Adding the code chunk below to your R Markdown file will cause all the inline code chunks to be executed from the root of the project directory. This is consistent with the default workflowr setting.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="bn">```{r setup}</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="bn">knitr::opts_knit$set(root.dir = "..")</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="bn">```{r setup}</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="bn">knitr::opts_knit$set(root.dir = "..")</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
 <p>If you change the value of <code>knit_root_dir</code> in <code>_workflowr.yml</code>, then you would need to change the value of <code>root.dir</code> in the setup chunk accordingly. Warning that this is fragile, i.e. trying to change <code>root.dir</code> to any arbitrary directory may result in an error. If you’re going to use inline code chunks, it’s best two follow one of the following options:</p>
 <ol style="list-style-type: decimal">
 <li><p>Execute code in the root of the project directory (the default workflowr setting). Don’t change <code>knit_root_dir</code> in <code>_workflowr.yml</code>. Add the setup chunk defined above to your R Markdown files. Note that this setup chunk will affect RStudio but not the workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</p></li>

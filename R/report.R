@@ -1,7 +1,7 @@
 
 create_report <- function(input, output_dir, has_code, opts) {
   report <- ""
-  if (is.null(opts$suppress_reports) || isFALSE(opts$suppress_reports)) {
+  if (is.null(opts$suppress_report) || isFALSE(opts$suppress_report)) {
     input <- absolute(input)
     input_dir <- dirname(input)
 

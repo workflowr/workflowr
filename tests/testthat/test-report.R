@@ -520,7 +520,7 @@ test_that("create_report reports knit directory", {
   expect_true(stringr::str_detect(report, expected))
 
   # Suppress the reports
-  opts$suppress_reports <- TRUE
+  opts$suppress_report <- TRUE
   report <- create_report(input, output_dir, has_code, opts)
   expected <- '<div id="workflowr-report" class="collapse">'
   expect_false(stringr::str_detect(report, expected))

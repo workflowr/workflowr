@@ -15,7 +15,8 @@ wflow_options <- function(file) {
                      seed = 12345,
                      github = get_host_from_remote(dirname(file)),
                      sessioninfo = "sessionInfo()",
-                     fig_path_ext = FALSE)
+                     fig_path_ext = FALSE,
+                     suppress_report = FALSE)
 
   # Get options from a potential _workflowr.yml file
   wflow_root <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),

@@ -119,9 +119,14 @@ test_that("wflow_start commits all the project files", {
   # Rproj file
   expect_true(file.path(site_dir, paste0(basename(site_dir), ".Rproj")) %in% committed)
   # hidden files
+  expect_true(file.path(site_dir, ".gitattributes") %in% committed)
   expect_true(file.path(site_dir, ".gitignore") %in% committed)
   expect_true(file.path(site_dir, ".Rprofile") %in% committed)
   expect_true(file.path(site_dir, "docs/.nojekyll") %in% committed)
+  # note: I'm pretty sure the above tests for hidden files are no longer
+  # necessary now that wflow_start() uses the list `templates` instead of actual
+  # files. But they are a useful regression check in case I return to a
+  # file-based strategy.
 
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })

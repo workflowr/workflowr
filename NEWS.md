@@ -6,6 +6,12 @@ robustness of workflowr Git functionality.
 * Add option `suppress_report` to suppress the insertion of the workflowr report
 at the top of the HTML file (@kaneplusplus, #168)
 
+* `wflow_start()` adds a `.gitattributes` file that classifies R Markdown files
+as R code for the official GitHub language statistics calculated via
+[linguist][]. The default setting is to ignore R Markdown files.
+
+[linguist]: https://github.com/github/linguist
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

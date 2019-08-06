@@ -8,9 +8,9 @@
 
 templates <- list(
   .gitattributes = '
-# Include R Markdown files in GitHub language statistics
-# https://github.com/github/linguist#detectable
-*.[Rr]md linguist-detectable=true
+# Classify R Markdown files as R code for GitHub language statistics
+# https://github.com/github/linguist#overrides
+*.[Rr]md linguist-language=R
 
 ',
   .gitignore = '

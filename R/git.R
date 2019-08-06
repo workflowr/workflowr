@@ -165,10 +165,6 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
     stop("Only R Markdown files are accepted.")
   # Corresponding HTML files
   html <- to_html(files, outdir = outdir)
-  # Remove preceding path if necessary. Has to be relative to .git directory.
-  path_to_git <- paste0(git2r_workdir(repo), "/")
-  files <- stringr::str_replace(files, path_to_git, "")
-  html <- stringr::str_replace(html, path_to_git, "")
   # For each source file, determine if it has been committed more recently than
   # its corresponding HTML
   out_of_date <- logical(length = length(files))
@@ -184,8 +180,6 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
     }
   }
   outdated <- files[out_of_date]
-  # Prepend path to Git repository
-  outdated <- file.path(path_to_git, outdated)
   return(outdated)
 }
 

@@ -1,5 +1,8 @@
 # workflowr 1.4.0.9000
 
+* Require git2r >= 0.26.0 to support internal changes that increase speed and
+robustness of workflowr Git functionality.
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

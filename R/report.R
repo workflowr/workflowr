@@ -1,99 +1,101 @@
 
 create_report <- function(input, output_dir, has_code, opts) {
-  report <- ""
-  if (is.null(opts$suppress_report) || isFALSE(opts$suppress_report)) {
-    input <- absolute(input)
-    input_dir <- dirname(input)
+  if (opts$suppress_report) {
+    return("")
+  }
 
-    uses_git <- git2r::in_repository(input_dir)
-    if (uses_git) {
-      r <- git2r::repository(input_dir, discover = TRUE)
-      s <- git2r::status(r, ignored = TRUE)
-    } else {
-      r <- NULL
-      s <- NULL
-    }
+  input <- absolute(input)
+  input_dir <- dirname(input)
 
-    # workflowr checks ------------------------------------------------------
-    checks <- list()
+  uses_git <- git2r::in_repository(input_dir)
+  if (uses_git) {
+    r <- git2r::repository(input_dir, discover = TRUE)
+    s <- git2r::status(r, ignored = TRUE)
+  } else {
+    r <- NULL
+    s <- NULL
+  }
 
-    # Check R Markdown status
-    if (uses_git) {
-      checks$result_rmd <- check_rmd(input, r, s)
-    }
+  # workflowr checks ------------------------------------------------------
+  checks <- list()
 
-    if (has_code) {
-      # Check environment
-      checks$result_environment <- check_environment()
+  # Check R Markdown status
+  if (uses_git) {
+    checks$result_rmd <- check_rmd(input, r, s)
+  }
 
-      # Check seed
-      checks$result_seed <- check_seed(opts$seed)
+  if (has_code) {
+    # Check environment
+    checks$result_environment <- check_environment()
 
-      # Check sessioninfo
-      checks$result_sessioninfo <- check_sessioninfo(input, opts$sessioninfo)
+    # Check seed
+    checks$result_seed <- check_seed(opts$seed)
 
-      # Check caching
-      checks$cache <- check_cache(input)
+    # Check sessioninfo
+    checks$result_sessioninfo <- check_sessioninfo(input, opts$sessioninfo)
 
-      # Check for absolute paths
-      checks$paths <- check_paths(input, opts$knit_root_dir)
-    }
+    # Check caching
+    checks$cache <- check_cache(input)
 
-    # Check version control
-    checks$result_vc <- check_vc(input, r, s, opts$github)
+    # Check for absolute paths
+    checks$paths <- check_paths(input, opts$knit_root_dir)
+  }
 
-    # Formatting checks -----------------------------------------------------
+  # Check version control
+  checks$result_vc <- check_vc(input, r, s, opts$github)
 
-    checks_formatted <- Map(format_check, checks)
-    checks_formatted_string <- paste(unlist(checks_formatted), collapse = "\n")
-    report_checks <- glue::glue('
+  # Formatting checks -----------------------------------------------------
+
+  checks_formatted <- Map(format_check, checks)
+  checks_formatted_string <- paste(unlist(checks_formatted), collapse = "\n")
+  report_checks <- glue::glue('
     <div class="panel-group" id="workflowr-checks">
       {checks_formatted_string}
     </div>
     ')
 
-    # Format `knit_root_dir` for display in report.
-    knit_root_print <- opts$knit_root_dir
-    # If it is part of a workflowr project, construct a path relative to the
-    # directory that contains the workflowr project directory.
-    p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
-    if (class(p) != "try-error") {
-      if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
-        knit_root_print <- fs::path_rel(knit_root_print,
-                                        start = dirname(absolute(p$root)))
-      }
-    } else {
-      # Otherwise, just replace the home directory with ~
-      knit_root_print <- stringr::str_replace(knit_root_print,
-                                              fs::path_home(),
-                                              "~")
+  # Format `knit_root_dir` for display in report.
+  knit_root_print <- opts$knit_root_dir
+  # If it is part of a workflowr project, construct a path relative to the
+  # directory that contains the workflowr project directory.
+  p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
+  if (class(p) != "try-error") {
+    if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
+      knit_root_print <- fs::path_rel(knit_root_print,
+                                      start = dirname(absolute(p$root)))
     }
-    # Add trailing slash
-    if (!stringr::str_detect(knit_root_print, "/$")) {
-      knit_root_print <- paste0(knit_root_print, "/")
-    }
+  } else {
+    # Otherwise, just replace the home directory with ~
+    knit_root_print <- stringr::str_replace(knit_root_print,
+                                            fs::path_home(),
+                                            "~")
+  }
+  # Add trailing slash
+  if (!stringr::str_detect(knit_root_print, "/$")) {
+    knit_root_print <- paste0(knit_root_print, "/")
+  }
 
-    # Version history --------------------------------------------------------
+  # Version history --------------------------------------------------------
 
-    if (uses_git) {
-      versions <- get_versions(input, output_dir, r, opts$github)
-      report_versions <- versions
-    } else {
-      report_versions <-
-        "<p>This project is not being versioned with Git. To obtain the full
+  if (uses_git) {
+    versions <- get_versions(input, output_dir, r, opts$github)
+    report_versions <- versions
+  } else {
+    report_versions <-
+      "<p>This project is not being versioned with Git. To obtain the full
         reproducibility benefits of using workflowr, please see
         <code>?wflow_start</code>.</p>"
-    }
+  }
 
-    # Return -----------------------------------------------------------------
+  # Return -----------------------------------------------------------------
 
-    checks_passed <- vapply(checks, function(x) x$pass, FUN.VALUE = logical(1))
-    if (all(checks_passed)) {
-      symbol <- "glyphicon-ok text-success"
-    } else {
-      symbol <- "glyphicon-exclamation-sign text-danger"
-    }
-    report <- glue::glue('
+  checks_passed <- vapply(checks, function(x) x$pass, FUN.VALUE = logical(1))
+  if (all(checks_passed)) {
+    symbol <- "glyphicon-ok text-success"
+  } else {
+    symbol <- "glyphicon-exclamation-sign text-danger"
+  }
+  report <- glue::glue('
     <p>
     <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report"
       data-toggle="collapse" data-target="#workflowr-report">
@@ -148,7 +150,7 @@ create_report <- function(input, output_dir, has_code, opts) {
     </div>
     </div>
     ')
-  }
+
   return(report)
 }
 

@@ -484,7 +484,7 @@ test_that("create_report reports knit directory", {
   output_dir <- file.path(path, "docs")
   has_code <- TRUE
   opts <- list(seed = 1, github = NA, sessioninfo = "sessionInfo()",
-               fig_path_ext = FALSE)
+               fig_path_ext = FALSE, suppress_report = FALSE)
 
   # In the project root
   opts$knit_root_dir <- path

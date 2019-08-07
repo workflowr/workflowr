@@ -1,7 +1,10 @@
-# workflowr 1.4.0.9000
+# workflowr 1.4.0.9001
 
 * Require git2r >= 0.26.0 to support internal changes that increase speed and
 robustness of workflowr Git functionality.
+
+* Add option `suppress_report` to suppress the insertion of the workflowr report
+at the top of the HTML file (@kaneplusplus, #168)
 
 # workflowr 1.4.0
 

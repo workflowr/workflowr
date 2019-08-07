@@ -210,6 +210,30 @@ vignette [Customize your research website](wflow-02-customization.html) provides
 some ideas that are simple to implement. Check out the documentation for
 [rmarkdown][] and [Twitter Bootstrap][Bootstrap] for inspiration.
 
+## How can I suppress the workflowr report?
+
+To suppress the insertion of the workflowr report for all of the files in your
+project, activate the option `suppress_report` in the `_workflowr.yml` file by
+adding the following line:
+
+```
+suppress_report: TRUE
+```
+
+And then republishing your project:
+
+```
+wflow_publish("_workflowr.yml", republish = TRUE)
+```
+
+To suppress the workflowr report only for a specific file, add the following
+lines to its YAML header:
+
+```
+workflowr:
+  suppress_report: TRUE
+```
+
 ## Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?
 
 `wflow_build()` is designed to have the same functionality as the Knit HTML

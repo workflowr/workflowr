@@ -8,10 +8,12 @@
 
 <title>Changelog • workflowr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -32,7 +34,9 @@
 
 
 
+
 <meta property="og:title" content="Changelog" />
+
 
 
 
@@ -63,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9001</span>
       </span>
     </div>
 
@@ -88,7 +92,6 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jdblischak/workflowr">
@@ -113,14 +116,19 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="workflowr-1-4-0-9000" class="section level1">
+    <div id="workflowr-1-4-0-9001" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-4-0-9000" class="anchor"></a>workflowr 1.4.0.9000<small> Unreleased </small>
+<a href="#workflowr-1-4-0-9001" class="anchor"></a>workflowr 1.4.0.9001<small> Unreleased </small>
 </h1>
+<ul>
+<li><p>Require git2r &gt;= 0.26.0 to support internal changes that increase speed and robustness of workflowr Git functionality.</p></li>
+<li><p>Add option <code>suppress_report</code> to suppress the insertion of the workflowr report at the top of the HTML file (<a href='https://github.com/kaneplusplus'>@kaneplusplus</a>, <a href='https://github.com/jdblischak/workflowr/issues/168'>#168</a>)</p></li>
+<li><p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> adds a <code>.gitattributes</code> file that classifies R Markdown files as R code for the official GitHub language statistics calculated via <a href="https://github.com/github/linguist">linguist</a>. The default setting is to ignore R Markdown files.</p></li>
+</ul>
 </div>
     <div id="workflowr-1-4-0" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-4-0" class="anchor"></a>workflowr 1.4.0<small> Unreleased </small>
+<a href="#workflowr-1-4-0" class="anchor"></a>workflowr 1.4.0<small> 2019-06-08 </small>
 </h1>
 <p>This minor release of workflowr features further GitHub integration, a new reproducibility check, and various improvements and bug fixes.</p>
 <div id="new-features" class="section level2">
@@ -728,7 +736,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-1-4-0-9000">1.4.0.9000</a></li>
+        <li><a href="#workflowr-1-4-0-9001">1.4.0.9001</a></li>
         <li><a href="#workflowr-1-4-0">1.4.0</a></li>
         <li><a href="#workflowr-1-3-0">1.3.0</a></li>
         <li><a href="#workflowr-1-2-0">1.2.0</a></li>

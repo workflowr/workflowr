@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9001</span>
       </span>
     </div>
 
@@ -77,10 +77,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Frequently asked questions</h1>
-            <h3 class="subtitle">workflowr version 1.4.0.9000</h3>
+            <h3 class="subtitle">workflowr version 1.4.0.9001</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-08-02</h4>
+            <h4 class="date">2019-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-05-faq.Rmd"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -139,7 +139,7 @@ wflow_git_commit("docs/assets/*.png", "Add external images of ...")</a></code></
 <div id="how-can-i-save-a-figure-in-a-vector-graphics-format-e-g-pdf" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-can-i-save-a-figure-in-a-vector-graphics-format-e-g-pdf" class="anchor"></a>How can I save a figure in a vector graphics format (e.g. PDF)?</h2>
-<p>The default file format is PNG. This is ideal for displaying figure files on a web page. However, you might need to import a figure into a vector graphics editor (e.g. Illustrator, Inkscape) for final editing for a manuscript. There are multiple options for acheiving this.</p>
+<p>The default file format is PNG. This is ideal for displaying figure files on a web page. However, you might need to import a figure into a vector graphics editor (e.g. Illustrator, Inkscape) for final editing for a manuscript. There are multiple options for achieving this.</p>
 <p>One option is to switch to the file format SVG. It is a vector graphics format that is also well supported by web browsers. The code chunk below saves the figure file as an SVG:</p>
 <pre><code>```{r plot-for-paper, dev='svg'}
 library(ggplot2)
@@ -158,8 +158,8 @@ data(mtcars)
 p &lt;- ggplot(mtcars, aes(x = mpg, y = disp)) + geom_point()
 p
 ```</code></pre>
-<p>The main advantage of the above approaches is that the figure files are still saved in an organzided fashion (i.e. the file path is still something like <code>docs/figure/file.Rmd/chunk-name.ext</code>). Furthermore, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> will automatically version the figure files regardless of the file extension.</p>
-<p>A similar option to the one above is to have two separate code chunks. The advantage of this more verbose option is that you can specify different chunk names (and thus different filenames) and also set different <code>fig.width</code> and <code>fig.height</code> for the website and paper versions. By setting <code>include=FALSE</code> for the second chunk, neither the code nore the PDF figure file is displayed in the web page.</p>
+<p>The main advantage of the above approaches is that the figure files are still saved in an organized fashion (i.e. the file path is still something like <code>docs/figure/file.Rmd/chunk-name.ext</code>). Furthermore, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> will automatically version the figure files regardless of the file extension.</p>
+<p>A similar option to the one above is to have two separate code chunks. The advantage of this more verbose option is that you can specify different chunk names (and thus different filenames) and also set different <code>fig.width</code> and <code>fig.height</code> for the website and paper versions. By setting <code>include=FALSE</code> for the second chunk, neither the code nor the PDF figure file is displayed in the web page.</p>
 <pre><code>```{r plot-for-paper}
 library(ggplot2)
 data(mtcars)
@@ -187,6 +187,17 @@ ggsave("paper/plot-to-edit.pdf", width = 5, height = 5)
 <h2 class="hasAnchor">
 <a href="#can-i-change-x-on-my-website" class="anchor"></a>Can I change “X” on my website?</h2>
 <p>Almost certainly yes, but some things are easier to customize than others. The vignette <a href="wflow-02-customization.html">Customize your research website</a> provides some ideas that are simple to implement. Check out the documentation for <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> and <a href="http://getbootstrap.com/">Twitter Bootstrap</a> for inspiration.</p>
+</div>
+<div id="how-can-i-suppress-the-workflowr-report" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-can-i-suppress-the-workflowr-report" class="anchor"></a>How can I suppress the workflowr report?</h2>
+<p>To suppress the insertion of the workflowr report for all of the files in your project, activate the option <code>suppress_report</code> in the <code>_workflowr.yml</code> file by adding the following line:</p>
+<pre><code>suppress_report: TRUE</code></pre>
+<p>And then republishing your project:</p>
+<pre><code><a href="../reference/wflow_publish.html">wflow_publish("_workflowr.yml", republish = TRUE)</a></code></pre>
+<p>To suppress the workflowr report only for a specific file, add the following lines to its YAML header:</p>
+<pre><code>workflowr:
+  suppress_report: TRUE</code></pre>
 </div>
 <div id="why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="section level2">
 <h2 class="hasAnchor">
@@ -227,11 +238,11 @@ In get(method, envir = home) : internal error -3 in R_decompress1</code></pre>
 <h2 class="hasAnchor">
 <a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files" class="anchor"></a>Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</h2>
 <p>Yes! If you’d like to create a single HTML or PDF file to distribute an isolated analysis from your project, you can directly run the <a href="http://rmarkdown.rstudio.com/">rmarkdown</a> function <code>render</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rmarkdown"</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Create analysis/file.html</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/html_document.html">html_document</a></span>())</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># Create analysis/file.pdf</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/pdf_document.html">pdf_document</a></span>())</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rmarkdown"</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co"># Create analysis/file.html</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/html_document.html">html_document</a></span>())</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co"># Create analysis/file.pdf</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"analysis/file.Rmd"</span>, <span class="kw"><a href="https://rdrr.io/pkg/rmarkdown/man/pdf_document.html">pdf_document</a></span>())</a></code></pre></div>
 <p>There are two main caveats to this:</p>
 <ol style="list-style-type: decimal">
 <li>Internal links to other HTML pages in your workflowr site will be broken since they are not being distributed with the single file.</li>
@@ -246,9 +257,9 @@ In get(method, envir = home) : internal error -3 in R_decompress1</code></pre>
 <pre><code>editor_options:
   chunk_output_type: console</code></pre>
 <p>Second, note that the working directory of the inline code chunks can be different than the working directory of the R console. This is very counterintuitive, but the working directory of the inline code chunks is set by the “Knit Directory” setting in RStudio. The setting of “Knit Directory” may be different in your collaborator’s version of RStudio, or even your own RStudio installed on a different computer. Thus it’s not a good idea to rely on this value. Instead, you can explicitly specify the working directory to be used for the inline code chunks by setting the knitr option <code>root.dir</code> in a chunk called <code>setup</code>, which RStudio treats specially. Adding the code chunk below to your R Markdown file will cause all the inline code chunks to be executed from the root of the project directory. This is consistent with the default workflowr setting.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="bn">```{r setup}</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="bn">knitr::opts_knit$set(root.dir = "..")</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="bn">```{r setup}</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="bn">knitr::opts_knit$set(root.dir = "..")</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
 <p>If you change the value of <code>knit_root_dir</code> in <code>_workflowr.yml</code>, then you would need to change the value of <code>root.dir</code> in the setup chunk accordingly. Warning that this is fragile, i.e. trying to change <code>root.dir</code> to any arbitrary directory may result in an error. If you’re going to use inline code chunks, it’s best two follow one of the following options:</p>
 <ol style="list-style-type: decimal">
 <li><p>Execute code in the root of the project directory (the default workflowr setting). Don’t change <code>knit_root_dir</code> in <code>_workflowr.yml</code>. Add the setup chunk defined above to your R Markdown files. Note that this setup chunk will affect RStudio but not the workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</p></li>
@@ -279,6 +290,7 @@ output:
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -289,6 +301,7 @@ output:
       <li><a href="#how-can-i-save-a-figure-in-a-vector-graphics-format-e-g-pdf">How can I save a figure in a vector graphics format (e.g. PDF)?</a></li>
       <li><a href="#can-i-include-shiny-apps-in-my-website">Can I include Shiny apps in my website?</a></li>
       <li><a href="#can-i-change-x-on-my-website">Can I change “X” on my website?</a></li>
+      <li><a href="#how-can-i-suppress-the-workflowr-report">How can I suppress the workflowr report?</a></li>
       <li><a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button">Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</a></li>
       <li><a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion">Can I share workflowr websites directly with collaborators in a secure fashion?</a></li>
       <li><a href="#can-i-password-protect-my-website">Can I password-protect my website?</a></li>

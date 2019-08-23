@@ -112,7 +112,7 @@ image file(s)
 The default file format is PNG. This is ideal for displaying figure files on a
 web page. However, you might need to import a figure into a vector graphics
 editor (e.g. Illustrator, Inkscape) for final editing for a manuscript. There
-are multiple options for acheiving this.
+are multiple options for achieving this.
 
 One option is to switch to the file format SVG. It is a vector graphics format
 that is also well supported by web browsers. The code chunk below saves the
@@ -151,7 +151,7 @@ p
 ````
 
 The main advantage of the above approaches is that the figure files are still
-saved in an organzided fashion (i.e. the file path is still something like
+saved in an organized fashion (i.e. the file path is still something like
 `docs/figure/file.Rmd/chunk-name.ext`). Furthermore, `wflow_publish()` will
 automatically version the figure files regardless of the file extension.
 

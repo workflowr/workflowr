@@ -48,7 +48,7 @@ Imports:
     stringr (>= 1.1.0),
     tools,
     utils,
-    whisker,
+    whisker (>= 0.3-2),
     yaml
 RoxygenNote: 6.1.1
 Suggests:

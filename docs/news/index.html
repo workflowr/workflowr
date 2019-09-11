@@ -125,6 +125,9 @@
 <li><p>Add option <code>suppress_report</code> to suppress the insertion of the workflowr report at the top of the HTML file (<a href='https://github.com/kaneplusplus'>@kaneplusplus</a>, <a href='https://github.com/jdblischak/workflowr/issues/168'>#168</a>)</p></li>
 <li><p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> adds a <code>.gitattributes</code> file that classifies R Markdown files as R code for the official GitHub language statistics calculated via <a href="https://github.com/github/linguist">linguist</a>. The default setting is to ignore R Markdown files.</p></li>
 </ul>
+<ul>
+<li>Address <a href="https://github.com/r-lib/callr/commit/9f7665e1081da6f5134b214da694b4461d05659f">callr 3.3.0 bug</a> that writes objects to the global environment, causing the workflowr check of the global environment to fail. The failed check now explains that the problem can be fixed by updating the callr package.</li>
+</ul>
 </div>
     <div id="workflowr-1-4-0" class="section level1">
 <h1 class="page-header">

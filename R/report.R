@@ -501,15 +501,16 @@ ensure that the code is always run in an empty environment.</p>
     if (utils::packageVersion("callr") == "3.3.0") {
       details <- paste(collapse = "\n",
                        details,
-                       "<p>The R package callr, which workflowr relies on to
-                       isolate the code execution from the current R session,
-                       has a known bug in version 3.3.0. It writes the objects
-                       <code>data</code> and <code>env</code> to the global
-                       environment. At best this only causes the workflowr
-                       check to fail, but at worse could affect your results
-                       if your analysis uses variables with the same names. To
-                       avoid this problem, please update the callr
-                       package.</p>")
+                       "<p><strong>SOLUTION:</strong> The R package
+                       <a href=\"https://cran.r-project.org/package=callr\">callr</a>,
+                       which workflowr relies on to isolate the code execution
+                       from the current R session, has a known bug in version
+                       3.3.0. It writes the objects <code>data</code> and
+                       <code>env</code> to the global environment. At best
+                       this only causes the workflowr check to fail, but at
+                       worse could affect your results if your analysis uses
+                       variables with the same names. To avoid this problem,
+                       please update the callr package.</p>")
     }
   }
 

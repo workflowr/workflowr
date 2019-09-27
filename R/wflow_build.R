@@ -243,6 +243,22 @@ wflow_build <- function(files = NULL, make = is.null(files),
     }
   }
 
+  # Check for site generator ---------------------------------------------------
+
+  index <- file.path(p$analysis, "index.Rmd")
+  if (!check_site_generator(index)) {
+    m <-
+    "
+    Missing workflowr-specific site generator. To ensure your workflowr
+    project functions properly, please add the following to the YAML header of
+    index.Rmd:
+
+    site: workflowr::wflow_site
+
+    "
+    warning(wrap(m), call. = FALSE, immediate. = TRUE)
+  }
+
   # Determine which files to build ---------------------------------------------
 
   files_to_build <- files

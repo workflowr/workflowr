@@ -1,5 +1,9 @@
 context("utility")
 
+# Setup ------------------------------------------------------------------------
+
+source("setup.R")
+
 # Test to_html -----------------------------------------------------------------
 
 test_that("to_html converts file extension Rmd", {
@@ -618,4 +622,41 @@ test_that("get_first_line returns the first line", {
   observed <- workflowr:::get_first_line(messages)
   expect_identical(observed, c("Only has 1 line", "Short title",
                                "This is a much longer title as you can observe by its length..."))
+})
+
+# Test check_site_generator ----------------------------------------------------
+
+test_that("check_site_generator checks for wflow_site", {
+  index <- fs::file_temp(ext = ".Rmd")
+  expect_error(
+    workflowr:::check_site_generator(index),
+    "Unable to find index.Rmd"
+  )
+
+  fs::file_create(index)
+  on.exit(fs::file_delete(index))
+
+  expect_false(workflowr:::check_site_generator(index))
+
+  writeLines(c("---", "site: workflowr::wflow_site", "---"), con = index)
+  expect_true(workflowr:::check_site_generator(index))
+
+  writeLines(c("---", "site: rmarkdown::default_site_generator", "---"), con = index)
+  expect_false(workflowr:::check_site_generator(index))
+})
+
+test_that("check_site_generator generates warning from wflow_build", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  index <- file.path(path, "analysis", "index.Rmd")
+  writeLines(c("---", "output: workflowr::wflow_html", "---"), con = index)
+  expect_warning(
+    wflow_build(index, view = FALSE, project = path),
+    "Missing workflowr-specific site generator."
+  )
 })

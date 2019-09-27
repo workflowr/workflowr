@@ -19,6 +19,9 @@ package.
 
 [callr-bug-3.3.0]: https://github.com/r-lib/callr/commit/9f7665e1081da6f5134b214da694b4461d05659f
 
+* Warn user from `wflow_build()` if `index.Rmd` is missing the
+workflowr-specific site generator `wflow_site()` (idea from @pcarbo, #177)
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

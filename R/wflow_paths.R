@@ -54,6 +54,15 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
     o$analysis <- dirname(site_file)
   }
 
+  # rmarkdown website requires index.Rmd file
+  index <- file.path(o$analysis, "index.Rmd")
+  if (!fs::file_exists(index)) {
+    stop(wrap(glue::glue(
+      "Invalid workflowr project. R Markdown websites require an index.Rmd
+      file. Unable to locate expected file: {index}")),
+    call. = FALSE)
+  }
+
   # docs/ directory
   output_dir <- yaml::yaml.load_file(site_file)$output_dir
   if (is.null(output_dir))

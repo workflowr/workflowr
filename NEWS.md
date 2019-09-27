@@ -22,6 +22,8 @@ package.
 * Warn user from `wflow_build()` if `index.Rmd` is missing the
 workflowr-specific site generator `wflow_site()` (idea from @pcarbo, #177)
 
+* Fail early if missing required file `index.Rmd`
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

@@ -255,6 +255,15 @@ test_that("wflow_status throws error if no _site.yml file.", {
                "Unable to find the file _site.yml in the analysis directory.")
 })
 
+test_that("wflow_status throws error if no index.Rmd file.", {
+  index_original <- file.path(site_dir, "analysis/index.Rmd")
+  index_replace <-  file.path(site_dir, "analysis/other.Rmd")
+  on.exit(file.rename(index_replace, index_original))
+  file.rename(index_original, index_replace)
+  expect_error(s <- wflow_status(project = site_dir),
+               "Invalid workflowr project")
+})
+
 test_that("wflow_status throws error if no Git repository.", {
   git_original <- file.path(site_dir, ".git")
   git_replace <-  file.path(site_dir, ".git2")

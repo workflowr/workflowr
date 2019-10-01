@@ -37,7 +37,7 @@ jobs:
       NOT_CRAN: true
       PANDOC: 2.7
     docker:
-      - image: rocker/r-ver:devel
+      - image: rocker/r-ver@sha256:3acb62f298e527d5fbd003770a40cc741c586d99e33a48173c71bef4f0b2c6d8
     steps:
       - restore_cache:
           keys:

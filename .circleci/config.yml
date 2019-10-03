@@ -4,12 +4,14 @@ jobs:
     environment:
       NOT_CRAN: true
       PANDOC: 2.7
+      R_LIBS: ~/R/Library
     docker:
-      - image: rocker/r-ver:3.6.0
+      - image: rocker/r-base:latest
     steps:
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CIRCLE_JOB }}
+            - r-pkg-cache-v1-{{ arch }}-{{ .Branch }}
+            - r-pkg-cache-v1-{{ arch }}-
       - checkout
       - run:
           name: Install system dependencies
@@ -29,16 +31,19 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: cache-{{ .Environment.CIRCLE_JOB }}
+          key: r-pkg-cache-v1-{{ arch }}-{{ .Branch }}
           paths:
-            - "/usr/local/lib/R/site-library"
+            - "~/R/Library"
   pandocless:
+    environment:
+      R_LIBS: ~/R/Library
     docker:
-      - image: rocker/r-ver:3.6.0
+      - image: rocker/r-base:latest
     steps:
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CIRCLE_JOB }}
+            - r-pkg-cache-v1-{{ arch }}-{{ .Branch }}
+            - r-pkg-cache-v1-{{ arch }}-
       - checkout
       - run:
           name: Install system dependencies
@@ -55,19 +60,21 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: cache-{{ .Environment.CIRCLE_JOB }}
+          key: r-pkg-cache-v1-{{ arch }}-{{ .Branch }}
           paths:
-            - "/usr/local/lib/R/site-library"
+            - "~/R/Library"
   codecov:
     environment:
       NOT_CRAN: true
       PANDOC: 2.7
+      R_LIBS: ~/R/Library
     docker:
-      - image: rocker/r-ver:3.6.0
+      - image: rocker/r-base:latest
     steps:
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CIRCLE_JOB }}
+            - r-pkg-cache-v1-{{ arch }}-{{ .Branch }}
+            - r-pkg-cache-v1-{{ arch }}-
       - checkout
       - run:
           name: Install system dependencies
@@ -87,9 +94,9 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: cache-{{ .Environment.CIRCLE_JOB }}
+          key: r-pkg-cache-v1-{{ arch }}-{{ .Branch }}
           paths:
-            - "/usr/local/lib/R/site-library"
+            - "~/R/Library"
 workflows:
   version: 2
   all:

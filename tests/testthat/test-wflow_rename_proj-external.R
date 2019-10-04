@@ -52,7 +52,7 @@ test_that("wflow_rename_proj() renames README title", {
 test_that("wflow_rename_proj() commits changes", {
   r <- git2r::repository(path = path_new)
   commit <- git2r::commits(r, n = 1)[[1]]
-  commit_message <- workflowr:::git2r_slot(commit, "message")
+  commit_message <- commit$message
   expect_identical(commit_message, paste("Rename project to", newname))
 })
 

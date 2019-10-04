@@ -131,7 +131,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
   # Must be using Git
   p <- wflow_paths(error_git = TRUE, project = project)
   r <- git2r::repository(path = p$git)
-  git_head <- git2r_head(r)
+  git_head <- git2r::repository_head(r)
   remote_avail <- wflow_git_remote(verbose = FALSE, project = project)
 
   # Fail early if HEAD does not point to a branch
@@ -179,7 +179,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
   if (!dry_run) {
     # First check for and execute any pre-push hooks. libgit2 does not support
     # this. Only supported on unix-alike systems.
-    pre_push_file <- file.path(git2r_workdir(r), ".git/hooks/pre-push")
+    pre_push_file <- file.path(git2r::workdir(r), ".git/hooks/pre-push")
     pre_push_file_rel <- fs::path_rel(pre_push_file, start = getwd())
     if (fs::file_exists(pre_push_file) && .Platform$OS.type != "windows") {
       message(glue::glue("Executing pre-push hook in {pre_push_file_rel}"))
@@ -231,7 +231,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
              }
     )
     # Set upstream tracking branch if it doesn't exist and `set_upstream=TRUE`
-    local_branch_object <- git2r_head(r)
+    local_branch_object <- git2r::repository_head(r)
     if (is.null(git2r::branch_get_upstream(local_branch_object)) && set_upstream) {
       git2r::branch_set_upstream(branch = local_branch_object,
                                  name = paste(remote, branch, sep = "/"))

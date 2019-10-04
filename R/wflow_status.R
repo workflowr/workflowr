@@ -149,7 +149,7 @@ wflow_status <- function(files = NULL, project = ".") {
   s <- git2r::status(r, ignored = TRUE)
   s_df <- status_to_df(s)
   # Fix file paths
-  s_df$file <- file.path(git2r_workdir(r), s_df$file)
+  s_df$file <- file.path(git2r::workdir(r), s_df$file)
   s_df$file <- relative(s_df$file)
   # Categorize all files by git status
   f_ignored <- s_df$file[s_df$status == "ignored"]

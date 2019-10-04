@@ -14,7 +14,7 @@ fs::file_create(f1)
 add(r, f1)
 c1 <- commit(r, "commit 1")
 t1 <- tree(c1)
-b1 <- git2r_head(r)
+b1 <- git2r::repository_head(r)
 
 b2 <- branch_create(c1, name = "b2")
 checkout(b2)
@@ -45,7 +45,7 @@ checkout(r, "master")
 # Test git2r -------------------------------------------------------------------
 
 test_that("head returns a branch", {
-  h <- git2r_head(r)
+  h <- git2r::repository_head(r)
   expect_equivalent(class(h), "git_branch")
 })
 
@@ -56,22 +56,22 @@ test_that("lookup returns a commit", {
 })
 
 test_that("workdir does not includes a trailing slash", {
-  wd <- git2r_workdir(r)
+  wd <- git2r::workdir(r)
   expect_false(stringr::str_sub(wd, start = -1) == "/")
 })
 
 test_that("as.list returns a list", {
-  l <- git2r_as.list(t1)
+  l <- as.list(t1)
   expect_equivalent(class(l), "list")
 })
 
 test_that("as.data.frame returns a data.frame", {
-  d <- git2r_as.data.frame(t1)
+  d <- as.data.frame(t1)
   expect_equivalent(class(d), "data.frame")
 })
 
 test_that("diff returns a diff", {
-  difference <- git2r_diff(t1, t2)
+  difference <- base::diff(t1, t2)
   expect_equivalent(class(difference), "git_diff")
   diff_file_list <- git2r_slot(difference, "files")
   expect_equivalent(class(diff_file_list), "list")

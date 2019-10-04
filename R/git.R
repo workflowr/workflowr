@@ -103,7 +103,7 @@ check_staged_changes <- function(path, custom_message = "this function") {
   } else {
     # Format files
     files_staged <- as.character(git_status$staged)
-    files_staged <- file.path(git2r_workdir(r), files_staged)
+    files_staged <- file.path(git2r::workdir(r), files_staged)
     files_staged <- relative(files_staged)
     files_staged <- utils::capture.output(dput(files_staged))
     stop(wrap(
@@ -126,18 +126,18 @@ get_committed_files <- function(repo, commit = NULL) {
     return(NA)
   }
   if (is.null(commit)) {
-    commit <- git2r::lookup(repo, git2r::branch_target(git2r_head(repo)))
+    commit <- git2r::lookup(repo, git2r::branch_target(git2r::repository_head(repo)))
   }
   tree <- git2r::tree(commit)
   files <- ls_files(tree)
-  files <- absolute(file.path(git2r_workdir(repo), files))
+  files <- absolute(file.path(git2r::workdir(repo), files))
   return(files)
 }
 
 # List all files in a given "git_tree" object.
 ls_files <- function (tree) {
-  tree_list <- git2r_as.list(tree)
-  tree_df <-git2r_as.data.frame(tree)
+  tree_list <- as.list(tree)
+  tree_df <- as.data.frame(tree)
   names(tree_list) <- tree_df$name
   files <- tree_df$name[tree_df$type == "blob"]
   dirs <- tree_df$name[tree_df$type == "tree"]
@@ -212,7 +212,7 @@ obtain_files_in_commit <- function(repo, commit) {
   if (length(parent_commit) == 0) {
     files <- obtain_files_in_commit_root(repo, commit)
   } else if (length(parent_commit) == 1) {
-    git_diff <- git2r_diff(git2r::tree(commit),
+    git_diff <- base::diff(git2r::tree(commit),
                             git2r::tree(parent_commit[[1]]))
     files <- sapply(git2r_slot(git_diff, "files"),
                     function(x) git2r_slot(x, "new_file"))
@@ -221,7 +221,7 @@ obtain_files_in_commit <- function(repo, commit) {
                  git2r_slot(commit, "sha"), length(parent_commit)))
   }
 
-  files <- absolute(file.path(git2r_workdir(repo), files))
+  files <- absolute(file.path(git2r::workdir(repo), files))
   return(files)
 }
 
@@ -242,7 +242,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
   stopifnot(class(repo) ==  "git_repository",
             class(commit) == "git_commit",
             length(git2r::parents(commit)) == 0)
-  entries <- git2r_as.data.frame(git2r::tree(commit))
+  entries <- as.data.frame(git2r::tree(commit))
   files <- character()
   while (nrow(entries) > 0) {
     if (entries$type[1] == "blob") {
@@ -257,7 +257,7 @@ obtain_files_in_commit_root <- function(repo, commit) {
       #  - add the subdirectory to the name so that path is correct
       #  - remove the entry from beginning and add new entries to end of
       #    data.frame
-      new_tree_df <- git2r_as.data.frame(git2r::lookup(repo, entries$sha[1]))
+      new_tree_df <- as.data.frame(git2r::lookup(repo, entries$sha[1]))
       new_tree_df$name <- file.path(entries$name[1], new_tree_df$name)
       entries <- rbind(entries[-1, ], new_tree_df)
     } else {
@@ -324,7 +324,7 @@ check_remote <- function(remote, remote_avail) {
 # Returns a list of length two.
 determine_remote_and_branch <- function(repo, remote, branch) {
   stopifnot(class(repo) == "git_repository")
-  git_head <- git2r_head(repo)
+  git_head <- git2r::repository_head(repo)
   tracking <- git2r::branch_get_upstream(git_head)
   # If both remote and branch are NULL and the current branch is tracking a
   # remote branch, use this remote and branch.
@@ -479,7 +479,7 @@ authenticate_git <- function(protocol, username = NULL,
 check_git_lock <- function(r) {
   stopifnot(class(r) == "git_repository")
 
-  index_lock <- file.path(git2r_workdir(r), ".git/index.lock")
+  index_lock <- file.path(git2r::workdir(r), ".git/index.lock")
   if (fs::file_exists(index_lock)) {
     stop(call. = FALSE, wrap(
       "The Git repository is locked. This can happen if a Git command

@@ -156,9 +156,9 @@ create_report <- function(input, output_dir, has_code, opts) {
 
 get_versions <- function(input, output_dir, r, github) {
 
-  rmd <- relative(input, start = git2r_workdir(r))
+  rmd <- relative(input, start = git2r::workdir(r))
   html <- to_html(rmd, outdir = output_dir)
-  html <- relative(html, start = git2r_workdir(r))
+  html <- relative(html, start = git2r::workdir(r))
 
   df_versions <- get_versions_df(c(rmd, html), r)
 
@@ -225,7 +225,7 @@ on the hyperlinks in the table below to view them.</p>
 # Get versions table for figures. Needs to be refactored to share code with
 # get_versions.
 get_versions_fig <- function(fig, r, github) {
-  fig <- relative(fig, start = git2r_workdir(r))
+  fig <- relative(fig, start = git2r::workdir(r))
 
   df_versions <- get_versions_df(fig, r)
 
@@ -305,7 +305,7 @@ get_versions_df <- function(files, r) {
 
   if (any(fs::is_absolute_path(files)))
     stop("File paths must be relative to Git repository at ",
-         git2r_workdir(r))
+         git2r::workdir(r))
 
   commits_path <- list()
   for (f in files) {
@@ -657,7 +657,7 @@ when running <code>wflow_build()</code> or <code>wflow_publish()</code>.
 
 add_git_path <- function(x, r) {
   if (!is.null(x)) {
-    file.path(git2r_workdir(r), x)
+    file.path(git2r::workdir(r), x)
   } else {
    NA_character_
   }

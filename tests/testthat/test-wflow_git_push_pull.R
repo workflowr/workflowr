@@ -17,7 +17,7 @@ r <- repository(p$root)
 # Test check_branch ------------------------------------------------------------
 
 test_that("check_branch passes if HEAD points to a branch", {
-  git_head <- git2r_head(r)
+  git_head <- git2r::repository_head(r)
   expect_silent(check_branch(git_head))
 })
 
@@ -25,7 +25,7 @@ test_that("check_branch fails if HEAD does *not* point to a branch", {
   latest_commit <- commits(r)[[1]]
   checkout(latest_commit)
   on.exit(checkout(r, branch = "master"))
-  git_head <- git2r_head(r)
+  git_head <- git2r::repository_head(r)
   expect_error(check_branch(git_head), "You are not currently on any branch")
 })
 
@@ -73,20 +73,20 @@ test_that("determine_remote_and_branch does nothing if both are specified", {
 
 test_that("determine_remote_and_branch uses the name of the current branch if branch not specified", {
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r_head(r), "name"))
+  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
   checkout(r, branch = "test", create = TRUE)
   on.exit(checkout(r, branch = "master"))
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r_head(r), "name"))
+  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
 })
 
 test_that("determine_remote_and_branch uses the name of the current branch if branch not specified", {
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r_head(r), "name"))
+  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
   checkout(r, branch = "test", create = TRUE)
   on.exit(checkout(r, branch = "master"))
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r_head(r), "name"))
+  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
 })
 
 test_that("determine_remote_and_branch uses the only remote if it is not specified", {

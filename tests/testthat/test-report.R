@@ -211,7 +211,7 @@ test_that("check_vc reports Git repo even if no commits", {
 workflowr:::git2r_add(r, rmd)
 git2r::commit(r, "Add rmd")
 s <- git2r::status(r, ignored = TRUE)
-current_commit <- workflowr:::git2r_slot(git2r::commits(r)[[1]], "sha")
+current_commit <- git2r::commits(r)[[1]]$sha
 commit_to_display <- workflowr:::shorten_sha(current_commit)
 
 test_that("check_vc reports Git repo", {

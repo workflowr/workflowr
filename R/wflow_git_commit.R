@@ -190,7 +190,7 @@ wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
       # bug that affects Ubuntu and Windows, but not macOS. Manually adding all
       # unstaged changes.
       unstaged <- unlist(git2r::status(r)$unstaged)
-      unstaged <- file.path(git2r_workdir(r), unstaged)
+      unstaged <- file.path(git2r::workdir(r), unstaged)
       git2r_add(r, unstaged)
     }
     # Commit

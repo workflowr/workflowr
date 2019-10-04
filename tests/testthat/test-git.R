@@ -101,7 +101,7 @@ test_that("check_git_lock throws error only when Git repository is locked", {
   r <- git2r::repository(path)
 
   expect_silent(workflowr:::check_git_lock(r))
-  index_lock <- file.path(workflowr:::git2r_workdir(r), ".git/index.lock")
+  index_lock <- file.path(git2r::workdir(r), ".git/index.lock")
   fs::file_create(index_lock)
   expect_error(workflowr:::check_git_lock(r), "The Git repository is locked")
   expect_error(workflowr:::check_git_lock(r), index_lock)
@@ -120,7 +120,7 @@ test_that("commits(path) returns commits in reverse chronological order", {
 
   first_commit <- git2r::commits(r, reverse = TRUE, n = 1)
   if (length(first_commit) == 0) skip("Requires the workflowr Git repository")
-  first_sha <- workflowr:::git2r_slot(first_commit[[1]], "sha")
+  first_sha <- first_commit[[1]]$sha
   if (!first_sha == "dc396e923537ced01babc9f893e691dababee89b")
     skip("Requires the workflowr Git repository")
 

@@ -289,7 +289,7 @@ wflow_start <- function(directory,
     dir_existing <- obtain_existing_path(directory)
     if (git2r::in_repository(dir_existing)) {
       r <- git2r::repository(dir_existing, discover = TRUE)
-      stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", git2r_workdir(r))
+      stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", git2r::workdir(r))
     }
   }
 
@@ -386,7 +386,7 @@ wflow_start <- function(directory,
     }
     # Create pre-push hook to prevent pushing confidential projects
     if (disable_remote) {
-      pre_push_file <- file.path(git2r_workdir(repo), ".git/hooks/pre-push")
+      pre_push_file <- file.path(git2r::workdir(repo), ".git/hooks/pre-push")
       if (!fs::file_exists(pre_push_file) || overwrite) {
         # extras is a list defined in infrastructure.R
         cat(glue::glue(extras[["disable_remote"]]), file = pre_push_file)
@@ -432,7 +432,7 @@ print.wflow_start <- function(x, ...) {
     }
     if (x$existing && git2r::in_repository(x$directory)) {
       repo <- git2r::repository(x$directory, discover = TRUE)
-      cat(sprintf("- Git repo already present at %s\n", git2r_workdir(repo)))
+      cat(sprintf("- Git repo already present at %s\n", git2r::workdir(repo)))
     } else if (x$git) {
       cat(sprintf("- Git repo will be initiated at %s\n", x$directory))
     } else {
@@ -462,11 +462,11 @@ print.wflow_start <- function(x, ...) {
     if (git2r::in_repository(x$directory)) {
       repo <- git2r::repository(x$directory, discover = TRUE)
       if (x$git && !x$existing) {
-        cat(sprintf("- Git repo initiated at %s\n", git2r_workdir(repo)))
+        cat(sprintf("- Git repo initiated at %s\n", git2r::workdir(repo)))
       } else if (x$git && x$existing && length(git2r::commits(repo)) == 1) {
-        cat(sprintf("- Git repo initiated at %s\n", git2r_workdir(repo)))
+        cat(sprintf("- Git repo initiated at %s\n", git2r::workdir(repo)))
       } else {
-        cat(sprintf("- Git repo already present at %s\n", git2r_workdir(repo)))
+        cat(sprintf("- Git repo already present at %s\n", git2r::workdir(repo)))
       }
       if (x$git) {
         if (is.null(x$commit)) {

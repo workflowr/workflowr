@@ -251,7 +251,7 @@ test_that("wflow_git_commit fails if Git repository is locked", {
   fs::file_create(file_to_commit)
   on.exit(wflow_remove(file_to_commit, project = site_dir))
 
-  index_lock <- file.path(workflowr:::git2r_workdir(r), ".git/index.lock")
+  index_lock <- file.path(git2r::workdir(r), ".git/index.lock")
   fs::file_create(index_lock)
 
   expect_error(wflow_git_commit(file_to_commit, project = site_dir),

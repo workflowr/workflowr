@@ -73,20 +73,20 @@ test_that("determine_remote_and_branch does nothing if both are specified", {
 
 test_that("determine_remote_and_branch uses the name of the current branch if branch not specified", {
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
+  expect_true(result$branch == git2r::repository_head(r)$name)
   checkout(r, branch = "test", create = TRUE)
   on.exit(checkout(r, branch = "master"))
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
+  expect_true(result$branch == git2r::repository_head(r)$name)
 })
 
 test_that("determine_remote_and_branch uses the name of the current branch if branch not specified", {
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
+  expect_true(result$branch == git2r::repository_head(r)$name)
   checkout(r, branch = "test", create = TRUE)
   on.exit(checkout(r, branch = "master"))
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
-  expect_true(result$branch == git2r_slot(git2r::repository_head(r), "name"))
+  expect_true(result$branch == git2r::repository_head(r)$name)
 })
 
 test_that("determine_remote_and_branch uses the only remote if it is not specified", {
@@ -163,8 +163,8 @@ test_that("authenticate_git can create HTTPS credentials", {
   cred <- authenticate_git(protocol = "https",
                            username = "fakeuser", password = "fakepass")
   expect_true(class(cred) == "cred_user_pass")
-  expect_true(git2r_slot(cred, "username") == "fakeuser")
-  expect_true(git2r_slot(cred, "password") == "fakepass")
+  expect_true(cred$username == "fakeuser")
+  expect_true(cred$password == "fakepass")
 })
 
 test_that("authenticate_git returns NULL for SSH remotes", {

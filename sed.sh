@@ -6,6 +6,10 @@ set -eu
 # Usage: bash sed.sh original replacement
 #
 # Example: bash sed.sh git2r_head git2r::repository_head
+#
+# For regular expressions, easier to just manually run code similar to below.
+# Very difficult to pass regex's via arguments and pass them correctly
+# formatted for sed.
 
 if [ ! -f DESCRIPTION ]
 then
@@ -22,5 +26,5 @@ for f in R/*R tests/testthat/*R
 do
   echo "Editing file $f"
   #grep 'file\.create' $f
-  sed -i s/${original}/${replacement}/g $f
+  sed -i -e s/'${original}'/'${replacement}'/g $f
 done

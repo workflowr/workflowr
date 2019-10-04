@@ -125,7 +125,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
 
   # Send warning if the remote branch is not the same one as local branch (HEAD)
   warn_branch_mismatch(remote_branch = branch,
-                       local_branch = git2r_slot(git_head, "name"))
+                       local_branch = git_head$name)
 
   # Determine protocol ---------------------------------------------------------
 
@@ -224,30 +224,30 @@ print.wflow_git_pull <- function(x, ...) {
   cat("\n")
 
   if (!is.null(x$merge_result)) {
-    if (git2r_slot(x$merge_result, "up_to_date")) {
+    if (x$merge_result$up_to_date) {
       cat("\n", wrap(
         "No changes were made because your local and remote repositories are
         in sync."
         ), "\n", sep = "")
-    } else if (git2r_slot(x$merge_result, "fast_forward")) {
+    } else if (x$merge_result$fast_forward) {
       cat("\n", wrap(
         "The latest changes in the remote repository were successfully pulled
         into your local repository (fast-forward merge)."
       ), "\n", sep = "")
-    } else if (!is.na(git2r_slot(x$merge_result, "sha"))) {
+    } else if (!is.na(x$merge_result$sha)) {
       cat("\n", wrap(sprintf(
         "The latest changes in the remote repository were successfully pulled
         into your local repository. To combine the changes that differed
         between the two repositories, the merge commit %s was created.",
-      git2r_slot(x$merge_result, "sha"))), "\n", sep = "")
-    } else if (git2r_slot(x$merge_result, "conflicts")) {
+      x$merge_result$sha)), "\n", sep = "")
+    } else if (x$merge_result$conflicts) {
       cat("\n", wrap(
         "There were conflicts that Git could not resolve automatically when
         trying to pull changes from the remote repository. You will need to
         use Git from the Terminal to resolve these conflicts manually. Run
         `git status` in the Terminal to get started."
       ), "\n", sep = "")
-    } else if (!git2r_slot(x$merge_result, "up_to_date")) {
+    } else if (!x$merge_result$up_to_date) {
       cat("\n", wrap(
         "The pull **failed** because you have made local changes to your files
         that would be overwritten by pulling the latest versions of the files.

@@ -239,7 +239,7 @@ print.wflow_rename <- function(x, ...) {
     } else {
       cat("\n", wrap(sprintf(
         "The following file(s) were included in Git commit %s:",
-        stringr::str_sub(git2r_slot(x$commit, "sha"), start = 1, end = 7))),
+        stringr::str_sub(x$commit$sha, start = 1, end = 7))),
         "\n\n", sep = "")
     }
     cat(x$files_git, sep = "\n")

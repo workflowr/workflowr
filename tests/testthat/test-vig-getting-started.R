@@ -95,8 +95,8 @@ test_that("wflow_publish can commit new file and website", {
   expect_true(all(html_mtime_pre < html_mtime_post))
   log <- commits(r)
   expect_true(length(log) == 3)
-  expect_identical(git2r_slot(log[[1]], "message"), "Build site.")
-  expect_identical(git2r_slot(log[[2]], "message"), "first analysis")
+  expect_identical(log[[1]]$message, "Build site.")
+  expect_identical(log[[2]]$message, "first analysis")
   expect_silent(wflow_build(make = TRUE, update = TRUE, view = FALSE,
                             project = site_dir))
 })

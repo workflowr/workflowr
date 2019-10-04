@@ -19,14 +19,6 @@ git2r_merge <- function(x, b) {
   }
 }
 
-git2r_slot <- function(x, slotname) {
-  if (isS4(x)) {
-    methods::slot(x, slotname)
-  } else {
-    x[[slotname]]
-  }
-}
-
 # Cover all edge cases by passing original paths, absolute paths, and paths that
 # are relative to root of Git repo.
 git2r_add <- function(r, files, force = FALSE) {

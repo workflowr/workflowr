@@ -151,7 +151,7 @@ wflow_rename_proj <- function(name,
     staged <- git2r::status(r)$staged
     if (length(staged) > 0) {
       commit_rename <- git2r::commit(r, paste("Rename project to", name))
-      sha <- git2r_slot(commit_rename, "sha")
+      sha <- commit_rename$sha
       message("* Committed changes in ", stringr::str_sub(sha, 1, 7))
     } else {
       message("* No changes to commit")

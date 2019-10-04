@@ -247,7 +247,7 @@ print.wflow_git_commit <- function(x, ...) {
   if (!x$dry_run) {
     cat(sep = "", "\n",
         wrap("The following file(s) were included in commit ",
-             stringr::str_sub(git2r_slot(x$commit, "sha"), start = 1, end = 7)),
+             stringr::str_sub(x$commit$sha, start = 1, end = 7)),
         ":\n")
     cat(shorten_site_libs(x$commit_files), sep = "\n")
   }

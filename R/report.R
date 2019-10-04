@@ -343,7 +343,7 @@ check_vc <- function(input, r, s, github) {
    pass <- TRUE
    log <- git2r::commits(r)
    if (length(log) > 0) {
-     sha <- git2r_slot(log[[1]], "sha")
+     sha <- log[[1]]$sha
      sha7 <- shorten_sha(sha)
      if (!is.na(github)) {
        sha_display <- sprintf("<a href=\"%s/tree/%s\" target=\"_blank\">%s</a>",

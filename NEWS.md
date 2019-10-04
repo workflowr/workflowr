@@ -24,6 +24,11 @@ workflowr-specific site generator `wflow_site()` (idea from @pcarbo, #177)
 
 * Fail early if missing required file `index.Rmd`
 
+* Add argument `fail` to `wflow_git_pull()` with default value of `TRUE`. Now if
+a pull generates a merge conflict, `wflow_git_pull()` will abort the pull. Thus
+no changes will be made to the local files. Users can set `fail = FALSE` to allow
+Git to add the merge conflicts to the local files.
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

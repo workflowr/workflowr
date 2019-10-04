@@ -237,7 +237,7 @@ test_that("wflow_git_commit fails early if merge conflicts detected", {
   add(r, rmd)
   commit(r, "edit index.Rmd on master")
   # Generate merge conflict
-  workflowr:::git2r_merge(r, "b2")
+  workflowr:::git2r_merge(r, "b2", fail = FALSE)
 
   skip_on_cran()
 

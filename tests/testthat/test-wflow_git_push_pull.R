@@ -295,6 +295,11 @@ test_that("prints correctly from merge commit", {
 })
 
 test_that("prints correctly from merge conflict", {
+
+  # Merge conflict due to unknown cause (committed, staged, or unstaged changes).
+  # Pull aborted.
+  # fail=TRUE
+  # conflicts=TRUE
   m <- structure(list(
     up_to_date = FALSE,
     fast_forward = FALSE,
@@ -303,9 +308,43 @@ test_that("prints correctly from merge conflict", {
     .Names = c("up_to_date", "fast_forward", "conflicts", "sha"),
     class = "git_merge_result")
 
-  o <- list(remote = "remote", branch = "branch", username = "username",
-            merge_result = m, dry_run = FALSE)
+    o <- list(remote = "remote", branch = "branch", username = "username",
+            merge_result = m, fail = TRUE, dry_run = FALSE)
   class(o) <- "wflow_git_pull"
 
-  expect_output(print(o), "There were conflicts")
+  expect_output(print(o), "No changes were made")
+
+  # Merge conflict due to committed changes
+  # fail=FALSE
+  # conflicts=TRUE
+  m <- structure(list(
+    up_to_date = FALSE,
+    fast_forward = FALSE,
+    conflicts = TRUE,
+    sha = NA_character_),
+    .Names = c("up_to_date", "fast_forward", "conflicts", "sha"),
+    class = "git_merge_result")
+
+    o <- list(remote = "remote", branch = "branch", username = "username",
+            merge_result = m, fail = FALSE, dry_run = FALSE)
+  class(o) <- "wflow_git_pull"
+
+  expect_output(print(o), "Git from the Terminal")
+
+  # Merge conflict due to unstaged or staged changes
+  # fail=FALSE
+  # conflicts=FALSE
+  m <- structure(list(
+    up_to_date = FALSE,
+    fast_forward = FALSE,
+    conflicts = FALSE,
+    sha = NA_character_),
+    .Names = c("up_to_date", "fast_forward", "conflicts", "sha"),
+    class = "git_merge_result")
+
+    o <- list(remote = "remote", branch = "branch", username = "username",
+            merge_result = m, fail = FALSE, dry_run = FALSE)
+  class(o) <- "wflow_git_pull"
+
+  expect_output(print(o), "local changes")
 })

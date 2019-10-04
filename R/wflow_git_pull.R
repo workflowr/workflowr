@@ -36,6 +36,10 @@
 #'   service (e.g. GitHub or GitLab). The user is prompted if necessary.
 #' @param password character (default: NULL). Password for online Git hosting
 #'   service (e.g. GitHub or GitLab). The user is prompted if necessary.
+#' @param fail logical (default: TRUE) Abort the pull if any merge conflicts
+#'   are detected. If you are sure you want to manually cleanup the merge
+#'   conflicts, set \code{fail = FALSE}. The argument \code{fail} is passed to
+#'   the git2r function \code{\link[git2r]{merge.git_repository}}.
 #' @param dry_run logical (default: FALSE). Preview the proposed action but do
 #'   not actually pull from the remote repository.
 #' @param project character (default: ".") By default the function assumes the
@@ -57,6 +61,8 @@
 #' \item \bold{merge_result}: The \code{git_merge_result} object returned by
 #' \link{git2r} (only included if \code{dry_run == FALSE}).
 #'
+#' \item \bold{fail}: The input argument \code{fail}.
+#'
 #' \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
 #' \item \bold{protocol}: The authentication protocol for the remote repository
@@ -75,7 +81,8 @@
 #'
 #' @export
 wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
-                           password = NULL, dry_run = FALSE, project = ".") {
+                           password = NULL, fail = TRUE, dry_run = FALSE,
+                           project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
@@ -90,6 +97,9 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
 
   if (!(is.null(password) || (is.character(password) && length(password) == 1)))
     stop("password must be NULL or a one-element character vector")
+
+  if (!(is.logical(fail) && length(fail) == 1))
+    stop("fail must be a one-element logical vector")
 
   if (!(is.logical(dry_run) && length(dry_run) == 1))
     stop("dry_run must be a one-element logical vector")
@@ -189,7 +199,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
                stop(wrap(reason), call. = FALSE)
              }
     )
-    merge_result <- git2r_merge(r, paste(remote, branch, sep = "/"))
+    merge_result <- git2r_merge(r, paste(remote, branch, sep = "/"), fail = fail)
   } else {
     merge_result <- NULL
   }
@@ -197,7 +207,8 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   # Prepare output -------------------------------------------------------------
 
   o <- list(remote = remote, branch = branch, username = username,
-            merge_result = merge_result, dry_run = dry_run, protocol = protocol)
+            merge_result = merge_result, fail = fail, dry_run = dry_run,
+            protocol = protocol)
   class(o) <- "wflow_git_pull"
   return(o)
 }
@@ -223,40 +234,67 @@ print.wflow_git_pull <- function(x, ...) {
   cat(git_cmd)
   cat("\n")
 
-  if (!is.null(x$merge_result)) {
-    if (x$merge_result$up_to_date) {
-      cat("\n", wrap(
-        "No changes were made because your local and remote repositories are
-        in sync."
-        ), "\n", sep = "")
-    } else if (x$merge_result$fast_forward) {
-      cat("\n", wrap(
-        "The latest changes in the remote repository were successfully pulled
-        into your local repository (fast-forward merge)."
-      ), "\n", sep = "")
-    } else if (!is.na(x$merge_result$sha)) {
-      cat("\n", wrap(sprintf(
-        "The latest changes in the remote repository were successfully pulled
-        into your local repository. To combine the changes that differed
-        between the two repositories, the merge commit %s was created.",
-      x$merge_result$sha)), "\n", sep = "")
-    } else if (x$merge_result$conflicts) {
-      cat("\n", wrap(
-        "There were conflicts that Git could not resolve automatically when
-        trying to pull changes from the remote repository. You will need to
-        use Git from the Terminal to resolve these conflicts manually. Run
-        `git status` in the Terminal to get started."
-      ), "\n", sep = "")
-    } else if (!x$merge_result$up_to_date) {
-      cat("\n", wrap(
-        "The pull **failed** because you have made local changes to your files
-        that would be overwritten by pulling the latest versions of the files.
-        You need to first commit or discard these changes and then pull
-        again."
-      ), "\n", sep = "")
-    }
+  # Note: Use "exit early" strategy instead of nested if-else clauses
+  if (is.null(x$merge_result)) return(invisible(x))
+
+  if (x$merge_result$up_to_date) {
+    m <- "No changes were made because your local and remote repositories are in sync."
+    cat("\n", wrap(m), "\n", sep = "")
+    cat("\n")
+    return(invisible(x))
   }
 
+  if (x$merge_result$fast_forward) {
+    m <- "The latest changes in the remote repository were successfully pulled
+          into your local repository (fast-forward merge)."
+    cat("\n", wrap(m), "\n", sep = "")
+    cat("\n")
+    return(invisible(x))
+  }
+
+  if (!is.na(x$merge_result$sha)) {
+    m <- sprintf(
+      "The latest changes in the remote repository were successfully pulled
+        into your local repository. To combine the changes that differed
+        between the two repositories, the merge commit %s was created.",
+      x$merge_result$sha)
+    cat("\n", wrap(m), "\n", sep = "")
+    cat("\n")
+    return(invisible(x))
+  }
+
+  # At this point, there must have been a merge conflict of some sort
+  m <- "There were conflicts that Git could not resolve automatically when
+       trying to pull changes from the remote repository."
+  cat("\n", wrap(m), "\n", sep = "")
+  cat("\n")
+
+  if (x$fail) {
+    m <- "No changes were made to your files because workflowr aborted the pull.
+         Try cleaning up your files by committing the changes you want and
+         discarding those you don't. To allow workflowr to proceed with the pull
+         and potentially generate merge conflicts, re-run wflow_git_pull() with
+         the argument fail=FALSE."
+    cat("\n", wrap(m), "\n", sep = "")
+    cat("\n")
+    return(invisible(x))
+  }
+
+  # Merge conflicts from committed changes. Merge conflicts are now unstaged changes
+  if (x$merge_result$conflicts) {
+    m <- "You will need to use Git from the Terminal to resolve these conflicts
+          manually. Run `git status` in the Terminal to get started."
+    cat("\n", wrap(m), "\n", sep = "")
+    cat("\n")
+    return(invisible(x))
+  }
+
+  # Merge conflicts from unstaged or staged changes. Need to clean up repo first.
+  m <- "The pull **failed** because you have made local changes to your files
+         that would be overwritten by pulling the latest versions of the files.
+         You need to first commit or discard these changes and then pull
+         again."
+  cat("\n", wrap(m), "\n", sep = "")
   cat("\n")
   return(invisible(x))
 }

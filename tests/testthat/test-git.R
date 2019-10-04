@@ -118,6 +118,12 @@ test_that("commits(path) returns commits in reverse chronological order", {
 
   r <- git2r::repository()
 
+  first_commit <- git2r::commits(r, reverse = TRUE, n = 1)
+  if (length(first_commit) == 0) skip("Requires the workflowr Git repository")
+  first_sha <- workflowr:::git2r_slot(first_commit[[1]], "sha")
+  if (!first_sha == "dc396e923537ced01babc9f893e691dababee89b")
+    skip("Requires the workflowr Git repository")
+
   files <- c("README.md", "vignettes/wflow-07-common-code.Rmd")
   files <- file.path(git2r::workdir(r), files)
 

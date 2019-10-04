@@ -21,7 +21,9 @@ jobs:
           command: bash .circleci/install-pandoc.sh $PANDOC
       - run:
           name: Install package dependencies
-          command: r .circleci/install-r-pkgs.R
+          command: |
+            mkdir -p ~/R/Library
+            r .circleci/install-r-pkgs.R
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R
@@ -50,7 +52,9 @@ jobs:
           command: bash .circleci/install-system.sh
       - run:
           name: Install package dependencies
-          command: r .circleci/install-r-pkgs.R
+          command: |
+            mkdir -p ~/R/Library
+            r .circleci/install-r-pkgs.R
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R
@@ -84,7 +88,9 @@ jobs:
           command: bash .circleci/install-pandoc.sh $PANDOC
       - run:
           name: Install package dependencies
-          command: r .circleci/install-r-pkgs.R
+          command: |
+            mkdir -p ~/R/Library
+            r .circleci/install-r-pkgs.R
       - run:
           name: Session information and installed package versions
           command: r -p .circleci/session-info.R

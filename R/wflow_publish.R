@@ -229,10 +229,8 @@ wflow_publish <- function(
                          delete_cache = delete_cache, seed = seed,
                          local = FALSE, verbose = verbose,
                          dry_run = dry_run, project = project)
-    s2 <- wflow_status(project = project)
   } else {
     step2 <- NULL
-    s2 <- s1
   }
 
   # Step 3 : Commit HTML files -------------------------------------------------
@@ -243,11 +241,11 @@ wflow_publish <- function(
     # Have to loop on step2$built as an underlying git2r function requires a
     # length 1 character vector
     figs_path <- vapply(step2$built, create_figure_path, character(1))
-    dir_figure <- file.path(s2$docs, figs_path)
-    site_libs <- file.path(s2$docs, "site_libs")
-    docs_nojekyll <- file.path(s2$docs, ".nojekyll")
-    docs_css <- list.files(path = s2$docs, pattern = "css$", full.names = TRUE)
-    docs_js <- list.files(path = s2$docs, pattern = "js$", full.names = TRUE)
+    dir_figure <- file.path(s0$docs, figs_path)
+    site_libs <- file.path(s0$docs, "site_libs")
+    docs_nojekyll <- file.path(s0$docs, ".nojekyll")
+    docs_css <- list.files(path = s0$docs, pattern = "css$", full.names = TRUE)
+    docs_js <- list.files(path = s0$docs, pattern = "js$", full.names = TRUE)
     files_to_commit <- c(step2$html, dir_figure, site_libs, docs_nojekyll,
                          docs_css, docs_js)
 

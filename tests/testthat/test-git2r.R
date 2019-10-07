@@ -112,43 +112,23 @@ test_that("merge returns git_merge_result", {
   expect_identical(m3$sha,
                    commits(r)[[1]]$sha)
 
-  # Merge conflicting branch with unstaged changes
-  writeLines("unstaged change\n", con = f2)
+  # Merge conflicting branch, which should create a merge conflict
+  # fail = TRUE
   m4 <- git2r_merge(r, "b4", fail = TRUE)
   expect_identical(class(m4), "git_merge_result")
   expect_identical(m4$up_to_date, FALSE)
   expect_identical(m4$fast_forward, FALSE)
   expect_identical(m4$conflicts, TRUE)
   expect_identical(m4$sha, NA_character_)
-  # When fail=FALSE, conflicts=FALSE even though the unstaged changes create
-  # conflicts. Waiting for this to be fixed upstream:
-  # https://github.com/ropensci/git2r/issues/389
-  # https://github.com/ropensci/git2r/pull/391
+  # working directory should be clean b/c fail=TRUE
+  expect_identical(status(r)$unstaged, structure(list(), .Names = character(0)))
+  # fail = FALSE
   m5 <- git2r_merge(r, "b4", fail = FALSE)
   expect_identical(class(m5), "git_merge_result")
   expect_identical(m5$up_to_date, FALSE)
   expect_identical(m5$fast_forward, FALSE)
-  expect_identical(m5$conflicts, FALSE)
+  expect_identical(m5$conflicts, TRUE)
   expect_identical(m5$sha, NA_character_)
-  checkout(r, path = "f2.txt")
-
-  # Merge conflicting branch, which should create a merge conflict
-  # fail = TRUE
-  m6 <- git2r_merge(r, "b4", fail = TRUE)
-  expect_identical(class(m6), "git_merge_result")
-  expect_identical(m6$up_to_date, FALSE)
-  expect_identical(m6$fast_forward, FALSE)
-  expect_identical(m6$conflicts, TRUE)
-  expect_identical(m6$sha, NA_character_)
-  # working directory should be clean b/c fail=TRUE
-  expect_identical(status(r)$unstaged, structure(list(), .Names = character(0)))
-  # fail = FALSE
-  m7 <- git2r_merge(r, "b4", fail = FALSE)
-  expect_identical(class(m7), "git_merge_result")
-  expect_identical(m7$up_to_date, FALSE)
-  expect_identical(m7$fast_forward, FALSE)
-  expect_identical(m7$conflicts, TRUE)
-  expect_identical(m7$sha, NA_character_)
   # working directory should have merge conflicts as unstaged changes
   expect_identical(status(r)$unstaged, list(conflicted = "f2.txt"))
 })

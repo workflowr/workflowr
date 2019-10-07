@@ -70,7 +70,11 @@ absolute <- function(path) {
   # Ensure Windows Drive is uppercase
   newpath <- toupper_win_drive(newpath)
   # Resolve symlinks
-  newpath <- fs::path_real(newpath)
+  if (.Platform$OS.type == "windows") {
+    newpath <- resolve_symlink(newpath)
+  } else {
+    newpath <- fs::path_real(newpath)
+  }
   newpath <- as.character(newpath)
 
   return(newpath)
@@ -113,6 +117,39 @@ relative <- function(path, start = getwd()) {
   newpath <- as.character(newpath)
 
   return(newpath)
+}
+
+# Resolve symlinks in a filepath even if file does not exist.
+#
+# Input: Vector of absolute filepaths
+# Output: Vector of absolute filepaths with any symlinks resolved
+resolve_symlink <- function(path) {
+  return(vapply(path, resolve_symlink_, character(1), USE.NAMES = FALSE))
+}
+
+# Recursive function to resolve symlinks one path at a time.
+resolve_symlink_ <- function(path) {
+  # Base case #1: If path exists, resolve symlink
+  if (fs::file_exists(path)) {
+    return(fs::path_real(path))
+  }
+
+  parts <- fs::path_split(path)[[1]]
+  len <- length(parts)
+
+  # Base case #2: Only 1 part of file path remaining. Return it.
+  #
+  # Possible cases:
+  #   * Invalid input such as NA
+  #   * A Fake file path that doesn't exist on the machine
+  if (len == 1) {
+    return(path)
+  }
+
+  # Recursive case
+  return(fs::path_join(c(
+    resolve_symlink_(fs::path_join(parts[-len])),
+    parts[len])))
 }
 
 # Because ~ maps to ~/Documents on Windows, need a reliable way to determine the

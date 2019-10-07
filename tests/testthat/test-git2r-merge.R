@@ -44,7 +44,7 @@ test_that("merge unstaged with fail=TRUE", {
 
   m <- merge(repo, "branch", fail = TRUE)
 
-  expect_equivalent(class(m), "git_merge_result")
+  expect_identical(class(m), "git_merge_result")
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, NULL)
   expect_identical(m$conflicts, NULL)
@@ -57,7 +57,7 @@ test_that("merge unstaged with fail=FALSE", {
 
   m <- merge(repo, "branch", fail = FALSE)
 
-  expect_equivalent(class(m), "git_merge_result")
+  expect_identical(class(m), "git_merge_result")
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, NULL)
   expect_identical(m$conflicts, NULL)
@@ -71,7 +71,7 @@ test_that("merge staged with fail=TRUE", {
 
   m <- merge(repo, "branch", fail = TRUE)
 
-  expect_equivalent(class(m), "git_merge_result")
+  expect_identical(class(m), "git_merge_result")
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, NULL)
   expect_identical(m$conflicts, NULL)
@@ -83,7 +83,7 @@ test_that("merge staged with fail=FALSE", {
 
   m <- merge(repo, "branch", fail = FALSE)
 
-  expect_equivalent(class(m), "git_merge_result")
+  expect_identical(class(m), "git_merge_result")
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, NULL)
   expect_identical(m$conflicts, NULL)
@@ -98,7 +98,7 @@ test_that("merge committed with fail = TRUE", {
 
   m <- merge(repo, "branch", fail = TRUE)
 
-  expect_equivalent(class(m), "git_merge_result")
+  expect_identical(class(m), "git_merge_result")
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, FALSE)
   expect_identical(m$conflicts, TRUE)
@@ -113,7 +113,7 @@ test_that("merge committed with fail = FALSE", {
 
   m <- merge(repo, "branch", fail = FALSE)
 
-  expect_equivalent(class(m), "git_merge_result")
+  expect_identical(class(m), "git_merge_result")
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, FALSE)
   expect_identical(m$conflicts, TRUE)

@@ -216,7 +216,7 @@ test_that("wflow_git_commit throws an error if user.name and user.email are not 
                "wflow_git_commit")
 })
 
-test_that("wflow_git_commit fails early if merge conflicts detected", {
+test_that("wflow_git_commit fails early if merge conflicts detected in Rmd file", {
   x <- tempfile("test-merge-conflicts-")
   suppressMessages(wflow_start(x, change_wd = FALSE, user.name = "Test Name",
                                user.email = "test@email"))
@@ -242,7 +242,38 @@ test_that("wflow_git_commit fails early if merge conflicts detected", {
   skip_on_cran()
 
   # Attempt to publish
-  expect_error(wflow_publish(rmd, project = x), rmd)
+  expect_error(wflow_publish(rmd, view = FALSE, project = x), rmd)
+})
+
+
+test_that("wflow_git_commit fails early if merge conflicts detected in non-Rmd file", {
+  x <- tempfile("test-merge-conflicts-")
+  suppressMessages(wflow_start(x, change_wd = FALSE, user.name = "Test Name",
+                               user.email = "test@email"))
+  x <- workflowr:::relative(x)
+  on.exit(unlink(x, recursive = TRUE, force = TRUE))
+  r <- repository(path = x)
+  s <- wflow_status(project = x)
+  rmd <- file.path(s$analysis, "index.Rmd")
+
+  # Edit non-Rmd file on new branch
+  non_rmd <- file.path(s$root, "test.txt")
+  checkout(r, "b2", create = TRUE)
+  cat("\nedit on b2\n", file = non_rmd, append = TRUE)
+  add(r, non_rmd)
+  commit(r, "edit non-Rmd on b2")
+  # Edit non-Rmd file on master branch
+  checkout(r, "master")
+  cat("\nedit on master\n", file = non_rmd, append = TRUE)
+  add(r, non_rmd)
+  commit(r, "edit non-Rmd on master")
+  # Generate merge conflict
+  workflowr:::git2r_merge(r, "b2", fail = FALSE)
+
+  skip_on_cran()
+
+  # Attempt to publish
+  expect_error(wflow_publish(rmd, view = FALSE, project = x), non_rmd)
 })
 
 test_that("wflow_git_commit fails if Git repository is locked", {

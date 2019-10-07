@@ -31,6 +31,11 @@ Git to add the merge conflicts to the local files.
 
 * Speed improvements for `wflow_publish()`.
 
+* Improved error handling when files contain merge conflicts. Before workflowr
+only detected merge conflicts in Rmd files. Now it detects them for any file
+(since Git requires any merge conflicts to be resolved before it makes any new
+commits).
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

@@ -162,19 +162,20 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
 wflow_git_commit_ <- function(files = NULL, message = NULL, all = FALSE,
                               force = FALSE, dry_run = FALSE, project = ".") {
 
-  # Obtain workflowr status
-  s <- wflow_status(project = project)
-
   # Establish connection to Git repository
-  r <- git2r::repository(s$git)
+  r <- git2r::repository(path = project)
 
   # Files cannot have merge conflicts
-  conflicted_files_all <- rownames(s$status)[s$status$conflicted]
-  conflicted_files <- files[files %in% conflicted_files_all]
-  if (length(conflicted_files) > 0) {
+  s <- git2r::status(r, ignored = TRUE)
+  s_df <- status_to_df(s)
+  # Fix file paths
+  s_df$file <- file.path(git2r::workdir(r), s_df$file)
+  s_df$file <- relative(s_df$file)
+  f_conflicted <- s_df$file[s_df$substatus == "conflicted"]
+  if (length(f_conflicted) > 0) {
     stop(call. = FALSE, wrap(
       "Cannot proceed due to merge conflicts in the following file(s):"
-      ), "\n\n", paste(conflicted_files, collapse = "\n"))
+      ), "\n\n", paste(f_conflicted, collapse = "\n"))
   }
 
   if (!dry_run) {

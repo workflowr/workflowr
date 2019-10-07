@@ -312,7 +312,7 @@ test_that("relative handles NA and NULL with Windows drives", {
   expect_identical(actual, expected)
 })
 
-# Test resolve_symlink ---------------------------------------------------------
+# Test ability to resolve symlinks via fs::path_real() -------------------------
 
 test_that("absolute can resolve symlinks", {
   link <- workflowr:::absolute(tempfile())

@@ -29,6 +29,8 @@ a pull generates a merge conflict, `wflow_git_pull()` will abort the pull. Thus
 no changes will be made to the local files. Users can set `fail = FALSE` to allow
 Git to add the merge conflicts to the local files.
 
+* Speed improvements for `wflow_publish()`.
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

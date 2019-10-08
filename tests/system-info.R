@@ -13,3 +13,6 @@ normalizePath("/")
 Sys.which("pandoc")
 rmarkdown::pandoc_available()
 rmarkdown::pandoc_version()
+# Git
+Sys.which("git")
+if (file.exists(Sys.which("git"))) system("git --version")

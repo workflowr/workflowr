@@ -51,3 +51,26 @@ functions:
 }
 }
 
+\section{Package options}{
+
+
+The following package options affect the default behavior of the workflowr
+functions. To permanently set any of these options, add a call to the
+function \code{\link[base]{options}} in the file \code{.Rprofile} at the root
+of your workflowr project. For example:
+
+\preformatted{
+# Do not use Git executable
+options(workflowr.sysgit = "")
+}
+
+\describe{
+
+\item{workflowr.sysgit}{The path to the system Git executable. This is
+occasionally used to increase the speed of Git operations performed by
+workflowr. By default it is set to the first Git executable on the search
+path. You can specify a path to a different Git executable. Alternatively you
+can disable this behavior entirely by setting it to the empty string \code{""}.}
+}
+}
+

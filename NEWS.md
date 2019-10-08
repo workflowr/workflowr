@@ -36,6 +36,11 @@ only detected merge conflicts in Rmd files. Now it detects them for any file
 (since Git requires any merge conflicts to be resolved before it makes any new
 commits).
 
+* Add workflowr package options. See `?workflowr` for more details.
+    * `workflowr.git`: Set the path to the system Git executable, which is
+    occasionally used to increase the speed of Git operations performed by
+    workflowr functions.
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

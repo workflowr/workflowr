@@ -21,6 +21,7 @@ git2r::config(r, user.name = "Test Name", user.email = "test@email")
 
 test_that("get_committed_files returns NA if no files have been committed", {
   expect_identical(workflowr:::get_committed_files(r), NA)
+  expect_identical(workflowr:::get_committed_files(r, sysgit = ""), NA)
 })
 
 # Commit some files in root commit
@@ -31,8 +32,8 @@ git2r::commit(r, message = "root commit")
 
 test_that("get_committed_files works on root commit", {
   expected <- f
-  actual <- workflowr:::get_committed_files(r)
-  expect_identical(actual, expected)
+  expect_identical(workflowr:::get_committed_files(r), expected)
+  expect_identical(workflowr:::get_committed_files(r, sysgit = ""), expected)
 })
 
 test_that("obtain_files_in_commit works on root commit", {
@@ -49,8 +50,8 @@ git2r::commit(r, message = "another commit")
 
 test_that("get_committed_files works on multiple commits", {
   expected <- c(f, f2)
-  actual <- workflowr:::get_committed_files(r)
-  expect_identical(actual, expected)
+  expect_identical(workflowr:::get_committed_files(r), expected)
+  expect_identical(workflowr:::get_committed_files(r, sysgit = ""), expected)
 })
 
 test_that("obtain_files_in_commit works on standard commit", {
@@ -59,14 +60,23 @@ test_that("obtain_files_in_commit works on standard commit", {
   expect_identical(actual, expected)
 })
 
+test_that("get_committed_files can be passed a specific commit", {
+  expected <- f
+  expect_identical(
+    workflowr:::get_committed_files(r, commit =  git2r::commits(r)[[2]]),
+    expected)
+  # Note: Testing with `sysgit = ""` is unnecessary here b/c libgit2 is always
+  # used to retreive the files present at a given commit.
+})
+
 # Remove a file
 git2r::rm_file(r, basename(f[1]))
 git2r::commit(r, message = "remove a file")
 
 test_that("get_committed_files stops reporting files after they are removed", {
   expected <- c(f[2], f2)
-  actual <- workflowr:::get_committed_files(r)
-  expect_identical(actual, expected)
+  expect_identical(workflowr:::get_committed_files(r), expected)
+  expect_identical(workflowr:::get_committed_files(r, sysgit = ""), expected)
 })
 
 test_that("obtain_files_in_commit reports a deleted file", {

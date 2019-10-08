@@ -121,14 +121,15 @@ check_staged_changes <- function(path, custom_message = "this function") {
 #
 # commit - NULL (default) or a git_commit object
 #
-# use_sys_git - logical (default: TRUE) Attempt to use system Git executable to
-#               obtain committed files via `git ls-files`. Cannot be used with
-#               commit argument.
+# sysgit - character (default: `Sys.which("git")`) Path to system Git executable
+#          used to obtain committed files via `git ls-files`. Cannot be used
+#          with commit argument. To disable, set `git = ""`.
 #
 # The default is to use the head commit.
 #
 # Returns absolute paths.
-get_committed_files <- function(repo, commit = NULL, use_sys_git = TRUE) {
+get_committed_files <- function(repo, commit = NULL,
+                                sysgit = getOption("workflowr.git", default = "")) {
   stopifnot(identical(class(repo), "git_repository"))
   stopifnot(is.null(commit) || identical(class(commit), "git_commit"))
 
@@ -138,9 +139,8 @@ get_committed_files <- function(repo, commit = NULL, use_sys_git = TRUE) {
   }
 
   # If Git is available and don't need a specific commit, use `git ls-files`
-  git <- Sys.which("git")
-  if (!is.null(git) && !is.na(git) && nchar(git) > 0 && is.null(commit) && use_sys_git) {
-    cmd <- sprintf("%s -C %s ls-files", git, git2r::workdir(repo))
+  if (!is.null(sysgit) && !is.na(sysgit) && nchar(sysgit) > 0 && is.null(commit)) {
+    cmd <- sprintf("%s -C %s ls-files", sysgit, git2r::workdir(repo))
     files <- system(cmd, intern = TRUE)
     files <- absolute(file.path(git2r::workdir(repo), files))
     return(files)

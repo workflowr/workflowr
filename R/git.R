@@ -117,17 +117,39 @@ check_staged_changes <- function(path, custom_message = "this function") {
 
 # Obtain all the committed files in a Git repository at a given commit.
 #
+# repo - a git_repository object
+#
+# commit - NULL (default) or a git_commit object
+#
+# use_sys_git - logical (default: TRUE) Attempt to use system Git executable to
+#               obtain committed files via `git ls-files`. Cannot be used with
+#               commit argument.
+#
 # The default is to use the head commit.
 #
 # Returns absolute paths.
-get_committed_files <- function(repo, commit = NULL) {
+get_committed_files <- function(repo, commit = NULL, use_sys_git = TRUE) {
+  stopifnot(identical(class(repo), "git_repository"))
+  stopifnot(is.null(commit) || identical(class(commit), "git_commit"))
+
   n_commits <- length(git2r::commits(repo))
   if (n_commits == 0) {
     return(NA)
   }
+
+  # If Git is available and don't need a specific commit, use `git ls-files`
+  git <- Sys.which("git")
+  if (!is.null(git) && !is.na(git) && nchar(git) > 0 && is.null(commit) && use_sys_git) {
+    cmd <- sprintf("%s -C %s ls-files", git, git2r::workdir(repo))
+    files <- system(cmd, intern = TRUE)
+    files <- absolute(file.path(git2r::workdir(repo), files))
+    return(files)
+  }
+
   if (is.null(commit)) {
     commit <- git2r::lookup(repo, git2r::branch_target(git2r::repository_head(repo)))
   }
+
   tree <- git2r::tree(commit)
   files <- ls_files(tree)
   files <- absolute(file.path(git2r::workdir(repo), files))

@@ -348,8 +348,9 @@ All the required setup can be performed by the workflowr function
 default is to name the GitHub repository using the same name as the directory
 that contains the workflowr project. This is likely what you used with
 `wflow_start()`, which in this case was `"myproject"`. If you'd prefer the
-GitHub repository to have a different name, you can pass the argument
-`repository = "other-name"`.]:
+GitHub repository to have a different name, or if you've already created a
+GitHub repo with a different name, you can pass the argument `repository =
+"other-name"`.]:
 
 ```{r wflow-use-github, eval=FALSE}
 wflow_use_github("myname")

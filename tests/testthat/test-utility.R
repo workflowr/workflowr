@@ -336,6 +336,20 @@ test_that("relative can resolve symlinks", {
   expect_equal(workflowr:::relative(nonexist), "x/y/z")
 })
 
+# Explicitly test resolve_symlink on all platforms (currently only used on
+# Windows)
+test_that("resolve_symlink can resolve symlinks", {
+  link <- workflowr:::absolute(tempfile())
+  target <- workflowr:::absolute(".")
+  on.exit(fs::link_delete(link))
+  fs::link_create(target, link)
+  expect_equal(workflowr:::resolve_symlink(link), target)
+  # Non-existent path
+  nonexist <- file.path(link, "x/y/z")
+  expect_equal(workflowr:::resolve_symlink(nonexist), file.path(target, "x/y/z"))
+})
+
+
 # Test toupper_win_drive -------------------------------------------------------
 
 test_that("toupper_win_drive capitalizes lowercase Windows drives", {

@@ -45,6 +45,10 @@ commits).
     if it is an interactive R session). This option is currently used by
     `wflow_build()`, `wflow_git_push()`, and `wflow_publish()`.
 
+* Warn user if `knit_root_dir` (the directory where the code in the Rmd files is
+executed) defined in `_workflowr.yml` is an absolute path. An absolute path
+would only work on the current computer, limiting reproducibility.
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

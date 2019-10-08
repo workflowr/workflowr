@@ -21,7 +21,7 @@ cache:
 before_test:
   - ps: >-
       if (-Not (Test-Path "C:\Program Files\Pandoc\")) {
-        cinst pandoc
+        cinst --no-progress pandoc
       }
 #  - ps: choco install pandoc --version 1.19.1 --allow-downgrade
   - ps: $env:Path += ";C:\Program Files\Pandoc\"

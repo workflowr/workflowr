@@ -6,8 +6,8 @@
 \usage{
 wflow_publish(files = NULL, message = NULL, all = FALSE,
   force = FALSE, update = FALSE, republish = FALSE,
-  view = interactive(), delete_cache = FALSE, seed = 12345,
-  verbose = FALSE, dry_run = FALSE, project = ".")
+  view = getOption("workflowr.view"), delete_cache = FALSE,
+  seed = 12345, verbose = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). R Markdown files and other files to
@@ -36,10 +36,11 @@ files (that do not have any unstaged or staged changes). Useful for
 site-wide changes like updating the theme, navigation bar, or any other
 setting in \code{_site.yml}.}
 
-\item{view}{logical (default: \code{\link{interactive}}). View the website
-with \code{\link{wflow_view}} after building files. If only one file is
-built, it is opened. If more than one file is built, the main index page is
-opened. Not applicable if no files are built or if \code{dry_run = TRUE}.}
+\item{view}{logical (default: \code{getOption("workflowr.view")}). View the
+website with \code{\link{wflow_view}} after building files. If only one
+file is built, it is opened. If more than one file is built, the main index
+page is opened. Not applicable if no files are built or if \code{dry_run =
+TRUE}.}
 
 \item{delete_cache}{logical (default: FALSE). Delete the cache directory (if
 it exists) for each R Markdown file prior to building it.}

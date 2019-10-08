@@ -42,10 +42,10 @@
 #' @param set_upstream logical (default: TRUE). Set the current local branch to
 #'   track the remote branch if it isn't already tracking one. This is likely
 #'   what you want. Equivalent to: \code{git push -u remote branch}
-#' @param view logical (default: TRUE). Open the URL to the repository in the
-#'   browser. Ignored if \code{dry_run = TRUE}. Also note that this only works
-#'   if the option \code{browser} is set, which you can check with
-#'   \code{getOption("browser")}.
+#' @param view logical (default: \code{getOption("workflowr.view")}). Open the
+#'   URL to the repository in the browser. Ignored if \code{dry_run = TRUE}.
+#'   Also note that this only works if the option \code{browser} is set, which
+#'   you can check with \code{getOption("browser")}.
 #' @param dry_run logical (default: FALSE). Preview the proposed action but do
 #'   not actually push to the remote repository.
 #' @param project character (default: ".") By default the function assumes the
@@ -89,7 +89,8 @@
 #' @export
 wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                            password = NULL, force = FALSE, set_upstream = TRUE,
-                           view = TRUE, dry_run = FALSE, project = ".") {
+                           view = getOption("workflowr.view"), dry_run = FALSE,
+                           project = ".") {
 
   # Check input arguments ------------------------------------------------------
 

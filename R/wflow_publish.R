@@ -70,7 +70,7 @@ wflow_publish <- function(
   # args to wflow_build
   update = FALSE,
   republish = FALSE,
-  view = interactive(),
+  view = getOption("workflowr.view"),
   delete_cache = FALSE,
   seed = 12345,
   verbose = FALSE,

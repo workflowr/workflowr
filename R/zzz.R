@@ -12,7 +12,7 @@
   sysgit <- Sys.which("git")
   wflow_pkg_opts <- list(
     workflowr.sysgit = if(fs::file_exists(sysgit)) sysgit else "",
-    workflowr.view = TRUE
+    workflowr.view = interactive()
   )
 
   op <- options()
@@ -82,6 +82,13 @@
 #' workflowr. By default it is set to the first Git executable on the search
 #' path. You can specify a path to a different Git executable. Alternatively you
 #' can disable this behavior entirely by setting it to the empty string \code{""}.}
+#'
+#' \item{workflowr.view}{A logical indicating whether workflowr functions should
+#' open webpages for viewing in the browser. The default is set to
+#' \code{\link[base]{interactive}} (i.e. it is \code{TRUE} only if it is an
+#' interactive R session). This option is currently used by
+#' \code{\link{wflow_build}}, \code{\link{wflow_git_push}}, and
+#' \code{\link{wflow_publish}}.}
 #' }
 #'
 #' @docType package

@@ -40,6 +40,10 @@ commits).
     * `workflowr.git`: Set the path to the system Git executable, which is
     occasionally used to increase the speed of Git operations performed by
     workflowr functions.
+    * `workflowr.view`: Should workflowr functions open webpages for viewing in
+    the browser? The default is set to `interactive()` (i.e. it is `TRUE` only
+    if it is an interactive R session). This option is currently used by
+    `wflow_build()`, `wflow_git_push()`, and `wflow_publish()`.
 
 # workflowr 1.4.0
 

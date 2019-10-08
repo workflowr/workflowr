@@ -54,10 +54,11 @@
 #'   files (that do not have any unstaged or staged changes). Useful for
 #'   site-wide changes like updating the theme, navigation bar, or any other
 #'   setting in \code{_site.yml}.
-#' @param view logical (default: \code{\link{interactive}}). View the website
-#'   with \code{\link{wflow_view}} after building files. If only one file is
-#'   built, it is opened. If more than one file is built, the main index page is
-#'   opened. Not applicable if no files are built or if \code{dry_run = TRUE}.
+#' @param view logical (default: \code{getOption("workflowr.view")}). View the
+#'   website with \code{\link{wflow_view}} after building files. If only one
+#'   file is built, it is opened. If more than one file is built, the main index
+#'   page is opened. Not applicable if no files are built or if \code{dry_run =
+#'   TRUE}.
 #' @param clean_fig_files logical (default: FALSE). Delete existing figure files
 #'   for each R Markdown file prior to building it. This ensures that only
 #'   relevant figure files are saved. As you develop an analysis, it is easy to
@@ -146,7 +147,8 @@
 #' @import rmarkdown
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
-                        update = FALSE, republish = FALSE, view = interactive(),
+                        update = FALSE, republish = FALSE,
+                        view = getOption("workflowr.view"),
                         clean_fig_files = FALSE, delete_cache = FALSE,
                         seed = 12345, log_dir = NULL, verbose = FALSE,
                         local = FALSE, dry_run = FALSE, project = ".") {

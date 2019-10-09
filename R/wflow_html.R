@@ -368,6 +368,16 @@ wflow_pre_knit <- function(input, ...) {
     seed_chunk <- ""
   }
 
+  if (basename(input) == "index.Rmd") {
+  sidebar <- glue::glue('
+    <div style="float:right; width:30%;padding:10px;background:#efefef; height:100%;">
+    This is hopefully a sidebar!
+    </div>
+    ')
+  } else {
+    sidebar <- ""
+  }
+
   # Add session information at the end
   if (has_code && wflow_opts$sessioninfo != "") {
     sessioninfo <- glue::glue('
@@ -400,6 +410,8 @@ wflow_pre_knit <- function(input, ...) {
   lines_out <- c(header_lines,
                  "",
                  report,
+                 "",
+                 sidebar,
                  "",
                  seed_chunk,
                  "",

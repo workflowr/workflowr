@@ -7,6 +7,22 @@ source("setup.R")
 # Test package options ---------------------------------------------------------
 
 test_that("workflowr does not overwrite user-defined package options", {
+
+  sysgit <- callr::r_safe(function() {
+    options(workflowr.sysgit = "/git")
+    library(workflowr)
+    getOption("workflowr.sysgit")
+  })
+
+  expect_identical(sysgit, "/git")
+})
+
+test_that("workflowr does not overwrite user-defined package options in .Rprofile", {
+
+  if (!interactive()) skip("These tests don't work in R CMD check")
+  # Thought this would fix it but it didn't: https://github.com/r-lib/callr/issues/20
+  # Interestingly, this worked fine on Windows
+
   path <- test_setup()
   on.exit(test_teardown(path))
 
@@ -20,9 +36,11 @@ test_that("workflowr does not overwrite user-defined package options", {
                "library(workflowr)"),
              con = ".Rprofile")
 
-  sysgit <- callr::r_copycat(function() getOption("workflowr.sysgit"))
+  sysgit <- callr::r_safe(function() getOption("workflowr.sysgit"),
+                          user_profile = TRUE)
   expect_identical(sysgit, "/git")
 
-  view <- callr::r_copycat(function() getOption("workflowr.view"))
+  view <- callr::r_safe(function() getOption("workflowr.view"),
+                        user_profile = TRUE)
   expect_identical(view, "bananas")
 })

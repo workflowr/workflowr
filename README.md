@@ -151,7 +151,7 @@ abide by its terms.
 [gh]: https://github.com
 [gl]: https://gitlab.com
 [git]: https://git-scm.com/
-[git2r]: https://cran.r-project.org/web/packages/git2r/index.html
+[git2r]: https://cran.r-project.org/package=git2r
 [GitHub Pages]: https://pages.github.com/
 [GitLab Pages]: https://about.gitlab.com/product/pages/
 [issues]: https://github.com/jdblischak/workflowr/issues

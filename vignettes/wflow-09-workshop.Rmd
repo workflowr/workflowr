@@ -1,0 +1,237 @@
+---
+title: "Reproducible research with workflowr"
+subtitle: "workflowr version `r utils::packageVersion('workflowr')`"
+author: "John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Reproducible research with workflowr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Introduction
+
+The [workflowr][] R package makes it easier for you to organize, reproduce, and
+share your data analyses. This short tutorial will introduce you to the
+workflowr framework. If you are completing this tutorial as part of a live
+workshop, please follow the [setup instructions](#setup) in the next section prior to
+arriving.
+
+Workflowr combines literate programming with [R Markdown][rmd] and version
+control with [Git][git] to generate a website containing time-stamped,
+versioned, and documented results. By the end of this tutorial, you will have a
+website hosted on [GitHub Pages][gh-pages] that contains the results of a
+reproducible, statistical analysis.
+
+[gh-pages]: https://pages.github.com/
+[git]: https://git-scm.com/
+[rmd]: http://rmarkdown.rstudio.com/
+[workflowr]: https://github.com/jdblischak/workflowr
+
+## Setup
+
+1. Install [R][r]
+
+1. Install [RStudio][rstudio]
+
+1. Install workflowr from [CRAN][cran]:
+
+    ```r
+    install.packages("workflowr")
+    ```
+
+1. Create an account on [GitHub][gh]
+
+[cran]: https://cran.r-project.org/package=workflowr
+[gh]: https://github.com
+[r]: http://cran.r-project.org
+[rstudio]: https://www.rstudio.com/products/rstudio/download/
+
+## Organized
+
+To help you stay organized, workflowr creates a project directory with the
+necessary configuration files as well as subdirectories for saving data and
+other project files. This tutorial uses the [RStudio project
+template][rstudio-proj-template] for workflowr, but note that the same can be
+achieved via the function `wflow_start()`.
+
+[rstudio-proj-template]: https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html
+
+To start your workflowr project, follow these steps:
+
+1. Open RStudio.
+
+1. In the R console, run `wflow_git_config()` to register your name and email
+with Git. This only has to be done once per computer. If you've used Git
+on this machine before, you can skip this step. For a better GitHub experience,
+use the same email as you used to register your GitHub account.
+
+    ```{r config}
+    library(workflowr)
+    wflow_git_config(user.name = "First Last", user.email = "email@domain.com")
+    ```
+
+1. In the menu bar, choose `File` -> `New Project`.
+
+1. Choose `New Directory` and then scroll down the list of project types to
+select `workflowr project`.
+
+    ![Screenshot of RStudio New Project menu](github-new-repo.png)
+
+    ![Screenshot of Project type workflowr project](github-new-repo.png)
+
+1. Type `myproject` as the directory name, choose where to save it on
+your computer, and choose `Create Project`.
+
+    ![Screenshot of workflowr project template menu](github-new-repo.png)
+
+1. RStudio executed `wflow_start()` to create the workflowr project `myproject`
+and opened the project in RStudio. Note the workflowr directory structure
+in the Files pane.
+
+    ```
+    myproject/
+    ├── .gitignore
+    ├── .Rprofile
+    ├── _workflowr.yml
+    ├── analysis/
+    │   ├── about.Rmd
+    │   ├── index.Rmd
+    │   ├── license.Rmd
+    │   └── _site.yml
+    ├── code/
+    │   ├── README.md
+    ├── data/
+    │   └── README.md
+    ├── docs/
+    ├── myproject.Rproj
+    ├── output/
+    │   └── README.md
+    └── README.md
+    ```
+
+1. Using the files pane, navigate to the directory `analysis/` and click on
+`index.Rmd` to open it for editing. Write a short introductory message.
+
+1. In the R console, run `wflow_build()`. This will build all the R Markdown
+files in `analysis/`^[The default behavior when `wflow_build()` is run without
+any arguments is to build any R Markdown file that has been edited since its
+corresponding HTML file was last built.], save them in `docs/`, and then open
+`docs/index.html` in the RStudio Viewer pane.
+
+1. To perform your analysis, you will use a built-in data set from R.^[While not
+the most exciting, this avoids any issues with downloading data from the
+internet and saving it correctly.] The data set `ToothGrowth` contains the
+length of the teeth for 60 guinea pigs given 3 different doses of vitamin C
+either via orange juice (`OC`) or directly with ascorbic acid (`VC`). To
+explore the data set, run the following in the R console.
+
+    ```{r teeth, eval=TRUE}
+    data("ToothGrowth")
+    summary(ToothGrowth)
+    str(ToothGrowth)
+    ```
+
+1. To mimic a real project that will have external data files, save the
+`ToothGrowth` data set to the `data/` subdirectory using `write.csv()`.
+
+    ```{r teeth-write}
+    write.csv(ToothGrowth, file = "data/teeth.csv")
+    ```
+
+## Reproducible
+
+To demonstrate the reproducibility features of workflowr, you will perform a
+small analysis.
+
+1. In the R console, open a new R Markdown file with `wflow_open()`. It will
+open automatically for editing in RStudio.
+
+    ```{r open}
+    wflow_open("analysis/teeth.Rmd")
+    ```
+
+1. In the file `teeth.Rmd`, insert a code chunk^[You can insert a code chunk via
+the menu bar, `Code` -> `Insert Chunk`, or using the keyboard shortcut
+`Ctrl/Cmd`+`Alt`+`I`.] that imports the data set from the file you previously
+created.
+
+    ````
+    ```{r import-teeth}`r ''`
+    teeth <- read.csv("data/teeth.csv", row.names = 1)
+    head(teeth)
+    ```
+    ````
+
+1. In the file `teeth.Rmd`, insert a second chunk and create some boxplots to
+explore the data:
+
+    ````
+    ```{r boxplots}`r ''`
+    boxplot(len ~ dose, data = teeth)
+    boxplot(len ~ supp, data = teeth)
+    boxplot(len ~ dose + supp, data = teeth)
+    ```
+    ````
+
+```{r test-boxplots, eval=TRUE, include=FALSE}
+data("ToothGrowth")
+teeth <- ToothGrowth
+boxplot(len ~ dose, data = teeth)
+boxplot(len ~ supp, data = teeth)
+boxplot(len ~ dose + supp, data = teeth)
+```
+
+1. To compare the tooth length of the guinea pigs given orange juice versus
+those given vitamin C, you could perform a permutation-based statistical test.
+This involves comparing the observed difference in teeth length due to the
+supplement method to the observed differences calculated from random
+permutations of the data. The basic idea is that if the observed difference is
+an outlier compared to the differences generated after permuting the supplement
+method column, it is more likely to be a true signal not due to chance alone.
+Insert the code chunk below to demonstrate a permutation^[You won't implement
+the full permutation method in this tutorial.]:
+
+    ````
+    ```{r permute}`r ''`
+    # Observed difference in teeth length due to supplement method
+    mean(teeth$len[teeth$supp == "OJ"]) - mean(teeth$len[teeth$supp == "VC"])
+    # Permute the observations
+    supp_perm <- sample(teeth$supp)
+    # Caclculate mean difference in permuted data
+    mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
+    ```
+    ````
+
+```{r test-permute, eval=TRUE, include=FALSE}
+# Observed difference in teeth length due to supplement method
+mean(teeth$len[teeth$supp == "OJ"]) - mean(teeth$len[teeth$supp == "VC"])
+# Permute the observations
+supp_perm <- sample(teeth$supp)
+# Caclculate mean difference in permuted data
+mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
+```
+
+1. In the R console, run `wflow_build()`. Note the value of the observed difference
+in the permuted data.
+
+1. In RStudio, click on the Knit button. Has the value of the observed difference
+in the permuted data changed? It should be identical. This is because workflowr
+always sets the same seed prior to running the analysis.^[Note that everyone in
+the workshop will have the same result because by default workflowr uses a seed that
+is the date the project was created as YYYYMMDD. You can change this by editing
+the file `_workflowr.yml`.]
+
+## Troubleshooting
+
+1. I don't see the workflowr project as an available RStudio Project Type.
+
+If you just installed workflowr, close and re-open RStudio.
+Also, make sure you scroll down to the bottom of the list.

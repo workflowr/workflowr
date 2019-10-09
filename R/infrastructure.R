@@ -195,6 +195,14 @@ footer is added to webpages before the MathJax javascript. -->
   });
 </script>
 
+',
+sidebar = '
+<div class="container-fluid" id="workflowr-sidebar">
+<p>This sidebar was inserted by <code>wflow_pre_processor()</code></p>
+<hr>
+<p>Created with <a href="https://jdblischak.github.io/workflowr/">workflowr</a></p>
+</div>
+
 '
 )
 

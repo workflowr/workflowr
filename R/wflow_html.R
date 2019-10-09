@@ -515,6 +515,13 @@ wflow_pre_processor <- function(metadata, input_file, runtime, knit_meta,
   fname_header <- tempfile("header", fileext = ".html")
   writeLines(includes$header, con = fname_header)
 
+  # sidebar
+  if (stringr::str_detect(basename(input_file), "index.+md")) {
+    # The default is index.utf8.md, but presumably this is affected by the
+    # encoding used.
+    cat(includes$sidebar, file = fname_header, sep = "\n", append = TRUE)
+  }
+
   # footer
   fname_footer <- tempfile("footer", fileext = ".html")
   writeLines(includes$footer, con = fname_footer)

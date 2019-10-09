@@ -29,8 +29,8 @@ then
 fi
 
 echo "Buiding..."
-R CMD build .
+R CMD build --no-manual .
 
 echo "Checking..."
 echo "$*"
-R CMD check --as-cran $* "$source"
+R CMD check --as-cran --no-manual $* "$source"

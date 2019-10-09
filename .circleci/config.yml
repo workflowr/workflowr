@@ -97,8 +97,6 @@ jobs:
       - run:
           name: Calculate code coverage
           command: r -e 'covr::codecov()'
-      - store_artifacts:
-          path: workflowr.Rcheck/
       - save_cache:
           key: r-pkg-cache-v2-{{ arch }}-{{ .Branch }}
           paths:

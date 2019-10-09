@@ -129,7 +129,7 @@ check_staged_changes <- function(path, custom_message = "this function") {
 #
 # Returns absolute paths.
 get_committed_files <- function(repo, commit = NULL,
-                                sysgit = getOption("workflowr.git", default = "")) {
+                                sysgit = getOption("workflowr.sysgit", default = "")) {
   stopifnot(identical(class(repo), "git_repository"))
   stopifnot(is.null(commit) || identical(class(commit), "git_commit"))
 

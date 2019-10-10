@@ -154,7 +154,7 @@ small analysis.
 1. In the R console, open a new R Markdown file with `wflow_open()`. It will
 open automatically for editing in RStudio.
 
-    ```{r open}
+    ```{r open-teeth}
     wflow_open("analysis/teeth.Rmd")
     ```
 
@@ -190,7 +190,7 @@ boxplot(len ~ dose + supp, data = teeth)
 ```
 
 1. To compare the tooth length of the guinea pigs given orange juice versus
-those given vitamin C, you could perform a permutation-based statistical test.
+those given vitamin C, you could perform a [permutation-based statistical test][permutation].
 This involves comparing the observed difference in teeth length due to the
 supplement method to the observed differences calculated from random
 permutations of the data. The basic idea is that if the observed difference is
@@ -198,6 +198,8 @@ an outlier compared to the differences generated after permuting the supplement
 method column, it is more likely to be a true signal not due to chance alone.
 Insert the code chunk below to demonstrate a permutation^[You won't implement
 the full permutation method in this tutorial.]:
+
+[permutation]: https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests
 
     ````
     ```{r permute}`r ''`
@@ -229,9 +231,130 @@ the workshop will have the same result because by default workflowr uses a seed 
 is the date the project was created as YYYYMMDD. You can change this by editing
 the file `_workflowr.yml`.]
 
+1. Navigate to the file `analysis/index.Rmd`. It should already be open in the
+RStudio Editor pane from when you created the project. If not, you can click on
+it in the Files pane or run the following in the R console:
+
+    ```{r open-index}
+    wflow_open("analysis/index.Rmd")
+    ```
+
+1. Copy-paste the line below into `analysis/index.Rmd`. This creates a
+hyperlink to the tooth analysis. The text between the square brackets is
+displayed on the webpage, and the text in parentheses is the relative path to
+the teeth webpage. Note that you don't need to include the subdirectory `docs/`
+because `index.html` and `teeth.html` are both already in `docs/`. Also note
+that you need to use the file extension `.html` since that is the file that
+needs to be opened by the web browser.
+
+    ```
+    * [Teeth growth](teeth.html)
+    ```
+
+1. Run `wflow_build()` and then confirm that clicking on the link "Teeth growth"
+takes you to your teeth analysis page.
+
+1. In the R console, run `wflow_status()`. This will show you the status of each
+of the Rmd files in your workflowr project. The status is determined by the Git
+status of the Rmd file and its corresponding HTML file. The file `teeth.Rmd` is
+classified as "Scratch" because it has not yet been committed (i.e. saved in a
+snapshot). In contrast, the file `index.Rmd` has status "Unpublished" because
+the Rmd file has been committed (an initial commit was made when the project was
+first started) but not its corresponding HTML file.
+
+<!-- Use knitr::include_graphics() to insert PNG version of image -->
+
+1. In the R console, run the command below to "publish" your results. The function
+`wflow_publish()` performs three steps: 1) commits the files, 2) rebuilds the
+Rmd files, and 3) commits the HTML and figure files. This guarantees that the
+results in each HTML file is always generated from an exact, known version
+of the Rmd file (you can see this version embedded in the workflowr report).
+The second argument is the message that is associated with the Git commit.
+This way you can better understand the motivation for each change that you
+made when you review the development history of your project (e.g. with `git log`).
+
+    ```{r publish-teeth-growth}
+    wflow_publish(c("analysis/*Rmd", "data/teeth.csv"), "Analyze teeth growth")
+    ```
+
+1. Open the workflowr report of `teeth.html` by clicking on the button at the
+top of the page. Navigate to the tab "Past versions". Note that the record
+of all past versions will be saved here. Once the project has been added to
+GitHub (you will do this in the next section), the "Past versions" tab will
+include hyperlinks for convenient viewing of the past versions of the Rmd and
+HTML files.
+
+## Shareable
+
+To share your work, you will host the Git repository on GitHub and activate the
+free service GitHub Pages to serve the static website in `docs/`.
+
+1. In the R console, run the function `wflow_use_github()`. The only required
+argument is your GitHub username. The name of the repository will automatically
+be named the same as the directory containing the workflowr project, in this
+case "myproject". When the function asks if you would like it to create the
+repository on GitHub for you, enter `y` for "yes". This will open your web
+browser so that you can authenticate with GitHub and then give permission for
+workflowr to create the repository on your behalf. Additionally, this function
+connects to your local repository with the remote GitHub repository and
+inserts a link to the GitHub repository into the navigation bar.
+
+    ```{r wflow-use-github}
+    wflow_use_github("your-github-username")
+    ```
+
+1. To update your workflowr website to use GitHub links to past versions of the
+files (as well as update the navigation bar to include the GitHub link),
+republish the files.
+
+    ```{r republish}
+    wflow_publish(republish = TRUE)
+    ```
+
+1. To send your project to GitHub, run `wflow_git_push()`. This will prompt you
+for your GitHub username and password.
+
+    ```{r wflow-git-push}
+    wflow_git_push()
+    ```
+
+1. On GitHub, navigate to the Settings tab of your GitHub repository. Scroll
+down to the section "GitHub Pages". For Source choose "master branch /docs folder".
+After it updates, scroll back down and click on the URL.
+
+1. Navigate to the tooth analysis. Click on the links in the "Past versions"
+tab to see the past results.
+
 ## Troubleshooting
 
 1. I don't see the workflowr project as an available RStudio Project Type.
 
-If you just installed workflowr, close and re-open RStudio.
-Also, make sure you scroll down to the bottom of the list.
+    If you just installed workflowr, close and re-open RStudio.
+    Also, make sure you scroll down to the bottom of the list.
+
+1. The GitHub repository wasn't created automatically by `wflow_use_github()`.
+
+    If `wflow_use_github()` failed unexpectedly when creating the GitHub
+    repository, or if you declined by entering `n`, you can     manually created
+    the repository on GitHub. After logging in to GitHub, click on the "+" in
+    the top right of the page. Choose "New repository". For the repository name,
+    type `myproject`. Do not change any of the     other settings. Click on the
+    green button "Create repository". Once that is completed, you can return to
+    the next step in the tutorial.
+
+    ![Screenshot of RStudio New Project menu](github-new-repo.png)
+
+1. I wasn't able to push to GitHub with `wflow_git_push()`.
+
+    Unfortunately this function has a high failure rate because it relies on the
+    correct configuration of various system software dependencies. If this fails,
+    you can push to Git using another techinque, but this will require that you
+    have previously installed Git on your computer. For example, you can use the
+    RStudio Git pane (click on the green arrow that says "Push"). Alternatively,
+    you can directly use Git by running `git push` in the terminal.
+
+1. My website isn't displaying after I activated GitHub Pages.
+
+It is not uncommon for there to be a short delay before your website is
+available. One trick to try is to specify the exact page that you want at the
+end of the URL, e.g. add `/index.html` to the end of the URL.

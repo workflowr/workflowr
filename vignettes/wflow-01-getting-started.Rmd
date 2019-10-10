@@ -380,7 +380,7 @@ account on GitHub and create a new repository following these
 [instructions][new-repo]. The screenshot below shows the menu in the topright of
 the webpage.
 
-<img src="github-new-repo.png" alt="Create a new repository on GitHub."
+<img src="img/github-new-repo.png" alt="Create a new repository on GitHub."
   style="display: block; margin: auto; border: black 1px solid">
 
 <p class="caption" style="text-align: center;">

@@ -14,7 +14,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
+knitr::opts_chunk$set(eval = FALSE, fig.align = "center", out.width = "90%")
 ```
 
 ## Introduction
@@ -84,14 +84,20 @@ use the same email as you used to register your GitHub account.
 1. Choose `New Directory` and then scroll down the list of project types to
 select `workflowr project`.
 
-    ![Screenshot of RStudio New Project menu](github-new-repo.png)
+    ```{r rstudio-create-project, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/rstudio-create-project.png")
+    ```
 
-    ![Screenshot of Project type workflowr project](github-new-repo.png)
+    ```{r rstudio-project-type, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/rstudio-project-type.png")
+    ```
 
 1. Type `myproject` as the directory name, choose where to save it on
 your computer, and choose `Create Project`.
 
-    ![Screenshot of workflowr project template menu](github-new-repo.png)
+    ```{r rstudio-workflowr-template, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/rstudio-workflowr-template.png")
+    ```
 
 1. RStudio executed `wflow_start()` to create the workflowr project `myproject`
 and opened the project in RStudio. Note the workflowr directory structure
@@ -118,8 +124,10 @@ in the Files pane.
     |-- README.md
     ```
 
-1. Using the files pane, navigate to the directory `analysis/` and click on
-`index.Rmd` to open it for editing. Write a short introductory message.
+1. Open the file `analysis/index.Rmd` for editing. It should already be open in
+the RStudio Editor pane from when you created the project. If not, use the Files
+pane to navigate to the directory `analysis/` and click on `index.Rmd` to open
+it for editing. Write a short introductory message.
 
 1. In the R console, run `wflow_build()`. This will build all the R Markdown
 files in `analysis/`^[The default behavior when `wflow_build()` is run without
@@ -162,7 +170,10 @@ open automatically for editing in RStudio.
 1. In the file `teeth.Rmd`, insert a code chunk^[You can insert a code chunk via
 the menu bar, `Code` -> `Insert Chunk`, or using the keyboard shortcut
 `Ctrl/Cmd`+`Alt`+`I`.] that imports the data set from the file you previously
-created.
+created^[Note that the default working directory for a workflowr project is the
+root of the project. Hence the relative path is `data/teeth.csv`. The working
+directory can be changed via the workflowr option `knit_root_dir` in `_workflowr.yml`.
+See `?wflow_html` for more details.].
 
     ````
     ```{r import-teeth}`r ''`
@@ -230,11 +241,16 @@ in the permuted data changed? It should be identical. This is because workflowr
 always sets the same seed prior to running the analysis.^[Note that everyone in
 the workshop will have the same result because by default workflowr uses a seed that
 is the date the project was created as YYYYMMDD. You can change this by editing
-the file `_workflowr.yml`.]
+the file `_workflowr.yml`.] To better understand this behavior as well as the
+other reproducibility safeguards and checks that workflowr performs for each
+analysis, click on the workflowr button at the top and select the "Checks" tab.
 
-1. Navigate to the file `analysis/index.Rmd`. It should already be open in the
-RStudio Editor pane from when you created the project. If not, you can click on
-it in the Files pane or run the following in the R console:
+    ```{r workflowr-report-checks, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/workflowr-report-checks.png")
+    ```
+
+1. Navigate back to the file `analysis/index.Rmd`. If you closed it, you can
+open it from the Files pane or run the following in the R console:
 
     ```{r open-index}
     wflow_open("analysis/index.Rmd")
@@ -263,7 +279,9 @@ snapshot). In contrast, the file `index.Rmd` has status "Unpublished" because
 the Rmd file has been committed (an initial commit was made when the project was
 first started) but not its corresponding HTML file.
 
-<!-- Use knitr::include_graphics() to insert PNG version of image -->
+    ```{r fig-status, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/status.png")
+    ```
 
 1. In the R console, run the command below to "publish" your results. The function
 `wflow_publish()` performs three steps: 1) commits the files, 2) rebuilds the
@@ -284,6 +302,10 @@ of all past versions will be saved here. Once the project has been added to
 GitHub (you will do this in the next section), the "Past versions" tab will
 include hyperlinks for convenient viewing of the past versions of the Rmd and
 HTML files.
+
+    ```{r workflowr-past-versions-1, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/workflowr-past-versions-1.png")
+    ```
 
 ## Shareable
 
@@ -323,8 +345,24 @@ for your GitHub username and password.
 down to the section "GitHub Pages". For Source choose "master branch /docs folder".
 After it updates, scroll back down and click on the URL.
 
+    ```{r github-pages-settings, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/github-pages-settings.png")
+    ```
+
 1. Navigate to the tooth analysis. Click on the links in the "Past versions"
-tab to see the past results.
+tab to see the past results. Click on the HTML hyperlink to view the past
+version of the HTML file. Click on the Rmd hyperlink to view the past version
+of the Rmd file on GitHub.
+
+    ```{r workflowr-past-versions-2, eval=TRUE, echo=FALSE}
+    knitr::include_graphics("img/workflowr-past-versions-2.png")
+    ```
+
+## Conclusion
+
+You have successfully created and shared a reproducible research website.
+Following similar steps, you can do the same for one of your own research
+projects and share it with collaborators and colleagues.
 
 ## Troubleshooting
 
@@ -343,7 +381,9 @@ tab to see the past results.
     green button "Create repository". Once that is completed, you can return to
     the next step in the tutorial.
 
-    ![Screenshot of RStudio New Project menu](github-new-repo.png)
+    ```{r github-new-repo, eval=TRUE, echo=FALSE, out.width="25%"}
+    knitr::include_graphics("img/github-new-repo.png")
+    ```
 
 1. I wasn't able to push to GitHub with `wflow_git_push()`.
 

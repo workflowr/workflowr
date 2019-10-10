@@ -7,7 +7,9 @@ test_that("wflow_quickstart copies Rmd into new project", {
   withr::local_options(list(workflowr.view = FALSE))
   quick <- wflow_quickstart(files = rmd, username = "username",
                             directory = path, change_wd = FALSE,
-                            create_on_github = FALSE)
+                            create_on_github = FALSE,
+                            git.user.name = "Test Name",
+                            git.user.email = "test@email")
   rmd_new <- file.path(path, "analysis", fs::path_file(rmd))
   expect_true(fs::file_exists(rmd_new))
   html_new <- workflowr:::to_html(rmd_new, outdir = file.path(path, "docs"))

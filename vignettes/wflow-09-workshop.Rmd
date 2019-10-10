@@ -6,10 +6,11 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
+  rmarkdown::pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Reproducible research with workflowr}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r setup, include=FALSE}
@@ -98,23 +99,23 @@ in the Files pane.
 
     ```
     myproject/
-    ├── .gitignore
-    ├── .Rprofile
-    ├── _workflowr.yml
-    ├── analysis/
-    │   ├── about.Rmd
-    │   ├── index.Rmd
-    │   ├── license.Rmd
-    │   └── _site.yml
-    ├── code/
-    │   ├── README.md
-    ├── data/
-    │   └── README.md
-    ├── docs/
-    ├── myproject.Rproj
-    ├── output/
-    │   └── README.md
-    └── README.md
+    |-- .gitignore
+    |-- .Rprofile
+    |-- _workflowr.yml
+    |-- analysis/
+    |   |-- about.Rmd
+    |   |-- index.Rmd
+    |   |-- license.Rmd
+    |   |-- _site.yml
+    |-- code/
+    |   |-- README.md
+    |-- data/
+    |   |-- README.md
+    |-- docs/
+    |-- myproject.Rproj
+    |-- output/
+    |   |-- README.md
+    |-- README.md
     ```
 
 1. Using the files pane, navigate to the directory `analysis/` and click on
@@ -199,8 +200,6 @@ method column, it is more likely to be a true signal not due to chance alone.
 Insert the code chunk below to demonstrate a permutation^[You won't implement
 the full permutation method in this tutorial.]:
 
-[permutation]: https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests
-
     ````
     ```{r permute}`r ''`
     # Observed difference in teeth length due to supplement method
@@ -211,6 +210,8 @@ the full permutation method in this tutorial.]:
     mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
     ```
     ````
+
+[permutation]: https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests
 
 ```{r test-permute, eval=TRUE, include=FALSE}
 # Observed difference in teeth length due to supplement method

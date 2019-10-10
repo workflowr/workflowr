@@ -163,7 +163,7 @@ abide by its terms.
 [pandoc]: http://pandoc.org
 [pandoc-install]: https://github.com/rstudio/rmarkdown/blob/master/PANDOC.md
 [pcarbo]: https://pcarbo.github.io/
-[r]: http://cran.r-project.org
+[r]: https://cran.r-project.org
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [r-project-workflows]: https://github.com/jdblischak/r-project-workflows#readme
 [rstudio]: https://www.rstudio.com/products/rstudio/download/

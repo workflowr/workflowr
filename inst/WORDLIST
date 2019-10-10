@@ -4,6 +4,7 @@ addins
 Addins
 Aja
 AppVeyor
+ascorbic
 blogdown
 bootswatch
 BuildType
@@ -107,4 +108,5 @@ worklowr
 Xiang
 YAML
 yml
+YYYYMMDD
 Zhu

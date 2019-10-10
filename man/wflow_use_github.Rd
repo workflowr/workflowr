@@ -59,9 +59,10 @@ Invisibly returns a list of class \code{wflow_use_github}. This is
 \description{
 \code{wflow_use_github} automates all the local configuration necessary to
 deploy your workflowr project with \href{https://pages.github.com/}{GitHub
-Pages}. Optionally, it can also create the new repository on GitHub and push
-the files to GitHub (only applies to public repositories hosted on
-github.com).
+Pages}. Optionally, it can also create the new repository on GitHub (only
+applies to public repositories hosted on github.com). Afterwards, you will
+need to run \code{wflow_git_push} in the R console (or \code{git push} in the
+terminal) to push the code to GitHub.
 }
 \details{
 \code{wflow_use_github} performs the following steps and then commits the
@@ -82,7 +83,7 @@ changes:
 }
 
 Furthermore, \code{wflow_use_github} will prompt you to request permission to
-perform the following steps:
+perform the following step:
 
 \itemize{
 
@@ -94,16 +95,14 @@ your behalf. This will allow \code{wflow_use_github}, running on your own
 machine, to create your new repository. Once \code{wflow_use_github}
 finishes, workflowr can no longer access your GitHub account.
 
-\item (Optional) Pushes the files to GitHub (via
-\code{\link{wflow_git_push}}). Don't worry if this step fails. If it does,
-run \code{git push origin master} in your terminal.
-
 }
 
 If you choose to not allow workflowr to create the repository for you, then
-you will have to complete these final two steps manually. First, login to
-your account and create the new repository on GitHub. Second, run
-\code{wflow_git_push} in the R console or \code{git push origin master}.
+you will have to create it manually by logging into your account.
+
+Once the GitHub repository has been created either by \code{wflow_use_github}
+or yourself, run \code{wflow_git_push} in the R console (or \code{git push
+origin master} in the terminal) to push your code to GitHub.
 }
 \examples{
 \dontrun{

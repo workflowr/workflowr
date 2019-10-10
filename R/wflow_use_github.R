@@ -320,7 +320,7 @@ wflow_use_github <- function(username = NULL, repository = NULL,
 
   o <- list(username = username, repository = repository,
             renamed = renamed, files_git = files_git, commit = commit,
-            config_remote = config_remote)
+            config_remote = config_remote, repo_created = repo_created)
   class(o) <- "wflow_use_github"
 
   if (!repo_created) {

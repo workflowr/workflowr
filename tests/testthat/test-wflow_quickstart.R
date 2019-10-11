@@ -1,6 +1,9 @@
 context("wflow_quickstart")
 
 test_that("wflow_quickstart copies Rmd into new project", {
+
+  skip_on_cran()
+
   path <- fs::file_temp()
   rmd <- fs::file_temp(ext = ".Rmd")
   fs::file_create(rmd)

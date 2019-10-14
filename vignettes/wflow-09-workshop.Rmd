@@ -14,22 +14,24 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE, fig.align = "center", out.width = "90%")
+knitr::opts_chunk$set(eval = FALSE, fig.align = "center")
 ```
 
 ## Introduction
 
 The [workflowr][] R package makes it easier for you to organize, reproduce, and
 share your data analyses. This short tutorial will introduce you to the
-workflowr framework. If you are completing this tutorial as part of a live
-workshop, please follow the [setup instructions](#setup) in the next section prior to
-arriving.
+workflowr framework. You will create a workflowr project that implements a small
+data anlaysis in R, and by the end you will have a working website that you can
+use to share your work. If you are completing this tutorial as part of a live
+workshop, please follow the [setup instructions](#setup) in the next section
+prior to arriving.
 
 Workflowr combines literate programming with [R Markdown][rmd] and version
 control with [Git][git] to generate a website containing time-stamped,
 versioned, and documented results. By the end of this tutorial, you will have a
 website hosted on [GitHub Pages][gh-pages] that contains the results of a
-reproducible, statistical analysis.
+reproducible statistical analysis.
 
 [gh-pages]: https://pages.github.com/
 [git]: https://git-scm.com/
@@ -55,7 +57,7 @@ reproducible, statistical analysis.
 [r]: https://cran.r-project.org
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
 
-## Organized
+## Organize your research
 
 To help you stay organized, workflowr creates a project directory with the
 necessary configuration files as well as subdirectories for saving data and
@@ -72,7 +74,7 @@ To start your workflowr project, follow these steps:
 1. In the R console, run `wflow_git_config()` to register your name and email
 with Git. This only has to be done once per computer. If you've used Git
 on this machine before, you can skip this step. For a better GitHub experience,
-use the same email as you used to register your GitHub account.
+use the same email you used to register your GitHub account.
 
     ```{r config}
     library(workflowr)
@@ -84,18 +86,18 @@ use the same email as you used to register your GitHub account.
 1. Choose `New Directory` and then scroll down the list of project types to
 select `workflowr project`.
 
-    ```{r rstudio-create-project, eval=TRUE, echo=FALSE}
+    ```{r rstudio-create-project, eval=TRUE, echo=FALSE, out.width = "50%"}
     knitr::include_graphics("img/rstudio-create-project.png")
     ```
 
-    ```{r rstudio-project-type, eval=TRUE, echo=FALSE}
+    ```{r rstudio-project-type, eval=TRUE, echo=FALSE, out.width = "50%"}
     knitr::include_graphics("img/rstudio-project-type.png")
     ```
 
 1. Type `myproject` as the directory name, choose where to save it on
 your computer, and choose `Create Project`.
 
-    ```{r rstudio-workflowr-template, eval=TRUE, echo=FALSE}
+    ```{r rstudio-workflowr-template, eval=TRUE, echo=FALSE, out.width = "50%"}
     knitr::include_graphics("img/rstudio-workflowr-template.png")
     ```
 
@@ -132,6 +134,25 @@ in the Files pane.
     `docs/` directory is where the website HTML files will be created and stored
     by  workflowr, and should not be edited by the user.
 
+1. In the R console, run `getwd()` to return the current working directory. Note
+that it is set to the location of the workflowr project on your computer.
+Everytime you open this RStudio project (e.g. by clicking on `myproject.Rproj`),
+it will change the working directory (as well as the Files pane) to this
+directory. This allows you to use relative paths to files when performing your
+analysis, which will make it easier for you and others to run the code on other
+machines. In other words, instead of writing an absolute path like:
+
+    ```{r absolute-path}
+    d <- read.csv("C:/Users/GraceHopper/myproject/data/raw.csv")
+    ```
+
+    Instead you can write a relative path that will work for any user on any
+    operating system:
+
+    ```{r relative-path}
+    d <- read.csv("data/raw.csv")
+    ```
+
 1. Open the file `analysis/index.Rmd` for editing. It should already be open in
 the RStudio Editor pane from when you created the project. If not, use the Files
 pane to navigate to the directory `analysis/` and click on `index.Rmd` to open
@@ -146,8 +167,8 @@ corresponding HTML file was last built.], save them in `docs/`, and then open
 `docs/index.html` in the RStudio Viewer pane. Ignore the warnings in the
 workflowr report for now; we will return to these later.
 
-1. To perform your analysis, you will use a built-in data set from R.^[While not
-the most exciting, this avoids any issues with downloading data from the
+1. To begin your analysis, you will use a built-in data set from R.^[While not
+the most realistic, this avoids any issues with downloading data from the
 internet and saving it correctly.] The data set `ToothGrowth` contains the
 length of the teeth for 60 guinea pigs given 3 different doses of vitamin C
 either via orange juice (`OC`) or directly with ascorbic acid (`VC`). To
@@ -166,7 +187,7 @@ explore the data set, run the following in the R console.
     write.csv(ToothGrowth, file = "data/teeth.csv")
     ```
 
-## Reproducible
+## Create reproducible analyses
 
 To demonstrate the reproducibility features of workflowr, you will perform a
 small analysis.
@@ -178,14 +199,44 @@ open automatically for editing in RStudio.
     wflow_open("analysis/teeth.Rmd")
     ```
 
-1. In the file `teeth.Rmd`, insert a code chunk^[You can insert a code chunk via
-the menu bar, `Code` -> `Insert Chunk`, or using the keyboard shortcut
-(`Ctrl`+`Alt`+`I` on Windows and Linux, `Command`+`Option`+`I` on macOS).] that
-imports the data set from the file you previously created^[Note that the default
+    Rmd files allow you to mix text, code, and results in the same output document
+    (which can be HTML, PDF, Word, and more). In order to accomplish this, it uses a
+    specific layout and syntax. At the top of the document between the dashes `---`
+    is the YAML^[[YAML](https://en.wikipedia.org/wiki/YAML) is a mini-language often
+    used in configuration files.] header that contains metadata about the document
+    such as the title. Code chunks^[You can insert a code chunk via the menu bar,
+    `Code` -> `Insert Chunk`, or using the keyboard shortcut (`Ctrl`+`Alt`+`I` on
+    Windows and Linux, `Command`+`Option`+`I` on macOS).] are specified using the
+    syntax below:
+
+    ````
+    ```{r optional-chunk-name}`r ''`
+    <code goes here>
+    ```
+    ````
+
+    And the code chunks are executed in order from top to bottom. Any text
+    outside of a code chunk is interpreted as prose that should not be executed
+    as R code.
+
+    The workflowr framework accepts any valid Rmd file that can be converted to
+    HTML. In the YAML header, note that workflowr provides its own custom output
+    format, `workflowr::wflow_html`. This function extends the default output
+    format `html_document` from the rmarkdown package, and thus accepts all the
+    same arguments. The only other minor difference is that `wflow_open()` adds
+    the editor option `chunk_output_type: console`, which causes the code to be
+    executed in the R console instead of within the document. If you'd prefer
+    the results of the code chunks be embedded inside the document while you
+    perform the analysis, you can delete those lines (note that this has no
+    effect on the final results, only on the display within RStudio).
+
+1. Copy the code chunk below and paste it at the bottom of the file `teeth.Rmd`.
+The code imports the data set from the file you previously created^[Note that the default
 working directory for a workflowr project is the root of the project. Hence the
 relative path is `data/teeth.csv`. The working directory can be changed via the
 workflowr option `knit_root_dir` in `_workflowr.yml`. See `?wflow_html` for more
-details.].
+details.]. Execute the code in the R console by clicking on the Run button or
+using the shortcut `Ctrl`/`CMD`+`Enter`.
 
     ````
     ```{r import-teeth}`r ''`
@@ -198,8 +249,9 @@ details.].
     before each of the backticks (` ``` `) so that they will be correctly
     recognized as indicating the beginning and end of a code chunk.
 
-1. In the file `teeth.Rmd`, insert a second chunk and create some boxplots to
-explore the data:
+1. Next create some boxplots to explore the data. Copy the code chunk below and
+paste it at the bottom of the file `teeth.Rmd`. Execute the code to see create
+the plots.
 
     ````
     ```{r boxplots}`r ''`
@@ -218,14 +270,15 @@ boxplot(len ~ dose + supp, data = teeth)
 ```
 
 1. To compare the tooth length of the guinea pigs given orange juice versus
-those given vitamin C, you could perform a [permutation-based statistical test][permutation].
-This involves comparing the observed difference in teeth length due to the
-supplement method to the observed differences calculated from random
-permutations of the data. The basic idea is that if the observed difference is
-an outlier compared to the differences generated after permuting the supplement
-method column, it is more likely to be a true signal not due to chance alone.
-Insert the code chunk below to demonstrate a permutation^[You won't implement
-the full permutation method in this tutorial.]:
+those given vitamin C, you could perform a [permutation-based statistical
+test][permutation]. This involves comparing the observed difference in teeth
+length due to the supplement method to the observed differences calculated from
+random permutations of the data. The basic idea is that if the observed
+difference is an outlier compared to the differences generated after permuting
+the supplement method column, it is more likely to be a true signal not due to
+chance alone. Copy the code chunk below, paste it at the bottom of of the file
+`teeth.Rmd`, and execute it. It demonstrates the idea of a permutation^[You
+won't implement the full permutation method in this tutorial.]:
 
     ````
     ```{r permute}`r ''`
@@ -238,16 +291,16 @@ the full permutation method in this tutorial.]:
     ```
     ````
 
-[permutation]: https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests
+    [permutation]: https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests
 
-```{r test-permute, eval=TRUE, include=FALSE}
-# Observed difference in teeth length due to supplement method
-mean(teeth$len[teeth$supp == "OJ"]) - mean(teeth$len[teeth$supp == "VC"])
-# Permute the observations
-supp_perm <- sample(teeth$supp)
-# Caclculate mean difference in permuted data
-mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
-```
+    ```{r test-permute, eval=TRUE, include=FALSE}
+    # Observed difference in teeth length due to supplement method
+    mean(teeth$len[teeth$supp == "OJ"]) - mean(teeth$len[teeth$supp == "VC"])
+    # Permute the observations
+    supp_perm <- sample(teeth$supp)
+    # Caclculate mean difference in permuted data
+    mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
+    ```
 
 1. In the R console, run `wflow_build()`. Note the value of the observed difference
 in the permuted data.
@@ -261,7 +314,7 @@ the file `_workflowr.yml`.] To better understand this behavior as well as the
 other reproducibility safeguards and checks that workflowr performs for each
 analysis, click on the workflowr button at the top and select the "Checks" tab.
 
-    ```{r workflowr-report-checks, eval=TRUE, echo=FALSE}
+    ```{r workflowr-report-checks, eval=TRUE, echo=FALSE, out.width = "75%"}
     knitr::include_graphics("img/workflowr-report-checks.png")
     ```
 
@@ -272,13 +325,13 @@ open it from the Files pane or run the following in the R console:
     wflow_open("analysis/index.Rmd")
     ```
 
-1. Copy-paste the line below into `analysis/index.Rmd`. This creates a
-hyperlink to the tooth analysis. The text between the square brackets is
-displayed on the webpage, and the text in parentheses is the relative path to
-the teeth webpage. Note that you don't need to include the subdirectory `docs/`
-because `index.html` and `teeth.html` are both already in `docs/`. Also note
-that you need to use the file extension `.html` since that is the file that
-needs to be opened by the web browser.
+1. Copy the line below and paste it at the bottom of the file
+`analysis/index.Rmd`. This creates a hyperlink to the tooth analysis. The text
+between the square brackets is displayed on the webpage, and the text in
+parentheses is the relative path to the teeth webpage. Note that you don't need
+to include the subdirectory `docs/` because `index.html` and `teeth.html` are
+both already in `docs/`. Also note that you need to use the file extension
+`.html` since that is the file that needs to be opened by the web browser.
 
     ```
     * [Teeth growth](teeth.html)
@@ -295,11 +348,13 @@ snapshot). In contrast, the file `index.Rmd` has status "Unpublished" because
 the Rmd file has been committed (an initial commit was made when the project was
 first started) but not its corresponding HTML file.
 
-    ```{r fig-status, eval=TRUE, echo=FALSE}
+    ```{r fig-status, eval=TRUE, echo=FALSE, out.width = "50%"}
     knitr::include_graphics("img/status.png")
     ```
 
-1. In the R console, run the command below to "publish" your results. The function
+1. In the R console, run the command below to "publish" your results
+^[The command uses the wildcard character `*` to match all the Rmd files in
+`analysis/`. If this fails on your computer, try running the more verbose command: `wflow_publish(c("analysis/index.Rmd", "analysis/teeth.Rmd", "data/teeth.csv"), message = "Analyze teeth growth")`]. The function
 `wflow_publish()` performs three steps: 1) commits the files, 2) rebuilds the
 Rmd files, and 3) commits the HTML and figure files. This guarantees that the
 results in each HTML file is always generated from an exact, known version
@@ -309,7 +364,7 @@ This way you can better understand the motivation for each change that you
 made when you review the development history of your project (e.g. with `git log`).
 
     ```{r publish-teeth-growth}
-    wflow_publish(c("analysis/*Rmd", "data/teeth.csv"), "Analyze teeth growth")
+    wflow_publish(c("analysis/*Rmd", "data/teeth.csv"), message = "Analyze teeth growth")
     ```
 
 1. Open the workflowr report of `teeth.html` by clicking on the button at the
@@ -319,11 +374,11 @@ GitHub (you will do this in the next section), the "Past versions" tab will
 include hyperlinks for convenient viewing of the past versions of the Rmd and
 HTML files.
 
-    ```{r workflowr-past-versions-1, eval=TRUE, echo=FALSE}
+    ```{r workflowr-past-versions-1, eval=TRUE, echo=FALSE, out.width = "75%"}
     knitr::include_graphics("img/workflowr-past-versions-1.png")
     ```
 
-## Shareable
+## Share your results
 
 To share your work, you will host the Git repository on GitHub and activate the
 free service GitHub Pages to serve the static website in `docs/`.
@@ -357,11 +412,14 @@ for your GitHub username and password.
     wflow_git_push()
     ```
 
-1. On GitHub, navigate to the Settings tab of your GitHub repository. Scroll
-down to the section "GitHub Pages". For Source choose "master branch /docs folder".
-After it updates, scroll back down and click on the URL.
+1. On GitHub, navigate to the Settings tab of your GitHub repository^[If your
+GitHub repository wasn't automatically opened by `wflow_git_push()`, you can
+manually enter the URL into the browser:
+`https://github.com/username/myproject`.]. Scroll down to the section "GitHub
+Pages". For Source choose "master branch /docs folder". After it updates, scroll
+back down and click on the URL.
 
-    ```{r github-pages-settings, eval=TRUE, echo=FALSE}
+    ```{r github-pages-settings, eval=TRUE, echo=FALSE, out.width = "75%"}
     knitr::include_graphics("img/github-pages-settings.png")
     ```
 
@@ -370,14 +428,14 @@ tab to see the past results. Click on the HTML hyperlink to view the past
 version of the HTML file. Click on the Rmd hyperlink to view the past version
 of the Rmd file on GitHub.
 
-    ```{r workflowr-past-versions-2, eval=TRUE, echo=FALSE}
+    ```{r workflowr-past-versions-2, eval=TRUE, echo=FALSE, out.width = "75%"}
     knitr::include_graphics("img/workflowr-past-versions-2.png")
     ```
 
 ## Conclusion
 
-You have successfully created and shared a reproducible research website.
-Following similar steps, you can do the same for one of your own research
+You have successfully created and shared a reproducible research website. Using
+the same workflowr commands, you can do the same for one of your own research
 projects and share it with collaborators and colleagues.
 
 ## Troubleshooting

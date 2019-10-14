@@ -124,16 +124,27 @@ in the Files pane.
     |-- README.md
     ```
 
+    The most important directory for you to  pay attention to now is the
+    `analysis/` directory. This is where you should store all your analyses as R
+    Markdown (Rmd) files. Other directories created for your convenience
+    include `data/` for storing data, and `code/` for storing long-running or
+    supplemental code you don't  want to include in an Rmd file. Note that the
+    `docs/` directory is where the website HTML files will be created and stored
+    by  workflowr, and should not be edited by the user.
+
 1. Open the file `analysis/index.Rmd` for editing. It should already be open in
 the RStudio Editor pane from when you created the project. If not, use the Files
 pane to navigate to the directory `analysis/` and click on `index.Rmd` to open
-it for editing. Write a short introductory message.
+it for editing. This index file is special because it is used to create the home
+page for your project. Write a short introductory message, e.g.  "Welcome to my
+first workflowr website", and then save the file.
 
 1. In the R console, run `wflow_build()`. This will build all the R Markdown
 files in `analysis/`^[The default behavior when `wflow_build()` is run without
 any arguments is to build any R Markdown file that has been edited since its
 corresponding HTML file was last built.], save them in `docs/`, and then open
-`docs/index.html` in the RStudio Viewer pane.
+`docs/index.html` in the RStudio Viewer pane. Ignore the warnings in the
+workflowr report for now; we will return to these later.
 
 1. To perform your analysis, you will use a built-in data set from R.^[While not
 the most exciting, this avoids any issues with downloading data from the
@@ -169,11 +180,12 @@ open automatically for editing in RStudio.
 
 1. In the file `teeth.Rmd`, insert a code chunk^[You can insert a code chunk via
 the menu bar, `Code` -> `Insert Chunk`, or using the keyboard shortcut
-`Ctrl/Cmd`+`Alt`+`I`.] that imports the data set from the file you previously
-created^[Note that the default working directory for a workflowr project is the
-root of the project. Hence the relative path is `data/teeth.csv`. The working
-directory can be changed via the workflowr option `knit_root_dir` in `_workflowr.yml`.
-See `?wflow_html` for more details.].
+(`Ctrl`+`Alt`+`I` on Windows and Linux, `Command`+`Option`+`I` on macOS).] that
+imports the data set from the file you previously created^[Note that the default
+working directory for a workflowr project is the root of the project. Hence the
+relative path is `data/teeth.csv`. The working directory can be changed via the
+workflowr option `knit_root_dir` in `_workflowr.yml`. See `?wflow_html` for more
+details.].
 
     ````
     ```{r import-teeth}`r ''`
@@ -181,6 +193,10 @@ See `?wflow_html` for more details.].
     head(teeth)
     ```
     ````
+
+    Note: if you copy and paste this chunk, make sure to remove any spaces
+    before each of the backticks (` ``` `) so that they will be correctly
+    recognized as indicating the beginning and end of a code chunk.
 
 1. In the file `teeth.Rmd`, insert a second chunk and create some boxplots to
 explore the data:
@@ -217,7 +233,7 @@ the full permutation method in this tutorial.]:
     mean(teeth$len[teeth$supp == "OJ"]) - mean(teeth$len[teeth$supp == "VC"])
     # Permute the observations
     supp_perm <- sample(teeth$supp)
-    # Caclculate mean difference in permuted data
+    # Calculate mean difference in permuted data
     mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
     ```
     ````

@@ -470,6 +470,6 @@ projects and share it with collaborators and colleagues.
 
 1. My website isn't displaying after I activated GitHub Pages.
 
-It is not uncommon for there to be a short delay before your website is
-available. One trick to try is to specify the exact page that you want at the
-end of the URL, e.g. add `/index.html` to the end of the URL.
+    It is not uncommon for there to be a short delay before your website is
+    available. One trick to try is to specify the exact page that you want at the
+    end of the URL, e.g. add `/index.html` to the end of the URL.

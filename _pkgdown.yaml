@@ -32,6 +32,7 @@ articles:
     - "`wflow-06-gitlab`"
     - "`wflow-07-common-code`"
     - "`wflow-08-deploy`"
+    - "`wflow-09-workshop`"
 
 reference:
   - title: "Main functions"

@@ -1,4 +1,4 @@
-# workflowr 1.4.0.9001
+# workflowr 1.4.0.9002
 
 * Require git2r >= 0.26.0 to support internal changes that increase speed and
 robustness of workflowr Git functionality.

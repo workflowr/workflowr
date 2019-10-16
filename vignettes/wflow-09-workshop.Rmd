@@ -22,7 +22,7 @@ knitr::opts_chunk$set(eval = FALSE, fig.align = "center")
 The [workflowr][] R package makes it easier for you to organize, reproduce, and
 share your data analyses. This short tutorial will introduce you to the
 workflowr framework. You will create a workflowr project that implements a small
-data anlaysis in R, and by the end you will have a working website that you can
+data analysis in R, and by the end you will have a working website that you can
 use to share your work. If you are completing this tutorial as part of a live
 workshop, please follow the [setup instructions](#setup) in the next section
 prior to arriving.
@@ -136,7 +136,7 @@ in the Files pane.
 
 1. In the R console, run `getwd()` to return the current working directory. Note
 that it is set to the location of the workflowr project on your computer.
-Everytime you open this RStudio project (e.g. by clicking on `myproject.Rproj`),
+Every time you open this RStudio project (e.g. by clicking on `myproject.Rproj`),
 it will change the working directory (as well as the Files pane) to this
 directory. This allows you to use relative paths to files when performing your
 analysis, which will make it easier for you and others to run the code on other

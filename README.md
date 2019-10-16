@@ -133,7 +133,7 @@ please cite our [manuscript][workflowr-paper] that describes the software:
 > research code the workflowr way [version 1; peer review: awaiting peer review].
 > F1000Research 2019, 8:1749 (https://doi.org/10.12688/f1000research.20843.1)
 
-To obtain a BibTex entry, please run `citation("workflowr")`. Note that
+To obtain a BibTeX entry, please run `citation("workflowr")`. Note that
 F1000Research publishes not only the original version but also any revisions. To
 check for the latest version, please go to the paper's [URL][workflowr-paper].
 

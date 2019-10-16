@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Migrating an existing project to use workflowr • workflowr</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/readable/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Migrating an existing project to use workflowr">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -30,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9002</span>
       </span>
     </div>
 
@@ -58,7 +59,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jdblischak/workflowr">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -71,14 +72,15 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Migrating an existing project to use workflowr</h1>
-            <h3 class="subtitle">workflowr version 1.4.0.9000</h3>
+            <h3 class="subtitle">workflowr version 1.4.0.9002</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-06-25</h4>
+            <h4 class="date">2019-10-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-03-migrating.Rmd"><code>vignettes/wflow-03-migrating.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-03-migrating.Rmd</code></div>
@@ -91,17 +93,17 @@
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This vignette is for those users that already have an existing project and wish to incorporate workflowr to create a research website. Migrating an existing project to use workflowr varies from straightforward to difficult depending on the scenario and your comfort level with Git. This vignette assumes that you have the background knowledge of workflowr explained in the <a href="wflow-01-getting-started.html">Getting started</a> vignette. Even if you have no need for a new workflowr project, please run through that vignette first as an exercise to familiarize yourself with the workflowr philosophy and functions.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/vignette">vignette</a></span>(<span class="st">"wflow-01-getting-started"</span>, <span class="st">"workflowr"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"wflow-01-getting-started"</span>, <span class="st">"workflowr"</span>)</a></code></pre></div>
 </div>
 <div id="scenario-i-have-a-collection-of-r-markdown-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-a-collection-of-r-markdown-files" class="anchor"></a>Scenario: I have a collection of R Markdown files</h2>
 <p>If you have a collection of R Markdown files, but no version control or other files, the most straightforward solution would be to create a workflowr project in a new directory and then move the R Markdown files to the <code>analysis/</code> subdirectory. In the hypothetical example below, the original R Markdown files are located in the directory <code>~/projects/misc/</code> and the workflowr project will be created in the new directory <code>~/projects/new-project/</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"workflowr"</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># Create project directory and change working directory to this location</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/new-project"</span>)</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># Copy the files to the analysis subdirectory of the workflowr project</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files">file.copy</a></span>(<span class="dt">from =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Sys.glob">Sys.glob</a></span>(<span class="st">"~/projects/misc/*Rmd"</span>), <span class="dt">to =</span> <span class="st">"analysis"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/files.html">file.copy</a></span>(<span class="dt">from =</span> <span class="kw"><a href="https://rdrr.io/r/base/Sys.glob.html">Sys.glob</a></span>(<span class="st">"~/projects/misc/*Rmd"</span>), <span class="dt">to =</span> <span class="st">"analysis"</span>)</a></code></pre></div>
 <p>Next run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to see if your files run without error. Lastly, build and commit the website using <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"Publish analysis files"</span>)</a></code></pre></div>
 </div>
@@ -109,7 +111,7 @@
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-a-collection-of-r-markdown-files-and-other-project-infrastructure" class="anchor"></a>Scenario: I have a collection of R Markdown files and other project infrastructure</h2>
 <p>If your project already has lots of infrastructure, it is most convenient to add the workflowr files directory to your already existing directory. This is controlled with the argument <code>existing</code>. In the hypothetical example below, the existing project is located at <code>~/projects/mature-project/</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"workflowr"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/mature-project"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>By default <code><a href="../reference/wflow_start.html">wflow_start()</a></code> will not overwrite your existing files (e.g. if you already have a <code>README.md</code>). If you’d prefer to overwrite your files with the default workflowr files, set <code>overwrite = TRUE</code>.</p>
@@ -121,7 +123,7 @@
 <h2 class="hasAnchor">
 <a href="#scenario-i-have-an-r-package" class="anchor"></a>Scenario: I have an R package</h2>
 <p>If your project is organized as an R package, you can still add a website using workflowr. In the hypothetical example below, the existing package is located at <code>~/projects/my-package/</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"workflowr"</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/wflow_start.html">wflow_start</a></span>(<span class="st">"~/projects/my-package"</span>, <span class="dt">existing =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>The above command will add the workflowr files to your existing project and also commit them to version control (it will initialize a Git repo if it doesn’t already exist). If you’d prefer to not use version control for your project or you’d prefer to commit the workflowr files yourself manually, you can set <code>git = FALSE</code> (this is also useful if you want to first test to see what would happen without committing the results).</p>
 <p>You’ll want R to ignore the workflowr directories when building the R package. Thus add the following to the <code>.Rbuildignore</code> file:</p>
@@ -139,8 +141,8 @@
 <a href="#scenario-i-have-an-old-worklowr-project" class="anchor"></a>Scenario: I have an old worklowr project</h2>
 <p>If you created a workflowr project prior to its release to CRAN (any version less than 1.0), you can migrate the project to use the 1.0+ features by running <code><a href="../reference/wflow_update.html">wflow_update()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Install the latest version from CRAN</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"workflowr"</span>)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"workflowr"</span>)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"workflowr"</span>)</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># Preview the files that would be changed</span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="../reference/wflow_update.html">wflow_update</a></span>()</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co"># Update the files</span></a>
@@ -156,6 +158,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -172,17 +175,20 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by John Blischak, Peter Carbonetto, Matthew Stephens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

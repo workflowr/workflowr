@@ -27,12 +27,12 @@ test_that("wflow_quickstart uses the first Rmd to name the directory", {
 
   path <- fs::file_temp()
   fs::dir_create(path)
-  on.exit(fs::dir_delete(path))
+  withr::local_dir(path)
+  on.exit(fs::dir_delete(path), add = TRUE)
   rmd <- c(fs::file_temp(ext = ".Rmd"), fs::file_temp(ext = ".Rmd"))
   fs::file_create(rmd)
   on.exit(fs::file_delete(rmd), add = TRUE)
   withr::local_options(list(workflowr.view = FALSE))
-  withr::local_dir(path)
   quick <- wflow_quickstart(files = rmd, username = "username",
                             change_wd = FALSE,
                             create_on_github = FALSE,

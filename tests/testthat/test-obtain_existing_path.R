@@ -81,3 +81,13 @@ test_that("obtain_existing_paths works when the root is the upstream existing di
   expect_identical(obtain_existing_path("C:/x/y/"), workflowr:::absolute("C:/"))
   expect_identical(obtain_existing_path("C:/x/y/z"), workflowr:::absolute("C:/"))
 })
+
+test_that("obtain_existing_paths rejects invalid input", {
+  expect_error(obtain_existing_path(1), "Invalid input")
+  expect_error(obtain_existing_path(TRUE), "Invalid input")
+  expect_error(obtain_existing_path(c("a", "b")), "Invalid input")
+  expect_error(obtain_existing_path(NA), "Invalid input")
+  expect_error(obtain_existing_path(NA_character_), "Invalid input")
+  expect_error(obtain_existing_path(NULL), "Invalid input")
+})
+

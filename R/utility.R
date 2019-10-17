@@ -16,6 +16,11 @@
 # non-existing.
 #
 obtain_existing_path <- function(path) {
+  if (length(path) > 1) stop("Invalid input: the vector should only have element")
+  if (is.null(path)) stop("Invalid input: NULL")
+  if (is.na(path)) stop("Invalid input: NA")
+  if (!is.character(path)) stop("Invalid input: ", path)
+
   if (fs::dir_exists(path)) {
     return(absolute(path))
   } else {

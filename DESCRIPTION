@@ -39,6 +39,7 @@ Imports:
     getPass,
     git2r (>= 0.26.0),
     glue,
+    httpuv (>= 1.2.2),
     httr,
     knitr (>= 1.18),
     rmarkdown (>= 1.7),

@@ -41,7 +41,6 @@ Imports:
     glue,
     httr,
     knitr (>= 1.18),
-    methods,
     rmarkdown (>= 1.7),
     rprojroot,
     rstudioapi (>= 0.5),

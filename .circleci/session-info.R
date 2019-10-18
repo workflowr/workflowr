@@ -1,4 +1,4 @@
-#!/usr/bin/env r
+#!/usr/bin/env Rscript
 
 "Pandoc version"
 rmarkdown::pandoc_version()

@@ -23,10 +23,10 @@ jobs:
           name: Install package dependencies
           command: |
             mkdir -p ~/R/Library
-            r .circleci/install-r-pkgs.R
+            Rscript .circleci/install-r-pkgs.R
       - run:
           name: Session information and installed package versions
-          command: r -p .circleci/session-info.R
+          command: Rscript .circleci/session-info.R
       - run:
           name: Build and check
           command: bash .circleci/check.sh
@@ -54,10 +54,10 @@ jobs:
           name: Install package dependencies
           command: |
             mkdir -p ~/R/Library
-            r .circleci/install-r-pkgs.R
+            Rscript .circleci/install-r-pkgs.R
       - run:
           name: Session information and installed package versions
-          command: r -p .circleci/session-info.R
+          command: Rscript .circleci/session-info.R
       - run:
           name: Build and check
           command: bash .circleci/check.sh
@@ -90,13 +90,13 @@ jobs:
           name: Install package dependencies
           command: |
             mkdir -p ~/R/Library
-            r .circleci/install-r-pkgs.R
+            Rscript .circleci/install-r-pkgs.R
       - run:
           name: Session information and installed package versions
-          command: r -p .circleci/session-info.R
+          command: Rscript .circleci/session-info.R
       - run:
           name: Calculate code coverage
-          command: r -e 'covr::codecov()'
+          command: Rscript -e 'covr::codecov()'
       - save_cache:
           key: r-pkg-cache-v2-{{ arch }}-{{ .Branch }}
           paths:

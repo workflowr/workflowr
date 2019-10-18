@@ -1,4 +1,4 @@
-#!/usr/bin/env r
+#!/usr/bin/env Rscript
 
 cat("Installing remotes\n")
 if (!requireNamespace("remotes", quietly = TRUE))

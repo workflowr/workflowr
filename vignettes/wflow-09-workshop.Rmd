@@ -469,34 +469,33 @@ To learn more about workflowr, you can read the following vignettes:
 
 ### I don't see the workflowr project as an available RStudio Project Type. {#missing-template}
 
-    If you just installed workflowr, close and re-open RStudio.
-    Also, make sure you scroll down to the bottom of the list.
+If you just installed workflowr, close and re-open RStudio. Also, make sure you
+scroll down to the bottom of the list.
 
 ### The GitHub repository wasn't created automatically by `wflow_use_github()`. {#no-repo}
 
-    If `wflow_use_github()` failed unexpectedly when creating the GitHub
-    repository, or if you declined by entering `n`, you can     manually created
-    the repository on GitHub. After logging in to GitHub, click on the "+" in
-    the top right of the page. Choose "New repository". For the repository name,
-    type `myproject`. Do not change any of the     other settings. Click on the
-    green button "Create repository". Once that is completed, you can return to
-    the next step in the tutorial.
+If `wflow_use_github()` failed unexpectedly when creating the GitHub repository,
+or if you declined by entering `n`, you can manually created the repository on
+GitHub. After logging in to GitHub, click on the "+" in the top right of the
+page. Choose "New repository". For the repository name, type `myproject`. Do not
+change any of the other settings. Click on the green button "Create repository".
+Once that is completed, you can return to the next step in the tutorial.
 
-    ```{r github-new-repo, eval=TRUE, echo=FALSE, out.width="25%"}
-    knitr::include_graphics("img/github-new-repo.png")
-    ```
+```{r github-new-repo, eval=TRUE, echo=FALSE, out.width="25%"}
+knitr::include_graphics("img/github-new-repo.png")
+```
 
 ### I wasn't able to push to GitHub with `wflow_git_push()`. {#failed-push}
 
-    Unfortunately this function has a high failure rate because it relies on the
-    correct configuration of various system software dependencies. If this fails,
-    you can push to Git using another technique, but this will require that you
-    have previously installed Git on your computer. For example, you can use the
-    RStudio Git pane (click on the green arrow that says "Push"). Alternatively,
-    you can directly use Git by running `git push` in the terminal.
+Unfortunately this function has a high failure rate because it relies on the
+correct configuration of various system software dependencies. If this fails,
+you can push to Git using another technique, but this will require that you have
+previously installed Git on your computer. For example, you can use the RStudio
+Git pane (click on the green arrow that says "Push"). Alternatively, you can
+directly use Git by running `git push` in the terminal.
 
 ### My website isn't displaying after I activated GitHub Pages. {#no-gh-pages}
 
-    It is not uncommon for there to be a short delay before your website is
-    available. One trick to try is to specify the exact page that you want at the
-    end of the URL, e.g. add `/index.html` to the end of the URL.
+It is not uncommon for there to be a short delay before your website is
+available. One trick to try is to specify the exact page that you want at the
+end of the URL, e.g. add `/index.html` to the end of the URL.

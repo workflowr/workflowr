@@ -6,6 +6,7 @@ date: "`r Sys.Date()`"
 output:
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 2
   rmarkdown::pdf_document: default
 vignette: >
   %\VignetteIndexEntry{Reproducible research with workflowr}
@@ -52,6 +53,18 @@ reproducible statistical analysis.
 
 1. Create an account on [GitHub][gh]
 
+To minimize the possibility of any potential issues with your computational
+setup, you are encouraged to udpate your version of RStudio (`Help` -> `Check
+for Updates`) and update your R packages:
+
+```{r update-packages, eval=FALSE}
+update.packages()
+```
+
+If you do encounter any issues during the tutorial, consult the
+[Troubleshooting](#troubleshooting) section for solutions to the most common
+problems.
+
 [cran]: https://cran.r-project.org/package=workflowr
 [gh]: https://github.com
 [r]: https://cran.r-project.org
@@ -84,7 +97,8 @@ use the same email you used to register your GitHub account.
 1. In the menu bar, choose `File` -> `New Project`.
 
 1. Choose `New Directory` and then scroll down the list of project types to
-select `workflowr project`.
+select `workflowr project`. If you don't see the workflowr project template, go
+to [Troubleshooting](#missing-template).
 
     ```{r rstudio-create-project, eval=TRUE, echo=FALSE, out.width = "50%"}
     knitr::include_graphics("img/rstudio-create-project.png")
@@ -391,7 +405,8 @@ repository on GitHub for you, enter `y` for "yes". This will open your web
 browser so that you can authenticate with GitHub and then give permission for
 workflowr to create the repository on your behalf. Additionally, this function
 connects to your local repository with the remote GitHub repository and
-inserts a link to the GitHub repository into the navigation bar.
+inserts a link to the GitHub repository into the navigation bar. If this fails
+to create a GitHub repository, go to [Troubleshooting](#no-repo).
 
     ```{r wflow-use-github}
     wflow_use_github("your-github-username")
@@ -406,7 +421,8 @@ republish the files.
     ```
 
 1. To send your project to GitHub, run `wflow_git_push()`. This will prompt you
-for your GitHub username and password.
+for your GitHub username and password. If this fails, go to
+[Troubleshooting](#failed-push).
 
     ```{r wflow-git-push}
     wflow_git_push()
@@ -417,7 +433,8 @@ GitHub repository wasn't automatically opened by `wflow_git_push()`, you can
 manually enter the URL into the browser:
 `https://github.com/username/myproject`.]. Scroll down to the section "GitHub
 Pages". For Source choose "master branch /docs folder". After it updates, scroll
-back down and click on the URL.
+back down and click on the URL. If the URL doesn't display your website, go to
+[Troubleshooting](#no-gh-pages).
 
     ```{r github-pages-settings, eval=TRUE, echo=FALSE, out.width = "75%"}
     knitr::include_graphics("img/github-pages-settings.png")
@@ -438,14 +455,24 @@ You have successfully created and shared a reproducible research website. Using
 the same workflowr commands, you can do the same for one of your own research
 projects and share it with collaborators and colleagues.
 
+To learn more about workflowr, you can read the following vignettes:
+
+* [Customize your research website](wflow-02-customization.html)
+* [Migrating an existing project to use workflowr](wflow-03-migrating.html)
+* [How the workflowr package works](wflow-04-how-it-works.html)
+* [Frequently asked questions](wflow-05-faq.html)
+* [Hosting workflowr websites using GitLab](wflow-06-gitlab.html)
+* [Sharing common code across analyses](wflow-07-common-code.html)
+* [Alternative strategies for deploying workflowr websites](wflow-08-deploy.html)
+
 ## Troubleshooting
 
-1. I don't see the workflowr project as an available RStudio Project Type.
+### I don't see the workflowr project as an available RStudio Project Type. {#missing-template}
 
     If you just installed workflowr, close and re-open RStudio.
     Also, make sure you scroll down to the bottom of the list.
 
-1. The GitHub repository wasn't created automatically by `wflow_use_github()`.
+### The GitHub repository wasn't created automatically by `wflow_use_github()`. {#no-repo}
 
     If `wflow_use_github()` failed unexpectedly when creating the GitHub
     repository, or if you declined by entering `n`, you can     manually created
@@ -459,7 +486,7 @@ projects and share it with collaborators and colleagues.
     knitr::include_graphics("img/github-new-repo.png")
     ```
 
-1. I wasn't able to push to GitHub with `wflow_git_push()`.
+### I wasn't able to push to GitHub with `wflow_git_push()`. {#failed-push}
 
     Unfortunately this function has a high failure rate because it relies on the
     correct configuration of various system software dependencies. If this fails,
@@ -468,7 +495,7 @@ projects and share it with collaborators and colleagues.
     RStudio Git pane (click on the green arrow that says "Push"). Alternatively,
     you can directly use Git by running `git push` in the terminal.
 
-1. My website isn't displaying after I activated GitHub Pages.
+### My website isn't displaying after I activated GitHub Pages. {#no-gh-pages}
 
     It is not uncommon for there to be a short delay before your website is
     available. One trick to try is to specify the exact page that you want at the

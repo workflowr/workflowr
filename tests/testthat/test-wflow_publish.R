@@ -319,7 +319,16 @@ test_that("wflow_publish restores previous docs/ if build fails", {
   md5sum_post <- tools::md5sum(html)
   mtime_post <- file.mtime(html)
   expect_identical(md5sum_post, md5sum_pre)
-  expect_identical(mtime_post, mtime_pre)
+  # expect_identical(mtime_post, mtime_pre)
+  # The test above failed R CMD check when testing with R 3.2.5. They aren't
+  # identical due too crazy small rounding errors:
+  # > mtime_post - mtime_pre
+  # Time differences in secs
+  # [1] -1.907349e-06 -9.536743e-07 -9.536743e-07
+  # So instead I check with all.equal() and reduntantly with my own similiar
+  # test of the time difference (much less than the time it slept above).
+  expect_equal(mtime_post, mtime_pre)
+  expect_true(all(mtime_post - mtime_pre < 0.1))
 })
 
 test_that("wflow_publish does *not* backup docs/ if it doesn't exist", {

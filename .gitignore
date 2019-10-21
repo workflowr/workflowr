@@ -13,3 +13,5 @@ workflowr_*
 workflowr.Rcheck
 Meta
 doc
+packrat/lib*/
+packrat/src/

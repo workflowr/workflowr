@@ -18,3 +18,5 @@ tar\.gz$
 ^doc$
 ^\.circleci$
 ^contribute\.R$
+^packrat/
+^\.Rprofile$

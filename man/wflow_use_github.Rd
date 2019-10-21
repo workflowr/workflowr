@@ -104,6 +104,32 @@ Once the GitHub repository has been created either by \code{wflow_use_github}
 or yourself, run \code{wflow_git_push} in the R console (or \code{git push
 origin master} in the terminal) to push your code to GitHub.
 }
+\section{Troubleshooting}{
+
+
+The feature to automatically create the GitHub repository for you may fail
+since it involves using your web browser to authenticate with your GitHub
+account. If it fails for any reason, it'd probably be easier to manually
+login to GitHub and create the repository yourself (\href{
+https://help.github.com/articles/creating-a-new-repository/}{instructions
+from GitHub}). However, if you have time, please file an
+\href{https://github.com/jdblischak/workflowr/issues/new/choose}{Issue on
+GitHub} to report what happened, and importantly include which web browser
+you were using.
+
+We have observed the following problems before:
+
+\itemize{
+
+\item The green button to approve the authentication of the workflowr GitHub
+app to create the repository on your behalf is grayed out, and unable to be
+clicked. This is likely a JavaScript problem. Make sure you don't have
+JavaScript disabled in your web browser. Also, you can try using a different
+browser.
+
+}
+}
+
 \examples{
 \dontrun{
 

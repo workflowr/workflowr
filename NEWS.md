@@ -51,6 +51,11 @@ would only work on the current computer, limiting reproducibility.
 
 * New vignette for teaching workflowr in a workshop setting
 
+* Include Git status in output of `wflow_status()`. Note that it purposefully
+excludes any files in the website directory since these generated files should
+only be committed by workflowr. You can omit the Git status by setting
+`include_git_status = FALSE` (idea from @pcarbo)
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

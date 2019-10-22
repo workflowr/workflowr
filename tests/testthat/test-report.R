@@ -188,9 +188,12 @@ fs::dir_create(tmp_dir)
 tmp_dir <- workflowr:::absolute(tmp_dir)
 rmd <- file.path(tmp_dir, "file.Rmd")
 writeLines(letters, rmd)
+output_dir <- file.path(tmp_dir, "website")
+fs::dir_create(output_dir)
 
 test_that("check_vc reports lack of Git repo", {
-  observed <- workflowr:::check_vc(rmd, r = NULL, s = NULL, github = NA_character_)
+  observed <- workflowr:::check_vc(rmd, r = NULL, s = NULL,
+                                   github = NA_character_, output_dir = output_dir)
   expect_false(observed$pass)
   expect_identical(observed$summary,
                    "<strong>Repository version:</strong> no version control")
@@ -202,7 +205,8 @@ git2r::config(r, user.name = "Test Name", user.email = "test@email")
 s <- git2r::status(r, ignored = TRUE)
 
 test_that("check_vc reports Git repo even if no commits", {
-  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_,
+                                   output_dir = output_dir)
   expect_true(observed$pass)
   expect_identical(observed$summary,
                    "<strong>Repository version:</strong> No commits yet")
@@ -215,7 +219,8 @@ current_commit <- git2r::commits(r)[[1]]$sha
 commit_to_display <- workflowr:::shorten_sha(current_commit)
 
 test_that("check_vc reports Git repo", {
-  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_,
+                                   output_dir = output_dir)
   expect_true(observed$pass)
   expect_identical(observed$summary,
                    sprintf("<strong>Repository version:</strong> %s",
@@ -224,7 +229,8 @@ test_that("check_vc reports Git repo", {
 
 test_that("check_vc reports Git repo and can add GitHub URL", {
   github <- "https://github.com/jdblischak/workflowr"
-  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = github)
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = github,
+                                   output_dir = output_dir)
   expect_true(observed$pass)
   expect_identical(observed$summary,
                    sprintf("<strong>Repository version:</strong> <a href=\"%s/tree/%s\" target=\"_blank\">%s</a>",
@@ -241,7 +247,8 @@ test_that("check_vc ignores *html, *png, and site_libs", {
   site_libs_readme <- file.path(site_libs, "README.md")
   fs::file_create(site_libs_readme)
 
-  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_,
+                                   output_dir = output_dir)
 
   expect_true(observed$pass)
   expect_false(grepl(basename(fname_html), observed$details))
@@ -255,7 +262,8 @@ fs::file_create(rmd2)
 s <- git2r::status(r, ignored = TRUE)
 
 test_that("check_vc reports uncommitted Rmd files", {
-  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_)
+  observed <- workflowr:::check_vc(rmd, r = r, s = s, github = NA_character_,
+                                   output_dir = output_dir)
 
   expect_true(observed$pass)
   expect_true(grepl(basename(rmd2), observed$details))
@@ -988,4 +996,162 @@ test_that("check_paths displays original formatting of Windows paths", {
   # that are difficult to reproduce.
   expect_silent(html <- rmarkdown::render(rmd, quiet = TRUE))
   expect_true(fs::file_exists(html))
+})
+
+# Test scrub_status ------------------------------------------------------------
+
+status_empty <- structure(
+  list(staged = structure(list(), .Names = character(0)),
+       unstaged = structure(list(), .Names = character(0)),
+       untracked = structure(list(), .Names = character(0))),
+  class = "git_status")
+
+
+
+
+test_that("scrub_status can return a clean working directory", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  r <- git2r::repository(path = path)
+  s <- git2r::status(r)
+  output_dir <- workflowr:::wflow_paths(project = path)$docs
+
+  observed <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected <- s
+  expect_identical(observed, expected)
+})
+
+test_that("scrub_status scrubs website directory when run outside project", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  r <- git2r::repository(path = path)
+  output_dir <- workflowr:::wflow_paths(project = path)$docs
+  wflow_build(view = FALSE, project = path)
+  s <- git2r::status(r)
+
+  observed <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected <- status_empty
+  expect_identical(observed, expected)
+})
+
+test_that("scrub_status scrubs website directory when run from project root", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  withr::local_dir(path)
+
+  r <- git2r::repository()
+  output_dir <- workflowr:::wflow_paths()$docs
+  wflow_build(view = FALSE)
+  s <- git2r::status(r)
+
+  observed <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected <- status_empty
+  expect_identical(observed, expected)
+})
+
+test_that("scrub_status scrubs website directory when run from project subdir", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  withr::local_dir(file.path(path, "analysis"))
+
+  r <- git2r::repository()
+  output_dir <- workflowr:::wflow_paths()$docs
+  wflow_build(view = FALSE)
+  s <- git2r::status(r)
+
+  observed <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected <- status_empty
+  expect_identical(observed, expected)
+})
+
+test_that("scrub_status scrubs website directory when run from website subdir", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  withr::local_dir(file.path(path, "docs"))
+
+  r <- git2r::repository()
+  output_dir <- workflowr:::wflow_paths()$docs
+  wflow_build(view = FALSE)
+  s <- git2r::status(r)
+
+  observed <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected <- status_empty
+  expect_identical(observed, expected)
+})
+
+
+test_that("scrub_status can remove ignored files", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  r <- git2r::repository(path = path)
+  output_dir <- workflowr:::wflow_paths(project = path)$docs
+
+  ignored <- file.path(path, "ignored.txt")
+  fs::file_create(ignored)
+  cat("ignored*\n", file = file.path(path, ".gitignore"), append = TRUE)
+  s <- git2r::status(r, ignored = TRUE)
+
+  observed_include_ignore <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected_include_ignore <- s
+  expect_identical(observed_include_ignore, expected_include_ignore)
+
+  observed_remove_ignore <- workflowr:::scrub_status(s, r, output_dir = output_dir,
+                                                     remove_ignored = TRUE)
+  expected_remove_ignore <- structure(
+    list(staged = structure(list(), .Names = character(0)),
+    unstaged = list(modified = ".gitignore"),
+    untracked = structure(list(), .Names = character(0))),
+    class = "git_status")
+  expect_identical(observed_remove_ignore, expected_remove_ignore)
+})
+
+test_that("scrub_status preserves non-website files", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  r <- git2r::repository(path = path)
+  output_dir <- workflowr:::wflow_paths(project = path)$docs
+
+  index <- file.path(path, "analysis", "index.Rmd")
+  cat("edit\n", file = index, append = TRUE)
+  wflow_build(index, view = FALSE, project = path)
+  s <- git2r::status(r)
+
+  observed <- workflowr:::scrub_status(s, r, output_dir = output_dir)
+  expected <- structure(
+    list(staged = structure(list(), .Names = character(0)),
+    unstaged = list(modified = "analysis/index.Rmd"),
+    untracked = structure(list(), .Names = character(0))),
+    class = "git_status")
+  expect_identical(observed, expected)
 })

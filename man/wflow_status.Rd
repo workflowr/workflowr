@@ -4,12 +4,17 @@
 \alias{wflow_status}
 \title{Report status of workflowr project}
 \usage{
-wflow_status(files = NULL, project = ".")
+wflow_status(files = NULL, include_git_status = TRUE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL) The analysis file(s) to report the
 status. By default checks the status of all analysis files. Supports
 file \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
+
+\item{include_git_status}{logical (default: TRUE) Include the Git status of
+the project files in the output. Note that this excludes any files in the
+website directory, since these generated files should only be committed by
+workflowr, and not the user.}
 
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
@@ -40,6 +45,13 @@ has uncommitted changes, otherwise \code{FALSE}.
 \code{_workflowr.yml} has uncommitted changes, otherwise \code{FALSE}. If the
 file does not exist, the result is \code{NULL}. If the file was recently
 deleted and not yet committed to Git, then it will be \code{TRUE}.
+
+\item \bold{git_status} The Git status as a \code{git_status}
+object from the package \link{git2r} (see \code{git2r::\link[git2r]{status}}).
+
+\item \bold{include_git_status} The argument \code{include_git_status}
+indicating whether the Git status should be printed along with the status of
+the Rmd files.
 
 \item \bold{status}: A data frame with detailed information on the status of
 each R Markdown file (see below).

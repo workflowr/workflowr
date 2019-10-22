@@ -42,7 +42,7 @@ create_report <- function(input, output_dir, has_code, opts) {
   }
 
   # Check version control
-  checks$result_vc <- check_vc(input, r, s, opts$github)
+  checks$result_vc <- check_vc(input, r, s, opts$github, output_dir = output_dir)
 
   # Formatting checks -----------------------------------------------------
 
@@ -338,7 +338,7 @@ get_versions_df <- function(files, r) {
   return(df_versions)
 }
 
-check_vc <- function(input, r, s, github) {
+check_vc <- function(input, r, s, github, output_dir) {
  if (!is.null(r)) {
    pass <- TRUE
    log <- git2r::commits(r)
@@ -357,14 +357,7 @@ check_vc <- function(input, r, s, github) {
    summary <- sprintf("<strong>Repository version:</strong> %s", sha_display)
    # Scrub HTML and other generated content (e.g. site_libs). It's ok that these
    # have uncommitted changes.
-   s <- status_to_df(s)
-   # HTML
-   s <- s[!stringr::str_detect(s$file, "html$"), ]
-   # png
-   s <- s[!stringr::str_detect(s$file, "png$"), ]
-   # site_libs
-   s <- s[!stringr::str_detect(s$file, "site_libs"), ]
-   s <- df_to_status(s)
+   s <- scrub_status(s, r, output_dir = output_dir)
 
    status <- utils::capture.output(print(s))
    status <- c("<pre><code>", status, "</code></pre>")
@@ -861,4 +854,27 @@ get_proj_dir <- function(directory) {
   if (class(proj_dir) != "try-error") return(proj_dir)
 
   return(directory)
+}
+
+# Scrub HTML and other generated content (e.g. site_libs). It's ok that these
+# have uncommitted changes.
+scrub_status <- function(status, repo, output_dir, remove_ignored = FALSE) {
+  s <- status_to_df(status)
+  full_path <- file.path(git2r::workdir(repo), s$file)
+  generated <- vapply(full_path, fs::path_has_parent, logical(1),
+                      parent = absolute(output_dir))
+  s <- s[!generated, ]
+  s <- df_to_status(s)
+
+  # # HTML
+  # s <- s[!stringr::str_detect(s$file, "html$"), ]
+  # # png
+  # s <- s[!stringr::str_detect(s$file, "png$"), ]
+  # # site_libs
+  # s <- s[!stringr::str_detect(s$file, "site_libs"), ]
+  # s <- df_to_status(s)
+
+  if (remove_ignored) s$ignored <- NULL
+
+  return(s)
 }

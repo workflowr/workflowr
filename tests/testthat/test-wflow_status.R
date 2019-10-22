@@ -10,6 +10,9 @@ site_dir <- workflowr:::relative(site_dir)
 # Cleanup
 on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 
+# Note: Only a few tests in this file use the modern setup
+source("setup.R")
+
 # Test wflow_status ------------------------------------------------------------
 
 s <- wflow_status(project = site_dir)
@@ -334,4 +337,57 @@ test_that("wflow_paths does *not* throw warning if docs/ directory is missing", 
   on.exit(file.rename(docs_tmp, docs))
   file.rename(docs, docs_tmp)
   expect_silent(wflow_paths(project = site_dir))
+})
+
+# Test print.wflow_status ------------------------------------------------------
+
+test_that("wflow_status includes Git status by default", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  status <- wflow_status(project = path)
+  status_print <- utils::capture.output(print(status))
+  expect_true("The current Git status is:" %in% status_print)
+  expect_true("working directory clean" %in% status_print)
+
+  # modify a file in docs/. Status should not change
+  fs::file_create(file.path(status$docs, "generated.txt"))
+
+  status <- wflow_status(project = path)
+  status_print <- utils::capture.output(print(status))
+  expect_true("working directory clean" %in% status_print)
+
+  # modify a file in analysis/. Status should change
+  fs::file_create(file.path(status$analysis, "new.Rmd"))
+
+  status <- wflow_status(project = path)
+  status_print <- utils::capture.output(print(status))
+  expect_true("Untracked files:" %in% status_print)
+})
+
+test_that("wflow_status can omit Git status", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  status <- wflow_status(include_git_status = FALSE, project = path)
+  status_print <- utils::capture.output(print(status))
+  expect_false("The current Git status is:" %in% status_print)
+
+  # modify a file in docs/. Status should not change
+  fs::file_create(file.path(status$docs, "generated.txt"))
+
+  status <- wflow_status(include_git_status = FALSE, project = path)
+  status_print <- utils::capture.output(print(status))
+  expect_false("The current Git status is:" %in% status_print)
+
+  # modify a file in analysis/. Status should change
+  fs::file_create(file.path(status$analysis, "new.Rmd"))
+
+  status <- wflow_status(include_git_status = FALSE, project = path)
+  status_print <- utils::capture.output(print(status))
+  expect_false("The current Git status is:" %in% status_print)
 })

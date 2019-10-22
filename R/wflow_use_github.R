@@ -24,12 +24,13 @@
 #'
 #' }
 #'
-#' Furthermore, \code{wflow_use_github} will prompt you to request permission to
-#' perform the following step:
+#' Furthermore, you have two options for creating the remote repository on GitHub.
+#' In an interactive R session, you will be prompted to choose one of the options
+#' below. To bypass the prompt, you can set the argument \code{create_on_github}.
 #'
 #' \itemize{
 #'
-#' \item (Optional) Creates the new repository on GitHub. If you accept, your
+#' \item 1. Have workflowr create the new repository on GitHub. If you accept, your
 #' browser will open for you to provide authorization. If you are not logged
 #' into GitHub, you will be prompted to login. Then you will be asked to give
 #' permission to the workflowr-oauth-app to create the new repository for you on
@@ -37,10 +38,13 @@
 #' machine, to create your new repository. Once \code{wflow_use_github}
 #' finishes, workflowr can no longer access your GitHub account.
 #'
-#' }
+#' \item 2. Create the remote repository yourself by going to
+#' \url{https://github.com/new} and entering the Repository name that matches
+#' the name of the directory of your workflowr project (if you used the argument
+#' \code{repository} to make it a different name, make sure to instead use that
+#' one).
 #'
-#' If you choose to not allow workflowr to create the repository for you, then
-#' you will have to create it manually by logging into your account.
+#' }
 #'
 #' Once the GitHub repository has been created either by \code{wflow_use_github}
 #' or yourself, run \code{wflow_git_push} in the R console (or \code{git push
@@ -284,15 +288,21 @@ wflow_use_github <- function(username = NULL, repository = NULL,
   }
 
   if (is.null(create_on_github) && interactive()) {
+    cat("\nTo proceed, you have two options:\n")
+
     cat("\n", wrap(glue::glue(
-      "The GitHub repository {repository} can be automatically created for the
-      account {username} if you authorize workflowr to do so. This requires
+      "1. Have workflowr attempt to automatically create the repository \"{repository}\" on GitHub.
+      This requires
       logging into GitHub and enabling the workflowr-oauth-app access to the
-      account."
+      account \"{username}\"."
     )), "\n", sep = "")
-    ans <- readline(glue::glue(
-      "Enable workflowr to create {username}/{repository}? (y/n) "))
-    if (tolower(ans) == "y") {
+
+    cat("\n", wrap(glue::glue(
+      "2. Create the repository \"{repository}\" yourself by going to https://github.com/new and entering \"{repository}\" for the Repository name."
+    )), "\n", sep = "")
+
+    ans <- readline("\nEnter your choice (1 or 2): ")
+    if (ans == "1") {
       create_on_github <- TRUE
     }
   }

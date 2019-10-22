@@ -56,6 +56,10 @@ excludes any files in the website directory since these generated files should
 only be committed by workflowr. You can omit the Git status by setting
 `include_git_status = FALSE` (idea from @pcarbo)
 
+* Make it clearer that you have two options for creating the remote repository on
+Github: 1) let `wflow_use_github()` do it automatically, or 2) create it yourself
+manually at https://github.com/new (idea from @pcarbo)
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

@@ -54,7 +54,7 @@ reproducible statistical analysis.
 1. Create an account on [GitHub][gh]
 
 To minimize the possibility of any potential issues with your computational
-setup, you are encouraged to udpate your version of RStudio (`Help` -> `Check
+setup, you are encouraged to update your version of RStudio (`Help` -> `Check
 for Updates`) and update your R packages:
 
 ```{r update-packages, eval=FALSE}

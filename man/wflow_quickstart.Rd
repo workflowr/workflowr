@@ -4,9 +4,9 @@
 \alias{wflow_quickstart}
 \title{Quickly start a workflowr project}
 \usage{
-wflow_quickstart(files, username, directory = NULL, change_wd = TRUE,
-  git.user.name = NULL, git.user.email = NULL, host = c("github",
-  "gitlab"), create_on_github = NULL)
+wflow_quickstart(files, username, supporting = NULL, directory = NULL,
+  change_wd = TRUE, git.user.name = NULL, git.user.email = NULL,
+  host = c("github", "gitlab"), create_on_github = NULL)
 }
 \arguments{
 \item{files}{character. The R Markdown file(s) to be copied into the
@@ -20,6 +20,11 @@ in the current working directory. Supports file
 want to use to create the remote Git repository. This is likely your
 personal username, but it could also be the name of an organization you
 belong to.}
+
+\item{supporting}{character (default: NULL) Supporting files or directories
+that are used by the Rmd files. These will be copied to the root of the
+project. Since by default Rmd files are executed in the root of the
+project, any relative file paths should still work.}
 
 \item{directory}{character (default: NULL). The path to the directory to
 create the workflowr project. This directory will also be used to name the
@@ -74,6 +79,10 @@ workflowr.
 \item Starts a new project with \code{\link{wflow_start}}
 
 \item Copies the Rmd file(s) to the subdirectory \code{analysis/}
+
+\item Copies the supporting file(s) and/or directory(s) to the root of the
+ project (Note: by default Rmd files are executed in the root of the project,
+ so relative file paths should still work)
 
 \item Adds link(s) to the results to the main index page
 

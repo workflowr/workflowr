@@ -1,0 +1,8 @@
+---
+output: html_document
+---
+
+```{r relative-file-path}
+x <- scan("dir/test.txt")
+```
+

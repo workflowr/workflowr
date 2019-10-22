@@ -12,6 +12,10 @@
 #'
 #' \item Copies the Rmd file(s) to the subdirectory \code{analysis/}
 #'
+#' \item Copies the supporting file(s) and/or directory(s) to the root of the
+#'  project (Note: by default Rmd files are executed in the root of the project,
+#'  so relative file paths should still work)
+#'
 #' \item Adds link(s) to the results to the main index page
 #'
 #' \item Publishes the Rmd files with \code{\link{wflow_publish}}
@@ -40,6 +44,10 @@
 #'   want to use to create the remote Git repository. This is likely your
 #'   personal username, but it could also be the name of an organization you
 #'   belong to.
+#' @param supporting character (default: NULL) Supporting files or directories
+#'   that are used by the Rmd files. These will be copied to the root of the
+#'   project. Since by default Rmd files are executed in the root of the
+#'   project, any relative file paths should still work.
 #' @param directory character (default: NULL). The path to the directory to
 #'   create the workflowr project. This directory will also be used to name the
 #'   remote Git repository. If left as \code{NULL}, the name is derived from the
@@ -82,6 +90,7 @@
 #' @export
 wflow_quickstart <- function(files,
                              username,
+                             supporting = NULL,
                              directory = NULL,
                              change_wd = TRUE,
                              git.user.name = NULL,
@@ -103,6 +112,15 @@ wflow_quickstart <- function(files,
 
   if (!(is.character(username) && length(username) == 1))
     stop("username must be a one-element character vector")
+
+  if (!is.null(supporting)) {
+    if (!(is.character(supporting) && length(supporting) > 0))
+      stop("supporting must be a character vector of files and/or directories")
+    supporting <- glob(supporting)
+    if (!all(fs::file_exists(supporting)))
+      stop("Not all supporting files exist. Check the paths to the files")
+    supporting <- absolute(supporting)
+  }
 
   if (!is.null(directory))
     if (!(is.character(directory) && length(directory) == 1))
@@ -143,6 +161,35 @@ wflow_quickstart <- function(files,
   html <- paste0(rmd_names, ".html")
   links <- glue::glue("* [{rmd_names}]({html})")
   cat(c("\n", links), file = index, sep = "\n", append = TRUE)
+
+  # Copy the supporting files --------------------------------------------------
+
+  if (change_wd) {
+    supporting <- relative(supporting, start = directory)
+  }
+
+  if (!is.null(supporting)) {
+    for (f in supporting) {
+      if (fs::is_dir(f)) {
+        fs::dir_copy(f, directory)
+        message(glue::glue("* Copied {fs::path_file(f)}/ to {directory}/"))
+      } else {
+        fs::file_copy(f, directory)
+        message(glue::glue("* Copied {fs::path_file(f)} to {directory}/"))
+      }
+    }
+  }
+
+  # Commit the supporting files ------------------------------------------------
+
+  if (!is.null(supporting)) {
+    commit_supporting <- wflow_git_commit(
+      files = file.path(directory, fs::path_file(supporting)),
+      message = "Commit supporting files from wflow_quickstart()",
+      project = directory
+    )
+    message("* Committed supporting files")
+  }
 
   # Publish the Rmd file(s) ----------------------------------------------------
 

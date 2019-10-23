@@ -97,6 +97,7 @@ jobs:
       - run:
           name: Calculate code coverage
           command: Rscript -e 'covr::codecov()'
+          no_output_timeout: "20m"
       - save_cache:
           key: r-pkg-cache-v2-{{ arch }}-{{ .Branch }}
           paths:

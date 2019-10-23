@@ -10,7 +10,7 @@ test_that("wflow_quickstart copies Rmd into new project", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path))
   rmd <- fs::file_temp(ext = ".Rmd")
   fs::file_create(rmd)
@@ -31,7 +31,7 @@ test_that("wflow_quickstart uses the first Rmd to name the directory", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   fs::dir_create(path)
   withr::local_dir(path)
   on.exit(fs::dir_delete(path), add = TRUE)
@@ -60,7 +60,7 @@ test_that("wflow_quickstart can change working directory", {
 
   cwd <- getwd()
   on.exit(setwd(cwd), add = TRUE)
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path), add = TRUE)
   rmd <- fs::file_temp(ext = ".Rmd")
   fs::file_create(rmd)
@@ -78,7 +78,7 @@ test_that("wflow_quickstart copies and commits supporting file", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path))
   rmd <- fs::file_temp(ext = ".Rmd")
   fs::file_create(rmd)
@@ -104,7 +104,7 @@ test_that("wflow_quickstart accepts file globs for Rmd files", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path))
   rmd <- fs::file_temp(pattern = letters[1:3], ext = ".Rmd")
   fs::file_create(rmd)
@@ -126,7 +126,7 @@ test_that("wflow_quickstart accepts file globs for supporting files", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path))
   rmd <- fs::file_temp(ext = ".Rmd")
   fs::file_create(rmd)
@@ -152,7 +152,7 @@ test_that("wflow_quickstart copies and commits supporting directories", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path))
   rmd <- fs::file_temp(ext = ".Rmd")
   fs::file_create(rmd)
@@ -182,7 +182,7 @@ test_that("wflow_quickstart preserves relative paths to supporting files", {
 
   skip_on_cran()
 
-  path <- fs::file_temp()
+  path <- workflowr:::absolute(fs::file_temp())
   on.exit(fs::dir_delete(path))
   rmd <- "files/test-wflow_quickstart/quickstart.Rmd"
   support_dir <- "files/test-wflow_quickstart/dir/"

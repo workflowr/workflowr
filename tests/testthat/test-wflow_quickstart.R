@@ -1,5 +1,11 @@
 context("wflow_quickstart")
 
+# Make sure the temporary directory doesn't contain any Rmd files
+local({
+  rmd <- fs::dir_ls(path = fs::path_temp(), glob = "*Rmd")
+  fs::file_delete(rmd)
+})
+
 test_that("wflow_quickstart copies Rmd into new project", {
 
   skip_on_cran()

@@ -5,8 +5,9 @@
 \title{Quickly start a workflowr project}
 \usage{
 wflow_quickstart(files, username, supporting = NULL, directory = NULL,
-  change_wd = TRUE, git.user.name = NULL, git.user.email = NULL,
-  host = c("github", "gitlab"), create_on_github = NULL)
+  change_wd = TRUE, delete_on_error = TRUE, git.user.name = NULL,
+  git.user.email = NULL, host = c("github", "gitlab"),
+  create_on_github = NULL)
 }
 \arguments{
 \item{files}{character. The R Markdown file(s) to be copied into the
@@ -31,8 +32,11 @@ create the workflowr project. This directory will also be used to name the
 remote Git repository. If left as \code{NULL}, the name is derived from the
 first Rmd file that is passed to the argument \code{files}.}
 
-\item{change_wd}{character(default: TRUE). Change the working directory to
+\item{change_wd}{logical (default: TRUE). Change the working directory to
 the newly created workflowr project. Passed to \code{\link{wflow_start}}.}
+
+\item{delete_on_error}{logical (default: TRUE). Delete the newly created
+project if any error occurs.}
 
 \item{git.user.name}{character (default: \code{NULL}). The user name
 used by Git to sign commits, e.g., "Ada Lovelace". This setting
@@ -97,10 +101,11 @@ Once it has completed, you can push to the remote service with
 \code{\link{wflow_git_push}}. Alternatively you can run \code{git push} in the
 terminal.
 
-If you are using GitHub and you chose to not allow workflowr to create the repository for you, then
-you will have to login to your account and create the new repository yourself. If you're using GitLab,
-you don't have to worry about this because the new repository will be automatically
-created when you push.
+If you are using GitHub and you chose to not allow workflowr to create the
+repository for you, then you will have to login to your account and create
+the new repository yourself. If you're using GitLab, you don't have to worry
+about this because the new repository will be automatically created when you
+push.
 }
 \examples{
 \dontrun{

@@ -29,10 +29,11 @@
 #' \code{\link{wflow_git_push}}. Alternatively you can run \code{git push} in the
 #' terminal.
 #'
-#' If you are using GitHub and you chose to not allow workflowr to create the repository for you, then
-#' you will have to login to your account and create the new repository yourself. If you're using GitLab,
-#' you don't have to worry about this because the new repository will be automatically
-#' created when you push.
+#' If you are using GitHub and you chose to not allow workflowr to create the
+#' repository for you, then you will have to login to your account and create
+#' the new repository yourself. If you're using GitLab, you don't have to worry
+#' about this because the new repository will be automatically created when you
+#' push.
 #'
 #' @param files character. The R Markdown file(s) to be copied into the
 #'   subdirectory \code{analysis/} of the newly created workflowr project. If
@@ -52,8 +53,10 @@
 #'   create the workflowr project. This directory will also be used to name the
 #'   remote Git repository. If left as \code{NULL}, the name is derived from the
 #'   first Rmd file that is passed to the argument \code{files}.
-#' @param change_wd character(default: TRUE). Change the working directory to
+#' @param change_wd logical (default: TRUE). Change the working directory to
 #'   the newly created workflowr project. Passed to \code{\link{wflow_start}}.
+#' @param delete_on_error logical (default: TRUE). Delete the newly created
+#'   project if any error occurs.
 #' @param git.user.name character (default: \code{NULL}). The user name
 #'   used by Git to sign commits, e.g., "Ada Lovelace". This setting
 #'   only applies to the workflowr project being created. To specify the
@@ -93,6 +96,7 @@ wflow_quickstart <- function(files,
                              supporting = NULL,
                              directory = NULL,
                              change_wd = TRUE,
+                             delete_on_error = TRUE,
                              git.user.name = NULL,
                              git.user.email = NULL,
                              host = c("github", "gitlab"),
@@ -122,6 +126,9 @@ wflow_quickstart <- function(files,
     supporting <- absolute(supporting)
   }
 
+  if (!(is.logical(delete_on_error) && length(delete_on_error) == 1))
+    stop("delete_on_error must be a one-element logical vector")
+
   if (!is.null(directory))
     if (!(is.character(directory) && length(directory) == 1))
       stop("directory must be NULL or a one element character vector: ", directory)
@@ -136,11 +143,33 @@ wflow_quickstart <- function(files,
   if (fs::dir_exists(directory))
     stop("wflow_quickstart() does not support existing directories")
 
+  # Delete on error ------------------------------------------------------------
+
+  cwd <- getwd()
+  delete_on_error_fun <- function(path, wd) {
+    message(glue::glue("* Error! Deleted workflowr project at {path}"))
+    message("* To keep the project in its unfinished state, set delete_on_error=FALSE")
+    if (getwd() != wd) {
+      message(glue::glue("* Returned working directory to {wd}"))
+    }
+    setwd(wd)
+    fs::dir_delete(path)
+  }
+
+  if (delete_on_error) {
+    on.exit(delete_on_error_fun(directory, wd = cwd))
+  } else {
+    on.exit(message("* An unexpected error occurred"))
+  }
+
   # Start the project ----------------------------------------------------------
 
   start <- wflow_start(directory = directory, change_wd = change_wd,
                        user.name = git.user.name, user.email = git.user.email)
   message(glue::glue("* Started the project with wflow_start() in {directory}/"))
+  if (change_wd) {
+      message(glue::glue("* Changed working directory to {directory}/"))
+  }
 
   # Copy the Rmd file(s) -------------------------------------------------------
 
@@ -224,6 +253,9 @@ wflow_quickstart <- function(files,
   }
 
   message(glue::glue("* To do: Run wflow_git_push() to push your project to {host}"))
+
+  # Cancel exit function delete_on_error_fun() since there was no error
+  on.exit()
 
   return(invisible(directory))
 }

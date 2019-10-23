@@ -199,3 +199,57 @@ test_that("wflow_quickstart preserves relative paths to supporting files", {
   html_new <- workflowr:::to_html(rmd_new, outdir = file.path(path, "docs"))
   expect_true(fs::file_exists(html_new))
 })
+
+test_that("wflow_quickstart can delete or keep directory on error", {
+
+  skip_on_cran()
+
+  cwd <- getwd()
+  on.exit(setwd(cwd), add = TRUE)
+  path <- workflowr:::absolute(fs::file_temp())
+  on.exit(fs::dir_delete(path), add = TRUE)
+
+  rmd <- fs::file_temp(ext = ".Rmd")
+  writeLines(c("```{r}",
+               "stop('there was an error!!')",
+               "```"),
+             con = rmd)
+  on.exit(fs::file_delete(rmd), add = TRUE)
+
+  withr::local_options(list(workflowr.view = FALSE))
+
+  # delete_on_error=TRUE
+  expect_error(
+    utils::capture.output(
+      wflow_quickstart(files = rmd, username = "username",
+                       directory = path, change_wd = TRUE,
+                       create_on_github = FALSE,
+                       git.user.name = "Test Name",
+                       git.user.email = "test@email")
+    ),
+    "there was an error!!"
+  )
+  # Working directory should be restored
+  expect_identical(getwd(), cwd)
+  # New project directory should be deleted
+  expect_false(fs::dir_exists(path))
+
+  # delete_on_error=FALSE
+  expect_error(
+    utils::capture.output(
+      wflow_quickstart(files = rmd, username = "username",
+                       directory = path, change_wd = TRUE,
+                       delete_on_error = FALSE,
+                       create_on_github = FALSE,
+                       git.user.name = "Test Name",
+                       git.user.email = "test@email")
+    ),
+    "there was an error!!"
+  )
+  # Working directory should be the new project directory
+  expect_identical(getwd(), path)
+  # New project directory should not be deleted
+  expect_true(fs::dir_exists(path))
+  # There should be a Git repository
+  expect_true(git2r::in_repository())
+})

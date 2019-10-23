@@ -37,11 +37,25 @@ vignette("wflow-01-getting-started", "workflowr")
 ## Scenario: I have a collection of R Markdown files
 
 If you have a collection of R Markdown files, but no version control or other 
-files, the most straightforward solution would be to create a workflowr project 
-in a new directory and then move the R Markdown files to the `analysis/` 
-subdirectory. In the hypothetical example below, the original R Markdown files 
-are located in the directory `~/projects/misc/` and the workflowr project will
-be created in the new directory `~/projects/new-project/`.
+files, the quickest solution is to use the function `wflow_quickstart()`. The
+code below 1) starts a new workflowr project in `~/projects/new-project/`,
+2) copies the existing Rmd files in `~/projects/misc/` to the `analysis/`
+subdirectory of the new project, 3) builds and commits the website, and 4)
+configures the project to use GitHub (which is why the GitHub username is
+required).
+
+```{r}
+library("workflowr")
+wflow_quickstart("~/projects/misc/*Rmd", username = "<github-username>",
+                 directory = "~/projects/new-project/")
+```
+
+Alternatively, you can manually perform each step to migrate your existing
+analysis by starting a workflowr project in a new directory and then moving the
+R Markdown files to the `analysis/` subdirectory. In the hypothetical example
+below, the original R Markdown files are located in the directory
+`~/projects/misc/` and the workflowr project will be created in the new
+directory `~/projects/new-project/`.
 
 ```{r}
 library("workflowr")
@@ -57,6 +71,9 @@ and commit the website using `wflow_publish()`:
 ```{r}
 wflow_publish("analysis/*Rmd", "Publish analysis files")
 ```
+
+When you are ready to share the results online, you can run `wflow_use_github()`
+or `wflow_use_gitlab()`.
 
 ## Scenario: I have a collection of R Markdown files and other project infrastructure
 

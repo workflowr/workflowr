@@ -60,6 +60,10 @@ only be committed by workflowr. You can omit the Git status by setting
 Github: 1) let `wflow_use_github()` do it automatically, or 2) create it yourself
 manually at https://github.com/new (idea from @pcarbo)
 
+* New function `wflow_quickstart()` to quickly convert a collection of Rmd files
+to a workflowr project. It combines `wflow_start()`, `wflow_publish()`, and
+`wflow_use_github()` (or `wflow_use_gitlab()`).
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

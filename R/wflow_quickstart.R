@@ -160,13 +160,17 @@ wflow_quickstart <- function(files,
 
   cwd <- getwd()
   delete_on_error_fun <- function(path, wd) {
-    message(glue::glue("* Error! Deleted workflowr project at {path}"))
-    message("* To keep the project in its unfinished state, set delete_on_error=FALSE")
+
     if (getwd() != wd) {
+      setwd(wd)
       message(glue::glue("* Returned working directory to {wd}"))
     }
-    setwd(wd)
-    fs::dir_delete(path)
+
+    if (fs::dir_exists(path)) {
+      fs::dir_delete(path)
+      message(glue::glue("* Deleted workflowr project at {path}"))
+      message("* To keep the project in its unfinished state, set delete_on_error=FALSE")
+    }
   }
 
   if (delete_on_error) {

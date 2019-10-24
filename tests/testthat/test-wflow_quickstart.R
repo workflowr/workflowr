@@ -279,3 +279,29 @@ test_that("wflow_quickstart only accepts Rmd files", {
   )
 
 })
+
+test_that("wflow_quickstart only deletes directory on error if it exists", {
+
+  # Create an existing Git repo
+  existing <- workflowr:::absolute(fs::file_temp())
+  fs::dir_create(existing)
+  on.exit(fs::dir_delete(existing))
+  git2r::init(existing)
+
+  # Plan to start the workflowr project within the existing Git repo
+  path <- file.path(existing, "test")
+  rmd <- fs::file_temp(ext = ".Rmd")
+  fs::file_create(rmd)
+  on.exit(fs::file_delete(rmd), add = TRUE)
+
+  # wflow_quickstart should only return the wflow_start error
+  expect_error(
+    wflow_quickstart(files = rmd, username = "username",
+                     directory = path, change_wd = FALSE,
+                     create_on_github = FALSE,
+                     git.user.name = "Test Name",
+                     git.user.email = "test@email"),
+    existing
+  )
+  expect_false(fs::dir_exists(path))
+})

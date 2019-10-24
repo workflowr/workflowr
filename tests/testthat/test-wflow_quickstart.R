@@ -253,3 +253,29 @@ test_that("wflow_quickstart can delete or keep directory on error", {
   # There should be a Git repository
   expect_true(git2r::in_repository())
 })
+
+test_that("wflow_quickstart only accepts Rmd files", {
+
+  rmd <- fs::file_temp(ext = ".Rmd")
+  fs::file_create(rmd)
+  on.exit(fs::file_delete(rmd), add = TRUE)
+
+  nonrmd <- fs::file_temp(ext = ".md")
+  fs::file_create(nonrmd)
+  on.exit(fs::file_delete(nonrmd), add = TRUE)
+
+  expect_error(
+    wflow_quickstart(c(rmd, nonrmd)),
+    glue::glue("{fs::path_file(nonrmd)}")
+  )
+
+  directory <- fs::file_temp()
+  fs::dir_create(directory)
+  on.exit(fs::dir_delete(directory), add = TRUE)
+
+  expect_error(
+    wflow_quickstart(c(rmd, directory)),
+    glue::glue("{fs::path_file(directory)}")
+  )
+
+})

@@ -674,3 +674,22 @@ test_that("check_site_generator generates warning from wflow_build", {
     "Missing workflowr-specific site generator."
   )
 })
+
+# Test is_rmd ------------------------------------------------------------------
+
+test_that("is_rmd distinguishes between Rmd and non-Rmd files", {
+  expect_identical(workflowr:::is_rmd("file.Rmd"), TRUE)
+  expect_identical(workflowr:::is_rmd("file.rmd"), TRUE)
+  expect_identical(workflowr:::is_rmd(c("file.Rmd", "file.rmd")), c(TRUE, TRUE))
+
+  expect_identical(workflowr:::is_rmd("file.md"), FALSE)
+  expect_identical(workflowr:::is_rmd("file.RRmd"), FALSE)
+  expect_identical(workflowr:::is_rmd("file.Rrmd"), FALSE)
+  expect_identical(workflowr:::is_rmd("file.rrmd"), FALSE)
+  expect_identical(workflowr:::is_rmd("file.MRmd"), FALSE)
+
+  expect_identical(
+    workflowr:::is_rmd(c("path/to/file.md", "path/to/file.Rmd",
+                         "path/to/file.Rrmd", "path/to/file.rmd")),
+    c(FALSE, TRUE, FALSE, TRUE))
+})

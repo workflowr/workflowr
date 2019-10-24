@@ -411,3 +411,8 @@ check_site_generator <- function(index) {
 
   return(FALSE)
 }
+
+is_rmd <- function(path) {
+  extensions <- fs::path_ext(path)
+  stringr::str_detect(extensions, "^[Rr]md$")
+}

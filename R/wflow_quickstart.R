@@ -113,6 +113,19 @@ wflow_quickstart <- function(files,
   if (!all(fs::file_exists(files)))
     stop("Not all files exist. Check the paths to the files")
   files <- absolute(files)
+  dir <- fs::is_dir(files)
+  if (any(dir)) {
+    stop("The argument `files` does not accept directories.\n",
+         "Instead use file globs to input multiple Rmd files.",
+         glue::glue("Directory: {fs::path_file(files[dir][1])}"),
+         call. = FALSE)
+  }
+  rmd <- is_rmd(files)
+  if (any(!rmd)) {
+    stop("The argument `files` only accepts R Markdown files\n",
+         glue::glue("Problem file: {fs::path_file(files[!rmd][1])}"),
+         call. = FALSE)
+  }
 
   if (!(is.character(username) && length(username) == 1))
     stop("username must be a one-element character vector")

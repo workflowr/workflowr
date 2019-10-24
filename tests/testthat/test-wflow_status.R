@@ -349,22 +349,23 @@ test_that("wflow_status includes Git status by default", {
 
   status <- wflow_status(project = path)
   status_print <- utils::capture.output(print(status))
-  expect_true("The current Git status is:" %in% status_print)
-  expect_true("working directory clean" %in% status_print)
+  expect_true("The current Git status is: working directory clean" %in% status_print)
 
   # modify a file in docs/. Status should not change
   fs::file_create(file.path(status$docs, "generated.txt"))
 
   status <- wflow_status(project = path)
   status_print <- utils::capture.output(print(status))
-  expect_true("working directory clean" %in% status_print)
+  expect_true("The current Git status is: working directory clean" %in% status_print)
 
   # modify a file in analysis/. Status should change
-  fs::file_create(file.path(status$analysis, "new.Rmd"))
+  rmd <- file.path(status$analysis, "new.Rmd")
+  fs::file_create(rmd)
 
   status <- wflow_status(project = path)
   status_print <- utils::capture.output(print(status))
-  expect_true("Untracked files:" %in% status_print)
+  expect_true("The current Git status is:" %in% status_print)
+  expect_true(glue::glue(" untracked untracked {rmd}") %in% status_print)
 })
 
 test_that("wflow_status can omit Git status", {

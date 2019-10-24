@@ -237,6 +237,21 @@ wflow_quickstart <- function(files,
     message("* Committed supporting files")
   }
 
+  # Configure remote repository ------------------------------------------------
+
+  host <- match.arg(host, choices = c("github", "gitlab"))
+  if (host == "github") {
+    # For now, only perform local operations. Attempt to create GitHub repo
+    # below after publishing.
+    gh_result <- suppressMessages(wflow_use_github(username = username,
+                                                   create_on_github = FALSE,
+                                                   project = directory))
+    message("* Configured local Git repo to host project on GitHub.com")
+  } else if (host == "gitlab") {
+    suppressMessages(wflow_use_gitlab(username = username, project = directory))
+    message("* Configured local Git repo to host on project GitLab.com")
+  }
+
   # Publish the Rmd file(s) ----------------------------------------------------
 
   message("* Building files")
@@ -245,20 +260,15 @@ wflow_quickstart <- function(files,
                                             project = directory))
   message("* Published the analysis files with wflow_publish()")
 
-  # Configure remote repository ------------------------------------------------
+  # Attempt to create remote repository on GitHub.com --------------------------
 
-  host <- match.arg(host, choices = c("github", "gitlab"))
   if (host == "github") {
     gh_result <- suppressMessages(wflow_use_github(username = username,
                                                    create_on_github = create_on_github,
                                                    project = directory))
-    message("* Configured to host project on GitHub.com")
     if (!gh_result$repo_created) {
-       message(glue::glue("To do: Create {username}/{gh_result$repository} on GitHub.com"))
+      message(glue::glue("* To do: Create {username}/{gh_result$repository} on GitHub.com"))
     }
-  } else if (host == "gitlab") {
-    suppressMessages(wflow_use_gitlab(username = username, project = directory))
-    message("* Configured to host on project GitLab.com")
   }
 
   # Return ---------------------------------------------------------------------

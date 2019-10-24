@@ -5,7 +5,8 @@
 \title{Quickly start a workflowr project}
 \usage{
 wflow_quickstart(files, username, supporting = NULL, directory = NULL,
-  change_wd = TRUE, delete_on_error = TRUE, git.user.name = NULL,
+  change_wd = TRUE, delete_on_error = TRUE,
+  view = getOption("workflowr.view"), git.user.name = NULL,
   git.user.email = NULL, host = c("github", "gitlab"),
   create_on_github = NULL)
 }
@@ -37,6 +38,10 @@ the newly created workflowr project. Passed to \code{\link{wflow_start}}.}
 
 \item{delete_on_error}{logical (default: TRUE). Delete the newly created
 project if any error occurs.}
+
+\item{view}{logical (default: \code{getOption("workflowr.view")}). View the
+local website after it is built (will open the home page in the RStudio
+Viewer pane or your web browser).}
 
 \item{git.user.name}{character (default: \code{NULL}). The user name
 used by Git to sign commits, e.g., "Ada Lovelace". This setting

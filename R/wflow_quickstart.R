@@ -57,6 +57,9 @@
 #'   the newly created workflowr project. Passed to \code{\link{wflow_start}}.
 #' @param delete_on_error logical (default: TRUE). Delete the newly created
 #'   project if any error occurs.
+#' @param view logical (default: \code{getOption("workflowr.view")}). View the
+#'   local website after it is built (will open the home page in the RStudio
+#'   Viewer pane or your web browser).
 #' @param git.user.name character (default: \code{NULL}). The user name
 #'   used by Git to sign commits, e.g., "Ada Lovelace". This setting
 #'   only applies to the workflowr project being created. To specify the
@@ -97,6 +100,7 @@ wflow_quickstart <- function(files,
                              directory = NULL,
                              change_wd = TRUE,
                              delete_on_error = TRUE,
+                             view = getOption("workflowr.view"),
                              git.user.name = NULL,
                              git.user.email = NULL,
                              host = c("github", "gitlab"),
@@ -141,6 +145,9 @@ wflow_quickstart <- function(files,
 
   if (!(is.logical(delete_on_error) && length(delete_on_error) == 1))
     stop("delete_on_error must be a one-element logical vector")
+
+  if (!(is.logical(view) && length(view) == 1))
+    stop("view must be a one-element logical vector")
 
   if (!is.null(directory))
     if (!(is.character(directory) && length(directory) == 1))
@@ -257,6 +264,7 @@ wflow_quickstart <- function(files,
   message("* Building files")
   publish <- suppressMessages(wflow_publish(files = file.path(directory, "analysis", "*Rmd"),
                                             message = "Quickstart commit from wflow_quickstart()",
+                                            view = FALSE,
                                             project = directory))
   message("* Published the analysis files with wflow_publish()")
 
@@ -278,6 +286,10 @@ wflow_quickstart <- function(files,
   }
 
   message(glue::glue("* To do: Run wflow_git_push() to push your project to {host}"))
+
+  if (view) {
+    viewed <- wflow_view(index, project = directory)
+  }
 
   # Cancel exit function delete_on_error_fun() since there was no error
   on.exit()

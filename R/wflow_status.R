@@ -266,19 +266,32 @@ print.wflow_status <- function(x, ...) {
     o <- sprintf("%s %s\n", names(f)[i], f[i])
     cat(o)
   }
-  if (length(f) == 0) {
-    cat("\nRmd files are up-to-date")
-  } else {
-    m <- sprintf("Key: %s
-
-To publish your changes as part of your website, use `wflow_publish()`.
-
-To commit your changes without publishing them yet, use `wflow_git_commit()`.",
-    paste(key, collapse = ", "))
-    cat("\n")
-    cat(wrap(m))
+  if (length(f) > 0) {
+    cat(sprintf("\nKey: %s\n", paste(key, collapse = ", ")))
   }
-  cat("\n")
+
+  if (x$include_git_status) {
+    s <- scrub_status(x$git_status, git2r::repository(x$git), output_dir = x$docs,
+                      remove_ignored = TRUE)
+    s_df <- status_to_df(s)
+    if (nrow(s_df) > 0) {
+      s_df$file <- file.path(x$git, s_df$file)
+      s_df$file <- relative(s_df$file)
+      cat("\nThe current Git status is:\n\n")
+      cat(paste(utils::capture.output(print(s_df, row.names = FALSE)), collapse = "\n"))
+      cat("\n")
+    }
+  }
+
+  if (length(f) == 0) {
+    cat("\nRmd files are up-to-date\n")
+  } else {
+    cat("\n")
+    cat(wrap("To publish your changes as part of your website, use `wflow_publish()`."))
+    cat("\n")
+    cat(wrap("To commit your changes without publishing them yet, use `wflow_git_commit()`."))
+    cat("\n")
+  }
 
   if (x$site_yml) {
     site_yml_path <- relative(file.path(x$analysis, "_site.yml"))
@@ -288,13 +301,6 @@ To commit your changes without publishing them yet, use `wflow_git_commit()`.",
   if (!is.null(x$wflow_yml) && x$wflow_yml) {
     wflow_yml_path <- relative(file.path(x$root, "_workflowr.yml"))
     cat(glue::glue("\n\nThe config file {wflow_yml_path} has been edited.\n\n"))
-  }
-
-  if (x$include_git_status) {
-    cat("\n\nThe current Git status is:\n\n")
-    s <- scrub_status(x$git_status, git2r::repository(x$git), output_dir = x$docs,
-                      remove_ignored = TRUE)
-    cat(paste(utils::capture.output(print(s)), collapse = "\n"))
   }
 
   # It's a convention for S3 print methods to invisibly return the original

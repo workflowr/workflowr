@@ -273,9 +273,7 @@ wflow_quickstart <- function(files,
 
   # Return ---------------------------------------------------------------------
 
-  if (change_wd) {
-    message(glue::glue("* Current working directory changed to {directory}/"))
-  } else {
+  if (!change_wd) {
     message(glue::glue("* Current working directory is still {getwd()}/"))
   }
 

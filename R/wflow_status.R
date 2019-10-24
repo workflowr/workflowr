@@ -278,7 +278,9 @@ print.wflow_status <- function(x, ...) {
       s_df$file <- file.path(x$git, s_df$file)
       s_df$file <- relative(s_df$file)
       cat("\nThe current Git status is:\n\n")
+      prev <- options(width = 200)
       cat(paste(utils::capture.output(print(s_df, row.names = FALSE)), collapse = "\n"))
+      options(prev)
       cat("\n")
     } else {
       cat("\nThe current Git status is: working directory clean\n")

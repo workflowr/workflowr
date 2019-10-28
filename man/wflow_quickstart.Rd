@@ -4,8 +4,8 @@
 \alias{wflow_quickstart}
 \title{Quickly start a workflowr project}
 \usage{
-wflow_quickstart(files, username, supporting = NULL, directory = NULL,
-  change_wd = TRUE, delete_on_error = TRUE,
+wflow_quickstart(files, username, supporting_files = NULL,
+  directory = NULL, change_wd = TRUE, delete_on_error = TRUE,
   view = getOption("workflowr.view"), git.user.name = NULL,
   git.user.email = NULL, host = c("github", "gitlab"),
   create_on_github = NULL)
@@ -23,10 +23,12 @@ want to use to create the remote Git repository. This is likely your
 personal username, but it could also be the name of an organization you
 belong to.}
 
-\item{supporting}{character (default: NULL) Supporting files or directories
-that are used by the Rmd files. These will be copied to the root of the
-project. Since by default Rmd files are executed in the root of the
-project, any relative file paths should still work.}
+\item{supporting_files}{character (default: NULL) Supporting files or
+directories that are used by the Rmd files. These will be copied to the
+root of the project. Since by default Rmd files are executed in the root of
+the project, any relative file paths should still work. Long term it is
+recommended to move these supporting files to subdirectories of the
+workflowr project, e.g. \code{data/}.}
 
 \item{directory}{character (default: NULL). The path to the directory to
 create the workflowr project. This directory will also be used to name the

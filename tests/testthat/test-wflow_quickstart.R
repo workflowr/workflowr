@@ -89,7 +89,7 @@ test_that("wflow_quickstart copies and commits supporting file", {
 
   withr::local_options(list(workflowr.view = FALSE))
   quick <- wflow_quickstart(files = rmd, username = "username",
-                            supporting = support,
+                            supporting_files = support,
                             directory = path, change_wd = FALSE,
                             create_on_github = FALSE,
                             git.user.name = "Test Name",
@@ -137,7 +137,7 @@ test_that("wflow_quickstart accepts file globs for supporting files", {
 
   withr::local_options(list(workflowr.view = FALSE))
   quick <- wflow_quickstart(files = rmd, username = "username",
-                            supporting = file.path(fs::path_temp(), "*R"),
+                            supporting_files = file.path(fs::path_temp(), "*R"),
                             directory = path, change_wd = FALSE,
                             create_on_github = FALSE,
                             git.user.name = "Test Name",
@@ -165,7 +165,7 @@ test_that("wflow_quickstart copies and commits supporting directories", {
 
   withr::local_options(list(workflowr.view = FALSE))
   quick <- wflow_quickstart(files = rmd, username = "username",
-                            supporting = support_dir,
+                            supporting_files = support_dir,
                             directory = path, change_wd = FALSE,
                             create_on_github = FALSE,
                             git.user.name = "Test Name",
@@ -189,7 +189,7 @@ test_that("wflow_quickstart preserves relative paths to supporting files", {
 
   withr::local_options(list(workflowr.view = FALSE))
   quick <- wflow_quickstart(files = rmd, username = "username",
-                            supporting = support_dir,
+                            supporting_files = support_dir,
                             directory = path, change_wd = FALSE,
                             create_on_github = FALSE,
                             git.user.name = "Test Name",

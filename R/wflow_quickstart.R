@@ -45,10 +45,12 @@
 #'   want to use to create the remote Git repository. This is likely your
 #'   personal username, but it could also be the name of an organization you
 #'   belong to.
-#' @param supporting character (default: NULL) Supporting files or directories
-#'   that are used by the Rmd files. These will be copied to the root of the
-#'   project. Since by default Rmd files are executed in the root of the
-#'   project, any relative file paths should still work.
+#' @param supporting_files character (default: NULL) Supporting files or
+#'   directories that are used by the Rmd files. These will be copied to the
+#'   root of the project. Since by default Rmd files are executed in the root of
+#'   the project, any relative file paths should still work. Long term it is
+#'   recommended to move these supporting files to subdirectories of the
+#'   workflowr project, e.g. \code{data/}.
 #' @param directory character (default: NULL). The path to the directory to
 #'   create the workflowr project. This directory will also be used to name the
 #'   remote Git repository. If left as \code{NULL}, the name is derived from the
@@ -96,7 +98,7 @@
 #' @export
 wflow_quickstart <- function(files,
                              username,
-                             supporting = NULL,
+                             supporting_files = NULL,
                              directory = NULL,
                              change_wd = TRUE,
                              delete_on_error = TRUE,
@@ -134,13 +136,13 @@ wflow_quickstart <- function(files,
   if (!(is.character(username) && length(username) == 1))
     stop("username must be a one-element character vector")
 
-  if (!is.null(supporting)) {
-    if (!(is.character(supporting) && length(supporting) > 0))
-      stop("supporting must be a character vector of files and/or directories")
-    supporting <- glob(supporting)
-    if (!all(fs::file_exists(supporting)))
+  if (!is.null(supporting_files)) {
+    if (!(is.character(supporting_files) && length(supporting_files) > 0))
+      stop("supporting_files must be a character vector of files and/or directories")
+    supporting_files <- glob(supporting_files)
+    if (!all(fs::file_exists(supporting_files)))
       stop("Not all supporting files exist. Check the paths to the files")
-    supporting <- absolute(supporting)
+    supporting_files <- absolute(supporting_files)
   }
 
   if (!(is.logical(delete_on_error) && length(delete_on_error) == 1))
@@ -218,11 +220,11 @@ wflow_quickstart <- function(files,
   # Copy the supporting files --------------------------------------------------
 
   if (change_wd) {
-    supporting <- relative(supporting, start = directory)
+    supporting_files <- relative(supporting_files, start = directory)
   }
 
-  if (!is.null(supporting)) {
-    for (f in supporting) {
+  if (!is.null(supporting_files)) {
+    for (f in supporting_files) {
       if (fs::is_dir(f)) {
         fs::dir_copy(f, directory)
         message(glue::glue("* Copied {fs::path_file(f)}/ to {directory}/"))
@@ -235,9 +237,9 @@ wflow_quickstart <- function(files,
 
   # Commit the supporting files ------------------------------------------------
 
-  if (!is.null(supporting)) {
+  if (!is.null(supporting_files)) {
     commit_supporting <- wflow_git_commit(
-      files = file.path(directory, fs::path_file(supporting)),
+      files = file.path(directory, fs::path_file(supporting_files)),
       message = "Commit supporting files from wflow_quickstart()",
       project = directory
     )

@@ -125,7 +125,8 @@
 #' wflow_git_push()
 #' }
 #'
-#'@export
+#' @importFrom httpuv startServer
+#' @export
 wflow_use_github <- function(username = NULL, repository = NULL,
                              navbar_link = TRUE,
                              create_on_github = NULL,

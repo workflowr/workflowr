@@ -42,8 +42,11 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f1$File == "f1.txt"))
   expect_identical(versions_f1$Version, c(c3$sha, c1$sha))
   expect_true(all(versions_f1$Author == "Test User"))
-  expect_equal(versions_f1$Date, c(as.Date(as.POSIXct(c3$author$when)),
-                                   as.Date(as.POSIXct(c1$author$when))))
+  expect_identical(
+    as.character(versions_f1$Date),
+    as.character(c(as.Date(as.POSIXct(c3$author$when)),
+                   as.Date(as.POSIXct(c1$author$when))))
+  )
   expect_identical(versions_f1$Message, c(c3$message, c1$message))
 
   versions_f2 <- workflowr:::get_versions_df("f2.txt", r)
@@ -51,8 +54,11 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f2$File == "f2.txt"))
   expect_identical(versions_f2$Version, c(c4$sha, c2$sha))
   expect_true(all(versions_f2$Author == "Test User"))
-  expect_equal(versions_f2$Date, c(as.Date(as.POSIXct(c4$author$when)),
-                                   as.Date(as.POSIXct(c2$author$when))))
+  expect_identical(
+    as.character(versions_f2$Date),
+    as.character(c(as.Date(as.POSIXct(c4$author$when)),
+                   as.Date(as.POSIXct(c2$author$when))))
+  )
   expect_identical(versions_f2$Message, c(c4$message, c2$message))
 
   versions_f1_f2 <- workflowr:::get_versions_df(c("f1.txt", "f2.txt"), r)
@@ -60,10 +66,13 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f1_f2$File == c("f2.txt", "f1.txt", "f2.txt", "f1.txt")))
   expect_identical(versions_f1_f2$Version, c(c4$sha, c3$sha, c2$sha, c1$sha))
   expect_true(all(versions_f1_f2$Author == "Test User"))
-  expect_equal(versions_f1_f2$Date, c(as.Date(as.POSIXct(c4$author$when)),
-                                      as.Date(as.POSIXct(c3$author$when)),
-                                      as.Date(as.POSIXct(c2$author$when)),
-                                      as.Date(as.POSIXct(c1$author$when))))
+  expect_identical(
+    as.character(versions_f1_f2$Date),
+    as.character(c(as.Date(as.POSIXct(c4$author$when)),
+                   as.Date(as.POSIXct(c3$author$when)),
+                   as.Date(as.POSIXct(c2$author$when)),
+                   as.Date(as.POSIXct(c1$author$when))))
+  )
   expect_identical(versions_f1_f2$Message, c(c4$message, c3$message,
                                              c2$message, c1$message))
 

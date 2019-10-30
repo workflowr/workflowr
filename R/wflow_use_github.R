@@ -298,12 +298,17 @@ wflow_use_github <- function(username = NULL, repository = NULL,
     )), "\n", sep = "")
 
     cat("\n", wrap(glue::glue(
-      "2. Create the repository \"{repository}\" yourself by going to https://github.com/new and entering \"{repository}\" for the Repository name."
+      "2. Create the repository \"{repository}\" yourself by going to https://github.com/new and entering \"{repository}\" for the Repository name. This is the default option."
     )), "\n", sep = "")
 
     ans <- readline("\nEnter your choice (1 or 2): ")
     if (ans == "1") {
       create_on_github <- TRUE
+      cat("You chose option 1: have workflowr attempt to create repo\n")
+    } else if (ans == "2") {
+      cat("You chose option 2: create the repo yourself\n")
+    } else {
+      cat("Invalid input. Defaulting to option 2: create the repo yourself\n")
     }
   }
 

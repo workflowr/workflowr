@@ -56,6 +56,7 @@ reference:
     contents:
       - wflow_html
       - wflow_open
+      - wflow_quickstart
       - wflow_remove
       - wflow_rename
       - wflow_rename_proj

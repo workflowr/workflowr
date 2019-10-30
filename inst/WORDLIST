@@ -44,12 +44,15 @@ github
 gitlab
 GitLab
 globbing
+greyed
 Grolemund
 Hadley
 Hadley's
 hashbase
 HPC
 https
+httpuv
+httr
 Inkscape
 io
 knitr
@@ -84,6 +87,7 @@ Rproj
 rprojroot
 RStudio
 RStudio's
+rstudioapi
 Rtools
 Scr
 serverless
@@ -95,6 +99,7 @@ stringr
 subproject
 symlink
 Symlink
+testthat
 topright
 uchicago
 uk
@@ -104,6 +109,7 @@ untracked
 VCS
 wflow
 Wickham
+withr
 workflowrBeta
 worklowr
 Xiang

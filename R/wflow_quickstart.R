@@ -1,8 +1,7 @@
 #' Quickly start a workflowr project
 #'
-#' \code{wflow_quickstart} converts existing R Markdown file(s) into a
-#' workflowr project. Its goal is to quickly demonstrate the usefulness of
-#' workflowr.
+#' \code{wflow_quickstart} provides a simple interface to effortlessly create a
+#' workflowr project from an existing data analysis.
 #'
 #' \code{wflow_quickstart} performs the following steps:
 #'

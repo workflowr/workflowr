@@ -321,18 +321,18 @@ get_versions_df <- function(files, r) {
 
   version <- vapply(commits_path, function(x) x$sha, character(1))
   author <- vapply(commits_path, function(x) x$author$name, character(1))
-  date <- vapply(commits_path, function(x) as.character(x$author$when),
-                 character(1))
+  date <- lapply(commits_path, function(x) as.POSIXct(x$author$when))
+  date <- do.call(c, date)
   message <- vapply(commits_path, function(x) x$message, character(1))
 
   # Only keep the first line of the commit message
   message <- vapply(message, get_first_line, character(1))
 
   df_versions <- data.frame(File = names(commits_path), Version = version,
-                            Author = author, Date = as.POSIXct(date),
+                            Author = author, Date = date,
                             Message = message, stringsAsFactors = FALSE)
   df_versions <- df_versions[order(df_versions$Date, decreasing = TRUE), ]
-  df_versions$Date <- as.Date(df_versions$Date)
+  df_versions$Date <- as.character(as.Date(df_versions$Date))
   rownames(df_versions) <- seq_len(nrow(df_versions))
 
   return(df_versions)

@@ -3,6 +3,10 @@ file.create("system-info.Rout.save")
 Sys.info()
 .Platform
 sessionInfo()
+# Dates and times
+Sys.Date()
+Sys.time()
+Sys.timezone()
 # Paths
 getwd()
 tempdir()

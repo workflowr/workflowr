@@ -130,7 +130,7 @@ Workflowr is available under the [MIT license][MIT]. For proper attribution,
 please cite our [manuscript][workflowr-paper] that describes the software:
 
 > Blischak JD, Carbonetto P, and Stephens M. Creating and sharing reproducible
-> research code the workflowr way [version 1; peer review: awaiting peer review].
+> research code the workflowr way [version 1; peer review: 1 approved].
 > F1000Research 2019, 8:1749 (https://doi.org/10.12688/f1000research.20843.1)
 
 To obtain a BibTeX entry, please run `citation("workflowr")`. Note that

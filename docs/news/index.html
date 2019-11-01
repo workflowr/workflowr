@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -116,13 +116,48 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="workflowr-1-4-0-9002" class="section level1">
+    <div id="workflowr-1-5-0" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-4-0-9002" class="anchor"></a>workflowr 1.4.0.9002<small> Unreleased </small>
+<a href="#workflowr-1-5-0" class="anchor"></a>workflowr 1.5.0<small> 2019-11-01 </small>
 </h1>
+<p>This minor release of workflowr includes a new function, the introduction of options to control package-wide function behavior, the ability to suppress the workflowr report from the HTML file, a new vignette for teaching workflowr, and lots of error handling improvements.</p>
+<div id="new-function-wflow_quickstart" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-function-wflow_quickstart" class="anchor"></a>New function <code>wflow_quickstart()</code>
+</h2>
+<p>The new function <code><a href="../reference/wflow_quickstart.html">wflow_quickstart()</a></code> provides a simple interface to effortlessly create a workflowr project from an existing data analysis. Pass it your existing R Markdown file(s), and it will start a new workflowr project, publish the analysis files, and configure GitHub (or GitLab).</p>
+<pre><code><a href="../reference/wflow_quickstart.html">wflow_quickstart(files = "existing-analysis.Rmd", username = "your-github-username")</a></code></pre>
+</div>
+<div id="package-options" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-options" class="anchor"></a>Package options</h2>
+<p>This is the first release to include options for controlling the behavior of all workflowr functions. This makes it more convenient for you to create a consistent workflowr experience. You can set the options in your project’s <code>.Rprofile</code> (using the function <code><a href="https://rdrr.io/r/base/options.html">options()</a></code>) instead of having to always remember to change a default argument every time you call a function.</p>
+<p>Currently there are two workflowr package options. See <code><a href="../reference/workflowr.html">?workflowr</a></code> for more details.</p>
 <ul>
-<li><p>Require git2r &gt;= 0.26.0 to support internal changes that increase speed and robustness of workflowr Git functionality.</p></li>
-<li><p>Add option <code>suppress_report</code> to suppress the insertion of the workflowr report at the top of the HTML file (<a href='https://github.com/kaneplusplus'>@kaneplusplus</a>, <a href='https://github.com/jdblischak/workflowr/issues/168'>#168</a>)</p></li>
+<li><p><code>workflowr.git</code>: Set the path to the system Git executable, which is occasionally used to increase the speed of Git operations performed by workflowr functions.</p></li>
+<li><p><code>workflowr.view</code>: Should workflowr functions open webpages for viewing in the browser? The default is set to <code><a href="https://rdrr.io/r/base/interactive.html">interactive()</a></code> (i.e. it is <code>TRUE</code> only if it is an interactive R session). This option is currently used by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, and <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</p></li>
+</ul>
+</div>
+<div id="workshop-tutorial-for-teaching-workflowr" class="section level2">
+<h2 class="hasAnchor">
+<a href="#workshop-tutorial-for-teaching-workflowr" class="anchor"></a>Workshop tutorial for teaching workflowr</h2>
+<p>The new vignette “Reproducible research with workflowr” is designed to be taught as a tutorial in a workshop setting. It includes setup instructions, an example analysis to highlight the benefits of workflowr, and troubleshooting advice.</p>
+</div>
+<div id="suppress-the-html-workflowr-report" class="section level2">
+<h2 class="hasAnchor">
+<a href="#suppress-the-html-workflowr-report" class="anchor"></a>Suppress the HTML workflowr report</h2>
+<p>If you’d like to suppress the workflowr report at the top of an HTML page, you can set the option <code>suppress_report</code> to <code>TRUE</code>. To suppress the report in every HTML file, set the option in <code>_workflowr.yml</code>:</p>
+<pre><code>suppress_report: TRUE</code></pre>
+<p>To suppress the report in a specific HTML file, add the following to the YAML header of the corresponding Rmd file:</p>
+<pre><code>workflowr:
+  suppress_report: TRUE</code></pre>
+<p>Many thanks to <a href='https://github.com/kaneplusplus'>@kaneplusplus</a> for implementing this feature! (<a href='https://github.com/jdblischak/workflowr/issues/168'>#168</a>)</p>
+</div>
+<div id="minor-improvements-and-bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
+<ul>
+<li><p>Require git2r &gt;= 0.26.0 to support internal changes that increase speed and robustness of workflowr Git functionality</p></li>
 <li><p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> adds a <code>.gitattributes</code> file that classifies R Markdown files as R code for the official GitHub language statistics calculated via <a href="https://github.com/github/linguist">linguist</a>. The default setting is to ignore R Markdown files.</p></li>
 </ul>
 <ul>
@@ -132,19 +167,20 @@
 <li><p>Warn user from <code><a href="../reference/wflow_build.html">wflow_build()</a></code> if <code>index.Rmd</code> is missing the workflowr-specific site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code> (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>, <a href='https://github.com/jdblischak/workflowr/issues/177'>#177</a>)</p></li>
 <li><p>Fail early if missing required file <code>index.Rmd</code></p></li>
 <li><p>Add argument <code>fail</code> to <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> with default value of <code>TRUE</code>. Now if a pull generates a merge conflict, <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> will abort the pull. Thus no changes will be made to the local files. Users can set <code>fail = FALSE</code> to allow Git to add the merge conflicts to the local files.</p></li>
-<li><p>Speed improvements for <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</p></li>
+<li><p>Speed improvements for <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code></p></li>
 <li><p>Improved error handling when files contain merge conflicts. Before workflowr only detected merge conflicts in Rmd files. Now it detects them for any file (since Git requires any merge conflicts to be resolved before it makes any new commits).</p></li>
-<li>Add workflowr package options. See <code><a href="../reference/workflowr.html">?workflowr</a></code> for more details.
-<ul>
-<li>
-<code>workflowr.git</code>: Set the path to the system Git executable, which is occasionally used to increase the speed of Git operations performed by workflowr functions.</li>
-<li>
-<code>workflowr.view</code>: Should workflowr functions open webpages for viewing in the browser? The default is set to <code><a href="https://rdrr.io/r/base/interactive.html">interactive()</a></code> (i.e. it is <code>TRUE</code> only if it is an interactive R session). This option is currently used by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, and <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</li>
-</ul>
-</li>
 <li><p>Warn user if <code>knit_root_dir</code> (the directory where the code in the Rmd files is executed) defined in <code>_workflowr.yml</code> is an absolute path. An absolute path would only work on the current computer, limiting reproducibility.</p></li>
-<li><p>New vignette for teaching workflowr in a workshop setting</p></li>
+<li><p>Include Git status in output of <code><a href="../reference/wflow_status.html">wflow_status()</a></code>. Note that it purposefully excludes any files in the website directory since these generated files should only be committed by workflowr. You can omit the Git status by setting <code>include_git_status = FALSE</code> (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
+<li><p>Make it clearer that you have two options for creating the remote repository on Github: 1) let <code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> do it automatically, or 2) create it yourself manually at <a href="https://github.com/new" class="uri">https://github.com/new</a> (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
+<li><p>New FAQ “How can I save a figure in a vector graphics format (e.g. PDF)?”</p></li>
+<li><p>Added citation to <a href="https://doi.org/10.12688/f1000research.20843.1">F1000Research paper</a>. Run <code><a href="https://rdrr.io/r/utils/citation.html">citation("workflowr")</a></code> to obtain the new citation information.</p></li>
+<li><p>Fixed <code><a href="../reference/wflow_start.html">wflow_start()</a></code> infinite recursion bug by requiring stringr &gt;=1.3.0</p></li>
+<li><p>Added httpuv as imported dependency so that <code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> is able to automatically create the GitHub repository via the httr package</p></li>
+<li><p>Set (or increased) minimum required versions for fs, git2r, httpuv, rstudioapi, stringr, whisker, clipr, shiny, testthat, and withr</p></li>
+<li><p>Document possible error of a greyed out GitHub authentication button when trying to give permission for workflowr to create a repository for your account</p></li>
+<li><p>Fixed bug in date displayed in table of past versions in the workflowr report. Depending on the time of day the commit was made, the displayed day may have been off by one.</p></li>
 </ul>
+</div>
 </div>
     <div id="workflowr-1-4-0" class="section level1">
 <h1 class="page-header">
@@ -160,9 +196,9 @@
 <li><p>Now every time you push your latest changes with <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, a new browser tab will automatically be opened to your online repository (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
 </ul>
 </div>
-<div id="minor-improvements-and-bug-fixes" class="section level2">
+<div id="minor-improvements-and-bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
+<a href="#minor-improvements-and-bug-fixes-1" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li>Mention <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> as an option for including external images (idea from <a href='https://github.com/Zepeng-Mu'>@Zepeng-Mu</a>, <a href='https://github.com/jdblischak/workflowr/issues/162'>#162</a>)</li>
 <li>Check if Git repository is locked and produce error message that explains how to fix it (idea from <a href='https://github.com/brimittleman'>@brimittleman</a>)</li>
@@ -203,9 +239,9 @@
 </ul>
 <p>Note that the addin for <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is a Shiny Gadget that enables you to interactively choose which files to publish and write a detailed commit message (assistance from <a href='https://github.com/zaynaib'>@zaynaib</a> and <a href='https://github.com/argdata'>@argdata</a>, <a href='https://github.com/jdblischak/workflowr/issues/143'>#143</a>).</p>
 </div>
-<div id="minor-improvements-and-bug-fixes-1" class="section level2">
+<div id="minor-improvements-and-bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-and-bug-fixes-1" class="anchor"></a>Minor improvements and bug fixes</h2>
+<a href="#minor-improvements-and-bug-fixes-2" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li><p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> fails early if pandoc is not installed (<a href='https://github.com/zaynaib'>@zaynaib</a>, <a href='https://github.com/jdblischak/workflowr/issues/75'>#75</a>)</p></li>
 <li><p><code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>/<code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fail early if user tries to use SSH authentication when it is not supported by the current installation of git2r/libgit2 (<a href='https://github.com/jdblischak/workflowr/issues/144'>#144</a>)</p></li>
@@ -756,7 +792,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-1-4-0-9002">1.4.0.9002</a></li>
+        <li><a href="#workflowr-1-5-0">1.5.0</a></li>
         <li><a href="#workflowr-1-4-0">1.4.0</a></li>
         <li><a href="#workflowr-1-3-0">1.3.0</a></li>
         <li><a href="#workflowr-1-2-0">1.2.0</a></li>

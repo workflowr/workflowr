@@ -74,7 +74,7 @@ terminal) to push the code to GitHub." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -216,23 +216,50 @@ changes:</p>
 <code>_site.yml</code> to save the website files in <code>docs/</code></p></li>
 </ul>
 
-<p>Furthermore, <code>wflow_use_github</code> will prompt you to request permission to
-perform the following step:</p>
+<p>Furthermore, you have two options for creating the remote repository on GitHub.
+In an interactive R session, you will be prompted to choose one of the options
+below. To bypass the prompt, you can set the argument <code>create_on_github</code>.</p>
 <ul>
-<li><p>(Optional) Creates the new repository on GitHub. If you accept, your
+<li><p>1. Have workflowr create the new repository on GitHub. If you accept, your
 browser will open for you to provide authorization. If you are not logged
 into GitHub, you will be prompted to login. Then you will be asked to give
 permission to the workflowr-oauth-app to create the new repository for you on
 your behalf. This will allow <code>wflow_use_github</code>, running on your own
 machine, to create your new repository. Once <code>wflow_use_github</code>
 finishes, workflowr can no longer access your GitHub account.</p></li>
+<li><p>2. Create the remote repository yourself by going to
+<a href='https://github.com/new'>https://github.com/new</a> and entering the Repository name that matches
+the name of the directory of your workflowr project (if you used the argument
+<code>repository</code> to make it a different name, make sure to instead use that
+one).</p></li>
 </ul>
 
-<p>If you choose to not allow workflowr to create the repository for you, then
-you will have to create it manually by logging into your account.</p>
 <p>Once the GitHub repository has been created either by <code>wflow_use_github</code>
 or yourself, run <code>wflow_git_push</code> in the R console (or <code>git push
 origin master</code> in the terminal) to push your code to GitHub.</p>
+    <h2 class="hasAnchor" id="troubleshooting"><a class="anchor" href="#troubleshooting"></a>Troubleshooting</h2>
+
+    
+
+
+<p>The feature to automatically create the GitHub repository for you may fail
+since it involves using your web browser to authenticate with your GitHub
+account. If it fails for any reason, it'd probably be easier to manually
+login to GitHub and create the repository yourself
+(<a href='https://help.github.com/articles/creating-a-new-repository/'>instructions from GitHub</a>).
+However, if you have time, please file an
+<a href='https://github.com/jdblischak/workflowr/issues/new/choose'>Issue on
+GitHub</a> to report what happened, and importantly include which web browser
+you were using.</p>
+<p>We have observed the following problems before:</p>
+<ul>
+<li><p>The green button to approve the authentication of the workflowr GitHub
+app to create the repository on your behalf is grayed out, and unable to be
+clicked. This is likely a JavaScript problem. Make sure you don't have
+JavaScript disabled in your web browser. Also, you can try using a different
+browser.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='wflow_git_push.html'>wflow_git_push</a></code>, <code><a href='wflow_git_remote.html'>wflow_git_remote</a></code>,
@@ -252,6 +279,7 @@ origin master</code> in the terminal) to push your code to GitHub.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#troubleshooting">Troubleshooting</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

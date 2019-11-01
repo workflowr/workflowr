@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@
     <p><code>wflow_status</code> reports the analysis files that require user action.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wflow_status</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_status</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>include_git_status</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,6 +133,13 @@
       <td><p>character (default: NULL) The analysis file(s) to report the
 status. By default checks the status of all analysis files. Supports
 file <a href='https://en.wikipedia.org/wiki/Glob_(programming)'>globbing</a>.</p></td>
+    </tr>
+    <tr>
+      <th>include_git_status</th>
+      <td><p>logical (default: TRUE) Include the Git status of
+the project files in the output. Note that this excludes any files in the
+website directory, since these generated files should only be committed by
+workflowr, and not the user.</p></td>
     </tr>
     <tr>
       <th>project</th>
@@ -161,6 +168,11 @@ has uncommitted changes, otherwise <code>FALSE</code>.</p></li>
 <code>_workflowr.yml</code> has uncommitted changes, otherwise <code>FALSE</code>. If the
 file does not exist, the result is <code>NULL</code>. If the file was recently
 deleted and not yet committed to Git, then it will be <code>TRUE</code>.</p></li>
+<li><p><b>git_status</b> The Git status as a <code>git_status</code>
+object from the package git2r (see <code>git2r::<a href='https://docs.ropensci.org/git2r/reference/status.html'>status</a></code>).</p></li>
+<li><p><b>include_git_status</b> The argument <code>include_git_status</code>
+indicating whether the Git status should be printed along with the status of
+the Rmd files.</p></li>
 <li><p><b>status</b>: A data frame with detailed information on the status of
 each R Markdown file (see below).</p></li>
 </ul>

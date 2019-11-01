@@ -127,6 +127,10 @@ rstudioapi, stringr, whisker, clipr, shiny, testthat, and withr
 * Document possible error of a greyed out GitHub authentication button when
 trying to give permission for workflowr to create a repository for your account
 
+* Fixed bug in date displayed in table of past versions in the workflowr report.
+Depending on the time of day the commit was made, the displayed day may have
+been off by one.
+
 # workflowr 1.4.0
 
 This minor release of workflowr features further GitHub integration, a new

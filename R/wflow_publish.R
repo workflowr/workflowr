@@ -140,6 +140,17 @@ wflow_publish <- function(
 
   project <- absolute(project)
 
+  # Save any files open in RStudio editor --------------------------------------
+
+  if (rstudioapi::isAvailable(version_needed = "1.1.287")) {
+    source_editor_context <- rstudioapi::getSourceEditorContext()
+    source_file <- relative(source_editor_context$path)
+    if (source_file %in% files) {
+      rstudioapi::documentSave(id = source_editor_context$id)
+      message(glue::glue("Auto-saving {source_file}"))
+    }
+  }
+
   # Assess project status ------------------------------------------------------
 
   s0 <- wflow_status(project = project)

@@ -186,6 +186,23 @@ wflow_status <- function(files = NULL, include_git_status = TRUE, project = ".")
   committed <- files_analysis %in% files_committed
   files_html <- to_html(files_analysis, outdir = o$docs)
   published <- files_html %in% files_committed
+
+  # If a user somehow committed the HTML file but not the source Rmd file, which
+  # is impossible to do with wflow_publish(), the workflowr report will show a
+  # warning. However, it will also cause an error when trying to access the date
+  # of the last commit to the Rmd file
+  html_only <- !committed & published
+  if (any(html_only)) {
+    published[html_only] <- FALSE
+    html_only_files <- files_analysis[html_only]
+    warning(call. = FALSE, immediate. = TRUE, wrap(
+            "The following R Markdown file(s) have not been committed to the
+            Git repository but their corresponding HTML file(s) have. This
+            violates the reproducibility guarantee of workflowr. Please
+            publish these files using wflow_publish() to fix this situation."),
+            "\n\n", paste(html_only_files, collapse = "\n"))
+  }
+
   # Do published files have subsequently committed changes?
   files_outdated <- get_outdated_files(r,
                                        absolute(files_analysis[published]),

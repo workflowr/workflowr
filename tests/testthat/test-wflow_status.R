@@ -290,6 +290,8 @@ test_that("wflow_status throws error if given non-[Rr]md extension.", {
                "File extensions must be either Rmd or rmd.")
 })
 
+
+
 # Test wflow_paths -------------------------------------------------------------
 
 # Most of this is redundant with wflow_status, so only testing different
@@ -338,6 +340,27 @@ test_that("wflow_paths does *not* throw warning if docs/ directory is missing", 
   file.rename(docs, docs_tmp)
   expect_silent(wflow_paths(project = site_dir))
 })
+
+test_that("wflow_status gives warning for HTML-only published files", {
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  rmd <- file.path(path, "analysis", "test.Rmd")
+  fs::file_create(rmd)
+  html <- file.path(path, "docs", "test.html")
+  fs::file_create(html)
+
+  r <- git2r::repository(path)
+  git2r::add(r, html)
+  git2r::commit(r, "Commit HTML only")
+  expect_warning(
+    wflow_status(project = path),
+    rmd
+  )
+})
+
 
 # Test print.wflow_status ------------------------------------------------------
 

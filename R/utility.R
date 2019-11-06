@@ -416,3 +416,10 @@ is_rmd <- function(path) {
   extensions <- fs::path_ext(path)
   stringr::str_detect(extensions, "^[Rr]md$")
 }
+
+# Save the files open in RStudio editor
+autosave <- function() {
+  if (!rstudioapi::isAvailable(version_needed = "1.1.287")) return(FALSE)
+
+  rstudioapi::documentSaveAll()
+}

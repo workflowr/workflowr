@@ -226,6 +226,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if(rmarkdown::pandoc_version() >= 2 && utils::packageVersion("rmarkdown") < 1.7)
     stop("pandoc 2+ requires rmarkdown version >= 1.7. Please update your rmarkdown package")
 
+  if (getOption("workflowr.autosave")) autosave()
+
   # Obtain files to consider ---------------------------------------------------
 
   p <- wflow_paths(project = project)

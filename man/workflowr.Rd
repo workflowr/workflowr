@@ -66,6 +66,12 @@ options(workflowr.sysgit = "")
 
 \describe{
 
+\item{workflowr.autosave}{A logical indicating whether workflowr functions
+should automatically save files open in the RStudio editor before running.
+The default is \code{TRUE}. This requires RStudio 1.1.287 or later. Only
+files that have been previously saved are affected. In other words, unnamed
+files will be ignored.}
+
 \item{workflowr.sysgit}{The path to the system Git executable. This is
 occasionally used to increase the speed of Git operations performed by
 workflowr. By default it is set to the first Git executable on the search

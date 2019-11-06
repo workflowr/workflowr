@@ -143,7 +143,7 @@ wflow_status <- function(files = NULL, include_git_status = TRUE, project = ".")
     stop("project does not exist.")
   project <- absolute(project)
 
-  if (getOption("workflowr.autosave")) autosave()
+  if (isTRUE(getOption("workflowr.autosave"))) autosave()
 
   # Obtain list of workflowr paths. Throw error if no Git repository.
   o <- wflow_paths(error_git = TRUE, project = project)

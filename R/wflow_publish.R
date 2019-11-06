@@ -140,7 +140,7 @@ wflow_publish <- function(
 
   project <- absolute(project)
 
-  if (getOption("workflowr.autosave")) autosave()
+  if (isTRUE(getOption("workflowr.autosave"))) autosave()
 
   # Assess project status ------------------------------------------------------
 

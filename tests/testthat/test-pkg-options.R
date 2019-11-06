@@ -31,10 +31,15 @@ test_that("workflowr does not overwrite user-defined package options in .Rprofil
 
   # Have to load workflowr after setting options to properly test this, thus
   # can't append to default .Rprofile that loads workflowr
-  writeLines(c("options(workflowr.sysgit = \"/git\")",
+  writeLines(c("options(workflowr.autosave = FALSE)",
+               "options(workflowr.sysgit = \"/git\")",
                "options(workflowr.view = \"bananas\")",
                "library(workflowr)"),
              con = ".Rprofile")
+
+  autosave <- callr::r_safe(function() getOption("workflowr.autosave"),
+                            user_profile = TRUE)
+  expect_false(autosave)
 
   sysgit <- callr::r_safe(function() getOption("workflowr.sysgit"),
                           user_profile = TRUE)
@@ -43,4 +48,18 @@ test_that("workflowr does not overwrite user-defined package options in .Rprofil
   view <- callr::r_safe(function() getOption("workflowr.view"),
                         user_profile = TRUE)
   expect_identical(view, "bananas")
+})
+
+test_that("Invalid workflowr.autosave does not crash workflowr", {
+
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  expect_silent(
+    callr::r_safe(function(path) {
+      options(workflowr.autosave = "not-a-logical")
+      library(workflowr)
+      wflow_status(project = path)
+    }, args = list(path = path))
+  )
 })

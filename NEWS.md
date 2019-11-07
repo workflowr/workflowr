@@ -1,6 +1,10 @@
 # workflowr 1.5.0.9000
 
-
+* New autosave feature. The workflowr functions `wflow_build()`,
+`wflow_publish()`, and `wflow_status()` will autosave any unsaved files open in
+the RStudio editor pane. This is similar to the behavior of the Knit HTML
+button. This feature can be disabled by setting the package option
+`workflowr.autosave` to `FALSE` (idea from @xiangzhu in #179)
 
 # workflowr 1.5.0
 

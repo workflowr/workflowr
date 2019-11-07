@@ -6,6 +6,7 @@
                  utils::packageVersion("workflowr")),
          "Run ?workflowr for help getting started")
   packageStartupMessage(paste(m, collapse = "\n"))
+  check_deps("workflowr")
 }
 
 .onLoad <- function(libname, pkgname) {
@@ -21,6 +22,33 @@
   if(any(toset)) options(wflow_pkg_opts[toset])
 
   invisible()
+}
+
+# Check minimum required versions of dependencies b/c install.packages() doesn't
+check_deps <- function(pkg) {
+  deps <- utils::packageDescription(pkg, fields = "Imports")
+  deps <- stringr::str_split(deps, pattern = ",[\n]")[[1]]
+  deps <- stringr::str_split_fixed(deps, "\\s", n = 2)
+  deps_names <- deps[, 1]
+  deps_versions <- stringr::str_extract(deps[, 2], "[0-9,\\.,-]+")
+
+  invalid <- character()
+  for (i in seq_along(deps_names)) {
+    pkgname <- deps_names[i]
+    required <- deps_versions[i]
+    if (is.na(required)) next
+
+    installed <- utils::packageVersion(deps_names[i])
+
+    if (as.numeric_version(installed) < as.numeric_version(required)) {
+      warning(call. = FALSE, glue::glue(
+        "Please update package \"{pkgname}\": version {installed} is installed, but {required} is required"
+      ))
+      invalid <- c(invalid, pkgname)
+    }
+  }
+
+  return(invisible(invalid))
 }
 
 #' workflowr: A workflow template for creating a research website

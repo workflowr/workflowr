@@ -6,6 +6,13 @@ the RStudio editor pane. This is similar to the behavior of the Knit HTML
 button. This feature can be disabled by setting the package option
 `workflowr.autosave` to `FALSE` (idea from @xiangzhu in #179)
 
+## Minor improvements and bug fixes
+
+* Warn user if only HTML file has been committed (and avoid throwing an error).
+Previously this threw an error because workflowr expects the R Markdown file to
+be committed to the Git repo if its corresponding HTML file is
+(bug report from @kevinlkx)
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

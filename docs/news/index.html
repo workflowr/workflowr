@@ -123,6 +123,13 @@
 <ul>
 <li>New autosave feature. The workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>, and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> will autosave any unsaved files open in the RStudio editor pane. This is similar to the behavior of the Knit HTML button. This feature can be disabled by setting the package option <code>workflowr.autosave</code> to <code>FALSE</code> (idea from <a href='https://github.com/xiangzhu'>@xiangzhu</a> in <a href='https://github.com/jdblischak/workflowr/issues/179'>#179</a>)</li>
 </ul>
+<div id="minor-improvements-and-bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
+<ul>
+<li>Warn user if only HTML file has been committed (and avoid throwing an error). Previously this threw an error because workflowr expects the R Markdown file to be committed to the Git repo if its corresponding HTML file is (bug report from <a href='https://github.com/kevinlkx'>@kevinlkx</a>)</li>
+</ul>
+</div>
 </div>
     <div id="workflowr-1-5-0" class="section level1">
 <h1 class="page-header">
@@ -161,9 +168,9 @@
   suppress_report: TRUE</code></pre>
 <p>Many thanks to <a href='https://github.com/kaneplusplus'>@kaneplusplus</a> for implementing this feature! (<a href='https://github.com/jdblischak/workflowr/issues/168'>#168</a>)</p>
 </div>
-<div id="minor-improvements-and-bug-fixes" class="section level2">
+<div id="minor-improvements-and-bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
+<a href="#minor-improvements-and-bug-fixes-1" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li><p>Require git2r &gt;= 0.26.0 to support internal changes that increase speed and robustness of workflowr Git functionality</p></li>
 <li><p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> adds a <code>.gitattributes</code> file that classifies R Markdown files as R code for the official GitHub language statistics calculated via <a href="https://github.com/github/linguist">linguist</a>. The default setting is to ignore R Markdown files.</p></li>
@@ -204,9 +211,9 @@
 <li><p>Now every time you push your latest changes with <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, a new browser tab will automatically be opened to your online repository (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
 </ul>
 </div>
-<div id="minor-improvements-and-bug-fixes-1" class="section level2">
+<div id="minor-improvements-and-bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-and-bug-fixes-1" class="anchor"></a>Minor improvements and bug fixes</h2>
+<a href="#minor-improvements-and-bug-fixes-2" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li>Mention <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> as an option for including external images (idea from <a href='https://github.com/Zepeng-Mu'>@Zepeng-Mu</a>, <a href='https://github.com/jdblischak/workflowr/issues/162'>#162</a>)</li>
 <li>Check if Git repository is locked and produce error message that explains how to fix it (idea from <a href='https://github.com/brimittleman'>@brimittleman</a>)</li>
@@ -247,9 +254,9 @@
 </ul>
 <p>Note that the addin for <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> is a Shiny Gadget that enables you to interactively choose which files to publish and write a detailed commit message (assistance from <a href='https://github.com/zaynaib'>@zaynaib</a> and <a href='https://github.com/argdata'>@argdata</a>, <a href='https://github.com/jdblischak/workflowr/issues/143'>#143</a>).</p>
 </div>
-<div id="minor-improvements-and-bug-fixes-2" class="section level2">
+<div id="minor-improvements-and-bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements-and-bug-fixes-2" class="anchor"></a>Minor improvements and bug fixes</h2>
+<a href="#minor-improvements-and-bug-fixes-3" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li><p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> fails early if pandoc is not installed (<a href='https://github.com/zaynaib'>@zaynaib</a>, <a href='https://github.com/jdblischak/workflowr/issues/75'>#75</a>)</p></li>
 <li><p><code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>/<code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fail early if user tries to use SSH authentication when it is not supported by the current installation of git2r/libgit2 (<a href='https://github.com/jdblischak/workflowr/issues/144'>#144</a>)</p></li>

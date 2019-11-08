@@ -5,6 +5,8 @@ jobs:
       NOT_CRAN: true
       PANDOC: 2.7
       R_LIBS: ~/R/Library
+      _R_CHECK_CRAN_INCOMING_: TRUE
+      _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
     docker:
       - image: rocker/r-base:latest
     steps:
@@ -39,6 +41,8 @@ jobs:
   pandocless:
     environment:
       R_LIBS: ~/R/Library
+      _R_CHECK_CRAN_INCOMING_: TRUE
+      _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
     docker:
       - image: rocker/r-base:latest
     steps:
@@ -72,6 +76,8 @@ jobs:
       NOT_CRAN: true
       PANDOC: 2.7
       R_LIBS: ~/R/Library
+      _R_CHECK_CRAN_INCOMING_: TRUE
+      _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
     docker:
       - image: rocker/r-base:latest
     steps:

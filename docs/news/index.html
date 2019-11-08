@@ -127,7 +127,8 @@
 <h2 class="hasAnchor">
 <a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
-<li>Warn user if only HTML file has been committed (and avoid throwing an error). Previously this threw an error because workflowr expects the R Markdown file to be committed to the Git repo if its corresponding HTML file is (bug report from <a href='https://github.com/kevinlkx'>@kevinlkx</a>)</li>
+<li><p>Warn user if only HTML file has been committed (and avoid throwing an error). Previously this threw an error because workflowr expects the R Markdown file to be committed to the Git repo if its corresponding HTML file is (bug report from <a href='https://github.com/kevinlkx'>@kevinlkx</a>)</p></li>
+<li><p>Warn user if a dependency does not meet the minimum required version. Unfortunately <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> does not automatically update previously installed packages when installing a new package, even if they violate the minimum required version (idea from <a href='https://github.com/stephens999'>@stephens999</a>)</p></li>
 </ul>
 </div>
 </div>

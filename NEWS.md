@@ -13,6 +13,11 @@ Previously this threw an error because workflowr expects the R Markdown file to
 be committed to the Git repo if its corresponding HTML file is
 (bug report from @kevinlkx)
 
+* Warn user if a dependency does not meet the minimum required version.
+Unfortunately `install.packages()` does not automatically update previously
+installed packages when installing a new package, even if they violate the
+minimum required version (idea from @stephens999)
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

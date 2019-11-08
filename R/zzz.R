@@ -6,7 +6,7 @@
                  utils::packageVersion("workflowr")),
          "Run ?workflowr for help getting started")
   packageStartupMessage(paste(m, collapse = "\n"))
-  check_deps("workflowr")
+  check_deps()
 }
 
 .onLoad <- function(libname, pkgname) {
@@ -25,26 +25,31 @@
 }
 
 # Check minimum required versions of dependencies b/c install.packages() doesn't
-check_deps <- function(pkg) {
-  deps <- utils::packageDescription(pkg, fields = "Imports")
-  deps <- stringr::str_split(deps, pattern = ",[\n]")[[1]]
-  deps <- stringr::str_split_fixed(deps, "\\s", n = 2)
-  deps_names <- deps[, 1]
-  deps_versions <- stringr::str_extract(deps[, 2], "[0-9,\\.,-]+")
+check_deps <- function() {
+  deps <- c(
+    fs = "1.2.7",
+    git2r = "0.26.0",
+    httpuv = "1.2.2",
+    knitr = "1.18",
+    rmarkdown = "1.7",
+    rstudioapi = "0.6",
+    stringr = "1.3.0",
+    whisker = "0.3-2"
+  )
+  deps <- as.package_version(deps)
 
-  invalid <- character()
-  for (i in seq_along(deps_names)) {
-    pkgname <- deps_names[i]
-    required <- deps_versions[i]
-    if (is.na(required)) next
+  invalid <- logical(length = length(deps))
+  names(invalid) <- names(deps)
+  for (i in seq_along(deps)) {
+    pkgname <- names(deps[i])
+    required <- deps[i]
+    installed <- utils::packageVersion(pkgname)
 
-    installed <- utils::packageVersion(deps_names[i])
-
-    if (as.numeric_version(installed) < as.numeric_version(required)) {
+    if (installed < required) {
       warning(call. = FALSE, glue::glue(
         "Please update package \"{pkgname}\": version {installed} is installed, but {required} is required"
       ))
-      invalid <- c(invalid, pkgname)
+      invalid[i] <- TRUE
     }
   }
 

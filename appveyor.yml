@@ -41,6 +41,10 @@ environment:
     # Allow remotes to update curl/git2r/pkgbuild by not relying on them
     R_REMOTES_STANDALONE: true
 
+    # Perform incoming CRAN checks that don't require remote access
+    _R_CHECK_CRAN_INCOMING_: TRUE
+    _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
+
   matrix:
   # 64-bit
   - R_VERSION: release

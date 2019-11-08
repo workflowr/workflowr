@@ -12,6 +12,9 @@ env:
     # Do not skip tests with skip_on_cran(). Adding this to be explicit for my
     # future self. This is already set by default.
     - NOT_CRAN=true
+    # Perform incoming CRAN checks that don't require remote access
+    - _R_CHECK_CRAN_INCOMING_=TRUE
+    - _R_CHECK_CRAN_INCOMING_REMOTE_=FALSE
 
 script:
   - R CMD build --no-manual .

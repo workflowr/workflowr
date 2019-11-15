@@ -5,10 +5,10 @@
 \title{Build the site}
 \usage{
 wflow_build(files = NULL, make = is.null(files), update = FALSE,
-  republish = FALSE, view = getOption("workflowr.view"),
-  clean_fig_files = FALSE, delete_cache = FALSE, seed = 12345,
-  log_dir = NULL, verbose = FALSE, local = FALSE, dry_run = FALSE,
-  project = ".")
+  republish = FALSE, run_all_chunks = FALSE,
+  view = getOption("workflowr.view"), clean_fig_files = FALSE,
+  delete_cache = FALSE, seed = 12345, log_dir = NULL,
+  verbose = FALSE, local = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in
@@ -34,6 +34,17 @@ file that was used to produce it.}
 files (that do not have any unstaged or staged changes). Useful for
 site-wide changes like updating the theme, navigation bar, or any other
 setting in \code{_site.yml}.}
+
+\item{run_all_chunks}{logical (default: FALSE). Execute all the code chunks
+in the R console. This simulates the same behavior as the RStudio option
+"Run All" (Ctrl/Cmd+Alt+R). Set \code{verbose=TRUE} to see each line of R
+code as it is executed. None of the workflowr reproducibility safeguards
+are applied, so this feature should only be used when actively developing
+your analysis. No HTML file or figure files will be created. It overrides
+the arguments \code{view} and \code{local} (i.e. these options will be
+ignored). Also note that the working directory is not changed, so you may
+need to use \code{\link{setwd}} to change the working directory to the
+value of \code{knit_root_dir} (check the file \code{_workflowr.yml}).}
 
 \item{view}{logical (default: \code{getOption("workflowr.view")}). View the
 website with \code{\link{wflow_view}} after building files. If only one
@@ -93,6 +104,8 @@ An object of class \code{wflow_build}, which is a list with the
    \item \bold{update}: The input argument \code{update}
 
    \item \bold{republish}: The input argument \code{republish}
+
+   \item \bold{run_all_chunks}: The input argument \code{run_all_chunks}
 
    \item \bold{view}: The input argument \code{view}
 

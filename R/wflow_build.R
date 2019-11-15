@@ -54,6 +54,16 @@
 #'   files (that do not have any unstaged or staged changes). Useful for
 #'   site-wide changes like updating the theme, navigation bar, or any other
 #'   setting in \code{_site.yml}.
+#' @param run_all_chunks logical (default: FALSE). Execute all the code chunks
+#'   in the R console. This simulates the same behavior as the RStudio option
+#'   "Run All" (Ctrl/Cmd+Alt+R). Set \code{verbose=TRUE} to see each line of R
+#'   code as it is executed. None of the workflowr reproducibility safeguards
+#'   are applied, so this feature should only be used when actively developing
+#'   your analysis. No HTML file or figure files will be created. It overrides
+#'   the arguments \code{view} and \code{local} (i.e. these options will be
+#'   ignored). Also note that the working directory is not changed, so you may
+#'   need to use \code{\link{setwd}} to change the working directory to the
+#'   value of \code{knit_root_dir} (check the file \code{_workflowr.yml}).
 #' @param view logical (default: \code{getOption("workflowr.view")}). View the
 #'   website with \code{\link{wflow_view}} after building files. If only one
 #'   file is built, it is opened. If more than one file is built, the main index
@@ -103,6 +113,8 @@
 #'
 #'    \item \bold{republish}: The input argument \code{republish}
 #'
+#'    \item \bold{run_all_chunks}: The input argument \code{run_all_chunks}
+#'
 #'    \item \bold{view}: The input argument \code{view}
 #'
 #'    \item \bold{clean_fig_files}: The input argument \code{clean_fig_files}
@@ -148,6 +160,7 @@
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
                         update = FALSE, republish = FALSE,
+                        run_all_chunks = FALSE,
                         view = getOption("workflowr.view"),
                         clean_fig_files = FALSE, delete_cache = FALSE,
                         seed = 12345, log_dir = NULL, verbose = FALSE,
@@ -180,6 +193,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   if (!(is.logical(republish) && length(republish) == 1))
     stop("republish must be a one-element logical vector")
+
+  if (!(is.logical(run_all_chunks) && length(run_all_chunks) == 1))
+    stop("run_all_chunks must be a one-element logical vector")
 
   if (!(is.logical(view) && length(view) == 1))
     stop("view must be a one-element logical vector")
@@ -300,7 +316,13 @@ wflow_build <- function(files = NULL, make = is.null(files),
       # Determine knit directory
       wflow_opts <- wflow_options(f)
       if (wflow_opts$knit_root_dir != wd) {
-        message(sprintf("Building %s in %s", f, wflow_opts$knit_root_dir))
+        if (run_all_chunks) {
+          warning(sprintf("Working directory does not match knit_root_dir: %s",
+                          wflow_opts$knit_root_dir),
+                  call. = FALSE, immediate. = TRUE)
+        } else {
+          message(sprintf("Building %s in %s", f, wflow_opts$knit_root_dir))
+        }
       } else {
         message("Building ", f)
       }
@@ -323,7 +345,13 @@ wflow_build <- function(files = NULL, make = is.null(files),
           message("  - Note: This file has a cache directory")
         }
       }
-      if (local) {
+      if (run_all_chunks) {
+        # setwd(wflow_opts$knit_root_dir)
+        # on.exit(setwd(wd), add = TRUE)
+        r_tmp <- fs::file_temp(pattern = "workflowr-purl-", ext = ".R")
+        knitr::purl(f, output = r_tmp, quiet = TRUE, documentation = 0L)
+        source(r_tmp, echo = verbose)
+      } else if (local) {
         build_rmd(f, seed = seed, envir = .GlobalEnv)
       } else {
         build_rmd_external(f, seed = seed, log_dir = log_dir, verbose = verbose,
@@ -344,7 +372,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # When 1 file is built, wflow_build() will open that file.
   #
   # When 1+ files are built, wflow_build() will open index.html.
-  if (!dry_run && view) {
+  if (!dry_run && view && !run_all_chunks) {
     n_files_to_build <- length(files_to_build)
     if (n_files_to_build == 1) {
       wflow_view(files_to_build, project = project)
@@ -357,7 +385,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
   # Prepare output -------------------------------------------------------------
 
   o <- list(files = files, make = make,
-            update = update, republish = republish, view = view,
+            update = update, republish = republish,
+            run_all_chunks = run_all_chunks, view = view,
             clean_fig_files = clean_fig_files, delete_cache = delete_cache,
             seed = seed, log_dir = log_dir, verbose = verbose,
             local = local, dry_run = dry_run,
@@ -375,8 +404,13 @@ print.wflow_build <- function(x, ...) {
   if (x$make) cat(" make: TRUE")
   if (x$update) cat(" update: TRUE")
   if (x$republish) cat(" republish: TRUE")
+  if (x$run_all_chunks) cat(" run_all_chunks: TRUE")
   if (x$clean_fig_files) cat(" clean_fig_files: TRUE")
   if (x$delete_cache) cat(" delete_cache: TRUE")
+  if (x$verbose) cat(" verbose: TRUE")
+  if (x$local) cat(" local: TRUE")
+  if (x$dry_run) cat(" dry_run: TRUE")
+
   cat("\n\n")
 
   if (length(x$built) == 0) {
@@ -385,21 +419,31 @@ print.wflow_build <- function(x, ...) {
     return(invisible(x))
   }
 
-  if (x$dry_run & x$local) {
+  if (x$dry_run && x$run_all_chunks) {
+    cat(wrap("The code chunks from the following Rmd files would be executed locally in the current R session:"),
+        "\n\n")
+  } else if (!x$dry_run && x$run_all_chunks) {
+    cat(wrap("The code chunks from the following Rmd files were executed locally in the current R session:"),
+        "\n\n")
+  } else if (x$dry_run && x$local) {
     cat(wrap("The following would be built locally in the current R session:"),
         "\n\n")
-  } else if (!x$dry_run & x$local) {
+  } else if (!x$dry_run && x$local) {
     cat(wrap("The following were built locally in the current R session:"),
         "\n\n")
-  } else if (x$dry_run & !x$local) {
+  } else if (x$dry_run && !x$local) {
     cat(wrap("The following would be built externally each in their own fresh R session:"),
         "\n\n")
-  } else if (!x$dry_run & !x$local) {
+  } else if (!x$dry_run && !x$local) {
     cat(wrap("The following were built externally each in their own fresh R session:"),
         "\n\n")
   }
-  cat(x$html, sep = "\n")
-  if (!x$dry_run & !x$local) {
+  if (x$run_all_chunks) {
+      cat(x$files, sep = "\n")
+  } else {
+     cat(x$html, sep = "\n")
+  }
+  if (!x$dry_run && !x$local && !x$run_all_chunks) {
     cat("\n")
     cat(wrap(sprintf("Log files saved in %s", x$log_dir)))
     cat("\n")

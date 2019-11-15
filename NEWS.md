@@ -18,6 +18,11 @@ Unfortunately `install.packages()` does not automatically update previously
 installed packages when installing a new package, even if they violate the
 minimum required version (idea from @stephens999)
 
+* Fix off-by-one date bug by specifying the local timezone (see [git2r Issue
+407][git2r407])
+
+[git2r407]: https://github.com/ropensci/git2r/issues/407
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

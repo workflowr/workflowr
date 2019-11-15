@@ -23,7 +23,7 @@ test_that("Conversion of git_time to character string of date is correct", {
 
   expect_identical(
     as.character(Sys.Date()),
-    as.character(as.Date(as.POSIXct(c1$author$when)))
+    as.character(as.Date(as.POSIXct(c1$author$when), tz = Sys.timezone()))
   )
 })
 
@@ -65,8 +65,8 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f1$Author == "Test User"))
   expect_identical(
     versions_f1$Date,
-    as.character(c(as.Date(as.POSIXct(c3$author$when)),
-                   as.Date(as.POSIXct(c1$author$when))))
+    as.character(c(as.Date(as.POSIXct(c3$author$when), tz = Sys.timezone()),
+                   as.Date(as.POSIXct(c1$author$when), tz = Sys.timezone())))
   )
   expect_identical(versions_f1$Message, c(c3$message, c1$message))
 
@@ -77,8 +77,8 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f2$Author == "Test User"))
   expect_identical(
     versions_f2$Date,
-    as.character(c(as.Date(as.POSIXct(c4$author$when)),
-                   as.Date(as.POSIXct(c2$author$when))))
+    as.character(c(as.Date(as.POSIXct(c4$author$when), tz = Sys.timezone()),
+                   as.Date(as.POSIXct(c2$author$when), tz = Sys.timezone())))
   )
   expect_identical(versions_f2$Message, c(c4$message, c2$message))
 
@@ -89,10 +89,10 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f1_f2$Author == "Test User"))
   expect_identical(
     versions_f1_f2$Date,
-    as.character(c(as.Date(as.POSIXct(c4$author$when)),
-                   as.Date(as.POSIXct(c3$author$when)),
-                   as.Date(as.POSIXct(c2$author$when)),
-                   as.Date(as.POSIXct(c1$author$when))))
+    as.character(c(as.Date(as.POSIXct(c4$author$when), tz = Sys.timezone()),
+                   as.Date(as.POSIXct(c3$author$when), tz = Sys.timezone()),
+                   as.Date(as.POSIXct(c2$author$when), tz = Sys.timezone()),
+                   as.Date(as.POSIXct(c1$author$when), tz = Sys.timezone())))
   )
   expect_identical(versions_f1_f2$Message, c(c4$message, c3$message,
                                              c2$message, c1$message))

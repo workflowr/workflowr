@@ -332,7 +332,7 @@ get_versions_df <- function(files, r) {
                             Author = author, Date = date,
                             Message = message, stringsAsFactors = FALSE)
   df_versions <- df_versions[order(df_versions$Date, decreasing = TRUE), ]
-  df_versions$Date <- as.character(as.Date(df_versions$Date))
+  df_versions$Date <- as.character(as.Date(df_versions$Date, tz = Sys.timezone()))
   rownames(df_versions) <- seq_len(nrow(df_versions))
 
   return(df_versions)

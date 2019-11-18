@@ -141,9 +141,14 @@ get_committed_files <- function(repo, commit = NULL,
   # If Git is available and don't need a specific commit, use `git ls-files`
   if (!is.null(sysgit) && !is.na(sysgit) && nchar(sysgit) > 0 && is.null(commit)) {
     cmd <- sprintf("%s -C %s ls-files", sysgit, shQuote(git2r::workdir(repo)))
-    files <- system(cmd, intern = TRUE)
-    files <- absolute(file.path(git2r::workdir(repo), files))
-    return(files)
+    suppressWarnings(files <- system(cmd, intern = TRUE, ignore.stderr = TRUE))
+    # Using Git is supposed to be a convenient speed increase. If it fails for
+    # any reason (a failure adds an attribute "status"), just continue and use
+    # git2r/libgit2.
+    if (is.null(attr(files, which = "status", exact = TRUE))) {
+      files <- absolute(file.path(git2r::workdir(repo), files))
+      return(files)
+    }
   }
 
   if (is.null(commit)) {

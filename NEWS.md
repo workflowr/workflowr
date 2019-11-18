@@ -23,6 +23,11 @@ minimum required version (idea from @stephens999)
 
 [git2r407]: https://github.com/ropensci/git2r/issues/407
 
+* Fix bug when path includes a space. The bug was introduced in version 1.5.0
+with the feature to use the system Git executable to run `git ls-files`. To fix
+the issue in version 1.5.0, set `options(workflowr.sysgit = "")` in the file
+`.Rprofile` (bug report from @wolfemd, #180)
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

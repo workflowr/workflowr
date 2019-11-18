@@ -131,6 +131,9 @@
 <li><p>Warn user if a dependency does not meet the minimum required version. Unfortunately <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> does not automatically update previously installed packages when installing a new package, even if they violate the minimum required version (idea from <a href='https://github.com/stephens999'>@stephens999</a>)</p></li>
 <li><p>Fix off-by-one date bug by specifying the local timezone (see <a href="https://github.com/ropensci/git2r/issues/407">git2r Issue 407</a>)</p></li>
 </ul>
+<ul>
+<li>Fix bug when path includes a space. The bug was introduced in version 1.5.0 with the feature to use the system Git executable to run <code>git ls-files</code>. To fix the issue in version 1.5.0, set <code><a href="https://rdrr.io/r/base/options.html">options(workflowr.sysgit = "")</a></code> in the file <code>.Rprofile</code> (bug report from <a href='https://github.com/wolfemd'>@wolfemd</a>, <a href='https://github.com/jdblischak/workflowr/issues/180'>#180</a>)</li>
+</ul>
 </div>
 </div>
     <div id="workflowr-1-5-0" class="section level1">

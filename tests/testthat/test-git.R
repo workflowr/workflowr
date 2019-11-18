@@ -85,6 +85,20 @@ test_that("obtain_files_in_commit reports a deleted file", {
   expect_identical(actual, expected)
 })
 
+test_that("get_committed_files can handle a path with spaces", {
+
+  path <- test_setup(path = fs::file_temp(" a path with spaces "))
+  on.exit(test_teardown(path))
+  r <- git2r::repository(path)
+
+  readme <- file.path(path, "README.md")
+
+  expect_true(readme %in% workflowr:::get_committed_files(r))
+  expect_true(readme %in% workflowr:::get_committed_files(r, sysgit = ""))
+})
+
+
+
 # Test check_git_config --------------------------------------------------------
 
 test_that("check_git_config throws an error when user.name and user.email are not set", {

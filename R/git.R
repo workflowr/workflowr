@@ -140,7 +140,7 @@ get_committed_files <- function(repo, commit = NULL,
 
   # If Git is available and don't need a specific commit, use `git ls-files`
   if (!is.null(sysgit) && !is.na(sysgit) && nchar(sysgit) > 0 && is.null(commit)) {
-    cmd <- sprintf("%s -C %s ls-files", sysgit, git2r::workdir(repo))
+    cmd <- sprintf("%s -C '%s' ls-files", sysgit, git2r::workdir(repo))
     files <- system(cmd, intern = TRUE)
     files <- absolute(file.path(git2r::workdir(repo), files))
     return(files)

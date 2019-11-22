@@ -210,6 +210,40 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
   return(outdated)
 }
 
+get_outdated_files_from_blobs <- function(repo, files, outdir = NULL) {
+  if (length(files) == 0) return(files)
+
+  ext <- tools::file_ext(files)
+  if (!all(grepl("[Rr]md", ext)))
+    stop("Only R Markdown files are accepted.")
+  # Corresponding HTML files
+  html <- to_html(files, outdir = outdir)
+  # Remove preceding path if necessary. Has to be relative to .git directory.
+  path_to_git <- paste0(git2r::workdir(repo), "/")
+  files <- stringr::str_replace(files, path_to_git, "")
+  html <- stringr::str_replace(html, path_to_git, "")
+  # For each source file, determine if it has been committed more recently than
+  # its corresponding HTML
+  out_of_date <- logical(length = length(files))
+
+  blobs <- git2r::odb_blobs(repo)
+  blobs$fname <- ifelse(blobs$path == "", blobs$name,
+                        file.path(blobs$path, blobs$name))
+
+  for (i in seq_along(files)) {
+    # Most recent commit time of source and HTML files
+    recent_source <- max(blobs$when[blobs$fname == files[i]])
+    recent_html <- max(blobs$when[blobs$fname == html[i]])
+    if (recent_source >= recent_html) {
+      out_of_date[i] <- TRUE
+    }
+  }
+  outdated <- files[out_of_date]
+  # Prepend path to Git repository
+  outdated <- file.path(path_to_git, outdated)
+  return(outdated)
+}
+
 # Obtain the files updated in a commit
 #
 # Obtain the files updated in a commit, similar to \code{git status --stat}, by

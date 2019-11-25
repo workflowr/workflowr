@@ -227,6 +227,21 @@ test_that("wflow_status detects uncommitted changes in configuration files", {
   expect_true(s_config$wflow_yml) # still true because "deleted" in git status
 })
 
+test_that("wflow_status works if HTML file of published Rmd is deleted", {
+
+  skip_on_cran()
+
+  html_pub <- workflowr:::to_html(rmd_pub, outdir = s$docs)
+  html_pub_tmp <- fs::file_temp(ext = "Rmd")
+  fs::file_move(html_pub, html_pub_tmp)
+  on.exit(fs::file_move(html_pub_tmp, html_pub))
+
+  expect_silent(
+    status <- wflow_status(files = rmd_pub, project = site_dir)
+  )
+  expect_true(status$status$published)
+})
+
 # Warnings and Errors ----------------------------------------------------------
 
 test_that("wflow_status throws error if not in workflowr project.", {

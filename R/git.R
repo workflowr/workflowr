@@ -213,7 +213,7 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
 }
 
 last_commit_time_sysgit <- function(repo, fname) {
-  cmd <- sprintf("git -C %s log -n 1 --date=unix --format=%%ad %s",
+  cmd <- sprintf("git -C %s log -n 1 --date=unix --format=%%ad -- %s",
                  shQuote(git2r::workdir(repo)), shQuote(fname))
   unix_git <- system(cmd, intern = TRUE)
   return(as.numeric(unix_git))

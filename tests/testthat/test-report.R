@@ -4,10 +4,13 @@ context("report")
 
 source("setup.R")
 
+# On some machines, the timezone isn't set. This is likely to be a test
+# environment, and thus can just use UTC.
+timezone <- Sys.timezone()
+if (is.na(timezone) || identical(timezone, "")) timezone <- "Etc/UTC"
+
 # Test get_versions_df ---------------------------------------------------------
 
-# My previous mistake was converting git_time to character first, which stripped
-# it of its timezone information.
 test_that("Conversion of git_time to character string of date is correct", {
 
   path <- fs::file_temp()
@@ -23,7 +26,7 @@ test_that("Conversion of git_time to character string of date is correct", {
 
   expect_identical(
     as.character(Sys.Date()),
-    as.character(as.Date(as.POSIXct(c1$author$when), tz = Sys.timezone()))
+    as.character(as.Date(as.POSIXct(c1$author$when), tz = timezone))
   )
 })
 
@@ -65,8 +68,8 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f1$Author == "Test User"))
   expect_identical(
     versions_f1$Date,
-    as.character(c(as.Date(as.POSIXct(c3$author$when), tz = Sys.timezone()),
-                   as.Date(as.POSIXct(c1$author$when), tz = Sys.timezone())))
+    as.character(c(as.Date(as.POSIXct(c3$author$when), tz = timezone),
+                   as.Date(as.POSIXct(c1$author$when), tz = timezone)))
   )
   expect_identical(versions_f1$Message, c(c3$message, c1$message))
 
@@ -77,8 +80,8 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f2$Author == "Test User"))
   expect_identical(
     versions_f2$Date,
-    as.character(c(as.Date(as.POSIXct(c4$author$when), tz = Sys.timezone()),
-                   as.Date(as.POSIXct(c2$author$when), tz = Sys.timezone())))
+    as.character(c(as.Date(as.POSIXct(c4$author$when), tz = timezone),
+                   as.Date(as.POSIXct(c2$author$when), tz = timezone)))
   )
   expect_identical(versions_f2$Message, c(c4$message, c2$message))
 
@@ -89,10 +92,10 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
   expect_true(all(versions_f1_f2$Author == "Test User"))
   expect_identical(
     versions_f1_f2$Date,
-    as.character(c(as.Date(as.POSIXct(c4$author$when), tz = Sys.timezone()),
-                   as.Date(as.POSIXct(c3$author$when), tz = Sys.timezone()),
-                   as.Date(as.POSIXct(c2$author$when), tz = Sys.timezone()),
-                   as.Date(as.POSIXct(c1$author$when), tz = Sys.timezone())))
+    as.character(c(as.Date(as.POSIXct(c4$author$when), tz = timezone),
+                   as.Date(as.POSIXct(c3$author$when), tz = timezone),
+                   as.Date(as.POSIXct(c2$author$when), tz = timezone),
+                   as.Date(as.POSIXct(c1$author$when), tz = timezone)))
   )
   expect_identical(versions_f1_f2$Message, c(c4$message, c3$message,
                                              c2$message, c1$message))
@@ -105,6 +108,55 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
 
   expect_error(workflowr:::get_versions_df(f1, r),
                "File paths must be relative")
+})
+
+
+test_that("get_versions_df uses Etc/UTC if timezone isn't set", {
+
+  path <- fs::file_temp()
+  fs::dir_create(path)
+  on.exit(test_teardown(path))
+  r <- git2r::init(path)
+  git2r::config(r, user.name = "Test User", user.email = "testing")
+
+  f1 <- file.path(path, "f1.txt")
+
+  cat("line 1\n", file = f1)
+  git2r::add(r, f1)
+  c1 <- git2r::commit(r, "The first commit to f1")
+  Sys.sleep(1)
+
+  cat("line 2\n", file = f1, append = TRUE)
+  git2r::add(r, f1)
+  c2 <- git2r::commit(r, "The second commit to f1")
+
+  versions_null <- workflowr:::get_versions_df("f1.txt", r, timezone = NULL)
+  expect_identical(
+    versions_null$Date,
+    as.character(c(as.Date(as.POSIXct(c2$author$when), tz = "Etc/UTC"),
+                   as.Date(as.POSIXct(c1$author$when), tz = "Etc/UTC")))
+  )
+
+  versions_na <- workflowr:::get_versions_df("f1.txt", r, timezone = NA)
+  expect_identical(
+    versions_na$Date,
+    as.character(c(as.Date(as.POSIXct(c2$author$when), tz = "Etc/UTC"),
+                   as.Date(as.POSIXct(c1$author$when), tz = "Etc/UTC")))
+  )
+
+  versions_nac <- workflowr:::get_versions_df("f1.txt", r, timezone = NA_character_)
+  expect_identical(
+    versions_nac$Date,
+    as.character(c(as.Date(as.POSIXct(c2$author$when), tz = "Etc/UTC"),
+                   as.Date(as.POSIXct(c1$author$when), tz = "Etc/UTC")))
+  )
+
+  versions_empty <- workflowr:::get_versions_df("f1.txt", r, timezone = "")
+  expect_identical(
+    versions_null$Date,
+    as.character(c(as.Date(as.POSIXct(c2$author$when), tz = "Etc/UTC"),
+                   as.Date(as.POSIXct(c1$author$when), tz = "Etc/UTC")))
+  )
 })
 
 # Test get_versions and get_versions_fig ---------------------------------------

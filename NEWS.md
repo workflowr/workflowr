@@ -28,6 +28,9 @@ with the feature to use the system Git executable to run `git ls-files`. To fix
 the issue in version 1.5.0, set `options(workflowr.sysgit = "")` in the file
 `.Rprofile` (bug report from @wolfemd, #180)
 
+* Fix bug caused by an unset timezone. If the machine has no timezone set,
+workflowr will default to Etc/UTC
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

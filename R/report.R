@@ -299,9 +299,11 @@ get_versions_fig <- function(fig, r, github) {
 #
 # files - paths relative to Git repository
 # r - git_repository
+# timezone - timezone to use, e.g. "America/New_York". Defaults to local
+#            timezone. If unset (i.e. is NULL, NA, or ""), defaults to "Etc/UTC".
 #
 # If no past versions, returns empty data frame
-get_versions_df <- function(files, r) {
+get_versions_df <- function(files, r, timezone = Sys.timezone()) {
 
   if (any(fs::is_absolute_path(files)))
     stop("File paths must be relative to Git repository at ",
@@ -332,7 +334,10 @@ get_versions_df <- function(files, r) {
                             Author = author, Date = date,
                             Message = message, stringsAsFactors = FALSE)
   df_versions <- df_versions[order(df_versions$Date, decreasing = TRUE), ]
-  df_versions$Date <- as.character(as.Date(df_versions$Date, tz = Sys.timezone()))
+  if (is.null(timezone) || is.na(timezone) || identical(timezone, "")) {
+    timezone <- "Etc/UTC"
+  }
+  df_versions$Date <- as.character(as.Date(df_versions$Date, tz = timezone))
   rownames(df_versions) <- seq_len(nrow(df_versions))
 
   return(df_versions)

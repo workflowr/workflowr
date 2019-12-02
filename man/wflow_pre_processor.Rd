@@ -4,8 +4,14 @@
 \alias{wflow_pre_processor}
 \title{pre_processor function for workflowr}
 \usage{
-wflow_pre_processor(metadata, input_file, runtime, knit_meta, files_dir,
-  output_dir)
+wflow_pre_processor(
+  metadata,
+  input_file,
+  runtime,
+  knit_meta,
+  files_dir,
+  output_dir
+)
 }
 \arguments{
 \item{metadata}{The metadata specified in the YAML header of the R Markdown
@@ -17,7 +23,7 @@ file}
 
 \item{runtime}{The runtime target for rendering. The \code{static} option
 produces output intended for static files; \code{shiny} produces output
-suitable for use in a Shiny document (see \code{\link{run}}). The default,
+suitable for use in a Shiny document (see \code{\link[rmarkdown]{run}}). The default,
 \code{auto}, allows the \code{runtime} target specified in the YAML metadata
 to take precedence, and renders for a \code{static} runtime target otherwise.}
 

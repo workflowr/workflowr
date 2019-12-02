@@ -4,8 +4,14 @@
 \alias{wflow_rename}
 \title{Rename files and directories}
 \usage{
-wflow_rename(files, to, message = NULL, git = TRUE, dry_run = FALSE,
-  project = ".")
+wflow_rename(
+  files,
+  to,
+  message = NULL,
+  git = TRUE,
+  dry_run = FALSE,
+  project = "."
+)
 }
 \arguments{
 \item{files}{character. Files to be renamed. Supports file

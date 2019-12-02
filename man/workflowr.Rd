@@ -3,7 +3,6 @@
 \docType{package}
 \name{workflowr}
 \alias{workflowr}
-\alias{workflowr-package}
 \title{workflowr: A workflow template for creating a research website}
 \description{
 The workflowr package helps you create a research website using R Markdown

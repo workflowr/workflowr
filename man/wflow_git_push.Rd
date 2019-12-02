@@ -4,9 +4,17 @@
 \alias{wflow_git_push}
 \title{Push files to remote repository}
 \usage{
-wflow_git_push(remote = NULL, branch = NULL, username = NULL,
-  password = NULL, force = FALSE, set_upstream = TRUE,
-  view = getOption("workflowr.view"), dry_run = FALSE, project = ".")
+wflow_git_push(
+  remote = NULL,
+  branch = NULL,
+  username = NULL,
+  password = NULL,
+  force = FALSE,
+  set_upstream = TRUE,
+  view = getOption("workflowr.view"),
+  dry_run = FALSE,
+  project = "."
+)
 }
 \arguments{
 \item{remote}{character (default: NULL). The name of the remote repository.

@@ -4,11 +4,19 @@
 \alias{wflow_quickstart}
 \title{Quickly start a workflowr project}
 \usage{
-wflow_quickstart(files, username, supporting_files = NULL,
-  directory = NULL, change_wd = TRUE, delete_on_error = TRUE,
-  view = getOption("workflowr.view"), git.user.name = NULL,
-  git.user.email = NULL, host = c("github", "gitlab"),
-  create_on_github = NULL)
+wflow_quickstart(
+  files,
+  username,
+  supporting_files = NULL,
+  directory = NULL,
+  change_wd = TRUE,
+  delete_on_error = TRUE,
+  view = getOption("workflowr.view"),
+  git.user.name = NULL,
+  git.user.email = NULL,
+  host = c("github", "gitlab"),
+  create_on_github = NULL
+)
 }
 \arguments{
 \item{files}{character. The R Markdown file(s) to be copied into the

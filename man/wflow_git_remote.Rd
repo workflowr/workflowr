@@ -4,9 +4,16 @@
 \alias{wflow_git_remote}
 \title{Manage remote Git repositories}
 \usage{
-wflow_git_remote(remote = NULL, user = NULL, repo = NULL,
-  protocol = "https", action = "add", domain = "github.com",
-  verbose = TRUE, project = ".")
+wflow_git_remote(
+  remote = NULL,
+  user = NULL,
+  repo = NULL,
+  protocol = "https",
+  action = "add",
+  domain = "github.com",
+  verbose = TRUE,
+  project = "."
+)
 }
 \arguments{
 \item{remote}{character (default: NULL). The name of the remote.}

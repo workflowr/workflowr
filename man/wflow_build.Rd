@@ -4,11 +4,21 @@
 \alias{wflow_build}
 \title{Build the site}
 \usage{
-wflow_build(files = NULL, make = is.null(files), update = FALSE,
-  republish = FALSE, view = getOption("workflowr.view"),
-  clean_fig_files = FALSE, delete_cache = FALSE, seed = 12345,
-  log_dir = NULL, verbose = FALSE, local = FALSE, dry_run = FALSE,
-  project = ".")
+wflow_build(
+  files = NULL,
+  make = is.null(files),
+  update = FALSE,
+  republish = FALSE,
+  view = getOption("workflowr.view"),
+  clean_fig_files = FALSE,
+  delete_cache = FALSE,
+  seed = 12345,
+  log_dir = NULL,
+  verbose = FALSE,
+  local = FALSE,
+  dry_run = FALSE,
+  project = "."
+)
 }
 \arguments{
 \item{files}{character (default: NULL). Files to build. Only allows files in

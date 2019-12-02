@@ -4,9 +4,15 @@
 \alias{wflow_use_github}
 \title{Deploy site with GitHub}
 \usage{
-wflow_use_github(username = NULL, repository = NULL,
-  navbar_link = TRUE, create_on_github = NULL, protocol = "https",
-  domain = "github.com", project = ".")
+wflow_use_github(
+  username = NULL,
+  repository = NULL,
+  navbar_link = TRUE,
+  create_on_github = NULL,
+  protocol = "https",
+  domain = "github.com",
+  project = "."
+)
 }
 \arguments{
 \item{username}{character (default: NULL). The GitHub account associated with

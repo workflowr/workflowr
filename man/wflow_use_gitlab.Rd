@@ -4,9 +4,14 @@
 \alias{wflow_use_gitlab}
 \title{Deploy site with GitLab}
 \usage{
-wflow_use_gitlab(username = NULL, repository = NULL,
-  navbar_link = TRUE, protocol = "https", domain = "gitlab.com",
-  project = ".")
+wflow_use_gitlab(
+  username = NULL,
+  repository = NULL,
+  navbar_link = TRUE,
+  protocol = "https",
+  domain = "gitlab.com",
+  project = "."
+)
 }
 \arguments{
 \item{username}{character (default: NULL). The GitLab account associated with

@@ -4,8 +4,14 @@
 \alias{wflow_git_commit}
 \title{Commit files}
 \usage{
-wflow_git_commit(files = NULL, message = NULL, all = FALSE,
-  force = FALSE, dry_run = FALSE, project = ".")
+wflow_git_commit(
+  files = NULL,
+  message = NULL,
+  all = FALSE,
+  force = FALSE,
+  dry_run = FALSE,
+  project = "."
+)
 }
 \arguments{
 \item{files}{character (default: NULL). Files to be added and committed with

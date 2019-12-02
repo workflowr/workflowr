@@ -4,9 +4,18 @@
 \alias{wflow_start}
 \title{Start a new workflowr project}
 \usage{
-wflow_start(directory, name = NULL, git = TRUE, existing = FALSE,
-  overwrite = FALSE, change_wd = TRUE, disable_remote = FALSE,
-  dry_run = FALSE, user.name = NULL, user.email = NULL)
+wflow_start(
+  directory,
+  name = NULL,
+  git = TRUE,
+  existing = FALSE,
+  overwrite = FALSE,
+  change_wd = TRUE,
+  disable_remote = FALSE,
+  dry_run = FALSE,
+  user.name = NULL,
+  user.email = NULL
+)
 }
 \arguments{
 \item{directory}{character. The directory where the workflowr

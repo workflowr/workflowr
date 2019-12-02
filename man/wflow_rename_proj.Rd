@@ -4,8 +4,16 @@
 \alias{wflow_rename_proj}
 \title{Rename a workflowr project}
 \usage{
-wflow_rename_proj(name, rproj = TRUE, remote = TRUE, navbar = TRUE,
-  readme = TRUE, commit = TRUE, directory = TRUE, project = ".")
+wflow_rename_proj(
+  name,
+  rproj = TRUE,
+  remote = TRUE,
+  navbar = TRUE,
+  readme = TRUE,
+  commit = TRUE,
+  directory = TRUE,
+  project = "."
+)
 }
 \arguments{
 \item{name}{character. The new name for the workflowr project.}

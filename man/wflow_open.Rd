@@ -4,8 +4,7 @@
 \alias{wflow_open}
 \title{Open R Markdown analysis file(s)}
 \usage{
-wflow_open(files, change_wd = TRUE, edit_in_rstudio = TRUE,
-  project = ".")
+wflow_open(files, change_wd = TRUE, edit_in_rstudio = TRUE, project = ".")
 }
 \arguments{
 \item{files}{character. R Markdown file(s) to open. Files must have the

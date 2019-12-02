@@ -4,8 +4,7 @@
 \alias{wflow_remove}
 \title{Remove files}
 \usage{
-wflow_remove(files, message = NULL, git = TRUE, dry_run = FALSE,
-  project = ".")
+wflow_remove(files, message = NULL, git = TRUE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character. Files to be removed. Supports file

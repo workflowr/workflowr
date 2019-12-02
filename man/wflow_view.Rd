@@ -4,8 +4,7 @@
 \alias{wflow_view}
 \title{View research website locally}
 \usage{
-wflow_view(files = NULL, latest = FALSE, dry_run = FALSE,
-  project = ".")
+wflow_view(files = NULL, latest = FALSE, dry_run = FALSE, project = ".")
 }
 \arguments{
 \item{files}{character (default: NULL). Name(s) of the specific file(s) to

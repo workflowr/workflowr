@@ -1,5 +1,11 @@
 # workflowr 1.5.0.9000
 
+* New function `wflow_run()`. It executes the code chunks of an R Markdown file
+in the current R session without affecting any of the website files. This is
+meant to be used while interactively developing an analysis. It does not change
+the working directory or isolate the computation from the current R session.
+This is analogous to the RStudio option "Run all" to run all the code chunks.
+
 * New autosave feature. The workflowr functions `wflow_build()`,
 `wflow_publish()`, and `wflow_status()` will autosave any unsaved files open in
 the RStudio editor pane. This is similar to the behavior of the Knit HTML

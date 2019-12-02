@@ -11,8 +11,10 @@ wflow_run(file = NULL, verbose = TRUE, project = ".")
 Must have file extension Rmd or rmd. If \code{NULL}, the most recently
 modified Rmd file will be executed.}
 
-\item{verbose}{logical (default: \code{TRUE}). Should the lines of code be
-echoed in the R console as they are executed?}
+\item{verbose}{logical (default: \code{TRUE}). Should the lines of code (and
+their output) be echoed in the R console as they are executed? This
+argument is passed directly to the argument \code{echo} of the function
+\code{\link{source}}.}
 
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
@@ -33,11 +35,14 @@ website.
 \examples{
 \dontrun{
 
+# Run the most recently modified Rmd file
 wflow_run()
+# Run a specific Rmd file
 wflow_run("analysis/file.Rmd")
 }
 
 }
 \seealso{
-\code{\link{wflow_build}} with argument \code{local = TRUE}
+\code{\link{wflow_build}} with argument \code{local = TRUE},
+  \code{\link{source}} with argument \code{echo = TRUE}
 }

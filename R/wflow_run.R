@@ -11,18 +11,23 @@
 #' @param file character (default: \code{NULL}). The R Markdown file to execute.
 #' Must have file extension Rmd or rmd. If \code{NULL}, the most recently
 #' modified Rmd file will be executed.
-#' @param verbose logical (default: \code{TRUE}). Should the lines of code be
-#' echoed in the R console as they are executed?
+#' @param verbose logical (default: \code{TRUE}). Should the lines of code (and
+#'   their output) be echoed in the R console as they are executed? This
+#'   argument is passed directly to the argument \code{echo} of the function
+#'   \code{\link{source}}.
 #' @inheritParams wflow_git_commit
 #'
 #' @return Invisibly returns the path to the Rmd file that was executed
 #'
-#' @seealso \code{\link{wflow_build}} with argument \code{local = TRUE}
+#' @seealso \code{\link{wflow_build}} with argument \code{local = TRUE},
+#'   \code{\link{source}} with argument \code{echo = TRUE}
 #'
 #' @examples
 #' \dontrun{
 #'
+#' # Run the most recently modified Rmd file
 #' wflow_run()
+#' # Run a specific Rmd file
 #' wflow_run("analysis/file.Rmd")
 #' }
 #'

@@ -377,6 +377,9 @@ print.wflow_build <- function(x, ...) {
   if (x$republish) cat(" republish: TRUE")
   if (x$clean_fig_files) cat(" clean_fig_files: TRUE")
   if (x$delete_cache) cat(" delete_cache: TRUE")
+  if (x$verbose) cat(" verbose: TRUE")
+  if (x$local) cat(" local: TRUE")
+  if (x$dry_run) cat(" dry_run: TRUE")
   cat("\n\n")
 
   if (length(x$built) == 0) {

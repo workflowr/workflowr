@@ -13,6 +13,7 @@ test_that("wflow_run by default runs the most recently modified file", {
   withr::local_dir(path)
 
   mod <- file.path(path, "analysis", "license.Rmd")
+  Sys.sleep(1.25)
   cat("edit\n", file = mod, append = TRUE)
   observed <- wflow_run(project = path)
   expect_identical(observed, workflowr:::relative(mod))

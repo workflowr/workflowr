@@ -505,3 +505,110 @@ test_that("add_bibliography adds bibliography to files", {
   sinfo_line <- stringr::str_which(bib_dont_add_2_lines, "sessionInfo()")
   expect_true(refs_line < sinfo_line)
 })
+
+# Test add_pagetitle -----------------------------------------------------------
+
+# pandoc2 generates a warning if a file has no title or pagetitle. This error
+# can't be captured in R with utils::capture.output() or sink(). Thus need to
+# run external R process and capture the stderr stream.
+#
+# Input: path to Rmd file
+# Output: character vector of lines sent to stderr
+#
+# Usage:
+# test_pandoc_warning("no-title.Rmd")
+test_pandoc_warning <- function(rmd, output_format = workflowr::wflow_html()) {
+  wrap_render <- function(...) rmarkdown::render(...)
+  file_stderr <- fs::file_temp()
+  on.exit(fs::file_delete(file_stderr))
+  html <- callr::r_safe(wrap_render,
+                        args = list(input = rmd, quiet = TRUE,
+                                    output_format = output_format),
+                        stderr = file_stderr)
+  fs::file_delete(html)
+  lines_stderr <- readLines(file_stderr)
+  return(lines_stderr)
+}
+
+test_that("Rmd file without title does not generate pandoc2 warning", {
+
+  skip_on_cran()
+
+  rmd <- fs::file_temp(ext = "Rmd")
+  on.exit(fs::file_delete(rmd))
+  fs::file_create(rmd)
+  observed <- test_pandoc_warning(rmd)
+  expect_identical(observed, character())
+})
+
+test_that("Rmd file with title defined in pandoc_args does not generate pandoc2 warning", {
+
+  skip_on_cran()
+
+  rmd <- fs::file_temp(ext = "Rmd")
+  on.exit(fs::file_delete(rmd))
+  lines <- c("---",
+             "output:",
+             "  workflowr::wflow_html:",
+             "    pandoc_args: ['--metadata', 'title=something']",
+             "---",
+             "")
+  writeLines(lines, con = rmd)
+  observed <- test_pandoc_warning(rmd, output_format = NULL)
+  expect_identical(observed, character())
+})
+
+test_that("Rmd file with defined title does not generate pandoc2 warning", {
+
+  skip_on_cran()
+
+  rmd <- fs::file_temp(ext = "Rmd")
+  on.exit(fs::file_delete(rmd))
+  lines <- c("---", "title: something", "---", "")
+  writeLines(lines, con = rmd)
+  observed <- test_pandoc_warning(rmd)
+  expect_identical(observed, character())
+})
+
+test_that("Rmd file with defined pagetitle does not generate pandoc2 warning", {
+
+  skip_on_cran()
+
+  rmd <- fs::file_temp(ext = "Rmd")
+  on.exit(fs::file_delete(rmd))
+  lines <- c("---", "pagetitle: something", "---", "")
+  writeLines(lines, con = rmd)
+  observed <- test_pandoc_warning(rmd)
+  expect_identical(observed, character())
+})
+
+test_that("Rmd file with defined title and pagetitle does not generate pandoc2 warning", {
+
+  skip_on_cran()
+
+  rmd <- fs::file_temp(ext = "Rmd")
+  on.exit(fs::file_delete(rmd))
+  lines <- c("---", "title: something", "pagetitle: else", "---", "")
+  writeLines(lines, con = rmd)
+  observed <- test_pandoc_warning(rmd)
+  expect_identical(observed, character())
+})
+
+test_that("add_pagetitle adds metadata pagetitle if missing title", {
+  observed <- workflowr:::add_pagetitle(metadata = list(), input_file = "abc")
+  expected <- c("--metadata", "pagetitle=abc")
+  expect_identical(observed, expected)
+})
+
+test_that("add_pagetitle does not add metadata pagetitle if set in pandoc_args", {
+  metadata <- list(
+    output = list(
+      `workflowr::wflow_html` = list(
+        pandoc_args = c("--metadata", "pagetitle=custom")
+      )
+    )
+  )
+  observed <- workflowr:::add_pagetitle(metadata = metadata, input_file = "abc")
+  expected <- character(0)
+  expect_identical(observed, expected)
+})

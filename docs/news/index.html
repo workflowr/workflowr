@@ -135,6 +135,7 @@
 <ul>
 <li><p>Fix bug when path includes a space. The bug was introduced in version 1.5.0 with the feature to use the system Git executable to run <code>git ls-files</code>. To fix the issue in version 1.5.0, set <code><a href="https://rdrr.io/r/base/options.html">options(workflowr.sysgit = "")</a></code> in the file <code>.Rprofile</code> (bug report from <a href='https://github.com/wolfemd'>@wolfemd</a>, <a href='https://github.com/jdblischak/workflowr/issues/180'>#180</a>)</p></li>
 <li><p>Fix bug caused by an unset timezone. If the machine has no timezone set, workflowr will default to Etc/UTC</p></li>
+<li><p>Handle missing title/pagetitle warning from pandoc 2+ and rmarkdown 1.18+ (see <a href="https://github.com/rstudio/rmarkdown/pull/1355#issuecomment-558817744">rmarkdown Issue 1355</a>)</p></li>
 </ul>
 </div>
 </div>

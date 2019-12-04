@@ -511,20 +511,41 @@ wflow_pre_processor <- function(metadata, input_file, runtime, knit_meta,
   args <- c("--include-before-body", fname_header,
             "--include-after-body", fname_footer)
 
-  # Pandoc 2+ sends a warning if there is no title and uses the filename without
-  # the extension to set the pagetitle (this is the text that is displayed in
-  # the browser tab). I sent a fix upstreamt to rmarkdown, and it was included
-  # in version 1.10. Thus my workflowr-specific fix below should only be
-  # implemented for previous versions of rmarkdown. Otherwise, both rmarkdown
-  # and workflowr set pagetitle via --metadata, and apparently pandoc can't
-  # handle this and sends the warning.
-  #
-  # https://github.com/rstudio/rmarkdown/pull/1355
-  if (is.null(metadata$title) && is.null(metadata$pagetitle) &&
-      utils::packageVersion("rmarkdown") < as.numeric_version("1.10")) {
-    pagetitle <- input_file
-    args <- c(args, "--metadata", paste0("pagetitle=", pagetitle))
+  # Add pagetitle if missing title to avoid pandoc2 error
+  if (rmarkdown::pandoc_available("2.0")) {
+     args <- c(args, add_pagetitle(metadata, input_file))
   }
 
   return(args)
+}
+
+# Add a pagetitle (if needed) to avoid pandoc2 warning about missing title
+add_pagetitle <- function(metadata, input_file) {
+  # Only add pagetitle if all the following conditions are met
+
+  # No title
+  if (!is.null(metadata$title)) return(character(0))
+
+  # No pagetitle
+  if (!is.null(metadata$pagetitle)) return(character(0))
+
+  # rmarkdown version that does not adds pagetitle
+  rmd_version <- utils::packageVersion("rmarkdown")
+  # rmarkdown handles this starting in version 1.10 and ending in version 1.18
+  # https://github.com/rstudio/rmarkdown/pull/1355
+  if (rmd_version >= as.numeric_version("1.10") &&
+      rmd_version <= as.numeric_version("1.17"))
+    return(character(0))
+
+  # No title/pagetitle defined with pandoc_args
+  if (is.list(metadata$output)) {
+      pandoc_args <- metadata$output$`workflowr::wflow_html`$pandoc_args
+  } else {
+    pandoc_args <- NULL
+  }
+  if (!is.null(pandoc_args) && any(stringr::str_detect(pandoc_args, "title")))
+    return(character(0))
+
+  pagetitle <- input_file
+  return(c("--metadata", paste0("pagetitle=", pagetitle)))
 }

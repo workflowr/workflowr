@@ -37,6 +37,11 @@ the issue in version 1.5.0, set `options(workflowr.sysgit = "")` in the file
 * Fix bug caused by an unset timezone. If the machine has no timezone set,
 workflowr will default to Etc/UTC
 
+* Handle missing title/pagetitle warning from pandoc 2+ and rmarkdown 1.18+
+(see [rmarkdown Issue 1355][rmarkdown1355])
+
+[rmarkdown1355]: https://github.com/rstudio/rmarkdown/pull/1355#issuecomment-558817744
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

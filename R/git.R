@@ -184,7 +184,10 @@ ls_files <- function (tree) {
 # repo: git_repository object
 # files: character vector of filenames
 # outdir: directory with website files
-get_outdated_files <- function(repo, files, outdir = NULL) {
+# sysgit: path to system Git executable to run `git log -n 1` to obtain time of
+# last commit
+get_outdated_files <- function(repo, files, outdir = NULL,
+                                sysgit = getOption("workflowr.sysgit", default = "")) {
   if (length(files) == 0) return(files)
 
   ext <- tools::file_ext(files)
@@ -196,20 +199,28 @@ get_outdated_files <- function(repo, files, outdir = NULL) {
   # its corresponding HTML
   out_of_date <- logical(length = length(files))
 
+  # If Git is available, use it to run `git log -n 1`
+  if (!is.null(sysgit) && !is.na(sysgit) && nchar(sysgit) > 0) {
+    last_commit_time <- last_commit_time_sysgit
+  } else {
+    last_commit_time <- last_commit_time_git2r
+  }
+
   for (i in seq_along(files)) {
-    recent_source_time <- last_commit_time_sysgit(repo, files[i])
-    recent_html_time <- last_commit_time_sysgit(repo, html[i])
-    # Most recent commit time of source and HTML files
-    # recent_source <- git2r::commits(repo, n = 1, path = files[i])[[1]]
-    # recent_source_time <- as.POSIXct(recent_source$author$when)
-    # recent_html <- git2r::commits(repo, n = 1, path = html[i])[[1]]
-    # recent_html_time <- as.POSIXct(recent_html$author$when)
+    recent_source_time <- last_commit_time(repo, files[i])
+    recent_html_time <- last_commit_time(repo, html[i])
     if (recent_source_time >= recent_html_time) {
       out_of_date[i] <- TRUE
     }
   }
   outdated <- files[out_of_date]
   return(outdated)
+}
+
+last_commit_time_git2r <- function(repo, fname) {
+  last_commit <- git2r::commits(repo, n = 1, path = fname)[[1]]
+  last_commit_time <- last_commit$author$when$time
+  return(last_commit_time)
 }
 
 last_commit_time_sysgit <- function(repo, fname) {

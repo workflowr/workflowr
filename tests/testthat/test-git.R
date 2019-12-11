@@ -173,7 +173,7 @@ test_that("Git and git2r return same unix time for last commit", {
   r <- git2r::repository(path)
   readme <- workflowr:::absolute(file.path(path, "README.md"))
 
-  result_last_commit_time_sysgit <- workflowr:::last_commit_time_sysgit(r, readme)
+  result_last_commit_time_sysgit <- workflowr:::last_commit_time_sysgit(r, readme, sysgit = sysgit)
   result_last_commit_time_git2r <- workflowr:::last_commit_time_git2r(r, readme)
 
   expect_identical(
@@ -210,7 +210,8 @@ test_that("Git and git2r return same outdated files", {
 
   outdated_sysgit <- workflowr:::get_outdated_files(r,
                                                     files = workflowr:::absolute(rmd),
-                                                    outdir = workflowr:::absolute(p$docs))
+                                                    outdir = workflowr:::absolute(p$docs),
+                                                    sysgit = sysgit)
 
   outdated_git2r <- workflowr:::get_outdated_files(r,
                                                    files = workflowr:::absolute(rmd),

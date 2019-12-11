@@ -207,8 +207,8 @@ get_outdated_files <- function(repo, files, outdir = NULL,
   }
 
   for (i in seq_along(files)) {
-    recent_source_time <- last_commit_time(repo, files[i])
-    recent_html_time <- last_commit_time(repo, html[i])
+    recent_source_time <- last_commit_time(repo, files[i], sysgit = sysgit)
+    recent_html_time <- last_commit_time(repo, html[i], sysgit = sysgit)
     if (recent_source_time >= recent_html_time) {
       out_of_date[i] <- TRUE
     }
@@ -217,15 +217,15 @@ get_outdated_files <- function(repo, files, outdir = NULL,
   return(outdated)
 }
 
-last_commit_time_git2r <- function(repo, fname) {
+last_commit_time_git2r <- function(repo, fname, ...) {
   last_commit <- git2r::commits(repo, n = 1, path = fname)[[1]]
   last_commit_time <- last_commit$author$when$time
   return(last_commit_time)
 }
 
-last_commit_time_sysgit <- function(repo, fname) {
-  cmd <- sprintf("git -C %s log -n 1 --date=unix --format=%%ad -- %s",
-                 shQuote(git2r::workdir(repo)), shQuote(fname))
+last_commit_time_sysgit <- function(repo, fname, sysgit, ...) {
+  cmd <- sprintf("%s -C %s log -n 1 --date=unix --format=%%ad -- %s",
+                 sysgit, shQuote(git2r::workdir(repo)), shQuote(fname))
   unix_git <- system(cmd, intern = TRUE)
   return(as.numeric(unix_git))
 }

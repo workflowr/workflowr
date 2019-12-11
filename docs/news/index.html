@@ -138,7 +138,8 @@
 <li><p>Handle missing title/pagetitle warning from pandoc 2+ and rmarkdown 1.18+ (see <a href="https://github.com/rstudio/rmarkdown/pull/1355#issuecomment-558817744">rmarkdown Issue 1355</a>)</p></li>
 </ul>
 <ul>
-<li>Improve speed of <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> by using the system Git executable (if available) to obtain the last commit time of the analysis files (this is used to determine which published Rmd files are outdated and need to be republished)</li>
+<li><p>Improve speed of <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> by using the system Git executable (if available) to obtain the last commit time of the analysis files (this is used to determine which published Rmd files are outdated and need to be republished)</p></li>
+<li><p>Report exact command to run <code>git push</code> or <code>git pull</code> in the terminal if either <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fail (reported by <a href='https://github.com/jennysjaarda'>@jennysjaarda</a>, <a href='https://github.com/jdblischak/workflowr/issues/182'>#182</a>)</p></li>
 </ul>
 </div>
 </div>

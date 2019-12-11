@@ -192,6 +192,14 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
       }
     }
 
+    git_alternative <- glue::glue("
+      Alternatively, if you have Git installed on your machine, the easiest
+      solution is to instead run `git push` in the terminal. This is
+      equivalent to wflow_git_push(). Specifically, copy-paste the following
+      in the terminal:
+
+      git push -u {remote} {branch}
+      ")
     tryCatch(git2r::push(r, name = remote,
                          refspec = paste0("refs/heads/", branch),
                          force = force, credentials = credentials),
@@ -200,18 +208,18 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                    stringr::str_detect(e$message, "unsupported URL protocol")) {
                  reason <-
                    "workflowr was unable to use your SSH keys because your
-                   computer does not have the required software installed. For
-                   a quick fix, run `git push` in the Terminal instead. If you
-                   want to be able to push directly from R, re-install the
+                   computer does not have the required software installed. If
+                   you want to be able to push directly from R, re-install the
                    package git2r and follow its advice for how to enable SSH
                    for your operating system."
+                 reason <- c(reason, "\n\n", git_alternative)
                } else if (protocol == "ssh" &&
                           stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
                  reason <-
                    "workflowr was unable to use your SSH keys because it has a
                    passphrase. You'll need to activate ssh-agent and add your
-                   keys. Alternatively, run `git push` in the Terminal
-                   instead."
+                   keys."
+                 reason <- c(reason, "\n\n", git_alternative)
                } else if (stringr::str_detect(e$message, "remote contains commits that are not present locally")) {
                  reason <-
                    "workflowr was unable to push because the remote repository
@@ -223,10 +231,10 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                              "\n\nThe error message from git2r::push() was:\n\n",
                              e$message,
                              "\n\nThese sorts of errors are difficult to
-                             troubleshoot. If you have Git installed on your
-                             machine, the easiest solution is to instead run
-                             `git push` in the Terminal. This is equivalent to
-                             wflow_git_push().")
+                             troubleshoot. You can search for similar errors
+                             on the git2r GitHub repository for advice on how
+                             to fix it.")
+                 reason <- c(reason, "\n\n", git_alternative)
                }
                stop(wrap(reason), call. = FALSE)
              }

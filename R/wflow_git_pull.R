@@ -165,6 +165,14 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
 
   # Do the pull in 2 steps: fetch+merge, b/c git2r::pull only allows pulling
   # from the tracked branch.
+  git_alternative <- glue::glue("
+    Alternatively, if you have Git installed on your machine, the easiest
+    solution is to instead run `git pull` in the terminal. This is equivalent
+    to wflow_git_pull(). Specifically, copy-paste the following in the
+    terminal:
+
+    git pull {remote} {branch}
+    ")
   if (!dry_run) {
     tryCatch(git2r::fetch(r, name = remote,
                           refspec = paste0("refs/heads/", branch),
@@ -174,27 +182,27 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
                    stringr::str_detect(e$message, "unsupported URL protocol")) {
                  reason <-
                    "workflowr was unable to use your SSH keys because your
-                   computer does not have the required software installed. For
-                   a quick fix, run `git pull` in the Terminal instead. If you
-                   want to be able to pull directly from R, re-install the
+                   computer does not have the required software installed. If
+                   you want to be able to pull directly from R, re-install the
                    package git2r and follow its advice for how to enable SSH
                    for your operating system."
+                 reason <- c(reason, "\n\n", git_alternative)
                } else if (protocol == "ssh" &&
                           stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
                  reason <-
                    "workflowr was unable to use your SSH keys because it has a
                    passphrase. You'll need to activate ssh-agent and add your
-                   keys. Alternatively, run `git pull` in the Terminal
-                   instead."
+                   keys."
+                 reason <- c(reason, "\n\n", git_alternative)
                } else {
                  reason <- c("Pull failed for unknown reason.",
                              "\n\nThe error message from git2r::pull() was:\n\n",
                              e$message,
                              "\n\nThese sorts of errors are difficult to
-                             troubleshoot. If you have Git installed on your
-                             machine, the easiest solution is to instead run
-                             `git pull` in the Terminal. This is equivalent to
-                             wflow_git_pull().")
+                             troubleshoot. You can search for similar errors
+                             on the git2r GitHub repository for advice on how
+                             to fix it.")
+                 reason <- c(reason, "\n\n", git_alternative)
                }
                stop(wrap(reason), call. = FALSE)
              }

@@ -42,6 +42,11 @@ workflowr will default to Etc/UTC
 
 [rmarkdown1355]: https://github.com/rstudio/rmarkdown/pull/1355#issuecomment-558817744
 
+* Improve speed of `wflow_publish()`/`wflow_status()` by using the system Git
+executable (if available) to obtain the last commit time of the analysis files
+(this is used to determine which published Rmd files are outdated and need to be
+republished)
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

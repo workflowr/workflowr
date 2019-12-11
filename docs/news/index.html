@@ -137,6 +137,9 @@
 <li><p>Fix bug caused by an unset timezone. If the machine has no timezone set, workflowr will default to Etc/UTC</p></li>
 <li><p>Handle missing title/pagetitle warning from pandoc 2+ and rmarkdown 1.18+ (see <a href="https://github.com/rstudio/rmarkdown/pull/1355#issuecomment-558817744">rmarkdown Issue 1355</a>)</p></li>
 </ul>
+<ul>
+<li>Improve speed of <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> by using the system Git executable (if available) to obtain the last commit time of the analysis files (this is used to determine which published Rmd files are outdated and need to be republished)</li>
+</ul>
 </div>
 </div>
     <div id="workflowr-1-5-0" class="section level1">

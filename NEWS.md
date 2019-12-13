@@ -50,6 +50,9 @@ republished)
 * Report exact command to run `git push` or `git pull` in the terminal if either
 `wflow_git_push()` or `wflow_git_pull()` fail (reported by @jennysjaarda, #182)
 
+* Update FAQ to include how to create a PDF using the RStudio Knit button
+(reported by @han16)
+
 # workflowr 1.5.0
 
 This minor release of workflowr includes a new function, the introduction of

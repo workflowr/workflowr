@@ -328,6 +328,18 @@ since they are not being distributed with the single file.
 converted to PDF. You'll need to ensure that you have LaTeX installed on your
 computer and avoid complicated characters and/or syntax.
 
+If you'd like to use the RStudio button "Knit to PDF", then you need to make
+sure that the YAML header still contains the workflowr output format. For
+example, the YAML header below contains a valid output section:
+
+```
+---
+output:
+  pdf_document: default
+  workflowr::wflow_html: default
+---
+```
+
 ## Can I use R notebooks with workflowr?
 
 Yes! You can use RStudio's notebook features while you interactively develop

@@ -1,0 +1,141 @@
+---
+title: "Using large data files with workflowr"
+subtitle: "workflowr version `r utils::packageVersion('workflowr')`"
+author: "John Blischak"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 2
+  rmarkdown::pdf_document: default
+vignette: >
+  %\VignetteIndexEntry{Using large data files with workflowr}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, fig.align = "center")
+```
+
+## Introduction
+
+Workflowr provides many features to track the progress of your data analysis
+project and make it easier to reproduce both the current version as well as
+previous versions of the project. However, this is only possible if the data
+files from previous versions can also be restored. In other words, even if you
+can obtain the code from six months ago, if you can't obtain the data from six
+months ago, you won't be able to reproduce your previous analysis.
+
+Unfortunately, if you have large data files, you can't simply commit them to the
+Git repository along with the code. The max file size able to be pushed to
+GitHub is [100 MB][100mb], and this is in general a good practice to follow no matter
+what Git hosting service you are using. Large files will make each push and pull
+take much longer and increase the risk of the download timing out. This vignette
+discusses various strategies for versioning your large data files.
+
+[100mb]: https://help.github.com/en/github/managing-large-files/conditions-for-large-files
+
+## Option 0: Reconsider versioning your large data files
+
+Before considering any of the options below, you need to reconsider if this is
+even necessary for your project. And if it is, which data files need to be
+versioned. Specifically, large raw data files that are never modified do not
+need to be versioned. Instead, you could follow these steps:
+
+1. Upload the files to an online data repository, a private FTP server, etc.
+1. Add a script to your workflowr project that can download all the files
+1. Include the instructions in your README and your workflowr website that
+explain how to download the files
+
+For example, an [RNA sequencing][rna-seq] project will produce [FASTQ][fastq]
+files that are large and won't be modified. Instead of committing these files to
+the Git repository, they should instead be uploaded to [GEO][geo]/[SRA][sra].
+
+[fastq]: https://en.wikipedia.org/wiki/FASTQ_format
+[geo]: https://www.ncbi.nlm.nih.gov/geo/
+[rna-seq]: https://en.wikipedia.org/wiki/RNA-Seq
+[sra]: https://www.ncbi.nlm.nih.gov/sra
+
+## Option 1: Record metadata
+
+If your large data files are modified throughout the project, one option would
+be to record metadata about the data files, save it in a plain text file, and
+then commit the plain text file to the Git repository. For example, you could
+record the modification date, file size, [MD5 checksum][md5], number of rows, number of
+columns, column means, etc.
+
+[md5]: https://en.wikipedia.org/wiki/MD5
+
+For example, if your data file contains observational measurements from a remote
+sensor, you could record the date of the last observation and commit this
+information. Then if you need to reproduce an analysis from six months ago, you
+could recreate the previous version of the data file by filtering on the date
+column.
+
+## Option 2: Use Git LFS (Large File Storage)
+
+If you are comfortable using Git in the terminal, a good option is [Git LFS][lfs]. It is
+an extension to Git that adds extra functionality to the standard Git commands.
+Thus it is completely compatible with workflowr.
+
+Instead of committing the large file to the Git repository, it instead commits a
+plain text file containing a unique hash. It then uploads the large file to a
+remote server. If you checkout a previous version of the code, it will use the
+unique hash in the file to download the previous version of the large data file
+from the server.
+
+Git LFS is [integrated into GitHub][bandwidth]. However, a free account is only allotted 1 GB
+of free storage and 1 GB a month of free bandwidth. Thus you may have to upgrade
+to a paid GitHub account if you need to version lots of large data files.
+
+See the [Git LFS][lfs] website to download the software and set it up to track your
+large data files.
+
+Note that for workflowr you can't use Git LFS with any of the website files in
+`docs/`. [GitHub Pages][gh-pages] serves the website using the exact versions of the files in that
+directory on GitHub. In other words, it won't pull the large data files from the
+LFS server. Therefore everything will look fine on your local machine, but break
+once pushed to GitHub.
+
+As an example of a workflowr project that uses Git LFS, see the GitHub
+repository [singlecell-qtl][scqtl]. Note that the large data files, e.g.
+[`data/eset/02192018.rds`][eset] , contain the phrase "Stored with Git LFS ". If
+you download the repository with `git clone`, the large data files will only
+contain the unique hashes. See the [contributing instructions][contributing] for
+how to use Git LFS to download the latest version of the large data files.
+
+[bandwidth]: https://help.github.com/en/github/managing-large-files/about-storage-and-bandwidth-usage
+[contributing]: https://jdblischak.github.io/singlecell-qtl/contributing.html
+[eset]: https://github.com/jdblischak/singlecell-qtl/blob/master/data/eset/02192018.rds
+[gh-pages]: https://pages.github.com/
+[lfs]: https://git-lfs.github.com/
+[scqtl]: https://github.com/jdblischak/singlecell-qtl
+
+## Option 3: Use piggyback
+
+An alternative option to Git LFS is the R package [piggyback][]. Its main advantages
+are that it doesn't require paying to upgrade your GitHub account or configuring
+Git. Instead, it uses R functions to upload large data files to [releases][] on
+your GitHub repository. The main disadvantage, especially for workflowr, is that
+it isn't integrated with Git. Therefore you will have to manually version the
+large data files by uploading them via piggyback, and recording the release
+version in a file in the workflowr project. This option is recommended if you
+anticipate substantial, but infrequent, changes to your large data files.
+
+[piggyback]: https://cran.r-project.org/package=piggyback
+[releases]: https://help.github.com/en/github/administering-a-repository/about-releases
+
+## Option 4: Use a database
+
+Importing large amounts of data into an R session can drastically degrade R's
+performance or even cause it to crash. If you have a large amount of data stored
+in one or more tabular files, but only need to access a subset at a time, you
+should consider converting your large data files into a single database. Then
+you can query the database from R to obtain a given subset of the data needed
+for a particular analysis. Not only is this memory efficient, but you will
+benefit from the improved organization of your project's data. See the CRAN
+Task View on [Databases][ctv-databases] for resources for interacting with
+databases with R.
+
+[ctv-databases]: https://cran.r-project.org/view=Databases

@@ -33,6 +33,7 @@ articles:
     - "`wflow-07-common-code`"
     - "`wflow-08-deploy`"
     - "`wflow-09-workshop`"
+    - "`wflow-10-data`"
 
 reference:
   - title: "Main functions"
@@ -60,6 +61,7 @@ reference:
       - wflow_remove
       - wflow_rename
       - wflow_rename_proj
+      - wflow_run
       - wflow_site
       - wflow_toc
       - wflow_update

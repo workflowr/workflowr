@@ -12,6 +12,11 @@ the RStudio editor pane. This is similar to the behavior of the Knit HTML
 button. This feature can be disabled by setting the package option
 `workflowr.autosave` to `FALSE` (idea from @xiangzhu in #179)
 
+* New [vignette][vig-data] on using large data files in a workflowr project
+(motivated by @xiangzhu, #183)
+
+[vig-data]: wflow-10-data.html
+
 ## Minor improvements and bug fixes
 
 * Warn user if only HTML file has been committed (and avoid throwing an error).

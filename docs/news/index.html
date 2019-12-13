@@ -116,13 +116,14 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="workflowr-1-5-0-9000" class="section level1">
+    <div id="workflowr-1509000" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-5-0-9000" class="anchor"></a>workflowr 1.5.0.9000<small> Unreleased </small>
+<a href="#workflowr-1509000" class="anchor"></a>workflowr 1.5.0.9000<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>New function <code><a href="../reference/wflow_run.html">wflow_run()</a></code>. It executes the code chunks of an R Markdown file in the current R session without affecting any of the website files. This is meant to be used while interactively developing an analysis. It does not change the working directory or isolate the computation from the current R session. This is analogous to the RStudio option “Run all” to run all the code chunks.</p></li>
 <li><p>New autosave feature. The workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>, and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> will autosave any unsaved files open in the RStudio editor pane. This is similar to the behavior of the Knit HTML button. This feature can be disabled by setting the package option <code>workflowr.autosave</code> to <code>FALSE</code> (idea from <a href='https://github.com/xiangzhu'>@xiangzhu</a> in <a href='https://github.com/jdblischak/workflowr/issues/179'>#179</a>)</p></li>
+<li><p>New <a href="wflow-10-data.html">vignette</a> on using large data files in a workflowr project (motivated by <a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/183'>#183</a>)</p></li>
 </ul>
 <div id="minor-improvements-and-bug-fixes" class="section level2">
 <h2 class="hasAnchor">
@@ -140,12 +141,13 @@
 <ul>
 <li><p>Improve speed of <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> by using the system Git executable (if available) to obtain the last commit time of the analysis files (this is used to determine which published Rmd files are outdated and need to be republished)</p></li>
 <li><p>Report exact command to run <code>git push</code> or <code>git pull</code> in the terminal if either <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fail (reported by <a href='https://github.com/jennysjaarda'>@jennysjaarda</a>, <a href='https://github.com/jdblischak/workflowr/issues/182'>#182</a>)</p></li>
+<li><p>Update FAQ to include how to create a PDF using the RStudio Knit button (reported by <a href='https://github.com/han16'>@han16</a>)</p></li>
 </ul>
 </div>
 </div>
-    <div id="workflowr-1-5-0" class="section level1">
+    <div id="workflowr-150" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-5-0" class="anchor"></a>workflowr 1.5.0<small> 2019-11-01 </small>
+<a href="#workflowr-150" class="anchor"></a>workflowr 1.5.0<small> 2019-11-01 </small>
 </h1>
 <p>This minor release of workflowr includes a new function, the introduction of options to control package-wide function behavior, the ability to suppress the workflowr report from the HTML file, a new vignette for teaching workflowr, and lots of error handling improvements.</p>
 <div id="new-function-wflow_quickstart" class="section level2">
@@ -209,9 +211,9 @@
 </ul>
 </div>
 </div>
-    <div id="workflowr-1-4-0" class="section level1">
+    <div id="workflowr-140" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-4-0" class="anchor"></a>workflowr 1.4.0<small> 2019-06-08 </small>
+<a href="#workflowr-140" class="anchor"></a>workflowr 1.4.0<small> 2019-06-08 </small>
 </h1>
 <p>This minor release of workflowr features further GitHub integration, a new reproducibility check, and various improvements and bug fixes.</p>
 <div id="new-features" class="section level2">
@@ -240,9 +242,9 @@
 </ul>
 </div>
 </div>
-    <div id="workflowr-1-3-0" class="section level1">
+    <div id="workflowr-130" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-3-0" class="anchor"></a>workflowr 1.3.0<small> 2019-04-15 </small>
+<a href="#workflowr-130" class="anchor"></a>workflowr 1.3.0<small> 2019-04-15 </small>
 </h1>
 <p>This minor release of workflowr introduces two new functions, RStudio Addins, and various minor improvements.</p>
 <div id="new-functions" class="section level2">
@@ -285,9 +287,9 @@
 </ul>
 </div>
 </div>
-    <div id="workflowr-1-2-0" class="section level1">
+    <div id="workflowr-120" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-2-0" class="anchor"></a>workflowr 1.2.0<small> 2019-02-14 </small>
+<a href="#workflowr-120" class="anchor"></a>workflowr 1.2.0<small> 2019-02-14 </small>
 </h1>
 <p>This release overhauls the layout of the reproducibility report, adds support for GitLab, introduces some safety checks and warnings related to caching, provides more documentation, and more.</p>
 <div id="full-support-for-gitlab" class="section level2">
@@ -296,7 +298,7 @@
 <p>While it has always been possible to host workflowr projects using platforms other than GitHub, it was less convenient and not all the features were supported. With this release, a workflowr project hosted on GitLab has all the same features as a workflowr project hosted on GitHub, including links to past versions of the R Markdown, HTML, and figure files. It’s also possible to use workflowr with GitHub Enterprise or a custom GitLab instance, but you’ll have to coordinate with your administrators to make sure it’s possible to host the website.</p>
 <ul>
 <li>Create vignette “Hosting workflowr websites using GitLab” (written with <a href='https://github.com/lazappi'>@lazappi</a>, <a href='https://github.com/jdblischak/workflowr/issues/112'>#112</a>)</li>
-<li>Add argument <code>domain</code> to <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code> to allow specifying any remote Git host, e.g. <code>domain = "gitlab.com"</code>
+<li>Add argument <code>domain</code> to <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code> to allow specifying any remote Git host, e.g. <code>domain = "gitlab.com"</code>
 </li>
 <li>Create function <code><a href="../reference/wflow_use_gitlab.html">wflow_use_gitlab()</a></code> to automate GitLab setup</li>
 </ul>
@@ -365,15 +367,15 @@
 </ul>
 </div>
 </div>
-    <div id="workflowr-1-1-1" class="section level1">
+    <div id="workflowr-111" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-1-1" class="anchor"></a>workflowr 1.1.1<small> 2018-07-06 </small>
+<a href="#workflowr-111" class="anchor"></a>workflowr 1.1.1<small> 2018-07-06 </small>
 </h1>
 <p>Fix unit test on CRAN Windows servers.</p>
 </div>
-    <div id="workflowr-1-1-0" class="section level1">
+    <div id="workflowr-110" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-1-0" class="anchor"></a>workflowr 1.1.0<small> 2018-07-04 </small>
+<a href="#workflowr-110" class="anchor"></a>workflowr 1.1.0<small> 2018-07-04 </small>
 </h1>
 <p>workflowr 1.1.0 is a maintenance release. It includes some minor new features, improved error handling, and bug fixes. Critically, it makes workflowr compatible with the latest release of <a href="https://cran.r-project.org/package=git2r">git2r</a>.</p>
 <p>The most noticeable changes are 1) <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> are now much faster, especially if your project has many R Markdown files and/or many Git commits, 2) the rmarkdown package is no longer loaded automatically when you load workflowr, and 3) the new function <code><a href="../reference/wflow_open.html">wflow_open()</a></code> (based on a previous version in <a href="https://github.com/jdblischak/workflowrBeta">workflowrBeta</a>) to open new or existing R Markdown files.</p>
@@ -425,18 +427,18 @@
 </ul>
 </div>
 </div>
-    <div id="workflowr-1-0-1" class="section level1">
+    <div id="workflowr-101" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-0-1" class="anchor"></a>workflowr 1.0.1<small> 2018-04-23 </small>
+<a href="#workflowr-101" class="anchor"></a>workflowr 1.0.1<small> 2018-04-23 </small>
 </h1>
 <p>Various minor changes to documentation, tests, and package infrastructure to prepare for CRAN submission.</p>
 </div>
-    <div id="workflowr-1-0-0" class="section level1">
+    <div id="workflowr-100" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-0-0" class="anchor"></a>workflowr 1.0.0<small> Unreleased </small>
+<a href="#workflowr-100" class="anchor"></a>workflowr 1.0.0<small> Unreleased </small>
 </h1>
 <p>The 1.0.0 release is a major change. Instead of relying on the external code chunks in <code>chunks.R</code> to implement the reproducibility features, workflowr 1.0.0 replaces <code>chunks.R</code> with the output format <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code>. This enables a much more informative reproducibility report to be created.</p>
-<pre><code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html"># Install from GitHub
+<pre><code><a href="https://rdrr.io/pkg/devtools/man/reexports.html"># Install from GitHub
 devtools::install_github("jdblischak/workflowr")
 
 # Start a new project to test out the new features
@@ -477,33 +479,33 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-11-0" class="section level1">
+    <div id="workflowr-0110" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-11-0" class="anchor"></a>workflowr 0.11.0<small> Unreleased </small>
+<a href="#workflowr-0110" class="anchor"></a>workflowr 0.11.0<small> Unreleased </small>
 </h1>
 <ul>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> now views the website by default if run interactively (<code>view = interactive()</code>) just like <code><a href="../reference/wflow_build.html">wflow_build()</a></code></p></li>
-<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
+<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://rdrr.io/pkg/devtools/man/reexports.html">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
 <li><p>Fix minor bug that affected the error message produced for a failed push or pull using the SSH protocol</p></li>
 <li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code><a href="https://docs.ropensci.org/git2r/reference/push.html">git2r::push()</a></code> or <code><a href="https://docs.ropensci.org/git2r/reference/pull.html">git2r::pull()</a></code> is reported to facilitate troubleshooting</p></li>
 <li><p>Multiple other internal changes to make workflowr more robust</p></li>
 </ul>
 </div>
-    <div id="workflowr-0-10-2" class="section level1">
+    <div id="workflowr-0102" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-10-2" class="anchor"></a>workflowr 0.10.2<small> Unreleased </small>
+<a href="#workflowr-0102" class="anchor"></a>workflowr 0.10.2<small> Unreleased </small>
 </h1>
 <p>Fix bug that caused <code><a href="../reference/wflow_status.html">wflow_status()</a></code> (and thus <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>) to ignore R Markdown files with the all lowercase file extension <code>.rmd</code> (reported by <a href='https://github.com/LSun'>@LSun</a> and <a href='https://github.com/pcarbo'>@pcarbo</a>). This was recently introduced in commit <a href="https://github.com/jdblischak/workflowr/commit/a8ce711de4ea2939bf76f2c2403c1d631ec130b0#diff-08716e76a3c9aeb6ad641bb23e5e5ea6R126">a8ce711</a>, so it only affected versions 0.10.0 and 0.10.1.</p>
 </div>
-    <div id="workflowr-0-10-1" class="section level1">
+    <div id="workflowr-0101" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-10-1" class="anchor"></a>workflowr 0.10.1<small> Unreleased </small>
+<a href="#workflowr-0101" class="anchor"></a>workflowr 0.10.1<small> Unreleased </small>
 </h1>
 <p>Fix bug that prevented deleted files from being committed with <code>wflow_commit()</code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> (reported by <a href='https://github.com/pcarbo'>@pcarbo</a>)</p>
 </div>
-    <div id="workflowr-0-10-0" class="section level1">
+    <div id="workflowr-0100" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-10-0" class="anchor"></a>workflowr 0.10.0<small> Unreleased </small>
+<a href="#workflowr-0100" class="anchor"></a>workflowr 0.10.0<small> Unreleased </small>
 </h1>
 <div id="integration-with-rstudio-viewer" class="section level2">
 <h2 class="hasAnchor">
@@ -530,9 +532,9 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-9-0" class="section level1">
+    <div id="workflowr-090" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-9-0" class="anchor"></a>workflowr 0.9.0<small> Unreleased </small>
+<a href="#workflowr-090" class="anchor"></a>workflowr 0.9.0<small> Unreleased </small>
 </h1>
 <div id="new-rstudio-project-template" class="section level2">
 <h2 class="hasAnchor">
@@ -566,9 +568,9 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-8-0" class="section level1">
+    <div id="workflowr-080" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-8-0" class="anchor"></a>workflowr 0.8.0<small> Unreleased </small>
+<a href="#workflowr-080" class="anchor"></a>workflowr 0.8.0<small> Unreleased </small>
 </h1>
 <div id="git-installation-is-now-optional" class="section level2">
 <h2 class="hasAnchor">
@@ -598,9 +600,9 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-7-0" class="section level1">
+    <div id="workflowr-070" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-7-0" class="anchor"></a>workflowr 0.7.0<small> Unreleased </small>
+<a href="#workflowr-070" class="anchor"></a>workflowr 0.7.0<small> Unreleased </small>
 </h1>
 <div id="wflow_build" class="section level2">
 <h2 class="hasAnchor">
@@ -609,7 +611,7 @@ wflow_update()</a></code></pre>
 <li>
 <code><a href="../reference/wflow_build.html">wflow_build()</a></code> automatically opens the website after building files, thus it’s not necessary to always run <code><a href="../reference/wflow_view.html">wflow_view()</a></code> manually afterwards. If one file is built, then that file is opened. If more than one file is built, then the index page is opened. (<a href='https://github.com/jdblischak/workflowr/issues/41'>#41</a>)</li>
 <li>
-<code><a href="../reference/wflow_build.html">wflow_build()</a></code> adds objects to the global environment when building files locally in the R console (i.e. <code>local = TRUE</code>) (<a href='https://github.com/jdblischak/workflowr/issues/53'>#53</a>)</li>
+<code><a href="../reference/wflow_build.html">wflow_build()</a></code> adds objects to the global environment when building files locally in the R console (i.e. <code>local = TRUE</code>) (<a href='https://github.com/jdblischak/workflowr/issues/53'>#53</a>)</li>
 </ul>
 </div>
 <div id="miscellaneous-4" class="section level2">
@@ -621,16 +623,16 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-6-0" class="section level1">
+    <div id="workflowr-060" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-6-0" class="anchor"></a>workflowr 0.6.0<small> Unreleased </small>
+<a href="#workflowr-060" class="anchor"></a>workflowr 0.6.0<small> Unreleased </small>
 </h1>
 <div id="new-function-wflow_remove" class="section level2">
 <h2 class="hasAnchor">
 <a href="#new-function-wflow_remove" class="anchor"></a>New function wflow_remove</h2>
 <ul>
 <li>
-<code><a href="../reference/wflow_remove.html">wflow_remove()</a></code> removes R Markdown files and all their associated files ( e.g. HTML and figures)</li>
+<code><a href="../reference/wflow_remove.html">wflow_remove()</a></code> removes R Markdown files and all their associated files (e.g. HTML and figures)</li>
 <li>If the files to be removed had been committed to the Git repository, the files are also removed from the Git repository (analogous to <code>git rm</code>)</li>
 <li>
 <code><a href="../reference/wflow_remove.html">wflow_remove()</a></code> also works on non-Rmd files</li>
@@ -655,15 +657,15 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-5-1" class="section level1">
+    <div id="workflowr-051" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-5-1" class="anchor"></a>workflowr 0.5.1<small> Unreleased </small>
+<a href="#workflowr-051" class="anchor"></a>workflowr 0.5.1<small> Unreleased </small>
 </h1>
 <p>This minor release fixes a bug in how filepaths are resolved so that workflowr can run on Windows.</p>
 </div>
-    <div id="workflowr-0-5-0" class="section level1">
+    <div id="workflowr-050" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-5-0" class="anchor"></a>workflowr 0.5.0<small> Unreleased </small>
+<a href="#workflowr-050" class="anchor"></a>workflowr 0.5.0<small> Unreleased </small>
 </h1>
 <p>This release changes the interface of some of the main workflowr functions. The functions <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> are introduced, and the previous functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> and <code>wflow_commit()</code> are re-designed.</p>
 <div id="wflow_status" class="section level2">
@@ -722,9 +724,9 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-4-0" class="section level1">
+    <div id="workflowr-040" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-4-0" class="anchor"></a>workflowr 0.4.0<small> Unreleased </small>
+<a href="#workflowr-040" class="anchor"></a>workflowr 0.4.0<small> Unreleased </small>
 </h1>
 <div id="wflow_start" class="section level2">
 <h2 class="hasAnchor">
@@ -784,9 +786,9 @@ wflow_update()</a></code></pre>
 </ul>
 </div>
 </div>
-    <div id="workflowr-0-3-0" class="section level1">
+    <div id="workflowr-030" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-3-0" class="anchor"></a>workflowr 0.3.0<small> Unreleased </small>
+<a href="#workflowr-030" class="anchor"></a>workflowr 0.3.0<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>Second alpha release. Major API overhaul.</p></li>
@@ -796,18 +798,18 @@ wflow_update()</a></code></pre>
 <li><p>Both <code>wflow_build</code> and <code>wflow_commit</code> have the argument <code>all</code> to optionally build all the HTML files</p></li>
 </ul>
 </div>
-    <div id="workflowr-0-2-0" class="section level1">
+    <div id="workflowr-020" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-2-0" class="anchor"></a>workflowr 0.2.0<small> Unreleased </small>
+<a href="#workflowr-020" class="anchor"></a>workflowr 0.2.0<small> Unreleased </small>
 </h1>
 <ul>
 <li><p>First alpha release. Contains enough functions to create workflowr project from scratch.</p></li>
 <li><p>Main functions: <code>start_project</code>, <code>open_rmd</code>, <code>build_site</code>, <code>commit_site</code>, <code>create_results</code></p></li>
 </ul>
 </div>
-    <div id="workflowr-0-1-0" class="section level1">
+    <div id="workflowr-010" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-0-1-0" class="anchor"></a>workflowr 0.1.0<small> Unreleased </small>
+<a href="#workflowr-010" class="anchor"></a>workflowr 0.1.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>Initial demonstration of idea.</li>
@@ -819,29 +821,29 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-1-5-0-9000">1.5.0.9000</a></li>
-        <li><a href="#workflowr-1-5-0">1.5.0</a></li>
-        <li><a href="#workflowr-1-4-0">1.4.0</a></li>
-        <li><a href="#workflowr-1-3-0">1.3.0</a></li>
-        <li><a href="#workflowr-1-2-0">1.2.0</a></li>
-        <li><a href="#workflowr-1-1-1">1.1.1</a></li>
-        <li><a href="#workflowr-1-1-0">1.1.0</a></li>
-        <li><a href="#workflowr-1-0-1">1.0.1</a></li>
-        <li><a href="#workflowr-1-0-0">1.0.0</a></li>
-        <li><a href="#workflowr-0-11-0">0.11.0</a></li>
-        <li><a href="#workflowr-0-10-2">0.10.2</a></li>
-        <li><a href="#workflowr-0-10-1">0.10.1</a></li>
-        <li><a href="#workflowr-0-10-0">0.10.0</a></li>
-        <li><a href="#workflowr-0-9-0">0.9.0</a></li>
-        <li><a href="#workflowr-0-8-0">0.8.0</a></li>
-        <li><a href="#workflowr-0-7-0">0.7.0</a></li>
-        <li><a href="#workflowr-0-6-0">0.6.0</a></li>
-        <li><a href="#workflowr-0-5-1">0.5.1</a></li>
-        <li><a href="#workflowr-0-5-0">0.5.0</a></li>
-        <li><a href="#workflowr-0-4-0">0.4.0</a></li>
-        <li><a href="#workflowr-0-3-0">0.3.0</a></li>
-        <li><a href="#workflowr-0-2-0">0.2.0</a></li>
-        <li><a href="#workflowr-0-1-0">0.1.0</a></li>
+        <li><a href="#workflowr-1509000">1.5.0.9000</a></li>
+        <li><a href="#workflowr-150">1.5.0</a></li>
+        <li><a href="#workflowr-140">1.4.0</a></li>
+        <li><a href="#workflowr-130">1.3.0</a></li>
+        <li><a href="#workflowr-120">1.2.0</a></li>
+        <li><a href="#workflowr-111">1.1.1</a></li>
+        <li><a href="#workflowr-110">1.1.0</a></li>
+        <li><a href="#workflowr-101">1.0.1</a></li>
+        <li><a href="#workflowr-100">1.0.0</a></li>
+        <li><a href="#workflowr-0110">0.11.0</a></li>
+        <li><a href="#workflowr-0102">0.10.2</a></li>
+        <li><a href="#workflowr-0101">0.10.1</a></li>
+        <li><a href="#workflowr-0100">0.10.0</a></li>
+        <li><a href="#workflowr-090">0.9.0</a></li>
+        <li><a href="#workflowr-080">0.8.0</a></li>
+        <li><a href="#workflowr-070">0.7.0</a></li>
+        <li><a href="#workflowr-060">0.6.0</a></li>
+        <li><a href="#workflowr-051">0.5.1</a></li>
+        <li><a href="#workflowr-050">0.5.0</a></li>
+        <li><a href="#workflowr-040">0.4.0</a></li>
+        <li><a href="#workflowr-030">0.3.0</a></li>
+        <li><a href="#workflowr-020">0.2.0</a></li>
+        <li><a href="#workflowr-010">0.1.0</a></li>
       </ul>
     </div>
   </div>

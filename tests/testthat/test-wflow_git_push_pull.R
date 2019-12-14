@@ -2,6 +2,9 @@ context("wflow_git_push_pull")
 
 # Setup ------------------------------------------------------------------------
 
+# Only newer tests use the setup functions
+source("setup.R")
+
 library("git2r")
 
 # Setup workflowr project for testing
@@ -317,6 +320,12 @@ test_that("prints correctly from merge conflict", {
   # Merge conflict due to committed changes
   # fail=FALSE
   # conflicts=TRUE
+  # Note: project needs to point to an actual Git repo b/c it searches for
+  # conflicted files
+  path <- fs::file_temp()
+  on.exit(fs::dir_delete(path))
+  fs::dir_create(path)
+  r <- git2r::init(path)
   m <- structure(list(
     up_to_date = FALSE,
     fast_forward = FALSE,
@@ -326,7 +335,7 @@ test_that("prints correctly from merge conflict", {
     class = "git_merge_result")
 
     o <- list(remote = "remote", branch = "branch", username = "username",
-            merge_result = m, fail = FALSE, dry_run = FALSE)
+            merge_result = m, fail = FALSE, dry_run = FALSE, project = path)
   class(o) <- "wflow_git_pull"
 
   expect_output(print(o), "Git from the Terminal")
@@ -347,4 +356,87 @@ test_that("prints correctly from merge conflict", {
   class(o) <- "wflow_git_pull"
 
   expect_output(print(o), "local changes")
+})
+
+# Test get_conflicted_files ----------------------------------------------------
+
+test_that("find_conflicted_line returns first line with <<<", {
+
+  lines <- c(
+    "<<<<<<< HEAD",
+    "master branch",
+    "=======",
+    "feature branch",
+    ">>>>>>> feature"
+  )
+  expect_equal(workflowr:::find_conflicted_line(lines), 1)
+
+  lines <- c("another line", lines)
+  expect_equal(workflowr:::find_conflicted_line(lines), 2)
+
+  # decoy
+  lines <- c("doesn't begin with <<<<<<<", lines)
+  expect_equal(workflowr:::find_conflicted_line(lines), 3)
+})
+
+test_that("find_conflicted_line returns NA if no conflicting line found", {
+  expect_identical(workflowr:::find_conflicted_line(""), NA_integer_)
+
+  lines <- letters
+  expect_identical(workflowr:::find_conflicted_line(lines), NA_integer_)
+})
+
+test_that("get_conflicted_lines return first conflicting line for each file", {
+
+  files <- fs::file_temp(pattern = as.character(0:5))
+  on.exit(fs::file_delete(files))
+  writer <- function(file, conflicted, total = 10) {
+    lines <- letters[seq_len(total)]
+    if (conflicted != 0) lines[conflicted] <- "<<<<<<<"
+    writeLines(lines, con = file)
+  }
+  Map(writer, files, conflicted = 0:5)
+
+  observed <- workflowr:::get_conflicted_lines(files)
+  expect_equivalent(observed, c(NA_integer_, 1:5))
+})
+
+test_that("get_conflicted_files returns files with merge conflicts", {
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  r <- repository(path)
+  f <- file.path(path, glue::glue("test-{1:3}.txt"))
+  checkout(r, branch = "feature", create = TRUE)
+  lapply(f, writeLines, text = "feature branch")
+  add(r, f)
+  commit(r, "commit on feature branch")
+  checkout(r, "master")
+  lapply(f, writeLines, text = "master branch")
+  add(r, f)
+  commit(r, "commit on master branch")
+  m <- merge(r, "feature", fail = FALSE)
+  expect_identical(m$conflicts, TRUE)
+
+  conflicted_files <- workflowr:::get_conflicted_files(path)
+  expect_identical(conflicted_files, f)
+
+  # Requires manual test to see if prompt works and RStudio opens files
+  skip("Manual test")
+
+  conflicted_lines <- workflowr:::get_conflicted_lines(conflicted_files)
+  open_files_rstudio(conflicted_files, conflicted_lines)
+
+  m <- structure(list(
+    up_to_date = FALSE,
+    fast_forward = FALSE,
+    conflicts = TRUE,
+    sha = NA_character_),
+    .Names = c("up_to_date", "fast_forward", "conflicts", "sha"),
+    class = "git_merge_result")
+
+  o <- list(remote = "remote", branch = "branch", username = "username",
+            merge_result = m, fail = FALSE, dry_run = FALSE, project = path)
+  class(o) <- "wflow_git_pull"
+  print(o)
 })

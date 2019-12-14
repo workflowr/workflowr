@@ -63,6 +63,8 @@ or GitLab).
 \item \bold{protocol}: The authentication protocol for the remote repository
 (either \code{"https"} or \code{"ssh"}.
 
+\item \bold{project}: The input argument \code{project}.
+
 }
 }
 \description{

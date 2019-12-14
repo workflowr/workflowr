@@ -17,6 +17,11 @@ button. This feature can be disabled by setting the package option
 
 [vig-data]: wflow-10-data.html
 
+* If there are merge conflicts after running `wflow_git_pull()`, and the merge
+was allowed to proceed (`fail = FALSE`), then the conflicted files are listed
+and optionally opened in RStudio at the first line of the conflict that needs
+to be resolved.
+
 ## Minor improvements and bug fixes
 
 * Warn user if only HTML file has been committed (and avoid throwing an error).

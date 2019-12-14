@@ -68,6 +68,8 @@
 #' \item \bold{protocol}: The authentication protocol for the remote repository
 #' (either \code{"https"} or \code{"ssh"}.
 #'
+#' \item \bold{project}: The input argument \code{project}.
+#'
 #' }
 #'
 #' @examples
@@ -216,7 +218,7 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
 
   o <- list(remote = remote, branch = branch, username = username,
             merge_result = merge_result, fail = fail, dry_run = dry_run,
-            protocol = protocol)
+            protocol = protocol, project = project)
   class(o) <- "wflow_git_pull"
   return(o)
 }
@@ -290,6 +292,16 @@ print.wflow_git_pull <- function(x, ...) {
 
   # Merge conflicts from committed changes. Merge conflicts are now unstaged changes
   if (x$merge_result$conflicts) {
+    conflicted_files <- get_conflicted_files(x$project)
+    cat("\nThe following file(s) contain conflicts:\n")
+    cat(conflicted_files, sep = "\n")
+    if (interactive() && rstudioapi::isAvailable(version_needed = "0.99.719")) {
+      ans <- readline("Do you want workflowr to open the conflicting files in RStudio? (y/n/c) ")
+      if (tolower(ans) == "y") {
+        conflicted_lines <- get_conflicted_lines(conflicted_files)
+        open_files_rstudio(conflicted_files, conflicted_lines)
+      }
+    }
     m <- "You will need to use Git from the Terminal to resolve these conflicts
           manually. Run `git status` in the Terminal to get started."
     cat("\n", wrap(m), "\n", sep = "")
@@ -305,4 +317,33 @@ print.wflow_git_pull <- function(x, ...) {
   cat("\n", wrap(m), "\n", sep = "")
   cat("\n")
   return(invisible(x))
+}
+
+# Return conflicted files in a Git repository
+get_conflicted_files <- function(path) {
+  r <- git2r::repository(path)
+  s <- git2r::status(r)
+  s_df <- status_to_df(s)
+  conflicted <- s_df[s_df$substatus == "conflicted", "file"]
+
+  if (length(conflicted) == 0) return(NA)
+
+  conflicted <- file.path(git2r::workdir(r), conflicted)
+  return(conflicted)
+}
+
+get_conflicted_lines <- function(files) {
+  list_of_lines <- Map(readLines, files)
+  conflicted_lines <- Map(find_conflicted_line, list_of_lines)
+  conflicted_lines <- unlist(conflicted_lines)
+  return(conflicted_lines)
+}
+
+find_conflicted_line <- function(lines) {
+  stringr::str_which(lines, "^<<<")[1]
+}
+
+open_files_rstudio <- function(files, lines = -1L) {
+  mapply(rstudioapi::navigateToFile, file = files, line = lines)
+  return(invisible(files))
 }

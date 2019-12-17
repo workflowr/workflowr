@@ -7,6 +7,11 @@ cache: packages
 latex: false
 pandoc_version: 2.3.1
 
+branches:
+  except:
+    - debug-appveyor
+    - debug-circleci
+
 env:
   global:
     # Do not skip tests with skip_on_cran(). Adding this to be explicit for my

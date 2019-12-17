@@ -176,7 +176,7 @@ wflow_remove <- function(files,
   # Remove files ---------------------------------------------------------------
 
   if (!dry_run) {
-    fs::file_delete(files_to_remove)
+    wflow_delete(files_to_remove)
     # Remove the empty (though potentially nested) directories
     unlink(dirs_to_remove, recursive = TRUE)
   }

@@ -175,7 +175,7 @@ wflow_quickstart <- function(files,
     }
 
     if (fs::dir_exists(path)) {
-      fs::dir_delete(path)
+      wflow_delete(path)
       message(glue::glue("* Deleted workflowr project at {path}"))
       message("* To keep the project in its unfinished state, set delete_on_error=FALSE")
     }

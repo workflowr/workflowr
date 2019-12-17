@@ -157,6 +157,32 @@ resolve_symlink_ <- function(path) {
     parts[len])))
 }
 
+# Attempts to delete file(s) and/or directory(ies) pointed to by path.
+#
+# path - character vector
+#
+# Fails gracefully. unlink() fails silently. fs::file_delete() properly throws
+# an error, but it is not the most informative. This will report the files that
+# weren't deleted as well as their file permissions.
+wflow_delete <- function(path) {
+
+  # Needed for, e.g. AppVeyor, where relative paths can cause permission issues
+  path <- absolute(path)
+
+  attempt_to_delete <- try(fs::file_delete(path), silent = TRUE)
+
+  persistent <- fs::file_exists(path)
+  if (any(persistent)) {
+    stop("Unable to delete the following file(s) or directory(ies):\n",
+         paste(path[persistent], collapse = "\n"),
+         "\nDo you have permission to delete them? The permissions are, in order:\n",
+         paste(fs::file_info(path[persistent])$permissions, collapse = "\n"),
+         call. = FALSE)
+  }
+
+  return(invisible(path))
+}
+
 # Because ~ maps to ~/Documents on Windows, need a reliable way to determine the
 # user's home directory on Windows.
 # https://cran.r-project.org/bin/windows/base/rw-FAQ.html#What-are-HOME-and-working-directories_003f

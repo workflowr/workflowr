@@ -317,7 +317,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
       dir_cache <- glue::glue("{dir_cache}_cache")
       if (fs::dir_exists(dir_cache)) {
         if (delete_cache) {
-          fs::dir_delete(dir_cache)
+          wflow_delete(dir_cache)
           message("  - Note: Deleted the cache directory before building")
         } else {
           message("  - Note: This file has a cache directory")

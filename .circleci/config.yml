@@ -113,5 +113,20 @@ workflows:
   all:
     jobs:
       - release
+          filters:
+            branches:
+              ignore:
+                - debug-appveyor
+                - debug-travis
       - pandocless
+          filters:
+            branches:
+              ignore:
+                - debug-appveyor
+                - debug-travis
       - codecov
+          filters:
+            branches:
+              ignore:
+                - debug-appveyor
+                - debug-travis

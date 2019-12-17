@@ -140,7 +140,8 @@ get_committed_files <- function(repo, commit = NULL,
 
   # If Git is available and don't need a specific commit, use `git ls-files`
   if (!is.null(sysgit) && !is.na(sysgit) && nchar(sysgit) > 0 && is.null(commit)) {
-    cmd <- sprintf("%s -C %s ls-files", sysgit, shQuote(git2r::workdir(repo)))
+    cmd <- sprintf("%s -C %s ls-files", shQuote(sysgit),
+                   shQuote(git2r::workdir(repo)))
     suppressWarnings(files <- system(cmd, intern = TRUE, ignore.stderr = TRUE))
     # Using Git is supposed to be a convenient speed increase. If it fails for
     # any reason (a failure adds an attribute "status"), just continue and use
@@ -189,6 +190,7 @@ ls_files <- function (tree) {
 get_outdated_files <- function(repo, files, outdir = NULL,
                                 sysgit = getOption("workflowr.sysgit", default = "")) {
   if (length(files) == 0) return(files)
+  stopifnot(inherits(repo, "git_repository"))
 
   ext <- tools::file_ext(files)
   if (!all(grepl("[Rr]md", ext)))
@@ -225,11 +227,14 @@ last_commit_time_git2r <- function(repo, fname, ...) {
 
 last_commit_time_sysgit <- function(repo, fname, sysgit, ...) {
   cmd <- sprintf("%s -C %s log -n 1 --date=raw --format=%%ad -- %s",
-                 sysgit, shQuote(git2r::workdir(repo)), shQuote(fname))
-  raw_git <- system(cmd, intern = TRUE)
+                 shQuote(sysgit), shQuote(git2r::workdir(repo)), shQuote(fname))
+  raw_git <- suppressWarnings(system(cmd, intern = TRUE, ignore.stderr = TRUE))
+  # If it fails for any reason, fall back on git2r
+  if (!is.null(attr(raw_git, which = "status", exact = TRUE))) {
+    return(last_commit_time_git2r(repo, fname))
+  }
   unix_git <- stringr::str_split(raw_git, "\\s")[[1]][1]
   return(as.numeric(unix_git))
-
 }
 
 # Obtain the files updated in a commit

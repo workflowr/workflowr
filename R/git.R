@@ -224,10 +224,12 @@ last_commit_time_git2r <- function(repo, fname, ...) {
 }
 
 last_commit_time_sysgit <- function(repo, fname, sysgit, ...) {
-  cmd <- sprintf("%s -C %s log -n 1 --date=unix --format=%%ad -- %s",
+  cmd <- sprintf("%s -C %s log -n 1 --date=raw --format=%%ad -- %s",
                  sysgit, shQuote(git2r::workdir(repo)), shQuote(fname))
-  unix_git <- system(cmd, intern = TRUE)
+  raw_git <- system(cmd, intern = TRUE)
+  unix_git <- stringr::str_split(raw_git, "\\s")[[1]][1]
   return(as.numeric(unix_git))
+
 }
 
 # Obtain the files updated in a commit

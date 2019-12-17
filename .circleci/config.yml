@@ -111,22 +111,14 @@ jobs:
 workflows:
   version: 2
   all:
+    triggers:
+      - schedule:
+          filters:
+            branches:
+              ignore:
+                - debug-appveyor
+                - debug-travis
     jobs:
       - release
-          filters:
-            branches:
-              ignore:
-                - debug-appveyor
-                - debug-travis
       - pandocless
-          filters:
-            branches:
-              ignore:
-                - debug-appveyor
-                - debug-travis
       - codecov
-          filters:
-            branches:
-              ignore:
-                - debug-appveyor
-                - debug-travis

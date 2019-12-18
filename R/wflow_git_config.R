@@ -33,6 +33,9 @@
 #'   email when committing (i.e. saving) changes. If you have never used Git
 #'   before on your computer, make sure to set this.
 #'
+#' @param overwrite logical (default: FALSE). Overwrite existing Git global
+#'   settings.
+#'
 #' @param ... Arbitrary Git settings, e.g. \code{core.editor = "nano"}.
 #'
 #' @return An object of class \code{wflow_git_config}, which is a list with the
@@ -61,7 +64,8 @@
 #' }
 #'
 #' @export
-wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
+wflow_git_config <- function(user.name = NULL, user.email = NULL, ...,
+                             overwrite = FALSE) {
 
   # Check input arguments ------------------------------------------------------
 
@@ -70,6 +74,9 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
 
   if (!(is.null(user.email) || (is.character(user.email) && length(user.email) == 1)))
     stop("user.email must be NULL or a one-element character vector")
+
+  if (!(is.logical(overwrite) && length(overwrite) == 1))
+    stop("overwrite must be a one-element logical vector")
 
   # Create .gitconfig on Windows -----------------------------------------------
 
@@ -88,6 +95,24 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...) {
       if (!fs::file_exists(config_file)) {
         fs::file_create(config_file)
       }
+    }
+  }
+
+  # Check for existing settings ------------------------------------------------
+
+  existing <- git2r::config(global = TRUE)$global
+  variables_to_set <- c(user.name = user.name, user.email = user.email, list(...))
+  to_be_overwritten <- intersect(names(existing), names(variables_to_set))
+  if (length(to_be_overwritten) > 0) {
+    message("Current settings:")
+    for (var in to_be_overwritten) {
+      message(glue::glue("  {var}: {existing[[var]]}"))
+    }
+    if (overwrite) {
+      message("The settings above will be overwritten.")
+    } else {
+      stop("Some settings already exist. Set overwrite=TRUE to overwrite them.",
+           call. = FALSE)
     }
   }
 

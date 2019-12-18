@@ -22,6 +22,13 @@ was allowed to proceed (`fail = FALSE`), then the conflicted files are listed
 and optionally opened in RStudio at the first line of the conflict that needs
 to be resolved.
 
+* `wflow_git_config()` has a new argument `overwrite`. Previously
+`wflow_git_config()` would by default overwrite any previous settings. Now this
+will throw an error. To overwrite a previous setting, set `overwrite = TRUE`
+([idea][f1000-config-overwrite] from @petebaker)
+
+[f1000-config-overwrite]: https://f1000research.com/articles/8-1749/v1#referee-response-55117
+
 ## Minor improvements and bug fixes
 
 * Warn user if only HTML file has been committed (and avoid throwing an error).

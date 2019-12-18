@@ -126,7 +126,8 @@
 <li><p>New <a href="wflow-10-data.html">vignette</a> on using large data files in a workflowr project (motivated by <a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/183'>#183</a>)</p></li>
 </ul>
 <ul>
-<li>If there are merge conflicts after running <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code>, and the merge was allowed to proceed (<code>fail = FALSE</code>), then the conflicted files are listed and optionally opened in RStudio at the first line of the conflict that needs to be resolved.</li>
+<li><p>If there are merge conflicts after running <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code>, and the merge was allowed to proceed (<code>fail = FALSE</code>), then the conflicted files are listed and optionally opened in RStudio at the first line of the conflict that needs to be resolved.</p></li>
+<li><p><code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code> has a new argument <code>overwrite</code>. Previously <code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code> would by default overwrite any previous settings. Now this will throw an error. To overwrite a previous setting, set <code>overwrite = TRUE</code> (<a href="https://f1000research.com/articles/8-1749/v1#referee-response-55117">idea</a> from <a href='https://github.com/petebaker'>@petebaker</a>)</p></li>
 </ul>
 <div id="minor-improvements-and-bug-fixes" class="section level2">
 <h2 class="hasAnchor">

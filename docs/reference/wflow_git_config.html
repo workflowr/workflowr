@@ -72,7 +72,7 @@ running git config in the Terminal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9000</span>
       </span>
     </div>
 
@@ -129,7 +129,7 @@ console instead of the Terminal. The same functionality can be achieved by
 running <code>git config</code> in the Terminal.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_git_config</span>(<span class='kw'>user.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user.email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,6 +149,11 @@ before on your computer, make sure to set this.</p></td>
     <tr>
       <th>...</th>
       <td><p>Arbitrary Git settings, e.g. <code>core.editor = "nano"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>logical (default: FALSE). Overwrite existing Git global
+settings.</p></td>
     </tr>
     </table>
 

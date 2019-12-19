@@ -299,6 +299,8 @@ test_that("prints correctly from merge commit", {
 
 test_that("prints correctly from merge conflict", {
 
+  if (interactive()) skip("Avoid conflicted files prompt")
+
   # Merge conflict due to unknown cause (committed, staged, or unstaged changes).
   # Pull aborted.
   # fail=TRUE

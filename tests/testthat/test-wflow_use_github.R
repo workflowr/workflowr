@@ -4,6 +4,8 @@ context("wflow_use_github")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 # Test wflow_use_github --------------------------------------------------------
 
 test_that("wflow_use_github automates local GitHub configuration", {

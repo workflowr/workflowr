@@ -4,6 +4,8 @@ context("report")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 # On some machines, the timezone isn't set. This is likely to be a test
 # environment, and thus can just use UTC.
 timezone <- Sys.timezone()

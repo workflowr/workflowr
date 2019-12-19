@@ -13,6 +13,8 @@ context("subdirectories")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 test_that("workflowr commands can be run from the root of the project", {
   path <- test_setup()
   on.exit(test_teardown(path))

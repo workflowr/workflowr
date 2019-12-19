@@ -194,6 +194,9 @@ test_that("Git and git2r return same outdated files", {
   on.exit(test_teardown(path))
   r <- git2r::repository(path)
   p <- workflowr:::wflow_paths(project = path)
+  # Use absolute paths. For some reason git2r sometimes fails with relative
+  # paths, e.g. on winbuilder. Impossible to debug.
+  p <- lapply(p, workflowr:::absolute)
   rmd <- list.files(path = p$analysis, pattern = "Rmd$", full.names = TRUE)
   html <- workflowr:::to_html(rmd, outdir = p$docs)
 
@@ -209,13 +212,13 @@ test_that("Git and git2r return same outdated files", {
   git2r::commit(r, "Make outdated Rmd")
 
   outdated_sysgit <- workflowr:::get_outdated_files(r,
-                                                    files = workflowr:::absolute(rmd),
-                                                    outdir = workflowr:::absolute(p$docs),
+                                                    files = rmd,
+                                                    outdir = p$docs,
                                                     sysgit = sysgit)
 
   outdated_git2r <- workflowr:::get_outdated_files(r,
-                                                   files = workflowr:::absolute(rmd),
-                                                   outdir = workflowr:::absolute(p$docs),
+                                                   files = rmd,
+                                                   outdir = p$docs,
                                                    sysgit = "")
 
   expect_identical(
@@ -225,6 +228,6 @@ test_that("Git and git2r return same outdated files", {
 
   expect_identical(
     outdated_sysgit,
-    workflowr:::absolute(rmd[1])
+    rmd[1]
   )
 })

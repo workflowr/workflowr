@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>workflowr: A workflow template for creating a research website — workflowr • workflowr</title>
+<title>Run the code — wflow_run • workflowr</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,14 @@
 
 
 
-<meta property="og:title" content="workflowr: A workflow template for creating a research website — workflowr" />
-<meta property="og:description" content="The workflowr package helps you create a research website using R Markdown
-and Git." />
+<meta property="og:title" content="Run the code — wflow_run" />
+<meta property="og:description" content="wflow_run executes the code chunks of an R Markdown file in the
+current R session without affecting any of the website files. This is meant
+to be used while interactively developing an analysis. It does not change the
+working directory or isolate the computation from the current R session. This
+is analogous to the RStudio option &quot;Run all&quot; to run all the code chunks. Use
+wflow_publish when you are ready to add the results to the
+website." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,109 +120,71 @@ and Git." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>workflowr: A workflow template for creating a research website</h1>
-    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/zzz.R'><code>R/zzz.R</code></a></small>
-    <div class="hidden name"><code>workflowr.Rd</code></div>
+    <h1>Run the code</h1>
+    <small class="dont-index">Source: <a href='https://github.com/jdblischak/workflowr/blob/master/R/wflow_run.R'><code>R/wflow_run.R</code></a></small>
+    <div class="hidden name"><code>wflow_run.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The workflowr package helps you create a research website using R Markdown
-and Git.</p>
+    <p><code>wflow_run</code> executes the code chunks of an R Markdown file in the
+current R session without affecting any of the website files. This is meant
+to be used while interactively developing an analysis. It does not change the
+working directory or isolate the computation from the current R session. This
+is analogous to the RStudio option "Run all" to run all the code chunks. Use
+<code><a href='wflow_publish.html'>wflow_publish</a></code> when you are ready to add the results to the
+website.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>wflow_run</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file</th>
+      <td><p>character (default: <code>NULL</code>). The R Markdown file to execute.
+Must have file extension Rmd or rmd. If <code>NULL</code>, the most recently
+modified Rmd file will be executed.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical (default: <code>TRUE</code>). Should the lines of code (and
+their output) be echoed in the R console as they are executed? This
+argument is passed directly to the argument <code>echo</code> of the function
+<code><a href='https://rdrr.io/r/base/source.html'>source</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>project</th>
+      <td><p>character (default: ".") By default the function assumes the
+current working directory is within the project. If this is not true,
+you'll need to provide the path to the project directory.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="vignettes"><a class="anchor" href="#vignettes"></a>Vignettes</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
+    <p>Invisibly returns the path to the Rmd file that was executed</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p><code><a href='wflow_build.html'>wflow_build</a></code> with argument <code>local = TRUE</code>,
+  <code><a href='https://rdrr.io/r/base/source.html'>source</a></code> with argument <code>echo = TRUE</code></p></div>
 
-<p>Run <code><a href='https://rdrr.io/r/utils/browseVignettes.html'>browseVignettes("workflowr")</a></code> to read the package vignettes
-  locally. Alternatively you can read the documentation online at
-  <a href='https://jdblischak.github.io/workflowr'>https://jdblischak.github.io/workflowr</a>.</p>
-    <h2 class="hasAnchor" id="main-workflowr-functions"><a class="anchor" href="#main-workflowr-functions"></a>Main workflowr functions</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 
-    
-
-
-<dl class='dl-horizontal'>
-
-<dt><code><a href='wflow_start.html'>wflow_start</a></code></dt><dd><p>Start a workflowr project.</p></dd>
-
-<dt><code><a href='wflow_build.html'>wflow_build</a></code></dt><dd><p>Build the site to view locally.</p></dd>
-
-<dt><code><a href='wflow_publish.html'>wflow_publish</a></code></dt><dd><p>Publish analyses to include in the
-      website.</p></dd>
-
-<dt><code><a href='wflow_status.html'>wflow_status</a></code></dt><dd><p>Report status of analysis files.</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="supporting-workflowr-functions"><a class="anchor" href="#supporting-workflowr-functions"></a>Supporting workflowr functions</h2>
-
-    
-
-
-<p>For further information on workflowr, see the help pages for these
-functions:</p>
-<dl class='dl-horizontal'>
-
-<dt><code><a href='wflow_html.html'>wflow_html</a></code></dt><dd><p>More technical details about how
-  individual R Markdown files are converted to webpages, and how the
-  rendering settings can be customized.</p></dd>
-
-<dt><code><a href='wflow_site.html'>wflow_site</a></code></dt><dd><p>This help page explains how
-  project-wide rendering settings can be customized in the
-  <code>_site.yml</code> file.</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="package-options"><a class="anchor" href="#package-options"></a>Package options</h2>
-
-    
-
-
-<p>The following package options affect the default behavior of the workflowr
-functions. To permanently set any of these options, add a call to the
-function <code><a href='https://rdrr.io/r/base/options.html'>options</a></code> in the file <code>.Rprofile</code> at the root
-of your workflowr project. For example:</p>
-<pre>
-# Do not use Git executable
-options(workflowr.sysgit = "")
-</pre>
-
-<dl class='dl-horizontal'>
-
-<dt>workflowr.autosave</dt><dd><p>A logical indicating whether workflowr functions
-should automatically save files open in the RStudio editor before running.
-The default is <code>TRUE</code>. This requires RStudio 1.1.287 or later. Only
-files that have been previously saved are affected. In other words, unnamed
-files will be ignored.</p></dd>
-
-<dt>workflowr.sysgit</dt><dd><p>The path to the system Git executable. This is
-occasionally used to increase the speed of Git operations performed by
-workflowr. By default it is set to the first Git executable on the search
-path. You can specify a path to a different Git executable. Alternatively you
-can disable this behavior entirely by setting it to the empty string <code>""</code>.</p></dd>
-
-<dt>workflowr.view</dt><dd><p>A logical indicating whether workflowr functions should
-open webpages for viewing in the browser. The default is set to
-<code><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></code> (i.e. it is <code>TRUE</code> only if it is an
-interactive R session). This option is currently used by
-<code><a href='wflow_build.html'>wflow_build</a></code>, <code><a href='wflow_git_push.html'>wflow_git_push</a></code>, and
-<code><a href='wflow_publish.html'>wflow_publish</a></code>.</p></dd>
-
-</dl>
-
-
+<span class='co'># Run the most recently modified Rmd file</span>
+<span class='fu'>wflow_run</span>()
+<span class='co'># Run a specific Rmd file</span>
+<span class='fu'>wflow_run</span>(<span class='st'>"analysis/file.Rmd"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#vignettes">Vignettes</a></li>
-      <li><a href="#main-workflowr-functions">Main workflowr functions</a></li>
-      <li><a href="#supporting-workflowr-functions">Supporting workflowr functions</a></li>
-      <li><a href="#package-options">Package options</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

@@ -1,10 +1,13 @@
-# workflowr 1.5.0.9000
+# workflowr 1.6.0
+
+## New features
 
 * New function `wflow_run()`. It executes the code chunks of an R Markdown file
 in the current R session without affecting any of the website files. This is
 meant to be used while interactively developing an analysis. It does not change
 the working directory or isolate the computation from the current R session.
-This is analogous to the RStudio option "Run all" to run all the code chunks.
+This is analogous to the RStudio option "Run all" to run all the code chunks
+(idea from @pcarbo)
 
 * New autosave feature. The workflowr functions `wflow_build()`,
 `wflow_publish()`, and `wflow_status()` will autosave any unsaved files open in
@@ -15,12 +18,12 @@ button. This feature can be disabled by setting the package option
 * New [vignette][vig-data] on using large data files in a workflowr project
 (motivated by @xiangzhu, #183)
 
-[vig-data]: wflow-10-data.html
+[vig-data]: https://jdblischak.github.io/workflowr/articles/wflow-10-data.html
 
 * If there are merge conflicts after running `wflow_git_pull()`, and the merge
 was allowed to proceed (`fail = FALSE`), then the conflicted files are listed
 and optionally opened in RStudio at the first line of the conflict that needs
-to be resolved.
+to be resolved
 
 * `wflow_git_config()` has a new argument `overwrite`. Previously
 `wflow_git_config()` would by default overwrite any previous settings. Now this
@@ -36,20 +39,24 @@ Previously this threw an error because workflowr expects the R Markdown file to
 be committed to the Git repo if its corresponding HTML file is
 (bug report from @kevinlkx)
 
-* Warn user if a dependency does not meet the minimum required version.
-Unfortunately `install.packages()` does not automatically update previously
-installed packages when installing a new package, even if they violate the
-minimum required version (idea from @stephens999)
+* Warn user if a dependency does not meet the minimum required version. There
+are multiple ways this could happen. First, it is possible to install an old
+version after having installed workflowr. Second, when running
+`install.packages()`, if the minimum required version is available in any of the
+package libraries, it is not installed. However, if the version of the package
+in the first directory listed in `.libPaths()` does not meet the minimum
+required version, it is still the one that is loaded when workflowr is loaded
+(idea from @stephens999)
 
 * Fix off-by-one date bug by specifying the local timezone (see [git2r Issue
 407][git2r407])
 
 [git2r407]: https://github.com/ropensci/git2r/issues/407
 
-* Fix bug when path includes a space. The bug was introduced in version 1.5.0
-with the feature to use the system Git executable to run `git ls-files`. To fix
-the issue in version 1.5.0, set `options(workflowr.sysgit = "")` in the file
-`.Rprofile` (bug report from @wolfemd, #180)
+* Fix bug when path to project includes a space. The bug was introduced in
+version 1.5.0 with the feature to use the system Git executable to run `git
+ls-files`. To fix the issue in version 1.5.0, set `options(workflowr.sysgit =
+"")` in the file `.Rprofile` (bug report from @wolfemd, #180)
 
 * Fix bug caused by an unset timezone. If the machine has no timezone set,
 workflowr will default to Etc/UTC
@@ -69,6 +76,11 @@ republished)
 
 * Update FAQ to include how to create a PDF using the RStudio Knit button
 (reported by @han16)
+
+* Update citation to [workflowr publication](https://doi.org/10.12688/f1000research.20843.1)
+
+* Properly quote the Git executable with `shQuote()` whenever Git is called
+from R
 
 # workflowr 1.5.0
 

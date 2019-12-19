@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -116,29 +116,33 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="workflowr-1-5-0-9000" class="section level1">
+    <div id="workflowr-1-6-0" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-5-0-9000" class="anchor"></a>workflowr 1.5.0.9000<small> Unreleased </small>
+<a href="#workflowr-1-6-0" class="anchor"></a>workflowr 1.6.0<small> Unreleased </small>
 </h1>
+<div id="new-features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#new-features" class="anchor"></a>New features</h2>
 <ul>
-<li><p>New function <code><a href="../reference/wflow_run.html">wflow_run()</a></code>. It executes the code chunks of an R Markdown file in the current R session without affecting any of the website files. This is meant to be used while interactively developing an analysis. It does not change the working directory or isolate the computation from the current R session. This is analogous to the RStudio option “Run all” to run all the code chunks.</p></li>
+<li><p>New function <code><a href="../reference/wflow_run.html">wflow_run()</a></code>. It executes the code chunks of an R Markdown file in the current R session without affecting any of the website files. This is meant to be used while interactively developing an analysis. It does not change the working directory or isolate the computation from the current R session. This is analogous to the RStudio option “Run all” to run all the code chunks (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
 <li><p>New autosave feature. The workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>, and <code><a href="../reference/wflow_status.html">wflow_status()</a></code> will autosave any unsaved files open in the RStudio editor pane. This is similar to the behavior of the Knit HTML button. This feature can be disabled by setting the package option <code>workflowr.autosave</code> to <code>FALSE</code> (idea from <a href='https://github.com/xiangzhu'>@xiangzhu</a> in <a href='https://github.com/jdblischak/workflowr/issues/179'>#179</a>)</p></li>
-<li><p>New <a href="wflow-10-data.html">vignette</a> on using large data files in a workflowr project (motivated by <a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/183'>#183</a>)</p></li>
+<li><p>New <a href="https://jdblischak.github.io/workflowr/articles/wflow-10-data.html">vignette</a> on using large data files in a workflowr project (motivated by <a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/183'>#183</a>)</p></li>
 </ul>
 <ul>
-<li><p>If there are merge conflicts after running <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code>, and the merge was allowed to proceed (<code>fail = FALSE</code>), then the conflicted files are listed and optionally opened in RStudio at the first line of the conflict that needs to be resolved.</p></li>
+<li><p>If there are merge conflicts after running <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code>, and the merge was allowed to proceed (<code>fail = FALSE</code>), then the conflicted files are listed and optionally opened in RStudio at the first line of the conflict that needs to be resolved</p></li>
 <li><p><code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code> has a new argument <code>overwrite</code>. Previously <code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code> would by default overwrite any previous settings. Now this will throw an error. To overwrite a previous setting, set <code>overwrite = TRUE</code> (<a href="https://f1000research.com/articles/8-1749/v1#referee-response-55117">idea</a> from <a href='https://github.com/petebaker'>@petebaker</a>)</p></li>
 </ul>
+</div>
 <div id="minor-improvements-and-bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-improvements-and-bug-fixes" class="anchor"></a>Minor improvements and bug fixes</h2>
 <ul>
 <li><p>Warn user if only HTML file has been committed (and avoid throwing an error). Previously this threw an error because workflowr expects the R Markdown file to be committed to the Git repo if its corresponding HTML file is (bug report from <a href='https://github.com/kevinlkx'>@kevinlkx</a>)</p></li>
-<li><p>Warn user if a dependency does not meet the minimum required version. Unfortunately <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> does not automatically update previously installed packages when installing a new package, even if they violate the minimum required version (idea from <a href='https://github.com/stephens999'>@stephens999</a>)</p></li>
+<li><p>Warn user if a dependency does not meet the minimum required version. There are multiple ways this could happen. First, it is possible to install an old version after having installed workflowr. Second, when running <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code>, if the minimum required version is available in any of the package libraries, it is not installed. However, if the version of the package in the first directory listed in <code><a href="https://rdrr.io/r/base/libPaths.html">.libPaths()</a></code> does not meet the minimum required version, it is still the one that is loaded when workflowr is loaded (idea from <a href='https://github.com/stephens999'>@stephens999</a>)</p></li>
 <li><p>Fix off-by-one date bug by specifying the local timezone (see <a href="https://github.com/ropensci/git2r/issues/407">git2r Issue 407</a>)</p></li>
 </ul>
 <ul>
-<li><p>Fix bug when path includes a space. The bug was introduced in version 1.5.0 with the feature to use the system Git executable to run <code>git ls-files</code>. To fix the issue in version 1.5.0, set <code><a href="https://rdrr.io/r/base/options.html">options(workflowr.sysgit = "")</a></code> in the file <code>.Rprofile</code> (bug report from <a href='https://github.com/wolfemd'>@wolfemd</a>, <a href='https://github.com/jdblischak/workflowr/issues/180'>#180</a>)</p></li>
+<li><p>Fix bug when path to project includes a space. The bug was introduced in version 1.5.0 with the feature to use the system Git executable to run <code>git ls-files</code>. To fix the issue in version 1.5.0, set <code><a href="https://rdrr.io/r/base/options.html">options(workflowr.sysgit = "")</a></code> in the file <code>.Rprofile</code> (bug report from <a href='https://github.com/wolfemd'>@wolfemd</a>, <a href='https://github.com/jdblischak/workflowr/issues/180'>#180</a>)</p></li>
 <li><p>Fix bug caused by an unset timezone. If the machine has no timezone set, workflowr will default to Etc/UTC</p></li>
 <li><p>Handle missing title/pagetitle warning from pandoc 2+ and rmarkdown 1.18+ (see <a href="https://github.com/rstudio/rmarkdown/pull/1355#issuecomment-558817744">rmarkdown Issue 1355</a>)</p></li>
 </ul>
@@ -146,6 +150,8 @@
 <li><p>Improve speed of <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> by using the system Git executable (if available) to obtain the last commit time of the analysis files (this is used to determine which published Rmd files are outdated and need to be republished)</p></li>
 <li><p>Report exact command to run <code>git push</code> or <code>git pull</code> in the terminal if either <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fail (reported by <a href='https://github.com/jennysjaarda'>@jennysjaarda</a>, <a href='https://github.com/jdblischak/workflowr/issues/182'>#182</a>)</p></li>
 <li><p>Update FAQ to include how to create a PDF using the RStudio Knit button (reported by <a href='https://github.com/han16'>@han16</a>)</p></li>
+<li><p>Update citation to <a href="https://doi.org/10.12688/f1000research.20843.1">workflowr publication</a></p></li>
+<li><p>Properly quote the Git executable with <code><a href="https://rdrr.io/r/base/shQuote.html">shQuote()</a></code> whenever Git is called from R</p></li>
 </ul>
 </div>
 </div>
@@ -220,9 +226,9 @@
 <a href="#workflowr-1-4-0" class="anchor"></a>workflowr 1.4.0<small> 2019-06-08 </small>
 </h1>
 <p>This minor release of workflowr features further GitHub integration, a new reproducibility check, and various improvements and bug fixes.</p>
-<div id="new-features" class="section level2">
+<div id="new-features-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features" class="anchor"></a>New features</h2>
+<a href="#new-features-1" class="anchor"></a>New features</h2>
 <ul>
 <li><p>The initial GitHub setup always included the manual step of creating the GitHub repository, but this is no longer the case! When you run <code><a href="../reference/wflow_use_github.html">wflow_use_github("username")</a></code>, it will offer to create the new GitHub repository for you. If you sign-in to GitHub via your web browser and grant workflowr permission, it will be created automatically.</p></li>
 <li><p>Absolute paths to files on your local computer are not reproducible. If you or someone else tries to execute the code on a different machine, it will fail. Now workflowr will automatically search for absolute paths to files that are inside of the workflowr project. If it detects any, it will fail the reproducibility check, and provide you with the equivalent relative paths to use.</p></li>
@@ -383,9 +389,9 @@
 </h1>
 <p>workflowr 1.1.0 is a maintenance release. It includes some minor new features, improved error handling, and bug fixes. Critically, it makes workflowr compatible with the latest release of <a href="https://cran.r-project.org/package=git2r">git2r</a>.</p>
 <p>The most noticeable changes are 1) <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>/<code><a href="../reference/wflow_status.html">wflow_status()</a></code> are now much faster, especially if your project has many R Markdown files and/or many Git commits, 2) the rmarkdown package is no longer loaded automatically when you load workflowr, and 3) the new function <code><a href="../reference/wflow_open.html">wflow_open()</a></code> (based on a previous version in <a href="https://github.com/jdblischak/workflowrBeta">workflowrBeta</a>) to open new or existing R Markdown files.</p>
-<div id="new-features-1" class="section level2">
+<div id="new-features-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#new-features-1" class="anchor"></a>New features</h2>
+<a href="#new-features-2" class="anchor"></a>New features</h2>
 <ul>
 <li>Resurrect <code><a href="../reference/wflow_open.html">wflow_open()</a></code>. Since there is no longer a workflowr template in workflowr 1.0+, it creates a file with a minimal YAML header (<a href='https://github.com/xiangzhu'>@xiangzhu</a>, <a href='https://github.com/jdblischak/workflowr/issues/107'>#107</a>)</li>
 <li>Add bibliography before session information (reported by <a href='https://github.com/docmanny'>@docmanny</a>, <a href='https://github.com/jdblischak/workflowr/issues/102'>#102</a>)</li>
@@ -825,7 +831,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-1-5-0-9000">1.5.0.9000</a></li>
+        <li><a href="#workflowr-1-6-0">1.6.0</a></li>
         <li><a href="#workflowr-1-5-0">1.5.0</a></li>
         <li><a href="#workflowr-1-4-0">1.4.0</a></li>
         <li><a href="#workflowr-1-3-0">1.3.0</a></li>

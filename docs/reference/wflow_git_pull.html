@@ -73,7 +73,7 @@ pull in the Terminal." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -131,8 +131,15 @@ of the Terminal. The same functionality can be achieved by running <code>git
 pull</code> in the Terminal.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wflow_git_pull</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>branch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>password</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fail</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_git_pull</span>(
+  <span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>branch</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>password</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fail</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,6 +200,7 @@ git2r (only included if <code>dry_run == FALSE</code>).</p></li>
 <li><p><b>dry_run</b>: The input argument <code>dry_run</code>.</p></li>
 <li><p><b>protocol</b>: The authentication protocol for the remote repository
 (either <code>"https"</code> or <code>"ssh"</code>.</p></li>
+<li><p><b>project</b>: The input argument <code>project</code>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

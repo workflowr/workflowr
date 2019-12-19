@@ -76,7 +76,7 @@ create the new repository on GitLab prior to pushing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -137,9 +137,14 @@ will also create the repository if it doesn't exist yet (this requires GitLab
 create the new repository on GitLab prior to pushing.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wflow_use_gitlab</span>(<span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repository</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>navbar_link</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>, <span class='kw'>domain</span> <span class='kw'>=</span> <span class='st'>"gitlab.com"</span>,
-  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_use_gitlab</span>(
+  <span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repository</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>navbar_link</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>,
+  <span class='kw'>domain</span> <span class='kw'>=</span> <span class='st'>"gitlab.com"</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

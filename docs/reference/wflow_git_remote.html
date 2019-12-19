@@ -72,7 +72,7 @@ update the URL for an existing remote." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
       </span>
     </div>
 
@@ -129,9 +129,16 @@ repositories from R. By default it displays the current remote repositories
 update the URL for an existing remote.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>wflow_git_remote</span>(<span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>user</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>repo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>, <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>domain</span> <span class='kw'>=</span> <span class='st'>"github.com"</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>)</pre>
+    <pre class="usage"><span class='fu'>wflow_git_remote</span>(
+  <span class='kw'>remote</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>user</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>repo</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>,
+  <span class='kw'>action</span> <span class='kw'>=</span> <span class='st'>"add"</span>,
+  <span class='kw'>domain</span> <span class='kw'>=</span> <span class='st'>"github.com"</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>project</span> <span class='kw'>=</span> <span class='st'>"."</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

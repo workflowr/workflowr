@@ -7,6 +7,8 @@ source("helpers.R", local = TRUE)
 
 source("setup.R", local = TRUE)
 
+skip_on_cran_windows()
+
 # Test get_committed_files and obtain_files_in_commit --------------------------
 
 # Create temp Git directory

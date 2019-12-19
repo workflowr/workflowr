@@ -4,6 +4,8 @@ context("wflow_run")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 # Test wflow_run ---------------------------------------------------------------
 
 test_that("wflow_run by default runs the most recently modified file", {

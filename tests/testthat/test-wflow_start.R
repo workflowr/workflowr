@@ -5,6 +5,10 @@ context("wflow_start")
 
 # Setup ------------------------------------------------------------------------
 
+source("setup.R")
+
+skip_on_cran_windows()
+
 # Load helper function local_no_gitconfig()
 source("helpers.R", local = TRUE)
 

@@ -2,6 +2,10 @@ context("wflow_git_commit")
 
 # Setup -----------------------------------------------------------------------
 
+source("setup.R")
+
+skip_on_cran_windows()
+
 library("git2r")
 # start project in a tempdir
 site_dir <- tempfile("test-wflow_git_commit-")

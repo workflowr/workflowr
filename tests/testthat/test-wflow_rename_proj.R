@@ -4,6 +4,8 @@ context("wflow_rename_proj")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 path <- test_setup()
 wd <- setwd(path)
 

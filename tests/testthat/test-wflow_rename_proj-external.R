@@ -6,6 +6,8 @@ context("wflow_rename_proj-external")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 path <- test_setup()
 wd <- absolute(getwd())
 

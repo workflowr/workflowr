@@ -2,6 +2,8 @@ context("suppress_report")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 test_that("suppress_report is FALSE by default", {
   path <- fs::file_temp()
   test_setup(path)

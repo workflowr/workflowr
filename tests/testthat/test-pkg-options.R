@@ -4,6 +4,8 @@ context("pkg-options")
 
 source("setup.R")
 
+skip_on_cran_windows()
+
 # Test package options ---------------------------------------------------------
 
 test_that("workflowr does not overwrite user-defined package options", {

@@ -1,5 +1,9 @@
 context("fig_path_ext")
 
+source("setup.R")
+
+skip_on_cran_windows()
+
 # Scenario #1: explicitly set fig_path_ext to FALSE ----------------------------
 
 site_dir <- tempfile("test-fig_path_ext-")

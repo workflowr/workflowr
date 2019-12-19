@@ -2,6 +2,10 @@ context("wflow_remove")
 
 # Setup ------------------------------------------------------------------------
 
+source("setup.R")
+
+skip_on_cran_windows()
+
 library("git2r")
 
 # Load helper function local_no_gitconfig()

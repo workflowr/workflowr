@@ -2,6 +2,10 @@ context("wflow_status")
 
 # Setup ------------------------------------------------------------------------
 
+source("setup.R")
+
+skip_on_cran_windows()
+
 # Setup workflowr project for testing
 site_dir <- tempfile("test-wflow_status-")
 suppressMessages(wflow_start(site_dir, change_wd = FALSE, user.name = "Test Name",

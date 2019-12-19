@@ -1,4 +1,5 @@
-file.create("system-info.Rout.save")
+if (identical(Sys.getenv("NOT_CRAN"), "true")) file.create("system-info.Rout.save")
+
 # System information
 Sys.info()
 .Platform

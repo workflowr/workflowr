@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A Framework for Reproducible and Collaborative Data Science
-Version: 1.6.0
+Version: 1.6.0.9000
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu",

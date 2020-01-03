@@ -1,3 +1,5 @@
+# workflowr 1.6.0.9000
+
 # workflowr 1.6.0
 
 ## New features
@@ -265,8 +267,6 @@ underlying functions from [git2r][] work.
 * Document in the GitLab vignette that the repository will be automatically
 created the first time the repository is pushed with `wflow_git_push()` (this is
 a feature unique to GitLab)
-
-[git2r]: https://cran.r-project.org/package=git2r
 
 # workflowr 1.3.0
 

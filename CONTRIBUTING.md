@@ -41,6 +41,7 @@ to be executed from the root directory of the package. The convenience scripts
 include:
 
 * `build.sh` runs `R CMD check`
+* `bump-version.R` bumps the version across all the necessary package files
 * `contribute.R` performs some basic checks that should be run before
 contributing a Pull Request
 * `document.R` regenerates the documentation
@@ -48,8 +49,7 @@ contributing a Pull Request
 
 ## Release checklist (for maintainers)
 
-* Bump version in [DESCRIPTION](DESCRIPTION), [NEWS.md](NEWS.md), and
-[the test _workflowr.yml file](tests/testthat/files/test-wflow_update/post/_workflowr.yml)
+* Bump version with [scripts/bump-version.R](scripts/bump-version.R)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs
 * Run [scripts/document.R](scripts/document.R) to update Rd files, install the package locally,

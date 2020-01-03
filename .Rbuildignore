@@ -6,8 +6,6 @@
 ^\.travis\.yml$
 ^\.codecov\.yml$
 ^_pkgdown\.yaml$
-^document\.R$
-\.sh$
 ^LICENSE\.md$
 ^appveyor\.yml$
 tar\.gz$
@@ -17,4 +15,4 @@ tar\.gz$
 ^Meta$
 ^doc$
 ^\.circleci$
-^contribute\.R$
+^scripts$

@@ -122,7 +122,7 @@
 <li>For potentially large changes, please open an Issue first to discuss</li>
 <li>Please follow the <a href="http://adv-r.had.co.nz/Style.html">Hadley style guide</a>
 </li>
-<li>Please run the file <a href="contribute.R">contribute.R</a> to check your changes</li>
+<li>Please run the file <a href="scripts/contribute.R">scripts/contribute.R</a> to check your changes</li>
 <li>(Optional) Run <code><a href="https://rdrr.io/pkg/devtools/man/test.html">devtools::test()</a></code> to run the tests</li>
 <li>(Optional) Add new test(s) in <code>tests/testthat/</code>
 </li>
@@ -132,7 +132,23 @@
 <h2 class="hasAnchor">
 <a href="#more-about-this-repository" class="anchor"></a>More about this repository</h2>
 <p>For the most part, I try to follow the guidelines from <a href="http://r-pkgs.had.co.nz/">R packages</a> by <a href="http://hadley.nz/">Hadley Wickham</a>. The unit tests are performed with <a href="https://github.com/hadley/testthat">testthat</a>, the documentation is built with <a href="https://github.com/klutometis/roxygen">roxygen2</a>, and the online package documentation is created with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>. Continuous integration testing is performed for Linux by <a href="https://circleci.com">CircleCI</a>, for macOS by <a href="https://travis-ci.org/">Travis CI</a>, and for Windows by <a href="https://ci.appveyor.com">AppVeyor</a>. Code coverage is calculated with <a href="https://github.com/jimhester/covr">covr</a> and <a href="https://codecov.io/">Codecov</a>.</p>
-<p>The template files used by <code><a href="reference/wflow_start.html">wflow_start()</a></code> to populate a new project are defined in the list <code>templates</code> in the file <code>R/infrastructure.R</code>. The <a href="https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html">RStudio project template</a> is configured by <code>inst/rstudio/templates/project/wflow_start.dcf</code>. The repository contains the files <code>LICENSE</code> and <code>LICENSE.md</code> to both adhere to <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Licensing">R package conventions for defining the license</a> and also to make the license clear in a more conventional manner (suggestions for improvement welcome). <code>document.R</code> is a convenience script for regenerating the documentation. <code>build.sh</code> is a convenience script for running <code>R CMD check</code>. The remaining directories are standard for R packages as described in the manual <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>.</p>
+<p>The template files used by <code><a href="reference/wflow_start.html">wflow_start()</a></code> to populate a new project are defined in the list <code>templates</code> in the file <code>R/infrastructure.R</code>. The <a href="https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html">RStudio project template</a> is configured by <code>inst/rstudio/templates/project/wflow_start.dcf</code>. The repository contains the files <code>LICENSE</code> and <code>LICENSE.md</code> to both adhere to <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Licensing">R package conventions for defining the license</a> and also to make the license clear in a more conventional manner (suggestions for improvement welcome). The directory <code>scripts/</code> contains convenience scripts for maintaining the R package. The remaining directories are standard for R packages as described in the manual <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>.</p>
+</div>
+<div id="scripts-for-maintaining-the-package" class="section level2">
+<h2 class="hasAnchor">
+<a href="#scripts-for-maintaining-the-package" class="anchor"></a>Scripts for maintaining the package</h2>
+<p>Convenience scripts for maintaining the package are located in <code>scripts/</code>. These are not included in the package tarball for distribution. They are all intended to be executed from the root directory of the package. The convenience scripts include:</p>
+<ul>
+<li>
+<code>build.sh</code> runs <code>R CMD check</code>
+</li>
+<li>
+<code>contribute.R</code> performs some basic checks that should be run before contributing a Pull Request</li>
+<li>
+<code>document.R</code> regenerates the documentation</li>
+<li>
+<code>sed.sh</code> performs search/replace for all R files in the package</li>
+</ul>
 </div>
 <div id="release-checklist-for-maintainers" class="section level2">
 <h2 class="hasAnchor">
@@ -141,9 +157,9 @@
 <li>Bump version in <a href="DESCRIPTION">DESCRIPTION</a>, <a href="NEWS.html">NEWS.md</a>, and <a href="tests/testthat/files/test-wflow_update/post/_workflowr.yml">the test _workflowr.yml file</a>
 </li>
 <li>Update <a href="NEWS.html">NEWS.md</a>: Check <code>git log</code> and make sure to reference GitHub Issues/PRs</li>
-<li>Run <a href="document.R">document.R</a> to update Rd files, install the package locally, and build the online documentation with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>
+<li>Run <a href="scripts/document.R">scripts/document.R</a> to update Rd files, install the package locally, and build the online documentation with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>
 </li>
-<li>Run <a href="build.sh">build.sh</a> to confirm tests pass locally</li>
+<li>Run <a href="scripts/build.sh">scripts/build.sh</a> to confirm tests pass locally</li>
 <li>Test on <a href="https://r-hub.github.io/rhub/">rhub</a>:
 <ul>
 <li>Have to validate email first with <code><a href="https://r-hub.github.io/rhub/reference/validate_email.html">rhub::validate_email()</a></code>. Copy-paste token from email into R console.</li>

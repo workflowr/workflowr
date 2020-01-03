@@ -3,9 +3,9 @@ set -eu
 
 # Utility script for mass replacement of text in R scripts:
 #
-# Usage: bash sed.sh original replacement
+# Usage: bash scripts/sed.sh original replacement
 #
-# Example: bash sed.sh git2r_head git2r::repository_head
+# Example: bash scripts/sed.sh git2r_head git2r::repository_head
 #
 # For regular expressions, easier to just manually run code similar to below.
 # Very difficult to pass regex's via arguments and pass them correctly

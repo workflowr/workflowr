@@ -5,7 +5,7 @@ Here are some guidelines to help make it easier to merge your Pull Request:
 
 * For potentially large changes, please open an Issue first to discuss
 * Please follow the [Hadley style guide][style]
-* Please run the file [contribute.R](contribute.R) to check your changes
+* Please run the file [scripts/contribute.R](scripts/contribute.R) to check your changes
 * (Optional) Run `devtools::test()` to run the tests
 * (Optional) Add new test(s) in `tests/testthat/`
 
@@ -29,10 +29,22 @@ template][pt] is configured by `inst/rstudio/templates/project/wflow_start.dcf`.
 The repository contains the files `LICENSE` and `LICENSE.md` to both adhere to
 [R package conventions for defining the license][r-exts-licensing] and also to
 make the license clear in a more conventional manner (suggestions for
-improvement welcome). `document.R` is a convenience script for regenerating the
-documentation. `build.sh` is a convenience script for running `R CMD check`. The
-remaining directories are standard for R packages as described in the manual
-[Writing R Extensions][r-exts].
+improvement welcome). The directory `scripts/` contains convenience scripts for
+maintaining the R package. The remaining directories are standard for R packages
+as described in the manual [Writing R Extensions][r-exts].
+
+## Scripts for maintaining the package
+
+Convenience scripts for maintaining the package are located in `scripts/`. These
+are not included in the package tarball for distribution. They are all intended
+to be executed from the root directory of the package. The convenience scripts
+include:
+
+* `build.sh` runs `R CMD check`
+* `contribute.R` performs some basic checks that should be run before
+contributing a Pull Request
+* `document.R` regenerates the documentation
+* `sed.sh` performs search/replace for all R files in the package
 
 ## Release checklist (for maintainers)
 
@@ -40,9 +52,9 @@ remaining directories are standard for R packages as described in the manual
 [the test _workflowr.yml file](tests/testthat/files/test-wflow_update/post/_workflowr.yml)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs
-* Run [document.R](document.R) to update Rd files, install the package locally,
+* Run [scripts/document.R](scripts/document.R) to update Rd files, install the package locally,
 and build the online documentation with [pkgdown][]
-* Run [build.sh](build.sh) to confirm tests pass locally
+* Run [scripts/build.sh](scripts/build.sh) to confirm tests pass locally
 * Test on [rhub][]:
     * Have to validate email first with `rhub::validate_email()`. Copy-paste
     token from email into R console.

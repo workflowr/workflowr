@@ -3,8 +3,8 @@
 # Please run this script before you submit your Pull Request on GitHub.
 #
 # Usage:
-#   In the R console: source("contribute.R")
-#   In the terminal: Rscript contribute.R
+#   In the R console: source("scripts/contribute.R")
+#   In the terminal: Rscript scripts/contribute.R
 #   In RStudio: Click on Source (Ctrl/Cmd-Shift-s)
 #
 # Thanks for contributing to workflowr!

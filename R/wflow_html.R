@@ -202,23 +202,6 @@ hook_fig_path <- function(options) {
 # This knit hook inserts a table of previous versions of the figure
 plot_hook <- function(x, options) {
 
-  # Inserts a Bootstrap warning into the HTML file if user set custom fig.path
-  # which gets ignored by workflowr
-  wflow_hook_plot_md <- function(x, options) {
-    expected <- paste0(tools::file_path_sans_ext(knitr::current_input()),
-                       "_files", .Platform$file.sep, "figure-html",
-                       .Platform$file.sep)
-    if (options$fig.path.orig == expected) {
-      return(knitr::hook_plot_md(x, options))
-    }
-
-    fig_path_warning <- "<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr."
-    return(glue::glue("{knitr::hook_plot_md(x, options)}
-                      <div class=\"alert alert-warning\">
-                      {fig_path_warning}
-                      </div>"))
-  }
-
   # Exit early if there is no Git repository
   if (!git2r::in_repository(".")) {
     return(wflow_hook_plot_md(x, options))
@@ -244,6 +227,48 @@ plot_hook <- function(x, options) {
 
   return(paste(c(wflow_hook_plot_md(x, options), fig_versions),
                collapse = "\n"))
+}
+
+# Inserts Bootstrap warning(s) into the HTML file if any of the following
+# issues are detected:
+#
+# * User set custom fig.path which gets ignored by workflowr
+# * Python chunk creates a plot, but using old version of reticulate (< 1.15).
+#   Older versions of reticulate used an absolute path to the figure file, which
+#   caused the images to not be rendered in a non-standalone document.
+wflow_hook_plot_md <- function(x, options) {
+
+  warnings_to_add <- character()
+
+  # Check fig.path
+  expected <- paste0(tools::file_path_sans_ext(knitr::current_input()),
+                     "_files", .Platform$file.sep, "figure-html",
+                     .Platform$file.sep)
+  if (options$fig.path.orig != expected) {
+    warnings_to_add <- c(warnings_to_add,
+                         "<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.")
+  }
+
+  # Check for outdated reticulate
+  if (identical(options$engine, "python") &&
+      !isFALSE(options$python.reticulate) &&
+      requireNamespace("reticulate", quietly = TRUE) &&
+      utils::packageVersion("reticulate") < "1.14.9000") {
+    warnings_to_add <- c(warnings_to_add,
+                         "<strong>Warning!</strong> Please update the R package <a href=\"https://cran.r-project.org/package=reticulate\">reticulate</a> to use Python plots with workflowr")
+  }
+
+  if (length(warnings_to_add) == 0) {
+    return(knitr::hook_plot_md(x, options))
+  }
+
+  # Add alert class
+  warnings_to_add <- paste("<div class=\"alert alert-warning\">",
+                           warnings_to_add,
+                           "</div>")
+  warnings_to_add <- paste(warnings_to_add, collapse = "\n")
+  return(glue::glue("{knitr::hook_plot_md(x, options)}
+                      {warnings_to_add}"))
 }
 
 # This knit hook warns if a chunk has cache=TRUE, autodep=FALSE, dependson=NULL

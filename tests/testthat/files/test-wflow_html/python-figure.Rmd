@@ -1,0 +1,28 @@
+---
+title: "Python figure"
+output: workflowr::wflow_html
+---
+
+```{r r-plot}
+plot(1:10)
+```
+
+```{r configure-python}
+library("reticulate")
+matplotlib <- import("matplotlib")
+matplotlib$use("Agg", force = TRUE)
+```
+
+```{python py-plot}
+import matplotlib.pyplot as plt
+
+x = range(1, 10)
+plt.plot(x, x)
+```
+
+```{python py-plot-w-fig.path, fig.path="to-be-ignored-and-generate-warning"}
+import matplotlib.pyplot as plt
+
+x = range(1, 10)
+plt.plot(x, x)
+```

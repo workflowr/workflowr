@@ -3,6 +3,8 @@
 * Skip test of error handling of deleted working directory on Solaris
 * Update FAQ entry on external images to note that the website directory for
 GitLab Pages is `public/`, not `docs/` (idea from @ryurko)
+* Send warning if Python plots created using outdated version of reticulate (<
+1.15) (bug report from @lazappi, #181)
 
 # workflowr 1.6.1
 

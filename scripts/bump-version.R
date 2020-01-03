@@ -57,5 +57,5 @@ message("* Updating wflow_update() test file")
 test_file <- "tests/testthat/files/test-wflow_update/post/_workflowr.yml"
 lines_in_test <- readLines(test_file)
 lines_out_test <- stringr::str_replace(lines_in_test, "^# Version.*",
-                                       sprintf("# Version: %s", next_version))
+                                       sprintf("# Version %s", next_version))
 writeLines(lines_out_test, test_file)

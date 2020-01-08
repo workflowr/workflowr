@@ -48,6 +48,8 @@ wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".") {
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
+  check_wd_exists()
+
   if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }

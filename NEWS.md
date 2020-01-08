@@ -1,5 +1,8 @@
 # workflowr 1.6.0.9000
 
+* Workflowr functions check if the working directory exists (idea from @pcarbo,
+#185)
+
 # workflowr 1.6.0
 
 ## New features

@@ -56,6 +56,8 @@ wflow_run <- function(file = NULL, verbose = TRUE, project = ".") {
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one-element character vector")
 
+  check_wd_exists()
+
   if (!fs::dir_exists(project)) {
     stop("project directory does not exist.")
   }

@@ -154,6 +154,8 @@ wflow_quickstart <- function(files,
     if (!(is.character(directory) && length(directory) == 1))
       stop("directory must be NULL or a one element character vector: ", directory)
 
+  check_wd_exists()
+
   # Determine directory --------------------------------------------------------
 
   if (is.null(directory)) {

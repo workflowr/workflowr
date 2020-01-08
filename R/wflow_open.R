@@ -85,6 +85,8 @@ wflow_open <- function(files,
   if (!(is.null(project) || (is.character(project) && length(project) == 1)))
     stop("project must be NULL or a one element character vector")
 
+  check_wd_exists()
+
   files <- glob(files)
   files <- absolute(files)
   project <- absolute(project)

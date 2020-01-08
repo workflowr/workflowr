@@ -693,3 +693,21 @@ test_that("is_rmd distinguishes between Rmd and non-Rmd files", {
                          "path/to/file.Rrmd", "path/to/file.rmd")),
     c(FALSE, TRUE, FALSE, TRUE))
 })
+
+# Test check_wd_exists() -------------------------------------------------------
+
+test_that("check_wd_exists throws error if working directory has been deleted", {
+
+  if (.Platform$OS.type == "windows")
+    skip("Current working directory cannot be deleted on Windows")
+
+  cwd <- fs::path_wd()
+  on.exit(setwd(cwd))
+
+  path <- fs::file_temp()
+  fs::dir_create(path)
+  setwd(path)
+  expect_silent(check_wd_exists())
+  fs::dir_delete(path)
+  expect_error(check_wd_exists(), "The current working directory doesn't exist.")
+})

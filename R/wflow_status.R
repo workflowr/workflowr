@@ -137,6 +137,8 @@ wflow_status <- function(files = NULL, include_git_status = TRUE, project = ".")
   if (!(is.logical(include_git_status) && length(include_git_status) == 1))
     stop("include_git_status must be a one-element logical vector")
 
+  check_wd_exists()
+
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one element character vector")
   if (!fs::dir_exists(project))

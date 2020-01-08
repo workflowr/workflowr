@@ -329,6 +329,65 @@ test_that("wflow_status gives warning for HTML-only published files", {
   )
 })
 
+test_that("wflow_status fails early if deleted subdirectory is current working directory", {
+
+  if (.Platform$OS.type == "windows")
+    skip("Current working directory cannot be deleted on Windows")
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  cwd <- fs::path_wd()
+  on.exit(setwd(cwd), add = TRUE)
+
+  subdir <- file.path(path, "sub")
+  fs::dir_create(subdir)
+  setwd(subdir)
+  expect_silent(s <- wflow_status())
+  fs::dir_delete(subdir)
+  expect_error(wflow_status(), "The current working directory doesn't exist.")
+})
+
+test_that("wflow_status fails early if deleted root directory is current working directory", {
+
+  if (.Platform$OS.type == "windows")
+    skip("Current working directory cannot be deleted on Windows")
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  cwd <- fs::path_wd()
+  on.exit(setwd(cwd), add = TRUE)
+
+  setwd(path)
+  expect_silent(s <- wflow_status())
+  fs::dir_delete(path)
+  expect_error(wflow_status(), "The current working directory doesn't exist.")
+})
+
+test_that("wflow_status fails early if deleted external directory is current working directory", {
+
+  if (.Platform$OS.type == "windows")
+    skip("Current working directory cannot be deleted on Windows")
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  cwd <- fs::path_wd()
+  on.exit(setwd(cwd), add = TRUE)
+
+  extdir <- fs::file_temp()
+  on.exit(if (fs::dir_exists(extdir)) fs::dir_delete(extdir), add = TRUE)
+  fs::dir_create(extdir)
+  setwd(extdir)
+  expect_silent(s <- wflow_status(project = path))
+  fs::dir_delete(extdir)
+  expect_error(wflow_status(project = path), "The current working directory doesn't exist.")
+})
+
 # Test wflow_paths -------------------------------------------------------------
 
 # Most of this is redundant with wflow_status, so only testing different

@@ -101,6 +101,7 @@ wflow_view <- function(files = NULL, latest = FALSE, dry_run = FALSE,
     stop("dry_run must be a one element logical vector. You entered: ", dry_run)
   if (!(is.character(project) && length(project) == 1))
     stop("project must be a one element character vector. You entered: ", project)
+  check_wd_exists()
   if (!fs::dir_exists(project))
     stop("project does not exist. You entered: ", project)
 

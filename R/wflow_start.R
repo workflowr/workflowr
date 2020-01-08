@@ -273,6 +273,8 @@ wflow_start <- function(directory,
       (!is.null(user.name) && is.null(user.email)))
     stop("Must specify both user.name and user.email, or neither.")
 
+  check_wd_exists()
+
   if (!existing & fs::dir_exists(directory)) {
     stop("Directory already exists. Set existing = TRUE if you wish to add workflowr files to an already existing project.")
   } else if (existing & !fs::dir_exists(directory)) {

@@ -449,3 +449,11 @@ autosave <- function() {
 
   rstudioapi::documentSaveAll()
 }
+
+check_wd_exists <- function() {
+  wd <- fs::path_wd()
+  if (length(fs::path_wd()) == 0)
+    stop("The current working directory doesn't exist.",
+         " Use setwd() to change to an existing directory.",
+         call. = FALSE)
+}

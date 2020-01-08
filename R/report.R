@@ -367,14 +367,31 @@ check_vc <- function(input, r, s, github, output_dir) {
    status <- utils::capture.output(print(s))
    status <- c("<pre><code>", status, "</code></pre>")
    status <- paste(status, collapse = "\n")
-   details <- paste(collpase = "\n",
+   details <-
 "
 <p>
 Great! You are using Git for version control. Tracking code development and
 connecting the code version to the results is critical for reproducibility.
-The version displayed above was the version of the Git repository at the time
-these results were generated.
-<br><br>
+</p>
+"
+   if (sha_display != "No commits yet") {
+     details <- c(details,
+                  glue::glue(
+"<p>The results in this page were generated with version {sha_display}.</p>"
+                  ))
+   }
+   if (!is.na(github)) {
+     rmd_path <- relative(input, start = git2r::workdir(r))
+     rmd_link <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
+                         github, sha, rmd_path, "here")
+     details <- c(details,
+                  glue::glue(
+"<p>Click {rmd_link} to go to the exact version of the R Markdown file that generated the results.</p>"
+                  ))
+   }
+   details <- c(details,
+"
+<p>
 Note that you need to be careful to ensure that all relevant files for the
 analysis have been committed to Git prior to generating the results (you can
 use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only
@@ -382,14 +399,16 @@ checks the R Markdown file, but you know if there are other scripts or data
 files that it depends on. Below is the status of the Git repository when the
 results were generated:
 </p>
+",
+status,
 "
-                , status,
-"<p>
+<p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in
 this status report because it is ok for generated content to have uncommitted
 changes.
 </p>
 ")
+   details <- paste(details, collapse = "\n")
  } else {
    pass <- FALSE
    summary <- "<strong>Repository version:</strong> no version control"

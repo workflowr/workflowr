@@ -188,9 +188,13 @@ get_versions <- function(input, output_dir, r, github) {
 
   template <-
 "
-<p>These are the previous versions of the R Markdown and HTML files. If you've
-configured a remote Git repository (see <code>?wflow_git_remote</code>), click
-on the hyperlinks in the table below to view them.</p>
+<p>
+These are the previous versions of the repository in which changes were made
+to the R Markdown (<code>{{rmd}}</code>) and HTML (<code>{{html}}</code>)
+files. If you've configured a remote Git repository (see
+<code>?wflow_git_remote</code>), click on the hyperlinks in the table below to
+view the files as they were in that past version.
+</p>
 <div class=\"table-responsive\">
 <table class=\"table table-condensed table-hover\">
 <thead>
@@ -216,7 +220,8 @@ on the hyperlinks in the table below to view them.</p>
 </table>
 </div>
 "
-  data <- list(df_versions = unname(whisker::rowSplit(df_versions)))
+  data <- list(rmd = rmd, html = html,
+               df_versions = unname(whisker::rowSplit(df_versions)))
   text <- whisker::whisker.render(template, data)
 
   return(text)
@@ -377,16 +382,11 @@ connecting the code version to the results is critical for reproducibility.
    if (sha_display != "No commits yet") {
      details <- c(details,
                   glue::glue(
-"<p>The results in this page were generated with version {sha_display}.</p>"
-                  ))
-   }
-   if (!is.na(github)) {
-     rmd_path <- relative(input, start = git2r::workdir(r))
-     rmd_link <- sprintf("<a href=\"%s/blob/%s/%s\" target=\"_blank\">%s</a>",
-                         github, sha, rmd_path, "here")
-     details <- c(details,
-                  glue::glue(
-"<p>Click {rmd_link} to go to the exact version of the R Markdown file that generated the results.</p>"
+"<p>
+The results in this page were generated with repository version {sha_display}.
+See the <em>Past versions</em> tab to see a history of the changes made to the
+R Markdown and HTML files.
+</p>"
                   ))
    }
    details <- c(details,

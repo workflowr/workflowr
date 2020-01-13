@@ -304,7 +304,8 @@ wflow_use_github <- function(username = NULL, repository = NULL,
       "2. Create the repository \"{repository}\" yourself by going to https://github.com/new and entering \"{repository}\" for the Repository name. This is the default option."
     )), "\n", sep = "")
 
-    ans <- readline("\nEnter your choice (1 or 2): ")
+    cat("\n")
+    ans <- readline("Enter your choice (1 or 2): ")
     if (ans == "1") {
       create_on_github <- TRUE
       cat("You chose option 1: have workflowr attempt to create repo\n")

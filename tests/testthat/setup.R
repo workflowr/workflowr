@@ -2,8 +2,8 @@
 
 test_setup <- function(path = tempfile()) {
   suppressMessages(
-    wflow_start(path, change_wd = FALSE,
-                user.name = "Test Name", user.email = "test@email"))
+    workflowr:::wflow_start_(path, change_wd = FALSE,
+                             user.name = "Test Name", user.email = "test@email"))
   path <- workflowr:::absolute(path)
   return(path)
 }

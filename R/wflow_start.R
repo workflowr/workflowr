@@ -238,7 +238,6 @@
 #' }
 #'
 #' @export
-#'
 wflow_start <- function(directory,
                         name = NULL,
                         git = TRUE,
@@ -249,6 +248,9 @@ wflow_start <- function(directory,
                         dry_run = FALSE,
                         user.name = NULL,
                         user.email = NULL) {
+
+  # Check input arguments ------------------------------------------------------
+
   if (!is.character(directory) | length(directory) != 1)
     stop("directory must be a one element character vector: ", directory)
   if (!(is.null(name) | (is.character(name) | length(name) != 1)))
@@ -280,13 +282,7 @@ wflow_start <- function(directory,
   # A workflowr directory cannot be created within an existing Git repository if
   # git = TRUE & existing = FALSE.
   if (git & !existing) {
-    # In order to check if location is within an existing Git repository, first
-    # must obtain the most upstream existing directory
-    dir_existing <- obtain_existing_path(directory)
-    if (git2r::in_repository(dir_existing)) {
-      r <- git2r::repository(dir_existing, discover = TRUE)
-      stop("The directory where you have chosen to create a new workflowr directory is already within a Git repository. This is potentially dangerous. If you want to have a workflowr project created within this existing Git repository, re-run wflow_start with `git = FALSE` and then manually commit the new files. The following directory contains the existing .git directory: ", git2r::workdir(r))
-    }
+    check_for_existing_git_directory(directory)
   }
 
   # Require that user.name and user.email be set locally or globally
@@ -303,6 +299,20 @@ wflow_start <- function(directory,
   if (disable_remote && .Platform$OS.type == "windows") {
     stop("disable_remote is not available on Windows")
   }
+
+  do.call(wflow_start_, args = as.list(environment()))
+}
+
+wflow_start_ <- function(directory,
+                        name = NULL,
+                        git = TRUE,
+                        existing = FALSE,
+                        overwrite = FALSE,
+                        change_wd = TRUE,
+                        disable_remote = FALSE,
+                        dry_run = FALSE,
+                        user.name = NULL,
+                        user.email = NULL) {
 
   # Create directory if it doesn't already exist
   if (!existing && !fs::dir_exists(directory) && !dry_run) {
@@ -496,4 +506,21 @@ check_rstudio_version <- function() {
     rs_version <- NULL
   }
   return(rs_version)
+}
+
+check_for_existing_git_directory <- function(directory) {
+  # In order to check if location is within an existing Git repository, first
+  # must obtain the most upstream existing directory
+  dir_existing <- obtain_existing_path(directory)
+  if (git2r::in_repository(dir_existing)) {
+    r <- git2r::repository(dir_existing, discover = TRUE)
+    stop(call. = FALSE,
+      "The directory where you have chosen to create a new workflowr directory",
+      " is already within a Git repository. This is potentially dangerous. If",
+      " you want to have a workflowr project created within this existing Git",
+      " repository, re-run wflow_start with `git = FALSE` and then manually",
+      " commit the new files. The following directory contains the existing .git",
+      " directory: ", git2r::workdir(r))
+  }
+  return(invisible(NULL))
 }

@@ -6,7 +6,8 @@
 \usage{
 wflow_quickstart(
   files,
-  username,
+  username = NULL,
+  organization = NULL,
   supporting_files = NULL,
   directory = NULL,
   change_wd = TRUE,
@@ -26,10 +27,13 @@ will be named after the first Rmd file. This new directory will be located
 in the current working directory. Supports file
 \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.}
 
-\item{username}{character (default: NULL). The GitHub or GitLab account you
-want to use to create the remote Git repository. This is likely your
-personal username, but it could also be the name of an organization you
-belong to.}
+\item{username}{character (default: NULL). The GitHub or GitLab personal
+account you want to use to create the remote Git repository. It can also be
+the name of a GitLab Group that you belong to. However, if it is a GitHub
+organization, instead use the argument \code{organization}.}
+
+\item{organization}{The GitHub organization account you want to use to
+create the remote Git repository.}
 
 \item{supporting_files}{character (default: NULL) Supporting files or
 directories that are used by the Rmd files. These will be copied to the

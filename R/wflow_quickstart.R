@@ -40,10 +40,12 @@
 #'   will be named after the first Rmd file. This new directory will be located
 #'   in the current working directory. Supports file
 #'   \href{https://en.wikipedia.org/wiki/Glob_(programming)}{globbing}.
-#' @param username character (default: NULL). The GitHub or GitLab account you
-#'   want to use to create the remote Git repository. This is likely your
-#'   personal username, but it could also be the name of an organization you
-#'   belong to.
+#' @param username character (default: NULL). The GitHub or GitLab personal
+#'   account you want to use to create the remote Git repository. It can also be
+#'   the name of a GitLab Group that you belong to. However, if it is a GitHub
+#'   organization, instead use the argument \code{organization}.
+#' @param organization  The GitHub organization account you want to use to
+#'   create the remote Git repository.
 #' @param supporting_files character (default: NULL) Supporting files or
 #'   directories that are used by the Rmd files. These will be copied to the
 #'   root of the project. Since by default Rmd files are executed in the root of
@@ -96,7 +98,8 @@
 #'
 #' @export
 wflow_quickstart <- function(files,
-                             username,
+                             username = NULL,
+                             organization = NULL,
                              supporting_files = NULL,
                              directory = NULL,
                              change_wd = TRUE,
@@ -132,8 +135,22 @@ wflow_quickstart <- function(files,
          call. = FALSE)
   }
 
-  if (!(is.character(username) && length(username) == 1))
-    stop("username must be a one-element character vector")
+  if (!is.null(username))
+    if (!(is.character(username) && length(username) == 1))
+      stop("username must be NULL or a one element character vector: ", username)
+
+  if (!is.null(organization))
+    if (!(is.character(organization) && length(organization) == 1))
+      stop("organization must be NULL or a one element character vector: ", organization)
+
+  if (is.character(username) && is.character(organization))
+    stop("Cannot set both username and organization.",
+         " Only one GitHub account can own the repository.")
+
+  if (is.character(organization) && host == "gitlab")
+    stop("Do not use the argument \"organization\" for creating a repository on ",
+         "GitLab. Instead use the argument \"username\" for either a personal or ",
+         "Group account.")
 
   if (!is.null(supporting_files)) {
     if (!(is.character(supporting_files) && length(supporting_files) > 0))
@@ -254,6 +271,7 @@ wflow_quickstart <- function(files,
     # For now, only perform local operations. Attempt to create GitHub repo
     # below after publishing.
     gh_result <- suppressMessages(wflow_use_github(username = username,
+                                                   organization = organization,
                                                    create_on_github = FALSE,
                                                    project = directory))
     message("* Configured local Git repo to host project on GitHub.com")
@@ -275,10 +293,11 @@ wflow_quickstart <- function(files,
 
   if (host == "github") {
     gh_result <- suppressMessages(wflow_use_github(username = username,
+                                                   organization = organization,
                                                    create_on_github = create_on_github,
                                                    project = directory))
     if (!gh_result$repo_created) {
-      message(glue::glue("* To do: Create {username}/{gh_result$repository} on GitHub.com"))
+      message(glue::glue("* To do: Create {gh_result$repository} on GitHub.com"))
     }
   }
 

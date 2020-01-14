@@ -7,6 +7,7 @@
 wflow_use_github(
   username = NULL,
   repository = NULL,
+  organization = NULL,
   navbar_link = TRUE,
   create_on_github = NULL,
   protocol = "https",
@@ -16,8 +17,9 @@ wflow_use_github(
 }
 \arguments{
 \item{username}{character (default: NULL). The GitHub account associated with
-the GitHub repository. This is likely your personal GitHub username, but it
-could also be the name of a GitHub organization you belong to. It will be
+the GitHub repository. This should be your personal GitHub username. If the
+repository will be created for a GitHub organization, instead use the
+argument \code{organization}. It will be
 combined with the arguments \code{repository} and \code{domain} to
 determine the URL of the new repository, e.g. the default is
 https://github.com/username/repository. It will be combined with the
@@ -35,6 +37,11 @@ repository on GitHub. If not specified, workflowr will guess the name of
 the repository. First, it will check the current setting for the remote URL
 named "origin". Second, it will use the name of the root directory of the
 workflowr project.}
+
+\item{organization}{character (default: NULL). The GitHub organization
+associated with the GitHub repository. Only set one of \code{organization}
+or \code{username}. See the argument \code{username} above for more
+details.}
 
 \item{navbar_link}{logical (default: TRUE). Insert a link to the GitHub
 repository into the navigation bar.}
@@ -146,6 +153,9 @@ browser.
 wflow_use_github("your-username", "name-of-repository")
 # Login with GitHub account and create new repository
 wflow_git_push()
+
+# Create a repository for an organization  you belong to
+wflow_use_github(organization = "my-org")
 }
 
 }

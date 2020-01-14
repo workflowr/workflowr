@@ -2,6 +2,10 @@
 
 * Workflowr functions check if the working directory exists (idea from @pcarbo,
 #185)
+* `wflow_use_github()` can now create repositories for GitHub organizations
+using the new argument `organization`. However, GitLab Groups should still be
+specified with the argument `username` for `wflow_use_gitlab()` (bug report from
+@stephens999, #186)
 
 # workflowr 1.6.0
 

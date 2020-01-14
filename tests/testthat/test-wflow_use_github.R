@@ -109,7 +109,22 @@ test_that("wflow_use_github throws error if username not set", {
   )
 })
 
-test_that("wflow_use_github sets correct username", {
+test_that("wflow_use_github throws error if username and organization both set", {
+  path <- test_setup()
+  on.exit(test_teardown(path))
+  username <- "testuser"
+  organization <- "testorg"
+  repository <- "testrepo"
+
+  expect_error(
+    wflow_use_github(username = username, organization = organization,
+                     repository = repository, create_on_github = FALSE,
+                     project = path),
+    "Cannot set both username and organization."
+  )
+})
+
+test_that("wflow_use_github sets correct account", {
   path <- test_setup()
   on.exit(test_teardown(path))
 
@@ -117,15 +132,15 @@ test_that("wflow_use_github sets correct username", {
   wflow_git_remote(remote = "origin", user = "testuser", repo = "testrepo",
                    project = path)
   x1 <- wflow_use_github(create_on_github = FALSE, project = path)
-  expect_identical(x1$username, "testuser")
+  expect_identical(x1$account, "testuser")
   origin <- wflow_git_remote(project = path)["origin"]
   expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
-                                    x1$username, x1$repository))
+                                    x1$account, x1$repository))
 
   # Will override based on input argument
   x2 <- wflow_use_github(username = "argument", create_on_github = FALSE,
                          project = path)
-  expect_identical(x2$username, "argument")
+  expect_identical(x2$account, "argument")
   origin <- wflow_git_remote(project = path)["origin"]
   expect_equivalent(origin, sprintf("https://github.com/%s/%s.git",
                                     x2$username, x2$repository))

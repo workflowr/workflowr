@@ -32,7 +32,7 @@
 #'
 #' @param username character (default: NULL). The GitLab account associated with
 #'   the GitLab repository. This is likely your personal GitLab username, but it
-#'   could also be the name of a GitLab organization you belong to. It will be
+#'   could also be the name of a GitLab Group you belong to. It will be
 #'   combined with the arguments \code{repository} and \code{domain} to
 #'   determine the URL of the new repository, e.g. the default is
 #'   https://gitlab.com/username/repository. It will be combined with the

@@ -493,7 +493,11 @@ authenticate_git <- function(protocol, username = NULL,
   if (protocol == "https" && !dry_run) {
     if (is.null(username)) {
       if (interactive()) {
-        username <- readline("Please enter your username: ")
+        response <- ""
+        while (response == "") {
+          response <- readline("Please enter your username (Esc to cancel): ")
+        }
+        username <- response
       } else {
         m <-
           "No username was specified. Either include the username in the

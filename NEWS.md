@@ -6,6 +6,9 @@
 using the new argument `organization`. However, GitLab Groups should still be
 specified with the argument `username` for `wflow_use_gitlab()` (bug report from
 @stephens999, #186)
+* Any workflowr function that prompts for user input will continue to reprompt
+until valid input has been entered (or canceled by hitting the key `Esc`) (idea
+from @pcarbo)
 
 # workflowr 1.6.0
 

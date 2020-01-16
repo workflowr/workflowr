@@ -329,14 +329,17 @@ wflow_use_github <- function(username = NULL,
     )), "\n", sep = "")
 
     cat("\n")
-    ans <- readline("Enter your choice (1 or 2): ")
-    if (ans == "1") {
-      create_on_github <- TRUE
-      cat("You chose option 1: have workflowr attempt to create repo\n")
-    } else if (ans == "2") {
-      cat("You chose option 2: create the repo yourself\n")
-    } else {
-      cat("Invalid input. Defaulting to option 2: create the repo yourself\n")
+    ans <- ""
+    while(!ans %in% c("1", "2")) {
+      ans <- readline("Enter your choice (1 or 2): ")
+      if (ans == "1") {
+        create_on_github <- TRUE
+        cat("You chose option 1: have workflowr attempt to create repo\n")
+      } else if (ans == "2") {
+        cat("You chose option 2: create the repo yourself\n")
+      } else {
+        cat("Invalid input.\n")
+      }
     }
   }
 

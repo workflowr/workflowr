@@ -298,7 +298,10 @@ print.wflow_git_pull <- function(x, ...) {
     cat("\nThe following file(s) contain conflicts:\n")
     cat(conflicted_files, sep = "\n")
     if (interactive() && rstudioapi::isAvailable(version_needed = "0.99.719")) {
-      ans <- readline("Do you want workflowr to open the conflicting files in RStudio? (y/n/c) ")
+      ans <- ""
+      while(!tolower(ans) %in% c("y", "n")) {
+        ans <- readline("Do you want workflowr to open the conflicting files in RStudio? (y/n) ")
+      }
       if (tolower(ans) == "y") {
         conflicted_lines <- get_conflicted_lines(conflicted_files)
         open_files_rstudio(conflicted_files, conflicted_lines)

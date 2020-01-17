@@ -16,8 +16,9 @@ vignette: >
 
 By default workflowr assumes that the project will be hosted on GitHub, but this
 is not always the case. Users may prefer to use another service or have a
-private git repository hosting instance. This vignette details how to host a
-workflowr project on GitLab. For more details, see the documentation for [GitLab
+private Git repository hosting instance. This vignette details how to host a
+workflowr project on GitLab. Unlike GitHub Pages, GitLab Pages offers both
+public and private sites. For more details, see the documentation for [GitLab
 Pages][gitlab-pages]. Similar steps will be required for other platforms but
 some of the specifics will be different.
 
@@ -26,9 +27,10 @@ some of the specifics will be different.
 ## Step 0: Set up a project
 
 The first thing we need to do is set up the project we want to host. We can do
-this by following the first few steps of the instructions in the
-"Getting started" vignette. When you get to the section [Deploy the website](wflow-01-getting-started.html#deploy-the-website), follow
-the rest of the steps in this vignette.
+this by following the first few steps of the instructions in the "Getting
+started" vignette. When you get to the section [Deploy the
+website](wflow-01-getting-started.html#deploy-the-website), follow the rest of
+the steps in this vignette.
 
 ## Step 1: Create a remote repository on GitLab
 
@@ -88,6 +90,23 @@ If this step has worked correctly you should be able to refresh your GitLab page
 and see all the files in your workflowr project. You can view your site at
 `myname.gitlab.io/myproject/`, replacing with your username and project (note it
 may take a minute for the site to be deployed).
+
+If you skipped Step 1 above, the new repository created during the initial push
+will be private by default. Unless you are working with sensitive data, you
+should consider making the project public so that it is easier to share with
+other researchers (e.g. collaborators, reviewers). You can change the visibility
+by going to `Settings` -> `General` -> `Visibility` and changing `Project
+visibility` to `Public`.
+
+## Access control for private sites
+
+If you need to keep your project private, you can [grant access][access-control]
+to your collaborators by going to `Settings` -> `Members`. You can invite them
+to the project via email, but they'll need a GitLab login to access the source
+code and site. They can login to GitLab using common social sites like Google
+and Twitter.
+
+[access-control]: https://gitlab.com/help/user/project/pages/pages_access_control.md
 
 ## Compatibility with custom GitLab instances
 

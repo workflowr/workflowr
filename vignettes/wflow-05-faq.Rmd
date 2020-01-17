@@ -44,27 +44,25 @@ builds][gh-troubleshooting].
 
 ## Can I make my workflowr website private?
 
-Short answer: Not if you use the default setup that deploys the site on GitHub
-Pages. For alternative deployment options, see the vignette [Alternative
-strategies for deploying workflowr websites][vig-deploy]. It includes options
-for public or private websites.
+Yes. While it it is **not** possible to make a [GitHub Pages][gh-pages] site
+private (the default setup described in the ["Getting Started"
+vignette][vig-getting-started]), there are various other hosting platforms that
+provide access control. Below are the currently documented options, in order of
+least to most amount of technical setup required:
 
-Long answer: Even if you create a private GitHub repository, the website it
-creates is still public. If you're not ready to publish your results online, you
-can always wait and activate GitHub Pages later. In the meantime, you'll still
-have a version-controlled, organized set of results for your project. However,
-the risk that someone that doesn't have the link to your website is able to find
-it is very low. Search engines prioritize the results by how many other sites
-link to a site, so your website will not be high in the results even if you
-search for very specific terms. Thus if you only share the URL to your results
-with your close collaborators, and request that they not share it widely, your
-website is effectively private. That being said, being truly scooped in science
-is rare (at best) and openly sharing your work will help establish your
-expertise in the field (and furthermore establishes your priority), so you
-should consider keeping both your code and website public. The main caveat to
-this advice is if you are analyzing data that contains sensitive or restricted
-information, in which case you should not use GitHub Pages or any other public
-deployment option.
+* You can host a private site on [GitLab Pages][gl-pages] and grant access to
+collaborators. All they need is a GitLab.com account (and they can use a social
+account, e.g. Twitter, to login to GitLab.com) - [Deploy your site with GitLab
+Pages][vig-gitlab]
+* You can use [Beaker Browser][beaker] to securely self-host your site and share
+the link with collaborators - [Deploy your site with Beaker
+Browser][deploy-beaker]
+* You can deploy a password-protected site using [Amazon Web Services][aws]
+(requires familiarity with cloud technologies) - [Deploy your site with
+AWS][deploy-aws]
+
+To see all the currently documented deployment options, see the vignette
+[Alternative strategies for deploying workflowr websites][vig-deploy].
 
 ## How should I manage large data files in a workflowr project?
 
@@ -255,16 +253,6 @@ able to be built with the RStudio button. If you have a use case that you think
 should be supported by `wflow_build()`, please open an [Issue][issues] and
 provide a small reproducible example.
 
-## Can I share workflowr websites directly with collaborators in a secure fashion?
-
-Yes. Please see these [instructions][deploy-beaker] for deploying a workflowr
-project securely with [Beaker Browser][beaker].
-
-## Can I password-protect my website?
-
-Yes. Please see these [instructions][deploy-aws] for deploying a workflowr
-project with password-protection using [Amazon S3][s3].
-
 ## How should I install packages to use with a workflowr project?
 
 When you start a new workflowr project with `wflow_start()`, it automatically
@@ -427,6 +415,7 @@ most natural to you.
 Workflowr should be capitalized at the beginning of a sentence, but otherwise
 the lowercase workflowr should be the preferred option.
 
+[aws]: https://aws.amazon.com/s3/
 [beaker]: https://beakerbrowser.com/
 [Bootstrap]: http://getbootstrap.com/
 [deploy-aws]: wflow-08-deploy.html#amazon-s3-password-protected
@@ -434,8 +423,10 @@ the lowercase workflowr should be the preferred option.
 [gh-pages]: https://pages.github.com/
 [gh-status]: https://twitter.com/githubstatus
 [gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
+[gl-pages]: https://docs.gitlab.com/ce/user/project/pages/index.html
 [issues]: https://github.com/jdblischak/workflowr/issues
 [rmarkdown]: http://rmarkdown.rstudio.com/
-[s3]: https://aws.amazon.com/s3/
 [vig-data]: wflow-10-data.html
 [vig-deploy]: wflow-08-deploy.html
+[vig-getting-started]: wflow-01-getting-started.html
+[vig-gitlab]: wflow-06-gitlab.html

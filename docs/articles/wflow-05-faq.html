@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9000</span>
       </span>
     </div>
 
@@ -77,10 +77,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Frequently asked questions</h1>
-            <h3 class="subtitle">workflowr version 1.6.0</h3>
+            <h3 class="subtitle">workflowr version 1.6.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-12-18</h4>
+            <h4 class="date">2020-01-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-05-faq.Rmd"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -106,8 +106,16 @@
 <div id="can-i-make-my-workflowr-website-private" class="section level2">
 <h2 class="hasAnchor">
 <a href="#can-i-make-my-workflowr-website-private" class="anchor"></a>Can I make my workflowr website private?</h2>
-<p>Short answer: Not if you use the default setup that deploys the site on GitHub Pages. For alternative deployment options, see the vignette <a href="wflow-08-deploy.html">Alternative strategies for deploying workflowr websites</a>. It includes options for public or private websites.</p>
-<p>Long answer: Even if you create a private GitHub repository, the website it creates is still public. If you’re not ready to publish your results online, you can always wait and activate GitHub Pages later. In the meantime, you’ll still have a version-controlled, organized set of results for your project. However, the risk that someone that doesn’t have the link to your website is able to find it is very low. Search engines prioritize the results by how many other sites link to a site, so your website will not be high in the results even if you search for very specific terms. Thus if you only share the URL to your results with your close collaborators, and request that they not share it widely, your website is effectively private. That being said, being truly scooped in science is rare (at best) and openly sharing your work will help establish your expertise in the field (and furthermore establishes your priority), so you should consider keeping both your code and website public. The main caveat to this advice is if you are analyzing data that contains sensitive or restricted information, in which case you should not use GitHub Pages or any other public deployment option.</p>
+<p>Yes. While it it is <strong>not</strong> possible to make a <a href="https://pages.github.com/">GitHub Pages</a> site private (the default setup described in the <a href="wflow-01-getting-started.html">“Getting Started” vignette</a>), there are various other hosting platforms that provide access control. Below are the currently documented options, in order of least to most amount of technical setup required:</p>
+<ul>
+<li>You can host a private site on <a href="https://docs.gitlab.com/ce/user/project/pages/index.html">GitLab Pages</a> and grant access to collaborators. All they need is a GitLab.com account (and they can use a social account, e.g. Twitter, to login to GitLab.com) - <a href="wflow-06-gitlab.html">Deploy your site with GitLab Pages</a>
+</li>
+<li>You can use <a href="https://beakerbrowser.com/">Beaker Browser</a> to securely self-host your site and share the link with collaborators - <a href="wflow-08-deploy.html#beaker-browser-secure-sharing">Deploy your site with Beaker Browser</a>
+</li>
+<li>You can deploy a password-protected site using <a href="https://aws.amazon.com/s3/">Amazon Web Services</a> (requires familiarity with cloud technologies) - <a href="wflow-08-deploy.html#amazon-s3-password-protected">Deploy your site with AWS</a>
+</li>
+</ul>
+<p>To see all the currently documented deployment options, see the vignette <a href="wflow-08-deploy.html">Alternative strategies for deploying workflowr websites</a>.</p>
 </div>
 <div id="how-should-i-manage-large-data-files-in-a-workflowr-project" class="section level2">
 <h2 class="hasAnchor">
@@ -209,16 +217,6 @@ ggsave("paper/plot-to-edit.pdf", width = 5, height = 5)
 <a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button" class="anchor"></a>Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</h2>
 <p><code><a href="../reference/wflow_build.html">wflow_build()</a></code> is designed to have the same functionality as the Knit HTML button in RStudio, namely that it knits the HTML file in a separate R session to avoid any clashes with variables or packages in use in the current R session. However, the technical implementations are not identical, and thus informally we have noticed the behavior of the two options occasionally differs. At the moment, we believe that if the file results in an error when using <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, the file needs to be fixed, regardless of whether the file is able to be built with the RStudio button. If you have a use case that you think should be supported by <code><a href="../reference/wflow_build.html">wflow_build()</a></code>, please open an <a href="https://github.com/jdblischak/workflowr/issues">Issue</a> and provide a small reproducible example.</p>
 </div>
-<div id="can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion" class="section level2">
-<h2 class="hasAnchor">
-<a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion" class="anchor"></a>Can I share workflowr websites directly with collaborators in a secure fashion?</h2>
-<p>Yes. Please see these <a href="wflow-08-deploy.html#beaker-browser-secure-sharing">instructions</a> for deploying a workflowr project securely with <a href="https://beakerbrowser.com/">Beaker Browser</a>.</p>
-</div>
-<div id="can-i-password-protect-my-website" class="section level2">
-<h2 class="hasAnchor">
-<a href="#can-i-password-protect-my-website" class="anchor"></a>Can I password-protect my website?</h2>
-<p>Yes. Please see these <a href="wflow-08-deploy.html#amazon-s3-password-protected">instructions</a> for deploying a workflowr project with password-protection using <a href="https://aws.amazon.com/s3/">Amazon S3</a>.</p>
-</div>
 <div id="how-should-i-install-packages-to-use-with-a-workflowr-project" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-should-i-install-packages-to-use-with-a-workflowr-project" class="anchor"></a>How should I install packages to use with a workflowr project?</h2>
@@ -315,8 +313,6 @@ output:
       <li><a href="#can-i-change-x-on-my-website">Can I change “X” on my website?</a></li>
       <li><a href="#how-can-i-suppress-the-workflowr-report">How can I suppress the workflowr report?</a></li>
       <li><a href="#why-am-i-not-getting-the-same-result-with-wflow_build-as-with-the-rstudio-knit-html-button">Why am I not getting the same result with wflow_build() as with the RStudio Knit HTML button?</a></li>
-      <li><a href="#can-i-share-workflowr-websites-directly-with-collaborators-in-a-secure-fashion">Can I share workflowr websites directly with collaborators in a secure fashion?</a></li>
-      <li><a href="#can-i-password-protect-my-website">Can I password-protect my website?</a></li>
       <li><a href="#how-should-i-install-packages-to-use-with-a-workflowr-project">How should I install packages to use with a workflowr project?</a></li>
       <li><a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files">Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</a></li>
       <li><a href="#can-i-use-r-notebooks-with-workflowr">Can I use R notebooks with workflowr?</a></li>

@@ -172,23 +172,12 @@ wflow_build <- function(files = NULL, make = is.null(files),
       stop(wrap("File extensions must be either Rmd or rmd."))
   }
 
-  if (!(is.logical(make) && length(make) == 1))
-    stop("make must be a one-element logical vector")
-
-  if (!(is.logical(update) && length(update) == 1))
-    stop("update must be a one-element logical vector")
-
-  if (!(is.logical(republish) && length(republish) == 1))
-    stop("republish must be a one-element logical vector")
-
-  if (!(is.logical(view) && length(view) == 1))
-    stop("view must be a one-element logical vector")
-
-  if (!(is.logical(clean_fig_files) && length(clean_fig_files) == 1))
-    stop("clean_fig_files must be a one-element logical vector")
-
-  if (!(is.logical(delete_cache) && length(delete_cache) == 1))
-    stop("delete_cache must be a one-element logical vector")
+  assert_is_flag(make)
+  assert_is_flag(update)
+  assert_is_flag(republish)
+  assert_is_flag(view)
+  assert_is_flag(clean_fig_files)
+  assert_is_flag(delete_cache)
 
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
@@ -201,24 +190,11 @@ wflow_build <- function(files = NULL, make = is.null(files),
   log_dir <- absolute(log_dir)
   fs::dir_create(log_dir)
 
-  if (!(is.logical(verbose) && length(verbose) == 1))
-    stop("verbose must be a one-element logical vector")
-
-  if (!(is.logical(local) && length(local) == 1))
-    stop("local must be a one-element logical vector")
-
-  if (!(is.logical(dry_run) && length(dry_run) == 1))
-    stop("dry_run must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(verbose)
+  assert_is_flag(local)
+  assert_is_flag(dry_run)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Check to see if pandoc is installed

@@ -9,41 +9,44 @@ assert_is_flag <- function(argument, env = environment()) {
 assert_not_null <- function(argument, env = environment()) {
   if (is_null(argument)) {
     argument_name <- deparse(substitute(argument, env = env))
-    stop("Invalid input for argument ", argument_name,
-         "\nExpected input: not NULL",
-         "\nObserved input: NULL",
-         call. = FALSE)
+    expected <- "not NULL"
+    observed <- "NULL"
+    stop_for_assert(argument_name, expected, observed)
   }
 }
 
 assert_not_na <- function(argument, env = environment()) {
   if (is_na(argument)) {
     argument_name <- deparse(substitute(argument, env = env))
-    stop("Invalid input for argument ", argument_name,
-         "\nExpected input: not NA",
-         "\nObserved input: NA",
-         call. = FALSE)
+    expected <- "not NA"
+    observed <- "NA"
+    stop_for_assert(argument_name, expected, observed)
   }
 }
 
 assert_is_logical <- function(argument, env = environment()) {
   if (!is_logical(argument)) {
     argument_name <- deparse(substitute(argument, env = env))
-    stop("Invalid input for argument ", argument_name,
-         "\nExpected input: logical vector",
-         "\nObserved input: ", deparse(argument),
-         call. = FALSE)
+    expected <- "logical vector"
+    observed <- deparse(argument)
+    stop_for_assert(argument_name, expected, observed)
   }
 }
 
 assert_has_length <- function(argument, required_length, env = environment()) {
   if (!has_length(argument, required_length)) {
     argument_name <- deparse(substitute(argument, env = env))
-    stop("Invalid input for argument ", argument_name,
-         "\nExpected input: vector with length ", required_length,
-         "\nObserved input: vector with length ", length(argument),
-         call. = FALSE)
+    expected <- paste("vector with length", required_length)
+    observed <- paste("vector with length", length(argument))
+    stop_for_assert(argument_name, expected, observed)
   }
+}
+
+stop_for_assert <- function(argument_name, expected, observed) {
+  stop("Invalid input for argument ", argument_name,
+       "\nExpected input: ", expected,
+       "\nObserved input: ", observed,
+       call. = FALSE)
 }
 
 is_null <- function(argument) {

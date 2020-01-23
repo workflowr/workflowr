@@ -100,24 +100,11 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
     stop("message must be NULL or a character vector")
   }
 
-  if (!(is.logical(all) && length(all) == 1))
-    stop("all must be a one-element logical vector")
-
-  if (!(is.logical(force) && length(force) == 1))
-    stop("force must be a one-element logical vector")
-
-  if (!(is.logical(dry_run) && length(dry_run) == 1))
-    stop("dry_run must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(all)
+  assert_is_flag(force)
+  assert_is_flag(dry_run)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Fail early if no Git repository

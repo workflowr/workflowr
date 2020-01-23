@@ -1,5 +1,7 @@
 context("assertions")
 
+# assert_is_flag() -------------------------------------------------------------
+
 test_that("assert_is_flag accepts flag arguments", {
   arg_name <- TRUE
   expect_silent(assert_is_flag(arg_name))
@@ -41,4 +43,42 @@ test_that("assert_is_flag returns original argument name of calling function", {
   expect_error(wflow_start(path, git = 1), "git")
   expect_error(wflow_start(path, git = letters), "git")
   expect_error(wflow_start(path, git = c(TRUE, TRUE)), "git")
+})
+
+# assert_is_single_directory() -------------------------------------------------------------
+
+test_that("assert_is_single_directory accepts directory arguments", {
+  directory_name <- fs::file_temp()
+  fs::dir_create(directory_name)
+  expect_silent(assert_is_single_directory(directory_name))
+})
+
+test_that("assert_is_single_directory throws error for non-directory arguments", {
+  arg_name <- NULL
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "not NULL")
+  arg_name <- c(NULL, NULL)
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "not NULL")
+  arg_name <- NA
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "not NA")
+  arg_name <- c(NA, NA)
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "not NA")
+  arg_name <- 1
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "character vector")
+  arg_name <- 1:3
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "character vector")
+  arg_name <- letters
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "vector with length 1")
+  arg_name <- c(FALSE, TRUE)
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "character vector")
+  arg_name <- "path/to/non-existent-directory"
+  expect_error(assert_is_single_directory(arg_name), "arg_name")
+  expect_error(assert_is_single_directory(arg_name), "directory")
 })

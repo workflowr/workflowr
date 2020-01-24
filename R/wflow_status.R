@@ -117,32 +117,12 @@
 #' @export
 wflow_status <- function(files = NULL, include_git_status = TRUE, project = ".") {
 
-  if (!is.null(files)) {
-    if (!(is.character(files) && length(files) > 0))
-      stop("files must be NULL or a character vector of filenames")
-    if (any(fs::dir_exists(files)))
-      stop("files cannot include a path to a directory")
-    files <- glob(files)
-    if (!all(fs::file_exists(files)))
-      stop("Not all files exist. Check the paths to the files")
-    # Change filepaths to relative paths
-    files <- relative(files)
-    # Check for valid file extensions
-    ext <- tools::file_ext(files)
-    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
-    if (any(ext_wrong))
-      stop(wrap("File extensions must be either Rmd or rmd."))
-  }
+  files <- process_input_files(files, allow_null = TRUE, rmd_only = TRUE,
+                               convert_to_relative_paths = TRUE)
 
-  if (!(is.logical(include_git_status) && length(include_git_status) == 1))
-    stop("include_git_status must be a one-element logical vector")
-
+  assert_is_flag(include_git_status)
   check_wd_exists()
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one element character vector")
-  if (!fs::dir_exists(project))
-    stop("project does not exist.")
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   if (isTRUE(getOption("workflowr.autosave"))) autosave()

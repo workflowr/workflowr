@@ -65,14 +65,9 @@ wflow_update <- function(dry_run = TRUE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
-  if (!(is.logical(dry_run) && length(dry_run) == 1))
-    stop("dry_run must be a one element logical vector. You entered: ", dry_run)
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one element character vector. You entered: ", project)
+  assert_is_flag(dry_run)
   check_wd_exists()
-  if (!fs::dir_exists(project))
-    stop("project does not exist. You entered: ", project)
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   if (dry_run) {

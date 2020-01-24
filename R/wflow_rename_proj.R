@@ -59,33 +59,14 @@ wflow_rename_proj <- function(name,
   if (!(is.character(name) && length(name) == 1))
     stop("name must be NULL or a one element character vector: ", name)
 
-  if (!(is.logical(rproj) && length(rproj) == 1))
-    stop("rproj must be a one-element logical vector")
-
-  if (!(is.logical(remote) && length(remote) == 1))
-    stop("remote must be a one-element logical vector")
-
-  if (!(is.logical(navbar) && length(navbar) == 1))
-    stop("navbar must be a one-element logical vector")
-
-  if (!(is.logical(readme) && length(readme) == 1))
-    stop("readme must be a one-element logical vector")
-
-  if (!(is.logical(commit) && length(commit) == 1))
-    stop("commit must be a one-element logical vector")
-
-  if (!(is.logical(directory) && length(directory) == 1))
-    stop("directory must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(rproj)
+  assert_is_flag(remote)
+  assert_is_flag(navbar)
+  assert_is_flag(readme)
+  assert_is_flag(commit)
+  assert_is_flag(directory)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   message("Summary from wflow_rename_proj():")

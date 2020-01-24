@@ -76,26 +76,16 @@ wflow_open <- function(files,
 
   # Check input arguments ------------------------------------------------------
 
-  if (!is.character(files))
-    stop("files must be a character vector")
-  if (!(is.logical(change_wd) && length(change_wd) == 1))
-    stop("change_wd must be a one element logical vector")
-  if (!(is.logical(edit_in_rstudio) && length(edit_in_rstudio) == 1))
-    stop("edit_in_rstudio must be a one element logical vector")
-  if (!(is.null(project) || (is.character(project) && length(project) == 1)))
-    stop("project must be NULL or a one element character vector")
-
+  files <- process_input_files(files, rmd_only = TRUE, must_exist = FALSE)
+  files <- absolute(files)
+  assert_is_flag(change_wd)
+  assert_is_flag(edit_in_rstudio)
   check_wd_exists()
 
-  files <- glob(files)
-  files <- absolute(files)
-  project <- absolute(project)
-
-  # Check file extensions
-  extensions <- tools::file_ext(files)
-  non_standard <- !(extensions %in% c("Rmd", "rmd"))
-  if (any(non_standard))
-    stop("R Markdown files must have the extension Rmd or rmd.")
+  if (!is.null(project)) {
+    assert_is_single_directory(project)
+    project <- absolute(project)
+  }
 
   files_new <- files[!fs::file_exists(files)]
 
@@ -106,11 +96,6 @@ wflow_open <- function(files,
     knit_directory <- NULL
   } else {
     # If project is set, find the knit directory
-
-    # Confirm that project exists
-    if (!fs::dir_exists(project)) {
-      stop("project does not exist: ", project)
-    }
 
     # Confirm project is a valid workflowr project
     tryCatch(p <- wflow_paths(project = project),

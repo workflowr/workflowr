@@ -106,27 +106,12 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
   if (!(is.null(password) || (is.character(password) && length(password) == 1)))
     stop("password must be NULL or a one-element character vector")
 
-  if (!(is.logical(force) && length(force) == 1))
-    stop("force must be a one-element logical vector")
-
-  if (!(is.logical(set_upstream) && length(set_upstream) == 1))
-    stop("set_upstream must be a one-element logical vector")
-
-  if (!(is.logical(view) && length(view) == 1))
-    stop("view must be a one-element logical vector")
-
-  if (!(is.logical(dry_run) && length(dry_run) == 1))
-    stop("dry_run must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(force)
+  assert_is_flag(set_upstream)
+  assert_is_flag(view)
+  assert_is_flag(dry_run)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Assess status of repository ------------------------------------------------

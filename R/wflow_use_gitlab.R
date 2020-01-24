@@ -100,18 +100,16 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
     if (!(is.character(repository) && length(repository) == 1))
       stop("repository must be NULL or a one element character vector: ", repository)
 
-  if (!(is.logical(navbar_link) && length(navbar_link) == 1))
-    stop("navbar_link must be a one-element logical vector")
+  assert_is_flag(navbar_link)
 
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
+  if (!(is.character(protocol) && length(protocol) == 1))
+    stop("protocol must be a one element character vector: ", protocol)
+
+  if (!(is.character(domain) && length(domain) == 1))
+    stop("domain must be a one element character vector: ", domain)
 
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Status ---------------------------------------------------------------------

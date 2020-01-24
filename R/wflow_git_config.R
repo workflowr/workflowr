@@ -69,14 +69,17 @@ wflow_git_config <- function(user.name = NULL, user.email = NULL, ...,
 
   # Check input arguments ------------------------------------------------------
 
-  if (!(is.null(user.name) || (is.character(user.name) && length(user.name) == 1)))
-    stop("user.name must be NULL or a one-element character vector")
+  if (!is.null(user.name)) {
+    assert_is_character(user.name)
+    assert_has_length(user.name, 1)
+  }
 
-  if (!(is.null(user.email) || (is.character(user.email) && length(user.email) == 1)))
-    stop("user.email must be NULL or a one-element character vector")
+  if (!is.null(user.email)) {
+    assert_is_character(user.email)
+    assert_has_length(user.email, 1)
+  }
 
-  if (!(is.logical(overwrite) && length(overwrite) == 1))
-    stop("overwrite must be a one-element logical vector")
+  assert_is_flag(overwrite)
 
   # Create .gitconfig on Windows -----------------------------------------------
 

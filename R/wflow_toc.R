@@ -39,21 +39,10 @@ wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
-  if (!(is.logical(ignore_nav_bar) && length(ignore_nav_bar) == 1))
-    stop("ignore_nav_bar must be a one-element logical vector")
-
-  if (!(is.logical(clipboard) && length(clipboard) == 1))
-    stop("clipboard must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(ignore_nav_bar)
+  assert_is_flag(clipboard)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Create table of contents ---------------------------------------------------

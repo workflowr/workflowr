@@ -34,33 +34,13 @@
 #' @export
 wflow_run <- function(file = NULL, verbose = TRUE, project = ".") {
 
-  if (!is.null(file)) {
-    if (!(is.character(file) && length(file) == 1))
-      stop("file must be NULL or a character vector with one filename")
-    if (fs::dir_exists(file))
-      stop("file cannot be a path to a directory")
-    if (!fs::file_exists(file))
-      stop("The file must exist. Check the path to the file")
-    # Change filepaths to relative paths
-    file <- relative(file)
-    # Check for valid file extensions
-    ext <- tools::file_ext(file)
-    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
-    if (ext_wrong)
-      stop(wrap("File extensions must be either Rmd or rmd."))
-  }
+  file <- process_input_files(file, allow_null = TRUE, rmd_only = TRUE,
+                              convert_to_relative_paths = TRUE)
 
-  if (!(is.logical(verbose) && length(verbose) == 1))
-    stop("verbose must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(verbose)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
+  assert_is_single_directory(project)
+  project <- absolute(project)
 
   # If file not specfied, get the most recently modified file
   if (is.null(file)) {
@@ -71,6 +51,8 @@ wflow_run <- function(file = NULL, verbose = TRUE, project = ".") {
     files_modified <- fs::file_info(files_analysis)$modification_time
     file <- files_analysis[which.max(files_modified)]
   }
+
+  assert_has_length(file, 1)
 
   # Determine knit directory
   wd <- getwd()

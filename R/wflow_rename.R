@@ -62,15 +62,11 @@ wflow_rename <- function(files,
 
   # Check input arguments ------------------------------------------------------
 
-  if (!(is.character(files) && length(files) > 0))
-    stop("files must be a character vector of filenames")
-  files <- glob(files)
-  if (!all(fs::file_exists(files) | fs::dir_exists(files)))
-    stop("Not all files exist. Check the paths to the files")
-  # Change filepaths to relative paths
-  files <- relative(files)
+  files <- process_input_files(files, files_only = FALSE,
+                               convert_to_relative_paths = TRUE)
 
-  if (!(is.character(to) && length(to) == length(files)))
+  assert_is_character(to)
+  if (length(to) != length(files))
     stop("to must be a character vector of filenames the same length as files")
   # Warning: this will not resolve symlinks since the files do not yet exist
   to <- relative(to)
@@ -84,21 +80,10 @@ wflow_rename <- function(files,
     stop("message must be NULL or a character vector")
   }
 
-  if (!(is.logical(git) && length(git) == 1))
-    stop("git must be a one-element logical vector")
-
-  if (!(is.logical(dry_run) && length(dry_run) == 1))
-    stop("dry_run must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(git)
+  assert_is_flag(dry_run)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Assess project status ------------------------------------------------------

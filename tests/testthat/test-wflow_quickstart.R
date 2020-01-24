@@ -266,7 +266,7 @@ test_that("wflow_quickstart only accepts Rmd files", {
 
   expect_error(
     wflow_quickstart(c(rmd, nonrmd)),
-    glue::glue("{fs::path_file(nonrmd)}")
+    "File extensions must be either Rmd or rmd."
   )
 
   directory <- fs::file_temp()
@@ -275,7 +275,7 @@ test_that("wflow_quickstart only accepts Rmd files", {
 
   expect_error(
     wflow_quickstart(c(rmd, directory)),
-    glue::glue("{fs::path_file(directory)}")
+    "files cannot include a path to a directory"
   )
 
 })

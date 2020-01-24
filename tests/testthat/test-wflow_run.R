@@ -82,7 +82,7 @@ test_that("wflow_run fails if passed more than one file or non-Rmd", {
                          glob = "*Rmd")
   expect_error(
     wflow_run(file = multiple, project = path),
-    "file must be NULL or a character vector with one filename"
+    "vector with length equal to 1"
   )
 
   non_rmd <- file.path(path, "README.md")
@@ -97,30 +97,30 @@ test_that("wflow_run fails with obviously bad input", {
   # file
   expect_error(
     wflow_run(file = 1),
-    "file must be NULL or a character vector with one filename"
+    "character vector"
   )
   expect_error(
     wflow_run(file = fs::path_temp()),
-    "file cannot be a path to a directory"
+    "files cannot include a path to a directory"
   )
   expect_error(
     wflow_run(file = fs::file_temp()),
-    "The file must exist. Check the path to the file"
+    "Not all files exist. Check the paths to the files"
   )
 
   # verbose
   expect_error(
     wflow_run(verbose = 1),
-    "verbose must be a one-element logical vector"
+    "logical vector"
   )
 
   # project
   expect_error(
     wflow_run(project = 1),
-    "project must be a one-element character vector"
+    "character vector"
   )
   expect_error(
     wflow_run(project = fs::file_temp()),
-    "project directory does not exist."
+    "directory"
   )
 })

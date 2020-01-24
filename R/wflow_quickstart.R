@@ -115,25 +115,7 @@ wflow_quickstart <- function(files,
 
   # Check input arguments ------------------------------------------------------
 
-  if (!(is.character(files) && length(files) > 0))
-      stop("files must be a character vector of filenames")
-  files <- glob(files)
-  if (!all(fs::file_exists(files)))
-    stop("Not all files exist. Check the paths to the files")
-  files <- absolute(files)
-  dir <- fs::is_dir(files)
-  if (any(dir)) {
-    stop("The argument `files` does not accept directories.\n",
-         "Instead use file globs to input multiple Rmd files.",
-         glue::glue("Directory: {fs::path_file(files[dir][1])}"),
-         call. = FALSE)
-  }
-  rmd <- is_rmd(files)
-  if (any(!rmd)) {
-    stop("The argument `files` only accepts R Markdown files\n",
-         glue::glue("Problem file: {fs::path_file(files[!rmd][1])}"),
-         call. = FALSE)
-  }
+  files <- process_input_files(files, rmd_only = TRUE)
 
   if (!is.null(username))
     if (!(is.character(username) && length(username) == 1))
@@ -152,20 +134,12 @@ wflow_quickstart <- function(files,
          "GitLab. Instead use the argument \"username\" for either a personal or ",
          "Group account.")
 
-  if (!is.null(supporting_files)) {
-    if (!(is.character(supporting_files) && length(supporting_files) > 0))
-      stop("supporting_files must be a character vector of files and/or directories")
-    supporting_files <- glob(supporting_files)
-    if (!all(fs::file_exists(supporting_files)))
-      stop("Not all supporting files exist. Check the paths to the files")
-    supporting_files <- absolute(supporting_files)
-  }
+  supporting_files <- process_input_files(supporting_files, allow_null = TRUE,
+                                          files_only = FALSE)
+  supporting_files <- absolute(supporting_files)
 
-  if (!(is.logical(delete_on_error) && length(delete_on_error) == 1))
-    stop("delete_on_error must be a one-element logical vector")
-
-  if (!(is.logical(view) && length(view) == 1))
-    stop("view must be a one-element logical vector")
+  assert_is_flag(delete_on_error)
+  assert_is_flag(view)
 
   if (!is.null(directory))
     if (!(is.character(directory) && length(directory) == 1))

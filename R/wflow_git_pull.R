@@ -100,21 +100,10 @@ wflow_git_pull <- function(remote = NULL, branch = NULL, username = NULL,
   if (!(is.null(password) || (is.character(password) && length(password) == 1)))
     stop("password must be NULL or a one-element character vector")
 
-  if (!(is.logical(fail) && length(fail) == 1))
-    stop("fail must be a one-element logical vector")
-
-  if (!(is.logical(dry_run) && length(dry_run) == 1))
-    stop("dry_run must be a one-element logical vector")
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
+  assert_is_flag(fail)
+  assert_is_flag(dry_run)
   check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
-  }
-
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Assess status of repository ------------------------------------------------

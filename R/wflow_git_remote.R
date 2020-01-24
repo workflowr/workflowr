@@ -80,14 +80,10 @@ wflow_git_remote <- function(remote = NULL, user = NULL, repo = NULL,
     stop("action must be add, remove, or set_url. You entered: ", action)
   if (!is.character(domain) | length(domain) != 1)
     stop("domain must be a one element character vector. You entered: ", domain)
-  if (!is.logical(verbose) | length(verbose) != 1)
-    stop("verbose must be a one element logical vector. You entered: ", verbose)
-  if (!is.character(project) | length(project) != 1)
-    stop("project must be a one element character vector. You entered: ", project)
-  check_wd_exists()
-  if (!fs::dir_exists(project))
-    stop("project does not exist. You entered: ", project)
 
+  assert_is_flag(verbose)
+  check_wd_exists()
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   if (!git2r::in_repository(project))

@@ -158,22 +158,19 @@ wflow_use_github <- function(username = NULL,
     if (!(is.character(organization) && length(organization) == 1))
       stop("organization must be NULL or a one element character vector: ", organization)
 
-  if (!(is.logical(navbar_link) && length(navbar_link) == 1))
-    stop("navbar_link must be a one-element logical vector")
-
-  if (!is.null(create_on_github))
-    if (!(is.logical(create_on_github) && length(create_on_github) == 1))
-      stop("create_on_github must be NULL or a one element character vector: ", create_on_github)
-
-  if (!(is.character(project) && length(project) == 1))
-    stop("project must be a one-element character vector")
-
-  check_wd_exists()
-
-  if (!fs::dir_exists(project)) {
-    stop("project directory does not exist.")
+  assert_is_flag(navbar_link)
+  if (!is.null(create_on_github)) {
+    assert_is_flag(create_on_github)
   }
 
+  if (!(is.character(protocol) && length(protocol) == 1))
+    stop("protocol must be a one element character vector: ", protocol)
+
+  if (!(is.character(domain) && length(domain) == 1))
+    stop("domain must be a one element character vector: ", domain)
+
+  check_wd_exists()
+  assert_is_single_directory(project)
   project <- absolute(project)
 
   # Status ---------------------------------------------------------------------

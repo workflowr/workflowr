@@ -81,15 +81,8 @@
 wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
                              force = FALSE, dry_run = FALSE, project = ".") {
 
-  if (!is.null(files)) {
-    if (!(is.character(files) && length(files) > 0))
-      stop("files must be NULL or a character vector of filenames")
-    files <- glob(files)
-    if (!all(fs::file_exists(files)))
-      stop("Not all files exist. Check the paths to the files")
-    # Change filepaths to relative paths
-    files <- relative(files)
-  }
+  files <- process_input_files(files, allow_null = TRUE,
+                               convert_to_relative_paths = TRUE)
 
   if (is.null(message)) {
     message <- deparse(sys.call())

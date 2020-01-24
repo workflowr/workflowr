@@ -1,4 +1,65 @@
 
+process_input_files <- function(files,
+                                allow_null = FALSE,
+                                files_only = TRUE,
+                                rmd_only = FALSE,
+                                must_exist = TRUE,
+                                convert_to_relative_paths = FALSE,
+                                expand_glob = TRUE) {
+
+  if (allow_null && is_null(files)) {
+    return(NULL)
+  }
+
+  assert_not_null(files)
+  assert_is_character(files)
+  assert_has_length(files, required_length = 1, comparison = "greater than or equal to")
+
+  if (files_only) {
+    if (any(fs::dir_exists(files))) {
+      stop("files cannot include a path to a directory")
+    }
+  }
+
+  if (expand_glob) {
+    files <- glob(files)
+  }
+
+  if (must_exist) {
+    if (!all(fs::file_exists(files)))
+      stop("Not all files exist. Check the paths to the files")
+  }
+
+  if (convert_to_relative_paths) {
+    files <- relative(files)
+  }
+
+  if (rmd_only) {
+    ext <- tools::file_ext(files)
+    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
+    if (any(ext_wrong))
+      stop(wrap("File extensions must be either Rmd or rmd."))
+  }
+
+  return(files)
+}
+
+assert_is_files_or_null <- function(argument, env = environment()) {
+  if (!is_null(argument)) {
+    assert_is_files(argument, env = env)
+  }
+}
+
+assert_is_files <- function(argument, env = environment()) {
+
+}
+
+# assert_is_flag <- function(argument, env = environment()) {}
+
+assert_is_rmd <- function(argument, env = environment()) {
+  assert_is_files()
+}
+
 assert_is_flag <- function(argument, env = environment()) {
   assert_not_null(argument, env = env)
   assert_not_na(argument, env = env)
@@ -50,10 +111,17 @@ assert_is_character <- function(argument, env = environment()) {
   }
 }
 
-assert_has_length <- function(argument, required_length, env = environment()) {
-  if (!has_length(argument, required_length)) {
+assert_has_length <- function(argument, required_length,
+                              comparison = c("equal to",
+                                             "greater than",
+                                             "greater than or equal to",
+                                             "less than",
+                                             "less than or equal to"),
+                              env = environment()) {
+  comparison <- match.arg(comparison)
+  if (!has_length(argument, required_length, comparison)) {
     argument_name <- deparse(substitute(argument, env = env))
-    expected <- paste("vector with length", required_length)
+    expected <- paste("vector with length", comparison, required_length)
     observed <- paste("vector with length", length(argument))
     stop_for_assert(argument_name, expected, observed)
   }
@@ -95,6 +163,11 @@ is_directory <- function(argument) {
   all(fs::dir_exists(argument))
 }
 
-has_length <- function(argument, required_length) {
-  length(argument) == required_length
+has_length <- function(argument, required_length, comparison) {
+  switch(comparison,
+         `equal to` = length(argument) == required_length,
+         `greater than` = length(argument) > required_length,
+         `greater than or equal to` = length(argument) >= required_length,
+         `less than` = length(argument) < required_length,
+         `less than or equal to` = length(argument) <= required_length)
 }

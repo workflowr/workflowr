@@ -155,22 +155,8 @@ wflow_build <- function(files = NULL, make = is.null(files),
 
   # Check input arguments ------------------------------------------------------
 
-  if (!is.null(files)) {
-    if (!(is.character(files) && length(files) > 0))
-      stop("files must be NULL or a character vector of filenames")
-    if (any(fs::dir_exists(files)))
-      stop("files cannot include a path to a directory")
-    files <- glob(files)
-    if (!all(fs::file_exists(files)))
-      stop("Not all files exist. Check the paths to the files")
-    # Change filepaths to relative paths
-    files <- relative(files)
-    # Check for valid file extensions
-    ext <- tools::file_ext(files)
-    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
-    if (any(ext_wrong))
-      stop(wrap("File extensions must be either Rmd or rmd."))
-  }
+  files <- process_input_files(files, allow_null = TRUE, rmd_only = TRUE,
+                               convert_to_relative_paths = TRUE)
 
   assert_is_flag(make)
   assert_is_flag(update)
@@ -182,13 +168,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   if (!(is.numeric(seed) && length(seed) == 1))
     stop("seed must be a one element numeric vector")
 
-  if (is.null(log_dir)) {
-    log_dir <- file.path(tempdir(), "workflowr")
-  } else if (!(is.character(log_dir) && length(log_dir) == 1)) {
-    stop("log_dir must be NULL or a one element character vector")
-  }
-  log_dir <- absolute(log_dir)
-  fs::dir_create(log_dir)
+  log_dir <- process_log_dir(log_dir)
 
   assert_is_flag(verbose)
   assert_is_flag(local)
@@ -463,4 +443,19 @@ build_rmd <- function(rmd, seed, ...) {
 
   set.seed(seed)
   rmarkdown::render_site(rmd, ...)
+}
+
+process_log_dir <- function(log_dir) {
+
+  if (is.null(log_dir)) {
+    log_dir <- file.path(tempdir(), "workflowr")
+  }
+
+  assert_is_character(log_dir)
+  assert_has_length(log_dir, 1)
+
+  log_dir <- absolute(log_dir)
+  fs::dir_create(log_dir)
+
+  return(log_dir)
 }

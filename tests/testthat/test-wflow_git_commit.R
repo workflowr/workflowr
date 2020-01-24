@@ -167,7 +167,7 @@ test_that("wflow_git_commit_ can commit deleted files from project subdir", {
 
 test_that("wflow_git_commit fails with invalid argument for files", {
   expect_error(wflow_git_commit(files = 1, project = site_dir),
-               "files must be NULL or a character vector of filenames")
+               "Observed input: 1")
   expect_error(wflow_git_commit(files = "nonexistent.Rmd", project = site_dir),
                "Not all files exist. Check the paths to the files")
 })

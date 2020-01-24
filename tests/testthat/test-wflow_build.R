@@ -385,7 +385,7 @@ test_that("wflow_build reports working and knit directories", {
 
 test_that("wflow_build fails early for bad files", {
   expect_error(wflow_build(character(), project = site_dir),
-               "files must be NULL or a character vector of filenames")
+               "vector with length 0")
   expect_error(wflow_build(s$analysis, project = site_dir),
                "files cannot include a path to a directory")
   expect_error(wflow_build("", project = site_dir),

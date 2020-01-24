@@ -227,12 +227,13 @@ wflow_publish <- function(
                         recursive = TRUE, copy.date = TRUE), add = TRUE)
     }
 
-    step2 <- wflow_build(files = files_to_build, make = FALSE,
-                         update = update, republish = republish,
-                         view = view, clean_fig_files = TRUE,
-                         delete_cache = delete_cache, seed = seed,
-                         local = FALSE, verbose = verbose,
-                         dry_run = dry_run, project = project)
+    step2 <- wflow_build_(files = files_to_build, make = FALSE,
+                          update = update, republish = republish,
+                          view = view, clean_fig_files = TRUE,
+                          delete_cache = delete_cache, seed = seed,
+                          local = FALSE, verbose = verbose,
+                          log_dir = use_default_log_dir(),
+                          dry_run = dry_run, project = project)
   } else {
     step2 <- NULL
   }

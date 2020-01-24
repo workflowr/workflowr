@@ -177,6 +177,16 @@ wflow_build <- function(files = NULL, make = is.null(files),
   assert_is_single_directory(project)
   project <- absolute(project)
 
+  do.call(wflow_build_, args = as.list(environment()))
+}
+
+wflow_build_ <- function(files = NULL, make = is.null(files),
+                         update = FALSE, republish = FALSE,
+                         view = getOption("workflowr.view"),
+                         clean_fig_files = FALSE, delete_cache = FALSE,
+                         seed = 12345, log_dir = NULL, verbose = FALSE,
+                         local = FALSE, dry_run = FALSE, project = ".") {
+
   # Check to see if pandoc is installed
   if(!rmarkdown::pandoc_available())
     stop("Pandoc is not installed. Please use RStudio or install pandoc manually")
@@ -448,7 +458,7 @@ build_rmd <- function(rmd, seed, ...) {
 process_log_dir <- function(log_dir) {
 
   if (is.null(log_dir)) {
-    log_dir <- file.path(tempdir(), "workflowr")
+    log_dir <-use_default_log_dir()
   }
 
   assert_is_character(log_dir)
@@ -459,3 +469,5 @@ process_log_dir <- function(log_dir) {
 
   return(log_dir)
 }
+
+use_default_log_dir <- function() file.path(tempdir(), "workflowr")

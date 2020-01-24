@@ -1,4 +1,11 @@
-
+# Process the files passed as input to workflowr functions.
+#
+# allow_null - Allow passing files=NULL
+# files_only - Throw an error if a path to a directory is included
+# rmd_only - Only allow files extensions Rmd or rmd
+# must_exist - Paths must exist on filesystem
+# convert_to_relative_paths - Return paths relative to working directory
+# expland_glob - Pass through function glob()
 process_input_files <- function(files,
                                 allow_null = FALSE,
                                 files_only = TRUE,
@@ -35,29 +42,19 @@ process_input_files <- function(files,
   }
 
   if (rmd_only) {
-    ext <- tools::file_ext(files)
-    ext_wrong <- !(ext %in% c("Rmd", "rmd"))
-    if (any(ext_wrong))
-      stop(wrap("File extensions must be either Rmd or rmd."))
+    assert_is_rmd(files)
   }
 
   return(files)
 }
 
-assert_is_files_or_null <- function(argument, env = environment()) {
-  if (!is_null(argument)) {
-    assert_is_files(argument, env = env)
-  }
-}
-
-assert_is_files <- function(argument, env = environment()) {
-
-}
-
-# assert_is_flag <- function(argument, env = environment()) {}
-
 assert_is_rmd <- function(argument, env = environment()) {
-  assert_is_files()
+  if (!is_rmd(argument)) {
+    argument_name <- deparse(substitute(argument, env = env))
+    expected <- "Only files with extension Rmd or rmd"
+    observed <- deparse(argument)
+    stop_for_assert(argument_name, expected, observed)
+  }
 }
 
 assert_is_flag <- function(argument, env = environment()) {
@@ -161,6 +158,11 @@ is_character <- function(argument) {
 
 is_directory <- function(argument) {
   all(fs::dir_exists(argument))
+}
+
+is_rmd <- function(argument) {
+  extensions <- fs::path_ext(argument)
+  all(stringr::str_detect(extensions, "^[Rr]md$"))
 }
 
 has_length <- function(argument, required_length, comparison) {

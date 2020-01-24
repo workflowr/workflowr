@@ -680,7 +680,7 @@ test_that("check_site_generator generates warning from wflow_build", {
 test_that("is_rmd distinguishes between Rmd and non-Rmd files", {
   expect_identical(workflowr:::is_rmd("file.Rmd"), TRUE)
   expect_identical(workflowr:::is_rmd("file.rmd"), TRUE)
-  expect_identical(workflowr:::is_rmd(c("file.Rmd", "file.rmd")), c(TRUE, TRUE))
+  expect_identical(workflowr:::is_rmd(c("file.Rmd", "file.rmd")), TRUE)
 
   expect_identical(workflowr:::is_rmd("file.md"), FALSE)
   expect_identical(workflowr:::is_rmd("file.RRmd"), FALSE)
@@ -691,7 +691,7 @@ test_that("is_rmd distinguishes between Rmd and non-Rmd files", {
   expect_identical(
     workflowr:::is_rmd(c("path/to/file.md", "path/to/file.Rmd",
                          "path/to/file.Rrmd", "path/to/file.rmd")),
-    c(FALSE, TRUE, FALSE, TRUE))
+    FALSE)
 })
 
 # Test check_wd_exists() -------------------------------------------------------

@@ -230,10 +230,10 @@ test_that("wflow_open rejects filenames without Rmd or rmd extension", {
 
   expect_error(wflow_open(file.path(p$analysis, "invalid-ext.md"), change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
-               "File extensions must be either Rmd or rmd.")
+               "Only files with extension Rmd or rmd")
   expect_error(wflow_open("no-ext", change_wd = FALSE, edit_in_rstudio = FALSE,
                           project = site_dir),
-               "File extensions must be either Rmd or rmd.")
+               "Only files with extension Rmd or rmd")
   expect_silent(wflow_open(file.path(p$analysis, "valid-ext.Rmd"), change_wd = FALSE, edit_in_rstudio = FALSE,
                            project = site_dir))
   expect_silent(wflow_open(file.path(p$analysis, "valid-ext.rmd"), change_wd = FALSE, edit_in_rstudio = FALSE,

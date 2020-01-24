@@ -306,7 +306,7 @@ test_that("wflow_status throws error if given directory input.", {
 test_that("wflow_status throws error if given non-[Rr]md extension.", {
   readme <- file.path(site_dir, "README.md")
   expect_error(wflow_status(readme, project = site_dir),
-               "File extensions must be either Rmd or rmd.")
+               "Only files with extension Rmd or rmd")
 })
 
 test_that("wflow_status gives warning for HTML-only published files", {

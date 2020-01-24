@@ -392,7 +392,7 @@ test_that("wflow_build fails early for bad files", {
                "Not all files exist. Check the paths to the files")
   fs::file_create(file.path(s$analysis, "invalid.R"))
   expect_error(wflow_build(file.path(s$analysis, "invalid.R"), project = site_dir),
-               "File extensions must be either Rmd or rmd.")
+               "Only files with extension Rmd or rmd")
 })
 
 test_that("wflow_build throws error if given directory input", {

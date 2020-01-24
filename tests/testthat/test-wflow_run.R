@@ -88,7 +88,7 @@ test_that("wflow_run fails if passed more than one file or non-Rmd", {
   non_rmd <- file.path(path, "README.md")
   expect_error(
     wflow_run(file = non_rmd, project = path),
-    "File extensions must be either Rmd or rmd."
+    "Only files with extension Rmd or rmd"
   )
 })
 

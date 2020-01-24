@@ -266,7 +266,7 @@ test_that("wflow_quickstart only accepts Rmd files", {
 
   expect_error(
     wflow_quickstart(c(rmd, nonrmd)),
-    "File extensions must be either Rmd or rmd."
+    "Only files with extension Rmd or rmd"
   )
 
   directory <- fs::file_temp()

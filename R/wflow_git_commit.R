@@ -81,7 +81,7 @@
 wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
                              force = FALSE, dry_run = FALSE, project = ".") {
 
-  files <- process_input_files(files, allow_null = TRUE,
+  files <- process_input_files(files, allow_null = TRUE, files_only = FALSE,
                                convert_to_relative_paths = TRUE)
 
   if (is.null(message)) {

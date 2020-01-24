@@ -173,9 +173,9 @@ wflow_publish <- function(
     any(!(files %in% rownames(s0$status)))
 
   if (scenario1 || scenario2 || scenario3) {
-    step1 <- wflow_git_commit(files = files, message = message,
-                          all = all, force = force,
-                          dry_run = dry_run, project = project)
+    step1 <- wflow_git_commit_(files = files, message = message,
+                               all = all, force = force,
+                               dry_run = dry_run, project = project)
     # If subsequent steps fail, undo this action by resetting the Git repo to
     # its initial state.
     on.exit(git2r::reset(commit_current, reset_type = "mixed"), add = TRUE)

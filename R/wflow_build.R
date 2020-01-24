@@ -180,12 +180,9 @@ wflow_build <- function(files = NULL, make = is.null(files),
   do.call(wflow_build_, args = as.list(environment()))
 }
 
-wflow_build_ <- function(files = NULL, make = is.null(files),
-                         update = FALSE, republish = FALSE,
-                         view = getOption("workflowr.view"),
-                         clean_fig_files = FALSE, delete_cache = FALSE,
-                         seed = 12345, log_dir = NULL, verbose = FALSE,
-                         local = FALSE, dry_run = FALSE, project = ".") {
+wflow_build_ <- function() {}
+formals(wflow_build_) <- formals(wflow_build)
+body(wflow_build_) <- quote({
 
   # Check to see if pandoc is installed
   if(!rmarkdown::pandoc_available())
@@ -334,7 +331,7 @@ wflow_build_ <- function(files = NULL, make = is.null(files),
   class(o) <- "wflow_build"
 
   return(o)
-}
+})
 
 #' @export
 print.wflow_build <- function(x, ...) {

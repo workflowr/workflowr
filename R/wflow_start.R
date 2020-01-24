@@ -303,16 +303,9 @@ wflow_start <- function(directory,
   do.call(wflow_start_, args = as.list(environment()))
 }
 
-wflow_start_ <- function(directory,
-                        name = NULL,
-                        git = TRUE,
-                        existing = FALSE,
-                        overwrite = FALSE,
-                        change_wd = TRUE,
-                        disable_remote = FALSE,
-                        dry_run = FALSE,
-                        user.name = NULL,
-                        user.email = NULL) {
+wflow_start_ <- function() {}
+formals(wflow_start_) <- formals(wflow_start)
+body(wflow_start_) <- quote({
 
   # Create directory if it doesn't already exist
   if (!existing && !fs::dir_exists(directory) && !dry_run) {
@@ -419,7 +412,7 @@ wflow_start_ <- function(directory,
   class(o) <- "wflow_start"
 
   return(o)
-}
+})
 
 #' @export
 print.wflow_start <- function(x, ...) {

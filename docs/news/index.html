@@ -127,6 +127,8 @@
 <code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> can now create repositories for GitHub organizations using the new argument <code>organization</code>. However, GitLab Groups should still be specified with the argument <code>username</code> for <code><a href="../reference/wflow_use_gitlab.html">wflow_use_gitlab()</a></code> (bug report from <a href='https://github.com/stephens999'>@stephens999</a>, <a href='https://github.com/jdblischak/workflowr/issues/186'>#186</a>)</li>
 <li>Any workflowr function that prompts for user input will continue to re-prompt until valid input has been entered (or canceled by hitting the key <code>Esc</code>) (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</li>
 <li>Document that GitLab.com provides private repositories with access control to the source code repository and the website (<a href='https://github.com/jdblischak/workflowr/issues/187'>#187</a>)</li>
+<li>Internal refactoring for increased speed and improved error handling of input arguments</li>
+<li>Check for class with <code><a href="https://rdrr.io/r/base/class.html">inherits()</a></code> (<a href='https://github.com/jdblischak/workflowr/issues/189'>#189</a>)</li>
 </ul>
 </div>
     <div id="workflowr-1-6-0" class="section level1">

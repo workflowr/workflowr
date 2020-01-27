@@ -21,7 +21,7 @@ wflow_options <- function(file) {
   # Get options from a potential _workflowr.yml file
   wflow_root <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),
                                          path = dirname(file)), silent = TRUE)
-  if (class(wflow_root) != "try-error") {
+  if (!inherits(wflow_root, "try-error")) {
     wflow_yml <- file.path(wflow_root, "_workflowr.yml")
     wflow_yml_opts <- yaml::yaml.load_file(wflow_yml)
     for (opt in names(wflow_yml_opts)) {

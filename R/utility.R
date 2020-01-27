@@ -283,7 +283,7 @@ get_output_dir <- function(directory, yml = "_site.yml") {
 
 # Convert the output of git2r::status() to a data frame for easier manipulation
 status_to_df <- function(x) {
-  stopifnot(class(x) == "git_status")
+  stopifnot(inherits(x, "git_status"))
 
   col_status <- character()
   col_substatus <- character()

@@ -11,6 +11,9 @@ until valid input has been entered (or canceled by hitting the key `Esc`) (idea
 from @pcarbo)
 * Document that GitLab.com provides private repositories with access control to
 the source code repository and the website (#187)
+* Internal refactoring for increased speed and improved error handling of input
+arguments
+* Check for class with `inherits()` (#189)
 
 # workflowr 1.6.0
 

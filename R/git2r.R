@@ -16,7 +16,7 @@
 #
 # See ?git2r::merge.git_repository for more details.
 git2r_merge <- function(x, b, fail = FALSE) {
-  stopifnot(class(x) == "git_repository")
+  stopifnot(inherits(x, "git_repository"))
   stopifnot(is.character(b))
   stopifnot(is.logical(fail), length(fail) == 1)
 

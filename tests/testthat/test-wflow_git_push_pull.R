@@ -165,7 +165,7 @@ test_that("get_remote_protocol fails for unknown protocol", {
 test_that("authenticate_git can create HTTPS credentials", {
   cred <- authenticate_git(protocol = "https",
                            username = "fakeuser", password = "fakepass")
-  expect_true(class(cred) == "cred_user_pass")
+  expect_true(inherits(cred, "cred_user_pass"))
   expect_true(cred$username == "fakeuser")
   expect_true(cred$password == "fakepass")
 })

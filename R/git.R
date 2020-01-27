@@ -130,8 +130,8 @@ check_staged_changes <- function(path, custom_message = "this function") {
 # Returns absolute paths.
 get_committed_files <- function(repo, commit = NULL,
                                 sysgit = getOption("workflowr.sysgit", default = "")) {
-  stopifnot(identical(class(repo), "git_repository"))
-  stopifnot(is.null(commit) || identical(class(commit), "git_commit"))
+  stopifnot(inherits(repo, "git_repository"))
+  stopifnot(is.null(commit) || inherits(commit, "git_commit"))
 
   n_commits <- length(git2r::commits(repo))
   if (n_commits == 0) {
@@ -254,8 +254,8 @@ last_commit_time_sysgit <- function(repo, fname, sysgit, ...) {
 #
 # Returns absolute paths.
 obtain_files_in_commit <- function(repo, commit) {
-  stopifnot(class(repo) == "git_repository",
-            class(commit) == "git_commit")
+  stopifnot(inherits(repo, "git_repository"),
+            inherits(commit, "git_commit"))
   parent_commit <- git2r::parents(commit)
 
   # 3 possibilities:
@@ -293,8 +293,8 @@ obtain_files_in_commit <- function(repo, commit) {
 # Returns paths relative to Git root directory.
 obtain_files_in_commit_root <- function(repo, commit) {
   # Obtain the files in the root commit of a Git repository
-  stopifnot(class(repo) ==  "git_repository",
-            class(commit) == "git_commit",
+  stopifnot(inherits(repo, "git_repository"),
+            inherits(commit, "git_commit"),
             length(git2r::parents(commit)) == 0)
   entries <- as.data.frame(git2r::tree(commit))
   files <- character()
@@ -377,7 +377,7 @@ check_remote <- function(remote, remote_avail) {
 #
 # Returns a list of length two.
 determine_remote_and_branch <- function(repo, remote, branch) {
-  stopifnot(class(repo) == "git_repository")
+  stopifnot(inherits(repo, "git_repository"))
   git_head <- git2r::repository_head(repo)
   tracking <- git2r::branch_get_upstream(git_head)
   # If both remote and branch are NULL and the current branch is tracking a
@@ -406,7 +406,7 @@ determine_remote_and_branch <- function(repo, remote, branch) {
 # 2. If there are multiple remotes available and one is called "origin", use it.
 # 3. If there are multiple remotes available and none is "origin", throw error.
 guess_remote <- function(repo) {
-  stopifnot(class(repo) == "git_repository")
+  stopifnot(inherits(repo, "git_repository"))
   remotes <- git2r::remotes(repo)
 
   if (length(remotes) == 1) {
@@ -535,7 +535,7 @@ authenticate_git <- function(protocol, username = NULL,
 
 # Throw error if Git repository is locked
 check_git_lock <- function(r) {
-  stopifnot(class(r) == "git_repository")
+  stopifnot(inherits(r, "git_repository"))
 
   index_lock <- file.path(git2r::workdir(r), ".git/index.lock")
   if (fs::file_exists(index_lock)) {

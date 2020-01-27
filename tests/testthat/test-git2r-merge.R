@@ -34,7 +34,7 @@ test_that("commited conflicting changes only", {
   )
 
   m_fail <- merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_fail), "git_merge_result")
+  expect_true(inherits(m_fail, "git_merge_result"))
   expect_identical(m_fail$up_to_date, FALSE)
   expect_identical(m_fail$fast_forward, FALSE)
   expect_identical(m_fail$conflicts, TRUE)
@@ -45,7 +45,7 @@ test_that("commited conflicting changes only", {
   )
 
   m_wflow <- workflowr:::git2r_merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_wflow), "git_merge_result")
+  expect_true(inherits(m_wflow, "git_merge_result"))
   expect_identical(m_wflow$up_to_date, FALSE)
   expect_identical(m_wflow$fast_forward, FALSE)
   expect_identical(m_wflow$conflicts, TRUE)
@@ -56,7 +56,7 @@ test_that("commited conflicting changes only", {
   )
 
   m <- merge(r, "feature", fail = FALSE)
-  expect_identical(class(m), "git_merge_result")
+  expect_true(inherits(m, "git_merge_result"))
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, FALSE)
   expect_identical(m$conflicts, TRUE)
@@ -87,7 +87,7 @@ test_that("staged conflicting changes only", {
   )
 
   m_fail <- merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_fail), "git_merge_result")
+  expect_true(inherits(m_fail, "git_merge_result"))
   expect_identical(m_fail$up_to_date, FALSE)
   expect_identical(m_fail$fast_forward, NULL)
   expect_identical(m_fail$conflicts, NULL)
@@ -98,7 +98,7 @@ test_that("staged conflicting changes only", {
   )
 
   m_wflow <- workflowr:::git2r_merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_wflow), "git_merge_result")
+  expect_true(inherits(m_wflow, "git_merge_result"))
   expect_identical(m_wflow$up_to_date, FALSE)
   expect_identical(m_wflow$fast_forward, FALSE)
   expect_identical(m_wflow$conflicts, FALSE)
@@ -109,7 +109,7 @@ test_that("staged conflicting changes only", {
   )
 
   m <- merge(r, "feature", fail = FALSE)
-  expect_identical(class(m), "git_merge_result")
+  expect_true(inherits(m, "git_merge_result"))
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, NULL)
   expect_identical(m$conflicts, NULL)
@@ -141,7 +141,7 @@ test_that("untracked conflicting changes only", {
   )
 
   m_fail <- merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_fail), "git_merge_result")
+  expect_true(inherits(m_fail, "git_merge_result"))
   expect_identical(m_fail$up_to_date, FALSE)
   expect_identical(m_fail$fast_forward, NULL)
   expect_identical(m_fail$conflicts, NULL)
@@ -152,7 +152,7 @@ test_that("untracked conflicting changes only", {
   )
 
   m_wflow <- workflowr:::git2r_merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_wflow), "git_merge_result")
+  expect_true(inherits(m_wflow, "git_merge_result"))
   expect_identical(m_wflow$up_to_date, FALSE)
   expect_identical(m_wflow$fast_forward, FALSE)
   expect_identical(m_wflow$conflicts, FALSE)
@@ -163,7 +163,7 @@ test_that("untracked conflicting changes only", {
   )
 
   m <- merge(r, "feature", fail = FALSE)
-  expect_identical(class(m), "git_merge_result")
+  expect_true(inherits(m, "git_merge_result"))
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, NULL)
   expect_identical(m$conflicts, NULL)
@@ -197,7 +197,7 @@ test_that("staged and commited conflicting changes", {
   )
 
   m_fail <- merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_fail), "git_merge_result")
+  expect_true(inherits(m_fail, "git_merge_result"))
   expect_identical(m_fail$up_to_date, FALSE)
   expect_identical(m_fail$fast_forward, FALSE)
   expect_identical(m_fail$conflicts, TRUE)
@@ -208,7 +208,7 @@ test_that("staged and commited conflicting changes", {
   )
 
   m_wflow <- workflowr:::git2r_merge(r, "feature", fail = TRUE)
-  expect_identical(class(m_wflow), "git_merge_result")
+  expect_true(inherits(m_wflow, "git_merge_result"))
   expect_identical(m_wflow$up_to_date, FALSE)
   expect_identical(m_wflow$fast_forward, FALSE)
   expect_identical(m_wflow$conflicts, TRUE)
@@ -219,7 +219,7 @@ test_that("staged and commited conflicting changes", {
   )
 
   m <- merge(r, "feature", fail = FALSE)
-  expect_identical(class(m), "git_merge_result")
+  expect_true(inherits(m, "git_merge_result"))
   expect_identical(m$up_to_date, FALSE)
   expect_identical(m$fast_forward, FALSE)
   expect_identical(m$conflicts, NULL)

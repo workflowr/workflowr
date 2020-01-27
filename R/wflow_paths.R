@@ -25,7 +25,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
   project <- absolute(project)
   o$root <- try(rprojroot::find_rstudio_root_file(path = project),
                 silent = TRUE)
-  if (class(o$root) == "try-error")
+  if (inherits(o$root, "try-error"))
     stop(wrap(
       "Unable to detect a workflowr project. This could be due to one of the
       following reasons:
@@ -73,7 +73,7 @@ wflow_paths <- function(error_git = FALSE, project = ".") {
 
   # Git repository
   r <- try(git2r::repository(o$root, discover = TRUE), silent = TRUE)
-  if (class(r) == "try-error") {
+  if (inherits(r, "try-error")) {
     if (error_git) {
       stop(wrap("A Git repository is required for this functionality."),
            call. = FALSE)

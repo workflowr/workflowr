@@ -59,7 +59,7 @@ create_report <- function(input, output_dir, has_code, opts) {
   # If it is part of a workflowr project, construct a path relative to the
   # directory that contains the workflowr project directory.
   p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
-  if (class(p) != "try-error") {
+  if (!inherits(p, "try-error")) {
     if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
       knit_root_print <- fs::path_rel(knit_root_print,
                                       start = dirname(absolute(p$root)))
@@ -863,19 +863,19 @@ get_proj_dir <- function(directory) {
   # RStudio project file, .Rproj
   proj_dir <- try(rprojroot::find_rstudio_root_file(path = directory),
                 silent = TRUE)
-  if (class(proj_dir) != "try-error") return(proj_dir)
+  if (!inherits(proj_dir, "try-error")) return(proj_dir)
 
   # .git/
   proj_dir <- try(rprojroot::find_root_file(criterion = rprojroot::is_git_root,
                                             path = directory),
                   silent = TRUE)
-  if (class(proj_dir) != "try-error") return(proj_dir)
+  if (!inherits(proj_dir, "try-error")) return(proj_dir)
 
   # _workflowr.yml file
   proj_dir <- try(rprojroot::find_root(rprojroot::has_file("_workflowr.yml"),
                                        path = directory),
                   silent = TRUE)
-  if (class(proj_dir) != "try-error") return(proj_dir)
+  if (!inherits(proj_dir, "try-error")) return(proj_dir)
 
   return(directory)
 }

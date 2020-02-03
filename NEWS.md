@@ -14,6 +14,8 @@ the source code repository and the website (#187)
 * Internal refactoring for increased speed and improved error handling of input
 arguments
 * Check for class with `inherits()` (#189)
+* Update URL to RStudio-specific instructions for installing pandoc (bug report
+from @PietrH, #190)
 
 # workflowr 1.6.0
 

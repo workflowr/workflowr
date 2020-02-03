@@ -58,7 +58,7 @@ For related tools, see [r-project-workflows][].
 
     * (Recommended) Install [RStudio][rstudio]
 
-    * (Optional) Install [pandoc][pandoc-install]
+    * (Optional) Install [pandoc][] ([Instructions][pandoc-install])
 
     * (Optional) Install [Git][git]
 
@@ -161,7 +161,7 @@ abide by its terms.
 [moore]: https://www.moore.org/
 [nkweiwang]: https://github.com/NKweiwang
 [pandoc]: http://pandoc.org
-[pandoc-install]: https://github.com/rstudio/rmarkdown/blob/master/PANDOC.md
+[pandoc-install]: https://rmarkdown.rstudio.com/docs/articles/pandoc.html
 [pcarbo]: https://pcarbo.github.io/
 [r]: https://cran.r-project.org
 [rmarkdown]: http://rmarkdown.rstudio.com/

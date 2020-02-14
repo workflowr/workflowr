@@ -16,6 +16,8 @@ arguments
 * Check for class with `inherits()` (#189)
 * Update URL to RStudio-specific instructions for installing pandoc (bug report
 from @PietrH, #190)
+* Fix Windows-specific bug that caused the table of past versions to be missing
+from the workflowr report (bug introduced in version 1.5.0)
 
 # workflowr 1.6.0
 

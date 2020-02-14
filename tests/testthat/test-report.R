@@ -108,8 +108,7 @@ test_that("get_versions_df returns data frame of commits for file(s)", {
 
   expect_identical(workflowr:::get_versions_df("non-existent", r), data.frame())
 
-  expect_error(workflowr:::get_versions_df(f1, r),
-               "File paths must be relative")
+  expect_silent(workflowr:::get_versions_df(f1, r))
 })
 
 
@@ -162,6 +161,26 @@ test_that("get_versions_df uses Etc/UTC if timezone isn't set", {
 })
 
 # Test get_versions and get_versions_fig ---------------------------------------
+
+test_that("get_versions inserts table of past versions", {
+
+  skip_on_cran()
+
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  rmd <- file.path(path, "analysis", "index.Rmd")
+  for (i in 1:2) wflow_publish(rmd, view = FALSE, project = path)
+
+  html <- workflowr:::to_html(rmd, outdir = file.path(path, "docs"))
+  html_lines <- readLines(html)
+  expect_false(any(
+    stringr::str_detect(html_lines, "There are no past versions")
+  ))
+  expect_true(any(
+    stringr::str_detect(html_lines, "These are the previous versions")
+  ))
+})
 
 test_that("get_versions and get_versions_fig insert GitHub URL if available", {
 

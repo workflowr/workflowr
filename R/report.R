@@ -156,11 +156,15 @@ create_report <- function(input, output_dir, has_code, opts) {
 
 get_versions <- function(input, output_dir, r, github) {
 
-  rmd <- relative(input, start = git2r::workdir(r))
+  rmd <- input
   html <- to_html(rmd, outdir = output_dir)
-  html <- relative(html, start = git2r::workdir(r))
 
   df_versions <- get_versions_df(c(rmd, html), r)
+
+  # Convert paths to be relative to Git root
+  rmd <- relative(rmd, start = git2r::workdir(r))
+  html <- relative(html, start = git2r::workdir(r))
+  df_versions$File <- relative(df_versions$File, start = git2r::workdir(r))
 
   # Exit early if there are no past versions
   if (length(df_versions) == 0) {
@@ -302,17 +306,13 @@ get_versions_fig <- function(fig, r, github) {
 
 # Return a data frame of past versions
 #
-# files - paths relative to Git repository
+# files - paths to files
 # r - git_repository
 # timezone - timezone to use, e.g. "America/New_York". Defaults to local
 #            timezone. If unset (i.e. is NULL, NA, or ""), defaults to "Etc/UTC".
 #
 # If no past versions, returns empty data frame
 get_versions_df <- function(files, r, timezone = Sys.timezone()) {
-
-  if (any(fs::is_absolute_path(files)))
-    stop("File paths must be relative to Git repository at ",
-         git2r::workdir(r))
 
   commits_path <- list()
   for (f in files) {

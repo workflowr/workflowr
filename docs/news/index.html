@@ -131,6 +131,8 @@
 <li>Check for class with <code><a href="https://rdrr.io/r/base/class.html">inherits()</a></code> (<a href='https://github.com/jdblischak/workflowr/issues/189'>#189</a>)</li>
 <li>Update URL to RStudio-specific instructions for installing pandoc (bug report from <a href='https://github.com/PietrH'>@PietrH</a>, <a href='https://github.com/jdblischak/workflowr/issues/190'>#190</a>)</li>
 <li>Fix Windows-specific bug that caused the table of past versions to be missing from the workflowr report (bug introduced in version 1.5.0)</li>
+<li>Document in the FAQ vignette how to include an external image using an absolute URL to the image hosted on another website (idea from <a href='https://github.com/JiaxiangBU'>@JiaxiangBU</a>,
+<a href='https://github.com/jdblischak/workflowr/issues/159'>#159</a>)</li>
 </ul>
 </div>
     <div id="workflowr-1-6-0" class="section level1">
@@ -465,7 +467,7 @@
 <a href="#workflowr-1-0-0" class="anchor"></a>workflowr 1.0.0<small> Unreleased </small>
 </h1>
 <p>The 1.0.0 release is a major change. Instead of relying on the external code chunks in <code>chunks.R</code> to implement the reproducibility features, workflowr 1.0.0 replaces <code>chunks.R</code> with the output format <code><a href="../reference/wflow_html.html">wflow_html()</a></code> and site generator <code><a href="../reference/wflow_site.html">wflow_site()</a></code>. This enables a much more informative reproducibility report to be created.</p>
-<pre><code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html"># Install from GitHub
+<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html"># Install from GitHub
 devtools::install_github("jdblischak/workflowr")
 
 # Start a new project to test out the new features
@@ -512,7 +514,7 @@ wflow_update()</a></code></pre>
 </h1>
 <ul>
 <li><p><code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> now views the website by default if run interactively (<code>view = interactive()</code>) just like <code><a href="../reference/wflow_build.html">wflow_build()</a></code></p></li>
-<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
+<li><p>Pin the dependency git2r to version 0.21.0 or lower because of the <a href="https://github.com/ropensci/git2r/issues/312">forthcoming breaking changes in the git2r API</a>. This is not a great solution because <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> always installs the latest version, which will cause an error in the installation. If you are having trouble with this, first install git2r with <code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_version("git2r", "0.21.0")</a></code> and then retry installing workflowr. If your machine is running macOS or Windows, you may need to run <code>install_version("git2r", "0.21.0", type = "binary")</code>.</p></li>
 <li><p>Fix minor bug that affected the error message produced for a failed push or pull using the SSH protocol</p></li>
 <li><p>When <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> or <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code> fails for an unknown reason, the exact error message from <code><a href="https://docs.ropensci.org/git2r/reference/push.html">git2r::push()</a></code> or <code><a href="https://docs.ropensci.org/git2r/reference/pull.html">git2r::pull()</a></code> is reported to facilitate troubleshooting</p></li>
 <li><p>Multiple other internal changes to make workflowr more robust</p></li>

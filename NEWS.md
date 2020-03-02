@@ -18,6 +18,9 @@ arguments
 from @PietrH, #190)
 * Fix Windows-specific bug that caused the table of past versions to be missing
 from the workflowr report (bug introduced in version 1.5.0)
+* Document in the FAQ vignette how to include an external image using an
+absolute URL to the image hosted on another website (idea from @JiaxiangBU,
+#159)
 
 # workflowr 1.6.0
 

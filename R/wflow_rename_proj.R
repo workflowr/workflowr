@@ -68,6 +68,7 @@ wflow_rename_proj <- function(name,
   check_wd_exists()
   assert_is_single_directory(project)
   project <- absolute(project)
+  check_git_config(project, "`wflow_rename_proj`")
 
   message("Summary from wflow_rename_proj():")
 

@@ -172,6 +172,7 @@ wflow_use_github <- function(username = NULL,
   check_wd_exists()
   assert_is_single_directory(project)
   project <- absolute(project)
+  check_git_config(project, "`wflow_use_github`")
 
   # Status ---------------------------------------------------------------------
 

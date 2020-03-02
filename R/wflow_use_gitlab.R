@@ -111,6 +111,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
   check_wd_exists()
   assert_is_single_directory(project)
   project <- absolute(project)
+  check_git_config(project, "`wflow_use_gitlab`")
 
   # Status ---------------------------------------------------------------------
 

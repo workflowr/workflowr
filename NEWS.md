@@ -23,6 +23,9 @@ absolute URL to the image hosted on another website (idea from @JiaxiangBU,
 #159)
 * Document how to embed Shiny apps with `knitr::include_app()` and
 [shinyapps.io](http://www.shinyapps.io/) (idea from @rsimon64, #130)
+* All functions that commit to the Git repository first check for the
+availability of the Git variables user.name and user.email (either global or
+local), which are required for creating a commit (#85)
 
 # workflowr 1.6.0
 

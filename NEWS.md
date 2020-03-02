@@ -21,6 +21,8 @@ from the workflowr report (bug introduced in version 1.5.0)
 * Document in the FAQ vignette how to include an external image using an
 absolute URL to the image hosted on another website (idea from @JiaxiangBU,
 #159)
+* Document how to embed Shiny apps with `knitr::include_app()` and
+[shinyapps.io](http://www.shinyapps.io/) (idea from @rsimon64, #130)
 
 # workflowr 1.6.0
 

@@ -208,13 +208,31 @@ ggsave("paper/plot-to-edit.pdf", width = 5, height = 5)
 
 ## Can I include Shiny apps in my website?
 
-No, at least not in the standard setup. The website is hosted with GitHub pages,
-which only supports static web pages. Shiny apps are dynamic, i.e. a user can
-interact with them to change the content. The easiest way to share your Shiny
-app would be to host it at [shinyapps.io](http://www.shinyapps.io/) and add a
-link to your app on your workflowr website. Alternatively you could host your
-workflowr website on your own server, but that would require much more knowledge
-and resources to accomplish.
+Yes, but not directly. You cannot directly embed the Shiny app into the Rmd file
+using `runtime: shiny_prerendered` for two reasons. First, workflowr creates a
+static website, and the free deployment options (e.g. GitHub Pages), only
+provide static web hosting. Shiny apps require a dynamic website because they
+need to call a server to run the R code. Second, even if you setup your own web
+server, the supporting files (e.g. CSS/JS) for a Shiny app have to be in a
+[different location][shiny-external-resources] than the standard for an
+Rmd-based website.
+
+[shiny-external-resources]: https://rmarkdown.rstudio.com/authoring_shiny_prerendered.html#external_resources
+
+However, there is still a good option for embeding the Shiny app directly into
+the web page. You can upload your Shiny app to
+[shinyapps.io](http://www.shinyapps.io/), and then embed it directly into your
+document by calling `knitr::include_app()` inside a code chunk, as shown below:
+
+````markdown
+`r ''````{r shiny-app}
+knitr::include_app("https://<user-name>.shinyapps.io/<app-name>/")
+```
+````
+
+Using this method, the R code for the Shiny app is executed on the servers at
+shinyapps.io, but your readers are able to explore the app without leaving your
+website.
 
 ## Can I change "X" on my website?
 

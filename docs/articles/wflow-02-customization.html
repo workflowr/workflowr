@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9000</span>
       </span>
     </div>
 
@@ -77,10 +77,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Customize your research website</h1>
-            <h3 class="subtitle">workflowr version 1.6.0</h3>
+            <h3 class="subtitle">workflowr version 1.6.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-12-18</h4>
+            <h4 class="date">2020-03-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-02-customization.Rmd"><code>vignettes/wflow-02-customization.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-02-customization.Rmd</code></div>
@@ -119,14 +119,22 @@
 <ol style="list-style-type: decimal">
 <li>Create the file <code>analysis/style.css</code>
 </li>
-<li>Register the CSS file in <code>analysis/_site.yml</code>: <code>output:    workflowr::wflow_html:      toc: true      toc_float: true      theme: cosmo      highlight: textmate      css: style.css</code>
+<li>
+<p>Register the CSS file in <code>analysis/_site.yml</code>:</p>
+<pre><code>output:
+  workflowr::wflow_html:
+    toc: true
+    toc_float: true
+    theme: cosmo
+    highlight: textmate
+    css: style.css</code></pre>
 </li>
 <li>Run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to preview the changes</li>
 <li>
 <p>Once you are satisfied with the appearance of the site, publish the results</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"analysis/style.css"</span>),</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">              <span class="dt">message =</span> <span class="st">"Customize website style."</span>,</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">              <span class="dt">republish =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"analysis/style.css"</span>),</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">              <span class="dt">message =</span> <span class="st">"Customize website style."</span>,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">              <span class="dt">republish =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </li>
 </ol>
 <p>To specifically change the style of the workflowr components of the website, you can write your CSS rules to target the custom workflowr classes. The example CSS rules below demonstrate how to affect every workflowr button using the class <code>btn-workflowr</code> and also how to affect specific workflowr buttons using the more specialized classes.</p>
@@ -163,22 +171,22 @@
       href: main-result.html</code></pre>
 <p>You can also create a drop-down menu from the navigation bar. See the <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation">rmarkdown documentation</a> for instructions.</p>
 <p>Similar to changing the theme above, you will need to re-render each page of the website (the navbar is embedded within each individual HTML file). Thus you could run the same command as above:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"Add main result page to navbar"</span>,</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">              <span class="dt">republish =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="st">"analysis/_site.yml"</span>, <span class="st">"Add main result page to navbar"</span>,</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">              <span class="dt">republish =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="setup-ssh-keys" class="section level2">
 <h2 class="hasAnchor">
 <a href="#setup-ssh-keys" class="anchor"></a>Setup SSH keys</h2>
 <p>Using the https protocol to communicate with GitHub is tedious because it requires entering your GitHub username and password. Using SSH keys for authentication removes the password requirement. Follow these <a href="https://help.github.com/articles/generating-an-ssh-key/">GitHub instructions</a> for creating SSH keys and linking them to your GitHub account. You’ll need to create separate SSH keys and link them each to GitHub for each machine where you clone your Git repository.</p>
 <p>After you create your SSH keys and add them to your GitHub account, you’ll need to instruct your local Git repository to use the SSH protocol. For a hypothetical GitHub username of “myname” and GitHub repository of “myproject”, you would change the remote “origin” (the default name by convention) using the function <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_git_remote.html">wflow_git_remote</a></span>(<span class="dt">remote =</span> <span class="st">"origin"</span>, <span class="dt">user =</span> <span class="st">"myname"</span>, <span class="dt">repo =</span> <span class="st">"myproject"</span>,</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">              <span class="dt">protocol =</span> <span class="st">"ssh"</span>, <span class="dt">action =</span> <span class="st">"set_url"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_git_remote.html">wflow_git_remote</a></span>(<span class="dt">remote =</span> <span class="st">"origin"</span>, <span class="dt">user =</span> <span class="st">"myname"</span>, <span class="dt">repo =</span> <span class="st">"myproject"</span>,</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">              <span class="dt">protocol =</span> <span class="st">"ssh"</span>, <span class="dt">action =</span> <span class="st">"set_url"</span>)</a></code></pre></div>
 <p>Alternatively you could update the remote URL using Git directly in the shell. See this GitHub documentation on <a href="https://help.github.com/articles/changing-a-remote-s-url/">changing a remote URL</a> for instructions.</p>
 </div>
 <div id="change-the-session-information-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#change-the-session-information-function" class="anchor"></a>Change the session information function</h2>
-<p>The default function used to report the session information is <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>. To change this, you can edit this setting in <code>_workflowr.yml</code>. For example, to instead use <code><a href="https://rdrr.io/pkg/devtools/man/reexports.html">devtools::session_info()</a></code>, add the following line to <code>_workflowr.yml</code>:</p>
+<p>The default function used to report the session information is <code><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo()</a></code>. To change this, you can edit this setting in <code>_workflowr.yml</code>. For example, to instead use <code><a href="https://devtools.r-lib.org//reference/reexports.html">devtools::session_info()</a></code>, add the following line to <code>_workflowr.yml</code>:</p>
 <pre><code>sessioninfo: "devtools::session_info()"</code></pre>
 <p>If you’d prefer to manually insert a more complex report of the session information, disable the automatic reporting by adding the following to <code>_workflowr.yml</code>:</p>
 <pre><code>sessioninfo: ""</code></pre>

@@ -69,6 +69,7 @@ follow these steps to get started:
 
 1. Create the file `analysis/style.css`
 1. Register the CSS file in `analysis/_site.yml`:
+
     ```
     output:
       workflowr::wflow_html:

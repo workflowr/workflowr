@@ -432,6 +432,45 @@ output:
 ---
 ```
 
+## Can I use a Git hosting service that uses the HTTP protocol?
+
+Workflowr works best with Git hosting services that use the HTTPS protocol.
+However, with a litle upfront configuration, it is possible to use the HTTP
+protocol.
+
+The configuration differs depending on whether you are authenticating with SSH
+keys or username/password.
+
+**SSH keys**
+
+1. Configure the remote with `wflow_git_remote()` and `protocol = "ssh"`
+1. You can use `wflow_git_push()` and `wflow_git_pull()`
+1. For the embedded links to past versions of the files to be correct, you need
+to manually include the URL to the project in `_workflowr.yml` (for historical
+reasons, this variable is named `github`)
+
+    ```
+    github: http://custom-site.com/<username>/<reponame>
+    ```
+
+**Username/Password**
+
+1. You can't use `wflow_git_remote()`. Instead use either
+    a. `git2r::remote_add()` in R:
+
+        ```
+        git2r::remote_add(name = "origin", url = "http://custom-site/<username>/<reponame>.git")
+        ```
+    a. `git remote add origin` in the terminal:
+
+        ```
+        git remote add origin http://custom-site/<username>/<reponame>.git
+        ```
+1. You cannot use `wflow_git_push()` and `wflow_git_pull()`. Instead run
+`git push` and `git pull` in the terminal
+1. The embedded links to past versions of the files will be correct because they
+will be based off of your remote URL
+
 ## How should I pronounce and spell workflowr?
 
 There are multiple options for pronouncing workflowr:

@@ -29,6 +29,8 @@ local), which are required for creating a commit (#85)
 * Update the FAQ on including external images to account for the breaking change
 in `knitr::include_graphics()` introduced in knitr version 1.28 (bug report from
 @ditordccaa, #103)
+* Add FAQ entry on how to use a Git hosting site that uses the HTTP protocol
+(idea from @antass, #163)
 
 # workflowr 1.6.0
 

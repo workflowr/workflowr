@@ -291,6 +291,40 @@ output:
     code_folding: show
 ---</code></pre>
 </div>
+<div id="can-i-use-a-git-hosting-service-that-uses-the-http-protocol" class="section level2">
+<h2 class="hasAnchor">
+<a href="#can-i-use-a-git-hosting-service-that-uses-the-http-protocol" class="anchor"></a>Can I use a Git hosting service that uses the HTTP protocol?</h2>
+<p>Workflowr works best with Git hosting services that use the HTTPS protocol. However, with a litle upfront configuration, it is possible to use the HTTP protocol.</p>
+<p>The configuration differs depending on whether you are authenticating with SSH keys or username/password.</p>
+<p><strong>SSH keys</strong></p>
+<ol style="list-style-type: decimal">
+<li>Configure the remote with <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code> and <code>protocol = "ssh"</code>
+</li>
+<li>You can use <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> and <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code>
+</li>
+<li>
+<p>For the embedded links to past versions of the files to be correct, you need to manually include the URL to the project in <code>_workflowr.yml</code> (for historical reasons, this variable is named <code>github</code>)</p>
+<pre><code>github: http://custom-site.com/&lt;username&gt;/&lt;reponame&gt;</code></pre>
+</li>
+</ol>
+<p><strong>Username/Password</strong></p>
+<ol style="list-style-type: decimal">
+<li>You can’t use <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code>. Instead use either
+<ol style="list-style-type: lower-alpha">
+<li>
+<p><code><a href="https://docs.ropensci.org/git2r/reference/remote_add.html">git2r::remote_add()</a></code> in R:</p>
+<pre><code><a href="https://docs.ropensci.org/git2r/reference/remote_add.html">git2r::remote_add(name = "origin", url = "http://custom-site/&lt;username&gt;/&lt;reponame&gt;.git")</a></code></pre>
+</li>
+<li>
+<p><code>git remote add origin</code> in the terminal:</p>
+<pre><code>git remote add origin http://custom-site/&lt;username&gt;/&lt;reponame&gt;.git</code></pre>
+</li>
+</ol>
+</li>
+<li>You cannot use <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code> and <code><a href="../reference/wflow_git_pull.html">wflow_git_pull()</a></code>. Instead run <code>git push</code> and <code>git pull</code> in the terminal</li>
+<li>The embedded links to past versions of the files will be correct because they will be based off of your remote URL</li>
+</ol>
+</div>
 <div id="how-should-i-pronounce-and-spell-workflowr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-should-i-pronounce-and-spell-workflowr" class="anchor"></a>How should I pronounce and spell workflowr?</h2>
@@ -323,6 +357,7 @@ output:
       <li><a href="#how-should-i-install-packages-to-use-with-a-workflowr-project">How should I install packages to use with a workflowr project?</a></li>
       <li><a href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files">Can I create a single HTML or PDF file of one of my workflowr R Markdown files?</a></li>
       <li><a href="#can-i-use-r-notebooks-with-workflowr">Can I use R notebooks with workflowr?</a></li>
+      <li><a href="#can-i-use-a-git-hosting-service-that-uses-the-http-protocol">Can I use a Git hosting service that uses the HTTP protocol?</a></li>
       <li><a href="#how-should-i-pronounce-and-spell-workflowr">How should I pronounce and spell workflowr?</a></li>
       </ul>
 </div>

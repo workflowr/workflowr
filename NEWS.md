@@ -26,6 +26,9 @@ absolute URL to the image hosted on another website (idea from @JiaxiangBU,
 * All functions that commit to the Git repository first check for the
 availability of the Git variables user.name and user.email (either global or
 local), which are required for creating a commit (#85)
+* Update the FAQ on including external images to account for the breaking change
+in `knitr::include_graphics()` introduced in knitr version 1.28 (bug report from
+@ditordccaa, #103)
 
 # workflowr 1.6.0
 

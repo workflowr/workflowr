@@ -137,8 +137,9 @@
 <p>In the R Markdown file, refer to the image file(s) using the relative path from <code>docs/</code> (because this is where the HTML files are located), e.g.:</p>
 <pre><code>![](assets/external.png)</code></pre>
 <p>Alternatively, you could use <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> inside of an R code chunk, which will automatically center the image and also follow the knitr chunk options <code>out.width</code> and <code>out.height</code>:</p>
-<pre><code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics("assets/external.png")</a></code></pre>
-Note that the image will not be previewed in the R Markdown file inside of RStudio because it is in a different directory than the R Markdown file.</li>
+<pre><code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics("assets/external.png", error = FALSE)</a></code></pre>
+Note that the image will not be previewed in the R Markdown file inside of RStudio because it is in a different directory than the R Markdown file. Also note that the default behavior of <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> has changed over time. Starting in version 1.28, the function throws an error if it can’t find the file. This breaks the workflowr setup, since the file path only exists once the HTML file is moved to <code>docs/</code>. Thus you have to set <code>error = FALSE</code>. Starting in 1.29, there is a knitr package option that you can set, e.g. in your <code>.Rprofile</code>, to disable this behavior globally: <code><a href="https://rdrr.io/r/base/options.html">options(knitr.graphics.error = FALSE)</a></code>
+</li>
 <li>Run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to confirm the external image file(s) are properly displayed</li>
 <li>
 <p>Use <code><a href="../reference/wflow_git_commit.html">wflow_git_commit()</a></code> to commit the file(s) to the Git repo (so that they get pushed to GitHub):</p>

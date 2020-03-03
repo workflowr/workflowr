@@ -31,6 +31,8 @@ in `knitr::include_graphics()` introduced in knitr version 1.28 (bug report from
 @ditordccaa, #103)
 * Add FAQ entry on how to use a Git hosting site that uses the HTTP protocol
 (idea from @antass, #163)
+* Switch to use pandoc option `--include-in-header` to insert workflowr-specific
+CSS and other metadata (suprisingly `--include-before-body` works fine)
 
 # workflowr 1.6.0
 

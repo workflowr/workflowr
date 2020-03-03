@@ -291,7 +291,14 @@ test_that("wflow_html inserts custom header and footer", {
              "output: workflowr::wflow_html",
              "---")
   writeLines(lines, rmd)
-  html <- rmarkdown::render(rmd, quiet = TRUE)
+  html <- rmarkdown::render(rmd, quiet = TRUE,
+                            # These are added by wflow_site(), which I am
+                            # purposefully skipping for these tests. In order
+                            # for the browser tab icon to be a URL and not a
+                            # binary blob, have to manually set to
+                            # self_contained
+                            output_options = list(self_contained = FALSE,
+                                                  lib_dir = "site_libs"))
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
   html_complete <- paste(html_lines, collapse = "\n")
@@ -299,6 +306,42 @@ test_that("wflow_html inserts custom header and footer", {
                                   stringr::fixed(workflowr:::includes$header)))
   expect_true(stringr::str_detect(html_complete,
                                   stringr::fixed(workflowr:::includes$footer)))
+})
+
+test_that("wflow_html allows users to add additional files for pandoc includes", {
+
+  skip_on_cran()
+
+  tmp_dir <- tempfile()
+  fs::dir_create(tmp_dir)
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+  css <- file.path(tmp_dir, "style.html")
+  style <- "p {color: red}"
+  writeLines(c("<style>", style, "</style>"), con = css)
+  rmd <- file.path(tmp_dir, "file.Rmd")
+  lines <- c("---",
+             "output:",
+             "  workflowr::wflow_html:",
+             "    includes:",
+             "      in_header: style.html",
+             "---",
+             "```{r}",
+             "plot(1:10)",
+             "```")
+  writeLines(lines, rmd)
+  html <- rmarkdown::render(rmd, quiet = TRUE,
+                            output_options = list(self_contained = FALSE,
+                                                  lib_dir = "site_libs"))
+  expect_true(fs::file_exists(html))
+  html_lines <- readLines(html)
+  html_complete <- paste(html_lines, collapse = "\n")
+  expect_true(stringr::str_detect(html_complete,
+                                  stringr::fixed(workflowr:::includes$header)))
+  expect_true(stringr::str_detect(html_complete,
+                                  stringr::fixed(workflowr:::includes$footer)))
+  expect_true(stringr::str_detect(html_complete,
+                                  stringr::fixed(style)))
 })
 
 test_that("wflow_html respects html_document() argument keep_md", {

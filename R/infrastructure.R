@@ -174,6 +174,7 @@ StripTrailingWhitespace: Yes
 
 includes <- list(
   header = '
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
 <style type="text/css">
 div.section {

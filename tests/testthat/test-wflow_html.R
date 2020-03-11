@@ -641,8 +641,7 @@ test_that("add_pagetitle adds metadata pagetitle if missing title", {
   observed <- workflowr:::add_pagetitle(metadata = list(), input_file = "abc")
 
   rmd_version <- utils::packageVersion("rmarkdown")
-  if (rmd_version >= as.numeric_version("1.10") &&
-      rmd_version <= as.numeric_version("1.17")) {
+  if (rmd_version >= "1.10" && rmd_version <= "1.17") {
     expected <- character(0)
   } else {
     expected <- c("--metadata", "pagetitle=abc")

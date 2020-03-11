@@ -188,7 +188,7 @@ body(wflow_build_) <- quote({
   if(!rmarkdown::pandoc_available())
     stop("Pandoc is not installed. Please use RStudio or install pandoc manually")
 
-  if(rmarkdown::pandoc_version() >= 2 && utils::packageVersion("rmarkdown") < 1.7)
+  if(rmarkdown::pandoc_version() >= "2" && utils::packageVersion("rmarkdown") < "1.7")
     stop("pandoc 2+ requires rmarkdown version >= 1.7. Please update your rmarkdown package")
 
   if (isTRUE(getOption("workflowr.autosave"))) autosave()

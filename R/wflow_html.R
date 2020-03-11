@@ -533,8 +533,7 @@ add_pagetitle <- function(metadata, input_file) {
   rmd_version <- utils::packageVersion("rmarkdown")
   # rmarkdown handles this starting in version 1.10 and ending in version 1.18
   # https://github.com/rstudio/rmarkdown/pull/1355
-  if (rmd_version >= as.numeric_version("1.10") &&
-      rmd_version <= as.numeric_version("1.17"))
+  if (rmd_version >= "1.10" && rmd_version <= "1.17")
     return(character(0))
 
   # No title/pagetitle defined with pandoc_args

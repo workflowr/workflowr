@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -122,8 +122,8 @@
 <li>For potentially large changes, please open an Issue first to discuss</li>
 <li>Please follow the <a href="http://adv-r.had.co.nz/Style.html">Hadley style guide</a>
 </li>
-<li>Please run the file <a href="scripts/contribute.R">scripts/contribute.R</a> to check your changes</li>
-<li>(Optional) Run <code><a href="https://rdrr.io/pkg/devtools/man/test.html">devtools::test()</a></code> to run the tests</li>
+<li>Please run the file <a href="scripts/contribute.R" class="uri">scripts/contribute.R</a> to check your changes</li>
+<li>(Optional) Run <code><a href="https://devtools.r-lib.org//reference/test.html">devtools::test()</a></code> to run the tests</li>
 <li>(Optional) Add new test(s) in <code>tests/testthat/</code>
 </li>
 </ul>
@@ -140,8 +140,10 @@
 <p>Convenience scripts for maintaining the package are located in <code>scripts/</code>. These are not included in the package tarball for distribution. They are all intended to be executed from the root directory of the package. The convenience scripts include:</p>
 <ul>
 <li>
-<code>build.sh</code> runs <code>R CMD check</code>
+<code>build.sh</code> runs <code>R CMD build</code> and <code>R CMD check</code>
 </li>
+<li>
+<code>bump-version.R</code> bumps the version across all the necessary package files</li>
 <li>
 <code>contribute.R</code> performs some basic checks that should be run before contributing a Pull Request</li>
 <li>
@@ -154,12 +156,12 @@
 <h2 class="hasAnchor">
 <a href="#release-checklist-for-maintainers" class="anchor"></a>Release checklist (for maintainers)</h2>
 <ul>
-<li>Bump version in <a href="DESCRIPTION">DESCRIPTION</a>, <a href="NEWS.html">NEWS.md</a>, and <a href="tests/testthat/files/test-wflow_update/post/_workflowr.yml">the test _workflowr.yml file</a>
+<li>Bump version with <a href="scripts/bump-version.R" class="uri">scripts/bump-version.R</a>
 </li>
-<li>Update <a href="NEWS.html">NEWS.md</a>: Check <code>git log</code> and make sure to reference GitHub Issues/PRs</li>
-<li>Run <a href="scripts/document.R">scripts/document.R</a> to update Rd files, install the package locally, and build the online documentation with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>
+<li>Update <a href="NEWS.html" class="uri">NEWS.md</a>: Check <code>git log</code> and make sure to reference GitHub Issues/PRs</li>
+<li>Run <a href="scripts/document.R" class="uri">scripts/document.R</a> to update Rd files, install the package locally, and build the online documentation with <a href="https://github.com/r-lib/pkgdown">pkgdown</a>
 </li>
-<li>Run <a href="scripts/build.sh">scripts/build.sh</a> to confirm tests pass locally</li>
+<li>Run <a href="scripts/build.sh" class="uri">scripts/build.sh</a> to confirm tests pass locally</li>
 <li>Test on <a href="https://r-hub.github.io/rhub/">rhub</a>:
 <ul>
 <li>Have to validate email first with <code><a href="https://r-hub.github.io/rhub/reference/validate_email.html">rhub::validate_email()</a></code>. Copy-paste token from email into R console.</li>
@@ -173,20 +175,20 @@
 </li>
 <li>Test on <a href="https://win-builder.r-project.org/">winbuilder</a>:
 <ul>
-<li>Check with R release with <code><a href="https://rdrr.io/pkg/devtools/man/check_win.html">devtools::check_win_release()</a></code>
+<li>Check with R release with <code><a href="https://devtools.r-lib.org//reference/check_win.html">devtools::check_win_release()</a></code>
 </li>
-<li>Check with R devel with <code><a href="https://rdrr.io/pkg/devtools/man/check_win.html">devtools::check_win_devel()</a></code>
+<li>Check with R devel with <code><a href="https://devtools.r-lib.org//reference/check_win.html">devtools::check_win_devel()</a></code>
 </li>
 </ul>
 </li>
-<li>Update <a href="cran-comments.html">cran-comments.md</a>
+<li>Update <a href="cran-comments.html" class="uri">cran-comments.md</a>
 </li>
 <li>Commit with <code>git commit -am "Bump version: x.x.x.9xxx -&gt; x.x.x and re-build docs."</code>
 </li>
 <li>Push with <code>git push origin master</code> and wait for CI builds to pass</li>
-<li>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</li>
-<li>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html">NEWS.md</a>.</li>
-<li>Build tarball with <code>R CMD build .</code> and upload to <a href="https://cran.r-project.org/submit.html">CRAN submission site</a>. You will receive an email to request confirmation, then an email confirming the package was submitted, and then an email with the test results. Once it is accepted to CRAN, monitor the <a href="https://cran.r-project.org/web/checks/check_results_workflowr.html">check results</a> for any surpise errors. Also, these builds are when the binaries are built for Windows and macOS, so they aren’t available until they are finished. You will receive an email once all the Windows binaries are available for download (devel, release, oldrel).</li>
+<li>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html" class="uri">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</li>
+<li>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html" class="uri">NEWS.md</a>.</li>
+<li>Build tarball with <code>R CMD build .</code> and upload to <a href="https://cran.r-project.org/submit.html">CRAN submission site</a>. You will receive an email to request confirmation, then an email confirming the package was submitted, and then an email with the test results. Once it is accepted to CRAN, monitor the <a href="https://cran.r-project.org/web/checks/check_results_workflowr.html">check results</a> for any surprise errors. Also, these builds are when the binaries are built for Windows and macOS, so they aren’t available until they are finished. You will receive an email once all the Windows binaries are available for download (devel, release, oldrel).</li>
 </ul>
 </div>
 </div>

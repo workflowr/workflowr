@@ -70,7 +70,7 @@ workflowr project from an existing data analysis." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -127,7 +127,8 @@ workflowr project from an existing data analysis.</p>
 
     <pre class="usage"><span class='fu'>wflow_quickstart</span>(
   <span class='no'>files</span>,
-  <span class='no'>username</span>,
+  <span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>organization</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>supporting_files</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>directory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>change_wd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -153,10 +154,15 @@ in the current working directory. Supports file
     </tr>
     <tr>
       <th>username</th>
-      <td><p>character (default: NULL). The GitHub or GitLab account you
-want to use to create the remote Git repository. This is likely your
-personal username, but it could also be the name of an organization you
-belong to.</p></td>
+      <td><p>character (default: NULL). The GitHub or GitLab personal
+account you want to use to create the remote Git repository. It can also be
+the name of a GitLab Group that you belong to. However, if it is a GitHub
+organization, instead use the argument <code>organization</code>.</p></td>
+    </tr>
+    <tr>
+      <th>organization</th>
+      <td><p>The GitHub organization account you want to use to
+create the remote Git repository.</p></td>
     </tr>
     <tr>
       <th>supporting_files</th>

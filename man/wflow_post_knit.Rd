@@ -12,14 +12,13 @@ file}
 
 \item{input_file}{Name of R Markdown file}
 
-\item{runtime}{The runtime target for rendering. \code{static} produces output
-  intended for static files; \code{shiny} produces output suitable for use in a
-  Shiny document (see \code{\link[rmarkdown]{run}}). The default, \code{auto},
-  allows the \code{runtime} target specified in the YAML metadata to take
-  precedence, and renders for a \code{static} runtime target otherwise.}
+\item{runtime}{The runtime target for rendering. The \code{static} option
+produces output intended for static files; \code{shiny} produces output
+suitable for use in a Shiny document (see \code{\link[rmarkdown]{run}}). The default,
+\code{auto}, allows the \code{runtime} target specified in the YAML metadata
+to take precedence, and renders for a \code{static} runtime target otherwise.}
 
-\item{encoding}{The encoding of the input file; see
-  \code{\link{file}}.}
+\item{encoding}{Ignored. The encoding is always assumed to be UTF-8.}
 
 \item{...}{arguments passed to the \code{post_knit} function of
 \code{rmarkdown::\link[rmarkdown]{html_document}}}

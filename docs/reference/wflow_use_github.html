@@ -74,7 +74,7 @@ terminal) to push the code to GitHub." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -136,6 +136,7 @@ terminal) to push the code to GitHub.</p>
     <pre class="usage"><span class='fu'>wflow_use_github</span>(
   <span class='kw'>username</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>repository</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>organization</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>navbar_link</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>create_on_github</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>protocol</span> <span class='kw'>=</span> <span class='st'>"https"</span>,
@@ -149,8 +150,9 @@ terminal) to push the code to GitHub.</p>
     <tr>
       <th>username</th>
       <td><p>character (default: NULL). The GitHub account associated with
-the GitHub repository. This is likely your personal GitHub username, but it
-could also be the name of a GitHub organization you belong to. It will be
+the GitHub repository. This should be your personal GitHub username. If the
+repository will be created for a GitHub organization, instead use the
+argument <code>organization</code>. It will be
 combined with the arguments <code>repository</code> and <code>domain</code> to
 determine the URL of the new repository, e.g. the default is
 https://github.com/username/repository. It will be combined with the
@@ -170,6 +172,13 @@ repository on GitHub. If not specified, workflowr will guess the name of
 the repository. First, it will check the current setting for the remote URL
 named "origin". Second, it will use the name of the root directory of the
 workflowr project.</p></td>
+    </tr>
+    <tr>
+      <th>organization</th>
+      <td><p>character (default: NULL). The GitHub organization
+associated with the GitHub repository. Only set one of <code>organization</code>
+or <code>username</code>. See the argument <code>username</code> above for more
+details.</p></td>
     </tr>
     <tr>
       <th>navbar_link</th>
@@ -277,6 +286,9 @@ browser.</p></li>
 <span class='fu'>wflow_use_github</span>(<span class='st'>"your-username"</span>, <span class='st'>"name-of-repository"</span>)
 <span class='co'># Login with GitHub account and create new repository</span>
 <span class='fu'><a href='wflow_git_push.html'>wflow_git_push</a></span>()
+
+<span class='co'># Create a repository for an organization  you belong to</span>
+<span class='fu'>wflow_use_github</span>(<span class='kw'>organization</span> <span class='kw'>=</span> <span class='st'>"my-org"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -40,7 +40,7 @@ are not included in the package tarball for distribution. They are all intended
 to be executed from the root directory of the package. The convenience scripts
 include:
 
-* `build.sh` runs `R CMD check`
+* `build.sh` runs `R CMD build` and `R CMD check`
 * `bump-version.R` bumps the version across all the necessary package files
 * `contribute.R` performs some basic checks that should be run before
 contributing a Pull Request
@@ -52,8 +52,8 @@ contributing a Pull Request
 * Bump version with [scripts/bump-version.R](scripts/bump-version.R)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs
-* Run [scripts/document.R](scripts/document.R) to update Rd files, install the package locally,
-and build the online documentation with [pkgdown][]
+* Run [scripts/document.R](scripts/document.R) to update Rd files, install the
+package locally, and build the online documentation with [pkgdown][]
 * Run [scripts/build.sh](scripts/build.sh) to confirm tests pass locally
 * Test on [rhub][]:
     * Have to validate email first with `rhub::validate_email()`. Copy-paste
@@ -78,7 +78,7 @@ the release "workflowr x.x.x" and copy-paste the Markdown entry from
 site][cran-submit]. You will receive an email to request confirmation, then an
 email confirming the package was submitted, and then an email with the test
 results. Once it is accepted to CRAN, monitor the [check results][check-results]
-for any surpise errors. Also, these builds are when the binaries are built for
+for any surprise errors. Also, these builds are when the binaries are built for
 Windows and macOS, so they aren't available until they are finished. You will
 receive an email once all the Windows binaries are available for download
 (devel, release, oldrel).

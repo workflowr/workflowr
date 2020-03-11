@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -116,30 +116,50 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="workflowr-1-6-0-9000" class="section level1">
+    <div id="workflowr-1-6-1" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-6-0-9000" class="anchor"></a>workflowr 1.6.0.9000<small> Unreleased </small>
+<a href="#workflowr-1-6-1" class="anchor"></a>workflowr 1.6.1<small> Unreleased </small>
 </h1>
+<p>This patch release of workflowr includes minor improvements, updated documentation, bug fixes, and lots of internal refactoring.</p>
+<div id="minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements" class="anchor"></a>Minor improvements</h2>
 <ul>
-<li>Workflowr functions check if the working directory exists (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>,
-<a href='https://github.com/jdblischak/workflowr/issues/185'>#185</a>)</li>
-<li>
-<code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> can now create repositories for GitHub organizations using the new argument <code>organization</code>. However, GitLab Groups should still be specified with the argument <code>username</code> for <code><a href="../reference/wflow_use_gitlab.html">wflow_use_gitlab()</a></code> (bug report from <a href='https://github.com/stephens999'>@stephens999</a>, <a href='https://github.com/jdblischak/workflowr/issues/186'>#186</a>)</li>
-<li>Any workflowr function that prompts for user input will continue to re-prompt until valid input has been entered (or canceled by hitting the key <code>Esc</code>) (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</li>
-<li>Document that GitLab.com provides private repositories with access control to the source code repository and the website (<a href='https://github.com/jdblischak/workflowr/issues/187'>#187</a>)</li>
+<li><p>Workflowr functions check if the working directory exists (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>, <a href='https://github.com/jdblischak/workflowr/issues/185'>#185</a>)</p></li>
+<li><p><code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> can now create repositories for GitHub organizations using the new argument <code>organization</code>. However, GitLab Groups should still be specified with the argument <code>username</code> for <code><a href="../reference/wflow_use_gitlab.html">wflow_use_gitlab()</a></code> (bug report from <a href='https://github.com/stephens999'>@stephens999</a>, <a href='https://github.com/jdblischak/workflowr/issues/186'>#186</a>)</p></li>
+<li><p>Any workflowr function that prompts for user input will continue to re-prompt until valid input has been entered (or canceled by hitting the key <code>Esc</code>) (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
+<li><p>All functions that commit to the Git repository first check for the availability of the Git variables user.name and user.email (either global or local), which are required for creating a commit (<a href='https://github.com/jdblischak/workflowr/issues/85'>#85</a>)</p></li>
+<li><p>The workflowr icon is displayed in browser tabs of workflowr websites (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
+</ul>
+</div>
+<div id="updated-documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#updated-documentation" class="anchor"></a>Updated documentation</h2>
+<ul>
+<li><p>Document that GitLab.com provides private repositories with access control to the source code repository and the website (<a href='https://github.com/jdblischak/workflowr/issues/187'>#187</a>)</p></li>
+<li><p>Update URL to RStudio-specific instructions for installing pandoc (bug report from <a href='https://github.com/PietrH'>@PietrH</a>, <a href='https://github.com/jdblischak/workflowr/issues/190'>#190</a>)</p></li>
+<li><p>Document in the FAQ vignette how to include an external image using an absolute URL to the image hosted on another website (idea from <a href='https://github.com/JiaxiangBU'>@JiaxiangBU</a>, <a href='https://github.com/jdblischak/workflowr/issues/159'>#159</a>)</p></li>
+<li><p>Document how to embed Shiny apps with <code><a href="https://rdrr.io/pkg/knitr/man/include_url.html">knitr::include_app()</a></code> and <a href="http://www.shinyapps.io/">shinyapps.io</a> (idea from <a href='https://github.com/rsimon64'>@rsimon64</a>, <a href='https://github.com/jdblischak/workflowr/issues/130'>#130</a>)</p></li>
+<li><p>Update the FAQ on including external images to account for the breaking change in <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> introduced in knitr version 1.28 (bug report from <a href='https://github.com/ditordccaa'>@ditordccaa</a>, <a href='https://github.com/jdblischak/workflowr/issues/103'>#103</a>)</p></li>
+<li><p>Add FAQ entry on how to use a Git hosting site that uses the HTTP protocol (idea from <a href='https://github.com/antass'>@antass</a>, <a href='https://github.com/jdblischak/workflowr/issues/163'>#163</a>)</p></li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fix Windows-specific bug that caused the table of past versions to be missing from the workflowr report (bug introduced in version 1.5.0)</li>
+</ul>
+</div>
+<div id="internal-refactoring" class="section level2">
+<h2 class="hasAnchor">
+<a href="#internal-refactoring" class="anchor"></a>Internal refactoring</h2>
+<ul>
 <li>Internal refactoring for increased speed and improved error handling of input arguments</li>
 <li>Check for class with <code><a href="https://rdrr.io/r/base/class.html">inherits()</a></code> (<a href='https://github.com/jdblischak/workflowr/issues/189'>#189</a>)</li>
-<li>Update URL to RStudio-specific instructions for installing pandoc (bug report from <a href='https://github.com/PietrH'>@PietrH</a>, <a href='https://github.com/jdblischak/workflowr/issues/190'>#190</a>)</li>
-<li>Fix Windows-specific bug that caused the table of past versions to be missing from the workflowr report (bug introduced in version 1.5.0)</li>
-<li>Document in the FAQ vignette how to include an external image using an absolute URL to the image hosted on another website (idea from <a href='https://github.com/JiaxiangBU'>@JiaxiangBU</a>,
-<a href='https://github.com/jdblischak/workflowr/issues/159'>#159</a>)</li>
-<li>Document how to embed Shiny apps with <code><a href="https://rdrr.io/pkg/knitr/man/include_url.html">knitr::include_app()</a></code> and <a href="http://www.shinyapps.io/">shinyapps.io</a> (idea from <a href='https://github.com/rsimon64'>@rsimon64</a>, <a href='https://github.com/jdblischak/workflowr/issues/130'>#130</a>)</li>
-<li>All functions that commit to the Git repository first check for the availability of the Git variables user.name and user.email (either global or local), which are required for creating a commit (<a href='https://github.com/jdblischak/workflowr/issues/85'>#85</a>)</li>
-<li>Update the FAQ on including external images to account for the breaking change in <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics()</a></code> introduced in knitr version 1.28 (bug report from <a href='https://github.com/ditordccaa'>@ditordccaa</a>, <a href='https://github.com/jdblischak/workflowr/issues/103'>#103</a>)</li>
-<li>Add FAQ entry on how to use a Git hosting site that uses the HTTP protocol (idea from <a href='https://github.com/antass'>@antass</a>, <a href='https://github.com/jdblischak/workflowr/issues/163'>#163</a>)</li>
 <li>Switch to use pandoc option <code>--include-in-header</code> to insert workflowr-specific CSS and other metadata (surprisingly <code>--include-before-body</code> works fine)</li>
-<li>Add workflowr icon to browser tabs of workflowr websites (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</li>
 </ul>
+</div>
 </div>
     <div id="workflowr-1-6-0" class="section level1">
 <h1 class="page-header">
@@ -856,7 +876,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-1-6-0-9000">1.6.0.9000</a></li>
+        <li><a href="#workflowr-1-6-1">1.6.1</a></li>
         <li><a href="#workflowr-1-6-0">1.6.0</a></li>
         <li><a href="#workflowr-1-5-0">1.5.0</a></li>
         <li><a href="#workflowr-1-4-0">1.4.0</a></li>

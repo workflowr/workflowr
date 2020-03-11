@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -77,10 +77,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Sharing common code across analyses</h1>
-            <h3 class="subtitle">workflowr version 1.6.0</h3>
+            <h3 class="subtitle">workflowr version 1.6.1</h3>
                         <h4 class="author">Tim Trice, John Blischak</h4>
             
-            <h4 class="date">2019-12-18</h4>
+            <h4 class="date">2020-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-07-common-code.Rmd"><code>vignettes/wflow-07-common-code.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-07-common-code.Rmd</code></div>
@@ -135,7 +135,7 @@ str(mtcars)
 <p>To include the content of the child document, you can reference it using <code><a href="https://rdrr.io/pkg/here/man/here.html">here::here()</a></code> in your chunk options.</p>
 <pre><code>```{r parent, child = here::here("analysis/child/ex-child.Rmd")}
 ```</code></pre>
-<p>However, this fails if you wish to include plots in the code chunks of the child documents. It will not generate an error, but the plot will be missing <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. In a situation like this, you would want to generate the plot within the parent R Markdown file or use <code><a href="https://rdrr.io/pkg/knitr/man/knit_expand.html">knitr::knit_expand()</a></code> as described in the next section.</p>
+<p>However, this fails if you wish to include plots in the code chunks of the child documents. It will not generate an error, but the plot will be missing <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. In a situation like this, you would want to generate the plot within the parent R Markdown file or use <code><a href="https://rdrr.io/pkg/knitr/man/knit_expand.html">knitr::knit_expand()</a></code> as described in the next section.</p>
 </div>
 <div id="share-templates-with-knit_expand" class="section level2">
 <h2 class="hasAnchor">
@@ -158,7 +158,7 @@ iris %&gt;%
 src &lt;- knitr::knit_expand(file = here::here("analysis/child/iris.Rmd"),
                           title = "setosa")
 ```</code></pre>
-<p>and then later knit it using an inline code expression<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>:</p>
+<p>and then later knit it using an inline code expression<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>:</p>
 <p><code>`r knitr::knit(text = unlist(src))`</code></p>
 <p>The convenience of using <code><a href="https://rdrr.io/pkg/knitr/man/knit_expand.html">knitr::knit_expand()</a></code> gives you the flexibility to generate multiple plots along with custom headers, figure labels, and more. For example, if you want to generate a scatter plot for each Species in the <code>iris</code> datasets, you can call <code><a href="https://rdrr.io/pkg/knitr/man/knit_expand.html">knitr::knit_expand()</a></code> within a <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> or <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code> call:</p>
 <pre><code>```{r, include = FALSE}
@@ -175,13 +175,13 @@ src &lt;- lapply(
 <p>This example code loops through each unique <code>iris$Species</code> and sends it to the template as the variable <code>title</code>. <code>title</code> is inserted into the header, the chunk label, the <code><a href="https://dplyr.tidyverse.org/reference/filter.html">dplyr::filter()</a></code>, and the title of the plot. This generates three plots with custom plot titles and labels while keeping your analysis flow clean and simple.</p>
 <p>Remember to insert <code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::knit(text = unlist(src))</a></code> in an inline R expression as noted above to knit the code in the desired location of your main document.</p>
 <p>Read the <code><a href="https://rdrr.io/pkg/knitr/man/knit_expand.html">knitr::knit_expand()</a></code> vignette for more information.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"knit_expand"</span>, <span class="dt">package =</span> <span class="st">"knitr"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/vignette.html">vignette</a></span>(<span class="st">"knit_expand"</span>, <span class="dt">package =</span> <span class="st">"knitr"</span>)</code></pre></div>
 </div>
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>The reason for this is very technical and requires more understanding of how workflowr is implemented than is necessary to use it effectively in the majority of cases. Whenever workflowr builds an R Markdown file, it first copies it to a temporary directory so that it can inject extra code chunks that implement some of its reproducibility features. The figures in the child documents end up being saved there and then lost.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>Before calling <code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::knit()</a></code>, you’ll need to load the dplyr and ggplot2 packages to run the code in this example child document.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>The reason for this is very technical and requires more understanding of how workflowr is implemented than is necessary to use it effectively in the majority of cases. Whenever workflowr builds an R Markdown file, it first copies it to a temporary directory so that it can inject extra code chunks that implement some of its reproducibility features. The figures in the child documents end up being saved there and then lost.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Before calling <code><a href="https://rdrr.io/pkg/knitr/man/knit.html">knitr::knit()</a></code>, you’ll need to load the dplyr and ggplot2 packages to run the code in this example child document.<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
   </div>

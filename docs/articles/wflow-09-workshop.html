@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -77,10 +77,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Reproducible research with workflowr</h1>
-            <h3 class="subtitle">workflowr version 1.6.0</h3>
+            <h3 class="subtitle">workflowr version 1.6.1</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2019-12-18</h4>
+            <h4 class="date">2020-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-09-workshop.Rmd"><code>vignettes/wflow-09-workshop.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-09-workshop.Rmd</code></div>
@@ -103,12 +103,12 @@
 <li><p>Install <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a></p></li>
 <li>
 <p>Install workflowr from <a href="https://cran.r-project.org/package=workflowr">CRAN</a>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"workflowr"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"workflowr"</span>)</code></pre></div>
 </li>
 <li><p>Create an account on <a href="https://github.com">GitHub</a></p></li>
 </ol>
 <p>To minimize the possibility of any potential issues with your computational setup, you are encouraged to update your version of RStudio (<code>Help</code> -&gt; <code>Check for Updates</code>) and update your R packages:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/update.packages.html">update.packages</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/update.packages.html">update.packages</a></span>()</code></pre></div>
 <p>If you do encounter any issues during the tutorial, consult the <a href="#troubleshooting">Troubleshooting</a> section for solutions to the most common problems.</p>
 </div>
 <div id="organize-your-research" class="section level2">
@@ -120,8 +120,8 @@
 <li><p>Open RStudio.</p></li>
 <li>
 <p>In the R console, run <code><a href="../reference/wflow_git_config.html">wflow_git_config()</a></code> to register your name and email with Git. This only has to be done once per computer. If you’ve used Git on this machine before, you can skip this step. For a better GitHub experience, use the same email you used to register your GitHub account.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(workflowr)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/wflow_git_config.html">wflow_git_config</a></span>(<span class="dt">user.name =</span> <span class="st">"First Last"</span>, <span class="dt">user.email =</span> <span class="st">"email@domain.com"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(workflowr)
+<span class="kw"><a href="../reference/wflow_git_config.html">wflow_git_config</a></span>(<span class="dt">user.name =</span> <span class="st">"First Last"</span>, <span class="dt">user.email =</span> <span class="st">"email@domain.com"</span>)</code></pre></div>
 </li>
 <li><p>In the menu bar, choose <code>File</code> -&gt; <code>New Project</code>.</p></li>
 <li>
@@ -157,16 +157,16 @@
 </li>
 <li>
 <p>In the R console, run <code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code> to return the current working directory. Note that it is set to the location of the workflowr project on your computer. Every time you open this RStudio project (e.g. by clicking on <code>myproject.Rproj</code>), it will change the working directory (as well as the Files pane) to this directory. This allows you to use relative paths to files when performing your analysis, which will make it easier for you and others to run the code on other machines. In other words, instead of writing an absolute path like:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="st">"C:/Users/GraceHopper/myproject/data/raw.csv"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="st">"C:/Users/GraceHopper/myproject/data/raw.csv"</span>)</code></pre></div>
 <p>Instead you can write a relative path that will work for any user on any operating system:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="st">"data/raw.csv"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="st">"data/raw.csv"</span>)</code></pre></div>
 </li>
 <li><p>Open the file <code>analysis/index.Rmd</code> for editing. It should already be open in the RStudio Editor pane from when you created the project. If not, use the Files pane to navigate to the directory <code>analysis/</code> and click on <code>index.Rmd</code> to open it for editing. This index file is special because it is used to create the home page for your project. Write a short introductory message, e.g. “Welcome to my first workflowr website”, and then save the file.</p></li>
-<li><p>In the R console, run <code><a href="../reference/wflow_build.html">wflow_build()</a></code>. This will build all the R Markdown files in <code>analysis/</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, save them in <code>docs/</code>, and then open <code>docs/index.html</code> in the RStudio Viewer pane. Ignore the warnings in the workflowr report for now; we will return to these later.</p></li>
+<li><p>In the R console, run <code><a href="../reference/wflow_build.html">wflow_build()</a></code>. This will build all the R Markdown files in <code>analysis/</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, save them in <code>docs/</code>, and then open <code>docs/index.html</code> in the RStudio Viewer pane. Ignore the warnings in the workflowr report for now; we will return to these later.</p></li>
 <li>
-<p>To begin your analysis, you will use a built-in data set from R.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The data set <code>ToothGrowth</code> contains the length of the teeth for 60 guinea pigs given 3 different doses of vitamin C either via orange juice (<code>OC</code>) or directly with ascorbic acid (<code>VC</code>). To explore the data set, run the following in the R console.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ToothGrowth"</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(ToothGrowth)</a></code></pre></div>
+<p>To begin your analysis, you will use a built-in data set from R.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> The data set <code>ToothGrowth</code> contains the length of the teeth for 60 guinea pigs given 3 different doses of vitamin C either via orange juice (<code>OC</code>) or directly with ascorbic acid (<code>VC</code>). To explore the data set, run the following in the R console.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"ToothGrowth"</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(ToothGrowth)</code></pre></div>
 <pre><code>##       len        supp         dose      
 ##  Min.   : 4.20   OJ:30   Min.   :0.500  
 ##  1st Qu.:13.07   VC:30   1st Qu.:0.500  
@@ -174,7 +174,7 @@
 ##  Mean   :18.81           Mean   :1.167  
 ##  3rd Qu.:25.27           3rd Qu.:2.000  
 ##  Max.   :33.90           Max.   :2.000</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(ToothGrowth)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(ToothGrowth)</code></pre></div>
 <pre><code>## 'data.frame':    60 obs. of  3 variables:
 ##  $ len : num  4.2 11.5 7.3 5.8 6.4 10 11.2 11.2 5.2 7 ...
 ##  $ supp: Factor w/ 2 levels "OJ","VC": 2 2 2 2 2 2 2 2 2 2 ...
@@ -182,7 +182,7 @@
 </li>
 <li>
 <p>To mimic a real project that will have external data files, save the <code>ToothGrowth</code> data set to the <code>data/</code> subdirectory using <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(ToothGrowth, <span class="dt">file =</span> <span class="st">"data/teeth.csv"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span>(ToothGrowth, <span class="dt">file =</span> <span class="st">"data/teeth.csv"</span>)</code></pre></div>
 </li>
 </ol>
 </div>
@@ -193,8 +193,8 @@
 <ol style="list-style-type: decimal">
 <li>
 <p>In the R console, open a new R Markdown file with <code><a href="../reference/wflow_open.html">wflow_open()</a></code>. It will open automatically for editing in RStudio.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/teeth.Rmd"</span>)</a></code></pre></div>
-<p>Rmd files allow you to mix text, code, and results in the same output document (which can be HTML, PDF, Word, and more). In order to accomplish this, it uses a specific layout and syntax. At the top of the document between the dashes <code>---</code> is the YAML<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> header that contains metadata about the document such as the title. Code chunks<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> are specified using the syntax below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/teeth.Rmd"</span>)</code></pre></div>
+<p>Rmd files allow you to mix text, code, and results in the same output document (which can be HTML, PDF, Word, and more). In order to accomplish this, it uses a specific layout and syntax. At the top of the document between the dashes <code>---</code> is the YAML<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> header that contains metadata about the document such as the title. Code chunks<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> are specified using the syntax below:</p>
 <pre><code>```{r optional-chunk-name}
 &lt;code goes here&gt;
 ```</code></pre>
@@ -202,7 +202,7 @@
 <p>The workflowr framework accepts any valid Rmd file that can be converted to HTML. In the YAML header, note that workflowr provides its own custom output format, <code><a href="../reference/wflow_html.html">workflowr::wflow_html</a></code>. This function extends the default output format <code>html_document</code> from the rmarkdown package, and thus accepts all the same arguments. The only other minor difference is that <code><a href="../reference/wflow_open.html">wflow_open()</a></code> adds the editor option <code>chunk_output_type: console</code>, which causes the code to be executed in the R console instead of within the document. If you’d prefer the results of the code chunks be embedded inside the document while you perform the analysis, you can delete those lines (note that this has no effect on the final results, only on the display within RStudio).</p>
 </li>
 <li>
-<p>Copy the code chunk below and paste it at the bottom of the file <code>teeth.Rmd</code>. The code imports the data set from the file you previously created<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>. Execute the code in the R console by clicking on the Run button or using the shortcut <code>Ctrl</code>/<code>CMD</code>+<code>Enter</code>.</p>
+<p>Copy the code chunk below and paste it at the bottom of the file <code>teeth.Rmd</code>. The code imports the data set from the file you previously created<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a>. Execute the code in the R console by clicking on the Run button or using the shortcut <code>Ctrl</code>/<code>CMD</code>+<code>Enter</code>.</p>
 <pre><code>```{r import-teeth}
 teeth &lt;- read.csv("data/teeth.csv", row.names = 1)
 head(teeth)
@@ -218,7 +218,7 @@ boxplot(len ~ dose + supp, data = teeth)
 ```</code></pre>
 </li>
 <li>
-<p>To compare the tooth length of the guinea pigs given orange juice versus those given vitamin C, you could perform a <a href="https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests">permutation-based statistical test</a>. This involves comparing the observed difference in teeth length due to the supplement method to the observed differences calculated from random permutations of the data. The basic idea is that if the observed difference is an outlier compared to the differences generated after permuting the supplement method column, it is more likely to be a true signal not due to chance alone. Copy the code chunk below, paste it at the bottom of of the file <code>teeth.Rmd</code>, and execute it. It demonstrates the idea of a permutation<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>:</p>
+<p>To compare the tooth length of the guinea pigs given orange juice versus those given vitamin C, you could perform a <a href="https://en.wikipedia.org/wiki/Resampling_%28statistics%29#Permutation_tests">permutation-based statistical test</a>. This involves comparing the observed difference in teeth length due to the supplement method to the observed differences calculated from random permutations of the data. The basic idea is that if the observed difference is an outlier compared to the differences generated after permuting the supplement method column, it is more likely to be a true signal not due to chance alone. Copy the code chunk below, paste it at the bottom of of the file <code>teeth.Rmd</code>, and execute it. It demonstrates the idea of a permutation<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a>:</p>
 <pre><code>```{r permute}
 # Observed difference in teeth length due to supplement method
 mean(teeth$len[teeth$supp == "OJ"]) - mean(teeth$len[teeth$supp == "VC"])
@@ -230,12 +230,12 @@ mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
 </li>
 <li><p>In the R console, run <code><a href="../reference/wflow_build.html">wflow_build()</a></code>. Note the value of the observed difference in the permuted data.</p></li>
 <li>
-<p>In RStudio, click on the Knit button. Has the value of the observed difference in the permuted data changed? It should be identical. This is because workflowr always sets the same seed prior to running the analysis.<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> To better understand this behavior as well as the other reproducibility safeguards and checks that workflowr performs for each analysis, click on the workflowr button at the top and select the “Checks” tab.</p>
+<p>In RStudio, click on the Knit button. Has the value of the observed difference in the permuted data changed? It should be identical. This is because workflowr always sets the same seed prior to running the analysis.<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a> To better understand this behavior as well as the other reproducibility safeguards and checks that workflowr performs for each analysis, click on the workflowr button at the top and select the “Checks” tab.</p>
 <p><img src="img/workflowr-report-checks.png" width="75%" style="display: block; margin: auto;"></p>
 </li>
 <li>
 <p>Navigate back to the file <code>analysis/index.Rmd</code>. If you closed it, you can open it from the Files pane or run the following in the R console:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/index.Rmd"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_open.html">wflow_open</a></span>(<span class="st">"analysis/index.Rmd"</span>)</code></pre></div>
 </li>
 <li>
 <p>Copy the line below and paste it at the bottom of the file <code>analysis/index.Rmd</code>. This creates a hyperlink to the tooth analysis. The text between the square brackets is displayed on the webpage, and the text in parentheses is the relative path to the teeth webpage. Note that you don’t need to include the subdirectory <code>docs/</code> because <code>index.html</code> and <code>teeth.html</code> are both already in <code>docs/</code>. Also note that you need to use the file extension <code>.html</code> since that is the file that needs to be opened by the web browser.</p>
@@ -247,8 +247,8 @@ mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
 <p><img src="img/status.png" width="50%" style="display: block; margin: auto;"></p>
 </li>
 <li>
-<p>In the R console, run the command below to “publish” your results <a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>. The function <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> performs three steps: 1) commits the files, 2) rebuilds the Rmd files, and 3) commits the HTML and figure files. This guarantees that the results in each HTML file is always generated from an exact, known version of the Rmd file (you can see this version embedded in the workflowr report). The second argument is the message that is associated with the Git commit. This way you can better understand the motivation for each change that you made when you review the development history of your project (e.g. with <code>git log</code>).</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"data/teeth.csv"</span>), <span class="dt">message =</span> <span class="st">"Analyze teeth growth"</span>)</a></code></pre></div>
+<p>In the R console, run the command below to “publish” your results <a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a>. The function <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> performs three steps: 1) commits the files, 2) rebuilds the Rmd files, and 3) commits the HTML and figure files. This guarantees that the results in each HTML file is always generated from an exact, known version of the Rmd file (you can see this version embedded in the workflowr report). The second argument is the message that is associated with the Git commit. This way you can better understand the motivation for each change that you made when you review the development history of your project (e.g. with <code>git log</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"analysis/*Rmd"</span>, <span class="st">"data/teeth.csv"</span>), <span class="dt">message =</span> <span class="st">"Analyze teeth growth"</span>)</code></pre></div>
 </li>
 <li>
 <p>Open the workflowr report of <code>teeth.html</code> by clicking on the button at the top of the page. Navigate to the tab “Past versions”. Note that the record of all past versions will be saved here. Once the project has been added to GitHub (you will do this in the next section), the “Past versions” tab will include hyperlinks for convenient viewing of the past versions of the Rmd and HTML files.</p>
@@ -263,18 +263,18 @@ mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
 <ol style="list-style-type: decimal">
 <li>
 <p>In the R console, run the function <code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code>. The only required argument is your GitHub username. The name of the repository will automatically be named the same as the directory containing the workflowr project, in this case “myproject”. When the function asks if you would like it to create the repository on GitHub for you, enter <code>y</code> for “yes”. This will open your web browser so that you can authenticate with GitHub and then give permission for workflowr to create the repository on your behalf. Additionally, this function connects to your local repository with the remote GitHub repository and inserts a link to the GitHub repository into the navigation bar. If this fails to create a GitHub repository, go to <a href="#no-repo">Troubleshooting</a>.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_use_github.html">wflow_use_github</a></span>(<span class="st">"your-github-username"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_use_github.html">wflow_use_github</a></span>(<span class="st">"your-github-username"</span>)</code></pre></div>
 </li>
 <li>
 <p>To update your workflowr website to use GitHub links to past versions of the files (as well as update the navigation bar to include the GitHub link), republish the files.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="dt">republish =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_publish.html">wflow_publish</a></span>(<span class="dt">republish =</span> <span class="ot">TRUE</span>)</code></pre></div>
 </li>
 <li>
 <p>To send your project to GitHub, run <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>. This will prompt you for your GitHub username and password. If this fails, go to <a href="#failed-push">Troubleshooting</a>.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="../reference/wflow_git_push.html">wflow_git_push</a></span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/wflow_git_push.html">wflow_git_push</a></span>()</code></pre></div>
 </li>
 <li>
-<p>On GitHub, navigate to the Settings tab of your GitHub repository<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>. Scroll down to the section “GitHub Pages”. For Source choose “master branch /docs folder”. After it updates, scroll back down and click on the URL. If the URL doesn’t display your website, go to <a href="#no-gh-pages">Troubleshooting</a>.</p>
+<p>On GitHub, navigate to the Settings tab of your GitHub repository<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a>. Scroll down to the section “GitHub Pages”. For Source choose “master branch /docs folder”. After it updates, scroll back down and click on the URL. If the URL doesn’t display your website, go to <a href="#no-gh-pages">Troubleshooting</a>.</p>
 <p><img src="img/github-pages-settings.png" width="75%" style="display: block; margin: auto;"></p>
 </li>
 <li>
@@ -326,15 +326,15 @@ mean(teeth$len[supp_perm == "OJ"]) - mean(teeth$len[supp_perm == "VC"])
 <div class="footnotes">
 <hr>
 <ol>
-<li id="fn1"><p>The default behavior when <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is run without any arguments is to build any R Markdown file that has been edited since its corresponding HTML file was last built.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>While not the most realistic, this avoids any issues with downloading data from the internet and saving it correctly.<a href="#fnref2" class="footnote-back">↩</a></p></li>
-<li id="fn3"><p><a href="https://en.wikipedia.org/wiki/YAML">YAML</a> is a mini-language often used in configuration files.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>You can insert a code chunk via the menu bar, <code>Code</code> -&gt; <code>Insert Chunk</code>, or using the keyboard shortcut (<code>Ctrl</code>+<code>Alt</code>+<code>I</code> on Windows and Linux, <code>Command</code>+<code>Option</code>+<code>I</code> on macOS).<a href="#fnref4" class="footnote-back">↩</a></p></li>
-<li id="fn5"><p>Note that the default working directory for a workflowr project is the root of the project. Hence the relative path is <code>data/teeth.csv</code>. The working directory can be changed via the workflowr option <code>knit_root_dir</code> in <code>_workflowr.yml</code>. See <code><a href="../reference/wflow_html.html">?wflow_html</a></code> for more details.<a href="#fnref5" class="footnote-back">↩</a></p></li>
-<li id="fn6"><p>You won’t implement the full permutation method in this tutorial.<a href="#fnref6" class="footnote-back">↩</a></p></li>
-<li id="fn7"><p>Note that everyone in the workshop will have the same result because by default workflowr uses a seed that is the date the project was created as YYYYMMDD. You can change this by editing the file <code>_workflowr.yml</code>.<a href="#fnref7" class="footnote-back">↩</a></p></li>
-<li id="fn8"><p>The command uses the wildcard character <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code> to match all the Rmd files in <code>analysis/</code>. If this fails on your computer, try running the more verbose command: <code><a href="../reference/wflow_publish.html">wflow_publish(c("analysis/index.Rmd", "analysis/teeth.Rmd", "data/teeth.csv"), message = "Analyze teeth growth")</a></code><a href="#fnref8" class="footnote-back">↩</a></p></li>
-<li id="fn9"><p>If your GitHub repository wasn’t automatically opened by <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, you can manually enter the URL into the browser: <code>https://github.com/username/myproject</code>.<a href="#fnref9" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>The default behavior when <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is run without any arguments is to build any R Markdown file that has been edited since its corresponding HTML file was last built.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>While not the most realistic, this avoids any issues with downloading data from the internet and saving it correctly.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p><a href="https://en.wikipedia.org/wiki/YAML">YAML</a> is a mini-language often used in configuration files.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>You can insert a code chunk via the menu bar, <code>Code</code> -&gt; <code>Insert Chunk</code>, or using the keyboard shortcut (<code>Ctrl</code>+<code>Alt</code>+<code>I</code> on Windows and Linux, <code>Command</code>+<code>Option</code>+<code>I</code> on macOS).<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Note that the default working directory for a workflowr project is the root of the project. Hence the relative path is <code>data/teeth.csv</code>. The working directory can be changed via the workflowr option <code>knit_root_dir</code> in <code>_workflowr.yml</code>. See <code><a href="../reference/wflow_html.html">?wflow_html</a></code> for more details.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>You won’t implement the full permutation method in this tutorial.<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>Note that everyone in the workshop will have the same result because by default workflowr uses a seed that is the date the project was created as YYYYMMDD. You can change this by editing the file <code>_workflowr.yml</code>.<a href="#fnref7">↩</a></p></li>
+<li id="fn8"><p>The command uses the wildcard character <code><a href="https://rdrr.io/r/base/Arithmetic.html">*</a></code> to match all the Rmd files in <code>analysis/</code>. If this fails on your computer, try running the more verbose command: <code><a href="../reference/wflow_publish.html">wflow_publish(c("analysis/index.Rmd", "analysis/teeth.Rmd", "data/teeth.csv"), message = "Analyze teeth growth")</a></code><a href="#fnref8">↩</a></p></li>
+<li id="fn9"><p>If your GitHub repository wasn’t automatically opened by <code><a href="../reference/wflow_git_push.html">wflow_git_push()</a></code>, you can manually enter the URL into the browser: <code>https://github.com/username/myproject</code>.<a href="#fnref9">↩</a></p></li>
 </ol>
 </div>
   </div>

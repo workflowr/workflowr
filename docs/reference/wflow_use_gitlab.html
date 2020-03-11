@@ -76,7 +76,7 @@ create the new repository on GitLab prior to pushing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
       </span>
     </div>
 
@@ -153,7 +153,7 @@ create the new repository on GitLab prior to pushing.</p>
       <th>username</th>
       <td><p>character (default: NULL). The GitLab account associated with
 the GitLab repository. This is likely your personal GitLab username, but it
-could also be the name of a GitLab organization you belong to. It will be
+could also be the name of a GitLab Group you belong to. It will be
 combined with the arguments <code>repository</code> and <code>domain</code> to
 determine the URL of the new repository, e.g. the default is
 https://gitlab.com/username/repository. It will be combined with the
@@ -218,12 +218,17 @@ save the website files in <code>public/</code></p></li>
 <li><p>Configures the Git remote settings to use GitLab</p></li>
 </ul>
 
+<p>By default the GitLab repository is set to private, so you are the only one
+that can access it. If you need to keep it private, you can
+<a href='https://gitlab.com/help/user/project/pages/pages_access_control.md'>grant
+access</a> to collaborators in Settings-&gt;Members. Otherwise, you can make it
+public in Settings-&gt;General-&gt;Visibility.</p>
 <p>For more details, read the documentation provided by
 <a href='https://docs.gitlab.com/ee/ci/yaml/README.html#pages'>GitLab Pages</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='wflow_git_push.html'>wflow_git_push</a></code>, <code><a href='wflow_git_remote.html'>wflow_git_remote</a></code>,
-         <code><a href='wflow_use_github.html'>wflow_use_github</a></code></p></div>
+         <code><a href='wflow_use_github.html'>wflow_use_github</a></code>, vignette("wflow-06-gitlab")</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {

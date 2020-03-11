@@ -80,7 +80,7 @@
             <h3 class="subtitle">workflowr version 1.6.0.9000</h3>
                         <h4 class="author">John Blischak</h4>
             
-            <h4 class="date">2020-03-02</h4>
+            <h4 class="date">2020-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/master/vignettes/wflow-05-faq.Rmd"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -149,7 +149,7 @@ wflow_git_commit("docs/assets/*.png", "Add external images of ...")</a></code></
 </li>
 <li><p>Run <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> on the R Markdown file that contains the external image file(s)</p></li>
 </ol>
-<p>Another option is to first upload the image, e.g. to <a href="https://imgur.com/">imgur</a>, <a href="https://figshare.com/">figshare</a>, another GitHub repository, etc. Then you can link directly to the image in your Rmd file using the absolute URL. This has the added advantage that the image will automatically display in the Rmd file as you edit it in RStudio. The main disadvantage is that the image isn’t in the same location as the rest of your project files.</p>
+<p>Another option is to first upload the image, e.g. to <a href="https://imgur.com/">Imgur</a>, <a href="https://figshare.com/">Figshare</a>, another GitHub repository, etc. Then you can link directly to the image in your Rmd file using the absolute URL. This has the added advantage that the image will automatically display in the Rmd file as you edit it in RStudio. The main disadvantage is that the image isn’t in the same location as the rest of your project files.</p>
 </div>
 <div id="how-can-i-save-a-figure-in-a-vector-graphics-format-e-g-pdf" class="section level2">
 <h2 class="hasAnchor">
@@ -197,7 +197,7 @@ ggsave("paper/plot-to-edit.pdf", width = 5, height = 5)
 <h2 class="hasAnchor">
 <a href="#can-i-include-shiny-apps-in-my-website" class="anchor"></a>Can I include Shiny apps in my website?</h2>
 <p>Yes, but not directly. You cannot directly embed the Shiny app into the Rmd file using <code>runtime: shiny_prerendered</code> for two reasons. First, workflowr creates a static website, and the free deployment options (e.g. GitHub Pages), only provide static web hosting. Shiny apps require a dynamic website because they need to call a server to run the R code. Second, even if you setup your own web server, the supporting files (e.g. CSS/JS) for a Shiny app have to be in a <a href="https://rmarkdown.rstudio.com/authoring_shiny_prerendered.html#external_resources">different location</a> than the standard for an Rmd-based website.</p>
-<p>However, there is still a good option for embeding the Shiny app directly into the web page. You can upload your Shiny app to <a href="http://www.shinyapps.io/">shinyapps.io</a>, and then embed it directly into your document by calling <code><a href="https://rdrr.io/pkg/knitr/man/include_url.html">knitr::include_app()</a></code> inside a code chunk, as shown below:</p>
+<p>However, there is still a good option for embedding the Shiny app directly into the web page. You can upload your Shiny app to <a href="http://www.shinyapps.io/">shinyapps.io</a>, and then embed it directly into your document by calling <code><a href="https://rdrr.io/pkg/knitr/man/include_url.html">knitr::include_app()</a></code> inside a code chunk, as shown below:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="bn">```{r shiny-app}</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="bn">knitr::include_app("https://&lt;user-name&gt;.shinyapps.io/&lt;app-name&gt;/")</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="bn">```</span></a></code></pre></div>
@@ -294,7 +294,7 @@ output:
 <div id="can-i-use-a-git-hosting-service-that-uses-the-http-protocol" class="section level2">
 <h2 class="hasAnchor">
 <a href="#can-i-use-a-git-hosting-service-that-uses-the-http-protocol" class="anchor"></a>Can I use a Git hosting service that uses the HTTP protocol?</h2>
-<p>Workflowr works best with Git hosting services that use the HTTPS protocol. However, with a litle upfront configuration, it is possible to use the HTTP protocol.</p>
+<p>Workflowr works best with Git hosting services that use the HTTPS protocol. However, with some minimal upfront configuration, it is possible to use the HTTP protocol.</p>
 <p>The configuration differs depending on whether you are authenticating with SSH keys or username/password.</p>
 <p><strong>SSH keys</strong></p>
 <ol style="list-style-type: decimal">

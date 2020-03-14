@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9000</span>
       </span>
     </div>
 
@@ -116,9 +116,14 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="workflowr-1-6-1-9000" class="section level1">
+<h1 class="page-header">
+<a href="#workflowr-1-6-1-9000" class="anchor"></a>workflowr 1.6.1.9000<small> Unreleased </small>
+</h1>
+</div>
     <div id="workflowr-1-6-1" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-6-1" class="anchor"></a>workflowr 1.6.1<small> Unreleased </small>
+<a href="#workflowr-1-6-1" class="anchor"></a>workflowr 1.6.1<small> 2020-03-11 </small>
 </h1>
 <p>This patch release of workflowr includes minor improvements, updated documentation, bug fixes, and lots of internal refactoring.</p>
 <div id="minor-improvements" class="section level2">
@@ -155,9 +160,9 @@
 <h2 class="hasAnchor">
 <a href="#internal-refactoring" class="anchor"></a>Internal refactoring</h2>
 <ul>
-<li>Internal refactoring for increased speed and improved error handling of input arguments</li>
-<li>Check for class with <code><a href="https://rdrr.io/r/base/class.html">inherits()</a></code> (<a href='https://github.com/jdblischak/workflowr/issues/189'>#189</a>)</li>
-<li>Switch to use pandoc option <code>--include-in-header</code> to insert workflowr-specific CSS and other metadata (surprisingly <code>--include-before-body</code> works fine)</li>
+<li><p>Internal refactoring for increased speed and improved error handling of input arguments</p></li>
+<li><p>Check for class with <code><a href="https://rdrr.io/r/base/class.html">inherits()</a></code> (<a href='https://github.com/jdblischak/workflowr/issues/189'>#189</a>)</p></li>
+<li><p>Switch to use pandoc option <code>--include-in-header</code> to insert workflowr-specific CSS and other metadata (surprisingly <code>--include-before-body</code> works fine)</p></li>
 </ul>
 </div>
 </div>
@@ -687,7 +692,7 @@ wflow_update()</a></code></pre>
 <a href="#new-function-wflow_remove" class="anchor"></a>New function wflow_remove</h2>
 <ul>
 <li>
-<code><a href="../reference/wflow_remove.html">wflow_remove()</a></code> removes R Markdown files and all their associated files ( e.g. HTML and figures)</li>
+<code><a href="../reference/wflow_remove.html">wflow_remove()</a></code> removes R Markdown files and all their associated files (e.g. HTML and figures)</li>
 <li>If the files to be removed had been committed to the Git repository, the files are also removed from the Git repository (analogous to <code>git rm</code>)</li>
 <li>
 <code><a href="../reference/wflow_remove.html">wflow_remove()</a></code> also works on non-Rmd files</li>
@@ -876,6 +881,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-1-6-1-9000">1.6.1.9000</a></li>
         <li><a href="#workflowr-1-6-1">1.6.1</a></li>
         <li><a href="#workflowr-1-6-0">1.6.0</a></li>
         <li><a href="#workflowr-1-5-0">1.5.0</a></li>

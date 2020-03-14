@@ -82,6 +82,14 @@ for any surprise errors. Also, these builds are when the binaries are built for
 Windows and macOS, so they aren't available until they are finished. You will
 receive an email once all the Windows binaries are available for download
 (devel, release, oldrel).
+* You can monitor the status of the CRAN submission with the [foghorn][]
+package:
+
+    ```
+    foghorn::cran_incoming("workflowr")
+    foghorn::cran_details("workflowr")
+    foghorn::cran_results(pkg = "workflowr")
+    ```
 
 [appveyor]: https://ci.appveyor.com
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html
@@ -90,6 +98,7 @@ receive an email once all the Windows binaries are available for download
 [contribute]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011
 [covr]: https://github.com/jimhester/covr
 [cran-submit]: https://cran.r-project.org/submit.html
+[foghorn]: https://cran.r-project.org/package=foghorn
 [git-tutorial]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668
 [hadley]: http://hadley.nz/
 [pkgdown]: https://github.com/r-lib/pkgdown

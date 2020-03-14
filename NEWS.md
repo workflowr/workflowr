@@ -1,3 +1,5 @@
+# workflowr 1.6.1.9000
+
 # workflowr 1.6.1
 
 This patch release of workflowr includes minor improvements, updated
@@ -58,8 +60,10 @@ from the workflowr report (bug introduced in version 1.5.0)
 
 * Internal refactoring for increased speed and improved error handling of input
 arguments
+
 * Check for class with `inherits()`
 (#189)
+
 * Switch to use pandoc option `--include-in-header` to insert workflowr-specific
 CSS and other metadata (surprisingly `--include-before-body` works fine)
 

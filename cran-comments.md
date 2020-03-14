@@ -11,6 +11,7 @@
 
 * Windows 10, R 3.6.3 (local)
 * Windows Server 2012 R2 (x64/x64), R 3.6.3 (AppVeyor)
+* Windows Server 2008 R2 SP1 (32/64 bit), R 3.6.3 (r-hub)
 * winbuilder (release, devel)
 
 ## R CMD check results

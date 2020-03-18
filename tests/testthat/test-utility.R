@@ -698,8 +698,8 @@ test_that("is_rmd distinguishes between Rmd and non-Rmd files", {
 
 test_that("check_wd_exists throws error if working directory has been deleted", {
 
-  if (.Platform$OS.type == "windows")
-    skip("Current working directory cannot be deleted on Windows")
+  # The current working directory cannot be deleted on Solaris or Windows
+  skip_on_os(c("solaris", "windows"))
 
   cwd <- fs::path_wd()
   on.exit(setwd(cwd))

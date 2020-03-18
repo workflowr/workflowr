@@ -331,8 +331,8 @@ test_that("wflow_status gives warning for HTML-only published files", {
 
 test_that("wflow_status fails early if deleted subdirectory is current working directory", {
 
-  if (.Platform$OS.type == "windows")
-    skip("Current working directory cannot be deleted on Windows")
+  # The current working directory cannot be deleted on Solaris or Windows
+  skip_on_os(c("solaris", "windows"))
 
   # Setup functions from setup.R
   path <- test_setup()
@@ -351,8 +351,8 @@ test_that("wflow_status fails early if deleted subdirectory is current working d
 
 test_that("wflow_status fails early if deleted root directory is current working directory", {
 
-  if (.Platform$OS.type == "windows")
-    skip("Current working directory cannot be deleted on Windows")
+  # The current working directory cannot be deleted on Solaris or Windows
+  skip_on_os(c("solaris", "windows"))
 
   # Setup functions from setup.R
   path <- test_setup()
@@ -369,8 +369,8 @@ test_that("wflow_status fails early if deleted root directory is current working
 
 test_that("wflow_status fails early if deleted external directory is current working directory", {
 
-  if (.Platform$OS.type == "windows")
-    skip("Current working directory cannot be deleted on Windows")
+  # The current working directory cannot be deleted on Solaris or Windows
+  skip_on_os(c("solaris", "windows"))
 
   # Setup functions from setup.R
   path <- test_setup()

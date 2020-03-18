@@ -1,5 +1,7 @@
 # workflowr 1.6.1.9000
 
+* Skip test of error handling of deleted working directory on Solaris
+
 # workflowr 1.6.1
 
 This patch release of workflowr includes minor improvements, updated

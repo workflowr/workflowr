@@ -36,6 +36,8 @@ test_that("wflow_run can run specified file", {
 
 test_that("wflow_run argument verbose controls code echoing", {
 
+  skip_on_os("solaris")
+
   path <- test_setup()
   on.exit(test_teardown(path))
   withr::local_dir(path)

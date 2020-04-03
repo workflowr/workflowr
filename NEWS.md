@@ -1,6 +1,8 @@
 # workflowr 1.6.1.9000
 
 * Skip test of error handling of deleted working directory on Solaris
+* Update FAQ entry on external images to note that the website directory for
+GitLab Pages is `public/`, not `docs/` (idea from @ryurko)
 
 # workflowr 1.6.1
 

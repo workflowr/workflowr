@@ -49,6 +49,7 @@ Imports:
     tools,
     utils,
     whisker (>= 0.3-2),
+    xfun,
     yaml
 RoxygenNote: 7.0.2
 Suggests:

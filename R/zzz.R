@@ -32,6 +32,7 @@ check_deps <- function() {
     httpuv = "1.2.2",
     knitr = "1.18",
     rmarkdown = "1.7",
+    rprojroot = "1.2",
     rstudioapi = "0.6",
     stringr = "1.3.0",
     whisker = "0.3-2"

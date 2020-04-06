@@ -5,6 +5,7 @@
 GitLab Pages is `public/`, not `docs/` (idea from @ryurko)
 * Send warning if Python plots created using outdated version of reticulate (<
 1.15) (bug report from @lazappi, #181)
+* Set minimum version requirement for dependency rprojroot to 1.2
 
 # workflowr 1.6.1
 

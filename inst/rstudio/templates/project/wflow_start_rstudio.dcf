@@ -1,0 +1,57 @@
+Binding: wflow_start_rstudio
+Title: workflowr project (beta)
+Subtitle: RStudio interface to wflow_start_rstudio()
+Caption: Start a workflowr project
+Icon: reproducible.png
+OpenFiles: README.md, analysis/index.Rmd, _workflowr.yml, analysis/_site.yml
+
+Parameter: name
+Widget: TextInput
+Label: Project name
+Position: left
+
+Parameter: user.name
+Widget: TextInput
+Label: Git user name
+Position: left
+
+Parameter: user.email
+Widget: TextInput
+Label: Git email address
+Position: left
+
+Parameter: git
+Widget: CheckboxInput
+Label: Use Git for version control
+Default: On
+Position: right
+
+Parameter: existing
+Widget: CheckboxInput
+Label: Directory already exists
+Default: Off
+Position: right
+
+Parameter: overwrite
+Widget: CheckboxInput
+Label: Overwite existing directories and files
+Default: Off
+Position: right
+
+Parameter: change_wd
+Widget: CheckboxInput
+Label: Change the working directory
+Default: On
+Position: right
+
+Parameter: disable_remote
+Widget: CheckboxInput
+Label: Prevents pushing to remote
+Default: Off
+Position: right
+
+Parameter: dry_run
+Widget: CheckboxInput
+Label: The actions are previewed
+Default: Off
+Position: right

@@ -134,6 +134,7 @@
 #' }
 #'
 #' @importFrom httpuv startServer
+#' @importFrom httr RETRY
 #' @export
 wflow_use_github <- function(username = NULL,
                              repository = NULL,
@@ -410,14 +411,30 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
   # Create the repository
   message(glue::glue("Creating repository {repository}"))
   if (account_is_organization) {
-      req_create <- httr::POST(
-        glue::glue("https://api.github.com/orgs/{account}/repos"), token, ua,
-        body = list(name = repository), encode = "json"
+      req_create <- httr::RETRY(
+        verb = "POST"
+        , url = glue::glue("https://api.github.com/orgs/{account}/repos")
+        , config = token
+        , ua
+        , body = list(name = repository)
+        , encode = "json"
+        , terminate_on = c(
+          403, 404
+        )
       )
       httr::stop_for_status(req_create)
   } else {
-    req_create <- httr::POST("https://api.github.com/user/repos", token, ua,
-                             body = list(name = repository), encode = "json")
+    req_create <- httr::RETRY(
+      verb = "POST"
+      , url = "https://api.github.com/user/repos"
+      , config = token
+      , ua
+      , body = list(name = repository)
+      , encode = "json"
+      , terminate_on = c(
+        403, 404
+      )
+    )
     httr::stop_for_status(req_create)
   }
 

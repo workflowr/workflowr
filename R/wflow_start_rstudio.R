@@ -26,7 +26,7 @@ wflow_start_rstudio <- function(directory,
   # Check if user.name is blank, use NULL if true
   if (user.name == "") {
     user.name_rs <- NULL
-    warning("No user name is recorded for the project, the global setting will be used")
+    check_git_config(directory, custom_message = "the RStudio Project Template")
   } else {
     user.name_rs <- user.name
   }
@@ -34,7 +34,7 @@ wflow_start_rstudio <- function(directory,
   # Check if user.email is blank, use NULL if true
   if (user.email == "") {
     user.email_rs <- NULL
-    warning("No user email is recorded for the project, the global setting will be used")
+    check_git_config(directory, custom_message = "the RStudio Project Template")
   } else {
     user.email_rs <- user.email
   }

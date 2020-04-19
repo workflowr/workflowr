@@ -258,6 +258,9 @@ wflow_start <- function(directory,
   assert_is_flag(git)
   assert_is_flag(existing)
   assert_is_flag(overwrite)
+  if (overwrite && !existing) {
+    stop("Cannot overwrite non-existent project. Set existing = TRUE if you wish to overwrite existing workflowr files.")
+  }
   assert_is_flag(change_wd)
   assert_is_flag(disable_remote)
   assert_is_flag(dry_run)

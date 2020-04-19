@@ -389,6 +389,16 @@ test_that("wflow_start changes to workflowr directory by default", {
   expect_identical(getwd(), site_dir)
 })
 
+test_that("wflow_start fails if `overwrite = TRUE` and `existing = FALSE`", {
+
+  site_dir <- tempfile("test-start-")
+  site_dir <- workflowr:::absolute(site_dir)
+  expect_error(wflow_start(site_dir, change_wd = FALSE, overwrite = TRUE,
+                           user.name = "Test Name", user.email = "test@email"),
+               "Cannot overwrite non-existent project.")
+
+})
+
 test_that("wflow_start fails early if directory exists and `existing = FALSE`", {
 
   site_dir <- tempfile("test-start-")

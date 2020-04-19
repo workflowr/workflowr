@@ -388,7 +388,7 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
   token <- httr::config(token =  oauth_token)
 
   # Ensure they haven't exceeded their rate limit
-  req_rate <- httr::GET("https://api.github.com/rate_limit", token, ua)
+  req_rate <- httr::RETRY("GET", "https://api.github.com/rate_limit", token, ua, terminate_on = c(403,  404))
   httr::stop_for_status(req_rate)
   content_rate <- httr::content(req_rate)
   if (content_rate$resources$core$remaining < 5) {
@@ -398,8 +398,8 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
   }
 
   # Confirm the repository doesn't exist
-  req_exist <- httr::GET(glue::glue("https://api.github.com/repos/{account}/{repository}"),
-                         token, ua)
+  req_exist <- httr::RETRY("GET", glue::glue("https://api.github.com/repos/{account}/{repository}"),
+                         token, ua, terminate_on = c(403, 404))
   status_exist <- httr::http_status(req_exist)
   if (status_exist$reason != "Not Found") {
     warning(glue::glue("Repository {repository} already exists for account {account}"),
@@ -422,8 +422,8 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
   }
 
   # Confirm the repository exists
-  req_confirm <- httr::GET(glue::glue("https://api.github.com/repos/{account}/{repository}"),
-                           token, ua)
+  req_confirm <- httr::RETRY("GET", glue::glue("https://api.github.com/repos/{account}/{repository}"),
+                           token, ua, terminate_on = c(403, 404))
   status_confirm <- httr::http_status(req_confirm)
   if (status_confirm$category != "Success") {
     warning(glue::glue("Failed to create repository {repository}. Reason: {status_confirm$reason}"))

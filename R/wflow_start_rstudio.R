@@ -1,12 +1,12 @@
 ## Wrapper function to enhance RStudio Project Template
 
 wflow_start_rstudio <- function(directory,
-                                name = NULL,
+                                name = "",
                                 git = TRUE,
                                 existing = FALSE,
                                 overwrite = FALSE,
-                                user.name = NULL,
-                                user.email = NULL) {
+                                user.name = "",
+                                user.email = "") {
 
   directory_rs <- directory
 

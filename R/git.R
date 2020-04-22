@@ -475,10 +475,11 @@ get_remote_protocol <- function(remote, remote_avail) {
   return(protocol)
 }
 
-ssh_key_has_passphrase <- function(privatekey = git2r::ssh_path('id_rsa')) {
+ssh_key_has_passphrase <- function(privatekey = git2r::ssh_path("id_rsa")) {
   # https://security.stackexchange.com/questions/129724/how-to-check-if-an-ssh-private-key-has-passphrase-or-not
-  private_content <- readLines(privatekey, n = 2L)
-  has_pass <- !startsWith(private_content[2L], 'MII')
+  private_content <- readLines(privatekey, n = 3L)
+  has_pass <- !startsWith(private_content[2L], "MII") ||
+    any(grepl("encrypted", private_content, ignore.case = TRUE))
   return(has_pass)
 }
 

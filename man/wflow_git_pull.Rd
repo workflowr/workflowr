@@ -11,8 +11,7 @@ wflow_git_pull(
   password = NULL,
   fail = TRUE,
   dry_run = FALSE,
-  project = ".",
-  ssh_key_has_passphrase = FALSE
+  project = "."
 )
 }
 \arguments{
@@ -40,10 +39,6 @@ not actually pull from the remote repository.}
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}
-
-\item{ssh_key_has_passphrase}{logical (default: FALSE). Specify whether the
-ssh key has a passphrase. Only used if authentication to the remote
-repository uses ssh.}
 }
 \value{
 An object of class \code{wflow_git_pull}, which is a list with the

@@ -175,11 +175,6 @@ test_that("authenticate_git returns NULL for SSH remotes if dry run", {
   expect_true(is.null(cred))
 })
 
-test_that("authenticate_git returns NULL for SSH remotes if ssh key has passphrase", {
-  cred <- authenticate_git(protocol = "ssh", ssh_key_has_passphrase = TRUE)
-  expect_true(is.null(cred))
-})
-
 test_that("authenticate_git only accepts https or ssh", {
   expect_error(authenticate_git(protocol = "xyz"))
 })

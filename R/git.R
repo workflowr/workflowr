@@ -475,16 +475,21 @@ get_remote_protocol <- function(remote, remote_avail) {
   return(protocol)
 }
 
+ssh_key_has_passphrase <- function(privatekey = git2r::ssh_path('id_rsa')) {
+  # https://security.stackexchange.com/questions/129724/how-to-check-if-an-ssh-private-key-has-passphrase-or-not
+  private_content <- readLines(privatekey, n = 2L)
+  has_pass <- !startsWith(private_content[2L], 'MII')
+  return(has_pass)
+}
+
 # Authenticate with Git using either HTTPS or SSH
 #
 # protocol - either "https" or "ssh"
 # username - username or NULL
 # password - password or NULL
 # dry_run - logical
-# ssh_key_has_passphrase - logical
 authenticate_git <- function(protocol, username = NULL,
-                             password = NULL, dry_run = FALSE,
-                             ssh_key_has_passphrase = FALSE) {
+                             password = NULL, dry_run = FALSE) {
   if (!protocol %in% c("https", "ssh"))
     stop("protocol must be either \"https\" or \"ssh\"")
   if (!(is.null(username) || (is.character(username) && length(username) == 1)))
@@ -530,7 +535,7 @@ authenticate_git <- function(protocol, username = NULL,
     #
     # https://github.com/hadley/devtools/issues/642#issuecomment-139357055
     # https://github.com/ropensci/git2r/issues/284#issuecomment-306103004
-    if (ssh_key_has_passphrase || dry_run) {
+    if (dry_run || ssh_key_has_passphrase()) {
       credentials <- NULL
     } else {
       credentials <- git2r::cred_ssh_key()

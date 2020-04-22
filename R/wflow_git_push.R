@@ -113,6 +113,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
   assert_is_flag(set_upstream)
   assert_is_flag(view)
   assert_is_flag(dry_run)
+  assert_is_flag(ssh_key_has_passphrase)
   check_wd_exists()
   assert_is_single_directory(project)
   project <- absolute(project)

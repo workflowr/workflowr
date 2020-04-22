@@ -530,7 +530,7 @@ authenticate_git <- function(protocol, username = NULL,
     #
     # https://github.com/hadley/devtools/issues/642#issuecomment-139357055
     # https://github.com/ropensci/git2r/issues/284#issuecomment-306103004
-    if (isTRUE(ssh_key_has_passphrase)) {
+    if (ssh_key_has_passphrase || dry_run) {
       credentials <- NULL
     } else {
       credentials <- git2r::cred_ssh_key()

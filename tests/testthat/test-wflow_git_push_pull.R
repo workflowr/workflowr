@@ -170,8 +170,13 @@ test_that("authenticate_git can create HTTPS credentials", {
   expect_true(cred$password == "fakepass")
 })
 
-test_that("authenticate_git returns NULL for SSH remotes", {
-  cred <- authenticate_git(protocol = "ssh")
+test_that("authenticate_git returns NULL for SSH remotes if dry run", {
+  cred <- authenticate_git(protocol = "ssh", dry_run = TRUE)
+  expect_true(is.null(cred))
+})
+
+test_that("authenticate_git returns NULL for SSH remotes if ssh key has passphrase", {
+  cred <- authenticate_git(protocol = "ssh", ssh_key_has_passphrase = TRUE)
   expect_true(is.null(cred))
 })
 

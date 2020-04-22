@@ -481,8 +481,10 @@ get_remote_protocol <- function(remote, remote_avail) {
 # username - username or NULL
 # password - password or NULL
 # dry_run - logical
+# ssh_key_has_passphrase - logical
 authenticate_git <- function(protocol, username = NULL,
-                             password = NULL, dry_run = FALSE) {
+                             password = NULL, dry_run = FALSE,
+                             ssh_key_has_passphrase = FALSE) {
   if (!protocol %in% c("https", "ssh"))
     stop("protocol must be either \"https\" or \"ssh\"")
   if (!(is.null(username) || (is.character(username) && length(username) == 1)))
@@ -528,7 +530,11 @@ authenticate_git <- function(protocol, username = NULL,
     #
     # https://github.com/hadley/devtools/issues/642#issuecomment-139357055
     # https://github.com/ropensci/git2r/issues/284#issuecomment-306103004
-    credentials <- NULL
+    if (isTRUE(ssh_key_has_passphrase)) {
+      credentials <- NULL
+    } else {
+      credentials <- git2r::cred_ssh_key()
+    }
   }
   return(credentials)
 }

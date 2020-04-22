@@ -51,7 +51,7 @@ Imports:
     whisker (>= 0.3-2),
     xfun,
     yaml
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Suggests:
     clipr (>= 0.7.0),
     covr,

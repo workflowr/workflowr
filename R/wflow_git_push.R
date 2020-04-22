@@ -51,6 +51,9 @@
 #' @param project character (default: ".") By default the function assumes the
 #'   current working directory is within the project. If this is not true,
 #'   you'll need to provide the path to the project directory.
+#' @param ssh_key_has_passphrase logical (default: FALSE). Specify whether the
+#'   ssh key has a passphrase. Only used if authentication to the remote
+#'   repository uses ssh.
 #'
 #' @return An object of class \code{wflow_git_push}, which is a list with the
 #'   following elements:
@@ -90,7 +93,7 @@
 wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                            password = NULL, force = FALSE, set_upstream = TRUE,
                            view = getOption("workflowr.view"), dry_run = FALSE,
-                           project = ".") {
+                           project = ".", ssh_key_has_passphrase = FALSE) {
 
   # Check input arguments ------------------------------------------------------
 
@@ -160,7 +163,8 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
 
   credentials <- authenticate_git(protocol = protocol,
                                   username = username, password = password,
-                                  dry_run = dry_run)
+                                  dry_run = dry_run,
+                                  ssh_key_has_passphrase = ssh_key_has_passphrase)
 
   # Push! ----------------------------------------------------------------------
 

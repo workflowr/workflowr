@@ -75,11 +75,7 @@ absolute <- function(path) {
   # Ensure Windows Drive is uppercase
   newpath <- toupper_win_drive(newpath)
   # Resolve symlinks
-  if (.Platform$OS.type == "windows") {
-    newpath <- resolve_symlink(newpath)
-  } else {
-    newpath <- fs::path_real(newpath)
-  }
+  newpath <- resolve_symlink(newpath)
   newpath <- as.character(newpath)
 
   return(newpath)

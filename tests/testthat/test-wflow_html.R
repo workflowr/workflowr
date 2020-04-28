@@ -617,7 +617,7 @@ test_that("Rmd file without title does not generate pandoc2 warning", {
   on.exit(fs::file_delete(rmd))
   fs::file_create(rmd)
   observed <- test_pandoc_warning(rmd)
-  expect_identical(observed, character())
+  expect_false(any(stringr::str_detect(observed, "nonempty")))
 })
 
 test_that("Rmd file with title defined in pandoc_args does not generate pandoc2 warning", {
@@ -634,7 +634,7 @@ test_that("Rmd file with title defined in pandoc_args does not generate pandoc2 
              "")
   writeLines(lines, con = rmd)
   observed <- test_pandoc_warning(rmd, output_format = NULL)
-  expect_identical(observed, character())
+  expect_false(any(stringr::str_detect(observed, "nonempty")))
 })
 
 test_that("Rmd file with defined title does not generate pandoc2 warning", {
@@ -646,7 +646,7 @@ test_that("Rmd file with defined title does not generate pandoc2 warning", {
   lines <- c("---", "title: something", "---", "")
   writeLines(lines, con = rmd)
   observed <- test_pandoc_warning(rmd)
-  expect_identical(observed, character())
+  expect_false(any(stringr::str_detect(observed, "nonempty")))
 })
 
 test_that("Rmd file with defined pagetitle does not generate pandoc2 warning", {
@@ -658,7 +658,7 @@ test_that("Rmd file with defined pagetitle does not generate pandoc2 warning", {
   lines <- c("---", "pagetitle: something", "---", "")
   writeLines(lines, con = rmd)
   observed <- test_pandoc_warning(rmd)
-  expect_identical(observed, character())
+  expect_false(any(stringr::str_detect(observed, "nonempty")))
 })
 
 test_that("Rmd file with defined title and pagetitle does not generate pandoc2 warning", {
@@ -670,7 +670,7 @@ test_that("Rmd file with defined title and pagetitle does not generate pandoc2 w
   lines <- c("---", "title: something", "pagetitle: else", "---", "")
   writeLines(lines, con = rmd)
   observed <- test_pandoc_warning(rmd)
-  expect_identical(observed, character())
+  expect_false(any(stringr::str_detect(observed, "nonempty")))
 })
 
 test_that("add_pagetitle adds metadata pagetitle if missing title", {

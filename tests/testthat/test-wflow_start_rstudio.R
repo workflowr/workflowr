@@ -147,20 +147,20 @@ test_that("wflow_start_rstudio can handle deeply nested paths that need to be cr
   expect_true(fs::file_exists(file.path(expected, "z.Rproj")))
 })
 
-# test_that("wflow_start_rstudio throws an error if user.name and user.email are not set", {
-#
-#   skip_on_cran()
-#
-#   # local_no_gitconfig() is defined in tests/testthat/helpers.R
-#   local_no_gitconfig("-workflowr")
-#
-#   site_dir <- tempfile()
-#   cwd <- getwd()
-#   on.exit(setwd(cwd))
-#   on.exit(unlink(site_dir, recursive = TRUE, force = TRUE), add = TRUE)
-#   expect_error(wflow_start_rstudio(site_dir),
-#                "You must set your user.name and user.email for Git first")
-#   expect_false(fs::dir_exists(site_dir))
-#   expect_error(wflow_start_rstudio(site_dir),
-#                "the RStudio Project Template")
-# })
+test_that("wflow_start_rstudio throws an error if user.name and user.email are not set", {
+
+  skip_on_cran()
+
+  # local_no_gitconfig() is defined in tests/testthat/helpers.R
+  local_no_gitconfig("-workflowr")
+
+  site_dir <- tempfile()
+  cwd <- getwd()
+  on.exit(setwd(cwd))
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE), add = TRUE)
+  expect_error(wflow_start_rstudio(site_dir),
+               "You must set your user.name and user.email for Git first")
+  expect_false(fs::dir_exists(site_dir))
+  expect_error(wflow_start_rstudio(site_dir),
+               "the RStudio Project Template")
+})

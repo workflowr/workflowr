@@ -35,8 +35,6 @@ test_that("wflow_start_studio accepts custom name", {
 
   site_yaml_contents <- readLines(file.path(site_dir, "analysis", "_site.yml"))
   expect_identical(site_yaml_contents[1], sprintf('name: "%s"', project_name))
-
-  unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
 
@@ -53,7 +51,6 @@ test_that("wflow_start_rstudio initializes Git repository by default", {
                                             user.email = "test@email"))
   site_dir <- workflowr:::absolute(site_dir)
   expect_true(git2r::in_repository(site_dir))
-  unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
 
@@ -71,7 +68,6 @@ test_that("wflow_start_rstudio git = FALSE does not initialize a Git repository"
   site_dir <- workflowr:::absolute(site_dir)
   expect_false(git2r::in_repository(site_dir))
   expect_null(o$commit)
-  unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
 test_that("wflow_start_rstudio does not overwrite files by default", {
@@ -96,7 +92,6 @@ test_that("wflow_start_rstudio does not overwrite files by default", {
   expect_true(readme_contents == "original")
   rprofile_contents <- readLines(rprofile_file)
   expect_true(rprofile_contents == "x <- 1")
-  unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
 
@@ -123,7 +118,6 @@ test_that("wflow_start_rstudio overwrites files when forced", {
   expect_true(readme_contents[1] == sprintf("# %s", basename(site_dir)))
   rprofile_contents <- readLines(rprofile_file)
   expect_false(any(rprofile_contents == "x <- 1"))
-  unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
 

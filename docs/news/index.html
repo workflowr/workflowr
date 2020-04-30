@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2</span>
       </span>
     </div>
 
@@ -116,23 +116,46 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="workflowr-1-6-1-9000" class="section level1">
+    <div id="workflowr-1-6-2" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-6-1-9000" class="anchor"></a>workflowr 1.6.1.9000<small> Unreleased </small>
+<a href="#workflowr-1-6-2" class="anchor"></a>workflowr 1.6.2<small> Unreleased </small>
 </h1>
+<p>This patch release of workflowr includes minor improvements, updated documentation, and bug fixes. Users are encouraged to upgrade workflowr so that it is compatible with the next release of <a href="https://github.com/r-lib/fs">fs</a> (&gt;1.4.1).</p>
+<div id="minor-improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#minor-improvements" class="anchor"></a>Minor improvements</h2>
 <ul>
-<li>Skip test of error handling of deleted working directory on Solaris</li>
+<li>Make the HTTP calls by <code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> to the GitHub API more resilient to transient network issues by automatically retrying HTTP calls more than once (<a href='https://github.com/jameslamb'>@jameslamb</a>, <a href='https://github.com/jdblischak/workflowr/issues/199'>#199</a>, <a href='https://github.com/jdblischak/workflowr/issues/201'>#201</a>)</li>
+<li>Enhance the RStudio Project Template to include more arguments from <code><a href="../reference/wflow_start.html">wflow_start()</a></code> (<a href='https://github.com/trannhatanh89'>@trannhatanh89</a>, <a href='https://github.com/jdblischak/workflowr/issues/193'>#193</a>, <a href='https://github.com/jdblischak/workflowr/issues/200'>#200</a>)</li>
+<li>Throw error early if user sets <code>overwrite = TRUE</code> to <code><a href="../reference/wflow_start.html">wflow_start()</a></code> but <code>existing = FALSE</code>, since it isn’t possible to overwrite non-existent files (<a href='https://github.com/skpurdue'>@skpurdue</a>, <a href='https://github.com/jdblischak/workflowr/issues/194'>#194</a>, <a href='https://github.com/jdblischak/workflowr/issues/202'>#202</a>, idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</li>
+</ul>
+</div>
+<div id="updated-documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#updated-documentation" class="anchor"></a>Updated documentation</h2>
+<ul>
 <li>Update FAQ entry on external images to note that the website directory for GitLab Pages is <code>public/</code>, not <code>docs/</code> (idea from <a href='https://github.com/ryurko'>@ryurko</a>)</li>
 </ul>
+</div>
+<div id="bug-fixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Send warning if Python plots created using outdated version of reticulate (&lt; 1.15) (bug report from <a href='https://github.com/lazappi'>@lazappi</a>, <a href='https://github.com/jdblischak/workflowr/issues/181'>#181</a>)</li>
+<li>Make workflowr compatible with fs version 1.4.1.9000+ (<a href='https://github.com/jimhester'>@jimhester</a>, <a href='https://github.com/jdblischak/workflowr/issues/204'>#204</a>)</li>
+<li>Set minimum version requirement for dependency rprojroot to 1.2</li>
+<li>Skip test of error handling of deleted working directory on Solaris</li>
+</ul>
+</div>
 </div>
     <div id="workflowr-1-6-1" class="section level1">
 <h1 class="page-header">
 <a href="#workflowr-1-6-1" class="anchor"></a>workflowr 1.6.1<small> 2020-03-11 </small>
 </h1>
 <p>This patch release of workflowr includes minor improvements, updated documentation, bug fixes, and lots of internal refactoring.</p>
-<div id="minor-improvements" class="section level2">
+<div id="minor-improvements-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#minor-improvements" class="anchor"></a>Minor improvements</h2>
+<a href="#minor-improvements-1" class="anchor"></a>Minor improvements</h2>
 <ul>
 <li><p>Workflowr functions check if the working directory exists (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>, <a href='https://github.com/jdblischak/workflowr/issues/185'>#185</a>)</p></li>
 <li><p><code><a href="../reference/wflow_use_github.html">wflow_use_github()</a></code> can now create repositories for GitHub organizations using the new argument <code>organization</code>. However, GitLab Groups should still be specified with the argument <code>username</code> for <code><a href="../reference/wflow_use_gitlab.html">wflow_use_gitlab()</a></code> (bug report from <a href='https://github.com/stephens999'>@stephens999</a>, <a href='https://github.com/jdblischak/workflowr/issues/186'>#186</a>)</p></li>
@@ -141,9 +164,9 @@
 <li><p>The workflowr icon is displayed in browser tabs of workflowr websites (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>)</p></li>
 </ul>
 </div>
-<div id="updated-documentation" class="section level2">
+<div id="updated-documentation-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#updated-documentation" class="anchor"></a>Updated documentation</h2>
+<a href="#updated-documentation-1" class="anchor"></a>Updated documentation</h2>
 <ul>
 <li><p>Document that GitLab.com provides private repositories with access control to the source code repository and the website (<a href='https://github.com/jdblischak/workflowr/issues/187'>#187</a>)</p></li>
 <li><p>Update URL to RStudio-specific instructions for installing pandoc (bug report from <a href='https://github.com/PietrH'>@PietrH</a>, <a href='https://github.com/jdblischak/workflowr/issues/190'>#190</a>)</p></li>
@@ -153,9 +176,9 @@
 <li><p>Add FAQ entry on how to use a Git hosting site that uses the HTTP protocol (idea from <a href='https://github.com/antass'>@antass</a>, <a href='https://github.com/jdblischak/workflowr/issues/163'>#163</a>)</p></li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level2">
+<div id="bug-fixes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix Windows-specific bug that caused the table of past versions to be missing from the workflowr report (bug introduced in version 1.5.0)</li>
 </ul>
@@ -885,7 +908,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#workflowr-1-6-1-9000">1.6.1.9000</a></li>
+        <li><a href="#workflowr-1-6-2">1.6.2</a></li>
         <li><a href="#workflowr-1-6-1">1.6.1</a></li>
         <li><a href="#workflowr-1-6-0">1.6.0</a></li>
         <li><a href="#workflowr-1-5-0">1.5.0</a></li>

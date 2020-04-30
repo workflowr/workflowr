@@ -150,7 +150,7 @@ test_that("wflow_start_rstudio throws an error if user.name and user.email are n
 
   site_dir <- tempfile()
   cwd <- getwd()
-  on.exit(setwd(cwd))
+  on.exit(setwd(cwd), add = TRUE)
   on.exit(unlink(site_dir, recursive = TRUE, force = TRUE), add = TRUE)
   expect_error(wflow_start_rstudio(site_dir),
                "You must set your user.name and user.email for Git first")

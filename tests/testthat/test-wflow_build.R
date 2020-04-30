@@ -307,6 +307,7 @@ test_that("wflow_build does not remove unused figure files if clean_fig_files = 
 test_that("wflow_build deletes cache when delete_cache = TRUE", {
 
   skip_on_cran()
+  skip_on_os("windows") # Avoid errors due to long filenames
 
   # Build a file that has cached chunks
   file_w_cache <- file.path(s$analysis, "cache.Rmd")
@@ -340,12 +341,7 @@ test_that("wflow_build deletes cache when delete_cache = TRUE", {
   expect_true(dir_cache_mod_post > dir_cache_mod_pre)
 
   # Cleanup
-  if (identical(Sys.getenv("APPVEYOR"), "True")) {
-    # Can't delete cache dir on AppVeyor because the cache filenames are too long
-    fs::file_delete(c(file_w_cache, build_v03$html))
-  } else {
-    wflow_remove(file_w_cache, project = site_dir)
-  }
+  wflow_remove(file_w_cache, project = site_dir)
 })
 
 test_that("wflow_build can display build log directly in R console with verbose", {

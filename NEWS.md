@@ -1,3 +1,5 @@
+# workflowr 1.6.2.9000
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated

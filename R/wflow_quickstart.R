@@ -116,6 +116,7 @@ wflow_quickstart <- function(files,
   # Check input arguments ------------------------------------------------------
 
   files <- process_input_files(files, rmd_only = TRUE)
+  files <- absolute(files)
 
   if (!is.null(username))
     if (!(is.character(username) && length(username) == 1))

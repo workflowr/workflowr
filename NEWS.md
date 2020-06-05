@@ -1,5 +1,8 @@
 # workflowr 1.6.2.9000
 
+* Bug fix: `wflow_quickstart()` can now handle relative paths to the Rmd files
+when the working directory is changed (`change_wd = TRUE`, which is the default)
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated

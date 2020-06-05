@@ -334,3 +334,40 @@ test_that("wflow_quickstart fails early if both username and organization are se
   # Confirm that directory wasn't created
   expect_false(fs::dir_exists(directory))
 })
+
+test_that("wflow_quickstart accepts relative paths when changing working directory", {
+
+  skip_on_cran()
+
+  cwd <- getwd()
+  on.exit(setwd(cwd), add = TRUE)
+  path <- workflowr:::absolute(fs::file_temp())
+  on.exit(fs::dir_delete(path), add = TRUE)
+  rmd <- fs::file_temp(ext = ".Rmd")
+  rmd <- workflowr:::relative(rmd)
+  fs::file_create(rmd)
+  on.exit(fs::file_delete(rmd), add = TRUE)
+  support <- fs::file_temp(ext = ".R")
+  support <- workflowr:::relative(support)
+  fs::file_create(support)
+  on.exit(fs::file_delete(support), add = TRUE)
+  withr::local_options(list(workflowr.view = FALSE))
+  quick <- wflow_quickstart(files = rmd, username = "username",
+                            supporting_files = support,
+                            directory = path, change_wd = TRUE,
+                            create_on_github = FALSE,
+                            git.user.name = "Test Name",
+                            git.user.email = "test@email")
+
+  expect_identical(getwd(), as.character(path))
+  committed_files <- workflowr:::get_committed_files(git2r::repository(path))
+  rmd_new <- file.path(path, "analysis", fs::path_file(rmd))
+  expect_true(fs::file_exists(rmd_new))
+  expect_true(rmd_new %in% committed_files)
+  html_new <- workflowr:::to_html(rmd_new, outdir = file.path(path, "docs"))
+  expect_true(fs::file_exists(html_new))
+  expect_true(html_new %in% committed_files)
+  support_new <- file.path(path, fs::path_file(support))
+  expect_true(fs::file_exists(support_new))
+  expect_true(support_new %in% committed_files)
+})

@@ -1,14 +1,14 @@
 version: 2
 jobs:
   release:
+    docker:
+      - image: rocker/r-base:latest
     environment:
       NOT_CRAN: true
       PANDOC: 2.7
       R_LIBS: ~/R/Library
       _R_CHECK_CRAN_INCOMING_: TRUE
       _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
-    docker:
-      - image: rocker/r-base:latest
     steps:
       - restore_cache:
           keys:
@@ -32,6 +32,7 @@ jobs:
       - run:
           name: Build and check
           command: bash .circleci/check.sh
+          no_output_timeout: 20m
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
@@ -39,12 +40,12 @@ jobs:
           paths:
             - "~/R/Library"
   pandocless:
+    docker:
+      - image: rocker/r-base:latest
     environment:
       R_LIBS: ~/R/Library
       _R_CHECK_CRAN_INCOMING_: TRUE
       _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
-    docker:
-      - image: rocker/r-base:latest
     steps:
       - restore_cache:
           keys:
@@ -65,6 +66,7 @@ jobs:
       - run:
           name: Build and check
           command: bash .circleci/check.sh
+          no_output_timeout: 20m
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
@@ -72,14 +74,14 @@ jobs:
           paths:
             - "~/R/Library"
   codecov:
+    docker:
+      - image: rocker/r-base:latest
     environment:
       NOT_CRAN: true
       PANDOC: 2.7
       R_LIBS: ~/R/Library
       _R_CHECK_CRAN_INCOMING_: TRUE
       _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
-    docker:
-      - image: rocker/r-base:latest
     steps:
       - restore_cache:
           keys:
@@ -103,7 +105,7 @@ jobs:
       - run:
           name: Calculate code coverage
           command: Rscript -e 'covr::codecov()'
-          no_output_timeout: "20m"
+          no_output_timeout: 20m
       - save_cache:
           key: r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
           paths:

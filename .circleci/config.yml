@@ -12,8 +12,8 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
-            - r-pkg-cache-v3-{{ arch }}-
+            - r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
+            - r-pkg-cache-v4-{{ arch }}-
       - checkout
       - run:
           name: Install system dependencies
@@ -36,7 +36,7 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
+          key: r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
           paths:
             - "~/R/Library"
   pandocless:
@@ -49,8 +49,8 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
-            - r-pkg-cache-v3-{{ arch }}-
+            - r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
+            - r-pkg-cache-v4-{{ arch }}-
       - checkout
       - run:
           name: Install system dependencies
@@ -70,7 +70,7 @@ jobs:
       - store_artifacts:
           path: workflowr.Rcheck/
       - save_cache:
-          key: r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
+          key: r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
           paths:
             - "~/R/Library"
   codecov:
@@ -85,8 +85,8 @@ jobs:
     steps:
       - restore_cache:
           keys:
-            - r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
-            - r-pkg-cache-v3-{{ arch }}-
+            - r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
+            - r-pkg-cache-v4-{{ arch }}-
       - checkout
       - run:
           name: Install system dependencies
@@ -107,7 +107,7 @@ jobs:
           command: Rscript -e 'covr::codecov()'
           no_output_timeout: 20m
       - save_cache:
-          key: r-pkg-cache-v3-{{ arch }}-{{ .Branch }}
+          key: r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
           paths:
             - "~/R/Library"
 workflows:

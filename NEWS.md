@@ -3,6 +3,16 @@
 * Bug fix: `wflow_quickstart()` can now handle relative paths to the Rmd files
 when the working directory is changed (`change_wd = TRUE`, which is the default)
 
+* Remove Rd warnings when installing package on Windows by explicitly specifying
+the topic page when cross-referencing an exported function from another package.
+Note that the links worked previously, so this change is just being proactive in
+case this warning starts getting strongly enforced. If the authors of the other
+package rearrange how they group functions into documentation topics, this will
+break the cross-references and require an update. See this
+[thread][rs-community-rd-warning] for more details.
+
+[rs-community-rd-warning]: https://community.rstudio.com/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated

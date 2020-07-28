@@ -31,7 +31,7 @@ service (e.g. GitHub or GitLab). The user is prompted if necessary.}
 \item{fail}{logical (default: TRUE) Abort the pull if any merge conflicts
 are detected. If you are sure you want to manually cleanup the merge
 conflicts, set \code{fail = FALSE}. The argument \code{fail} is passed to
-the git2r function \code{\link[git2r]{merge.git_repository}}.}
+the git2r function \code{\link[git2r:reexports]{merge.git_repository}}.}
 
 \item{dry_run}{logical (default: FALSE). Preview the proposed action but do
 not actually pull from the remote repository.}

@@ -72,7 +72,7 @@ wflow_publish." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2.9000</span>
       </span>
     </div>
 
@@ -230,7 +230,8 @@ long-running code chunks.</p></td>
       <td><p>logical (default: FALSE). Build files locally in the R console.
 This should only be used for debugging purposes. The default is to build
 each file in its own separate fresh R process to ensure each file is
-reproducible in isolation.</p></td>
+reproducible in isolation. This is done using
+<code><a href='https://rdrr.io/pkg/callr/man/r.html'>callr::r_safe</a></code>.</p></td>
     </tr>
     <tr>
       <th>dry_run</th>
@@ -289,7 +290,56 @@ ignored.</p></li>
 </ul>
 
 <p>Under the hood, <code>wflow_build</code> is a wrapper for
-<code><a href='https://rdrr.io/pkg/rmarkdown/man/render_site.html'>render_site</a></code> from the package rmarkdown.</p>
+<code><a href='https://rdrr.io/pkg/rmarkdown/man/render_site.html'>render_site</a></code> from the package rmarkdown. By
+default (<code>local = FALSE</code>), the code is executed in an isolated R
+session. This is done using <code><a href='https://rdrr.io/pkg/callr/man/r.html'>callr::r_safe</a></code>.</p>
+    <h2 class="hasAnchor" id="comparison-to-rstudio-knit-button"><a class="anchor" href="#comparison-to-rstudio-knit-button"></a>Comparison to RStudio Knit button</h2>
+
+    
+
+
+<p><code>wflow_build</code> is intentionally designed to be similar to clicking on the
+Knit button in RStudio. Both isolate the code execution in a separate R
+process, thus ensuring the results are not dependent on the state of the
+current R session. However, they do differ in a few ways:</p>
+<dl class='dl-horizontal'>
+
+  <dt>Number of files</dt><dd><p>The RStudio Knit button only builds the current Rmd
+  file open in the editor. In contrast, <code>wflow_build</code> can build any
+  number of Rmd files (each in their own separate R process) with a single
+  invocation, including accepting file globs.</p></dd>
+
+  <dt>System and user profiles</dt><dd><p>The two methods diverge the most in
+  their use of <code>.Rprofile</code> files. <code>wflow_build</code> ignores any system
+  or user profiles (i.e. <code>~/.Rprofile</code> on Linux/macOS or
+  <code>~/Documents/.Rprofile</code> on Windows). This is the default behavior of
+  <code><a href='https://rdrr.io/pkg/callr/man/r.html'>callr::r_safe</a></code>, which it calls to run the separate R
+  process. This is ideal for reproducibility. Otherwise the results could be
+  affected by custom settings made only on the user's machine. In contrast,
+  the RStudio Knit button loads any system or user level profiles, consistent
+  with its role as a development tool.</p></dd>
+
+  <dt>Project-specific profiles</dt><dd><p>A project-specific <code>.Rprofile</code> is
+  treated differently than system or user profiles. <code>wflow_build</code> only
+  loads a project-specific <code>.Rprofile</code> if it is located in the current
+  working directory in which <code>wflow_build</code> is invoked. This may be
+  confusing if this differs from the directory in which the code is actually
+  executed (the option <code>knit_root_dir</code> defined in
+  <code>_workflowr.yml</code>). The RStudio Knit button only loads a
+  project-specific <code>.Rprofile</code> if it is located in the same directory as
+  its seting "Knit Directory" is configured. For example, if "Knit Directory"
+  is set to "Document Directory", it will ignore any <code>.Rprofile</code> in the
+  root of the project. But it would load the <code>.Rprofile</code> if "Knit
+  Directory" was changed to "Project Directory".</p></dd>
+
+</dl>
+
+<p>The main takeway from the above is that you should try to limit settings and
+options defined in <code>.Rprofile</code> to affect the interactive R experience
+and superficial behavior, e.g. the option <code>max.print</code> to limit the
+number of lines that can be printed to the console. Any critical settings
+that affect the results of the analysis should be explicitly set in the Rmd
+file.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='wflow_publish.html'>wflow_publish</a></code></p></div>
@@ -317,6 +367,7 @@ ignored.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#comparison-to-rstudio-knit-button">Comparison to RStudio Knit button</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>

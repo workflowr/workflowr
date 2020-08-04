@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.6.2.9000</span>
       </span>
     </div>
 
@@ -116,9 +116,21 @@
       <small>Source: <a href='https://github.com/jdblischak/workflowr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="workflowr-1-6-2-9000" class="section level1">
+<h1 class="page-header">
+<a href="#workflowr-1-6-2-9000" class="anchor"></a>workflowr 1.6.2.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>Bug fix: <code><a href="../reference/wflow_quickstart.html">wflow_quickstart()</a></code> can now handle relative paths to the Rmd files when the working directory is changed (<code>change_wd = TRUE</code>, which is the default)</p></li>
+<li><p>Remove Rd warnings when installing package on Windows by explicitly specifying the topic page when cross-referencing an exported function from another package. Note that the links worked previously, so this change is just being proactive in case this warning starts getting strongly enforced. If the authors of the other package rearrange how they group functions into documentation topics, this will break the cross-references and require an update. See this <a href="https://community.rstudio.com/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774">thread</a> for more details.</p></li>
+</ul>
+<ul>
+<li>Added more documention to <code><a href="../reference/wflow_build.html">wflow_build()</a></code> to explain when it does and doesn’t load code defined in a <code>.Rprofile</code> file (idea from <a href='https://github.com/pcarbo'>@pcarbo</a>).</li>
+</ul>
+</div>
     <div id="workflowr-1-6-2" class="section level1">
 <h1 class="page-header">
-<a href="#workflowr-1-6-2" class="anchor"></a>workflowr 1.6.2<small> Unreleased </small>
+<a href="#workflowr-1-6-2" class="anchor"></a>workflowr 1.6.2<small> 2020-04-30 </small>
 </h1>
 <p>This patch release of workflowr includes minor improvements, updated documentation, and bug fixes. Users are encouraged to upgrade workflowr so that it is compatible with the next release of <a href="https://github.com/r-lib/fs">fs</a> (&gt;1.4.1).</p>
 <div id="minor-improvements" class="section level2">
@@ -908,6 +920,7 @@ wflow_update()</a></code></pre>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#workflowr-1-6-2-9000">1.6.2.9000</a></li>
         <li><a href="#workflowr-1-6-2">1.6.2</a></li>
         <li><a href="#workflowr-1-6-1">1.6.1</a></li>
         <li><a href="#workflowr-1-6-0">1.6.0</a></li>

@@ -13,6 +13,9 @@ break the cross-references and require an update. See this
 
 [rs-community-rd-warning]: https://community.rstudio.com/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774
 
+* Added more documention to `wflow_build()` to explain when it does and doesn't
+load code defined in a `.Rprofile` file (idea from @pcarbo).
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated

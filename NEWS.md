@@ -1,5 +1,10 @@
 # workflowr 1.6.2.9000
 
+* Bug fix: Now workflowr will detect any problems with its dependencies when it
+is attached. All dependencies must be installed, loadable, and meet the minimum
+required version. Broken packages were causing cryptic, misleading errors
+(reported by in @markellekelly in #216 and @LearnUseZone in #217)
+
 * Bug fix: `wflow_quickstart()` can now handle relative paths to the Rmd files
 when the working directory is changed (`change_wd = TRUE`, which is the default)
 

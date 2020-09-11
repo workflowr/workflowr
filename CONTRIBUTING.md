@@ -45,6 +45,9 @@ include:
 * `contribute.R` performs some basic checks that should be run before
 contributing a Pull Request
 * `document.R` regenerates the documentation
+* `gather-dependencies.R` extracts the dependencies from `DESCRIPTION` to create
+the vector `dependencies` in `R/zzz.R` (which is used to confirm that all the
+packages that workflowr needs are properly installed)
 * `sed.sh` performs search/replace for all R files in the package
 
 ## Release checklist (for maintainers)

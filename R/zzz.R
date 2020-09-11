@@ -6,7 +6,7 @@
                  utils::packageVersion("workflowr")),
          "Run ?workflowr for help getting started")
   packageStartupMessage(paste(m, collapse = "\n"))
-  check_deps()
+  check_dependencies()
 }
 
 .onLoad <- function(libname, pkgname) {
@@ -24,37 +24,57 @@
   invisible()
 }
 
-# Check minimum required versions of dependencies b/c install.packages() doesn't
-check_deps <- function() {
-  deps <- c(
-    fs = "1.2.7",
-    git2r = "0.26.0",
-    httpuv = "1.2.2",
-    knitr = "1.18",
-    rmarkdown = "1.7",
-    rprojroot = "1.2",
-    rstudioapi = "0.6",
-    stringr = "1.3.0",
-    whisker = "0.3-2"
-  )
-  deps <- as.package_version(deps)
+# Unfortunately I can't assume anything about the dependencies. They may be:
+#
+# * Not installed: a user can remove them after installing workflowr
+# * Installed but unusable, e.g. one of their dependencies was removed
+# * Installed but below the minimum required version
+dependencies <- c(
+  callr = NA,
+  fs = "1.2.7",
+  getPass = NA,
+  git2r = "0.26.0",
+  glue = NA,
+  httpuv = "1.2.2",
+  httr = NA,
+  knitr = "1.18",
+  rmarkdown = "1.7",
+  rprojroot = "1.2",
+  rstudioapi = "0.6",
+  stringr = "1.3.0",
+  tools = NA,
+  utils = NA,
+  whisker = "0.3-2",
+  xfun = NA,
+  yaml = NA
+)
+check_dependencies <- function() {
+  for (i in seq_along(dependencies)) {
+    pkg_name <- names(dependencies)[i]
+    pkg_version <- dependencies[i]
 
-  invalid <- logical(length = length(deps))
-  names(invalid) <- names(deps)
-  for (i in seq_along(deps)) {
-    pkgname <- names(deps[i])
-    required <- deps[i]
-    installed <- utils::packageVersion(pkgname)
+    if (length(find.package(pkg_name, quiet = TRUE, verbose = FALSE)) == 0) {
+      stop(sprintf("The required dependency \"%s\" is missing, please install it.",
+                   pkg_name))
+    }
 
-    if (installed < required) {
-      warning(call. = FALSE, glue::glue(
-        "Please update package \"{pkgname}\": version {installed} is installed, but {required} is required"
-      ))
-      invalid[i] <- TRUE
+    if (!requireNamespace(pkg_name, quietly = TRUE)) {
+      stop(sprintf("The required dependency \"%s\" is unable to be loaded, please re-install it.",
+                   pkg_name))
+    }
+
+    if (!is.na(pkg_version)) {
+      installed_version <- utils::packageVersion(pkg_name)
+      if (installed_version < as.package_version(pkg_version)) {
+        stop(sprintf(
+          "Please update package \"%s\": version %s is installed, but %s is required",
+          pkg_name, installed_version, pkg_version
+        ))
+      }
     }
   }
 
-  return(invisible(invalid))
+  return(NULL)
 }
 
 #' workflowr: A workflow template for creating a research website

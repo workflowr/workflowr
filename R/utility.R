@@ -132,7 +132,7 @@ resolve_symlink <- function(path) {
 resolve_symlink_ <- function(path) {
   # Base case #1: If path exists, resolve symlink
   if (fs::file_exists(path)) {
-    return(fs::path_real(path))
+    return(normalizePath(path, winslash = "/", mustWork = TRUE))
   }
 
   parts <- fs::path_split(path)[[1]]

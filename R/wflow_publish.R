@@ -124,6 +124,12 @@ wflow_publish <- function(
 
   if (!dry_run) check_git_config(project, "`wflow_publish`")
 
+  # Step 0: Confirm there is something to do -----------------------------------
+
+  if (is.null(files) && !all && !update && !republish && !dry_run)
+    stop("You did not tell wflow_publish() what to publish.\n",
+         "Unlike wflow_build(), it requires that you name the Rmd files you want to publish.\n")
+
   # Step 1: Commit analysis files ----------------------------------------------
 
   # Decide if wflow_git_commit should be run. At least one of the following

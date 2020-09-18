@@ -348,7 +348,6 @@ test_that("wflow_publish does *not* backup docs/ if it doesn't exist", {
   unlink(docs, recursive = TRUE, force = TRUE)
 })
 
-
 test_that("wflow_publish throws an error if user.name and user.email are not set", {
 
   skip_on_cran()
@@ -368,4 +367,13 @@ test_that("wflow_publish throws an error if user.name and user.email are not set
                "You must set your user.name and user.email for Git first")
   expect_error(wflow_publish(project = site_dir),
                "wflow_publish")
+})
+
+test_that("wflow_publish throws an error if there are no files to publish", {
+
+  skip_on_cran()
+
+  # Note: Have to escape the parentheses for the regex to match
+  expect_error(wflow_publish(project = site_dir),
+               "You did not tell wflow_publish\\(\\) what to publish.")
 })

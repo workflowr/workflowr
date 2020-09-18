@@ -1,5 +1,11 @@
 # workflowr 1.6.2.9000
 
+* If `wflow_publish()` is called, but was not instructed which files to publish,
+it now throws an error. In other words, you must specify the files you wish to
+publish or use one of the convenience arguments like `republish = TRUE` or
+`update = TRUE`. It's previous behavior was to complete without having done
+anything, which was misleading (idea from @stephens999)
+
 * Bug fix: Now workflowr will detect any problems with its dependencies when it
 is attached. All dependencies must be installed, loadable, and meet the minimum
 required version. Broken packages were causing cryptic, misleading errors

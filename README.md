@@ -99,13 +99,13 @@ wflow_publish("analysis/*", "Start my new project")
 **Next steps:**
 
 1. Read the full [Getting started vignette][vig-start] to learn how to share
-your results online
+your results online.
 
 1. Read the [customization vignette][vig-custom] for ideas on how to customize
-your research website
+your research website.
 
 1. Read the [migrating vignette][vig-migrating] for how to integrate workflowr
-into your existing project
+into your existing project.
 
 ## Attribution
 

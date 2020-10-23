@@ -69,8 +69,7 @@ test_that("wflow_git_commit creates a commit message", {
   o <- wflow_git_commit(message = c("a", "b", "c"),
                     all = TRUE, dry_run = TRUE, project = site_dir)
   expect_identical(o$message, "a\n\nb\n\nc")
-  o_print <- paste(utils::capture.output(o), collapse = "\n")
-  expect_true(grepl(sprintf("\\$ git commit -a -m \"%s\"", o$message), o_print))
+
 
   o <- wflow_git_commit(message = "Example commit message",
                     all = TRUE, dry_run = TRUE, project = site_dir)

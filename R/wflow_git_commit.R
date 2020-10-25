@@ -89,9 +89,7 @@ wflow_git_commit <- function(files = NULL, message = NULL, all = FALSE,
     message <- paste(message, collapse = "\n")
   } else if (is.character(message)) {
     # To do: Separate elements of character vectors with 2 newlines
-    message <- lapply(message,wrap)
-    message <- unlist(message)
-    message<-paste(message,collapse="\n\n")
+    message <- create_newlines(message)
   } else {
     stop("message must be NULL or a character vector")
   }

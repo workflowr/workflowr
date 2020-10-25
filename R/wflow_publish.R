@@ -92,7 +92,7 @@ wflow_publish <- function(
     message <- deparse(sys.call())
     message <- paste(message, collapse = "\n")
   } else if (is.character(message)) {
-    message <- wrap(paste(message, collapse = " "))
+    message <-create_newlines(message)
   } else {
     stop("message must be NULL or a character vector")
   }

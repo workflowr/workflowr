@@ -448,3 +448,10 @@ check_wd_exists <- function() {
          " Use setwd() to change to an existing directory.",
          call. = FALSE)
 }
+
+# Creates two newlines inbetween texts
+create_newlines <- function(message){
+    message <- lapply(message,wrap)
+    message <- unlist(message)
+    message<-paste(message,collapse="\n\n")
+}

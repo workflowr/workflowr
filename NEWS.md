@@ -6,6 +6,14 @@ publish or use one of the convenience arguments like `republish = TRUE` or
 `update = TRUE`. It's previous behavior was to complete without having done
 anything, which was misleading (idea from @stephens999)
 
+* It is now easier to enter commit messages with a separate title and body. If
+you pass a character vector to the argument `message` to any of the functions
+that perform a commit, e.g. `wflow_publish()`, the first element will be used as
+the title, and any subsequent elements will be separate paragraphs in the commit
+body. Using a separate title and body will improve the display of your commit
+messages on GitHub/GitLab and `git log --oneline` since these only show the
+title (suggestion from @LearnUseZone in #222, implementation by @zaynaib in #225)
+
 * Bug fix: Now workflowr will detect any problems with its dependencies when it
 is attached. All dependencies must be installed, loadable, and meet the minimum
 required version. Broken packages were causing cryptic, misleading errors

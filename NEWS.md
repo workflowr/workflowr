@@ -1001,7 +1001,7 @@ Users should run `wflow_build()` instead. `wflow_update()` removes the build spe
 * Package documentation with [pkgdown][]
 
 [pkgdown]: http://pkgdown.r-lib.org/
-[travis]: https://travis-ci.org/
+[travis]: https://travis-ci.com/
 [covr]: https://github.com/jimhester/covr
 [Codecov]: https://codecov.io/
 

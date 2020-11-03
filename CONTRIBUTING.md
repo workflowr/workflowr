@@ -113,5 +113,5 @@ package:
 [roxygen2]: https://github.com/klutometis/roxygen
 [style]: http://adv-r.had.co.nz/Style.html
 [testthat]: https://github.com/hadley/testthat
-[travis]: https://travis-ci.org/
+[travis]: https://travis-ci.com/
 [winbuilder]: https://win-builder.r-project.org/

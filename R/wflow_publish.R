@@ -70,6 +70,7 @@ wflow_publish <- function(
   # args to wflow_build
   update = FALSE,
   republish = FALSE,
+  combine = "or",
   view = getOption("workflowr.view"),
   delete_cache = FALSE,
   seed = 12345,
@@ -164,6 +165,8 @@ wflow_publish <- function(
   }
 
   # Step 2: Build HTML files----------------------------------------------------
+
+  # To do: Implement "combine" argument
 
   # Determine if there are any files to be built.
   files_to_build <- character()

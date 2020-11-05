@@ -11,6 +11,7 @@ wflow_publish(
   force = FALSE,
   update = FALSE,
   republish = FALSE,
+  combine = "or",
   view = getOption("workflowr.view"),
   delete_cache = FALSE,
   seed = 12345,
@@ -45,6 +46,13 @@ file that was used to produce it.}
 files (that do not have any unstaged or staged changes). Useful for
 site-wide changes like updating the theme, navigation bar, or any other
 setting in \code{_site.yml}.}
+
+\item{combine}{character (default: \code{"or"}). Determine how to combine the
+files from the arguments \code{files}, \code{make} (\code{wflow_build()}
+only), \code{update}, and \code{republish}. When \code{combine} is
+\code{"or"}, any file specified by at least one of these arguments will be
+built. When \code{combine} is \code{"and"}, only files specified by all of
+these arguments will be built.}
 
 \item{view}{logical (default: \code{getOption("workflowr.view")}). View the
 website with \code{\link{wflow_view}} after building files. If only one

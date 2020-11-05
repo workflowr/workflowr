@@ -26,9 +26,10 @@ Invisibly returns the path to the Rmd file that was executed
 \description{
 \code{wflow_run} executes the code chunks of an R Markdown file in the
 current R session without affecting any of the website files. This is meant
-to be used while interactively developing an analysis. It does not change the
-working directory or isolate the computation from the current R session. This
-is analogous to the RStudio option "Run all" to run all the code chunks. Use
+to be used while interactively developing an analysis. It does \strong{not}
+change the working directory, isolate the computation from the current R
+session, nor set the seed of the random number generator. This is analogous
+to the RStudio option "Run all" to run all the code chunks. Use
 \code{\link{wflow_publish}} when you are ready to add the results to the
 website.
 }

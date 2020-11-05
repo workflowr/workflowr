@@ -194,8 +194,8 @@ current R session. However, they do differ in a few ways:
   treated differently than system or user profiles. \code{wflow_build} only
   loads a project-specific \code{.Rprofile} if it is located in the current
   working directory in which \code{wflow_build} is invoked. This may be
-  confusing if this differs from the directory in which the code is actually
-  executed (the option \code{knit_root_dir} defined in
+  confusing if this differs from the directory in which the code in the Rmd
+  is actually executed (the option \code{knit_root_dir} defined in
   \code{_workflowr.yml}). The RStudio Knit button only loads a
   project-specific \code{.Rprofile} if it is located in the same directory as
   its seting "Knit Directory" is configured. For example, if "Knit Directory"

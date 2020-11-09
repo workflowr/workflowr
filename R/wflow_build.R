@@ -297,7 +297,17 @@ body(wflow_build_) <- quote({
   # "and": Combine files with `intersect()`, i.e. only build files that are specified
   #   by all of the arguments.
 
+  #list of files
   files_to_build <- files
+  
+  if(combine == "and"){
+    files_make <- return_modified_rmd(files_all, p$docs)
+    files_to_build <- intersect(files_to_build,files_make)
+  }
+   if(combine == "or"){
+    files_make <- return_modified_rmd(files_all, p$docs)
+    files_to_build <- union(files_to_build,files_make)
+  }
   if (make) {
     files_make <- return_modified_rmd(files_all, p$docs)
     files_to_build <- union(files_to_build, files_make)

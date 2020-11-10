@@ -301,16 +301,14 @@ body(wflow_build_) <- quote({
   files_to_build <- files
   
   if(combine == "and"){
-    files_make <- return_modified_rmd(files_all, p$docs)
-    files_to_build <- intersect(files_to_build,files_make)
+    combine_files_function <- intersect
   }
-   if(combine == "or"){
-    files_make <- return_modified_rmd(files_all, p$docs)
-    files_to_build <- union(files_to_build,files_make)
+   else if(combine == "or"){
+     combine_files_function <- union
   }
   if (make) {
     files_make <- return_modified_rmd(files_all, p$docs)
-    files_to_build <- union(files_to_build, files_make)
+    files_to_build <- combine_files_function(files_to_build, files_make)
   }
 
   if (update || republish) {
@@ -319,13 +317,13 @@ body(wflow_build_) <- quote({
       files_update <- rownames(s$status)[s$status$mod_committed &
                                         !s$status$mod_unstaged &
                                         !s$status$mod_staged]
-      files_to_build <- union(files_to_build, files_update)
+      files_to_build <- combine_files_function(files_to_build, files_update)
     }
     if (republish) {
       files_republish <- rownames(s$status)[s$status$published &
                                            !s$status$mod_unstaged &
                                            !s$status$mod_staged]
-      files_to_build <- union(files_to_build, files_republish)
+      files_to_build <- combine_files_function(files_to_build, files_republish)
     }
   }
 

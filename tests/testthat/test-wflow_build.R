@@ -382,6 +382,27 @@ test_that("wflow_build reports working and knit directories", {
     sprintf("Building %s", rmd_new))
 })
 
+test_that("wflow_build can combine files to build using the intersection of the provided args", {
+
+  skip_on_cran()
+
+  # Reset modification of first rmd file. It is important to wait a couple
+  # seconds so that the modification times are different.
+  Sys.sleep(1)
+  system2("touch", args = rmd[1])
+  # With combine == "or" (default), make-mode should be build rmd[1] in addition
+  # to rmd[2]
+  actual <- wflow_build(files = rmd[2], make = TRUE, combine = "or",
+                        dry_run = TRUE, project = site_dir)
+  # rmd[2] is first since it was specified in the argument `files`
+  expect_identical(actual$built, rmd[2:1])
+  # With combine == "and" (default), make-mode should only consider rmd[2], and
+  # thus build no files
+  actual <- wflow_build(files = rmd[2], make = TRUE, combine = "and",
+                        dry_run = TRUE, project = site_dir)
+  expect_identical(actual$built, character(0))
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_build fails early for bad files", {

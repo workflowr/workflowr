@@ -293,6 +293,28 @@ test_that("wflow_publish can display build log directly in R console with verbos
   expect_true(length(x) > 0)
 })
 
+test_that("wflow_build can combine files to build using the intersection of the provided args", {
+
+  skip_on_cran()
+
+  status <- wflow_status(project = site_dir)
+  rmd_published <- rownames(status$status)[status$status$published]
+
+  # With combine = "or" (default), build `files` and `republish`
+  expect_identical(
+    wflow_publish(rmd_decoy, republish = TRUE, dry_run = TRUE, project = site_dir)$step2$built,
+    c(rmd_decoy, rmd_published)
+  )
+  # With combine = "and", only build intersection of `files` and `republish`
+  expect_null(
+    wflow_publish(rmd_decoy, republish = TRUE, combine = "and", dry_run = TRUE, project = site_dir)$step2$built
+  )
+  expect_identical(
+    wflow_publish(rmd_published[2], republish = TRUE, combine = "and", dry_run = TRUE, project = site_dir)$step2$built,
+    rmd_published[2]
+  )
+})
+
 # Test error handling ----------------------------------------------------------
 
 test_that("wflow_publish resets Git repo to previous commit if build fails", {

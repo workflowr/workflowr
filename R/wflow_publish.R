@@ -220,6 +220,7 @@ wflow_publish <- function(
 
     step2 <- wflow_build_(files = files_to_build, make = FALSE,
                           update = update, republish = republish,
+                          combine = combine,
                           view = view, clean_fig_files = TRUE,
                           delete_cache = delete_cache, seed = seed,
                           local = FALSE, verbose = verbose,

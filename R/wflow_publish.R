@@ -177,14 +177,24 @@ wflow_publish <- function(
   files_to_build <- union(files_to_build,
                           step1$commit_files[
                             step1$commit_files %in% rownames(s1$status)])
+
+  #Check if the user wants an intersect build or union build of files
+
+  if(combine == "and"){
+    combine_files_function <- intersect
+  }
+   else if(combine == "or"){
+     combine_files_function <- union
+  }
+
   # If `republish == TRUE`, all published files
   if (republish) {
-    files_to_build <- union(files_to_build,
+    files_to_build <- combine_files_function(files_to_build,
                             rownames(s1$status)[s1$status$published])
   }
   # If `update == TRUE`, all published files with committed modifications
   if (update) {
-    files_to_build <- union(files_to_build,
+    files_to_build <- combine_files_function(files_to_build,
                             rownames(s1$status)[s1$status$mod_committed])
   }
   # None of these files can have unstaged/staged changes

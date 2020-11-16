@@ -448,3 +448,13 @@ test_that("wflow_build throws error if pandoc is not installed", {
   expect_error(wflow_build(project = site_dir),
                'Pandoc is not installed.')
 })
+
+test_that("wflow_build throws error if combine=and but no files specified", {
+
+  expect_error(wflow_build(combine = "and", dry_run = TRUE, project = site_dir),
+               "can only be used when explicitly specifying Rmd files")
+
+  expect_error(wflow_build(republish = TRUE, combine = "and", dry_run = TRUE,
+                           project = site_dir),
+               "can only be used when explicitly specifying Rmd files")
+})

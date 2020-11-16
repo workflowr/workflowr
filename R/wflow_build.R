@@ -219,6 +219,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   assert_is_flag(make)
   assert_is_flag(update)
   assert_is_flag(republish)
+  combine <- match.arg(combine, choices = c("or", "and"))
   assert_is_flag(view)
   assert_is_flag(clean_fig_files)
   assert_is_flag(delete_cache)
@@ -288,7 +289,7 @@ body(wflow_build_) <- quote({
 
   # Determine which files to build ---------------------------------------------
 
-  # To do: Based on input argument `combine`, decide how to combine the files
+  # Based on input argument `combine`, decide how to combine the files
   # specified by different arguments:
   #
   # "or" (default): Combine files with `union()`, i.e. build all files specified
@@ -297,15 +298,19 @@ body(wflow_build_) <- quote({
   # "and": Combine files with `intersect()`, i.e. only build files that are specified
   #   by all of the arguments.
 
-  #list of files
+
   files_to_build <- files
-  
-  if(combine == "and"){
+
+  if (combine == "and" && length(files_to_build) == 0) {
+    stop("combine = \"and\" can only be used when explicitly specifying Rmd files to build with the argument `files`")
+  }
+
+  if (combine == "and") {
     combine_files_function <- intersect
+  } else if (combine == "or") {
+    combine_files_function <- union
   }
-   else if(combine == "or"){
-     combine_files_function <- union
-  }
+
   if (make) {
     files_make <- return_modified_rmd(files_all, p$docs)
     files_to_build <- combine_files_function(files_to_build, files_make)

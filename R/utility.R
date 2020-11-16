@@ -450,9 +450,9 @@ check_wd_exists <- function() {
 }
 
 # Creates two newlines in between texts
-create_newlines <- function(m){
-    m <- lapply(m,wrap)
-    m <- unlist(m)
-    m<-paste(m,collapse="\n\n")
-    return(m)
+create_newlines <- function(m) {
+  m <- lapply(m, wrap)
+  m <- unlist(m)
+  m <- paste(m, collapse = "\n\n")
+  return(m)
 }

@@ -103,6 +103,7 @@ wflow_publish <- function(
   assert_is_flag(force)
   assert_is_flag(update)
   assert_is_flag(republish)
+  combine <- match.arg(combine, choices = c("or", "and"))
   assert_is_flag(view)
   assert_is_flag(delete_cache)
 
@@ -166,8 +167,6 @@ wflow_publish <- function(
 
   # Step 2: Build HTML files----------------------------------------------------
 
-  # To do: Implement "combine" argument
-
   # Determine if there are any files to be built.
   files_to_build <- character()
   # Specified files
@@ -178,13 +177,15 @@ wflow_publish <- function(
                           step1$commit_files[
                             step1$commit_files %in% rownames(s1$status)])
 
-  #Check if the user wants an intersect build or union build of files
-
-  if(combine == "and"){
-    combine_files_function <- intersect
+  # Check if the user wants an intersect build or union build of files
+  if (combine == "and" && length(files_to_build) == 0) {
+    stop("combine = \"and\" can only be used when explicitly specifying Rmd files to build with the argument `files`")
   }
-   else if(combine == "or"){
-     combine_files_function <- union
+
+  if (combine == "and") {
+    combine_files_function <- intersect
+  } else if (combine == "or") {
+    combine_files_function <- union
   }
 
   # If `republish == TRUE`, all published files

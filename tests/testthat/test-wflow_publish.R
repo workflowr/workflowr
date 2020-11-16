@@ -399,3 +399,13 @@ test_that("wflow_publish throws an error if there are no files to publish", {
   expect_error(wflow_publish(project = site_dir),
                "You did not tell wflow_publish\\(\\) what to publish.")
 })
+
+test_that("wflow_publish throws error if combine=and but no files specified", {
+
+  expect_error(wflow_publish(combine = "and", dry_run = TRUE, project = site_dir),
+               "can only be used when explicitly specifying Rmd files")
+
+  expect_error(wflow_publish(republish = TRUE, combine = "and", dry_run = TRUE,
+                             project = site_dir),
+               "can only be used when explicitly specifying Rmd files")
+})

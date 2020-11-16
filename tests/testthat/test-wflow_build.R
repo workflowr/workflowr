@@ -451,6 +451,10 @@ test_that("wflow_build throws error if pandoc is not installed", {
 
 test_that("wflow_build throws error if combine=and but no files specified", {
 
+  # If pandoc isn't available, that error is thrown first
+  if(!rmarkdown::pandoc_available())
+    skip("skipped because pandoc is not installed")
+
   expect_error(wflow_build(combine = "and", dry_run = TRUE, project = site_dir),
                "can only be used when explicitly specifying Rmd files")
 

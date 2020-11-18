@@ -70,6 +70,7 @@ wflow_publish <- function(
   # args to wflow_build
   update = FALSE,
   republish = FALSE,
+  combine = "or",
   view = getOption("workflowr.view"),
   delete_cache = FALSE,
   seed = 12345,
@@ -102,6 +103,7 @@ wflow_publish <- function(
   assert_is_flag(force)
   assert_is_flag(update)
   assert_is_flag(republish)
+  combine <- match.arg(combine, choices = c("or", "and"))
   assert_is_flag(view)
   assert_is_flag(delete_cache)
 
@@ -174,14 +176,26 @@ wflow_publish <- function(
   files_to_build <- union(files_to_build,
                           step1$commit_files[
                             step1$commit_files %in% rownames(s1$status)])
+
+  # Check if the user wants an intersect build or union build of files
+  if (combine == "and" && length(files_to_build) == 0) {
+    stop("combine = \"and\" can only be used when explicitly specifying Rmd files to build with the argument `files`")
+  }
+
+  if (combine == "and") {
+    combine_files_function <- intersect
+  } else if (combine == "or") {
+    combine_files_function <- union
+  }
+
   # If `republish == TRUE`, all published files
   if (republish) {
-    files_to_build <- union(files_to_build,
+    files_to_build <- combine_files_function(files_to_build,
                             rownames(s1$status)[s1$status$published])
   }
   # If `update == TRUE`, all published files with committed modifications
   if (update) {
-    files_to_build <- union(files_to_build,
+    files_to_build <- combine_files_function(files_to_build,
                             rownames(s1$status)[s1$status$mod_committed])
   }
   # None of these files can have unstaged/staged changes
@@ -207,6 +221,7 @@ wflow_publish <- function(
 
     step2 <- wflow_build_(files = files_to_build, make = FALSE,
                           update = update, republish = republish,
+                          combine = combine,
                           view = view, clean_fig_files = TRUE,
                           delete_cache = delete_cache, seed = seed,
                           local = FALSE, verbose = verbose,

@@ -9,6 +9,7 @@ wflow_build(
   make = is.null(files),
   update = FALSE,
   republish = FALSE,
+  combine = "or",
   view = getOption("workflowr.view"),
   clean_fig_files = FALSE,
   delete_cache = FALSE,
@@ -44,6 +45,13 @@ file that was used to produce it.}
 files (that do not have any unstaged or staged changes). Useful for
 site-wide changes like updating the theme, navigation bar, or any other
 setting in \code{_site.yml}.}
+
+\item{combine}{character (default: \code{"or"}). Determine how to combine the
+files from the arguments \code{files}, \code{make} (\code{wflow_build()}
+only), \code{update}, and \code{republish}. When \code{combine} is
+\code{"or"}, any file specified by at least one of these arguments will be
+built. When \code{combine} is \code{"and"}, only files specified by all of
+these arguments will be built.}
 
 \item{view}{logical (default: \code{getOption("workflowr.view")}). View the
 website with \code{\link{wflow_view}} after building files. If only one
@@ -135,28 +143,31 @@ the changes. When you are ready to commit the files, use
 }
 \details{
 \code{wflow_build} has multiple, non-mutually exclusive options for deciding
-which files to build. In other words, if multiple options are set to
-\code{TRUE}, the union of all files will be built. The argument \code{make}
-is the most useful for interactively performing your analysis. The other
-options are more useful when you are ready to publish specific files with
+which files to build. If multiple options are used, then the argument
+\code{combine} determines which files will be built. If \code{combine ==
+"or"} (the default), then any file specified by at least one of the arguments
+will be built. In contrast, if \code{combine == "and"}, then only files
+specified by all of the arguments will be built. The argument \code{make} is
+the most useful for interactively performing your analysis. The other options
+are more useful when you are ready to publish specific files with
 \code{\link{wflow_publish}} (which passes these arguments to
-\code{wflow_build}).
+\code{wflow_build}). Here are the options for specifying files to be built:
 
 \itemize{
 
-\item Files specified via the argument \code{files} are always built.
+\item Files specified via the argument \code{files}
 
-\item If \code{make = TRUE}, all files which have been modified more recently
-than their corresponding HTML files will be built.
+\item \code{make = TRUE} - Files which have been modified more recently
+than their corresponding HTML files
 
-\item If \code{update = TRUE}, all previously published files which have been
-committed more recently than their corresponding HTML files will be built.
-However, files which currently have staged or unstaged changes will be
-ignored.
+\item \code{update = TRUE} - Previously published files which have been
+committed more recently than their corresponding HTML files.
+However, files which currently have staged or unstaged changes are not
+included.
 
-\item If \code{republish = TRUE}, all published files will be rebuilt.
-However, files which currently have staged or unstaged changes will be
-ignored.
+\item \code{republish = TRUE} - All published files.
+However, files which currently have staged or unstaged changes are not
+included.
 
 }
 

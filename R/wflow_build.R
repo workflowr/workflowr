@@ -6,28 +6,31 @@
 #' \code{\link{wflow_publish}}.
 #'
 #' \code{wflow_build} has multiple, non-mutually exclusive options for deciding
-#' which files to build. In other words, if multiple options are set to
-#' \code{TRUE}, the union of all files will be built. The argument \code{make}
-#' is the most useful for interactively performing your analysis. The other
-#' options are more useful when you are ready to publish specific files with
+#' which files to build. If multiple options are used, then the argument
+#' \code{combine} determines which files will be built. If \code{combine ==
+#' "or"} (the default), then any file specified by at least one of the arguments
+#' will be built. In contrast, if \code{combine == "and"}, then only files
+#' specified by all of the arguments will be built. The argument \code{make} is
+#' the most useful for interactively performing your analysis. The other options
+#' are more useful when you are ready to publish specific files with
 #' \code{\link{wflow_publish}} (which passes these arguments to
-#' \code{wflow_build}).
+#' \code{wflow_build}). Here are the options for specifying files to be built:
 #'
 #' \itemize{
 #'
-#' \item Files specified via the argument \code{files} are always built.
+#' \item Files specified via the argument \code{files}
 #'
-#' \item If \code{make = TRUE}, all files which have been modified more recently
-#' than their corresponding HTML files will be built.
+#' \item \code{make = TRUE} - Files which have been modified more recently
+#' than their corresponding HTML files
 #'
-#' \item If \code{update = TRUE}, all previously published files which have been
-#' committed more recently than their corresponding HTML files will be built.
-#' However, files which currently have staged or unstaged changes will be
-#' ignored.
+#' \item \code{update = TRUE} - Previously published files which have been
+#' committed more recently than their corresponding HTML files.
+#' However, files which currently have staged or unstaged changes are not
+#' included.
 #'
-#' \item If \code{republish = TRUE}, all published files will be rebuilt.
-#' However, files which currently have staged or unstaged changes will be
-#' ignored.
+#' \item \code{republish = TRUE} - All published files.
+#' However, files which currently have staged or unstaged changes are not
+#' included.
 #'
 #' }
 #'
@@ -101,6 +104,12 @@
 #'   files (that do not have any unstaged or staged changes). Useful for
 #'   site-wide changes like updating the theme, navigation bar, or any other
 #'   setting in \code{_site.yml}.
+#' @param combine character (default: \code{"or"}). Determine how to combine the
+#'   files from the arguments \code{files}, \code{make} (\code{wflow_build()}
+#'   only), \code{update}, and \code{republish}. When \code{combine} is
+#'   \code{"or"}, any file specified by at least one of these arguments will be
+#'   built. When \code{combine} is \code{"and"}, only files specified by all of
+#'   these arguments will be built.
 #' @param view logical (default: \code{getOption("workflowr.view")}). View the
 #'   website with \code{\link{wflow_view}} after building files. If only one
 #'   file is built, it is opened. If more than one file is built, the main index
@@ -196,6 +205,7 @@
 #' @export
 wflow_build <- function(files = NULL, make = is.null(files),
                         update = FALSE, republish = FALSE,
+                        combine = "or",
                         view = getOption("workflowr.view"),
                         clean_fig_files = FALSE, delete_cache = FALSE,
                         seed = 12345, log_dir = NULL, verbose = FALSE,
@@ -209,6 +219,7 @@ wflow_build <- function(files = NULL, make = is.null(files),
   assert_is_flag(make)
   assert_is_flag(update)
   assert_is_flag(republish)
+  combine <- match.arg(combine, choices = c("or", "and"))
   assert_is_flag(view)
   assert_is_flag(clean_fig_files)
   assert_is_flag(delete_cache)
@@ -278,10 +289,31 @@ body(wflow_build_) <- quote({
 
   # Determine which files to build ---------------------------------------------
 
+  # Based on input argument `combine`, decide how to combine the files
+  # specified by different arguments:
+  #
+  # "or" (default): Combine files with `union()`, i.e. build all files specified
+  #   by any of the arguments.
+  #
+  # "and": Combine files with `intersect()`, i.e. only build files that are specified
+  #   by all of the arguments.
+
+
   files_to_build <- files
+
+  if (combine == "and" && length(files_to_build) == 0) {
+    stop("combine = \"and\" can only be used when explicitly specifying Rmd files to build with the argument `files`")
+  }
+
+  if (combine == "and") {
+    combine_files_function <- intersect
+  } else if (combine == "or") {
+    combine_files_function <- union
+  }
+
   if (make) {
     files_make <- return_modified_rmd(files_all, p$docs)
-    files_to_build <- union(files_to_build, files_make)
+    files_to_build <- combine_files_function(files_to_build, files_make)
   }
 
   if (update || republish) {
@@ -290,13 +322,13 @@ body(wflow_build_) <- quote({
       files_update <- rownames(s$status)[s$status$mod_committed &
                                         !s$status$mod_unstaged &
                                         !s$status$mod_staged]
-      files_to_build <- union(files_to_build, files_update)
+      files_to_build <- combine_files_function(files_to_build, files_update)
     }
     if (republish) {
       files_republish <- rownames(s$status)[s$status$published &
                                            !s$status$mod_unstaged &
                                            !s$status$mod_staged]
-      files_to_build <- union(files_to_build, files_republish)
+      files_to_build <- combine_files_function(files_to_build, files_republish)
     }
   }
 
@@ -370,7 +402,7 @@ body(wflow_build_) <- quote({
   # Prepare output -------------------------------------------------------------
 
   o <- list(files = files, make = make,
-            update = update, republish = republish, view = view,
+            update = update, republish = republish, combine = combine, view = view,
             clean_fig_files = clean_fig_files, delete_cache = delete_cache,
             seed = seed, log_dir = log_dir, verbose = verbose,
             local = local, dry_run = dry_run,
@@ -388,6 +420,7 @@ print.wflow_build <- function(x, ...) {
   if (x$make) cat(" make: TRUE")
   if (x$update) cat(" update: TRUE")
   if (x$republish) cat(" republish: TRUE")
+  cat(sprintf(" combine: \"%s\"", x$combine))
   if (x$clean_fig_files) cat(" clean_fig_files: TRUE")
   if (x$delete_cache) cat(" delete_cache: TRUE")
   if (x$verbose) cat(" verbose: TRUE")

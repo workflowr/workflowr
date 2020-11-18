@@ -1,5 +1,19 @@
 # workflowr 1.6.2.9000
 
+* New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
+files are specified with the argument `files`, they are built in addition to any
+Rmd files that are automatically built when setting arguments like `make = TRUE`
+and `republish = TRUE`. If you would instead like to only build Rmd files that
+are included in all the filters, you can set `combine = "and"` to take the
+intersection. For example, if you ran `wflow_build("analysis/example*.Rmd", make
+= TRUE, combine = "and")`, then this would only build those Rmd files matched by
+the file glob `analysis/example*.Rmd` and had been modified more recently than
+their corresponding HTML file. With the default, `combine = "or"`, this would
+have built all the files that matched the file glob in addition to any files
+that had been modified more recently than their corresponding HTML file, even if
+they didn't match the file glob pattern (idea from @bfairkun in #221,
+implementation by @zaynaib in #227, #228)
+
 * If `wflow_publish()` is called, but was not instructed which files to publish,
 it now throws an error. In other words, you must specify the files you wish to
 publish or use one of the convenience arguments like `republish = TRUE` or

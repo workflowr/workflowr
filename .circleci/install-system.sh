@@ -6,6 +6,7 @@ apt-get install -y \
   emacs \
   git \
   libcurl4-openssl-dev \
+  libgit2-dev \
   libssl-dev \
   libxml2-dev \
   nano \

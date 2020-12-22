@@ -221,7 +221,7 @@ wflow_use_gitlab <- function(username = NULL, repository = NULL,
 
   host <- get_host_from_remote(path = project)
   if (navbar_link && !is.na(host)) {
-    site_yml$navbar$right <- list(list(icon = "fa-gitlab",
+    site_yml$navbar$right <- list(list(icon = get_fa_brand_icon("gitlab"),
                                        text = "Source code",
                                        href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)

@@ -456,3 +456,17 @@ create_newlines <- function(m) {
   m <- paste(m, collapse = "\n\n")
   return(m)
 }
+
+# Get Font Awesome icon for a brand
+#
+# Decide between Font Awesome 4 and 5
+# https://github.com/rstudio/rmarkdown/issues/1991
+get_fa_brand_icon <- function(brand) {
+  if (utils::packageVersion("rmarkdown") < "2.6") {
+    # Font Awesome 4: rmarkdown adds preceding "fa"
+    return(sprintf("fa-%s", brand))
+  }
+
+  # Font Awesome 5
+  return(sprintf("fab fa-%s", brand))
+}

@@ -38,7 +38,8 @@ test_that("Setup GitLab infrastructure", {
   expect_equal(length(git_status$untracked), 0)
   site_yml_fname <- file.path(s$analysis, "_site.yml")
   site_yml <- yaml::yaml.load_file(site_yml_fname)
-  expect_identical(site_yml$navbar$right[[1]][["icon"]], "fa-gitlab")
+  expect_identical(site_yml$navbar$right[[1]][["icon"]],
+                   workflowr:::get_fa_brand_icon("gitlab"))
   expect_identical(site_yml$output_dir, "../public")
 })
 

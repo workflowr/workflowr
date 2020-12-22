@@ -49,6 +49,10 @@ break the cross-references and require an update. See this
 * Added more documention to `wflow_build()` to explain when it does and doesn't
 load code defined in a `.Rprofile` file (idea from @pcarbo).
 
+* Bug fix: `wflow_use_github()` and `wflow_use_gitlab()` now use Font Awesome 5
+syntax to insert icons into the navigation bar when a recent version of
+rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated

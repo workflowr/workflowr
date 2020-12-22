@@ -279,7 +279,7 @@ wflow_use_github <- function(username = NULL,
 
   host <- get_host_from_remote(path = project)
   if (navbar_link && !is.na(host)) {
-    site_yml$navbar$right <- list(list(icon = "fa-github",
+    site_yml$navbar$right <- list(list(icon = get_fa_brand_icon("github"),
                                        text = "Source code",
                                        href = host))
     yaml::write_yaml(site_yml, file = site_yml_fname)

@@ -27,7 +27,8 @@ test_that("wflow_use_github automates local GitHub configuration", {
   output_dir <- site_yml$output_dir
   expect_identical("../docs", output_dir)
   # Adds a link to the GitHub repository in the navigation bar
-  expect_identical(site_yml$navbar$right[[1]]$icon, "fa-github")
+  expect_identical(site_yml$navbar$right[[1]]$icon,
+                   workflowr:::get_fa_brand_icon("github"))
   expect_identical(site_yml$navbar$right[[1]]$href,
                    sprintf("https://github.com/%s/%s", username, repository))
   # Configures the Git remote settings to use GitHub
@@ -73,7 +74,8 @@ test_that("wflow_use_github can be used post GitLab", {
   output_dir <- site_yml$output_dir
   expect_identical("../docs", output_dir)
   # Adds a link to the GitHub repository in the navigation bar
-  expect_identical(site_yml$navbar$right[[1]]$icon, "fa-github")
+  expect_identical(site_yml$navbar$right[[1]]$icon,
+                   workflowr:::get_fa_brand_icon("github"))
   expect_identical(site_yml$navbar$right[[1]]$href,
                    sprintf("https://github.com/%s/%s", username, repository))
   # Configures the Git remote settings to use GitHub
@@ -221,7 +223,8 @@ test_that("wflow_use_github works when site has been published", {
   output_dir <- site_yml$output_dir
   expect_identical("../docs", output_dir)
   # Adds a link to the GitHub repository in the navigation bar
-  expect_identical(site_yml$navbar$right[[1]]$icon, "fa-github")
+  expect_identical(site_yml$navbar$right[[1]]$icon,
+                   workflowr:::get_fa_brand_icon("github"))
   expect_identical(site_yml$navbar$right[[1]]$href,
                    sprintf("https://github.com/%s/%s", username, repository))
   # Configures the Git remote settings to use GitHub

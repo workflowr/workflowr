@@ -26,7 +26,8 @@ test_that("wflow_use_gitlab automates local GitLab configuration", {
   output_dir <- site_yml$output_dir
   expect_identical("../public", output_dir)
   # Adds a link to the GitLab repository in the navigation bar
-  expect_identical(site_yml$navbar$right[[1]]$icon, "fa-gitlab")
+  expect_identical(site_yml$navbar$right[[1]]$icon,
+                   workflowr:::get_fa_brand_icon("gitlab"))
   expect_identical(site_yml$navbar$right[[1]]$href,
                    sprintf("https://gitlab.com/%s/%s", username, repository))
   # Creates the required file .gitlab-ci.yml
@@ -154,7 +155,8 @@ test_that("wflow_use_gitlab works when site has been published", {
   output_dir <- site_yml$output_dir
   expect_identical("../public", output_dir)
   # Adds a link to the GitLab repository in the navigation bar
-  expect_identical(site_yml$navbar$right[[1]]$icon, "fa-gitlab")
+  expect_identical(site_yml$navbar$right[[1]]$icon,
+                   workflowr:::get_fa_brand_icon("gitlab"))
   expect_identical(site_yml$navbar$right[[1]]$href,
                    sprintf("https://gitlab.com/%s/%s", username, repository))
   # Creates the required file .gitlab-ci.yml

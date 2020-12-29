@@ -53,6 +53,11 @@ load code defined in a `.Rprofile` file (idea from @pcarbo).
 syntax to insert icons into the navigation bar when a recent version of
 rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
 
+* Bump minimum required version of R from 3.2.5 to 3.3.0. While workflowr itself
+should be able to continue to work fine with R 3.2.5, it was becoming too much
+of a burden to regularly test workflowr with R 3.2.5 as the tidyverse team has
+started updating their packages to require a minimum of R 3.3.0.
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated

@@ -224,6 +224,26 @@ test_that("wflow_open sends warning if used in workflowrBeta project", {
   expect_true(fs::file_exists(rmd))
 })
 
+# https://github.com/jdblischak/workflowr/issues/233
+test_that("wflow_open does **not** send warning when using bookdown output format", {
+  tmp_dir <- tempfile()
+  tmp_dir <- workflowr:::absolute(tmp_dir)
+  on.exit(unlink(tmp_dir, recursive = TRUE))
+
+  wflow_start(tmp_dir, change_wd = FALSE,
+              user.name = "Test Name", user.email = "test@email")
+  site_yml_fname <- file.path(tmp_dir, "analysis", "_site.yml")
+  site_yml <- yaml::read_yaml(site_yml_fname)
+  names(site_yml[["output"]]) <- "bookdown::html_document2"
+  site_yml[["output"]][["bookdown::html_document2"]][["base_format"]] <- "workflowr::wflow_html"
+  yaml::write_yaml(site_yml, site_yml_fname)
+
+  rmd <- file.path(tmp_dir, "analysis", "new.Rmd")
+  expect_silent(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE,
+                           project = tmp_dir))
+  expect_true(fs::file_exists(rmd))
+})
+
 # Errors -----------------------------------------------------------------------
 
 test_that("wflow_open rejects filenames without Rmd or rmd extension", {

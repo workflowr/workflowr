@@ -53,6 +53,10 @@ load code defined in a `.Rprofile` file (idea from @pcarbo).
 syntax to insert icons into the navigation bar when a recent version of
 rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
 
+* Bug fix: `wflow_open()` no longer sends a warning if you are using
+`bookdown::html_document2` as your primary output format in `_site.yml` with
+`base_format: workflowr::wflow_html` (bug report from @rgayler, #233)
+
 * Bump minimum required version of R from 3.2.5 to 3.3.0. While workflowr itself
 should be able to continue to work fine with R 3.2.5, it was becoming too much
 of a burden to regularly test workflowr with R 3.2.5 as the tidyverse team has

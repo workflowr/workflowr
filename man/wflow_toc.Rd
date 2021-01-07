@@ -50,5 +50,8 @@ for you, you can try the following:
 \item Check that the system keyboard is writable. Run
 \code{\link[clipr]{clipr_available}} and \code{\link[clipr:clipr_available]{dr_clipr}}.
 
+\item If it's still not working, set \code{clipboard = FALSE} to send the
+table of contents to the R console to manually copy-paste.
+
 }
 }

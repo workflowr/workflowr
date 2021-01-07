@@ -30,7 +30,7 @@ you'll need to provide the path to the project directory.}
 Invisibly returns the table of contents as a character vector.
 }
 \description{
-\code{wfow_toc} creates a table of contents of the published R Markdown
+\code{wflow_toc} creates a table of contents of the published R Markdown
 files. The output is in markdown format, so you can paste it into a document
 such as \code{index.Rmd}. If the R package
 \href{https://cran.r-project.org/package=clipr}{clipr} is installed, the

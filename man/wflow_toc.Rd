@@ -20,6 +20,8 @@ clipboard. Only relevant if
 \href{https://cran.r-project.org/package=clipr}{clipr} package is installed
 and the system keyboard is available.}
 
+\item{only_published}{logical (default: TRUE) Include only published contents.}
+
 \item{project}{character (default: ".") By default the function assumes the
 current working directory is within the project. If this is not true,
 you'll need to provide the path to the project directory.}

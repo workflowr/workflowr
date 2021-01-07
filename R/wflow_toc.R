@@ -27,6 +27,7 @@
 #'   clipboard. Only relevant if
 #'   \href{https://cran.r-project.org/package=clipr}{clipr} package is installed
 #'   and the system keyboard is available.
+#' @param only_published logical (default: TRUE) Include only published contents.
 #' @inheritParams wflow_git_commit
 #'
 #' @return Invisibly returns the table of contents as a character vector.

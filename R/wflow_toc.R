@@ -51,10 +51,6 @@ wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, only_published = 
   s <- wflow_status(project = project)
   if (only_published) {
     rmd <- rownames(s$status)[s$status$published]
-    if (length(rmd)==0) {
-      warning("No suitable content to be added to the TOC found.
-If you wish to include unpublished contents, consider setting `only_published = FALSE`.")
-    }
   } else {
     rmd <- rownames(s$status)
   }
@@ -69,6 +65,13 @@ If you wish to include unpublished contents, consider setting `only_published = 
 
     html <- html[!html_in_nav]
     rmd <- rmd[!html_in_nav]
+  }
+
+  if (length(rmd)==0) {
+    warning("No suitable content to be added to the TOC found.
+If you wish to include unpublished contents, consider setting `only_published = FALSE`.
+If you wish to include contents already linked in the navigation bar, consider setting `ignore_nav_bar = FALSE`.")
+    return(invisible(character()))
   }
 
   titles <- vapply(rmd, get_rmd_title, character(1))

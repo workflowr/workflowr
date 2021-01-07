@@ -32,7 +32,7 @@
 #' @return Invisibly returns the table of contents as a character vector.
 #'
 #' @export
-wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".") {
+wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, only_published = TRUE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
@@ -45,7 +45,16 @@ wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".") {
   # Create table of contents ---------------------------------------------------
 
   s <- wflow_status(project = project)
-  rmd <- rownames(s$status)[s$status$published]
+  if (only_published) {
+    rmd <- rownames(s$status)[s$status$published]
+    if (length(rmd)==0) {
+      warning("No suitable content to be added to the TOC found.
+If you wish to include unpublished contents, consider setting `only_published = FALSE`.")
+    }
+  } else {
+    rmd <- rownames(s$status)
+  }
+
   html <- to_html(basename(rmd))
 
   # Obtains the toc except the documents in the navigation bar.

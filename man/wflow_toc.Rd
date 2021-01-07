@@ -4,7 +4,12 @@
 \alias{wflow_toc}
 \title{Create table of contents}
 \usage{
-wflow_toc(ignore_nav_bar = TRUE, clipboard = TRUE, project = ".")
+wflow_toc(
+  ignore_nav_bar = TRUE,
+  clipboard = TRUE,
+  only_published = TRUE,
+  project = "."
+)
 }
 \arguments{
 \item{ignore_nav_bar}{logical (default: TRUE). Ignore any HTML files included

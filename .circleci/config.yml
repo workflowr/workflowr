@@ -65,7 +65,9 @@ jobs:
           command: Rscript .circleci/session-info.R
       - run:
           name: Build and check
-          command: bash .circleci/check.sh
+          command: |
+            R CMD build --no-build-vignettes --no-manual .
+            R CMD check --no-build-vignettes --no-manual --as-cran *.tar.gz
           no_output_timeout: 20m
       - store_artifacts:
           path: workflowr.Rcheck/

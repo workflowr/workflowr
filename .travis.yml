@@ -6,6 +6,7 @@ sudo: false
 cache: packages
 latex: false
 pandoc_version: 2.3.1
+disable_homebrew: true
 
 env:
   global:

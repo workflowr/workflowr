@@ -38,7 +38,6 @@ Depends:
     R (>= 3.3.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Imports:
     callr,
     fs (>= 1.2.7),

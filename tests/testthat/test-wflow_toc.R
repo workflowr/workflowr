@@ -43,7 +43,10 @@ test_that("wflow_toc ignores HTML files in navigation bar by default", {
   wflow_publish(rownames(s$status), view = FALSE, project = path)
 
   expected <- character()
-  observed <- wflow_toc(clipboard = FALSE, project = path)
+  expect_warning(
+    observed <- wflow_toc(clipboard = FALSE, project = path),
+    "No suitable content to be added to the TOC found"
+  )
   expect_identical(observed, expected)
 
   rmd <- file.path(path, "analysis/file.Rmd")
@@ -98,7 +101,10 @@ test_that("wflow_toc handles navbar on right or both", {
   wflow_publish(rownames(s$status), view = FALSE, project = path)
 
   expected <- character()
-  observed <- wflow_toc(clipboard = FALSE, project = path)
+  expect_warning(
+    observed <- wflow_toc(clipboard = FALSE, project = path),
+    "No suitable content to be added to the TOC found"
+  )
   expect_identical(observed, expected)
 
   # Only on right
@@ -108,6 +114,24 @@ test_that("wflow_toc handles navbar on right or both", {
   yaml::write_yaml(yml, file = site_yml)
 
   expected <- character()
-  observed <- wflow_toc(clipboard = FALSE, project = path)
+  expect_warning(
+    observed <- wflow_toc(clipboard = FALSE, project = path),
+    "No suitable content to be added to the TOC found"
+  )
+  expect_identical(observed, expected)
+})
+
+test_that("wflow_toc returns unpublished files with only_published=FALSE", {
+
+  skip_on_cran()
+
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  expected <- c("1. [About](about.html)",
+                "1. [Home](index.html)",
+                "1. [License](license.html)")
+  observed <- wflow_toc(ignore_nav_bar = FALSE, clipboard = FALSE,
+                        only_published = FALSE, project = path)
   expect_identical(observed, expected)
 })

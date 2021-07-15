@@ -1,4 +1,4 @@
-# workflowr 1.6.2.9000
+# workflowr 1.6.2.9001
 
 * New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
 files are specified with the argument `files`, they are built in addition to any
@@ -27,6 +27,10 @@ the title, and any subsequent elements will be separate paragraphs in the commit
 body. Using a separate title and body will improve the display of your commit
 messages on GitHub/GitLab and `git log --oneline` since these only show the
 title (suggestion from @LearnUseZone in #222, implementation by @zaynaib in #225)
+
+* New argument `only_published` for `wflow_toc()`. If set to `FALSE`, then the
+table of contents will also include unpublished files (implemented by @giocomai
+in #234)
 
 * Bug fix: Now workflowr will detect any problems with its dependencies when it
 is attached. All dependencies must be installed, loadable, and meet the minimum

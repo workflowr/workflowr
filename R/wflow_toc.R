@@ -36,12 +36,14 @@
 #' @return Invisibly returns the table of contents as a character vector.
 #'
 #' @export
-wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, only_published = TRUE, project = ".") {
+wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE,
+                      only_published = TRUE, project = ".") {
 
   # Check input arguments ------------------------------------------------------
 
   assert_is_flag(ignore_nav_bar)
   assert_is_flag(clipboard)
+  assert_is_flag(only_published)
   check_wd_exists()
   assert_is_single_directory(project)
   project <- absolute(project)
@@ -67,10 +69,13 @@ wflow_toc <- function(ignore_nav_bar = TRUE, clipboard = TRUE, only_published = 
     rmd <- rmd[!html_in_nav]
   }
 
-  if (length(rmd)==0) {
-    warning("No suitable content to be added to the TOC found.
-If you wish to include unpublished contents, consider setting `only_published = FALSE`.
-If you wish to include contents already linked in the navigation bar, consider setting `ignore_nav_bar = FALSE`.")
+  if (length(rmd) == 0) {
+    m <-
+      "No suitable content to be added to the TOC found. If you wish to
+      include unpublished contents, consider setting `only_published = FALSE`.
+      If you wish to include contents already linked in the navigation bar,
+      consider setting `ignore_nav_bar = FALSE`."
+    warning(wrap(m))
     return(invisible(character()))
   }
 
@@ -115,11 +120,14 @@ wflow_toc_addin <- function() {
 
   toc <- suppressMessages(wflow_toc(clipboard = FALSE))
 
-  if (length(toc) == 0)
-    stop(wrap(
-      "wflow_toc() addin: Couldn't find any published files", "(that aren't part
-      of the navigation bar). Use wflow_publish() first."),
-         call. = FALSE)
+  if (length(toc) == 0) {
+    m <-
+      "wflow_toc() addin: Couldn't find any published files (that aren't part
+      of the navigation bar). Use wflow_publish() first or call wflow_toc()
+      directly using one of the arguments described in the warning message
+      below."
+    stop(wrap(m), call. = FALSE)
+  }
 
   toc_single <- paste(toc, collapse = "\n")
   toc_single <- paste0(toc_single, "\n")

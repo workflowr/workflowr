@@ -25,7 +25,9 @@ Authors@R: c(
     person("Anh", "Tran", role = c("ctb"),
            comment = "Updated RStudio Project Template"),
     person("Sydney", "Purdue", role = c("ctb"),
-           comment = "Improved wflow_start() error handling"))
+           comment = "Improved wflow_start() error handling"),
+    person("Giorgio", "Comai", role = c("ctb"),
+           comment = "Added argument only_published to wflow_toc()"))
 Description: Provides a workflow for your analysis projects by combining
   literate programming ('knitr' and 'rmarkdown') and version control
   ('Git', via 'git2r') to generate a website containing time-stamped,

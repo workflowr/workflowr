@@ -8,7 +8,6 @@
 #
 # * DESCRIPTION
 # * NEWS.md - also runs pkgdown::build_news()
-# * tests/testthat/files/test-wflow_update/post/_workflowr.yml
 
 # Setup ------------------------------------------------------------------------
 
@@ -50,12 +49,3 @@ if (is_dev) {
 writeLines(lines_out_news, "NEWS.md")
 
 pkgdown::build_news()
-
-# wflow_update() test file -----------------------------------------------------
-
-message("* Updating wflow_update() test file")
-test_file <- "tests/testthat/files/test-wflow_update/post/_workflowr.yml"
-lines_in_test <- readLines(test_file)
-lines_out_test <- stringr::str_replace(lines_in_test, "^# Version.*",
-                                       sprintf("# Version %s", next_version))
-writeLines(lines_out_test, test_file)

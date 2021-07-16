@@ -203,27 +203,6 @@ test_that("wflow_open can create a file when no Git repo or config present", {
   expect_true(fs::file_exists(rmd))
 })
 
-test_that("wflow_open sends warning if used in workflowrBeta project", {
-  tmp_dir <- tempfile()
-  fs::dir_create(tmp_dir)
-  tmp_dir <- workflowr:::absolute(tmp_dir)
-  on.exit(unlink(tmp_dir, recursive = TRUE))
-
-  file.copy("files/test-wflow_update/pre/.", tmp_dir, recursive = TRUE)
-  fs::dir_create(file.path(tmp_dir, "docs"))
-  git2r::init(tmp_dir)
-  r <- git2r::repository(tmp_dir)
-  git2r::config(r, user.name = "Test Name", user.email = "test@email")
-  workflowr:::git2r_add(r, ".")
-  git2r::commit(r, "Initial commit.")
-
-  rmd <- file.path(tmp_dir, "analysis", "new.Rmd")
-  expect_warning(wflow_open(rmd, change_wd = FALSE, edit_in_rstudio = FALSE,
-                            project = tmp_dir),
-                 "It appears that your site was created")
-  expect_true(fs::file_exists(rmd))
-})
-
 # https://github.com/jdblischak/workflowr/issues/233
 test_that("wflow_open does **not** send warning when using bookdown output format", {
   tmp_dir <- tempfile()

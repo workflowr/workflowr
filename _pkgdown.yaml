@@ -64,5 +64,4 @@ reference:
       - wflow_run
       - wflow_site
       - wflow_toc
-      - wflow_update
       - wflow_view

@@ -1,4 +1,4 @@
-# workflowr 1.6.2.9002
+# workflowr 1.6.2.9003
 
 * New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
 files are specified with the argument `files`, they are built in addition to any
@@ -31,6 +31,9 @@ title (suggestion from @LearnUseZone in #222, implementation by @zaynaib in #225
 * New argument `only_published` for `wflow_toc()`. If set to `FALSE`, then the
 table of contents will also include unpublished files (implemented by @giocomai
 in #234)
+
+* Removed function `wflow_update()`. Its only purpose was to migrate projects
+created with [workflowrBeta][], which is now over 3 years old
 
 * Bug fix: Now workflowr will detect any problems with its dependencies when it
 is attached. All dependencies must be installed, loadable, and meet the minimum

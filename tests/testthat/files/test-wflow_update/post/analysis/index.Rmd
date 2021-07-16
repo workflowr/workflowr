@@ -1,9 +1,0 @@
----
-site: workflowr::wflow_site
-title: "Home"
-output:
-  workflowr::wflow_html:
-    toc: false
----
-
-Welcome to my research website.

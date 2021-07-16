@@ -125,7 +125,8 @@ wflow_open <- function(files,
       "devtools::install_github(\"jdblischak/workflowrBeta\")\n\n",
       "To update to a workflowr 1.0+ site, you can:\n\n",
       "1. Run wflow_update() to preview the files that would be affected\n\n",
-      "2. Follow the instructions in ?wflow_update to make the transition")
+      "2. Follow the instructions in ?wflow_update to make the transition\n\n",
+      "(Note that wflow_update() is only available in workflowr <= 1.6.2)")
     }
 
     # Throw error if Rmd files not saved in R Markdown directory

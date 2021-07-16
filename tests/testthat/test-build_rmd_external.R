@@ -79,8 +79,6 @@ test_that("An error stops execution, does not create file,
                "There was an error")
   expect_false(fs::file_exists("_site/error.html"))
 
-  skip("callr 3.0.0 doesn't write the error message to stderr")
-  # https://github.com/r-lib/callr/issues/80
   stderr_lines <- readLines(Sys.glob(file.path(l, "error.Rmd-*-err.txt")))
   expect_true(any(grepl("There was an error", stderr_lines)))
 })

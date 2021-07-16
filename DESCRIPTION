@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A Framework for Reproducible and Collaborative Data Science
-Version: 1.6.2.9001
+Version: 1.6.2.9002
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu",
@@ -39,7 +39,7 @@ Depends:
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:
-    callr,
+    callr (>= 3.7.0),
     fs (>= 1.2.7),
     getPass,
     git2r (>= 0.26.0),

@@ -30,7 +30,7 @@
 # * Installed but unusable, e.g. one of their dependencies was removed
 # * Installed but below the minimum required version
 dependencies <- c(
-  callr = NA,
+  callr = "3.7.0",
   fs = "1.2.7",
   getPass = NA,
   git2r = "0.26.0",

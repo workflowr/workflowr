@@ -19,15 +19,16 @@ test_that("commited conflicting changes only", {
   on.exit(test_teardown(path))
 
   r <- repository(path)
+  b1 <- git2r::repository_head(r)
   f <- file.path(path, "test.txt")
   checkout(r, branch = "feature", create = TRUE)
   writeLines("feature branch", con = f)
   add(r, f)
   commit(r, "commit on feature branch")
-  checkout(r, "master")
-  writeLines("master branch", con = f)
+  checkout(r, b1$name)
+  writeLines("main branch", con = f)
   add(r, f)
-  commit(r, "commit on master branch")
+  commit(r, "commit on main branch")
   expect_identical(
     status(r)$unstaged,
     structure(list(), .Names = character(0))
@@ -72,13 +73,14 @@ test_that("staged conflicting changes only", {
   on.exit(test_teardown(path))
 
   r <- repository(path)
+  b1 <- git2r::repository_head(r)
   f <- file.path(path, "test.txt")
   checkout(r, branch = "feature", create = TRUE)
   writeLines("feature branch", con = f)
   add(r, f)
   commit(r, "commit on feature branch")
-  checkout(r, "master")
-  writeLines("master branch", con = f)
+  checkout(r, b1$name)
+  writeLines("main branch", con = f)
   add(r, f)
   # leave in staging area w/o committing
   expect_identical(
@@ -127,13 +129,14 @@ test_that("untracked conflicting changes only", {
   on.exit(test_teardown(path))
 
   r <- repository(path)
+  b1 <- git2r::repository_head(r)
   f <- file.path(path, "test.txt")
   checkout(r, branch = "feature", create = TRUE)
   writeLines("feature branch", con = f)
   add(r, f)
   commit(r, "commit on feature branch")
-  checkout(r, "master")
-  writeLines("master branch", con = f)
+  checkout(r, b1$name)
+  writeLines("main branch", con = f)
   # leave as unstaged change
   expect_identical(
     status(r)$untracked,
@@ -180,15 +183,16 @@ test_that("staged and commited conflicting changes", {
   on.exit(test_teardown(path))
 
   r <- repository(path)
+  b1 <- git2r::repository_head(r)
   f <- file.path(path, "test.txt")
   checkout(r, branch = "feature", create = TRUE)
   writeLines("feature branch", con = f)
   add(r, f)
   commit(r, "commit on feature branch")
-  checkout(r, "master")
-  writeLines("master branch", con = f)
+  checkout(r, b1$name)
+  writeLines("main branch", con = f)
   add(r, f)
-  commit(r, "commit on master branch")
+  commit(r, "commit on main branch")
   writeLines("staged changes", con = f)
   add(r, f)
   expect_identical(

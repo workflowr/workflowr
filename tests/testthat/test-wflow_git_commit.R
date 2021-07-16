@@ -239,6 +239,7 @@ test_that("wflow_git_commit fails early if merge conflicts detected in Rmd file"
   x <- workflowr:::relative(x)
   on.exit(unlink(x, recursive = TRUE, force = TRUE))
   r <- repository(path = x)
+  b1 <- git2r::repository_head(r)
   s <- wflow_status(project = x)
 
   # Edit index.Rmd on new branch
@@ -247,11 +248,11 @@ test_that("wflow_git_commit fails early if merge conflicts detected in Rmd file"
   cat("\nedit on b2\n", file = rmd, append = TRUE)
   add(r, rmd)
   commit(r, "edit index.Rmd on b2")
-  # Edit index.Rmd on master branch
-  checkout(r, "master")
-  cat("\nedit on master\n", file = rmd, append = TRUE)
+  # Edit index.Rmd on main branch
+  checkout(r, b1$name)
+  cat("\nedit on main\n", file = rmd, append = TRUE)
   add(r, rmd)
-  commit(r, "edit index.Rmd on master")
+  commit(r, "edit index.Rmd on main")
   # Generate merge conflict
   workflowr:::git2r_merge(r, "b2", fail = FALSE)
 
@@ -269,6 +270,7 @@ test_that("wflow_git_commit fails early if merge conflicts detected in non-Rmd f
   x <- workflowr:::relative(x)
   on.exit(unlink(x, recursive = TRUE, force = TRUE))
   r <- repository(path = x)
+  b1 <- git2r::repository_head(r)
   s <- wflow_status(project = x)
   rmd <- file.path(s$analysis, "index.Rmd")
 
@@ -278,11 +280,11 @@ test_that("wflow_git_commit fails early if merge conflicts detected in non-Rmd f
   cat("\nedit on b2\n", file = non_rmd, append = TRUE)
   add(r, non_rmd)
   commit(r, "edit non-Rmd on b2")
-  # Edit non-Rmd file on master branch
-  checkout(r, "master")
-  cat("\nedit on master\n", file = non_rmd, append = TRUE)
+  # Edit non-Rmd file on main branch
+  checkout(r, b1$name)
+  cat("\nedit on main\n", file = non_rmd, append = TRUE)
   add(r, non_rmd)
-  commit(r, "edit non-Rmd on master")
+  commit(r, "edit non-Rmd on main")
   # Generate merge conflict
   workflowr:::git2r_merge(r, "b2", fail = FALSE)
 

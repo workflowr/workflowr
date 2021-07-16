@@ -40,7 +40,7 @@ add(r, f2)
 c4 <- commit(r, "commit 4")
 t4 <- tree(c4)
 
-checkout(r, "master")
+checkout(r, b1$name)
 
 # Test git2r -------------------------------------------------------------------
 

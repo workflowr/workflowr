@@ -16,6 +16,7 @@ on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
 site_dir <- workflowr:::absolute(site_dir)
 p <- wflow_paths(project = site_dir)
 r <- repository(p$root)
+b1 <- git2r::repository_head(r)
 
 # Test check_branch ------------------------------------------------------------
 
@@ -27,7 +28,7 @@ test_that("check_branch passes if HEAD points to a branch", {
 test_that("check_branch fails if HEAD does *not* point to a branch", {
   latest_commit <- commits(r)[[1]]
   checkout(latest_commit)
-  on.exit(checkout(r, branch = "master"))
+  on.exit(checkout(r, branch = b1$name))
   git_head <- git2r::repository_head(r)
   expect_error(check_branch(git_head), "You are not currently on any branch")
 })
@@ -78,7 +79,7 @@ test_that("determine_remote_and_branch uses the name of the current branch if br
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
   expect_true(result$branch == git2r::repository_head(r)$name)
   checkout(r, branch = "test", create = TRUE)
-  on.exit(checkout(r, branch = "master"))
+  on.exit(checkout(r, branch = b1$name))
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
   expect_true(result$branch == git2r::repository_head(r)$name)
 })
@@ -87,7 +88,7 @@ test_that("determine_remote_and_branch uses the name of the current branch if br
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
   expect_true(result$branch == git2r::repository_head(r)$name)
   checkout(r, branch = "test", create = TRUE)
-  on.exit(checkout(r, branch = "master"))
+  on.exit(checkout(r, branch = b1$name))
   result <- determine_remote_and_branch(r, remote = "x", branch = NULL)
   expect_true(result$branch == git2r::repository_head(r)$name)
 })
@@ -203,23 +204,23 @@ wflow_git_remote("origin", "user", "repo", verbose = FALSE, project = site_dir)
 test_that("wflow_git_push can run in dry-run mode", {
   expect_silent(result <- wflow_git_push(dry_run = TRUE, project = site_dir))
   expect_identical(result$remote, "origin")
-  expect_identical(result$branch, "master")
+  expect_identical(result$branch, b1$name)
   expect_identical(result$force, FALSE)
   expect_identical(result$dry_run, TRUE)
   expect_identical(result$protocol, "https")
   # Test print method
-  expect_true("  $ git push origin master" %in% utils::capture.output(result))
+  expect_true(sprintf("  $ git push origin %s", b1$name) %in% utils::capture.output(result))
   expect_true("Using the HTTPS protocol" %in% utils::capture.output(result))
 })
 
 test_that("wflow_git_pull can run in dry-run mode", {
   expect_silent(result <- wflow_git_pull(dry_run = TRUE, project = site_dir))
   expect_identical(result$remote, "origin")
-  expect_identical(result$branch, "master")
+  expect_identical(result$branch, b1$name)
   expect_identical(result$dry_run, TRUE)
   expect_identical(result$protocol, "https")
   # Test print method
-  expect_true("  $ git pull origin master" %in% utils::capture.output(result))
+  expect_true(sprintf("  $ git pull origin %s", b1$name) %in% utils::capture.output(result))
   expect_true("Using the HTTPS protocol" %in% utils::capture.output(result))
 })
 
@@ -366,7 +367,7 @@ test_that("find_conflicted_line returns first line with <<<", {
 
   lines <- c(
     "<<<<<<< HEAD",
-    "master branch",
+    "main branch",
     "=======",
     "feature branch",
     ">>>>>>> feature"
@@ -413,10 +414,10 @@ test_that("get_conflicted_files returns files with merge conflicts", {
   lapply(f, writeLines, text = "feature branch")
   add(r, f)
   commit(r, "commit on feature branch")
-  checkout(r, "master")
-  lapply(f, writeLines, text = "master branch")
+  checkout(r, b1$name)
+  lapply(f, writeLines, text = "main branch")
   add(r, f)
-  commit(r, "commit on master branch")
+  commit(r, "commit on main branch")
   m <- merge(r, "feature", fail = FALSE)
   expect_identical(m$conflicts, TRUE)
 

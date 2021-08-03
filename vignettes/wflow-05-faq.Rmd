@@ -103,13 +103,12 @@ from `docs/` (because this is where the HTML files are located), e.g.:
     knitr::include_graphics("assets/external.png", error = FALSE)
     ```
     Note that the image will not be previewed in the R Markdown file inside of
-    RStudio because it is in a different directory than the R Markdown file.
-    Also note that the default behavior of `knitr::include_graphics()` has
-    changed over time. Starting in version 1.28, the function throws an error if
-    it can't find the file. This breaks the workflowr setup, since the file path
-    only exists once the HTML file is moved to `docs/`. Thus you have to set
-    `error = FALSE`. Starting in 1.29, there is a knitr package option that you
-    can set, e.g. in your `.Rprofile`, to disable this behavior globally:
+    RStudio because it is in a different directory than the R Markdown file. You
+    have to set `error = FALSE` because the function throws an error if it can't
+    find the file. This breaks the workflowr setup, since the file path only
+    exists once the HTML file is moved to `docs/`. If you'd like to disable
+    knitr from throwing this error for all the code in your project, add the
+    following line to the `.Rprofile` in your project:
     `options(knitr.graphics.error = FALSE)`
 1. Run `wflow_build()` to confirm the external image file(s) are properly
 displayed

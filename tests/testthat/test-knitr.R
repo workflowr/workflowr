@@ -11,16 +11,9 @@ test_that("include_graphics() can create HTML tag for file it can't find", {
   # https://github.com/yihui/knitr/issues/1717#issuecomment-583373829
   # https://jdblischak.github.io/workflowr/articles/wflow-05-faq.html#how-can-i-include-external-images-in-my-website
 
-  version_knitr <- utils::packageVersion("knitr")
+  expect_silent(
+    result <- knitr::include_graphics("docs/assets/external.png", error = FALSE)
+  )
 
-  if(version_knitr >= "1.28") {
-    expect_silent(
-      result <- knitr::include_graphics("docs/assets/external.png", error = FALSE)
-    )
-  } else {
-    expect_silent(
-      result <- knitr::include_graphics("docs/assets/external.png")
-    )
-  }
   expect_identical(as.character(result), "docs/assets/external.png")
 })

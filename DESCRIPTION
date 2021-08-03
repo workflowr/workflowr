@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A Framework for Reproducible and Collaborative Data Science
-Version: 1.6.2.9003
+Version: 1.6.2.9004
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@uchicago.edu",
@@ -46,7 +46,7 @@ Imports:
     glue,
     httpuv (>= 1.2.2),
     httr,
-    knitr (>= 1.18),
+    knitr (>= 1.29),
     rmarkdown (>= 1.7),
     rprojroot (>= 1.2),
     rstudioapi (>= 0.6),

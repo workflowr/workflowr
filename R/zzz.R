@@ -37,7 +37,7 @@ dependencies <- c(
   glue = NA,
   httpuv = "1.2.2",
   httr = NA,
-  knitr = "1.18",
+  knitr = "1.29",
   rmarkdown = "1.7",
   rprojroot = "1.2",
   rstudioapi = "0.6",

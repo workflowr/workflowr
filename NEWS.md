@@ -1,4 +1,4 @@
-# workflowr 1.6.2.9003
+# workflowr 1.6.2.9004
 
 * New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
 files are specified with the argument `files`, they are built in addition to any
@@ -68,6 +68,8 @@ rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
 should be able to continue to work fine with R 3.2.5, it was becoming too much
 of a burden to regularly test workflowr with R 3.2.5 as the tidyverse team has
 started updating their packages to require a minimum of R 3.3.0.
+
+* Require minimum version of knitr 1.29
 
 # workflowr 1.6.2
 

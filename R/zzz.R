@@ -38,7 +38,7 @@ dependencies <- c(
   httpuv = "1.2.2",
   httr = NA,
   knitr = "1.29",
-  rmarkdown = "1.7",
+  rmarkdown = "1.18",
   rprojroot = "1.2",
   rstudioapi = "0.6",
   stringr = "1.3.0",

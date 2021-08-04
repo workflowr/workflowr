@@ -675,13 +675,7 @@ test_that("Rmd file with defined title and pagetitle does not generate pandoc2 w
 
 test_that("add_pagetitle adds metadata pagetitle if missing title", {
   observed <- workflowr:::add_pagetitle(metadata = list(), input_file = "abc")
-
-  rmd_version <- utils::packageVersion("rmarkdown")
-  if (rmd_version >= "1.10" && rmd_version <= "1.17") {
-    expected <- character(0)
-  } else {
-    expected <- c("--metadata", "pagetitle=abc")
-  }
+  expected <- c("--metadata", "pagetitle=abc")
 
   expect_identical(observed, expected)
 })

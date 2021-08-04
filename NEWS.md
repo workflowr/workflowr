@@ -69,7 +69,7 @@ should be able to continue to work fine with R 3.2.5, it was becoming too much
 of a burden to regularly test workflowr with R 3.2.5 as the tidyverse team has
 started updating their packages to require a minimum of R 3.3.0.
 
-* Require minimum version of knitr 1.29
+* Require minimum versions of callr 3.7.0, knitr 1.29, rmarkdown 1.18
 
 # workflowr 1.6.2
 

@@ -556,6 +556,8 @@ To learn more about workflowr, you can read the following vignettes:
 * [Hosting workflowr websites using GitLab](wflow-06-gitlab.html)
 * [Sharing common code across analyses](wflow-07-common-code.html)
 * [Alternative strategies for deploying workflowr websites](wflow-08-deploy.html)
+* [Reproducible research with workflowr (workshop)](wflow-09-workshop.html)
+* [Using large data files with workflowr](wflow-10-data.html)
 
 ## Further reading
 

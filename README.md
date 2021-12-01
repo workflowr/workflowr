@@ -99,7 +99,9 @@ wflow_publish("analysis/*", "Start my new project")
 **Next steps:**
 
 1. Read the full [Getting started vignette][vig-start] to learn how to share
-your results online
+your results online. Alternatively, you could read the [Reproducible research
+workshop vignette][vig-workshop]. It covers the same steps, but includes example
+code and data to demonstrate some of workflowr's reproducibility features
 
 1. Read the [customization vignette][vig-custom] for ideas on how to customize
 your research website
@@ -174,6 +176,7 @@ abide by its terms.
 [vig-details]: https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html
 [vig-migrating]: https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html
 [vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
+[vig-workshop]: https://jdblischak.github.io/workflowr/articles/wflow-09-workshop.html
 [workflowr-docs]: https://jdblischak.github.io/workflowr/
 [workflowr-paper]: https://doi.org/10.12688/f1000research.20843.1
 [xiangzhu]: https://github.com/xiangzhu

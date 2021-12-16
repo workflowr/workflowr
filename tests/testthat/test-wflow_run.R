@@ -43,10 +43,10 @@ test_that("wflow_run argument verbose controls code echoing", {
   withr::local_dir(path)
 
   rmd <- file.path(path, "analysis", "license.Rmd")
-  cat(c("```{r}\n",
-        "1 + 1\n",
-        "```\n"),
-      file = rmd, append = TRUE)
+  cat(c("```{r}",
+        "1 + 1",
+        "```"),
+      file = rmd, sep = "\n", append = TRUE)
 
   # default
   expect_output(wflow_run(rmd, project = path), "1 \\+ 1")

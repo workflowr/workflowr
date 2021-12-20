@@ -18,11 +18,14 @@ time-stamped, versioned, and documented results. Any R user can quickly and
 easily adopt workflowr.
 
 For more details, see the [online documentation][workflowr-docs]. For an
-example, see the [Divvy data exploration project][divvy]. To keep up-to-date
-with the latest workflowr developments, please join the [workflowr-announce][]
-mailing list (low-volume, read-only). For bugs reports, feature requests, and
-questions, please open an [Issue][issues].
+example, see the [Divvy data exploration project][divvy]. To explore
+reproducible research projects facilitated by workflowr, browse the projects
+registered at [workflowr.io][]. To keep up-to-date with the latest workflowr
+developments, please join the [workflowr-announce][] mailing list (low-volume,
+read-only). For bugs reports, feature requests, and questions, please open an
+[Issue][issues].
 
+[workflowr.io]: https://workflowr.io/
 [workflowr-announce]: https://groups.google.com/forum/#!forum/workflowr-announce
 
 * [Features](#features)

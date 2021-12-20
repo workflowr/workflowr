@@ -1,4 +1,4 @@
-# workflowr 1.6.2.9006
+# workflowr 1.7.0
 
 * New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
 files are specified with the argument `files`, they are built in addition to any

@@ -203,7 +203,7 @@ test_that("wflow_open can create a file when no Git repo or config present", {
   expect_true(fs::file_exists(rmd))
 })
 
-# https://github.com/jdblischak/workflowr/issues/233
+# https://github.com/workflowr/workflowr/issues/233
 test_that("wflow_open does **not** send warning when using bookdown output format", {
   tmp_dir <- tempfile()
   tmp_dir <- workflowr:::absolute(tmp_dir)

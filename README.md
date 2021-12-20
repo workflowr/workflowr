@@ -150,7 +150,7 @@ Also, please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to
 abide by its terms.
 
-[contributors]: https://github.com/jdblischak/workflowr/graphs/contributors
+[contributors]: https://github.com/workflowr/workflowr/graphs/contributors
 [cran]: https://cran.r-project.org/package=workflowr
 [divvy]: https://stephenslab.github.io/wflow-divvy/
 [gh]: https://github.com
@@ -159,7 +159,7 @@ abide by its terms.
 [git2r]: https://cran.r-project.org/package=git2r
 [GitHub Pages]: https://pages.github.com/
 [GitLab Pages]: https://about.gitlab.com/product/pages/
-[issues]: https://github.com/jdblischak/workflowr/issues
+[issues]: https://github.com/workflowr/workflowr/issues
 [knitr]: https://github.com/yihui/knitr
 [lsun]: https://github.com/LSun
 [MIT]: https://opensource.org/licenses/mit-license.php

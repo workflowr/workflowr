@@ -29,7 +29,7 @@ obtain_existing_path <- function(path) {
 }
 
 # Wrap long messages
-# https://github.com/jdblischak/workflowr/issues/29
+# https://github.com/workflowr/workflowr/issues/29
 wrap <- function(...) {
   input <- list(...)
   if (!all(sapply(input, is.character)))
@@ -229,9 +229,9 @@ glob <- function(paths) {
 # doesn't exist, return NA.
 #
 # GitHub:
-# HTTPS: https://github.com/jdblischak/workflowr.git
+# HTTPS: https://github.com/workflowr/workflowr.git
 # SSH: git@github.com:jdblischak/workflowr.git
-# Return value:  https://github.com/jdblischak/workflowr
+# Return value:  https://github.com/workflowr/workflowr
 #
 # GitLab:
 # HTTPS: https://gitlab.com/jdblischak/wflow-gitlab.git

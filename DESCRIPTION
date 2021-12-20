@@ -32,8 +32,8 @@ Description: Provides a workflow for your analysis projects by combining
   literate programming ('knitr' and 'rmarkdown') and version control
   ('Git', via 'git2r') to generate a website containing time-stamped,
   versioned, and documented results.
-URL: https://github.com/jdblischak/workflowr
-BugReports: https://github.com/jdblischak/workflowr/issues
+URL: https://github.com/workflowr/workflowr
+BugReports: https://github.com/workflowr/workflowr/issues
 Depends:
     R (>= 3.3.0)
 License: MIT + file LICENSE

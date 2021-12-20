@@ -130,4 +130,4 @@ versions of the HTML files. This is because workflowr uses the free service
 `gitlab.com`.
 
 [raw.githack.com]: http://raw.githack.com/
-[workflowr-issues]: https://github.com/jdblischak/workflowr/issues
+[workflowr-issues]: https://github.com/workflowr/workflowr/issues

@@ -331,7 +331,7 @@ test_that("check_vc reports Git repo", {
 })
 
 test_that("check_vc reports Git repo and can add GitHub URL", {
-  github <- "https://github.com/jdblischak/workflowr"
+  github <- "https://github.com/workflowr/workflowr"
   observed <- workflowr:::check_vc(rmd, r = r, s = s, github = github,
                                    output_dir = output_dir)
   expect_true(observed$pass)

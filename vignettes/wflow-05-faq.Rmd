@@ -498,7 +498,7 @@ the lowercase workflowr should be the preferred option.
 [gh-status]: https://twitter.com/githubstatus
 [gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
 [gl-pages]: https://docs.gitlab.com/ce/user/project/pages/index.html
-[issues]: https://github.com/jdblischak/workflowr/issues
+[issues]: https://github.com/workflowr/workflowr/issues
 [rmarkdown]: http://rmarkdown.rstudio.com/
 [vig-data]: wflow-10-data.html
 [vig-deploy]: wflow-08-deploy.html

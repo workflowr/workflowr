@@ -103,7 +103,7 @@
 #' login to GitHub and create the repository yourself
 #' (\href{https://help.github.com/articles/creating-a-new-repository/}{instructions from GitHub}).
 #' However, if you have time, please file an
-#' \href{https://github.com/jdblischak/workflowr/issues/new/choose}{Issue on
+#' \href{https://github.com/workflowr/workflowr/issues/new/choose}{Issue on
 #' GitHub} to report what happened, and importantly include which web browser
 #' you were using.
 #'
@@ -377,7 +377,7 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
                          secret = "ac5e6d52e3bf71e4535149622f053b9f00f2e155")
 
   # Set user agent
-  ua <- httr::user_agent("https://github.com/jdblischak/workflowr")
+  ua <- httr::user_agent("https://github.com/workflowr/workflowr")
 
   message(glue::glue(
     "Requesting authorization for workflowr app to access GitHub account {account}"))

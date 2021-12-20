@@ -26,8 +26,8 @@ don't hesitate to open an [Issue][wflow-issues].
 
 [gh-pages]: https://pages.github.com/
 [vig-getting-started]: wflow-01-getting-started.html
-[wflow-issues]: https://github.com/jdblischak/workflowr/issues
-[workflowr]: https://github.com/jdblischak/workflowr
+[wflow-issues]: https://github.com/workflowr/workflowr/issues
+[workflowr]: https://github.com/workflowr/workflowr
 
 ## Amazon S3 (password-protected)
 
@@ -111,7 +111,7 @@ This solution was contributed by [Josh Johnson][johnsonlab]. For more details,
 please read his [blog post][johnsonlab-blog] and the discussion in Issue
 [#59][].
 
-[#59]: https://github.com/jdblischak/workflowr/issues/59
+[#59]: https://github.com/workflowr/workflowr/issues/59
 [beaker]: https://beakerbrowser.com/
 [beaker-install]: https://beakerbrowser.com/install/
 [dat]: https://datproject.org/

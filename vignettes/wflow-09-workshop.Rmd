@@ -36,7 +36,7 @@ reproducible statistical analysis.
 [gh-pages]: https://pages.github.com/
 [git]: https://git-scm.com/
 [rmd]: http://rmarkdown.rstudio.com/
-[workflowr]: https://github.com/jdblischak/workflowr
+[workflowr]: https://github.com/workflowr/workflowr
 
 ## Setup
 

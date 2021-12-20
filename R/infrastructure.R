@@ -143,7 +143,7 @@ Save processed data files here.
 
 A [workflowr][] project.
 
-[workflowr]: https://github.com/jdblischak/workflowr
+[workflowr]: https://github.com/workflowr/workflowr
 
 ',
   "Rproj" = '

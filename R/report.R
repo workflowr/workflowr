@@ -132,7 +132,7 @@ create_report <- function(input, output_dir, has_code, opts) {
       <p>
       This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
       analysis was created with <a
-      href="https://github.com/jdblischak/workflowr">workflowr</a> (version
+      href="https://github.com/workflowr/workflowr">workflowr</a> (version
       {packageVersion("workflowr")}). The <em>Checks</em> tab describes the
       reproducibility checks that were applied when the results were created.
       The <em>Past versions</em> tab lists the development history.

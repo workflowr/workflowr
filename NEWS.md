@@ -76,6 +76,12 @@ have started updating their packages to require a minimum of R 3.3.0
 
 * Require minimum versions of callr 3.7.0, knitr 1.29, rmarkdown 1.18
 
+* Switched to the workflowr repository itself to use the default branch "main"
+and changed the owner to the workflowr organization. This has no effect on
+workflowr projects (future or existing). It mainly affects contributors to
+workflowr development. However, please update any links you might have
+bookmarked (e.g. to documentation)
+
 # workflowr 1.6.2
 
 This patch release of workflowr includes minor improvements, updated
@@ -793,7 +799,7 @@ facilitate troubleshooting
 Fix bug that caused `wflow_status()` (and thus `wflow_publish()`) to ignore R
 Markdown files with the all lowercase file extension `.rmd` (reported by @LSun
 and @pcarbo). This was recently introduced in commit
-[a8ce711](https://github.com/jdblischak/workflowr/commit/a8ce711de4ea2939bf76f2c2403c1d631ec130b0#diff-08716e76a3c9aeb6ad641bb23e5e5ea6R126),
+[a8ce711](https://github.com/workflowr/workflowr/commit/a8ce711de4ea2939bf76f2c2403c1d631ec130b0#diff-08716e76a3c9aeb6ad641bb23e5e5ea6R126),
 so it only affected versions 0.10.0 and 0.10.1.
 
 # workflowr 0.10.1

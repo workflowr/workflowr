@@ -64,7 +64,7 @@ Suggests:
     miniUI (>= 0.1.1),
     reticulate (>= 1.15),
     shiny (>= 0.14),
-    spelling,
+    spelling (>= 2.0),
     testthat (>= 2.0.0),
     withr (>= 2.0.0)
 VignetteBuilder: knitr

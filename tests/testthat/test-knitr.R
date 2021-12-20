@@ -9,7 +9,7 @@ test_that("include_graphics() can create HTML tag for file it can't find", {
   # the links even if knitr can't currently identify the files. The default
   # behavior changed in knitr 1.28.
   # https://github.com/yihui/knitr/issues/1717#issuecomment-583373829
-  # https://jdblischak.github.io/workflowr/articles/wflow-05-faq.html#how-can-i-include-external-images-in-my-website
+  # https://workflowr.github.io/workflowr/articles/wflow-05-faq.html#how-can-i-include-external-images-in-my-website
 
   expect_silent(
     result <- knitr::include_graphics("docs/assets/external.png", error = FALSE)

@@ -24,7 +24,7 @@ if (git2r::in_repository(tempdir())) {
     "Because you have a Git repository upstream of R's temporary directory,
     none of the code below was executed. Please refer to the online
     documentation to see the output:
-    https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
+    https://workflowr.github.io/workflowr/articles/wflow-01-getting-started.html
     \n\nYou should consider removing the directory since it was likely created
     in error: ",
     workflowr:::git2r_slot(git2r::repository(tempdir(), discover = TRUE), "path")))
@@ -58,7 +58,7 @@ time-stamped, versioned, and documented results. Any R user can quickly and
 easily adopt workflowr.
 
 This tutorial assumes you have already followed the [installation
-instructions](https://jdblischak.github.io/workflowr/index.html#installation).
+instructions](https://workflowr.github.io/workflowr/index.html#installation).
 Specifically, you need to have R, pandoc (or RStudio), and workflowr installed
 on your computer. Furthermore, you need an account on [GitHub][gh] or
 [GitLab][gl].

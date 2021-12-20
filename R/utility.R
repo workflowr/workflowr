@@ -230,7 +230,7 @@ glob <- function(paths) {
 #
 # GitHub:
 # HTTPS: https://github.com/workflowr/workflowr.git
-# SSH: git@github.com:jdblischak/workflowr.git
+# SSH: git@github.com:workflowr/workflowr.git
 # Return value:  https://github.com/workflowr/workflowr
 #
 # GitLab:

@@ -3,10 +3,10 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/workflowr)](https://cran.r-project.org/package=workflowr)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
 [![DOI](https://zenodo.org/badge/75893305.svg)](https://zenodo.org/badge/latestdoi/75893305)
-[![codecov](https://codecov.io/gh/jdblischak/workflowr/branch/main/graph/badge.svg)](https://codecov.io/gh/jdblischak/workflowr)
-[![Travis-CI Build Status](https://travis-ci.com/jdblischak/workflowr.svg?branch=main)](https://travis-ci.com/jdblischak/workflowr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=main&svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr)
-[![CircleCI](https://circleci.com/gh/jdblischak/workflowr/tree/main.svg?style=svg)](https://circleci.com/gh/jdblischak/workflowr/tree/main)
+[![codecov](https://codecov.io/gh/workflowr/workflowr/branch/main/graph/badge.svg)](https://codecov.io/gh/workflowr/workflowr)
+[![Travis-CI Build Status](https://travis-ci.com/workflowr/workflowr.svg?branch=main)](https://travis-ci.com/workflowr/workflowr)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr-org?branch=main&svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr-org)
+[![CircleCI](https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg)](https://circleci.com/gh/workflowr/workflowr/tree/main)
 
 <img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">
 
@@ -175,11 +175,11 @@ abide by its terms.
 [stephens]: http://stephenslab.uchicago.edu/
 [uchicago]: http://www.uchicago.edu/
 [video]: https://www.youtube.com/watch?v=O1wv94sZfvE
-[vig-custom]: https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html
-[vig-details]: https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html
-[vig-migrating]: https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html
-[vig-start]: https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html
-[vig-workshop]: https://jdblischak.github.io/workflowr/articles/wflow-09-workshop.html
-[workflowr-docs]: https://jdblischak.github.io/workflowr/
+[vig-custom]: https://workflowr.github.io/workflowr/articles/wflow-02-customization.html
+[vig-details]: https://workflowr.github.io/workflowr/articles/wflow-04-how-it-works.html
+[vig-migrating]: https://workflowr.github.io/workflowr/articles/wflow-03-migrating.html
+[vig-start]: https://workflowr.github.io/workflowr/articles/wflow-01-getting-started.html
+[vig-workshop]: https://workflowr.github.io/workflowr/articles/wflow-09-workshop.html
+[workflowr-docs]: https://workflowr.github.io/workflowr/
 [workflowr-paper]: https://doi.org/10.12688/f1000research.20843.1
 [xiangzhu]: https://github.com/xiangzhu

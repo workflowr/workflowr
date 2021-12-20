@@ -23,7 +23,7 @@ anything, which was misleading (idea from @stephens999)
 * Improved organization of [reproducible research workshop
 vignette][vig-workshop] (thanks to @stephens999)
 
-[vig-workshop]: https://jdblischak.github.io/workflowr/articles/wflow-09-workshop.html
+[vig-workshop]: https://workflowr.github.io/workflowr/articles/wflow-09-workshop.html
 
 * It is now easier to enter commit messages with a separate title and body. If
 you pass a character vector to the argument `message` to any of the functions
@@ -199,7 +199,7 @@ button. This feature can be disabled by setting the package option
 * New [vignette][vig-data] on using large data files in a workflowr project
 (motivated by @xiangzhu, #183)
 
-[vig-data]: https://jdblischak.github.io/workflowr/articles/wflow-10-data.html
+[vig-data]: https://workflowr.github.io/workflowr/articles/wflow-10-data.html
 
 * If there are merge conflicts after running `wflow_git_pull()`, and the merge
 was allowed to proceed (`fail = FALSE`), then the conflicted files are listed
@@ -512,7 +512,7 @@ binaries for 1.2.0)
 workflowr. Document how to use inline code chunks in the [FAQ][faq] (discussed
 with @rgayler and @Robinlovelace , #140)
 
-[faq]: https://jdblischak.github.io/workflowr/articles/wflow-05-faq.html
+[faq]: https://workflowr.github.io/workflowr/articles/wflow-05-faq.html
 
 # workflowr 1.2.0
 
@@ -737,7 +737,7 @@ be created.
 
 ```
 # Install from GitHub
-devtools::install_github("jdblischak/workflowr")
+devtools::install_github("workflowr/workflowr")
 
 # Start a new project to test out the new features
 wflow_start("testproject")

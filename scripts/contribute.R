@@ -48,7 +48,7 @@ if (!"origin" %in% remote_avail) {
   warning("There is no remote named origin", call. = FALSE)
 } else {
   origin <- git2r::remote_url(r, "origin")
-  if (stringr::str_detect(origin, "jdblischak/workflowr.git$")) {
+  if (stringr::str_detect(origin, "workflowr/workflowr.git$")) {
     warning("The remote origin is set to the main workflowr repository.",
             "\nDid you fork the repository on GitHub and then clone your fork?",
             call. = FALSE)

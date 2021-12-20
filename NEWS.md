@@ -1,4 +1,4 @@
-# workflowr 1.6.2.9004
+# workflowr 1.6.2.9006
 
 * New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
 files are specified with the argument `files`, they are built in addition to any
@@ -19,6 +19,11 @@ it now throws an error. In other words, you must specify the files you wish to
 publish or use one of the convenience arguments like `republish = TRUE` or
 `update = TRUE`. It's previous behavior was to complete without having done
 anything, which was misleading (idea from @stephens999)
+
+* Improved organization of [reproducible research workshop
+vignette][vig-workshop] (thanks to @stephens999)
+
+[vig-workshop]: https://jdblischak.github.io/workflowr/articles/wflow-09-workshop.html
 
 * It is now easier to enter commit messages with a separate title and body. If
 you pass a character vector to the argument `message` to any of the functions

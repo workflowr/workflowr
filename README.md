@@ -4,8 +4,8 @@
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
 [![DOI](https://zenodo.org/badge/75893305.svg)](https://zenodo.org/badge/latestdoi/75893305)
 [![codecov](https://codecov.io/gh/workflowr/workflowr/branch/main/graph/badge.svg)](https://codecov.io/gh/workflowr/workflowr)
-[![Travis-CI Build Status](https://travis-ci.com/workflowr/workflowr.svg?branch=main)](https://travis-ci.com/workflowr/workflowr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr-org?branch=main&svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr-org)
+[![Travis-CI Build Status](https://travis-ci.com/workflowr/workflowr.svg?branch=main)](https://travis-ci.com/github/workflowr/workflowr)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/haphtdrihgdj4i7n/branch/main?svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr-org)
 [![CircleCI](https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg)](https://circleci.com/gh/workflowr/workflowr/tree/main)
 
 <img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">

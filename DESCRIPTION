@@ -4,7 +4,7 @@ Title: A Framework for Reproducible and Collaborative Data Science
 Version: 1.6.2.9006
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
-           email = "jdblischak@uchicago.edu",
+           email = "jdblischak@gmail.com",
            comment = c(ORCID = "0000-0003-2634-9879")),
     person("Peter", "Carbonetto", role = c("aut"),
            comment = c(ORCID = "0000-0003-1144-6780")),

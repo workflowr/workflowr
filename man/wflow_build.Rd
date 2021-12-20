@@ -209,13 +209,13 @@ current R session. However, they do differ in a few ways:
   is actually executed (the option \code{knit_root_dir} defined in
   \code{_workflowr.yml}). The RStudio Knit button only loads a
   project-specific \code{.Rprofile} if it is located in the same directory as
-  its seting "Knit Directory" is configured. For example, if "Knit Directory"
+  its setting "Knit Directory" is configured. For example, if "Knit Directory"
   is set to "Document Directory", it will ignore any \code{.Rprofile} in the
   root of the project. But it would load the \code{.Rprofile} if "Knit
   Directory" was changed to "Project Directory".}
 }
 
-The main takeway from the above is that you should try to limit settings and
+The main takeaway from the above is that you should try to limit settings and
 options defined in \code{.Rprofile} to affect the interactive R experience
 and superficial behavior, e.g. the option \code{max.print} to limit the
 number of lines that can be printed to the console. Any critical settings

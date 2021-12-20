@@ -54,12 +54,12 @@ Note that the links worked previously, so this change is just being proactive in
 case this warning starts getting strongly enforced. If the authors of the other
 package rearrange how they group functions into documentation topics, this will
 break the cross-references and require an update. See this
-[thread][rs-community-rd-warning] for more details.
+[thread][rs-community-rd-warning] for more details
 
 [rs-community-rd-warning]: https://community.rstudio.com/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774
 
-* Added more documention to `wflow_build()` to explain when it does and doesn't
-load code defined in a `.Rprofile` file (idea from @pcarbo).
+* Added more documentation to `wflow_build()` to explain when it does and
+doesn't load code defined in a `.Rprofile` file (idea from @pcarbo)
 
 * Bug fix: `wflow_use_github()` and `wflow_use_gitlab()` now use Font Awesome 5
 syntax to insert icons into the navigation bar when a recent version of
@@ -71,8 +71,8 @@ rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
 
 * Bump minimum required version of R from 3.2.5 to 3.3.0. While workflowr itself
 should be able to continue to work fine with R 3.2.5, it was becoming too much
-of a burden to regularly test workflowr with R 3.2.5 as the tidyverse team has
-started updating their packages to require a minimum of R 3.3.0.
+of a burden to regularly test workflowr with R 3.2.5 as the RStudio engineers
+have started updating their packages to require a minimum of R 3.3.0
 
 * Require minimum versions of callr 3.7.0, knitr 1.29, rmarkdown 1.18
 

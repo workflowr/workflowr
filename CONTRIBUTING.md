@@ -70,7 +70,7 @@ package locally, and build the online documentation with [pkgdown][]
 * Update [cran-comments.md](cran-comments.md)
 * Commit with `git commit -am "Bump version: x.x.x.9xxx -> x.x.x and re-build
 docs."`
-* Push with `git push origin master` and wait for CI builds to pass
+* Push with `git push origin main` and wait for CI builds to pass
 * Tag with `git tag -a vx.x.x`. Summarize [NEWS.md](NEWS.md) entry into bullet
 points. Run ` git tag -l -n9` for past examples. Push with `git push origin
 --tags`.

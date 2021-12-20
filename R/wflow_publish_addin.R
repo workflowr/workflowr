@@ -10,8 +10,8 @@ wflow_publish_addin <- function() {
   site_yml_path <- relative(file.path(s$analysis, "_site.yml"))
   wflow_yml_path <- relative(file.path(s$root, "_workflowr.yml"))
 
-  flower_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/flower-purple.png"
-  logo_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/logo-workflowr-inverse.png"
+  flower_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/flower-purple.png"
+  logo_url <- "https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/logo-workflowr-inverse.png"
 
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar("Publish workflowr website",

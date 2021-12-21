@@ -26,7 +26,7 @@ project to implement reproducibility features for single R Markdown documents.">
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@ project to implement reproducibility features for single R Markdown documents.">
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -65,7 +65,7 @@ project to implement reproducibility features for single R Markdown documents.">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Convert to a workflowr HTML document</h1>
-    <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/HEAD/R/wflow_html.R" class="external-link"><code>R/wflow_html.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/R/wflow_html.R" class="external-link"><code>R/wflow_html.R</code></a></small>
     <div class="hidden name"><code>wflow_html.Rd</code></div>
     </div>
 
@@ -74,7 +74,7 @@ project to implement reproducibility features for single R Markdown documents.">
 <code>wflow_html</code> has two distinct functionalities: 1) configure the
 formatting of the HTML by extending <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document</a></code>
 (see the
-<a href="https://rmarkdown.rstudio.com/html_document_format.html" class="external-link">RStudio
+<a href="https://bookdown.org/yihui/rmarkdown/html-document.html" class="external-link">RStudio
 documentation</a> for the available options), and 2) configure the workflowr
 reproducibility features (typically specified in a file named
 <code>_workflowr.yml</code>). <code>wflow_html</code> is intended to be used to generate
@@ -82,7 +82,9 @@ webpages for a workflowr website, but it can also be used outside a workflowr
 project to implement reproducibility features for single R Markdown documents.</p>
     </div>
 
-    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">wflow_html</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">wflow_html</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
@@ -105,7 +107,7 @@ be shared across all of your HTML files, set them in the file
 <code>analysis/_site.yml</code>. This special file can also be used to configure
 other aspects of the website like the navigation bar (for more details see
 the documentation on
-<a href="https://rmarkdown.rstudio.com/rmarkdown_websites.html" class="external-link">R Markdown
+<a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html" class="external-link">R Markdown
 websites</a>). For example, to use the theme "cosmo" and add a table of contents
 to every webpage, you would add the following to <code>analysis/_site.yml</code>:</p>
 <div class="sourceCode"><pre><code><span class="va">output</span><span class="op">:</span>
@@ -147,7 +149,7 @@ as follows:</p>
   <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></code>. By default, <code><a href="wflow_start.html">wflow_start</a></code> sets
   <code>knit_root_dir</code> in the file <code>_workflowr.yml</code> to be the path
   <code>"."</code>. This path is a
-  <a href="https://swcarpentry.github.io/shell-novice/reference/#relative-path" class="external-link">relative
+  <a href="https://swcarpentry.github.io/shell-novice/reference.html#relative-path" class="external-link">relative
   path</a> from the location of <code>_workflowr.yml</code> to the directory for the
   code to be executed. The path <code>"."</code> is shorthand for "current working
   directory", and thus code is executed in the root of the workflowr project.
@@ -248,7 +250,7 @@ the root of the workflowr project.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer></div>

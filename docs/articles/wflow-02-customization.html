@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -79,12 +79,12 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Customize your research website</h1>
-            <h3 data-toc-skip class="subtitle">workflowr version 1.6.2.9005</h3>
+            <h3 data-toc-skip class="subtitle">workflowr version 1.7.0</h3>
                         <h4 data-toc-skip class="author">John Blischak</h4>
             
-            <h4 data-toc-skip class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2021-12-21</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/HEAD/vignettes/wflow-02-customization.Rmd" class="external-link"><code>vignettes/wflow-02-customization.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/vignettes/wflow-02-customization.Rmd" class="external-link"><code>vignettes/wflow-02-customization.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-02-customization.Rmd</code></div>
 
     </div>
@@ -101,13 +101,13 @@
 </li>
 <li>Share details about yourself in <code>analysis/about.Rmd</code>
 </li>
-<li>State a software license in <code>analysis/license.Rmd</code>. See <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598" class="external-link">A Quick Guide to Software Licensing for the Scientist-Programmer</a> by Morin et al., 2012 for advice. If you’re ambivalent, the MIT license is a standard choice.</li>
+<li>State a software license in <code>analysis/license.Rmd</code>. See <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598" class="external-link">A Quick Guide to Software Licensing for the Scientist-Programmer</a> by Morin et al., 2012 for advice. If you’re ambivalent, the MIT license is a standard choice.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="changing-the-theme">Changing the theme<a class="anchor" aria-label="anchor" href="#changing-the-theme"></a>
 </h2>
-<p>The theme is defined in the file <code>analysis/_site.yml</code>. The default is cosmo, but the rmarkdown package accepts multiple Bootstrap themes. These are listed in the <a href="http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style" class="external-link">rmarkdown documentation</a>. Go to <a href="http://bootswatch.com/" class="external-link">bootswatch.com</a> to compare the bootstrap themes. When typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).</p>
+<p>The theme is defined in the file <code>analysis/_site.yml</code>. The default is cosmo, but the rmarkdown package accepts multiple Bootstrap themes. These are listed in the <a href="https://bookdown.org/yihui/rmarkdown/html-document.html" class="external-link">rmarkdown documentation</a>. Go to <a href="https://bootswatch.com/" class="external-link">bootswatch.com</a> to compare the bootstrap themes. When typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).</p>
 <p>When experimenting with different themes, you’ll want to build a fast-running file, e.g. likely <code>analysis/index.Rmd</code>, instead of rebuilding the entire site every time. Click the RStudio Knit button or run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> in the R console to preview each theme:</p>
 <pre><code><span class="fu"><a href="../reference/wflow_build.html">wflow_build</a></span><span class="op">(</span><span class="st">"analysis/index.Rmd"</span><span class="op">)</span></code></pre>
 <p>Once you have chosen a theme, update the website by running the following:</p>
@@ -172,7 +172,7 @@
 <p>If you have other important pages, you can add them as well. For example, to add the text “The main result” which links to <code>main-result.html</code>, you would add the following:</p>
 <pre><code><span class="op">-</span> <span class="va">text</span><span class="op">:</span> <span class="st">"The main result"</span>
       <span class="va">href</span><span class="op">:</span> <span class="va">main</span><span class="op">-</span><span class="va">result.html</span></code></pre>
-<p>You can also create a drop-down menu from the navigation bar. See the <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation" class="external-link">rmarkdown documentation</a> for instructions.</p>
+<p>You can also create a drop-down menu from the navigation bar. See the <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html" class="external-link">rmarkdown documentation</a> for instructions.</p>
 <p>Similar to changing the theme above, you will need to re-render each page of the website (the navbar is embedded within each individual HTML file). Thus you could run the same command as above:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_publish.html">wflow_publish</a></span><span class="op">(</span><span class="st">"analysis/_site.yml"</span>, <span class="st">"Add main result page to navbar"</span>,
@@ -181,12 +181,12 @@
 <div class="section level2">
 <h2 id="setup-ssh-keys">Setup SSH keys<a class="anchor" aria-label="anchor" href="#setup-ssh-keys"></a>
 </h2>
-<p>Using the https protocol to communicate with GitHub is tedious because it requires entering your GitHub username and password. Using SSH keys for authentication removes the password requirement. Follow these <a href="https://help.github.com/articles/generating-an-ssh-key/" class="external-link">GitHub instructions</a> for creating SSH keys and linking them to your GitHub account. You’ll need to create separate SSH keys and link them each to GitHub for each machine where you clone your Git repository.</p>
+<p>Using the https protocol to communicate with GitHub is tedious because it requires entering your GitHub username and password. Using SSH keys for authentication removes the password requirement. Follow these <a href="https://docs.github.com/articles/generating-an-ssh-key" class="external-link">GitHub instructions</a> for creating SSH keys and linking them to your GitHub account. You’ll need to create separate SSH keys and link them each to GitHub for each machine where you clone your Git repository.</p>
 <p>After you create your SSH keys and add them to your GitHub account, you’ll need to instruct your local Git repository to use the SSH protocol. For a hypothetical GitHub username of “myname” and GitHub repository of “myproject”, you would change the remote “origin” (the default name by convention) using the function <code><a href="../reference/wflow_git_remote.html">wflow_git_remote()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_git_remote.html">wflow_git_remote</a></span><span class="op">(</span>remote <span class="op">=</span> <span class="st">"origin"</span>, user <span class="op">=</span> <span class="st">"myname"</span>, repo <span class="op">=</span> <span class="st">"myproject"</span>,
               protocol <span class="op">=</span> <span class="st">"ssh"</span>, action <span class="op">=</span> <span class="st">"set_url"</span><span class="op">)</span></code></pre></div>
-<p>Alternatively you could update the remote URL using Git directly in the shell. See this GitHub documentation on <a href="https://help.github.com/articles/changing-a-remote-s-url/" class="external-link">changing a remote URL</a> for instructions.</p>
+<p>Alternatively you could update the remote URL using Git directly in the shell. See this GitHub documentation on <a href="https://docs.github.com/articles/changing-a-remote-s-url" class="external-link">changing a remote URL</a> for instructions.</p>
 </div>
 <div class="section level2">
 <h2 id="change-the-session-information-function">Change the session information function<a class="anchor" aria-label="anchor" href="#change-the-session-information-function"></a>
@@ -216,7 +216,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>

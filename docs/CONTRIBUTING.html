@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -41,7 +41,7 @@
   <a href="news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -65,13 +65,13 @@
 <li>Please follow the <a href="http://adv-r.had.co.nz/Style.html" class="external-link">Hadley style guide</a>
 </li>
 <li>Please run the file <a href="scripts/contribute.R">scripts/contribute.R</a> to check your changes</li>
-<li>(Optional) Run <code><a href="https://devtools.r-lib.org//reference/test.html" class="external-link">devtools::test()</a></code> to run the tests</li>
+<li>(Optional) Run <code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code> to run the tests</li>
 <li>(Optional) Add new test(s) in <code>tests/testthat/</code>
 </li>
-</ul><p>If you’re new to submitting Pull Requests, please read the section <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011" class="external-link">Contribute to other projects</a> in the tutorial <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668" class="external-link">A quick introduction to version control with Git and GitHub</a>.</p>
+</ul><p>If you’re new to submitting Pull Requests, please read the section <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011" class="external-link">Contribute to other projects</a> in the tutorial <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668" class="external-link">A quick introduction to version control with Git and GitHub</a>.</p>
 <div class="section level2">
 <h2 id="more-about-this-repository">More about this repository<a class="anchor" aria-label="anchor" href="#more-about-this-repository"></a></h2>
-<p>For the most part, I try to follow the guidelines from <a href="http://r-pkgs.had.co.nz/" class="external-link">R packages</a> by <a href="http://hadley.nz/" class="external-link">Hadley Wickham</a>. The unit tests are performed with <a href="https://github.com/hadley/testthat" class="external-link">testthat</a>, the documentation is built with <a href="https://github.com/klutometis/roxygen" class="external-link">roxygen2</a>, and the online package documentation is created with <a href="https://github.com/r-lib/pkgdown" class="external-link">pkgdown</a>. Continuous integration testing is performed for Linux by <a href="https://circleci.com" class="external-link">CircleCI</a>, for macOS by <a href="https://travis-ci.com/" class="external-link">Travis CI</a>, and for Windows by <a href="https://ci.appveyor.com" class="external-link">AppVeyor</a>. Code coverage is calculated with <a href="https://github.com/jimhester/covr" class="external-link">covr</a> and <a href="https://codecov.io/" class="external-link">Codecov</a>.</p>
+<p>For the most part, I try to follow the guidelines from <a href="https://r-pkgs.org/" class="external-link">R packages</a> by <a href="http://hadley.nz/" class="external-link">Hadley Wickham</a>. The unit tests are performed with <a href="https://github.com/hadley/testthat" class="external-link">testthat</a>, the documentation is built with <a href="https://github.com/klutometis/roxygen" class="external-link">roxygen2</a>, and the online package documentation is created with <a href="https://github.com/r-lib/pkgdown" class="external-link">pkgdown</a>. Continuous integration testing is performed for Linux by <a href="https://circleci.com" class="external-link">CircleCI</a>, for macOS by <a href="https://travis-ci.com/" class="external-link">Travis CI</a>, and for Windows by <a href="https://ci.appveyor.com" class="external-link">AppVeyor</a>. Code coverage is calculated with <a href="https://github.com/jimhester/covr" class="external-link">covr</a> and <a href="https://codecov.io/" class="external-link">Codecov</a>.</p>
 <p>The template files used by <code><a href="reference/wflow_start.html">wflow_start()</a></code> to populate a new project are defined in the list <code>templates</code> in the file <code>R/infrastructure.R</code>. The <a href="https://rstudio.github.io/rstudio-extensions/rstudio_project_templates.html" class="external-link">RStudio project template</a> is configured by <code>inst/rstudio/templates/project/wflow_start.dcf</code>. The repository contains the files <code>LICENSE</code> and <code>LICENSE.md</code> to both adhere to <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Licensing" class="external-link">R package conventions for defining the license</a> and also to make the license clear in a more conventional manner (suggestions for improvement welcome). The directory <code>scripts/</code> contains convenience scripts for maintaining the R package. The remaining directories are standard for R packages as described in the manual <a href="https://cran.r-project.org/doc/manuals/R-exts.html" class="external-link">Writing R Extensions</a>.</p>
 </div>
 <div class="section level2">
@@ -99,33 +99,29 @@
 <li><p>Run <a href="scripts/build.sh">scripts/build.sh</a> to confirm tests pass locally</p></li>
 <li>
 <p>Test on <a href="https://r-hub.github.io/rhub/" class="external-link">rhub</a>:</p>
-<ul><li>Have to validate email first with <code>rhub::validate_email()</code>. Copy-paste token from email into R console.</li>
-<li>Check on Ubuntu with <code>rhub::check_on_ubuntu()</code>
+<ul><li>Have to validate email first with <code><a href="https://r-hub.github.io/rhub/reference/validate_email.html" class="external-link">rhub::validate_email()</a></code>. Copy-paste token from email into R console</li>
+<li>Check on Ubuntu with <code>rhub::check_for_cran(platform = "ubuntu-gcc-devel")</code>
 </li>
-<li>Check on macOS with <code>rhub::check_on_macos()</code>
-</li>
-<li>Check on Windows with <code>rhub::check_on_windows()</code>
+<li>Check on Solaris with <code>rhub::check_for_cran(platform = "solaris-x86-patched")</code>
 </li>
 </ul></li>
 <li>
 <p>Test on <a href="https://win-builder.r-project.org/" class="external-link">winbuilder</a>:</p>
-<ul><li>Check with R release with <code><a href="https://devtools.r-lib.org//reference/check_win.html" class="external-link">devtools::check_win_release()</a></code>
-</li>
-<li>Check with R devel with <code><a href="https://devtools.r-lib.org//reference/check_win.html" class="external-link">devtools::check_win_devel()</a></code>
+<ul><li>Check with R devel with <code><a href="https://devtools.r-lib.org/reference/check_win.html" class="external-link">devtools::check_win_devel()</a></code>
 </li>
 </ul></li>
 <li><p>Update <a href="cran-comments.html">cran-comments.md</a></p></li>
 <li><p>Commit with <code>git commit -am "Bump version: x.x.x.9xxx -&gt; x.x.x and re-build docs."</code></p></li>
-<li><p>Push with <code>git push origin master</code> and wait for CI builds to pass</p></li>
-<li><p>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</p></li>
-<li><p>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html">NEWS.md</a>.</p></li>
+<li><p>Push with <code>git push origin main</code> and wait for CI builds to pass</p></li>
 <li><p>Build tarball with <code>R CMD build .</code> and upload to <a href="https://cran.r-project.org/submit.html" class="external-link">CRAN submission site</a>. You will receive an email to request confirmation, then an email confirming the package was submitted, and then an email with the test results. Once it is accepted to CRAN, monitor the <a href="https://cran.r-project.org/web/checks/check_results_workflowr.html" class="external-link">check results</a> for any surprise errors. Also, these builds are when the binaries are built for Windows and macOS, so they aren’t available until they are finished. You will receive an email once all the Windows binaries are available for download (devel, release, oldrel).</p></li>
 <li>
 <p>You can monitor the status of the CRAN submission with the <a href="https://cran.r-project.org/package=foghorn" class="external-link">foghorn</a> package:</p>
-<pre><code><span class="fu">foghorn</span><span class="fu">::</span><span class="fu">cran_incoming</span><span class="op">(</span><span class="st">"workflowr"</span><span class="op">)</span>
-<span class="fu">foghorn</span><span class="fu">::</span><span class="fu">cran_details</span><span class="op">(</span><span class="st">"workflowr"</span><span class="op">)</span>
-<span class="fu">foghorn</span><span class="fu">::</span><span class="fu">cran_results</span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"workflowr"</span><span class="op">)</span></code></pre>
+<pre><code><span class="fu">foghorn</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/foghorn/man/cran_incoming.html" class="external-link">cran_incoming</a></span><span class="op">(</span><span class="st">"workflowr"</span><span class="op">)</span>
+<span class="fu">foghorn</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/foghorn/man/cran_details.html" class="external-link">cran_details</a></span><span class="op">(</span><span class="st">"workflowr"</span><span class="op">)</span>
+<span class="fu">foghorn</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/foghorn/man/cran_results.html" class="external-link">cran_results</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"workflowr"</span><span class="op">)</span></code></pre>
 </li>
+<li><p>Tag with <code>git tag -a vx.x.x</code>. Summarize <a href="NEWS.html">NEWS.md</a> entry into bullet points. Run <code>git tag -l -n9</code> for past examples. Push with <code>git push origin --tags</code>.</p></li>
+<li><p>Make a release. On GitHub, go to Releases -&gt; Tags -&gt; Edit release notes. Name the release “workflowr x.x.x” and copy-paste the Markdown entry from <a href="NEWS.html">NEWS.md</a>.</p></li>
 </ul></div>
 </div>
 
@@ -144,7 +140,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer></div>

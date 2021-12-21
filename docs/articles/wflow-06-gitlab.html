@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -79,12 +79,12 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Hosting workflowr websites using GitLab</h1>
-            <h3 data-toc-skip class="subtitle">workflowr version 1.6.2.9005</h3>
+            <h3 data-toc-skip class="subtitle">workflowr version 1.7.0</h3>
                         <h4 data-toc-skip class="author">Luke Zappia, John Blischak</h4>
             
-            <h4 data-toc-skip class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2021-12-21</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/HEAD/vignettes/wflow-06-gitlab.Rmd" class="external-link"><code>vignettes/wflow-06-gitlab.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/vignettes/wflow-06-gitlab.Rmd" class="external-link"><code>vignettes/wflow-06-gitlab.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-06-gitlab.Rmd</code></div>
 
     </div>
@@ -104,8 +104,8 @@
 <div class="section level2">
 <h2 id="step-1-create-a-remote-repository-on-gitlab">Step 1: Create a remote repository on GitLab<a class="anchor" aria-label="anchor" href="#step-1-create-a-remote-repository-on-gitlab"></a>
 </h2>
-<p><strong>Note:</strong> You can skip this step if you’d like because GitLab will automatically create the new repository after you push it in Step 4 below. This <a href="https://docs.gitlab.com/ee/gitlab-basics/create-project.html#push-to-create-a-new-project" class="external-link">feature</a> was introduced in <a href="https://about.gitlab.com/2018/02/22/gitlab-10-5-released/" class="external-link">GitLab 10.5</a>, released in February 2018.</p>
-<p>Log in to the GitLab instance you want to use and create a repository to host your project (follow this <a href="https://gitlab.com/projects/new" class="external-link">link</a> if you are using GitLab.com). We recommend setting the project to be Public so that others can inspect the code behind your results and extend your work.</p>
+<p><strong>Note:</strong> You can skip this step if you’d like because GitLab will automatically create the new repository after you push it in Step 4 below. This <a href="https://docs.gitlab.com/ee/gitlab-basics/create-project.html#push-to-create-a-new-project" class="external-link">feature</a> was introduced in <a href="https://about.gitlab.com/releases/2018/02/22/gitlab-10-5-released/" class="external-link">GitLab 10.5</a>, released in February 2018.</p>
+<p>Log in to the GitLab instance you want to use and create a repository to host your project. We recommend setting the project to be Public so that others can inspect the code behind your results and extend your work.</p>
 </div>
 <div class="section level2">
 <h2 id="step-2-configure-your-local-workflowr-project-to-use-gitlab">Step 2: Configure your local workflowr project to use GitLab<a class="anchor" aria-label="anchor" href="#step-2-configure-your-local-workflowr-project-to-use-gitlab"></a>
@@ -140,7 +140,7 @@
 </h2>
 <p>Currently workflowr works best with the public GitLab instance hosted at gitlab.com. If you are using a custom GitLab instance that is hosted by your institution, it may not work as smoothly.</p>
 <p>If you cannot view your workflowr website, this may be because your administrators have not enabled <a href="https://docs.gitlab.com/ee/ci/yaml/README.html#pages" class="external-link">GitLab Pages</a>. You will need to email them to activate this feature. You can include this link to the <a href="https://git.rcc.uchicago.edu/help/administration/pages/index.md" class="external-link">GitLab Pages administration</a> instructions.</p>
-<p>If GitLab Pages is enabled, the links to past versions of the R Markdown files should work correctly (open an <a href="https://github.com/jdblischak/workflowr/issues" class="external-link">Issue</a> if you are having problems). However, there is currently no way to conveniently view the past versions of the HTML files. This is because workflowr uses the free service <a href="http://raw.githack.com/" class="external-link">raw.githack.com</a> to host past HTML files, and it only supports the URLs <code>raw.githubusercontent.com</code>, <code>gist.githubusercontent.com</code>, <code>bitbucket.org</code>, and <code>gitlab.com</code>.</p>
+<p>If GitLab Pages is enabled, the links to past versions of the R Markdown files should work correctly (open an <a href="https://github.com/workflowr/workflowr/issues" class="external-link">Issue</a> if you are having problems). However, there is currently no way to conveniently view the past versions of the HTML files. This is because workflowr uses the free service <a href="https://raw.githack.com/" class="external-link">raw.githack.com</a> to host past HTML files, and it only supports the URLs <code>raw.githubusercontent.com</code>, <code>gist.githubusercontent.com</code>, <code>bitbucket.org</code>, and <code>gitlab.com</code>.</p>
 </div>
 <div class="footnotes">
 <hr>
@@ -167,7 +167,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>

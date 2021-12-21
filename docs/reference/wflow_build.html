@@ -20,7 +20,7 @@ wflow_publish."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@ wflow_publish."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
   <a href="../news/index.html">News</a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -59,7 +59,7 @@ wflow_publish."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Build the site</h1>
-    <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/HEAD/R/wflow_build.R" class="external-link"><code>R/wflow_build.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/R/wflow_build.R" class="external-link"><code>R/wflow_build.R</code></a></small>
     <div class="hidden name"><code>wflow_build.Rd</code></div>
     </div>
 
@@ -70,7 +70,8 @@ the changes. When you are ready to commit the files, use
 <code><a href="wflow_publish.html">wflow_publish</a></code>.</p>
     </div>
 
-    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">wflow_build</span><span class="op">(</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">wflow_build</span><span class="op">(</span>
   files <span class="op">=</span> <span class="cn">NULL</span>,
   make <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span>,
   update <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -85,7 +86,8 @@ the changes. When you are ready to commit the files, use
   local <span class="op">=</span> <span class="cn">FALSE</span>,
   dry_run <span class="op">=</span> <span class="cn">FALSE</span>,
   project <span class="op">=</span> <span class="st">"."</span>
-<span class="op">)</span></code></pre></div></div>
+<span class="op">)</span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
@@ -249,13 +251,13 @@ current R session. However, they do differ in a few ways:</p>
   is actually executed (the option <code>knit_root_dir</code> defined in
   <code>_workflowr.yml</code>). The RStudio Knit button only loads a
   project-specific <code>.Rprofile</code> if it is located in the same directory as
-  its seting "Knit Directory" is configured. For example, if "Knit Directory"
+  its setting "Knit Directory" is configured. For example, if "Knit Directory"
   is set to "Document Directory", it will ignore any <code>.Rprofile</code> in the
   root of the project. But it would load the <code>.Rprofile</code> if "Knit
   Directory" was changed to "Project Directory".</p></dd>
 
 
-</dl><p>The main takeway from the above is that you should try to limit settings and
+</dl><p>The main takeaway from the above is that you should try to limit settings and
 options defined in <code>.Rprofile</code> to affect the interactive R experience
 and superficial behavior, e.g. the option <code>max.print</code> to limit the
 number of lines that can be printed to the console. Any critical settings
@@ -299,7 +301,7 @@ file.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer></div>

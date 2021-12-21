@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -63,7 +63,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -84,9 +84,9 @@
 <div class="page-header"><h1 id="workflowr-organized--reproducible--shareable-data-science-in-r">workflowr: organized + reproducible + shareable data science in R<a class="anchor" aria-label="anchor" href="#workflowr-organized--reproducible--shareable-data-science-in-r"></a>
 </h1></div>
 
-<p><img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/master/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px"></p>
+<p><img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px"></p>
 <p>The workflowr R package helps researchers organize their analyses in a way that promotes effective project management, reproducibility, collaboration, and sharing of results. Workflowr combines literate programming (knitr and rmarkdown) and version control (Git, via git2r) to generate a website containing time-stamped, versioned, and documented results. Any R user can quickly and easily adopt workflowr.</p>
-<p>For more details, see the <a href="https://jdblischak.github.io/workflowr/" class="external-link">online documentation</a>. For an example, see the <a href="https://stephenslab.github.io/wflow-divvy/" class="external-link">Divvy data exploration project</a>. To keep up-to-date with the latest workflowr developments, please join the <a href="https://groups.google.com/forum/#!forum/workflowr-announce" class="external-link">workflowr-announce</a> mailing list (low-volume, read-only). For bugs reports, feature requests, and questions, please open an <a href="https://github.com/jdblischak/workflowr/issues" class="external-link">Issue</a>.</p>
+<p>For more details, see the <a href="https://workflowr.github.io/workflowr/" class="external-link">online documentation</a>. For an example, see the <a href="https://stephenslab.github.io/wflow-divvy/" class="external-link">Divvy data exploration project</a>. To explore reproducible research projects facilitated by workflowr, browse the projects registered at <a href="https://workflowr.io/" class="external-link">workflowr.io</a>. To keep up-to-date with the latest workflowr developments, please join the <a href="https://groups.google.com/forum/#!forum/workflowr-announce" class="external-link">workflowr-announce</a> mailing list (low-volume, read-only). For bugs reports, feature requests, and questions, please open an <a href="https://github.com/workflowr/workflowr/issues" class="external-link">Issue</a>.</p>
 <ul>
 <li><a href="#features">Features</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -116,7 +116,7 @@
 <li>Shareable
 <ul>
 <li>Creates a website to present your research results</li>
-<li>Documents how to host your website for free via <a href="https://pages.github.com/" class="external-link">GitHub Pages</a> or <a href="https://about.gitlab.com/product/pages/" class="external-link">GitLab Pages</a>
+<li>Documents how to host your website for free via <a href="https://pages.github.com/" class="external-link">GitHub Pages</a> or <a href="https://about.gitlab.com/stages-devops-lifecycle/pages/" class="external-link">GitLab Pages</a>
 </li>
 <li>Creates links to past versions of results</li>
 </ul>
@@ -133,7 +133,7 @@
 <p>Install <a href="https://cran.r-project.org" class="external-link">R</a></p>
 <ul>
 <li><p>(Recommended) Install <a href="https://www.rstudio.com/products/rstudio/download/" class="external-link">RStudio</a></p></li>
-<li><p>(Optional) Install <a href="http://pandoc.org" class="external-link">pandoc</a> (<a href="https://rmarkdown.rstudio.com/docs/articles/pandoc.html" class="external-link">Instructions</a>)</p></li>
+<li><p>(Optional) Install <a href="https://pandoc.org/" class="external-link">pandoc</a> (<a href="https://pandoc.org/installing.html" class="external-link">Instructions</a>)</p></li>
 <li><p>(Optional) Install <a href="https://git-scm.com/" class="external-link">Git</a></p></li>
 </ul>
 </li>
@@ -142,13 +142,13 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"workflowr"</span><span class="op">)</span></code></pre></div>
 </li>
-<li><p>Create an account on <a href="https://github.com" class="external-link">GitHub</a> or <a href="https://gitlab.com" class="external-link">GitLab</a></p></li>
+<li><p>Create an account on <a href="https://github.com" class="external-link">GitHub</a> or <a href="https://about.gitlab.com/" class="external-link">GitLab</a></p></li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/jdblischak/workflowr" class="external-link">"workflowr"</a></span><span class="op">)</span>
+<pre><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/workflowr/workflowr" class="external-link">"workflowr"</a></span><span class="op">)</span>
 
 <span class="co"># Configure Git (only need to do once per computer)</span>
 <span class="fu"><a href="reference/wflow_git_config.html">wflow_git_config</a></span><span class="op">(</span>user.name <span class="op">=</span> <span class="st">"Full Name"</span>, user.email <span class="op">=</span> <span class="st">"email@domain"</span><span class="op">)</span>
@@ -171,17 +171,17 @@
 <span class="fu"><a href="reference/wflow_publish.html">wflow_publish</a></span><span class="op">(</span><span class="st">"analysis/*"</span>, <span class="st">"Start my new project"</span><span class="op">)</span></code></pre>
 <p><strong>Next steps:</strong></p>
 <ol style="list-style-type: decimal">
-<li><p>Read the full <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html" class="external-link">Getting started vignette</a> to learn how to share your results online. Alternatively, you could read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-09-workshop.html" class="external-link">Reproducible research workshop vignette</a>. It covers the same steps, but includes example code and data to demonstrate some of workflowr’s reproducibility features</p></li>
-<li><p>Read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-02-customization.html" class="external-link">customization vignette</a> for ideas on how to customize your research website</p></li>
-<li><p>Read the <a href="https://jdblischak.github.io/workflowr/articles/wflow-03-migrating.html" class="external-link">migrating vignette</a> for how to integrate workflowr into your existing project</p></li>
+<li><p>Read the full <a href="https://workflowr.github.io/workflowr/articles/wflow-01-getting-started.html" class="external-link">Getting started vignette</a> to learn how to share your results online. Alternatively, you could read the <a href="https://workflowr.github.io/workflowr/articles/wflow-09-workshop.html" class="external-link">Reproducible research workshop vignette</a>. It covers the same steps, but includes example code and data to demonstrate some of workflowr’s reproducibility features</p></li>
+<li><p>Read the <a href="https://workflowr.github.io/workflowr/articles/wflow-02-customization.html" class="external-link">customization vignette</a> for ideas on how to customize your research website</p></li>
+<li><p>Read the <a href="https://workflowr.github.io/workflowr/articles/wflow-03-migrating.html" class="external-link">migrating vignette</a> for how to integrate workflowr into your existing project</p></li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a>
 </h2>
-<p>Workflowr was developed, and is maintained, by John Blischak, a postdoctoral researcher in the laboratory of <a href="http://stephenslab.uchicago.edu/" class="external-link">Matthew Stephens</a> at <a href="http://www.uchicago.edu/" class="external-link">The University of Chicago</a>. He is funded by a grant from the <a href="https://www.moore.org/" class="external-link">Gordon and Betty Moore Foundation</a> to MS. <a href="https://pcarbo.github.io/" class="external-link">Peter Carbonetto</a> and <a href="http://stephenslab.uchicago.edu/" class="external-link">Matthew Stephens</a> are co-authors.</p>
-<p>We are very thankful to workflowr <a href="https://github.com/jdblischak/workflowr/graphs/contributors" class="external-link">contributors</a> for helping improve the package. We are also grateful for workflowr users for testing the package and providing feedback—thanks especially to <a href="https://github.com/LSun" class="external-link">Lei Sun</a>, <a href="https://github.com/xiangzhu" class="external-link">Xiang Zhu</a>, <a href="https://github.com/NKweiwang" class="external-link">Wei Wang</a>, and other members (past and present) of the Stephens lab.</p>
-<p>The workflowr package uses many great open source packages. Especially critical for this project are the R packages <a href="https://cran.r-project.org/package=git2r" class="external-link">git2r</a>, <a href="https://github.com/yihui/knitr" class="external-link">knitr</a>, and <a href="http://rmarkdown.rstudio.com/" class="external-link">rmarkdown</a>. Please see the vignette <a href="https://jdblischak.github.io/workflowr/articles/wflow-04-how-it-works.html" class="external-link">How the workflowr package works</a> to learn about the software that makes workflowr possible.</p>
+<p>Workflowr was developed, and is maintained, by John Blischak, a postdoctoral researcher in the laboratory of <a href="https://stephenslab.uchicago.edu/" class="external-link">Matthew Stephens</a> at <a href="https://www.uchicago.edu/" class="external-link">The University of Chicago</a>. He is funded by a grant from the <a href="https://www.moore.org/" class="external-link">Gordon and Betty Moore Foundation</a> to MS. <a href="https://pcarbo.github.io/" class="external-link">Peter Carbonetto</a> and <a href="https://stephenslab.uchicago.edu/" class="external-link">Matthew Stephens</a> are co-authors.</p>
+<p>We are very thankful to workflowr <a href="https://github.com/workflowr/workflowr/graphs/contributors" class="external-link">contributors</a> for helping improve the package. We are also grateful for workflowr users for testing the package and providing feedback—thanks especially to <a href="https://github.com/LSun" class="external-link">Lei Sun</a>, <a href="https://github.com/xiangzhu" class="external-link">Xiang Zhu</a>, <a href="https://github.com/NKweiwang" class="external-link">Wei Wang</a>, and other members (past and present) of the Stephens lab.</p>
+<p>The workflowr package uses many great open source packages. Especially critical for this project are the R packages <a href="https://cran.r-project.org/package=git2r" class="external-link">git2r</a>, <a href="https://github.com/yihui/knitr" class="external-link">knitr</a>, and <a href="https://rmarkdown.rstudio.com/" class="external-link">rmarkdown</a>. Please see the vignette <a href="https://workflowr.github.io/workflowr/articles/wflow-04-how-it-works.html" class="external-link">How the workflowr package works</a> to learn about the software that makes workflowr possible.</p>
 <p>Workflowr is available under the <a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT license</a>. For proper attribution, please cite our <a href="https://doi.org/10.12688/f1000research.20843.1" class="external-link">manuscript</a> that describes the software:</p>
 <blockquote>
 <p>Blischak JD, Carbonetto P, and Stephens M. Creating and sharing reproducible research code the workflowr way [version 1; peer review: 3 approved]. F1000Research 2019, 8:1749 (<a href="https://doi.org/10.12688/f1000research.20843.1" class="external-link uri">https://doi.org/10.12688/f1000research.20843.1</a>)</p>
@@ -201,8 +201,8 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=workflowr" class="external-link">View on CRAN</a></li>
-<li><a href="https://github.com/jdblischak/workflowr/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/jdblischak/workflowr/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/workflowr/workflowr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/workflowr/workflowr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -245,10 +245,10 @@
 <li><a href="https://cran.r-project.org/package=workflowr" class="external-link"><img src="https://www.r-pkg.org/badges/version/workflowr" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=workflowr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/workflowr" alt="CRAN downloads"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/75893305" class="external-link"><img src="https://zenodo.org/badge/75893305.svg" alt="DOI"></a></li>
-<li><a href="https://codecov.io/gh/jdblischak/workflowr" class="external-link"><img src="https://codecov.io/gh/jdblischak/workflowr/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://travis-ci.com/jdblischak/workflowr" class="external-link"><img src="https://travis-ci.com/jdblischak/workflowr.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/jdblischak/workflowr" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/github/jdblischak/workflowr?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
-<li><a href="https://circleci.com/gh/jdblischak/workflowr/tree/master" class="external-link"><img src="https://circleci.com/gh/jdblischak/workflowr/tree/master.svg?style=svg" alt="CircleCI"></a></li>
+<li><a href="https://app.codecov.io/gh/workflowr/workflowr" class="external-link"><img src="https://app.codecov.io/gh/workflowr/workflowr/branch/main/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://app.travis-ci.com:443/github/workflowr/workflowr" class="external-link"><img src="https://travis-ci.com/workflowr/workflowr.svg?branch=main" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/jdblischak/workflowr-org" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/haphtdrihgdj4i7n/branch/main?svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main" class="external-link"><img src="https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main.svg?style=svg" alt="CircleCI"></a></li>
 </ul>
 </div>
 
@@ -263,7 +263,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>

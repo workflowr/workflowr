@@ -1,5 +1,5 @@
 pandoc: 2.11.4
-pkgdown: 2.0.0
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   wflow-01-getting-started: wflow-01-getting-started.html
@@ -12,5 +12,5 @@ articles:
   wflow-08-deploy: wflow-08-deploy.html
   wflow-09-workshop: wflow-09-workshop.html
   wflow-10-data: wflow-10-data.html
-last_built: 2021-12-01T17:27Z
+last_built: 2021-12-21T14:16Z
 

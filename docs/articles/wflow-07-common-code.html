@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jdblischak/workflowr/" class="external-link">
+  <a href="https://github.com/workflowr/workflowr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -79,12 +79,12 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Sharing common code across analyses</h1>
-            <h3 data-toc-skip class="subtitle">workflowr version 1.6.2.9005</h3>
+            <h3 data-toc-skip class="subtitle">workflowr version 1.7.0</h3>
                         <h4 data-toc-skip class="author">Tim Trice, John Blischak</h4>
             
-            <h4 data-toc-skip class="date">2021-12-01</h4>
+            <h4 data-toc-skip class="date">2021-12-21</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/jdblischak/workflowr/blob/HEAD/vignettes/wflow-07-common-code.Rmd" class="external-link"><code>vignettes/wflow-07-common-code.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/vignettes/wflow-07-common-code.Rmd" class="external-link"><code>vignettes/wflow-07-common-code.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-07-common-code.Rmd</code></div>
 
     </div>
@@ -94,7 +94,7 @@
 <p>During the course of a project, you may want to repeat a similar analysis across multiple R Markdown files. To avoid duplicated code across your files (which is difficult to update), there are multiple strategies you can use to share common code:</p>
 <ol style="list-style-type: decimal">
 <li><p>To share R code like function definitions, you can put this code in an R script and import it in each file with the function <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code></p></li>
-<li><p>To share common R Markdown text and code chunks, you can use <a href="https://yihui.name/knitr/demo/child/" class="external-link">child documents</a></p></li>
+<li><p>To share common R Markdown text and code chunks, you can use <a href="https://yihui.org/knitr/demo/child/" class="external-link">child documents</a></p></li>
 <li><p>To share common templates, you can use the function <code><a href="https://rdrr.io/pkg/knitr/man/knit_expand.html" class="external-link">knitr::knit_expand()</a></code></p></li>
 </ol>
 <p>Each of these strategies is detailed below, with a special emphasis on how to use them within the workflowr framework. In order to source scripts or use child documents, it is suggested you use the <a href="https://cran.r-project.org/package=here" class="external-link">here</a> package, which helps to locate the root directory of your project regardless of the directory your script or analysis file is, making sourcing documents cleaner.</p>
@@ -124,7 +124,7 @@ source(here::here("code/functions.R"))
 <div class="section level2">
 <h2 id="share-child-documents-with-chunk-option">Share child documents with chunk option<a class="anchor" aria-label="anchor" href="#share-child-documents-with-chunk-option"></a>
 </h2>
-<p>To share text and code chunks across R Markdown files, you can use <a href="https://yihui.name/knitr/demo/child/" class="external-link">child documents</a>, a feature of the <a href="https://cran.r-project.org/package=knitr" class="external-link">knitr</a> package.</p>
+<p>To share text and code chunks across R Markdown files, you can use <a href="https://yihui.org/knitr/demo/child/" class="external-link">child documents</a>, a feature of the <a href="https://cran.r-project.org/package=knitr" class="external-link">knitr</a> package.</p>
 <p>Here is a example of a simple R Markdown file that you can use to test this feature. Note that it contains an H2 header, some regular text, and a code chunk.</p>
 <pre><code>## Header in child document
 
@@ -206,7 +206,7 @@ src &lt;- lapply(
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>

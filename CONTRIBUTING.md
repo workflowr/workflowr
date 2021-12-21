@@ -60,23 +60,15 @@ package locally, and build the online documentation with [pkgdown][]
 * Run [scripts/build.sh](scripts/build.sh) to confirm tests pass locally
 * Test on [rhub][]:
     * Have to validate email first with `rhub::validate_email()`. Copy-paste
-    token from email into R console.
-    * Check on Ubuntu with `rhub::check_on_ubuntu()`
-    * Check on macOS with `rhub::check_on_macos()`
-    * Check on Windows with `rhub::check_on_windows()`
+    token from email into R console
+    * Check on Ubuntu with `rhub::check_for_cran(platform = "ubuntu-gcc-devel")`
+    * Check on Solaris with `rhub::check_for_cran(platform = "solaris-x86-patched")`
 * Test on [winbuilder][]:
-    * Check with R release with `devtools::check_win_release()`
     * Check with R devel with `devtools::check_win_devel()`
 * Update [cran-comments.md](cran-comments.md)
 * Commit with `git commit -am "Bump version: x.x.x.9xxx -> x.x.x and re-build
 docs."`
 * Push with `git push origin main` and wait for CI builds to pass
-* Tag with `git tag -a vx.x.x`. Summarize [NEWS.md](NEWS.md) entry into bullet
-points. Run ` git tag -l -n9` for past examples. Push with `git push origin
---tags`.
-* Make a release. On GitHub, go to Releases -> Tags -> Edit release notes. Name
-the release "workflowr x.x.x" and copy-paste the Markdown entry from
-[NEWS.md](NEWS.md).
 * Build tarball with `R CMD build .` and upload to [CRAN submission
 site][cran-submit]. You will receive an email to request confirmation, then an
 email confirming the package was submitted, and then an email with the test
@@ -93,6 +85,12 @@ package:
     foghorn::cran_details("workflowr")
     foghorn::cran_results(pkg = "workflowr")
     ```
+* Tag with `git tag -a vx.x.x`. Summarize [NEWS.md](NEWS.md) entry into bullet
+points. Run ` git tag -l -n9` for past examples. Push with `git push origin
+--tags`.
+* Make a release. On GitHub, go to Releases -> Tags -> Edit release notes. Name
+the release "workflowr x.x.x" and copy-paste the Markdown entry from
+[NEWS.md](NEWS.md).
 
 [appveyor]: https://ci.appveyor.com
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html

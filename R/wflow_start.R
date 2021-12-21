@@ -52,7 +52,7 @@
 #' website theme, navigation bar, and other properties can be
 #' controlled through this file (for more details see the
 #' documentation on
-#' \href{https://rmarkdown.rstudio.com/rmarkdown_websites.html}{R
+#' \href{https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html}{R
 #' Markdown websites}). Do not delete \code{index.Rmd} or
 #' \code{_site.yml}.
 #'

@@ -1,7 +1,7 @@
 #' Custom site generator for workflowr websites
 #'
 #' \code{wflow_site} is a
-#' \href{http://rmarkdown.rstudio.com/rmarkdown_site_generators.html}{custom
+#' \href{https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html}{custom
 #' site generator} to be used in combination with the R Markdown output format
 #' \code{\link{wflow_html}}.
 #'

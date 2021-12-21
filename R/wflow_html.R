@@ -4,7 +4,7 @@
 #' \code{wflow_html} has two distinct functionalities: 1) configure the
 #' formatting of the HTML by extending \code{\link[rmarkdown]{html_document}}
 #' (see the
-#' \href{https://rmarkdown.rstudio.com/html_document_format.html}{RStudio
+#' \href{https://bookdown.org/yihui/rmarkdown/html-document.html}{RStudio
 #' documentation} for the available options), and 2) configure the workflowr
 #' reproducibility features (typically specified in a file named
 #' \code{_workflowr.yml}). \code{wflow_html} is intended to be used to generate
@@ -19,7 +19,7 @@
 #' \code{analysis/_site.yml}. This special file can also be used to configure
 #' other aspects of the website like the navigation bar (for more details see
 #' the documentation on
-#' \href{https://rmarkdown.rstudio.com/rmarkdown_websites.html}{R Markdown
+#' \href{https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html}{R Markdown
 #' websites}). For example, to use the theme "cosmo" and add a table of contents
 #' to every webpage, you would add the following to \code{analysis/_site.yml}:
 #'

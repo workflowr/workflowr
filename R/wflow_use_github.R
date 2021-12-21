@@ -101,7 +101,7 @@
 #' since it involves using your web browser to authenticate with your GitHub
 #' account. If it fails for any reason, it'd probably be easier to manually
 #' login to GitHub and create the repository yourself
-#' (\href{https://help.github.com/articles/creating-a-new-repository/}{instructions from GitHub}).
+#' (\href{https://docs.github.com/articles/creating-a-new-repository}{instructions from GitHub}).
 #' However, if you have time, please file an
 #' \href{https://github.com/workflowr/workflowr/issues/new/choose}{Issue on
 #' GitHub} to report what happened, and importantly include which web browser

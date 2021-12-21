@@ -1,5 +1,10 @@
 # workflowr 1.7.0
 
+This minor release includes some new features, improved documentation, and bug
+fixes.
+
+## Minor improvements
+
 * New argument `combine` for `wflow_build()` and `wflow_publish()`. When Rmd
 files are specified with the argument `files`, they are built in addition to any
 Rmd files that are automatically built when setting arguments like `make = TRUE`
@@ -20,11 +25,6 @@ publish or use one of the convenience arguments like `republish = TRUE` or
 `update = TRUE`. It's previous behavior was to complete without having done
 anything, which was misleading (idea from @stephens999)
 
-* Improved organization of [reproducible research workshop
-vignette][vig-workshop] (thanks to @stephens999)
-
-[vig-workshop]: https://workflowr.github.io/workflowr/articles/wflow-09-workshop.html
-
 * It is now easier to enter commit messages with a separate title and body. If
 you pass a character vector to the argument `message` to any of the functions
 that perform a commit, e.g. `wflow_publish()`, the first element will be used as
@@ -37,8 +37,17 @@ title (suggestion from @LearnUseZone in #222, implementation by @zaynaib in #225
 table of contents will also include unpublished files (implemented by @giocomai
 in #234)
 
-* Removed function `wflow_update()`. Its only purpose was to migrate projects
-created with [workflowrBeta][], which is now over 3 years old
+## Updated documentation
+
+* Improved organization of [reproducible research workshop
+vignette][vig-workshop] (thanks to @stephens999)
+
+[vig-workshop]: https://workflowr.github.io/workflowr/articles/wflow-09-workshop.html
+
+* Added more documentation to `wflow_build()` to explain when it does and
+doesn't load code defined in a `.Rprofile` file (idea from @pcarbo)
+
+## Bug fixes
 
 * Bug fix: Now workflowr will detect any problems with its dependencies when it
 is attached. All dependencies must be installed, loadable, and meet the minimum
@@ -58,9 +67,6 @@ break the cross-references and require an update. See this
 
 [rs-community-rd-warning]: https://community.rstudio.com/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774
 
-* Added more documentation to `wflow_build()` to explain when it does and
-doesn't load code defined in a `.Rprofile` file (idea from @pcarbo)
-
 * Bug fix: `wflow_use_github()` and `wflow_use_gitlab()` now use Font Awesome 5
 syntax to insert icons into the navigation bar when a recent version of
 rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
@@ -68,6 +74,11 @@ rmarkdown is installed (>= 2.6) (bug report from @christianholland, #231)
 * Bug fix: `wflow_open()` no longer sends a warning if you are using
 `bookdown::html_document2` as your primary output format in `_site.yml` with
 `base_format: workflowr::wflow_html` (bug report from @rgayler, #233)
+
+## Miscellaneous
+
+* Removed function `wflow_update()`. Its only purpose was to migrate projects
+created with [workflowrBeta][], which is now over 3 years old
 
 * Bump minimum required version of R from 3.2.5 to 3.3.0. While workflowr itself
 should be able to continue to work fine with R 3.2.5, it was becoming too much

@@ -31,14 +31,14 @@ a first step for customizing your site, add the following information:
 Software Licensing for the Scientist-Programmer][morin2012] by Morin et al.,
 2012 for advice. If you're ambivalent, the MIT license is a standard choice.
 
-[morin2012]: http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598
+[morin2012]: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598
 
 ## Changing the theme
 
 The theme is defined in the file `analysis/_site.yml`. The default is cosmo, but
 the rmarkdown package accepts multiple Bootstrap themes. These are listed in the
 [rmarkdown documentation][rmd-themes]. Go to 
-[bootswatch.com](http://bootswatch.com/) to compare the bootstrap themes. When
+[bootswatch.com](https://bootswatch.com/) to compare the bootstrap themes. When
 typing the theme, make sure it is all lowercase (e.g. spacelab, united, etc.).
 
 When experimenting with different themes, you'll want to build a fast-running
@@ -59,7 +59,7 @@ wflow_publish("analysis/_site.yml", "Change the theme", republish = TRUE)
 This commits `analysis/_site.yml`, re-builds every previously published HTML
 file using the new theme, and commits all the republished HTML pages.
 
-[rmd-themes]: http://rmarkdown.rstudio.com/html_document_format.html#appearance_and_style
+[rmd-themes]: https://bookdown.org/yihui/rmarkdown/html-document.html
 
 ## Style with custom CSS
 
@@ -150,7 +150,7 @@ wflow_publish("analysis/_site.yml", "Add main result page to navbar",
               republish = TRUE)
 ```
 
-[navbar]: http://rmarkdown.rstudio.com/rmarkdown_websites.html#site_navigation
+[navbar]: https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html
 
 ## Setup SSH keys
 
@@ -176,8 +176,8 @@ Alternatively you could update the remote URL using Git directly in the shell.
 See this GitHub documentation on [changing a remote URL][set-url] for
 instructions.
 
-[ssh]: https://help.github.com/articles/generating-an-ssh-key/
-[set-url]: https://help.github.com/articles/changing-a-remote-s-url/
+[ssh]: https://docs.github.com/articles/generating-an-ssh-key
+[set-url]: https://docs.github.com/articles/changing-a-remote-s-url
 
 ## Change the session information function
 

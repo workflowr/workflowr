@@ -114,7 +114,7 @@ please read his [blog post][johnsonlab-blog] and the discussion in Issue
 [#59]: https://github.com/workflowr/workflowr/issues/59
 [beaker]: https://beakerbrowser.com/
 [beaker-install]: https://beakerbrowser.com/install/
-[dat]: https://datproject.org/
+[dat]: https://dat.foundation
 [dat-docs]: https://docs.datproject.org/
 [dat-security]: https://docs.datproject.org/docs/security-faq
 [dathttpd]: https://github.com/beakerbrowser/dathttpd

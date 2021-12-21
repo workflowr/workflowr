@@ -24,7 +24,7 @@ following message:
 >
 > For information on troubleshooting Jekyll see:
 >
->   https://help.github.com/articles/troubleshooting-jekyll-builds
+>   https://docs.github.com/articles/troubleshooting-jekyll-builds
 >
 > If you have any questions you can contact us by replying to this email.
 
@@ -152,7 +152,7 @@ p
 
 To apply this to every figure file in a particular document, you can create a
 "setup" chunk at the beginning of the document that sets the [knitr chunk
-option](https://yihui.name/knitr/options/) globally:
+option](https://yihui.org/knitr/options/) globally:
 
 ````
 ```{r setup, dev='svg'}`r ''`
@@ -231,7 +231,7 @@ Rmd-based website.
 
 However, there is still a good option for embedding the Shiny app directly into
 the web page. You can upload your Shiny app to
-[shinyapps.io](http://www.shinyapps.io/), and then embed it directly into your
+[shinyapps.io](https://www.shinyapps.io/), and then embed it directly into your
 document by calling `knitr::include_app()` inside a code chunk, as shown below:
 
 ````markdown
@@ -491,15 +491,15 @@ the lowercase workflowr should be the preferred option.
 
 [aws]: https://aws.amazon.com/s3/
 [beaker]: https://beakerbrowser.com/
-[Bootstrap]: http://getbootstrap.com/
+[Bootstrap]: https://getbootstrap.com/
 [deploy-aws]: wflow-08-deploy.html#amazon-s3-password-protected
 [deploy-beaker]: wflow-08-deploy.html#beaker-browser-secure-sharing
 [gh-pages]: https://pages.github.com/
 [gh-status]: https://twitter.com/githubstatus
-[gh-troubleshooting]: https://help.github.com/articles/troubleshooting-github-pages-builds/
+[gh-troubleshooting]: https://docs.github.com/articles/troubleshooting-github-pages-builds
 [gl-pages]: https://docs.gitlab.com/ce/user/project/pages/index.html
 [issues]: https://github.com/workflowr/workflowr/issues
-[rmarkdown]: http://rmarkdown.rstudio.com/
+[rmarkdown]: https://rmarkdown.rstudio.com/
 [vig-data]: wflow-10-data.html
 [vig-deploy]: wflow-08-deploy.html
 [vig-getting-started]: wflow-01-getting-started.html

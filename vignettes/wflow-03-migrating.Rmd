@@ -150,7 +150,7 @@ details, see the relevant sections in the CRAN manual [Writing R
 Extensions][data-in-packages] and Hadley's [R Packages][r-pkgs-data].
 
 [data-in-packages]: https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Data-in-packages
-[r-pkgs-data]: http://r-pkgs.had.co.nz/data.html
+[r-pkgs-data]: https://r-pkgs.org/data.html
 
 If your primary purpose for creating a website to accompany your package is to 
 share the package documentation, please check out the package [pkgdown][]. It 

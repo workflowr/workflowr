@@ -40,11 +40,10 @@ create the new repository after you push it in Step 4 below. This
 10.5][gitlab-10.5], released in February 2018.
 
 [push-to-create-a-new-project]: https://docs.gitlab.com/ee/gitlab-basics/create-project.html#push-to-create-a-new-project
-[gitlab-10.5]: https://about.gitlab.com/2018/02/22/gitlab-10-5-released/
+[gitlab-10.5]: https://about.gitlab.com/releases/2018/02/22/gitlab-10-5-released/
 
 Log in to the GitLab instance you want to use and create a repository to host
-your project (follow this [link](https://gitlab.com/projects/new) if you are
-using GitLab.com). We recommend setting the project to be Public so that others
+your project. We recommend setting the project to be Public so that others
 can inspect the code behind your results and extend your work.
 
 ## Step 2: Configure your local workflowr project to use GitLab

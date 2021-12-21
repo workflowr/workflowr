@@ -13,7 +13,7 @@ and Git.
 
   Run \code{browseVignettes("workflowr")} to read the package vignettes
   locally. Alternatively you can read the documentation online at
-  \url{https://workflowr.github.io/workflowr}.
+  \url{https://workflowr.github.io/workflowr/}.
 }
 
 \section{Main workflowr functions}{

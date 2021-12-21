@@ -64,7 +64,7 @@ on your computer. Furthermore, you need an account on [GitHub][gh] or
 [GitLab][gl].
 
 [gh]: https://github.com
-[gl]: https://gitlab.com
+[gl]: https://about.gitlab.com/
 
 ## Overview
 
@@ -178,7 +178,7 @@ use to edit the theme, navigation bar, and other website aesthetics (for more
 details see the documentation on [R Markdown websites][rmd-website]). Do not
 delete `index.Rmd` or `_site.yml`.
 
-[rmd-website]: https://rmarkdown.rstudio.com/rmarkdown_websites.html
+[rmd-website]: https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html
 
 * `docs/`: This directory contains all the HTML files for your
 website. The HTML files are built from the R Markdown files in
@@ -250,7 +250,7 @@ analyses (e.g. accidentally sharing a variable with the same name across files).
 Lastly, it displays the website in the RStudio Viewer or default web browser.
 
 The default action of `wflow_build()` is to behave similar to a
-[Makefile](https://swcarpentry.github.io/make-novice) (`make = TRUE` is the
+[Makefile](https://swcarpentry.github.io/make-novice/) (`make = TRUE` is the
 default when no input files are provided), i.e. it only builds R Markdown files
 that have been modified more recently than their corresponding HTML files. Thus
 if you run it again, no files are built (and no files are displayed).
@@ -420,8 +420,8 @@ repository would be hosted at the URL `myname.github.io/myproject/`^[It may take
 a few minutes for the site to be rendered.]. If you scroll back down to the
 GitHub Pages section of the Settings page, you can click on the URL there.
 
-[new-repo]: https://help.github.com/articles/creating-a-new-repository/
-[publish-docs]: https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
+[new-repo]: https://docs.github.com/articles/creating-a-new-repository
+[publish-docs]: https://docs.github.com/articles/configuring-a-publishing-source-for-github-pages
 
 ## Add a new analysis file
 
@@ -562,6 +562,6 @@ To learn more about workflowr, you can read the following vignettes:
 ## Further reading
 
 * For advice on using R Markdown files to organize your analysis, read the
-chapter [R Markdown workflow](http://r4ds.had.co.nz/r-markdown-workflow.html) in
-the book [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and
+chapter [R Markdown workflow](https://r4ds.had.co.nz/r-markdown-workflow.html) in
+the book [R for Data Science](https://r4ds.had.co.nz/) by Garrett Grolemund and
 Hadley Wickham

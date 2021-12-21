@@ -18,7 +18,7 @@ Workflowr custom format for converting from R Markdown to an HTML document.
 \code{wflow_html} has two distinct functionalities: 1) configure the
 formatting of the HTML by extending \code{\link[rmarkdown]{html_document}}
 (see the
-\href{https://rmarkdown.rstudio.com/html_document_format.html}{RStudio
+\href{https://bookdown.org/yihui/rmarkdown/html-document.html}{RStudio
 documentation} for the available options), and 2) configure the workflowr
 reproducibility features (typically specified in a file named
 \code{_workflowr.yml}). \code{wflow_html} is intended to be used to generate
@@ -34,7 +34,7 @@ be shared across all of your HTML files, set them in the file
 \code{analysis/_site.yml}. This special file can also be used to configure
 other aspects of the website like the navigation bar (for more details see
 the documentation on
-\href{https://rmarkdown.rstudio.com/rmarkdown_websites.html}{R Markdown
+\href{https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html}{R Markdown
 websites}). For example, to use the theme "cosmo" and add a table of contents
 to every webpage, you would add the following to \code{analysis/_site.yml}:
 
@@ -83,7 +83,7 @@ as follows:
   \code{\link[rmarkdown]{render}}. By default, \code{\link{wflow_start}} sets
   \code{knit_root_dir} in the file \code{_workflowr.yml} to be the path
   \code{"."}. This path is a
-  \href{https://swcarpentry.github.io/shell-novice/reference/#relative-path}{relative
+  \href{https://swcarpentry.github.io/shell-novice/reference.html#relative-path}{relative
   path} from the location of \code{_workflowr.yml} to the directory for the
   code to be executed. The path \code{"."} is shorthand for "current working
   directory", and thus code is executed in the root of the workflowr project.

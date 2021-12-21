@@ -66,7 +66,7 @@
 #'   \code{\link[rmarkdown]{render}}. By default, \code{\link{wflow_start}} sets
 #'   \code{knit_root_dir} in the file \code{_workflowr.yml} to be the path
 #'   \code{"."}. This path is a
-#'   \href{https://swcarpentry.github.io/shell-novice/reference/#relative-path}{relative
+#'   \href{https://swcarpentry.github.io/shell-novice/reference.html#relative-path}{relative
 #'   path} from the location of \code{_workflowr.yml} to the directory for the
 #'   code to be executed. The path \code{"."} is shorthand for "current working
 #'   directory", and thus code is executed in the root of the workflowr project.

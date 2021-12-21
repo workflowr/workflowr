@@ -3,10 +3,10 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/workflowr)](https://cran.r-project.org/package=workflowr)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
 [![DOI](https://zenodo.org/badge/75893305.svg)](https://zenodo.org/badge/latestdoi/75893305)
-[![codecov](https://codecov.io/gh/workflowr/workflowr/branch/main/graph/badge.svg)](https://codecov.io/gh/workflowr/workflowr)
-[![Travis-CI Build Status](https://travis-ci.com/workflowr/workflowr.svg?branch=main)](https://travis-ci.com/github/workflowr/workflowr)
+[![codecov](https://app.codecov.io/gh/workflowr/workflowr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/workflowr/workflowr)
+[![Travis-CI Build Status](https://travis-ci.com/workflowr/workflowr.svg?branch=main)](https://app.travis-ci.com:443/github/workflowr/workflowr)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/haphtdrihgdj4i7n/branch/main?svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr-org)
-[![CircleCI](https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg)](https://circleci.com/gh/workflowr/workflowr/tree/main)
+[![CircleCI](https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main.svg?style=svg)](https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main)
 
 <img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">
 
@@ -154,26 +154,26 @@ abide by its terms.
 [cran]: https://cran.r-project.org/package=workflowr
 [divvy]: https://stephenslab.github.io/wflow-divvy/
 [gh]: https://github.com
-[gl]: https://gitlab.com
+[gl]: https://about.gitlab.com/
 [git]: https://git-scm.com/
 [git2r]: https://cran.r-project.org/package=git2r
 [GitHub Pages]: https://pages.github.com/
-[GitLab Pages]: https://about.gitlab.com/product/pages/
+[GitLab Pages]: https://about.gitlab.com/stages-devops-lifecycle/pages/
 [issues]: https://github.com/workflowr/workflowr/issues
 [knitr]: https://github.com/yihui/knitr
 [lsun]: https://github.com/LSun
 [MIT]: https://opensource.org/licenses/mit-license.php
 [moore]: https://www.moore.org/
 [nkweiwang]: https://github.com/NKweiwang
-[pandoc]: http://pandoc.org
-[pandoc-install]: https://rmarkdown.rstudio.com/docs/articles/pandoc.html
+[pandoc]: https://pandoc.org/
+[pandoc-install]: https://pandoc.org/installing.html
 [pcarbo]: https://pcarbo.github.io/
 [r]: https://cran.r-project.org
-[rmarkdown]: http://rmarkdown.rstudio.com/
+[rmarkdown]: https://rmarkdown.rstudio.com/
 [r-project-workflows]: https://github.com/jdblischak/r-project-workflows#readme
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
 [stephens]: http://stephenslab.uchicago.edu/
-[uchicago]: http://www.uchicago.edu/
+[uchicago]: https://www.uchicago.edu/
 [video]: https://www.youtube.com/watch?v=O1wv94sZfvE
 [vig-custom]: https://workflowr.github.io/workflowr/articles/wflow-02-customization.html
 [vig-details]: https://workflowr.github.io/workflowr/articles/wflow-04-how-it-works.html

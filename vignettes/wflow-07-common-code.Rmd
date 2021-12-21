@@ -25,7 +25,7 @@ share common code:
 1. To share R code like function definitions, you can put this code in an R
 script and import it in each file with the function `source()`
 
-1. To share common R Markdown text and code chunks, you can use [child documents](https://yihui.name/knitr/demo/child/)
+1. To share common R Markdown text and code chunks, you can use [child documents](https://yihui.org/knitr/demo/child/)
 
 1. To share common templates, you can use the function `knitr::knit_expand()`
 
@@ -95,7 +95,7 @@ source(here::here("code/functions.R"))
 ## Share child documents with chunk option
 
 To share text and code chunks across R Markdown files, you can use [child
-documents](https://yihui.name/knitr/demo/child/), a feature of the [knitr][]
+documents](https://yihui.org/knitr/demo/child/), a feature of the [knitr][]
 package.
 
 [knitr]: https://cran.r-project.org/package=knitr

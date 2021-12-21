@@ -50,11 +50,11 @@ that enables `wflow_html()` to work with R Markdown websites. These options are
 controlled in `analysis/_site.yml`.
 
 [R]: https://cran.r-project.org/
-[knitr]: http://yihui.name/knitr/
-[Markdown]: http://daringfireball.net/projects/markdown/
-[rmarkdown]: http://rmarkdown.rstudio.com/
-[pandoc]: http://pandoc.org/
-[Bootstrap]: http://getbootstrap.com/
+[knitr]: https://yihui.org/knitr/
+[Markdown]: https://daringfireball.net/projects/markdown/
+[rmarkdown]: https://rmarkdown.rstudio.com/
+[pandoc]: https://pandoc.org/
+[Bootstrap]: https://getbootstrap.com/
 [Git]: http://git-scm.com/
 [SHA-1]: https://en.wikipedia.org/wiki/SHA-1
 [GitHub]: https://github.com/
@@ -110,7 +110,7 @@ Specifically, [rprojroot][] searches for the RStudio project `.Rproj` file at th
 [rstudioapi]: https://github.com/rstudio/rstudioapi
 [rprojroot]: https://cran.r-project.org/package=rprojroot
 [git2r]: https://cran.r-project.org/package=git2r
-[libgit2]: https://libgit2.github.com/
+[libgit2]: https://libgit2.org/
 [rstudio-features]: https://www.rstudio.com/products/rstudio/features/
 
 ## Background and related work
@@ -145,10 +145,10 @@ out!
 
 ## Further reading
 
-* How the code, results, and figures are executed and displayed can be customized using [knitr chunk and package options](http://yihui.name/knitr/options/)
+* How the code, results, and figures are executed and displayed can be customized using [knitr chunk and package options](https://yihui.org/knitr/options/)
 
-* How [R Markdown websites](http://rmarkdown.rstudio.com/rmarkdown_websites.html) are configured
+* How [R Markdown websites](https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html) are configured
 
 * The many [features][rstudio-features] of the [RStudio][] IDE
 
-* [Directions](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) to publish a [GitHub Pages][] site using the `docs/` subdirectory
+* [Directions](https://docs.github.com/articles/configuring-a-publishing-source-for-github-pages) to publish a [GitHub Pages][] site using the `docs/` subdirectory

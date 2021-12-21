@@ -153,7 +153,7 @@ absolute URL to the image hosted on another website
 (idea from @JiaxiangBU, #159)
 
 * Document how to embed Shiny apps with `knitr::include_app()` and
-[shinyapps.io](http://www.shinyapps.io/)
+[shinyapps.io](https://www.shinyapps.io/)
 (idea from @rsimon64, #130)
 
 * Update the FAQ on including external images to account for the breaking change
@@ -699,7 +699,7 @@ remove the file `analysis/.nojekyll` (related to point above). Unlike
 the output directory, so these fields have no effect. See the R Markdown
 documentation on [Included files][included-files] for more information
 
-[included-files]: https://rmarkdown.rstudio.com/rmarkdown_websites.html#included-files
+[included-files]: https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html
 
 *  Add GitHub Issue Templates (created by @pcarbo)
 
@@ -1047,10 +1047,10 @@ Users should run `wflow_build()` instead. `wflow_update()` removes the build spe
 * Code coverage with [covr][] and [Codecov][]
 * Package documentation with [pkgdown][]
 
-[pkgdown]: http://pkgdown.r-lib.org/
-[travis]: https://travis-ci.com/
-[covr]: https://github.com/jimhester/covr
-[Codecov]: https://codecov.io/
+[pkgdown]: https://pkgdown.r-lib.org/
+[travis]: https://www.travis-ci.com/
+[covr]: https://github.com/r-lib/covr
+[Codecov]: https://about.codecov.io/
 
 # workflowr 0.3.0
 

@@ -283,7 +283,7 @@ obtain_files_in_commit <- function(repo, commit) {
 #
 # The files included in the root commit cannot be determined comparing two
 # trees (which is how \code{\link{obtain_files_in_commit}} works). See
-# \href{http://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}{this
+# \href{https://stackoverflow.com/questions/41433034/how-to-obtain-files-included-in-initial-commit-using-git2r-libgit2}{this
 # Stack Overflow question} for details.
 #
 # This only works for the root commit, i.e. it must have no parents.

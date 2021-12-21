@@ -128,5 +128,5 @@ versions of the HTML files. This is because workflowr uses the free service
 `raw.githubusercontent.com`, `gist.githubusercontent.com`, `bitbucket.org`, and
 `gitlab.com`.
 
-[raw.githack.com]: http://raw.githack.com/
+[raw.githack.com]: https://raw.githack.com/
 [workflowr-issues]: https://github.com/workflowr/workflowr/issues

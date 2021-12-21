@@ -453,7 +453,7 @@ to manually include the URL to the project in `_workflowr.yml` (for historical
 reasons, this variable is named `github`)
 
     ```
-    github: http://custom-site.com/<username>/<reponame>
+    github: https://custom-site.com/<username>/<reponame>
     ```
 
 **Username/Password**
@@ -462,12 +462,12 @@ reasons, this variable is named `github`)
     a. `git2r::remote_add()` in R:
 
         ```
-        git2r::remote_add(name = "origin", url = "http://custom-site/<username>/<reponame>.git")
+        git2r::remote_add(name = "origin", url = "https://custom-site/<username>/<reponame>.git")
         ```
     a. `git remote add origin` in the terminal:
 
         ```
-        git remote add origin http://custom-site/<username>/<reponame>.git
+        git remote add origin https://custom-site/<username>/<reponame>.git
         ```
 1. You cannot use `wflow_git_push()` and `wflow_git_pull()`. Instead run
 `git push` and `git pull` in the terminal

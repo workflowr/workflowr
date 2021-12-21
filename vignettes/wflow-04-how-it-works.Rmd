@@ -55,7 +55,7 @@ controlled in `analysis/_site.yml`.
 [rmarkdown]: https://rmarkdown.rstudio.com/
 [pandoc]: https://pandoc.org/
 [Bootstrap]: https://getbootstrap.com/
-[Git]: http://git-scm.com/
+[Git]: https://git-scm.com/
 [SHA-1]: https://en.wikipedia.org/wiki/SHA-1
 [GitHub]: https://github.com/
 [GitHub Pages]: https://pages.github.com/

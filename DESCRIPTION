@@ -20,7 +20,7 @@ Authors@R: c(
            comment = "Function wflow_toc() to create table of contents"),
     person("Michael J.", "Kane", role = c("ctb"),
            email = "michael.kane@yale.edu",
-           comment = c(ORCID = "http://orcid.org/0000-0003-1899-6662",
+           comment = c(ORCID = "0000-0003-1899-6662",
                        "Option suppress_report")),
     person("Anh", "Tran", role = c("ctb"),
            comment = "Updated RStudio Project Template"),
@@ -68,5 +68,5 @@ Suggests:
     testthat (>= 2.0.0),
     withr (>= 2.0.0)
 VignetteBuilder: knitr
-SystemRequirements: pandoc (>= 1.14) - http://pandoc.org
+SystemRequirements: pandoc (>= 1.14) - https://pandoc.org
 Language: en-US

@@ -172,7 +172,7 @@ abide by its terms.
 [rmarkdown]: https://rmarkdown.rstudio.com/
 [r-project-workflows]: https://github.com/jdblischak/r-project-workflows#readme
 [rstudio]: https://www.rstudio.com/products/rstudio/download/
-[stephens]: http://stephenslab.uchicago.edu/
+[stephens]: https://stephenslab.uchicago.edu/
 [uchicago]: https://www.uchicago.edu/
 [video]: https://www.youtube.com/watch?v=O1wv94sZfvE
 [vig-custom]: https://workflowr.github.io/workflowr/articles/wflow-02-customization.html

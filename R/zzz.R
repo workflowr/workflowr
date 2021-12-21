@@ -1,5 +1,5 @@
 # Resources:
-# .onAttach & zzz.R explained: http://r-pkgs.had.co.nz/r.html#r-differences
+# .onAttach & zzz.R explained: https://r-pkgs.org/r.html#when-you-do-need-side-effects
 
 .onAttach <- function(libname, pkgname) {
   m <- c(sprintf("This is workflowr version %s",

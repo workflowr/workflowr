@@ -130,7 +130,7 @@ create_report <- function(input, output_dir, has_code, opts) {
       </span>
       </p>
       <p>
-      This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+      This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
       analysis was created with <a
       href="https://github.com/workflowr/workflowr">workflowr</a> (version
       {packageVersion("workflowr")}). The <em>Checks</em> tab describes the

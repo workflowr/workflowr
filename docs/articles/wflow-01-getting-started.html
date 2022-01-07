@@ -82,7 +82,7 @@
             <h3 data-toc-skip class="subtitle">workflowr version 1.7.0</h3>
                         <h4 data-toc-skip class="author">John Blischak</h4>
             
-            <h4 data-toc-skip class="date">2021-12-21</h4>
+            <h4 data-toc-skip class="date">2022-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/vignettes/wflow-01-getting-started.Rmd" class="external-link"><code>vignettes/wflow-01-getting-started.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-01-getting-started.Rmd</code></div>
@@ -119,11 +119,11 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_start.html">wflow_start</a></span><span class="op">(</span><span class="st">"myproject"</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## wflow_start:</span>
-<span class="co">## - New directory created at C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span>
+<span class="co">## - New directory created at C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span>
 <span class="co">## - Project name is "myproject"</span>
-<span class="co">## - Working directory changed to C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span>
-<span class="co">## - Git repo initiated at C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span>
-<span class="co">## - Files were committed in version 0b50afb</span></code></pre>
+<span class="co">## - Working directory changed to C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span>
+<span class="co">## - Git repo initiated at C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span>
+<span class="co">## - Files were committed in version d70aa53</span></code></pre>
 <p><code><a href="../reference/wflow_start.html">wflow_start()</a></code> created the following directory structure in <code>myproject/</code>:</p>
 <pre><code>myproject/
 ├── .gitignore
@@ -170,7 +170,7 @@
 <p>To build the website, run the function <code><a href="../reference/wflow_build.html">wflow_build()</a></code> in the R console:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_build.html">wflow_build</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span>
+<pre><code><span class="co">## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span>
 <span class="co">## Building 3 file(s):</span>
 <span class="co">## Building analysis/about.Rmd</span>
 <span class="co">## Building analysis/index.Rmd</span>
@@ -187,7 +187,7 @@
 <span class="co">## docs/license.html</span>
 <span class="co">## </span>
 <span class="co">## Log files saved in</span>
-<span class="co">## C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/workflowr</span></code></pre>
+<span class="co">## C:/Users/john/AppData/Local/Temp/RtmpWKadBh/workflowr</span></code></pre>
 <p>This command builds all the R Markdown files in <code>analysis/</code> and saves the corresponding HTML files in <code>docs/</code>. It sets the same seed before running every file so that any function that generates random data (e.g. permutations) is reproducible. Furthermore, each file is built in its own external R session to avoid any potential conflicts between analyses (e.g. accidentally sharing a variable with the same name across files). Lastly, it displays the website in the RStudio Viewer or default web browser.</p>
 <p>The default action of <code><a href="../reference/wflow_build.html">wflow_build()</a></code> is to behave similar to a <a href="https://swcarpentry.github.io/make-novice/" class="external-link">Makefile</a> (<code>make = TRUE</code> is the default when no input files are provided), i.e. it only builds R Markdown files that have been modified more recently than their corresponding HTML files. Thus if you run it again, no files are built (and no files are displayed).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -236,7 +236,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_publish.html">wflow_publish</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/about.Rmd"</span>, <span class="st">"analysis/license.Rmd"</span><span class="op">)</span>,
               <span class="st">"Publish the initial files for myproject"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span>
+<pre><code><span class="co">## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span>
 <span class="co">## Building 3 file(s):</span>
 <span class="co">## Building analysis/index.Rmd</span>
 <span class="co">## Building analysis/about.Rmd</span>
@@ -252,7 +252,7 @@
 <span class="co">##   $ git add analysis/index.Rmd analysis/about.Rmd analysis/license.Rmd </span>
 <span class="co">##   $ git commit -m "Publish the initial files for myproject" </span>
 <span class="co">## </span>
-<span class="co">## The following file(s) were included in commit 4c05417:</span>
+<span class="co">## The following file(s) were included in commit ac1c768:</span>
 <span class="co">## analysis/about.Rmd</span>
 <span class="co">## analysis/index.Rmd</span>
 <span class="co">## analysis/license.Rmd</span>
@@ -271,7 +271,7 @@
 <span class="co">## docs/license.html</span>
 <span class="co">## </span>
 <span class="co">## Log files saved in</span>
-<span class="co">## C:\Users\john\AppData\Local\Temp\RtmpuSr6Z8/workflowr</span>
+<span class="co">## C:\Users\john\AppData\Local\Temp\RtmpWKadBh/workflowr</span>
 <span class="co">## </span>
 <span class="co">## **Step 3: Commit HTML files**</span>
 <span class="co">## </span>
@@ -282,7 +282,7 @@
 <span class="co">##   $ git add docs/index.html docs/about.html docs/license.html docs/figure/index.Rmd docs/figure/about.Rmd docs/figure/license.Rmd docs/site_libs docs/.nojekyll </span>
 <span class="co">##   $ git commit -m "Build site." </span>
 <span class="co">## </span>
-<span class="co">## The following file(s) were included in commit 7e1ade0:</span>
+<span class="co">## The following file(s) were included in commit ea69532:</span>
 <span class="co">## docs/about.html</span>
 <span class="co">## docs/index.html</span>
 <span class="co">## docs/license.html</span>
@@ -356,8 +356,8 @@ Create a new repository on GitHub.
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_open.html">wflow_open</a></span><span class="op">(</span><span class="st">"analysis/first-analysis.Rmd"</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## wflow_open:</span>
 <span class="co">## - New file(s):</span>
-<span class="co">##   C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject/analysis/first-analysis.Rmd</span>
-<span class="co">## - Same working directory: C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span></code></pre>
+<span class="co">##   C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject/analysis/first-analysis.Rmd</span>
+<span class="co">## - Same working directory: C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span></code></pre>
 <p>Now you are ready to start writing! Go ahead and add some example code. If you are using RStudio, press the Knit button to build the file and see a preview in the Viewer pane. Alternatively from the R console, you can run <code><a href="../reference/wflow_build.html">wflow_build()</a></code> again (this function can be run from the base directory of your project or any subdirectory).</p>
 <p>Check out your new file <code>first-analysis.html</code>. Near the top you will see the workflowr reproducibility report. If you click on the button, the full menu will drop down. Click around to learn more about the reproducibility safety checks, why their important, and whether or not the file passed or failed each one. You’ll notice that the first check failed because the R Markdown file had uncommitted changes. This is OK now since the file is a draft. Once you are ready to publish it to share with others, you can use <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code> to ensure that any changes to the R Markdown file are committed to the Git repository prior to generating the results.</p>
 <p>In order to make it easier to navigate to your new file, you can include a link to it on the main index page. First open <code>analysis/index.Rmd</code> (optionally using <code><a href="../reference/wflow_open.html">wflow_open()</a></code>). Second paste the following line into <code>index.Rmd</code>:</p>
@@ -392,7 +392,7 @@ Create a new repository on GitHub.
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/wflow_publish.html">wflow_publish</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"analysis/index.Rmd"</span>, <span class="st">"analysis/first-analysis.Rmd"</span><span class="op">)</span>,
               <span class="st">"Add my first analysis"</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpuSr6Z8/wflow-01-getting-started-2c202b7d3e67/myproject</span>
+<pre><code><span class="co">## Current working directory: C:/Users/john/AppData/Local/Temp/RtmpWKadBh/wflow-01-getting-started-2206f9e739/myproject</span>
 <span class="co">## Building 2 file(s):</span>
 <span class="co">## Building analysis/index.Rmd</span>
 <span class="co">## Building analysis/first-analysis.Rmd</span>
@@ -407,7 +407,7 @@ Create a new repository on GitHub.
 <span class="co">##   $ git add analysis/index.Rmd analysis/first-analysis.Rmd </span>
 <span class="co">##   $ git commit -m "Add my first analysis" </span>
 <span class="co">## </span>
-<span class="co">## The following file(s) were included in commit 8d2ac31:</span>
+<span class="co">## The following file(s) were included in commit 67ffb1b:</span>
 <span class="co">## analysis/first-analysis.Rmd</span>
 <span class="co">## analysis/index.Rmd</span>
 <span class="co">## </span>
@@ -424,7 +424,7 @@ Create a new repository on GitHub.
 <span class="co">## docs/first-analysis.html</span>
 <span class="co">## </span>
 <span class="co">## Log files saved in</span>
-<span class="co">## C:\Users\john\AppData\Local\Temp\RtmpuSr6Z8/workflowr</span>
+<span class="co">## C:\Users\john\AppData\Local\Temp\RtmpWKadBh/workflowr</span>
 <span class="co">## </span>
 <span class="co">## **Step 3: Commit HTML files**</span>
 <span class="co">## </span>
@@ -435,7 +435,7 @@ Create a new repository on GitHub.
 <span class="co">##   $ git add docs/index.html docs/first-analysis.html docs/figure/index.Rmd docs/figure/first-analysis.Rmd docs/site_libs docs/.nojekyll </span>
 <span class="co">##   $ git commit -m "Build site." </span>
 <span class="co">## </span>
-<span class="co">## The following file(s) were included in commit 1018d3d:</span>
+<span class="co">## The following file(s) were included in commit 60194b0:</span>
 <span class="co">## docs/first-analysis.html</span>
 <span class="co">## docs/index.html</span>
 <span class="co">## docs/site_libs/font-awesome-5.1.0/</span>

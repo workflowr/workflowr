@@ -82,7 +82,7 @@
             <h3 data-toc-skip class="subtitle">workflowr version 1.7.0</h3>
                         <h4 data-toc-skip class="author">John Blischak</h4>
             
-            <h4 data-toc-skip class="date">2021-12-21</h4>
+            <h4 data-toc-skip class="date">2022-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/workflowr/workflowr/blob/HEAD/vignettes/wflow-05-faq.Rmd" class="external-link"><code>vignettes/wflow-05-faq.Rmd</code></a></small>
       <div class="hidden name"><code>wflow-05-faq.Rmd</code></div>
@@ -248,24 +248,60 @@ In get(method, envir = home) : internal error -3 in R_decompress1</code></pre>
 <div class="section level2">
 <h2 id="can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files">Can I create a single HTML or PDF file of one of my workflowr R Markdown files?<a class="anchor" aria-label="anchor" href="#can-i-create-a-single-html-or-pdf-file-of-one-of-my-workflowr-r-markdown-files"></a>
 </h2>
-<p>Yes! If you’d like to create a single HTML or PDF file to distribute an isolated analysis from your project, you can directly run the <a href="https://rmarkdown.rstudio.com/" class="external-link">rmarkdown</a> function <code>render</code>.</p>
+<p>Yes! You can create a single HTML or PDF file to distribute an isolated analysis from your project by directly running the <a href="https://rmarkdown.rstudio.com/" class="external-link">rmarkdown</a> function <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render()</a></code>. The main limitation is that any links to other pages will no longer be functional.</p>
+<div class="section level3">
+<h3 id="working-directory">Working directory<a class="anchor" aria-label="anchor" href="#working-directory"></a>
+</h3>
+<p>You will need to be careful with the working directory in which the code is executed. By default, code in R Markdown documents are executed in the same directory as the file. This is cumbersome, so the default behavior of workflowr is to set the working directory to the root project directory for convenience. To get around this, you can pass <code>knit_root_dir = ".."</code> or <code>knit_root_dir = normalizePath(".")</code> to <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render()</a></code>, which both have the effect of running the code in the project root. If you have configured your workflowr project to execute the files in <code>analysis/</code>, then you don’t have to worry about this.</p>
+</div>
+<div class="section level3">
+<h3 id="pdf">PDF<a class="anchor" aria-label="anchor" href="#pdf"></a>
+</h3>
+<p>To convert a single analysis to PDF, use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/pdf_document.html" class="external-link">pdf_document()</a></code>. Note that this requires a functional LaTeX setup.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/rmarkdown" class="external-link">"rmarkdown"</a></span><span class="op">)</span>
-<span class="co"># Create analysis/file.html</span>
-<span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"analysis/file.Rmd"</span>, <span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co"># Create analysis/file.pdf</span>
-<span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"analysis/file.Rmd"</span>, <span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/pdf_document.html" class="external-link">pdf_document</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>There are two main caveats to this:</p>
-<ol style="list-style-type: decimal">
-<li>Internal links to other HTML pages in your workflowr site will be broken since they are not being distributed with the single file.</li>
-<li>An R Markdown file that can be converted to HTML is not guaranteed to be converted to PDF. You’ll need to ensure that you have LaTeX installed on your computer and avoid complicated characters and/or syntax.</li>
-</ol>
-<p>If you’d like to use the RStudio button “Knit to PDF”, then you need to make sure that the YAML header still contains the workflowr output format. For example, the YAML header below contains a valid output section:</p>
+<span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"analysis/file.Rmd"</span>, <span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/pdf_document.html" class="external-link">pdf_document</a></span><span class="op">(</span><span class="op">)</span>, knit_root_dir <span class="op">=</span> <span class="st">".."</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="html">HTML<a class="anchor" aria-label="anchor" href="#html"></a>
+</h3>
+<p>Rendering a single HTML page is slightly more complex because <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document()</a></code> always includes the navigation bar. If you don’t mind the non-functional navbar at the top of the document, you can simply use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document()</a></code>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/rmarkdown" class="external-link">"rmarkdown"</a></span><span class="op">)</span>
+<span class="co"># Create analysis/file.html, includes navigation bar</span>
+<span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"analysis/file.Rmd"</span>, <span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document</a></span><span class="op">(</span><span class="op">)</span>, knit_root_dir <span class="op">=</span> <span class="st">".."</span><span class="op">)</span></code></pre></div>
+<p>To create a very simple HTML file, you can instead use <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document_base.html" class="external-link">html_document_base()</a></code>. This eliminates the navbar, but it may also remove some of the advanced stylistic features of <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document()</a></code> that you rely on.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/rmarkdown" class="external-link">"rmarkdown"</a></span><span class="op">)</span>
+<span class="co"># Create analysis/file.html, no navigation bar nor advanced features</span>
+<span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"analysis/file.Rmd"</span>, <span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document_base.html" class="external-link">html_document_base</a></span><span class="op">(</span><span class="op">)</span>, knit_root_dir <span class="op">=</span> <span class="st">".."</span><span class="op">)</span></code></pre></div>
+<p>Lastly, if you are determined to have a full-featured standalone HTML file without the navigation bar, you can temporarily rename the <code>_site.yml</code> file, which prevents <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document()</a></code> from including the navbar.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/rmarkdown" class="external-link">"rmarkdown"</a></span><span class="op">)</span>
+
+<span class="co"># Temporarily rename _site.yml</span>
+<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.rename</a></span><span class="op">(</span><span class="st">"analysis/_site.yml"</span>, <span class="st">"analysis/_site.yml_tmp"</span><span class="op">)</span>
+
+<span class="co"># Create analysis/file.html, no navigation bar</span>
+<span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"analysis/file.Rmd"</span>, <span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html" class="external-link">html_document</a></span><span class="op">(</span><span class="op">)</span>, knit_root_dir <span class="op">=</span> <span class="st">".."</span><span class="op">)</span>
+
+<span class="co"># Restore _site.yml</span>
+<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.rename</a></span><span class="op">(</span><span class="st">"analysis/_site.yml_tmp"</span>, <span class="st">"analysis/_site.yml"</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="rstudio-knit-button">RStudio Knit button<a class="anchor" aria-label="anchor" href="#rstudio-knit-button"></a>
+</h3>
+<p>Ideally you should also be able to use the RStudio Knit button to conveniently create the standalone HTML or PDF files. For example, you could update the YAML header to have multiple output formats, and then choose the output format that RStudio should create. The workflowr functions like <code><a href="../reference/wflow_build.html">wflow_build()</a></code> will ignore these other output formats because they use the output format defined in <code>analysis/_site.yml</code>.</p>
 <pre><code>---
 output:
   pdf_document: default
+  html_document_base: default
   workflowr::wflow_html: default
 ---</code></pre>
+<p>However, just like when calling <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render()</a></code> directly, you’ll need to be careful about the working directory. To execute the code in the project directory, you can manually set the Knit Directory to “Project Directory” (the default is “Document Directory” to match the default behavior of R Markdown files).</p>
+<p>Lastly, the RStudio Knit button is somewhat finicky when custom output formats are included (e.g. workflowr, bookdown). If you are having trouble getting it to display the output format you want as an option, try knitting it to the current format. That should update the menu to include all the options you’ve written in the YAML header. See <a href="https://github.com/workflowr/workflowr/issues/261" class="external-link">Issue #261</a> for more details.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="can-i-use-r-notebooks-with-workflowr">Can I use R notebooks with workflowr?<a class="anchor" aria-label="anchor" href="#can-i-use-r-notebooks-with-workflowr"></a>
@@ -275,9 +311,9 @@ output:
 <pre><code><span class="va">editor_options</span><span class="op">:</span>
   <span class="va">chunk_output_type</span><span class="op">:</span> <span class="va">console</span></code></pre>
 <p>Second, note that the working directory of the inline code chunks can be different than the working directory of the R console. This is very counterintuitive, but the working directory of the inline code chunks is set by the “Knit Directory” setting in RStudio. The setting of “Knit Directory” may be different in your collaborator’s version of RStudio, or even your own RStudio installed on a different computer. Thus it’s not a good idea to rely on this value. Instead, you can explicitly specify the working directory to be used for the inline code chunks by setting the knitr option <code>root.dir</code> in a chunk called <code>setup</code>, which RStudio treats specially. Adding the code chunk below to your R Markdown file will cause all the inline code chunks to be executed from the root of the project directory. This is consistent with the default workflowr setting.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_knit$set(root.dir = "..")</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="in">knitr::opts_knit$set(root.dir = "..")</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
 <p>If you change the value of <code>knit_root_dir</code> in <code>_workflowr.yml</code>, then you would need to change the value of <code>root.dir</code> in the setup chunk accordingly. Warning that this is fragile, i.e. trying to change <code>root.dir</code> to any arbitrary directory may result in an error. If you’re going to use inline code chunks, it’s best two follow one of the following options:</p>
 <ol style="list-style-type: decimal">
 <li><p>Execute code in the root of the project directory (the default workflowr setting). Don’t change <code>knit_root_dir</code> in <code>_workflowr.yml</code>. Add the setup chunk defined above to your R Markdown files. Note that this setup chunk will affect RStudio but not the workflowr functions <code><a href="../reference/wflow_build.html">wflow_build()</a></code> or <code><a href="../reference/wflow_publish.html">wflow_publish()</a></code>.</p></li>

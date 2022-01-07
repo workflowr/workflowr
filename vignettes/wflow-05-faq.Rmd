@@ -331,37 +331,101 @@ workflowr with `library(workflowr)` every time you start a new R session
 
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 
-Yes! If you'd like to create a single HTML or PDF file to distribute an isolated
-analysis from your project, you can directly run the [rmarkdown][] function
-`render`.
+Yes! You can create a single HTML or PDF file to distribute an isolated analysis
+from your project by directly running the [rmarkdown][] function `render()`. The
+main limitation is that any links to other pages will no longer be functional.
 
-```{r render-single-page, eval=FALSE}
+### Working directory
+
+You will need to be careful with the working directory in which the code is
+executed. By default, code in R Markdown documents are executed in the same
+directory as the file. This is cumbersome, so the default behavior of workflowr
+is to set the working directory to the root project directory for convenience.
+To get around this, you can pass `knit_root_dir = ".."` or `knit_root_dir =
+normalizePath(".")` to `render()`, which both have the effect of running the
+code in the project root. If you have configured your workflowr project to
+execute the files in `analysis/`, then you don't have to worry about this.
+
+### PDF
+
+To convert a single analysis to PDF, use `pdf_document()`. Note that this
+requires a functional LaTeX setup.
+
+```{r render-single-page-pdf, eval=FALSE}
 library("rmarkdown")
-# Create analysis/file.html
-render("analysis/file.Rmd", html_document())
 # Create analysis/file.pdf
-render("analysis/file.Rmd", pdf_document())
+render("analysis/file.Rmd", pdf_document(), knit_root_dir = "..")
 ```
 
-There are two main caveats to this:
+### HTML
 
-1. Internal links to other HTML pages in your workflowr site will be broken
-since they are not being distributed with the single file.
-1. An R Markdown file that can be converted to HTML is not guaranteed to be
-converted to PDF. You'll need to ensure that you have LaTeX installed on your
-computer and avoid complicated characters and/or syntax.
+Rendering a single HTML page is slightly more complex because `html_document()`
+always includes the navigation bar. If you don't mind the non-functional navbar
+at the top of the document, you can simply use `html_document()`.
 
-If you'd like to use the RStudio button "Knit to PDF", then you need to make
-sure that the YAML header still contains the workflowr output format. For
-example, the YAML header below contains a valid output section:
+```{r render-single-page-html-1, eval=FALSE}
+library("rmarkdown")
+# Create analysis/file.html, includes navigation bar
+render("analysis/file.Rmd", html_document(), knit_root_dir = "..")
+```
+
+To create a very simple HTML file, you can instead use `html_document_base()`.
+This eliminates the navbar, but it may also remove some of the advanced
+stylistic features of `html_document()` that you rely on.
+
+```{r render-single-page-html-2, eval=FALSE}
+library("rmarkdown")
+# Create analysis/file.html, no navigation bar nor advanced features
+render("analysis/file.Rmd", html_document_base(), knit_root_dir = "..")
+```
+
+Lastly, if you are determined to have a full-featured standalone HTML file
+without the navigation bar, you can temporarily rename the `_site.yml` file,
+which prevents `html_document()` from including the navbar.
+
+```{r render-single-page-html-3, eval=FALSE}
+library("rmarkdown")
+
+# Temporarily rename _site.yml
+file.rename("analysis/_site.yml", "analysis/_site.yml_tmp")
+
+# Create analysis/file.html, no navigation bar
+render("analysis/file.Rmd", html_document(), knit_root_dir = "..")
+
+# Restore _site.yml
+file.rename("analysis/_site.yml_tmp", "analysis/_site.yml")
+```
+
+### RStudio Knit button
+
+Ideally you should also be able to use the RStudio Knit button to conveniently
+create the standalone HTML or PDF files. For example, you could update the
+YAML header to have multiple output formats, and then choose the output format
+that RStudio should create. The workflowr functions like `wflow_build()` will
+ignore these other output formats because they use the output format defined in
+`analysis/_site.yml`.
 
 ```
 ---
 output:
   pdf_document: default
+  html_document_base: default
   workflowr::wflow_html: default
 ---
 ```
+
+However, just like when calling `render()` directly, you'll need to be careful
+about the working directory. To execute the code in the project directory, you
+can manually set the Knit Directory to "Project Directory" (the default is
+"Document Directory" to match the default behavior of R Markdown files).
+
+Lastly, the RStudio Knit button is somewhat finicky when custom output formats
+are included (e.g. workflowr, bookdown). If you are having trouble getting it
+to display the output format you want as an option, try knitting it to the current
+format. That should update the menu to include all the options you've written in
+the YAML header. See [Issue #261][issue-261] for more details.
+
+[issue-261]: https://github.com/workflowr/workflowr/issues/261
 
 ## Can I use R notebooks with workflowr?
 

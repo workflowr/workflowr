@@ -13,6 +13,28 @@ If you're new to submitting Pull Requests, please read the section [Contribute
 to other projects][contribute] in the tutorial [A quick introduction to version
 control with Git and GitHub][git-tutorial].
 
+## Setup a development environment
+
+To contribute to workflowr, follow these steps to setup a development
+environment:
+
+1. Fork GitHub repository and clone to your local machine
+
+1. Install dependencies
+
+    ```
+    # Install package dependencies
+    if (!requireNamespace("remotes", quietly = TRUE))
+      install.packages("remotes")
+    remotes::install_deps(dependencies = TRUE)
+
+    # Install developlment-only dependencies
+    install.packages("devtools")
+
+    # Install local copy of workflowr
+    devtools::install()
+    ```
+
 ## More about this repository
 
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by

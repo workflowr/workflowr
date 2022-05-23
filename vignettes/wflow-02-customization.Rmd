@@ -183,11 +183,11 @@ instructions.
 
 The default function used to report the session information is `sessionInfo()`.
 To change this, you can edit this setting in `_workflowr.yml`. For example, to
-instead use `devtools::session_info()`, add the following line to
+instead use `sessioninfo::session_info()`, add the following line to
 `_workflowr.yml`:
 
 ```
-sessioninfo: "devtools::session_info()"
+sessioninfo: "sessioninfo::session_info()"
 ```
 
 If you'd prefer to manually insert a more complex report of the session

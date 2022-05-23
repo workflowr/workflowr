@@ -404,7 +404,7 @@ lines <- readLines(rmd)
 writeLines(stringr::str_replace(lines, "sessionInfo", "session_info"),
            con = rmd)
 
-test_that("check_sessioninfo reports sessioninfo in file as session_info() from devtools", {
+test_that("check_sessioninfo reports sessioninfo in file as session_info() from sessioninfo", {
   observed <- workflowr:::check_sessioninfo(rmd, "")
   expect_true(observed$pass)
   expect_identical(observed$summary, "<strong>Session information:</strong> recorded")

@@ -62,9 +62,9 @@ RoxygenNote: 7.1.2
 Suggests:
     clipr (>= 0.7.0),
     covr,
-    devtools,
     miniUI (>= 0.1.1),
     reticulate (>= 1.15),
+    sessioninfo,
     shiny (>= 0.14),
     spelling (>= 2.0),
     testthat (>= 2.0.0),

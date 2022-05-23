@@ -76,7 +76,7 @@ test_that("wflow_html can change the sesssioninfo from the YAML header", {
   lines <- c("---",
              "output: workflowr::wflow_html",
              "workflowr:",
-             "  sessioninfo: \"devtools::session_info()\"",
+             "  sessioninfo: \"sessioninfo::session_info()\"",
              "---",
              "",
              "`r 1 + 1`")
@@ -84,7 +84,7 @@ test_that("wflow_html can change the sesssioninfo from the YAML header", {
   html <- rmarkdown::render(rmd, quiet = TRUE)
   expect_true(fs::file_exists(html))
   html_lines <- readLines(html)
-  expect_true(sum(stringr::str_detect(html_lines, "devtools::session_info")) == 1)
+  expect_true(sum(stringr::str_detect(html_lines, "sessioninfo::session_info")) == 1)
 })
 
 test_that("wflow_html can change the seed from the YAML header", {

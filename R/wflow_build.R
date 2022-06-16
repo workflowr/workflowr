@@ -512,7 +512,7 @@ build_rmd_external <- function(rmd, seed, log_dir, verbose = FALSE, ...) {
       n <- length(stdout_lines)
       # Print the final 10 lines of standard out to give context to error
       cat(stdout_lines[pmax(1, n - 10):n], sep = "\n")
-      stop(e$message, call. = FALSE)
+      stop(conditionMessage(e), call. = FALSE)
     }
   )
   return(invisible(rmd))

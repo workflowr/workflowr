@@ -192,7 +192,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                          force = force, credentials = credentials),
              error = function(e) {
                if (protocol == "ssh" &&
-                   stringr::str_detect(e$message, "unsupported URL protocol")) {
+                   stringr::str_detect(conditionMessage(e), "unsupported URL protocol")) {
                  reason <-
                    "workflowr was unable to use your SSH keys because your
                    computer does not have the required software installed. If
@@ -201,13 +201,13 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                    for your operating system."
                  reason <- c(reason, "\n\n", git_alternative)
                } else if (protocol == "ssh" &&
-                          stringr::str_detect(e$message, "Failed to authenticate SSH session")) {
+                          stringr::str_detect(conditionMessage(e), "Failed to authenticate SSH session")) {
                  reason <-
                    "workflowr was unable to use your SSH keys because it has a
                    passphrase. You'll need to activate ssh-agent and add your
                    keys."
                  reason <- c(reason, "\n\n", git_alternative)
-               } else if (stringr::str_detect(e$message, "remote contains commits that are not present locally")) {
+               } else if (stringr::str_detect(conditionMessage(e), "remote contains commits that are not present locally")) {
                  reason <-
                    "workflowr was unable to push because the remote repository
                    contains changes that are not present in your local
@@ -216,7 +216,7 @@ wflow_git_push <- function(remote = NULL, branch = NULL, username = NULL,
                } else {
                  reason <- c("Push failed for unknown reason.",
                              "\n\nThe error message from git2r::push() was:\n\n",
-                             e$message,
+                             conditionMessage(e),
                              "\n\nThese sorts of errors are difficult to
                              troubleshoot. You can search for similar errors
                              on the git2r GitHub repository for advice on how

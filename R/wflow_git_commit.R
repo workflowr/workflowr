@@ -168,7 +168,7 @@ body(wflow_git_commit_) <- quote({
     tryCatch(
       commit <- git2r::commit(r, message = message, all = all),
       error = function(e) {
-        if (stringr::str_detect(e$message, "Nothing added to commit")) {
+        if (stringr::str_detect(conditionMessage(e), "Nothing added to commit")) {
           reason <- "Commit failed because no files were added."
           if (!is.null(files)) {
             reason <- c(reason, " Attempted to commit the following files:\n",

@@ -284,6 +284,52 @@ test_that("get_versions_fig converts spaces to dashes for HTML ID", {
   expect_true(length(fig_display_name) == 1)
 })
 
+test_that("get_versions_fig produces figure version table", {
+
+  skip_on_cran()
+
+  # Setup functions from setup.R
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  rmd <- file.path(path, "analysis", "file.Rmd")
+  lines <- c("---",
+             "output: workflowr::wflow_html",
+             "---",
+             "",
+             "```{r chunk-name}",
+             "plot(1:10)",
+             "```")
+  writeLines(lines, rmd)
+
+  # Add remote
+  tmp_remote <- wflow_git_remote("origin", "testuser", "testrepo",
+                                 verbose = FALSE, project = path)
+
+  # Commit once
+  tmp_publish <- wflow_publish(rmd, view = FALSE, project = path)
+
+  # Change the plot
+  lines <- c("---",
+             "output: workflowr::wflow_html",
+             "---",
+             "",
+             "```{r chunk-name}",
+             "plot(2:10)",
+             "```")
+  writeLines(lines, rmd)
+
+  # Commit again with a modified plot so that the figure version table is generated
+  tmp_publish <- wflow_publish(rmd, view = FALSE, project = path)
+
+  output_dir <- workflowr:::get_output_dir(file.path(path, "analysis/"))
+
+  # The figure file without spaces should be displayed as normal
+  output_html <- file.path(output_dir, "file.html")
+  output_html_content <- readLines(output_html)
+  expect_true(any(stringr::str_detect(output_html_content, "Past versions of chunk-name-1.png")))
+})
+
 # Test check_vc ----------------------------------------------------------------
 
 tmp_dir <- tempfile("test-check_vc")

@@ -1,3 +1,7 @@
+# dev
+
+* Fix missing figure version table on Windows (implemented by @warmdev in #275)
+
 # workflowr 1.7.0
 
 This minor release includes some new features, improved documentation, and bug

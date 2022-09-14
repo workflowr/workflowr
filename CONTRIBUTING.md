@@ -88,7 +88,7 @@ package locally, and build the online documentation with [pkgdown][]
 * Test on [winbuilder][]:
     * Check with R devel with `devtools::check_win_devel()`
 * Update [cran-comments.md](cran-comments.md)
-* Commit with `git commit -am "Bump version: x.x.x.9xxx -> x.x.x and re-build
+* Commit with `git commit -am "Bump version: x.x.x.x -> x.x.x and re-build
 docs."`
 * Push with `git push origin main` and wait for CI builds to pass
 * Build tarball with `R CMD build .` and upload to [CRAN submission

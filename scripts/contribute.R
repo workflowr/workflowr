@@ -15,7 +15,7 @@ options(warn = 1)
 # Check required packages ------------------------------------------------------
 
 message("* Checking that required dependencies are installed")
-pkgs <- c("devtools", "fs", "git2r", "roxygen2", "spelling", "stringr",
+pkgs <- c("devtools", "fs", "git2r", "roxygen2", "stringr",
           "testthat", "withr")
 installed <- rownames(installed.packages())
 

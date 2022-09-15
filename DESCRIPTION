@@ -68,7 +68,6 @@ Suggests:
     reticulate (>= 1.15),
     sessioninfo,
     shiny (>= 0.14),
-    spelling (>= 2.0),
     testthat (>= 2.0.0),
     withr (>= 2.0.0)
 VignetteBuilder: knitr

@@ -1,0 +1,104 @@
+name: quick-test
+on:
+  push:
+    branches-ignore:
+      - '**skip**'
+    tags-ignore:
+      - '**'
+    paths:
+      - '.github/workflows/quick-test.yaml'
+      - '.Rbuildignore'
+      - 'DESCRIPTION'
+      - 'man/**'
+      - 'NAMESPACE'
+      - 'R/**'
+      - 'tests/**'
+      - 'vignettes/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/quick-test.yaml'
+      - '.Rbuildignore'
+      - 'DESCRIPTION'
+      - 'man/**'
+      - 'NAMESPACE'
+      - 'R/**'
+      - 'tests/**'
+      - 'vignettes/**'
+  workflow_dispatch:
+jobs:
+  current:
+    runs-on: ubuntu-22.04
+    name: quick-test
+    env:
+      _R_CHECK_FORCE_SUGGESTS_: FALSE
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup r2u
+        run: |
+          apt-get update
+          apt-get install --yes --no-install-recommends wget ca-certificates
+          wget -q -O- https://eddelbuettel.github.io/r2u/assets/dirk_eddelbuettel_key.asc \
+            | tee -a /etc/apt/trusted.gpg.d/cranapt_key.asc
+          echo "deb [arch=amd64] https://dirk.eddelbuettel.com/cranapt jammy main" \
+            > /etc/apt/sources.list.d/cranapt.list
+          apt-get update
+          wget -q -O- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
+            | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+          echo "deb [arch=amd64] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" \
+            > /etc/apt/sources.list.d/cran_r.list
+          echo "Package: *" > /etc/apt/preferences.d/99cranapt
+          echo "Pin: release o=CRAN-Apt Project" >> /etc/apt/preferences.d/99cranapt
+          echo "Pin: release l=CRAN-Apt Packages" >> /etc/apt/preferences.d/99cranapt
+          echo "Pin-Priority: 700"  >> /etc/apt/preferences.d/99cranapt
+        shell: sudo bash {0}
+      - name: Install dependencies
+        run: |
+          apt-get install --yes \
+            pandoc \
+            r-cran-callr \
+            r-cran-fs \
+            r-cran-getpass \
+            r-cran-git2r \
+            r-cran-glue \
+            r-cran-httpuv \
+            r-cran-httr \
+            r-cran-knitr \
+            r-cran-rmarkdown \
+            r-cran-rprojroot \
+            r-cran-rstudioapi \
+            r-cran-stringr \
+            r-cran-whisker \
+            r-cran-xfun \
+            r-cran-yaml
+        shell: sudo bash {0}
+      - name: Build
+        run: R CMD build --no-manual .
+      - name: Check
+        run: R CMD check --no-manual --no-tests workflowr_*.tar.gz
+      - name: Install
+        run: R CMD INSTALL --no-docs --no-multiarch --no-staged-install workflowr_*.tar.gz
+        shell: sudo bash {0}
+      - name: Test essential functionality
+        run: |
+          library("workflowr")
+          wflow_start("/tmp/quick-test", user.name = "test", user.email = "test")
+          rmd <- "analysis/quick-test.Rmd"
+          wflow_open(rmd)
+          lines <- c(
+            "",
+            "```{r chunkname}",
+            "plot(1:10)",
+            "```"
+          )
+          cat(lines, file = rmd, sep = "\n", append = TRUE)
+          wflow_build("analysis/*Rmd", view = FALSE)
+          wflow_status()
+          wflow_publish("analysis/quick-test.Rmd", view = FALSE)
+          wflow_status()
+          wflow_use_github("test", create_on_github = FALSE)
+          wflow_use_gitlab("test")
+          wflow_remove("analysis/quick-test.Rmd")
+          wflow_status()
+        shell: Rscript {0}

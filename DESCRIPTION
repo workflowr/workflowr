@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A Framework for Reproducible and Collaborative Data Science
-Version: 1.7.0.2
+Version: 1.7.0.3
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@gmail.com",
@@ -63,7 +63,6 @@ Imports:
 RoxygenNote: 7.1.2
 Suggests:
     clipr (>= 0.7.0),
-    covr,
     miniUI (>= 0.1.1),
     reticulate (>= 1.15),
     sessioninfo,

@@ -106,7 +106,9 @@ jobs:
           command: Rscript .circleci/session-info.R
       - run:
           name: Calculate code coverage
-          command: Rscript -e 'covr::codecov()'
+          command: |
+            Rscript -e 'if(!requireNamespace("covr", quietly = TRUE)) install.packages("covr")'
+            Rscript -e 'covr::codecov()'
           no_output_timeout: 30m
       - save_cache:
           key: r-pkg-cache-v4-{{ arch }}-{{ .Branch }}

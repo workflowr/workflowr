@@ -39,42 +39,6 @@ jobs:
           key: r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
           paths:
             - "~/R/Library"
-  pandocless:
-    docker:
-      - image: rocker/r-base:latest
-    environment:
-      R_LIBS: ~/R/Library
-      _R_CHECK_CRAN_INCOMING_: TRUE
-      _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
-    steps:
-      - restore_cache:
-          keys:
-            - r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
-            - r-pkg-cache-v4-{{ arch }}-
-      - checkout
-      - run:
-          name: Install system dependencies
-          command: bash .circleci/install-system.sh
-      - run:
-          name: Install package dependencies
-          command: |
-            mkdir -p ~/R/Library
-            Rscript .circleci/install-r-pkgs.R
-      - run:
-          name: Session information and installed package versions
-          command: Rscript .circleci/session-info.R
-      - run:
-          name: Build and check
-          command: |
-            R CMD build --no-build-vignettes --no-manual .
-            R CMD check --no-build-vignettes --no-manual --as-cran *.tar.gz
-          no_output_timeout: 20m
-      - store_artifacts:
-          path: workflowr.Rcheck/
-      - save_cache:
-          key: r-pkg-cache-v4-{{ arch }}-{{ .Branch }}
-          paths:
-            - "~/R/Library"
   codecov:
     docker:
       - image: rocker/r-base:latest
@@ -119,5 +83,4 @@ workflows:
   all:
     jobs:
       - release
-      - pandocless
       - codecov

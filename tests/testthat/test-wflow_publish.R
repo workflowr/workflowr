@@ -342,15 +342,6 @@ test_that("wflow_publish restores previous docs/ if build fails", {
   md5sum_post <- tools::md5sum(html)
   mtime_post <- file.mtime(html)
   expect_identical(md5sum_post, md5sum_pre)
-  if (getRversion() >= "3.5.3") {
-    # This test fails with R 3.2.5 and 3.3.0 due to rounding errors, and it
-    # passes with R 3.5.3. This level of time accuracy isn't actually important
-    # to workflowr. It was just part of the tests to confirm that the file was
-    # unchanged.
-    expect_identical(mtime_post, mtime_pre)
-  }
-  # In case the above test fails due to rounding errors, the following tests
-  # ensure that the modification times are essentially identical.
   expect_equal(mtime_post, mtime_pre)
   expect_true(all(mtime_post - mtime_pre < 0.1))
 })

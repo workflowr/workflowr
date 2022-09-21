@@ -3,7 +3,6 @@
 ^\.Rproj\.user$
 ^workflowr\.Rproj$
 ^docs$
-^\.travis\.yml$
 ^\.codecov\.yml$
 ^_pkgdown\.yaml$
 ^LICENSE\.md$

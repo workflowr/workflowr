@@ -438,7 +438,7 @@ print.wflow_start <- function(x, ...) {
     } else if (x$git) {
       cat(sprintf("- Git repo will be initiated at %s\n", x$directory))
     } else {
-      cat(sprintf("- Git repo will not be initiated\n", x$directory))
+      cat(sprintf("- Git repo will not be initiated at %s\n", x$directory))
     }
     if (x$git) {
       cat("- Files will be committed with Git\n")

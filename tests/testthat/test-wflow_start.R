@@ -520,7 +520,7 @@ test_that("print.wflow_start works with change_wd = FALSE and git = FALSE", {
   expect_identical(p_dry_run[4],
                    paste("- Working directory will continue to be", getwd()))
   expect_identical(p_dry_run[5],
-                   "- Git repo will not be initiated")
+                   paste("- Git repo will not be initiated at", tmp_dir))
   expect_identical(p_dry_run[6], "- Files will not be committed with Git")
 
   # Actual run

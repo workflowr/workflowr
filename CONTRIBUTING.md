@@ -40,10 +40,12 @@ environment:
 For the most part, I try to follow the guidelines from [R packages][r-pkg] by
 [Hadley Wickham][hadley]. The unit tests are performed with [testthat][], the
 documentation is built with [roxygen2][], and the online package documentation
-is created with [pkgdown][]. Continuous integration testing is performed for
-Linux by [CircleCI][circleci], for macOS by [Travis CI][travis], and for Windows
-by [AppVeyor][appveyor]. Code coverage is calculated with [covr][] and
-[Codecov][].
+is created with [pkgdown][].
+
+Minimal continuous integration testing is performed by GitHub Actions for each
+push to the repository. Extensive continuous integration testing is performed at
+scheduled intervals in [workflowr-pkg-tests][]. Code coverage is calculated with
+[covr][] and [Codecov][].
 
 The template files used by `wflow_start()` to populate a new project are defined
 in the list `templates` in the file `R/infrastructure.R`. The [RStudio project
@@ -114,7 +116,6 @@ points. Run ` git tag -l -n9` for past examples. Push with `git push origin
 the release "workflowr x.x.x" and copy-paste the Markdown entry from
 [NEWS.md](NEWS.md).
 
-[appveyor]: https://ci.appveyor.com
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html
 [circleci]: https://circleci.com
 [Codecov]: https://codecov.io/
@@ -133,5 +134,5 @@ the release "workflowr x.x.x" and copy-paste the Markdown entry from
 [roxygen2]: https://github.com/klutometis/roxygen
 [style]: http://adv-r.had.co.nz/Style.html
 [testthat]: https://github.com/hadley/testthat
-[travis]: https://travis-ci.com/
 [winbuilder]: https://win-builder.r-project.org/
+[workflowr-pkg-tests]: https://github.com/workflowr/workflowr-pkg-tests

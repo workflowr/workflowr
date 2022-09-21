@@ -123,12 +123,6 @@ test_that("verbose displays build log directly in R console", {
   expect_identical(observed[stringr::str_detect(observed, "pandoc")],
                    expected_stdout[stringr::str_detect(expected_stdout, "pandoc")])
 
-  # For some strange reason, the standard error line is not sent to the R
-  # console only on the Travis macOS (10.12.6) build with r-oldrel (R 3.3.3) and
-  # rmarkdown 1.8. I could not replicate this using macOS 10.10.5, R 3.3.3, and
-  # rmarkdown 1.8.
-  skip_on_travis()
-
   # Confirm that "Output created:" line was sent to R console
   expect_identical(observed[stringr::str_detect(observed, "Output created:")],
                    expected_stderr[stringr::str_detect(expected_stderr, "Output created:")])

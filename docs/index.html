@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">workflowr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.7.0.3</span>
       </span>
     </div>
 
@@ -98,23 +98,20 @@
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
 <ul>
-<li>Organized
-<ul>
+<li>Organized<ul>
 <li>Provides a project template with organized subdirectories</li>
 <li>Mixes code and results with R Markdown</li>
 <li>Uses Git to version both source code and results</li>
 </ul>
 </li>
-<li>Reproducible
-<ul>
+<li>Reproducible<ul>
 <li>Displays the code version used to create each result</li>
 <li>Runs each analysis in an isolated R session</li>
 <li>Records the session information of each analysis</li>
 <li>Sets the same seed for random number generation for each analysis</li>
 </ul>
 </li>
-<li>Shareable
-<ul>
+<li>Shareable<ul>
 <li>Creates a website to present your research results</li>
 <li>Documents how to host your website for free via <a href="https://pages.github.com/" class="external-link">GitHub Pages</a> or <a href="https://about.gitlab.com/stages-devops-lifecycle/pages/" class="external-link">GitLab Pages</a>
 </li>
@@ -183,9 +180,7 @@
 <p>We are very thankful to workflowr <a href="https://github.com/workflowr/workflowr/graphs/contributors" class="external-link">contributors</a> for helping improve the package. We are also grateful for workflowr users for testing the package and providing feedback—thanks especially to <a href="https://github.com/LSun" class="external-link">Lei Sun</a>, <a href="https://github.com/xiangzhu" class="external-link">Xiang Zhu</a>, <a href="https://github.com/NKweiwang" class="external-link">Wei Wang</a>, and other members (past and present) of the Stephens lab.</p>
 <p>The workflowr package uses many great open source packages. Especially critical for this project are the R packages <a href="https://cran.r-project.org/package=git2r" class="external-link">git2r</a>, <a href="https://github.com/yihui/knitr" class="external-link">knitr</a>, and <a href="https://rmarkdown.rstudio.com/" class="external-link">rmarkdown</a>. Please see the vignette <a href="https://workflowr.github.io/workflowr/articles/wflow-04-how-it-works.html" class="external-link">How the workflowr package works</a> to learn about the software that makes workflowr possible.</p>
 <p>Workflowr is available under the <a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT license</a>. For proper attribution, please cite our <a href="https://doi.org/10.12688/f1000research.20843.1" class="external-link">manuscript</a> that describes the software:</p>
-<blockquote>
-<p>Blischak JD, Carbonetto P, and Stephens M. Creating and sharing reproducible research code the workflowr way [version 1; peer review: 3 approved]. F1000Research 2019, 8:1749 (<a href="https://doi.org/10.12688/f1000research.20843.1" class="external-link uri">https://doi.org/10.12688/f1000research.20843.1</a>)</p>
-</blockquote>
+<blockquote><p>Blischak JD, Carbonetto P, and Stephens M. Creating and sharing reproducible research code the workflowr way [version 1; peer review: 3 approved]. F1000Research 2019, 8:1749 (<a href="https://doi.org/10.12688/f1000research.20843.1" class="external-link uri">https://doi.org/10.12688/f1000research.20843.1</a>)</p></blockquote>
 <p>To obtain a BibTeX entry, please run <code>citation("workflowr")</code>. Note that F1000Research publishes not only the original version but also any revisions. To check for the latest version, please go to the paper’s <a href="https://doi.org/10.12688/f1000research.20843.1" class="external-link">URL</a>.</p>
 </div>
 <div class="section level2">
@@ -245,10 +240,8 @@
 <li><a href="https://cran.r-project.org/package=workflowr" class="external-link"><img src="https://www.r-pkg.org/badges/version/workflowr" alt="CRAN status"></a></li>
 <li><a href="https://cran.r-project.org/package=workflowr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/workflowr" alt="CRAN downloads"></a></li>
 <li><a href="https://zenodo.org/badge/latestdoi/75893305" class="external-link"><img src="https://zenodo.org/badge/75893305.svg" alt="DOI"></a></li>
-<li><a href="https://app.codecov.io/gh/workflowr/workflowr" class="external-link"><img src="https://app.codecov.io/gh/workflowr/workflowr/branch/main/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://app.travis-ci.com:443/github/workflowr/workflowr" class="external-link"><img src="https://travis-ci.com/workflowr/workflowr.svg?branch=main" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/jdblischak/workflowr-org" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/haphtdrihgdj4i7n/branch/main?svg=true" alt="AppVeyor Build Status"></a></li>
-<li><a href="https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main" class="external-link"><img src="https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main.svg?style=svg" alt="CircleCI"></a></li>
+<li><a href="https://app.codecov.io/gh/workflowr/workflowr" class="external-link"><img src="https://codecov.io/gh/workflowr/workflowr/branch/main/graphs/badge.svg?branch=main" alt="codecov"></a></li>
+<li><a href="https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main" class="external-link"><img src="https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg" alt="CircleCI"></a></li>
 </ul>
 </div>
 
@@ -263,7 +256,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer>

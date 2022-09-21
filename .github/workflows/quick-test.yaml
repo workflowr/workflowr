@@ -28,7 +28,7 @@ on:
       - 'vignettes/**'
   workflow_dispatch:
 jobs:
-  current:
+  build:
     runs-on: ubuntu-22.04
     name: quick-test
     env:
@@ -72,7 +72,11 @@ jobs:
             r-cran-whisker \
             r-cran-xfun \
             r-cran-yaml
+            dpkg-query --list r-*
         shell: sudo bash {0}
+      - name: Session information
+        run: sessionInfo()
+        shell: Rscript {0}
       - name: Build
         run: R CMD build --no-manual .
       - name: Check

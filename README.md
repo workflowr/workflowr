@@ -4,7 +4,6 @@
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
 [![DOI](https://zenodo.org/badge/75893305.svg)](https://zenodo.org/badge/latestdoi/75893305)
 [![codecov](https://codecov.io/gh/workflowr/workflowr/branch/main/graphs/badge.svg?branch=main)](https://app.codecov.io/gh/workflowr/workflowr)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/haphtdrihgdj4i7n/branch/main?svg=true)](https://ci.appveyor.com/project/jdblischak/workflowr-org)
 [![CircleCI](https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main)
 
 <img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">

@@ -6,7 +6,6 @@
 ^\.codecov\.yml$
 ^_pkgdown\.yaml$
 ^LICENSE\.md$
-^appveyor\.yml$
 tar\.gz$
 ^cran-comments\.md$
 ^\.github$

@@ -1,4 +1,4 @@
-name: quick-test
+name: build
 on:
   push:
     branches-ignore:
@@ -6,7 +6,7 @@ on:
     tags-ignore:
       - '**'
     paths:
-      - '.github/workflows/quick-test.yaml'
+      - '.github/workflows/build.yaml'
       - '.Rbuildignore'
       - 'DESCRIPTION'
       - 'man/**'
@@ -18,7 +18,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/quick-test.yaml'
+      - '.github/workflows/build.yaml'
       - '.Rbuildignore'
       - 'DESCRIPTION'
       - 'man/**'
@@ -30,7 +30,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-    name: quick-test
+    name: build
     env:
       _R_CHECK_FORCE_SUGGESTS_: FALSE
     steps:
@@ -87,8 +87,8 @@ jobs:
       - name: Test essential functionality
         run: |
           library("workflowr")
-          wflow_start("/tmp/quick-test", user.name = "test", user.email = "test")
-          rmd <- "analysis/quick-test.Rmd"
+          wflow_start("/tmp/build", user.name = "test", user.email = "test")
+          rmd <- "analysis/build.Rmd"
           wflow_open(rmd)
           lines <- c(
             "",
@@ -99,10 +99,10 @@ jobs:
           cat(lines, file = rmd, sep = "\n", append = TRUE)
           wflow_build("analysis/*Rmd", view = FALSE)
           wflow_status()
-          wflow_publish("analysis/quick-test.Rmd", view = FALSE)
+          wflow_publish("analysis/build.Rmd", view = FALSE)
           wflow_status()
           wflow_use_github("test", create_on_github = FALSE)
           wflow_use_gitlab("test")
-          wflow_remove("analysis/quick-test.Rmd")
+          wflow_remove("analysis/build.Rmd")
           wflow_status()
         shell: Rscript {0}

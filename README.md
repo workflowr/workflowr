@@ -3,6 +3,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/workflowr)](https://cran.r-project.org/package=workflowr)
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/workflowr)](https://cran.r-project.org/package=workflowr)
 [![DOI](https://zenodo.org/badge/75893305.svg)](https://zenodo.org/badge/latestdoi/75893305)
+[![build](https://github.com/workflowr/workflowr/workflows/build/badge.svg)](https://github.com/workflowr/workflowr/actions/workflows/build.yaml)
 [![codecov](https://codecov.io/gh/workflowr/workflowr/branch/main/graphs/badge.svg?branch=main)](https://app.codecov.io/gh/workflowr/workflowr)
 [![CircleCI](https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main)
 

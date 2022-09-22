@@ -80,6 +80,6 @@ jobs:
         run: |
           library("covr")
           x <- package_coverage(quiet = FALSE, clean = FALSE)
-          report(x)
+          print(x)
           codecov(coverage = x)
         shell: Rscript {0}

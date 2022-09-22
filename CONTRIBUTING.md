@@ -117,7 +117,6 @@ the release "workflowr x.x.x" and copy-paste the Markdown entry from
 [NEWS.md](NEWS.md).
 
 [check-results]: https://cran.r-project.org/web/checks/check_results_workflowr.html
-[circleci]: https://circleci.com
 [Codecov]: https://codecov.io/
 [contribute]: https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004668#sec011
 [covr]: https://github.com/jimhester/covr

@@ -5,7 +5,6 @@
 [![DOI](https://zenodo.org/badge/75893305.svg)](https://zenodo.org/badge/latestdoi/75893305)
 [![build](https://github.com/workflowr/workflowr/workflows/build/badge.svg)](https://github.com/workflowr/workflowr/actions/workflows/build.yaml)
 [![codecov](https://codecov.io/gh/workflowr/workflowr/branch/main/graphs/badge.svg?branch=main)](https://app.codecov.io/gh/workflowr/workflowr)
-[![CircleCI](https://circleci.com/gh/workflowr/workflowr/tree/main.svg?style=svg)](https://app.circleci.com/pipelines/github/workflowr/workflowr?branch=main)
 
 <img src="https://raw.githubusercontent.com/workflowr/workflowr-assets/main/img/hex-workflowr.png" alt="hex sticker for workflowr R package" align="right" width="100px">
 

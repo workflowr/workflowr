@@ -32,7 +32,9 @@ jobs:
     runs-on: ubuntu-22.04
     name: build
     env:
-      _R_CHECK_FORCE_SUGGESTS_: FALSE
+      NOT_CRAN: TRUE
+      _R_CHECK_CRAN_INCOMING_: TRUE
+      _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
     steps:
       - uses: actions/checkout@v2
       - name: Setup r2u
@@ -56,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get install --yes \
-            pandoc \
+            \
             r-cran-callr \
             r-cran-fs \
             r-cran-getpass \
@@ -71,7 +73,17 @@ jobs:
             r-cran-stringr \
             r-cran-whisker \
             r-cran-xfun \
-            r-cran-yaml
+            r-cran-yaml \
+            \
+            r-cran-clipr
+            r-cran-miniui \
+            r-cran-reticulate \
+            r-cran-sessioninfo \
+            r-cran-shiny \
+            r-cran-testthat \
+            r-cran-withr \
+            \
+            pandoc
             dpkg-query --list r-*
         shell: sudo bash {0}
       - name: Session information
@@ -80,7 +92,7 @@ jobs:
       - name: Build
         run: R CMD build --no-manual .
       - name: Check
-        run: R CMD check --no-manual --no-tests workflowr_*.tar.gz
+        run: R CMD check --no-manual --no-tests --as-cran workflowr_*.tar.gz
       - name: Install
         run: R CMD INSTALL --no-docs --no-multiarch --no-staged-install workflowr_*.tar.gz
         shell: sudo bash {0}

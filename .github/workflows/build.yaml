@@ -83,8 +83,10 @@ jobs:
             r-cran-testthat \
             r-cran-withr \
             \
-            pandoc
-            dpkg-query --list r-*
+            pandoc \
+            \
+            r-cran-covr
+          dpkg-query --list r-*
         shell: sudo bash {0}
       - name: Session information
         run: sessionInfo()
@@ -118,3 +120,8 @@ jobs:
           wflow_remove("analysis/build.Rmd")
           wflow_status()
         shell: Rscript {0}
+      - name: Test coverage
+        run: |
+          library("covr")
+          x <- package_coverage(quiet = FALSE, clean = FALSE)
+          report(x)

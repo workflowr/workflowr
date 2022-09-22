@@ -85,6 +85,7 @@ jobs:
             \
             pandoc \
             \
+            qpdf \
             r-cran-covr
           apt list --installed 'r-*'
         shell: sudo bash {0}
@@ -125,3 +126,4 @@ jobs:
           library("covr")
           x <- package_coverage(quiet = FALSE, clean = FALSE)
           report(x)
+        shell: Rscript {0}

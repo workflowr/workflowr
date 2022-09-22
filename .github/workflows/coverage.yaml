@@ -1,40 +1,28 @@
-name: build
+name: coverage
 on:
   push:
-    branches-ignore:
-      - '**skip**'
+    branches:
+      - main
     tags-ignore:
       - '**'
     paths:
-      - '.github/workflows/build.yaml'
-      - '.Rbuildignore'
-      - 'DESCRIPTION'
-      - 'man/**'
-      - 'NAMESPACE'
+      - '.github/workflows/coverage.yaml'
       - 'R/**'
       - 'tests/**'
-      - 'vignettes/**'
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/build.yaml'
-      - '.Rbuildignore'
-      - 'DESCRIPTION'
-      - 'man/**'
-      - 'NAMESPACE'
+      - '.github/workflows/coverage.yaml'
       - 'R/**'
       - 'tests/**'
-      - 'vignettes/**'
   workflow_dispatch:
 jobs:
-  build:
+  coverage:
     runs-on: ubuntu-22.04
-    name: build
+    name: coverage
     env:
       NOT_CRAN: TRUE
-      _R_CHECK_CRAN_INCOMING_: TRUE
-      _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
     steps:
       - uses: actions/checkout@v2
       - name: Setup r2u
@@ -75,48 +63,23 @@ jobs:
             r-cran-xfun \
             r-cran-yaml \
             \
-            r-cran-clipr \
-            r-cran-miniui \
-            r-cran-reticulate \
             r-cran-sessioninfo \
-            r-cran-shiny \
             r-cran-testthat \
             r-cran-withr \
             \
             pandoc \
+            pandoc-citeproc \
             \
-            qpdf
+            r-cran-covr
           apt list --installed 'r-*'
         shell: sudo bash {0}
       - name: Session information
         run: sessionInfo()
         shell: Rscript {0}
-      - name: Build
-        run: R CMD build --no-manual .
-      - name: Check
-        run: R CMD check --no-manual --no-tests --as-cran workflowr_*.tar.gz
-      - name: Install
-        run: R CMD INSTALL --no-docs --no-multiarch --no-staged-install workflowr_*.tar.gz
-        shell: sudo bash {0}
-      - name: Test essential functionality
+      - name: Test coverage
         run: |
-          library("workflowr")
-          wflow_start("/tmp/build", user.name = "test", user.email = "test")
-          rmd <- "analysis/build.Rmd"
-          wflow_open(rmd)
-          lines <- c(
-            "",
-            "```{r chunkname}",
-            "plot(1:10)",
-            "```"
-          )
-          cat(lines, file = rmd, sep = "\n", append = TRUE)
-          wflow_build("analysis/*Rmd", view = FALSE)
-          wflow_status()
-          wflow_publish("analysis/build.Rmd", view = FALSE)
-          wflow_status()
-          wflow_use_github("test", create_on_github = FALSE)
-          wflow_use_gitlab("test")
-          wflow_remove("analysis/build.Rmd")
-          wflow_status()
+          library("covr")
+          x <- package_coverage(quiet = FALSE, clean = FALSE)
+          report(x)
+          codecov(coverage = x)
         shell: Rscript {0}

@@ -75,7 +75,7 @@ jobs:
             r-cran-xfun \
             r-cran-yaml \
             \
-            r-cran-clipr
+            r-cran-clipr \
             r-cran-miniui \
             r-cran-reticulate \
             r-cran-sessioninfo \
@@ -86,7 +86,7 @@ jobs:
             pandoc \
             \
             r-cran-covr
-          dpkg-query --list r-*
+          apt list --installed 'r-*'
         shell: sudo bash {0}
       - name: Session information
         run: sessionInfo()

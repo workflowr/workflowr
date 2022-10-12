@@ -384,6 +384,7 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
   oauth_token <- httr::oauth2.0_token(httr::oauth_endpoints("github"),
                                       app,
                                       scope = c("public_repo"),
+                                      use_oob = TRUE,
                                       cache = FALSE)
   token <- httr::config(token =  oauth_token)
 

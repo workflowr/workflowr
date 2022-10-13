@@ -385,6 +385,7 @@ create_gh_repo <- function(account, repository, account_is_organization = FALSE)
                                       app,
                                       scope = c("public_repo"),
                                       use_oob = TRUE,
+                                      oob_value = "http://localhost:1410",
                                       cache = FALSE)
   token <- httr::config(token =  oauth_token)
 

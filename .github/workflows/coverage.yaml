@@ -26,53 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup r2u
-        run: |
-          apt-get update
-          apt-get install --yes --no-install-recommends wget ca-certificates
-          wget -q -O- https://eddelbuettel.github.io/r2u/assets/dirk_eddelbuettel_key.asc \
-            | tee -a /etc/apt/trusted.gpg.d/cranapt_key.asc
-          echo "deb [arch=amd64] https://dirk.eddelbuettel.com/cranapt jammy main" \
-            > /etc/apt/sources.list.d/cranapt.list
-          apt-get update
-          wget -q -O- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc \
-            | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
-          echo "deb [arch=amd64] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" \
-            > /etc/apt/sources.list.d/cran_r.list
-          echo "Package: *" > /etc/apt/preferences.d/99cranapt
-          echo "Pin: release o=CRAN-Apt Project" >> /etc/apt/preferences.d/99cranapt
-          echo "Pin: release l=CRAN-Apt Packages" >> /etc/apt/preferences.d/99cranapt
-          echo "Pin-Priority: 700"  >> /etc/apt/preferences.d/99cranapt
-        shell: sudo bash {0}
+        run: sudo bash scripts/ci/setup-r2u.sh
       - name: Install dependencies
-        run: |
-          apt-get install --yes \
-            \
-            r-cran-callr \
-            r-cran-fs \
-            r-cran-getpass \
-            r-cran-git2r \
-            r-cran-glue \
-            r-cran-httpuv \
-            r-cran-httr \
-            r-cran-knitr \
-            r-cran-rmarkdown \
-            r-cran-rprojroot \
-            r-cran-rstudioapi \
-            r-cran-stringr \
-            r-cran-whisker \
-            r-cran-xfun \
-            r-cran-yaml \
-            \
-            r-cran-sessioninfo \
-            r-cran-testthat \
-            r-cran-withr \
-            \
-            pandoc \
-            pandoc-citeproc \
-            \
-            r-cran-covr
-          apt list --installed 'r-*'
-        shell: sudo bash {0}
+        run: sudo bash scripts/ci/install-dependencies.sh
       - name: Session information
         run: sessionInfo()
         shell: Rscript {0}

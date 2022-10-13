@@ -4,7 +4,7 @@ set -eu
 # Install dependencies with APT/r2u
 
 # Imports
-apt-get install --yes \
+imports="\
   r-cran-callr \
   r-cran-fs \
   r-cran-getpass \
@@ -19,30 +19,38 @@ apt-get install --yes \
   r-cran-stringr \
   r-cran-whisker \
   r-cran-xfun \
-  r-cran-yaml
+  r-cran-yaml \
+"
 
 # Suggests
-apt-get install --yes \
+suggests="\
   r-cran-clipr \
   r-cran-miniui \
   r-cran-reticulate \
   r-cran-sessioninfo \
   r-cran-shiny \
   r-cran-testthat \
-  r-cran-withr
+  r-cran-withr \
+"
 
 # SystemRequirements
-apt-get install --yes \
+system="\
   pandoc \
-  pandoc-citeproc
+  pandoc-citeproc \
+"
 
 # R CMD check
-apt-get install --yes \
-  qpdf
+check="\
+  qpdf \
+"
 
 # Coverage
-apt-get install --yes \
-  r-cran-covr
+coverage="\
+  r-cran-covr \
+"
+
+# Install
+apt-get install --yes $imports $suggests $system $check $coverage
 
 # List installed R packages
 apt list --installed 'r-*'

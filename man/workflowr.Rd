@@ -86,3 +86,4 @@ interactive R session). This option is currently used by
 }
 }
 
+\keyword{internal}

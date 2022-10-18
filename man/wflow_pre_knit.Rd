@@ -25,3 +25,4 @@ Markdown output formats such as \code{blogdown::html_page}, you can use
 \code{\link{wflow_html}}, \code{\link{wflow_post_knit}},
          \code{\link{wflow_pre_processor}}
 }
+\keyword{internal}

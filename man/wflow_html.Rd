@@ -134,8 +134,8 @@ Here is an example of a customized \code{_workflowr.yml} file:
 knit_root_dir: "."
 # Set a custom seed
 seed: 4815162342
-# Use devtools to generate the session information.
-sessioninfo: "devtools::session_info()"
+# Use sessioninfo package to generate the session information.
+sessioninfo: "sessioninfo::session_info()"
 # Use this URL when inserting links to past results.
 github: https://github.com/repoowner/mainrepo
 }
@@ -152,7 +152,7 @@ output:
 workflowr:
   knit_root_dir: ".."
   seed: 4815162342
-  sessioninfo: "devtools::session_info()"
+  sessioninfo: "sessioninfo::session_info()"
   github: https://github.com/repoowner/mainrepo
 ---
 }

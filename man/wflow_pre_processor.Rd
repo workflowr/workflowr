@@ -54,3 +54,4 @@ using workflowr.
 \code{\link{wflow_html}}, \code{\link{wflow_pre_knit}},
          \code{\link{wflow_post_knit}}
 }
+\keyword{internal}

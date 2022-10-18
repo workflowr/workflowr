@@ -1,0 +1,57 @@
+name: docs
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'CODE_OF_CONDUCT.md'
+      - 'CONTRIBUTING.md'
+      - 'DESCRIPTION'
+      - 'LICENSE'
+      - 'LICENSE.md'
+      - 'NAMESPACE'
+      - 'NEWS.md'
+      - 'README.md'
+      - '_pkgdown.yaml'
+      - 'man/**'
+      - 'vignettes/**'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  pkgdown:
+    runs-on: ubuntu-22.04
+    name: Build pkgdown site
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup r2u
+        run: sudo bash scripts/ci/setup-r2u.sh
+      - name: Install dependencies
+        run: sudo bash scripts/ci/install-dependencies.sh
+      - name: Install pkgdown
+        run: apt-get install --yes r-cran-pkgdown
+        shell: sudo bash {0}
+      - name: Build workflowr
+        run: R CMD build --no-build-vignettes --no-manual .
+      - name: Install workflowr
+        run: R CMD INSTALL --no-docs --no-multiarch --no-staged-install workflowr_*.tar.gz
+        shell: sudo bash {0}
+      - name: Session information
+        run: |
+          library("workflowr")
+          sessionInfo()
+        shell: Rscript {0}
+      - name: Build pkgdown site
+        run: |
+          library("pkgdown")
+          build_site_github_pages()
+        shell: Rscript {0}
+      - name: Deploy to gh-pages
+        if: ${{ github.repository == 'workflowr/workflowr' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs
+          branch: gh-pages
+          git-config-name: GitHub Actions
+          git-config-email: runneradmin@users.noreply.github.com
+          single-commit: true

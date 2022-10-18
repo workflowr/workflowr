@@ -154,5 +154,6 @@ check_dependencies <- function() {
 #'
 #' @docType package
 #' @name workflowr
+#' @keywords internal
 #'
 NULL

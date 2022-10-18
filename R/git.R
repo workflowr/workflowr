@@ -21,6 +21,7 @@
 #' extract_commit(".", 2)
 #' }
 #' @export
+#' @keywords internal
 extract_commit <- function(path, num) {
   stopifnot(fs::file_exists(path),
             is.numeric(num),

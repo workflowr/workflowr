@@ -338,6 +338,7 @@ get_cache_hook <- function() {
 #'          \code{\link{wflow_pre_processor}}
 #'
 #' @export
+#' @keywords internal
 wflow_pre_knit <- function(input, ...) {
   # This function copies the R Markdown file to a temporary directory and then
   # modifies it.
@@ -477,6 +478,7 @@ add_bibliography <- function(sessioninfo, lines) {
 #'          \code{\link{wflow_pre_processor}}
 #'
 #' @export
+#' @keywords internal
 wflow_post_knit <- function(metadata, input_file, runtime, encoding, ...) {
   # This function adds the navigation bar for websites defined in either
   # _navbar.html or _site.yml. Below I just fix the path to the input file that
@@ -518,6 +520,7 @@ wflow_post_knit <- function(metadata, input_file, runtime, encoding, ...) {
 #'          \code{\link{wflow_post_knit}}
 #'
 #' @export
+#' @keywords internal
 wflow_pre_processor <- function(metadata, input_file, runtime, knit_meta,
                                 files_dir, output_dir) {
   # Pass additional arguments to Pandoc. I use this to add a custom header

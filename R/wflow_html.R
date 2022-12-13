@@ -249,15 +249,6 @@ wflow_hook_plot_md <- function(x, options) {
                          "<strong>Warning!</strong> The custom <code>fig.path</code> you set was ignored by workflowr.")
   }
 
-  # Check for outdated reticulate
-  if (identical(options$engine, "python") &&
-      !identical(options$python.reticulate, FALSE) &&
-      requireNamespace("reticulate", quietly = TRUE) &&
-      utils::packageVersion("reticulate") < "1.14.9000") {
-    warnings_to_add <- c(warnings_to_add,
-                         "<strong>Warning!</strong> Please update the R package <a href=\"https://cran.r-project.org/package=reticulate\">reticulate</a> to use Python plots with workflowr")
-  }
-
   if (length(warnings_to_add) == 0) {
     return(knitr::hook_plot_md(x, options))
   }

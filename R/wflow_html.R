@@ -251,7 +251,7 @@ wflow_hook_plot_md <- function(x, options) {
 
   # Check for outdated reticulate
   if (identical(options$engine, "python") &&
-      !xfun::isFALSE(options$python.reticulate) &&
+      !identical(options$python.reticulate, FALSE) &&
       requireNamespace("reticulate", quietly = TRUE) &&
       utils::packageVersion("reticulate") < "1.14.9000") {
     warnings_to_add <- c(warnings_to_add,

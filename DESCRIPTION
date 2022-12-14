@@ -1,7 +1,7 @@
 Package: workflowr
 Type: Package
 Title: A Framework for Reproducible and Collaborative Data Science
-Version: 1.7.0.3
+Version: 1.7.0.4
 Authors@R: c(
     person("John", "Blischak", role = c("aut", "cre"),
            email = "jdblischak@gmail.com",
@@ -31,7 +31,11 @@ Authors@R: c(
     person("Zaynaib", "Giwa", role = c("ctb"),
            comment = "Multiple enhancements"),
     person("Xiongbing", "Jin", role = c("ctb"),
-           comment = "Fixed bug in versions table for figures"))
+           comment = "Fixed bug in versions table for figures"),
+    person("Yihui", "Xie", role = c("ctb"),
+           comment = c(ORCID = "0000-0003-0645-5666",
+                       "Design advice; maintenance"))
+    )
 Description: Provides a workflow for your analysis projects by combining
   literate programming ('knitr' and 'rmarkdown') and version control
   ('Git', via 'git2r') to generate a website containing time-stamped,

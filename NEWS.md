@@ -2,6 +2,9 @@
 
 * Fix missing figure version table on Windows (implemented by @warmdev in #275)
 
+* Improve guidance on rendering a standalone HTML file in FAQ vignette
+(idea from @fkgruber in #283)
+
 # workflowr 1.7.0
 
 This minor release includes some new features, improved documentation, and bug

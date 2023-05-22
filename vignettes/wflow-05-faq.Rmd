@@ -369,6 +369,9 @@ library("rmarkdown")
 render("analysis/file.Rmd", html_document(), knit_root_dir = "..")
 ```
 
+The standalone file will be saved as `analysis/file.html` unless you specify a
+different name via the argument `output_file`.
+
 To create a very simple HTML file, you can instead use `html_document_base()`.
 This eliminates the navbar, but it may also remove some of the advanced
 stylistic features of `html_document()` that you rely on.
@@ -379,7 +382,7 @@ library("rmarkdown")
 render("analysis/file.Rmd", html_document_base(), knit_root_dir = "..")
 ```
 
-Lastly, if you are determined to have a full-featured standalone HTML file
+If you are determined to have a full-featured standalone HTML file
 without the navigation bar, you can temporarily rename the `_site.yml` file,
 which prevents `html_document()` from including the navbar.
 
@@ -394,6 +397,31 @@ render("analysis/file.Rmd", html_document(), knit_root_dir = "..")
 
 # Restore _site.yml
 file.rename("analysis/_site.yml_tmp", "analysis/_site.yml")
+```
+
+If you'd like your standalone HTML file to have a similar appearance to your
+workflowr website, you can pass the style arguments directly to
+`html_document()` so that the theme is similar (copy from your project's
+`analysis/_site.yml`, below are the default values for a new workflowr project):
+
+```{r render-single-page-html-4, eval=FALSE}
+render("analysis/file.Rmd",
+       html_document(toc = TRUE, toc_float = TRUE, theme = "cosmo", highlight = "textmate"),
+       knit_root_dir = "..",
+       output_file = "standalone.html")
+```
+
+Alternatively, if you'd prefer to keep the workflowr report and other
+workflowr-specific features in the standalone document, don't use `output_file`,
+as this will cause workflowr to insert the warning ```The custom `fig.path` you
+set was ignored by workflowr``` if the analysis contains any figures. Instead,
+omit both `html_document()` and `output_file`. The standalone HTML file will be
+saved in `analysis/` (the standard, non-standalone HTML files are always moved
+to `docs/`), and you can move/rename it after it has rendered.
+
+```{r render-single-page-html-5, eval=FALSE}
+# use the workflowr::wflow_html settings in analysis/_site.yml
+render("analysis/file.Rmd", knit_root_dir = "..")
 ```
 
 ### RStudio Knit button

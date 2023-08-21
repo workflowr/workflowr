@@ -152,8 +152,6 @@ check_dependencies <- function() {
 #' \code{\link{wflow_publish}}.}
 #' }
 #'
-#' @docType package
-#' @name workflowr
 #' @keywords internal
 #'
-NULL
+"_PACKAGE"

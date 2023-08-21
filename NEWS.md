@@ -5,6 +5,9 @@
 * Improve guidance on rendering a standalone HTML file in FAQ vignette
 (idea from @fkgruber in #283)
 
+* Add the appropriate PKGNAME-package \alias to the package overview help file
+as per "Documenting packages" in R-exts
+
 # workflowr 1.7.0
 
 This minor release includes some new features, improved documentation, and bug

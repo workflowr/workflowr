@@ -1,12 +1,41 @@
-# dev
+# workflowr 1.7.1
 
-* Fix missing figure version table on Windows (implemented by @warmdev in #275)
+This patch release includes improved documentation, bug fixes, and a reduction
+in the number of Suggested dependencies.
+
+## Updated documentation
+
+* Update single-page FAQ to explain how to remove navbar
+
+* Update badge links (implemented by @wyq977 in #276)
+
+* Explicitly label internal functions with roxygen2
+
+* Build online docs via GitHub Actions and push to gh-pages
 
 * Improve guidance on rendering a standalone HTML file in FAQ vignette
 (idea from @fkgruber in #283)
 
 * Add the appropriate PKGNAME-package \alias to the package overview help file
-as per "Documenting packages" in R-exts
+as per "Documenting packages" in _Writing R Extensions_
+
+* Modernize `CITATION`. Replace `citEntry()` with `bibentry()`, replace
+`personList()` with `c()`, format as R code, and simplify.
+
+## Bug fixes
+
+* Fix missing figure version table on Windows (implemented by @warmdev in #275)
+
+* Use `conditionMessage()` to extract error message from callr subprocess
+  [r-lib/callr#228](https://github.com/r-lib/callr/issues/228)
+
+* Remove warning from `sprintf()` in `print.wflow_start()` when `git = FALSE`
+
+## Dependencies
+
+* Removed from Imports: xfun
+* Removed from Suggests: covr, devtools, spelling
+* Added to Suggests: sessioninfo
 
 # workflowr 1.7.0
 
@@ -357,7 +386,7 @@ robustness of workflowr Git functionality
 as R code for the official GitHub language statistics calculated via
 [linguist][]. The default setting is to ignore R Markdown files.
 
-[linguist]: https://github.com/github/linguist
+[linguist]: https://github.com/github-linguist/linguist
 
 * Address [callr 3.3.0 bug][callr-bug-3.3.0] that writes objects to the global
 environment, causing the workflowr check of the global environment to fail. The

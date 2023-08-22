@@ -30,6 +30,7 @@ Dat
 dathttpd
 datproject
 dev
+devtools
 dir
 DOI
 dplyr
@@ -74,10 +75,13 @@ myproject
 navbar
 oauth
 omnibar
+ORCID
 pagetitle
 pandoc
 Pandoc
+PBC
 pkgdown
+PKGNAME
 pre
 preprocess
 proj
@@ -93,6 +97,7 @@ reticulate
 rmarkdown
 rmd
 Rmd
+roxygen
 Rprofile
 Rproj
 rprojroot
@@ -102,6 +107,7 @@ rstudioapi
 Rtools
 Scr
 serverless
+sessioninfo
 SHA
 shinyapps
 singlecell
@@ -109,10 +115,12 @@ singleCellSeq
 spacelab
 SRA
 stringr
+subprocess
 subproject
 symlink
 Symlink
 testthat
+toc
 topright
 uchicago
 uk
@@ -126,6 +134,7 @@ withr
 workflowrBeta
 workflowr
 workflowr's
+xfun
 Xiang
 YAML
 yml

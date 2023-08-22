@@ -1,24 +1,21 @@
-citHeader("To cite workflowr in publications use:")
-
-citEntry(
-  entry    = "Article",
-  title    = "Creating and sharing reproducible research code the workflowr way [version 1; peer review: 3 approved]",
-  author   = personList(as.person("John D Blischak"),
-                        as.person("Peter Carbonetto"),
-                        as.person("Matthew Stephens")),
-  journal  = "F1000Research",
-  year     = "2019",
-  volume   = "8",
-  number   = "1749",
+bibentry(
+  bibtype = "Article",
+  title = "Creating and sharing reproducible research code the workflowr way [version 1; peer review: 3 approved]",
+  author = c(as.person("John D Blischak"),
+             as.person("Peter Carbonetto"),
+             as.person("Matthew Stephens")),
+  journal = "F1000Research",
+  year = "2019",
+  volume = "8",
+  number = "1749",
   doi = "10.12688/f1000research.20843.1",
-  url      = "https://doi.org/10.12688/f1000research.20843.1",
-  textVersion = paste("Blischak JD, Carbonetto P and Stephens M.",
-  "Creating and sharing reproducible research code the workflowr way",
-  "[version 1; peer review: 3 approved].",
-  "F1000Research 2019, 8:1749 (https://doi.org/10.12688/f1000research.20843.1) "
-
-  )
+  url = "https://doi.org/10.12688/f1000research.20843.1",
+  textVersion = paste(
+    "Blischak JD, Carbonetto P and Stephens M.",
+    "Creating and sharing reproducible research code the workflowr way",
+    "[version 1; peer review: 3 approved].",
+    "F1000Research 2019, 8:1749 (https://doi.org/10.12688/f1000research.20843.1)"
+  ),
+  footer = c("F1000Research publishes not only the original version but also any revisions.",
+             "To check for the latest version, please go to the paper's URL.")
 )
-
-citFooter("F1000Research publishes not only the original version but also any revisions.",
-          "To check for the latest version, please go to the paper's URL.")

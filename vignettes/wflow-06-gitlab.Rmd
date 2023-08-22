@@ -39,7 +39,7 @@ create the new repository after you push it in Step 4 below. This
 [feature][push-to-create-a-new-project] was introduced in [GitLab
 10.5][gitlab-10.5], released in February 2018.
 
-[push-to-create-a-new-project]: https://docs.gitlab.com/ee/gitlab-basics/create-project.html#push-to-create-a-new-project
+[push-to-create-a-new-project]: https://docs.gitlab.com/ee/user/project/#create-a-new-project-with-git-push
 [gitlab-10.5]: https://about.gitlab.com/releases/2018/02/22/gitlab-10-5-released/
 
 Log in to the GitLab instance you want to use and create a repository to host

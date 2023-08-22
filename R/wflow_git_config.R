@@ -23,7 +23,7 @@
 #' \code{\link[git2r]{config}} from the package \link{git2r}.
 #'
 #' To learn more about how to configure Git, see the Software Carpentry lesson
-#' \href{https://swcarpentry.github.io/git-novice/02-setup/}{Setting Up Git}.
+#' \href{https://swcarpentry.github.io/git-novice/02-setup.html}{Setting Up Git}.
 #'
 #' @param user.name character (default: NULL). Git user name. Git assigns an
 #'   author when committing (i.e. saving) changes. If you have never used Git

@@ -110,7 +110,7 @@ how to use Git LFS to download the latest version of the large data files.
 [contributing]: https://jdblischak.github.io/singlecell-qtl/contributing.html
 [eset]: https://github.com/jdblischak/singlecell-qtl/blob/master/data/eset/02192018.rds
 [gh-pages]: https://pages.github.com/
-[lfs]: https://git-lfs.github.com/
+[lfs]: https://git-lfs.com/
 [scqtl]: https://github.com/jdblischak/singlecell-qtl
 
 ## Option 3: Use piggyback

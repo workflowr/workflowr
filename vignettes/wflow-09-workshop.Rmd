@@ -67,7 +67,7 @@ problems.
 [cran]: https://cran.r-project.org/package=workflowr
 [gh]: https://github.com
 [r]: https://cran.r-project.org
-[rstudio]: https://www.rstudio.com/products/rstudio/download/
+[rstudio]: https://posit.co/download/rstudio-desktop/
 
 ## Organize your research
 

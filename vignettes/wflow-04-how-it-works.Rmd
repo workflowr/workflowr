@@ -84,7 +84,7 @@ ignored.
 
 ## Additional tools
 
-[RStudio, Inc.][] is a company that develops open source software for R users.
+[Posit Software, PBC][] is a company that develops open source software for R users.
 They are the principal developers of [RStudio][], an integrated development environment (IDE) for R, and the [rmarkdown][] package.
 Because of this tight integration, new developments in the [rmarkdown][] package are quickly incorporated into the [RStudio][] IDE.
 While not strictly required for using workflowr, using [RStudio][] provides many benefits, including:
@@ -105,13 +105,13 @@ Another key R package used by workflowr is [rprojroot][].
 This package finds the root of the repository, so workflowr functions like `wflow_build` will work the same regardless of the current working directory.
 Specifically, [rprojroot][] searches for the RStudio project `.Rproj` file at the base of the workflowr project (so don't delete it!).
 
-[RStudio, Inc.]: https://www.rstudio.com/
-[RStudio]: https://www.rstudio.com/products/rstudio/
+[Posit Software, PBC]: https://posit.co/
+[RStudio]: https://posit.co/products/open-source/rstudio/
 [rstudioapi]: https://github.com/rstudio/rstudioapi
 [rprojroot]: https://cran.r-project.org/package=rprojroot
 [git2r]: https://cran.r-project.org/package=git2r
 [libgit2]: https://libgit2.org/
-[rstudio-features]: https://www.rstudio.com/products/rstudio/features/
+[rstudio-features]: https://posit.co/products/open-source/rstudio/
 
 ## Background and related work
 

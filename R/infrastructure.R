@@ -9,7 +9,7 @@
 templates <- list(
   .gitattributes = '
 # Classify R Markdown files as R code for GitHub language statistics
-# https://github.com/github/linguist#overrides
+# https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
 *.[Rr]md linguist-language=R
 
 ',

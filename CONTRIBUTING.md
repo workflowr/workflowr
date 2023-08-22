@@ -81,8 +81,12 @@ packages that workflowr needs are properly installed)
 * Bump version with [scripts/bump-version.R](scripts/bump-version.R)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs
+* Check spelling with `spelling::spell_check_package()` and update
+`inst/CITATION` as needed
 * Run [scripts/document.R](scripts/document.R) to update Rd files, install the
-package locally, and build the online documentation with [pkgdown][]
+package locally, and preview the online documentation with [pkgdown][] (No need
+to commit `docs/` because the pkgdown site is rebuilt and deployed automatically
+by GitHub Pages after each push)
 * Run [scripts/build.sh](scripts/build.sh) to confirm tests pass locally
 * Test on [rhub][]:
     * Have to validate email first with `rhub::validate_email()`. Copy-paste
@@ -92,8 +96,7 @@ package locally, and build the online documentation with [pkgdown][]
 * Test on [winbuilder][]:
     * Check with R devel with `devtools::check_win_devel()`
 * Update [cran-comments.md](cran-comments.md)
-* Commit with `git commit -am "Bump version: x.x.x.x -> x.x.x and re-build
-docs."`
+* Commit with `git commit -am "Bump version: x.x.x.x -> x.x.x"`
 * Push with `git push origin main` and wait for CI builds to pass
 * Build tarball with `R CMD build .` and upload to [CRAN submission
 site][cran-submit]. You will receive an email to request confirmation, then an
@@ -106,7 +109,7 @@ receive an email once all the Windows binaries are available for download
 * You can monitor the status of the CRAN submission with the [foghorn][]
 package:
 
-    ```
+    ```R
     foghorn::cran_incoming("workflowr")
     foghorn::cran_details("workflowr")
     foghorn::cran_results(pkg = "workflowr")

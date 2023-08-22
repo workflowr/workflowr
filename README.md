@@ -169,7 +169,7 @@ abide by its terms.
 [r]: https://cran.r-project.org
 [rmarkdown]: https://rmarkdown.rstudio.com/
 [r-project-workflows]: https://github.com/jdblischak/r-project-workflows#readme
-[rstudio]: https://www.rstudio.com/products/rstudio/download/
+[rstudio]: https://posit.co/download/rstudio-desktop/
 [stephens]: https://stephenslab.uchicago.edu/
 [uchicago]: https://www.uchicago.edu/
 [video]: https://www.youtube.com/watch?v=O1wv94sZfvE

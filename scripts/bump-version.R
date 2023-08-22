@@ -7,13 +7,12 @@
 # Bumps the version in the following files:
 #
 # * DESCRIPTION
-# * NEWS.md - also runs pkgdown::build_news()
+# * NEWS.md
 
 # Setup ------------------------------------------------------------------------
 
 stopifnot(file.exists("workflowr.Rproj"))
 
-library(pkgdown)
 library(stringr)
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -25,6 +24,7 @@ if (length(args) == 1) {
 
 # DESCRIPTION ------------------------------------------------------------------
 
+# can't use read.dcf() because write.dcf() mangles the output
 message("* Updating DESCRIPTION")
 lines_in_desc <- readLines("DESCRIPTION")
 lines_out_desc <- stringr::str_replace(lines_in_desc, "^Version.*",
@@ -47,5 +47,3 @@ if (is_dev) {
 }
 
 writeLines(lines_out_news, "NEWS.md")
-
-pkgdown::build_news()

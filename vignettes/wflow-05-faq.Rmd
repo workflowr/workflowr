@@ -36,8 +36,8 @@ down. Overall for a free service, it is very reliable. If you wait 5 minutes (or
 30 minutes at most), your website will likely be back to normal.
 
 If you are anxious to know if there is a problem and when it will be resolved,
-you can check the status of the Twitter account [GitHub Status][gh-status] for
-the most up-to-date reports from GitHub. If you suspect that the problem may
+you can check the website [githubstatus.com][gh-status] for
+the most up-to-date reports directly from GitHub. If you suspect that the problem may
 have been caused by your recent changes to your website (again, this is
 unlikely), you can view the GitHub help page [Troubleshooting GitHub Pages
 builds][gh-troubleshooting].
@@ -587,7 +587,7 @@ the lowercase workflowr should be the preferred option.
 [deploy-aws]: wflow-08-deploy.html#amazon-s3-password-protected
 [deploy-beaker]: wflow-08-deploy.html#beaker-browser-secure-sharing
 [gh-pages]: https://pages.github.com/
-[gh-status]: https://twitter.com/githubstatus
+[gh-status]: https://www.githubstatus.com/
 [gh-troubleshooting]: https://docs.github.com/articles/troubleshooting-github-pages-builds
 [gl-pages]: https://docs.gitlab.com/ce/user/project/pages/index.html
 [issues]: https://github.com/workflowr/workflowr/issues

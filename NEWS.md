@@ -1,3 +1,5 @@
+# workflowr 1.7.1.1
+
 # workflowr 1.7.1
 
 This patch release includes improved documentation, bug fixes, and a reduction

@@ -15,7 +15,3 @@ devtools::install(dependencies = FALSE)
 
 unlink("docs/articles/*R")
 pkgdown::build_site()
-
-# Delete empty directories
-unlink("Meta", recursive = TRUE)
-unlink("doc", recursive = TRUE)

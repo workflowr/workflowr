@@ -25,7 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup r2u
-        run: sudo bash scripts/ci/setup-r2u.sh
+        uses: eddelbuettel/github-actions/r2u-setup@master
+        with:
+          bspm-version-check: "FALSE"
       - name: Install dependencies
         run: sudo bash scripts/ci/install-dependencies.sh
       - name: Install pkgdown

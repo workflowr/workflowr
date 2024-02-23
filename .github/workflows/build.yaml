@@ -36,7 +36,7 @@ jobs:
       _R_CHECK_CRAN_INCOMING_: TRUE
       _R_CHECK_CRAN_INCOMING_REMOTE_: FALSE
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup r2u
         uses: eddelbuettel/github-actions/r2u-setup@master
         with:

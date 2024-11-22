@@ -35,6 +35,8 @@ jobs:
         run: sessionInfo()
         shell: Rscript {0}
       - name: Test coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
           library("covr")
           x <- package_coverage(quiet = FALSE, clean = FALSE)

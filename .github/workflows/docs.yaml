@@ -49,7 +49,7 @@ jobs:
           build_site_github_pages()
         shell: Rscript {0}
       - name: Deploy to gh-pages
-        if: ${{ github.repository == 'workflowr/workflowr' }}
+        if: github.repository == 'workflowr/workflowr' && github.ref_name == 'main'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: docs

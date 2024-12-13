@@ -36,7 +36,6 @@ suggests="\
 # SystemRequirements
 system="\
   pandoc \
-  pandoc-citeproc \
 "
 
 # R CMD check

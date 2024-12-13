@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 jobs:
   coverage:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     name: coverage
     env:
       NOT_CRAN: TRUE

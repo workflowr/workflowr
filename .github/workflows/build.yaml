@@ -12,6 +12,7 @@ on:
       - 'man/**'
       - 'NAMESPACE'
       - 'R/**'
+      - 'scripts/ci/**'
       - 'tests/**'
       - 'vignettes/**'
   pull_request:
@@ -24,6 +25,7 @@ on:
       - 'man/**'
       - 'NAMESPACE'
       - 'R/**'
+      - 'scripts/ci/**'
       - 'tests/**'
       - 'vignettes/**'
   workflow_dispatch:

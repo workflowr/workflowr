@@ -1,5 +1,3 @@
-context("wflow_status")
-
 # Setup ------------------------------------------------------------------------
 
 source("setup.R")
@@ -50,11 +48,11 @@ test_that("wflow_status identifies Git directory.", {
 })
 
 test_that("wflow_status returns data frame of logical values on Rmd files.", {
-  expect_is(s$status, "data.frame")
+  expect_s3_class(s$status, "data.frame")
   for (column in colnames(s$status)) {
-    expect_is(s$status[, column], "logical")
+    expect_type(s$status[, column], "logical")
   }
-  expect_is(rownames(s$status), "character")
+  expect_type(rownames(s$status), "character")
   expect_identical(colnames(s$status),
                    c("ignored", "mod_unstaged", "conflicted", "mod_staged",
                      "tracked", "committed", "published", "mod_committed",

@@ -1,5 +1,3 @@
-context("integrations")
-
 # Integration tests across workflowr functions
 
 # Setup ------------------------------------------------------------------------

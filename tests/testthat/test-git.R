@@ -1,5 +1,3 @@
-context("git")
-
 # Setup ------------------------------------------------------------------------
 
 # Load helper function local_no_gitconfig()

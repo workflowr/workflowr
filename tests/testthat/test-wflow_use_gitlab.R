@@ -1,5 +1,3 @@
-context("wflow_use_gitlab")
-
 # Setup ------------------------------------------------------------------------
 
 source("setup.R")
@@ -35,8 +33,11 @@ test_that("wflow_use_gitlab automates local GitLab configuration", {
   expect_true(file.exists(gitlab_yml))
   # Configures the Git remote settings to use GitLab
   remotes <- wflow_git_remote(verbose = FALSE, project = path)
-  expect_equivalent(remotes["origin"], sprintf("https://gitlab.com/%s/%s.git",
-                                               username, repository))
+  expect_equal(
+    remotes["origin"],
+    sprintf("https://gitlab.com/%s/%s.git", username, repository),
+    ignore_attr = TRUE
+  )
 
   # Confirm files were committed
   r <- git2r::repository(path = path)
@@ -73,15 +74,21 @@ test_that("wflow_use_gitlab sets correct username", {
   x1 <- wflow_use_gitlab(project = path)
   expect_identical(x1$username, "testuser")
   origin <- wflow_git_remote(project = path)["origin"]
-  expect_equivalent(origin, sprintf("https://gitlab.com/%s/%s.git",
-                                    x1$username, x1$repository))
+  expect_equal(
+    origin,
+    sprintf("https://gitlab.com/%s/%s.git", x1$username, x1$repository),
+    ignore_attr = TRUE
+  )
 
   # Will override based on input argument
   x2 <- wflow_use_gitlab(username = "argument", project = path)
   expect_identical(x2$username, "argument")
   origin <- wflow_git_remote(project = path)["origin"]
-  expect_equivalent(origin, sprintf("https://gitlab.com/%s/%s.git",
-                                    x2$username, x2$repository))
+  expect_equal(
+    origin,
+    sprintf("https://gitlab.com/%s/%s.git", x2$username, x2$repository),
+    ignore_attr = TRUE
+  )
 })
 
 test_that("wflow_use_gitlab sets correct repository", {
@@ -93,8 +100,11 @@ test_that("wflow_use_gitlab sets correct repository", {
   x1 <- wflow_use_gitlab(username = username, project = path)
   expect_identical(x1$repository, fs::path_file(path))
   origin <- wflow_git_remote(project = path)["origin"]
-  expect_equivalent(origin, sprintf("https://gitlab.com/%s/%s.git",
-                                    username, x1$repository))
+  expect_equal(
+    origin,
+    sprintf("https://gitlab.com/%s/%s.git", username, x1$repository),
+    ignore_attr = TRUE
+  )
 
   # Will override with value for remote named "origin"
   wflow_git_remote(remote = "origin", user = username,
@@ -103,16 +113,22 @@ test_that("wflow_use_gitlab sets correct repository", {
   x2 <- wflow_use_gitlab(username = username, project = path)
   expect_identical(x2$repository, "not-the-same-as-project-root-dir")
   origin <- wflow_git_remote(project = path)["origin"]
-  expect_equivalent(origin, sprintf("https://gitlab.com/%s/%s.git",
-                                    username, x2$repository))
+  expect_equal(
+    origin,
+    sprintf("https://gitlab.com/%s/%s.git", username, x2$repository),
+    ignore_attr = TRUE
+  )
 
   # Will override based on input argument
   x3 <- wflow_use_gitlab(username = username, repository = "testrepo",
                          project = path)
   expect_identical(x3$repository, "testrepo")
   origin <- wflow_git_remote(project = path)["origin"]
-  expect_equivalent(origin, sprintf("https://gitlab.com/%s/%s.git",
-                                    username, x3$repository))
+  expect_equal(
+    origin,
+    sprintf("https://gitlab.com/%s/%s.git", username, x3$repository),
+    ignore_attr = TRUE
+  )
 })
 
 test_that("wflow_use_gitlab can disable navbar_link", {
@@ -164,8 +180,11 @@ test_that("wflow_use_gitlab works when site has been published", {
   expect_true(file.exists(gitlab_yml))
   # Configures the Git remote settings to use GitLab
   remotes <- wflow_git_remote(verbose = FALSE, project = path)
-  expect_equivalent(remotes["origin"], sprintf("https://gitlab.com/%s/%s.git",
-                                               username, repository))
+  expect_equal(
+    remotes["origin"],
+    sprintf("https://gitlab.com/%s/%s.git", username, repository),
+    ignore_attr = TRUE
+  )
 
   # Confirm files were committed
   r <- git2r::repository(path = path)
@@ -224,8 +243,11 @@ test_that("wflow_use_gitlab can be run after using GitHub remote", {
   x <- wflow_use_gitlab(username, repository, project = path)
 
   remotes2 <- wflow_git_remote(verbose = FALSE, project = path)
-  expect_equivalent(remotes2["origin"], sprintf("https://gitlab.com/%s/%s.git",
-                                                username, repository))
+  expect_equal(
+    remotes2["origin"],
+    sprintf("https://gitlab.com/%s/%s.git", username, repository),
+    ignore_attr = TRUE
+  )
 })
 
 test_that("wflow_use_gitlab works with ssh protocol", {
@@ -237,8 +259,11 @@ test_that("wflow_use_gitlab works with ssh protocol", {
   x <- wflow_use_gitlab(username, repository, protocol = "ssh", project = path)
 
   remotes <- wflow_git_remote(verbose = FALSE, project = path)
-  expect_equivalent(remotes["origin"], sprintf("git@gitlab.com:%s/%s.git",
-                                               username, repository))
+  expect_equal(
+    remotes["origin"],
+    sprintf("git@gitlab.com:%s/%s.git", username, repository),
+    ignore_attr = TRUE
+  )
 })
 
 test_that("wflow_use_gitlab works with different domain", {
@@ -251,7 +276,9 @@ test_that("wflow_use_gitlab works with different domain", {
                         project = path)
 
   remotes <- wflow_git_remote(verbose = FALSE, project = path)
-  expect_equivalent(remotes["origin"],
-                    sprintf("https://git.rcc.uchicago.edu/%s/%s.git",
-                            username, repository))
+  expect_equal(
+    remotes["origin"],
+    sprintf("https://git.rcc.uchicago.edu/%s/%s.git", username, repository),
+    ignore_attr = TRUE
+  )
 })

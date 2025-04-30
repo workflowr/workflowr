@@ -1,5 +1,3 @@
-context("suppress_report")
-
 source("setup.R")
 
 skip_on_cran_windows()

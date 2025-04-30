@@ -1,5 +1,3 @@
-context("wflow_quickstart")
-
 # Make sure the temporary directory doesn't contain any Rmd files
 local({
   rmd <- fs::dir_ls(path = fs::path_temp(), glob = "*Rmd")

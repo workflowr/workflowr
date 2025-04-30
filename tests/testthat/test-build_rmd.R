@@ -1,5 +1,3 @@
-context("build_rmd")
-
 # Setup ------------------------------------------------------------------------
 
 # Create a temporary directory

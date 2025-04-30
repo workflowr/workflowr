@@ -1,5 +1,3 @@
-context("git2r-merge-conflicts")
-
 # Test behavior of git2r merge.git_repository with merge conflicts
 #
 # Will need to be updated if upstream behavior is fixed:

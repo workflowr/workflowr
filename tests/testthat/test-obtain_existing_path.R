@@ -1,5 +1,3 @@
-context("obtain_existing_path")
-
 # Function in R/utility.R
 
 # Setup ------------------------------------------------------------------------

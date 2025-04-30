@@ -70,8 +70,10 @@ Suggests:
     reticulate (>= 1.15),
     sessioninfo,
     shiny (>= 0.14),
-    testthat (>= 2.0.0),
+    testthat (>= 3.0.0),
     withr (>= 2.0.0)
 VignetteBuilder: knitr
 SystemRequirements: pandoc (>= 1.14) - https://pandoc.org
 Language: en-US
+Config/testthat/edition: 3
+Config/testthat/parallel: true

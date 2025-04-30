@@ -1,5 +1,3 @@
-context("vig-getting-started")
-
 # Testing similar workflow as in getting-started vignette
 
 library("git2r")

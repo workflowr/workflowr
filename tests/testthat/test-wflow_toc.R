@@ -1,5 +1,3 @@
-context("wflow_toc")
-
 source("setup.R")
 
 test_that("wflow_toc returns table of contents", {

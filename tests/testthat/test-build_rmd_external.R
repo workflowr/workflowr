@@ -1,5 +1,3 @@
-context("build_rmd_external")
-
 # Setup ------------------------------------------------------------------------
 
 # Create a temporary workflowr project

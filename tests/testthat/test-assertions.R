@@ -1,5 +1,3 @@
-context("assertions")
-
 # assert_is_flag() -------------------------------------------------------------
 
 test_that("assert_is_flag accepts flag arguments", {

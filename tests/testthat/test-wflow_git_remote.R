@@ -1,5 +1,3 @@
-context("wflow_git_remote")
-
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing

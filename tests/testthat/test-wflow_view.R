@@ -1,5 +1,3 @@
-context("wflow_view")
-
 # Setup ------------------------------------------------------------------------
 
 # Setup workflowr project for testing

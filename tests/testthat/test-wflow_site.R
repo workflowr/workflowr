@@ -1,5 +1,3 @@
-context("wflow_site")
-
 # Test wflow_site --------------------------------------------------------------
 
 test_that("wflow_site returns the correct output_dir", {

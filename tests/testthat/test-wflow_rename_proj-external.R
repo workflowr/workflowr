@@ -1,5 +1,3 @@
-context("wflow_rename_proj-external")
-
 # Test wflow_rename_proj() when run from outside a workflowr project.
 
 # Setup ------------------------------------------------------------------------

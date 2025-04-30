@@ -1,5 +1,3 @@
-context("vig-gitlab")
-
 # Testing similar workflow as in vignette wflow-06-gitlab.Rmd
 
 # Setup ------------------------------------------------------------------------
@@ -18,7 +16,11 @@ test_that("Add GitLab remote", {
   remote <- wflow_git_remote(remote = "origin", user = "testname", repo = "testrepo",
                              domain = "gitlab.com", verbose = FALSE,
                              project = site_dir)
-  expect_equivalent(remote["origin"], "https://gitlab.com/testname/testrepo.git")
+  expect_equal(
+    remote["origin"],
+    "https://gitlab.com/testname/testrepo.git",
+    ignore_attr = TRUE
+  )
 })
 
 test_that("Setup GitLab infrastructure", {

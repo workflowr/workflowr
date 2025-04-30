@@ -1,5 +1,3 @@
-context("knitr")
-
 # Test include_graphics() ------------------------------------------------------
 
 test_that("include_graphics() can create HTML tag for file it can't find", {

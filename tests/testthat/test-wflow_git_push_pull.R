@@ -1,5 +1,3 @@
-context("wflow_git_push_pull")
-
 # Setup ------------------------------------------------------------------------
 
 # Only newer tests use the setup functions
@@ -401,7 +399,7 @@ test_that("get_conflicted_lines return first conflicting line for each file", {
   Map(writer, files, conflicted = 0:5)
 
   observed <- workflowr:::get_conflicted_lines(files)
-  expect_equivalent(observed, c(NA_integer_, 1:5))
+  expect_equal(observed, c(NA_integer_, 1:5), ignore_attr = TRUE)
 })
 
 test_that("get_conflicted_files returns files with merge conflicts", {

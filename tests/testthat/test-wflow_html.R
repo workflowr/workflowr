@@ -1,5 +1,3 @@
-context("wflow_html")
-
 # Test wflow_html --------------------------------------------------------------
 
 test_that("wflow_html sets custom knitr chunk options", {

@@ -1,5 +1,3 @@
-context("subdirectories")
-
 # Test that workflowr functions can be run from various subdirectories as long
 # as the argument project is set correctly.
 #

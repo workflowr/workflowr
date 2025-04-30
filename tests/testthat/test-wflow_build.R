@@ -1,5 +1,3 @@
-context("wflow_build")
-
 # Setup ------------------------------------------------------------------------
 
 # start project in a tempdir

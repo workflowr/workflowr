@@ -1,5 +1,3 @@
-context("wflow_rename_proj")
-
 # Setup ------------------------------------------------------------------------
 
 source("setup.R")
@@ -19,7 +17,7 @@ s <- wflow_status()
 # Test wflow_rename_proj() -----------------------------------------------------
 
 test_that("wflow_rename_proj() returns a character vector", {
-  expect_is(path_new, "character")
+  expect_type(path_new, "character")
 })
 
 test_that("Current working directory is the newly renamed directory", {

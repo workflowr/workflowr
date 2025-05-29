@@ -1,14 +1,8 @@
 name: coverage
 on:
   push:
-    branches:
-      - main
-    tags-ignore:
-      - '**'
     paths:
       - '.github/workflows/coverage.yaml'
-      - 'R/**'
-      - 'tests/**'
   pull_request:
     branches:
       - main
@@ -16,6 +10,8 @@ on:
       - '.github/workflows/coverage.yaml'
       - 'R/**'
       - 'tests/**'
+  schedule: # monthly
+    - cron: "0 09 1 * *"
   workflow_dispatch:
 jobs:
   coverage:

@@ -1,0 +1,44 @@
+name: test
+on:
+  push:
+    branches-ignore:
+      - '**skip**'
+    tags-ignore:
+      - '**'
+    paths:
+      - '.github/workflows/test.yaml'
+      - 'R/**'
+      - 'scripts/ci/**'
+      - 'tests/**'
+  pull_request:
+    paths:
+      - '.github/workflows/test.yaml'
+      - 'R/**'
+      - 'scripts/ci/**'
+      - 'tests/**'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    name: test
+    env:
+      NOT_CRAN: TRUE
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup r2u
+        uses: eddelbuettel/github-actions/r2u-setup@master
+        with:
+          bspm-version-check: "FALSE"
+      - name: Install dependencies
+        run: sudo bash scripts/ci/install-dependencies.sh
+      - name: Session information
+        run: sessionInfo()
+        shell: Rscript {0}
+      - name: Build
+        run: R CMD build --no-build-vignettes --no-manual .
+      - name: Install
+        run: R CMD INSTALL --no-docs --no-multiarch --no-staged-install workflowr_*.tar.gz
+        shell: sudo bash {0}
+      - name: Run tests
+        run: testthat::test_local(load_package = "installed")
+        shell: Rscript {0}

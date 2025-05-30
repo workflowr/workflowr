@@ -49,7 +49,7 @@ coverage="\
 "
 
 # Install
-apt-get install --yes $imports $suggests $system $check $coverage
+apt-get install --yes $imports $suggests $system $check $coverage r-cran-codetools
 
 # List installed R packages
 apt list --installed 'r-*'

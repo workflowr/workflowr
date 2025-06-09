@@ -90,6 +90,7 @@ interactive R session). This option is currently used by
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://workflowr.github.io/workflowr/}
   \item \url{https://github.com/workflowr/workflowr}
   \item Report bugs at \url{https://github.com/workflowr/workflowr/issues}
 }

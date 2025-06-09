@@ -225,6 +225,6 @@ pages:
     paths:
       - public
   only:
-    - master
+    - main
 
 ')

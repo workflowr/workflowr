@@ -237,7 +237,7 @@ test_that("wflow_html can insert figures with or without Git repo present", {
   html_lines <- readLines(html)
   # Because it isn't a website, the image gets embedded as a base64 image
   expect_true(sum(stringr::str_detect(html_lines,
-                                      "<img src=\"data:image/png;base64,")) == 1)
+                                      "<img.+src=\"data:image/png;base64,")) == 1)
 
   fs::file_delete(html)
   # With Git repo
@@ -245,7 +245,7 @@ test_that("wflow_html can insert figures with or without Git repo present", {
   html <- rmarkdown::render(rmd, quiet = TRUE)
   html_lines <- readLines(html)
   expect_true(sum(stringr::str_detect(html_lines,
-                                      "<img src=\"data:image/png;base64,")) == 1)
+                                      "<img.+src=\"data:image/png;base64,")) == 1)
 })
 
 test_that("github URL in _workflowr.yml overrides git remote", {

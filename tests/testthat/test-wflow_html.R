@@ -489,6 +489,7 @@ test_that("wflow_html sends warning for outdated version of reticulate", {
 test_that("wflow_html sends warning if chunk caches without autodep", {
 
   skip_on_cran()
+  skip_if_not_installed("codetools")
 
   tmp_dir <- tempfile()
   fs::dir_create(tmp_dir)

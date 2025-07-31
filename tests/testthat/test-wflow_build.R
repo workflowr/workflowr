@@ -306,6 +306,7 @@ test_that("wflow_build deletes cache when delete_cache = TRUE", {
 
   skip_on_cran()
   skip_on_os("windows") # Avoid errors due to long filenames
+  skip_if_not_installed("codetools")
 
   # Build a file that has cached chunks
   file_w_cache <- file.path(s$analysis, "cache.Rmd")

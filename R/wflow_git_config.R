@@ -20,7 +20,7 @@
 #' \code{git config} in the Terminal.
 #'
 #' Under the hood, \code{wflow_git_config} is a wrapper for
-#' \code{\link[git2r]{config}} from the package \link{git2r}.
+#' \code{\link[git2r]{config}} from the package \link[git2r]{git2r}.
 #'
 #' To learn more about how to configure Git, see the Software Carpentry lesson
 #' \href{https://swcarpentry.github.io/git-novice/02-setup.html}{Setting Up Git}.

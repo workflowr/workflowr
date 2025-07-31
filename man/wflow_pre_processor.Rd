@@ -42,7 +42,7 @@ provided will create any necessary directories if they do not exist.}
 \description{
 This is the \code{pre_processor} function that \code{\link{wflow_html}}
 passes to the function \code{\link[rmarkdown]{output_format}} from the
-package \link{rmarkdown}. For advanced usage only.
+package \link[rmarkdown]{rmarkdown}. For advanced usage only.
 }
 \details{
 If you'd like to combine workflowr with another R Markdown output format, you

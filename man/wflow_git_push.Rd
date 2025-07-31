@@ -103,7 +103,7 @@ name of the current local branch is used (referred to as \code{HEAD} by Git).
 }
 
 Under the hood, \code{wflow_git_push} is a wrapper for \code{\link[git2r]{push}}
-from the package \link{git2r}.
+from the package \link[git2r]{git2r}.
 }
 \examples{
 \dontrun{

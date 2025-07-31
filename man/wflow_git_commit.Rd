@@ -50,7 +50,7 @@ An object of class \code{wflow_git_commit}, which is a list with the
 \item \bold{dry_run}: The input argument \code{dry_run}.
 
 \item \bold{commit}: The object returned by
-\link{git2r}::\code{\link[git2r]{commit}} (only included if \code{dry_run ==
+\link[git2r]{git2r}::\code{\link[git2r]{commit}} (only included if \code{dry_run ==
 FALSE}).
 
 \item \bold{commit_files}: The relative path(s) to the file(s) included in
@@ -83,7 +83,7 @@ include in one of your pages.
 }
 
 Under the hood, \code{wflow_git_commit} is a wrapper for \code{\link[git2r]{add}}
-and \code{\link[git2r]{commit}} from the package \link{git2r}.
+and \code{\link[git2r]{commit}} from the package \link[git2r]{git2r}.
 }
 \examples{
 \dontrun{

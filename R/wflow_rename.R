@@ -31,7 +31,7 @@
 #'   \item \bold{dry_run}: The input argument \code{dry_run}.
 #'
 #'   \item \bold{commit}:The object returned by
-#'   \link{git2r}::\code{\link[git2r]{commit}} (only included if \code{dry_run
+#'   \link[git2r]{git2r}::\code{\link[git2r]{commit}} (only included if \code{dry_run
 #'   == FALSE}).
 #'
 #'   \item \bold{files_git}: The relative path(s) to the file(s) renamed from

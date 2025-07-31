@@ -63,7 +63,7 @@ Imports:
     utils,
     whisker (>= 0.3-2),
     yaml
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests:
     clipr (>= 0.7.0),
     miniUI (>= 0.1.1),

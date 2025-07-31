@@ -213,7 +213,7 @@
 #'    \item{user.email}{The input argument \code{user.email}.}
 #'
 #'    \item{commit}{The object returned by
-#'    \link{git2r}::\code{\link[git2r]{commit}}, or \code{NULL} if \code{git =
+#'    \link[git2r]{git2r}::\code{\link[git2r]{commit}}, or \code{NULL} if \code{git =
 #'    FALSE}.}
 #'
 #' @seealso vignette("wflow-01-getting-started")

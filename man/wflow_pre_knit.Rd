@@ -14,7 +14,7 @@ wflow_pre_knit(input, ...)
 \description{
 This is the \code{pre_knit} function that \code{\link{wflow_html}} passes to
 the function \code{\link[rmarkdown]{output_format}} from the package
-\link{rmarkdown}. For advanced usage only.
+\link[rmarkdown]{rmarkdown}. For advanced usage only.
 }
 \details{
 If you'd like to insert the workflowr reproducibility report into other R

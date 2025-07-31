@@ -57,7 +57,7 @@
 #' deleted and not yet committed to Git, then it will be \code{TRUE}.
 #'
 #' \item \bold{git_status} The Git status as a \code{git_status}
-#' object from the package \link{git2r} (see \code{git2r::\link[git2r]{status}}).
+#' object from the package \link[git2r]{git2r} (see \code{git2r::\link[git2r]{status}}).
 #'
 #' \item \bold{include_git_status} The argument \code{include_git_status}
 #' indicating whether the Git status should be printed along with the status of

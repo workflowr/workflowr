@@ -25,7 +25,7 @@
 #' }
 #'
 #' Under the hood, \code{wflow_git_push} is a wrapper for \code{\link[git2r]{push}}
-#' from the package \link{git2r}.
+#' from the package \link[git2r]{git2r}.
 #'
 #' @param remote character (default: NULL). The name of the remote repository.
 #'   See Details for the default behavior.

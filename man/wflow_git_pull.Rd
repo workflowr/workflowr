@@ -54,7 +54,7 @@ An object of class \code{wflow_git_pull}, which is a list with the
 or GitLab).
 
 \item \bold{merge_result}: The \code{git_merge_result} object returned by
-\link{git2r} (only included if \code{dry_run == FALSE}).
+\link[git2r]{git2r} (only included if \code{dry_run == FALSE}).
 
 \item \bold{fail}: The input argument \code{fail}.
 
@@ -94,7 +94,7 @@ name of the current local branch is used (referred to as \code{HEAD} by Git).
 }
 
 Under the hood, \code{wflow_git_pull} is a wrapper for
-\code{\link[git2r]{pull}} from the package \link{git2r}.
+\code{\link[git2r]{pull}} from the package \link[git2r]{git2r}.
 }
 \examples{
 \dontrun{

@@ -316,7 +316,7 @@ get_cache_hook <- function() {
 #'
 #' This is the \code{pre_knit} function that \code{\link{wflow_html}} passes to
 #' the function \code{\link[rmarkdown]{output_format}} from the package
-#' \link{rmarkdown}. For advanced usage only.
+#' \link[rmarkdown]{rmarkdown}. For advanced usage only.
 #'
 #' If you'd like to insert the workflowr reproducibility report into other R
 #' Markdown output formats such as \code{blogdown::html_page}, you can use
@@ -451,7 +451,7 @@ add_bibliography <- function(sessioninfo, lines) {
 #'
 #' This is the \code{post_knit} function that \code{\link{wflow_html}} passes to
 #' the function \code{\link[rmarkdown]{output_format}} from the package
-#' \link{rmarkdown}. For advanced usage only.
+#' \link[rmarkdown]{rmarkdown}. For advanced usage only.
 #'
 #' If you'd like to combine workflowr with another R Markdown output format, you
 #' may need to use \code{wflow_post_knit}. This function fixes the path to the R
@@ -492,7 +492,7 @@ wflow_post_knit <- function(metadata, input_file, runtime, encoding, ...) {
 #'
 #' This is the \code{pre_processor} function that \code{\link{wflow_html}}
 #' passes to the function \code{\link[rmarkdown]{output_format}} from the
-#' package \link{rmarkdown}. For advanced usage only.
+#' package \link[rmarkdown]{rmarkdown}. For advanced usage only.
 #'
 #' If you'd like to combine workflowr with another R Markdown output format, you
 #' may need to use \code{wflow_pre_processor}. This function only has minor

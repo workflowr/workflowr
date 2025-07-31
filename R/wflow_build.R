@@ -35,7 +35,7 @@
 #' }
 #'
 #' Under the hood, \code{wflow_build} is a wrapper for
-#' \code{\link[rmarkdown]{render_site}} from the package \link{rmarkdown}. By
+#' \code{\link[rmarkdown]{render_site}} from the package \link[rmarkdown]{rmarkdown}. By
 #' default (\code{local = FALSE}), the code is executed in an isolated R
 #' session. This is done using \code{\link[callr:r]{callr::r_safe}}.
 #'

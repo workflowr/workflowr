@@ -54,9 +54,6 @@ least to most amount of technical setup required:
 collaborators. All they need is a GitLab.com account (and they can use a social
 account, e.g. Twitter, to login to GitLab.com) - [Deploy your site with GitLab
 Pages][vig-gitlab]
-* You can use [Beaker Browser][beaker] to securely self-host your site and share
-the link with collaborators - [Deploy your site with Beaker
-Browser][deploy-beaker]
 * You can deploy a password-protected site using [Amazon Web Services][aws]
 (requires familiarity with cloud technologies) - [Deploy your site with
 AWS][deploy-aws]
@@ -582,10 +579,8 @@ Workflowr should be capitalized at the beginning of a sentence, but otherwise
 the lowercase workflowr should be the preferred option.
 
 [aws]: https://aws.amazon.com/s3/
-[beaker]: https://beakerbrowser.com/
 [Bootstrap]: https://getbootstrap.com/
 [deploy-aws]: wflow-08-deploy.html#amazon-s3-password-protected
-[deploy-beaker]: wflow-08-deploy.html#beaker-browser-secure-sharing
 [gh-pages]: https://pages.github.com/
 [gh-status]: https://www.githubstatus.com/
 [gh-troubleshooting]: https://docs.github.com/articles/troubleshooting-github-pages-builds

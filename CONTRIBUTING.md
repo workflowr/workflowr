@@ -88,14 +88,8 @@ package locally, and preview the online documentation with [pkgdown][] (No need
 to commit `docs/` because the pkgdown site is rebuilt and deployed automatically
 by GitHub Pages after each push)
 * Run [scripts/build.sh](scripts/build.sh) to confirm tests pass locally
-* Test on [rhub][]:
-    * Have to validate email first with `rhub::validate_email()`. Copy-paste
-    token from email into R console
-    * Check on Ubuntu with `rhub::check_for_cran(platform = "ubuntu-gcc-devel")`
-    * Check on Solaris with `rhub::check_for_cran(platform = "solaris-x86-patched")`
 * Test on [winbuilder][]:
     * Check with R devel with `devtools::check_win_devel()`
-* Update [cran-comments.md](cran-comments.md)
 * Commit with `git commit -am "Bump version: x.x.x.x -> x.x.x"`
 * Push with `git push origin main` and wait for CI builds to pass
 * Build tarball with `R CMD build .` and upload to [CRAN submission
@@ -134,7 +128,6 @@ the release "workflowr x.x.x" and copy-paste the Markdown entry from
 [r-exts]: https://cran.r-project.org/doc/manuals/R-exts.html
 [r-exts-licensing]: https://cran.r-project.org/doc/manuals/R-exts.html#Licensing
 [r-pkg]: https://r-pkgs.org/
-[rhub]: https://r-hub.github.io/rhub/
 [roxygen2]: https://github.com/klutometis/roxygen
 [style]: http://adv-r.had.co.nz/Style.html
 [testthat]: https://github.com/hadley/testthat

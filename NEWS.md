@@ -106,7 +106,7 @@ package rearrange how they group functions into documentation topics, this will
 break the cross-references and require an update. See this
 [thread][rs-community-rd-warning] for more details
 
-[rs-community-rd-warning]: https://community.rstudio.com/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774
+[rs-community-rd-warning]: https://forum.posit.co/t/file-link-quasiquotation-in-package-rlang-does-not-exist-and-so-has-been-treated-as-a-topic/55774
 
 * Bug fix: `wflow_use_github()` and `wflow_use_gitlab()` now use Font Awesome 5
 syntax to insert icons into the navigation bar when a recent version of

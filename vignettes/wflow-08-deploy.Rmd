@@ -48,7 +48,7 @@ Contributed by E. David Aja ([edavidaja][]).
 [dumrauf]: https://github.com/dumrauf/serverless_static_website_with_basic_auth
 [hackernoon]: https://hackernoon.com/serverless-password-protecting-a-static-website-in-an-aws-s3-bucket-bfaaa01b8666
 [kynatro]: https://kynatro.com/blog/2018/01/03/a-step-by-step-guide-to-creating-a-password-protected-s3-bucket/
-[lambda]: https://docs.aws.amazon.com/lambda/latest/dg/lambda-edge.html
+[lambda]: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/lambda-at-the-edge.html
 [s3]: https://aws.amazon.com/s3/
 
 ## GitLab Pages

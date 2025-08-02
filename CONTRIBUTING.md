@@ -82,7 +82,7 @@ packages that workflowr needs are properly installed)
 * Update [NEWS.md](NEWS.md): Check `git log` and make sure to reference GitHub
 Issues/PRs
 * Check spelling with `spelling::spell_check_package()` and update
-`inst/CITATION` as needed
+`inst/WORDLIST` as needed
 * Run [scripts/document.R](scripts/document.R) to update Rd files, install the
 package locally, and preview the online documentation with [pkgdown][] (No need
 to commit `docs/` because the pkgdown site is rebuilt and deployed automatically

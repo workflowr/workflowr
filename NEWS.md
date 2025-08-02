@@ -1,4 +1,11 @@
-# workflowr 1.7.1.1
+# workflowr 1.7.2
+
+This patch release includes improvements to the documentation and tests.
+
+## User-facing changes
+
+* Update GitLab Pages to build from "main" branch by default (implemented by
+@eweine in #294)
 
 # workflowr 1.7.1
 

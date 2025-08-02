@@ -56,4 +56,4 @@ function `wflow_use_gitlab()`. You can choose if the site is public or private.
 For more details, please see the dedicated vignette [Hosting workflowr websites
 using GitLab](wflow-06-gitlab.html).
 
-[gitlab]: https://docs.gitlab.com/ee/ci/yaml/README.html#pages
+[gitlab]: https://docs.gitlab.com/user/project/pages/

@@ -22,7 +22,7 @@ public and private sites. For more details, see the documentation for [GitLab
 Pages][gitlab-pages]. Similar steps will be required for other platforms but
 some of the specifics will be different.
 
-[gitlab-pages]: https://docs.gitlab.com/ee/ci/yaml/README.html#pages
+[gitlab-pages]: https://docs.gitlab.com/user/project/pages/
 
 ## Step 0: Set up a project
 

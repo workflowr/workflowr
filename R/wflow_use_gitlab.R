@@ -2,7 +2,7 @@
 #'
 #' \code{wflow_use_gitlab} automates all the local configuration necessary to
 #' deploy your workflowr project with
-#' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
+#' \href{https://docs.gitlab.com/user/project/pages/}{GitLab Pages}.
 #' Afterwards, you will need to run \code{wflow_git_push} in the R console (or
 #' \code{git push} in the terminal) to push the code to GitLab. Note that this
 #' will also create the repository if it doesn't exist yet (this requires GitLab
@@ -34,7 +34,7 @@
 #' public in Settings->General->Visibility.
 #'
 #' For more details, read the documentation provided by
-#' \href{https://docs.gitlab.com/ee/ci/yaml/README.html#pages}{GitLab Pages}.
+#' \href{https://docs.gitlab.com/user/project/pages/}{GitLab Pages}.
 #'
 #' @param username character (default: NULL). The GitLab account associated with
 #'   the GitLab repository. This is likely your personal GitLab username, but it

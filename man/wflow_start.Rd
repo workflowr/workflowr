@@ -14,7 +14,8 @@ wflow_start(
   disable_remote = FALSE,
   dry_run = FALSE,
   user.name = NULL,
-  user.email = NULL
+  user.email = NULL,
+  renv = FALSE
 )
 }
 \arguments{
@@ -87,6 +88,11 @@ email address, use \code{\link{wflow_git_config}} instead. When
 \code{user.name = NULL}, no email address is recorded for the
 project, and the global setting will be used. This setting can be
 modified later by running \code{git config --local} in the Terminal.}
+
+\item{renv}{logical (default: \code{FALSE}). Initialize an
+\href{https://rstudio.github.io/renv/}{renv} project after creating the
+workflowr files. This adds the renv project infrastructure and lockfile to
+the initial Git commit. The renv package must already be installed.}
 }
 \value{
 An object of class \code{wflow_start}, which is a list with the
@@ -111,6 +117,8 @@ An object of class \code{wflow_start}, which is a list with the
    \item{user.name}{The input argument \code{user.name}.}
 
    \item{user.email}{The input argument \code{user.email}.}
+
+   \item{renv}{The input argument \code{renv}.}
 
    \item{commit}{The object returned by
    \link[git2r]{git2r}::\code{\link[git2r]{commit}}, or \code{NULL} if \code{git =
@@ -255,6 +263,9 @@ wflow_start("path/to/current-project", existing = TRUE)
 # Add workflowr files to an existing project, but do not automatically
 # commit them.
 wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
+
+# Start a workflowr project with an isolated R package library.
+wflow_start("path/to/new-project", renv = TRUE)
 }
 
 }

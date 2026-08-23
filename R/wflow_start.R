@@ -189,6 +189,11 @@
 #'   project, and the global setting will be used. This setting can be
 #'   modified later by running \code{git config --local} in the Terminal.
 #'
+#' @param renv logical (default: \code{FALSE}). Initialize an
+#'   \href{https://rstudio.github.io/renv/}{renv} project after creating the
+#'   workflowr files. This adds the renv project infrastructure and lockfile to
+#'   the initial Git commit. The renv package must already be installed.
+#'
 #' @return An object of class \code{wflow_start}, which is a list with the
 #'   following elements:
 #'
@@ -211,6 +216,8 @@
 #'    \item{user.name}{The input argument \code{user.name}.}
 #'
 #'    \item{user.email}{The input argument \code{user.email}.}
+#'
+#'    \item{renv}{The input argument \code{renv}.}
 #'
 #'    \item{commit}{The object returned by
 #'    \link[git2r]{git2r}::\code{\link[git2r]{commit}}, or \code{NULL} if \code{git =
@@ -235,6 +242,9 @@
 #' # Add workflowr files to an existing project, but do not automatically
 #' # commit them.
 #' wflow_start("path/to/current-project", git = FALSE, existing = TRUE)
+#'
+#' # Start a workflowr project with an isolated R package library.
+#' wflow_start("path/to/new-project", renv = TRUE)
 #' }
 #'
 #' @export
@@ -247,7 +257,8 @@ wflow_start <- function(directory,
                         disable_remote = FALSE,
                         dry_run = FALSE,
                         user.name = NULL,
-                        user.email = NULL) {
+                        user.email = NULL,
+                        renv = FALSE) {
 
   # Check input arguments ------------------------------------------------------
 
@@ -264,6 +275,7 @@ wflow_start <- function(directory,
   assert_is_flag(change_wd)
   assert_is_flag(disable_remote)
   assert_is_flag(dry_run)
+  assert_is_flag(renv)
   if (!(is.null(user.name) | (is.character(user.name) | length(user.name) != 1)))
     stop("user.name must be NULL or a one element character vector: ", user.name)
   if (!(is.null(user.email) | (is.character(user.email) | length(user.email) != 1)))
@@ -271,6 +283,14 @@ wflow_start <- function(directory,
   if ((is.null(user.name) && !is.null(user.email)) ||
       (!is.null(user.name) && is.null(user.email)))
     stop("Must specify both user.name and user.email, or neither.")
+
+  if (renv && !requireNamespace("renv", quietly = TRUE)) {
+    stop(
+      "renv is required when renv = TRUE. Install it with ",
+      "install.packages(\"renv\").",
+      call. = FALSE
+    )
+  }
 
   check_wd_exists()
 
@@ -358,6 +378,22 @@ body(wflow_start_) <- quote({
     fs::file_create(nojekyll)
   }
 
+  # Initialize renv before the initial Git commit so that the lockfile and
+  # activation files describe the project from its first version.
+  if (renv && !dry_run) {
+    renv_files <- tryCatch(
+      initialize_renv(directory),
+      error = function(e) {
+        stop(
+          "Failed to initialize renv in ", directory, ": ",
+          conditionMessage(e),
+          call. = FALSE
+        )
+      }
+    )
+    project_files <- union(project_files, renv_files)
+  }
+
   # Configure, initialize, and commit ------------------------------------------
 
   # Configure RStudio
@@ -411,6 +447,7 @@ body(wflow_start_) <- quote({
             dry_run = dry_run,
             user.name = user.name,
             user.email = user.email,
+            renv = renv,
             commit = if (exists("commit", inherits = FALSE)) commit else NULL)
   class(o) <- "wflow_start"
 
@@ -444,6 +481,9 @@ print.wflow_start <- function(x, ...) {
       cat("- Files will be committed with Git\n")
     } else {
       cat("- Files will not be committed with Git\n")
+    }
+    if (x$renv) {
+      cat("- renv will be initialized\n")
     }
     if (x$disable_remote) {
       cat("- Pushing to remote repository will be disabled\n")
@@ -481,12 +521,38 @@ print.wflow_start <- function(x, ...) {
     } else {
       cat("- No Git repo\n")
     }
+    if (x$renv) {
+      cat("- renv initialized\n")
+    }
     if (x$disable_remote) {
       cat("- Pushing to remote repository is disabled\n")
     }
   }
 
   return(invisible(x))
+}
+
+initialize_renv <- function(directory) {
+  renv::init(
+    project = directory,
+    restart = FALSE,
+    load = FALSE
+  )
+
+  renv_files <- file.path(
+    directory,
+    c(
+      ".Rprofile",
+      "renv.lock",
+      "renv/activate.R",
+      "renv/settings.json",
+      "renv/.gitignore"
+    )
+  )
+
+  # Generated files can vary by renv version and project settings. Only add
+  # files that were actually created rather than assuming a fixed scaffold.
+  return(renv_files[fs::file_exists(renv_files)])
 }
 
 check_rstudio_version <- function() {

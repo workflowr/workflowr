@@ -104,6 +104,66 @@ test_that("wflow_start git = FALSE does not initialize a Git repository", {
   unlink(site_dir, recursive = TRUE, force = TRUE)
 })
 
+test_that("wflow_start initializes and commits a renv project", {
+
+  skip_on_cran()
+  skip_if_not_installed("renv")
+
+  site_dir <- tempfile("test-start-renv-")
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+
+  suppressMessages(
+    utils::capture.output(
+      started <- wflow_start(
+        site_dir,
+        change_wd = FALSE,
+        user.name = "Test Name",
+        user.email = "test@email",
+        renv = TRUE
+      )
+    )
+  )
+  site_dir <- workflowr:::absolute(site_dir)
+
+  renv_files <- c(
+    ".Rprofile",
+    "renv.lock",
+    "renv/activate.R",
+    "renv/settings.json",
+    "renv/.gitignore"
+  )
+  expect_true(started$renv)
+  expect_true(all(fs::file_exists(file.path(site_dir, renv_files))))
+
+  rprofile <- readLines(file.path(site_dir, ".Rprofile"))
+  expect_true(any(rprofile == 'source("renv/activate.R")'))
+  expect_true(any(stringr::str_detect(rprofile, 'library\\("workflowr"\\)')))
+
+  committed <- workflowr:::get_committed_files(git2r::repository(site_dir))
+  expect_true(all(file.path(site_dir, renv_files) %in% committed))
+})
+
+test_that("wflow_start previews renv initialization without creating files", {
+
+  skip_if_not_installed("renv")
+
+  site_dir <- tempfile("test-start-renv-dry-run-")
+  on.exit(unlink(site_dir, recursive = TRUE, force = TRUE))
+
+  started <- wflow_start(
+    site_dir,
+    git = FALSE,
+    change_wd = FALSE,
+    dry_run = TRUE,
+    renv = TRUE
+  )
+  output <- utils::capture.output(started)
+
+  expect_true(started$renv)
+  expect_false(fs::dir_exists(site_dir))
+  expect_true(any(output == "- renv will be initialized"))
+})
+
 test_that("wflow_start commits all the project files", {
 
   # start project in a tempdir

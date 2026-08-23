@@ -63,10 +63,11 @@ Imports:
     utils,
     whisker (>= 0.3-2),
     yaml
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Suggests:
     clipr (>= 0.7.0),
     miniUI (>= 0.1.1),
+    renv (>= 1.0.0),
     reticulate (>= 1.15),
     sessioninfo,
     shiny (>= 0.14),

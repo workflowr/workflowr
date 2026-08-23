@@ -463,6 +463,79 @@ test_that("check_sessioninfo reports sessioninfo when in file and an option", {
 unlink(rmd)
 rm(rmd, lines)
 
+# Test check_renv -------------------------------------------------------------
+
+test_that("check_renv ignores projects without a lockfile", {
+  project <- withr::local_tempdir()
+  expect_null(workflowr:::check_renv(project))
+})
+
+test_that("check_renv reports a synchronized project", {
+  skip_if_not_installed("renv")
+
+  project <- withr::local_tempdir()
+  fs::file_create(file.path(project, "renv.lock"))
+  testthat::local_mocked_bindings(
+    capture_renv_status = function(project) {
+      list(
+        status = list(synchronized = TRUE),
+        output = "No issues found -- the project is in a consistent state."
+      )
+    },
+    .package = "workflowr"
+  )
+
+  observed <- workflowr:::check_renv(project)
+  expect_true(observed$pass)
+  expect_identical(observed$summary, "<strong>renv:</strong> synchronized")
+  expect_identical(
+    observed$details,
+    "No issues found &#45;&#45; the project is in a consistent state."
+  )
+  expect_false(stringr::str_detect(observed$details, "<pre><code>"))
+})
+
+test_that("check_renv reports a project that is out of sync", {
+  skip_if_not_installed("renv")
+
+  project <- withr::local_tempdir()
+  fs::file_create(file.path(project, "renv.lock"))
+  testthat::local_mocked_bindings(
+    capture_renv_status = function(project) {
+      list(
+        status = list(synchronized = FALSE),
+        output = "The lockfile is out of sync."
+      )
+    },
+    .package = "workflowr"
+  )
+
+  observed <- workflowr:::check_renv(project)
+  expect_false(observed$pass)
+  expect_identical(observed$summary, "<strong>renv:</strong> out of sync")
+  expect_true(stringr::str_detect(observed$details, "are out of sync"))
+  expect_true(stringr::str_detect(observed$details, "renv::snapshot"))
+  expect_true(stringr::str_detect(observed$details, "renv::restore"))
+  expect_true(stringr::str_detect(observed$details, "<pre><code>"))
+  expect_true(stringr::str_detect(observed$details, "</p>\\n\\n<pre><code>"))
+})
+
+test_that("check_renv handles status errors", {
+  skip_if_not_installed("renv")
+
+  project <- withr::local_tempdir()
+  fs::file_create(file.path(project, "renv.lock"))
+  testthat::local_mocked_bindings(
+    capture_renv_status = function(project) stop("invalid lockfile"),
+    .package = "workflowr"
+  )
+
+  observed <- workflowr:::check_renv(project)
+  expect_false(observed$pass)
+  expect_identical(observed$summary, "<strong>renv:</strong> status unavailable")
+  expect_true(stringr::str_detect(observed$details, "invalid lockfile"))
+})
+
 # Test check_seed --------------------------------------------------------------
 
 test_that("check_seed reports valid seed", {
@@ -676,6 +749,43 @@ test_that("create_report reports knit directory", {
   report <- create_report(input, output_dir, has_code, opts)
   expected <- '<div id="workflowr-report" class="collapse">'
   expect_false(stringr::str_detect(report, expected))
+})
+
+test_that("create_report includes renv status only for renv projects", {
+  skip_if_not_installed("renv")
+
+  path <- test_setup()
+  on.exit(test_teardown(path))
+
+  input <- file.path(path, "analysis/index.Rmd")
+  output_dir <- file.path(path, "docs")
+  opts <- list(
+    seed = 1,
+    github = NA,
+    sessioninfo = "sessionInfo()",
+    fig_path_ext = FALSE,
+    suppress_report = FALSE,
+    knit_root_dir = path
+  )
+
+  report_without_renv <- create_report(input, output_dir, TRUE, opts)
+  expect_false(stringr::str_detect(report_without_renv, "<strong>renv:"))
+
+  fs::file_create(file.path(path, "renv.lock"))
+  testthat::local_mocked_bindings(
+    capture_renv_status = function(project) {
+      list(status = list(synchronized = TRUE), output = character())
+    },
+    .package = "workflowr"
+  )
+
+  report_with_renv <- create_report(input, output_dir, TRUE, opts)
+  expect_true(
+    stringr::str_detect(
+      report_with_renv,
+      "<strong>renv:</strong> synchronized"
+    )
+  )
 })
 
 # Test detect_code -------------------------------------------------------------

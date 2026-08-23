@@ -16,6 +16,10 @@ create_report <- function(input, output_dir, has_code, opts) {
     s <- NULL
   }
 
+  # Locate the workflowr project once so project-level checks and path
+  # reporting use the same root directory.
+  p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
+
   # workflowr checks ------------------------------------------------------
   checks <- list()
 
@@ -33,6 +37,14 @@ create_report <- function(input, output_dir, has_code, opts) {
 
     # Check sessioninfo
     checks$result_sessioninfo <- check_sessioninfo(input, opts$sessioninfo)
+
+    # Check renv only when the project has opted in by creating a lockfile.
+    if (!inherits(p, "try-error")) {
+      result_renv <- check_renv(p$root)
+      if (!is.null(result_renv)) {
+        checks$result_renv <- result_renv
+      }
+    }
 
     # Check caching
     checks$cache <- check_cache(input)
@@ -58,7 +70,6 @@ create_report <- function(input, output_dir, has_code, opts) {
   knit_root_print <- opts$knit_root_dir
   # If it is part of a workflowr project, construct a path relative to the
   # directory that contains the workflowr project directory.
-  p <- try(wflow_paths(error_git = FALSE, project = input_dir), silent = TRUE)
   if (!inherits(p, "try-error")) {
     if (fs::path_has_parent(knit_root_print, absolute(p$root))) {
       knit_root_print <- fs::path_rel(knit_root_print,
@@ -453,6 +464,78 @@ automatic insertion by changing the workflowr setting to <code>sessioninfo:
   }
 
   return(list(pass = pass, summary = summary, details = details))
+}
+
+check_renv <- function(project) {
+  lockfile <- file.path(project, "renv.lock")
+  if (!fs::file_exists(lockfile)) {
+    return(NULL)
+  }
+
+  if (!requireNamespace("renv", quietly = TRUE)) {
+    return(list(
+      pass = FALSE,
+      summary = "<strong>renv:</strong> status unavailable",
+      details = paste(
+        "This project contains <code>renv.lock</code>, but the renv package",
+        "is unavailable. Restart R from the project directory so renv can",
+        "bootstrap itself, or install renv with",
+        "<code>install.packages(\"renv\")</code>."
+      )
+    ))
+  }
+
+  status_result <- tryCatch(
+    capture_renv_status(project),
+    error = function(e) e
+  )
+
+  if (inherits(status_result, "error")) {
+    return(list(
+      pass = FALSE,
+      summary = "<strong>renv:</strong> status unavailable",
+      details = paste(
+        "workflowr could not determine the renv project status:",
+        conditionMessage(status_result),
+        "Run <code>renv::status()</code> from the project directory for",
+        "additional details."
+      )
+    ))
+  }
+
+  pass <- isTRUE(status_result$status$synchronized)
+  status_output <- paste(status_result$output, collapse = "\n")
+
+  if (pass) {
+    summary <- "<strong>renv:</strong> synchronized"
+    # Preserve renv's literal double hyphen when Pandoc applies smart
+    # punctuation to the report text.
+    details <- gsub("--", "&#45;&#45;", status_output, fixed = TRUE)
+  } else {
+    if (nzchar(status_output)) {
+      status_output <- paste0("<pre><code>", status_output, "</code></pre>")
+    }
+    summary <- "<strong>renv:</strong> out of sync"
+    guidance <- paste(
+      "The project library, lockfile, or declared dependencies are out of",
+      "sync. Run <code>renv::status()</code> and then choose whether",
+      "to update the lockfile with <code>renv::snapshot()</code> or restore",
+      "the recorded environment with <code>renv::restore()</code>."
+    )
+    details <- paste0("<p>", guidance, "</p>\n\n", status_output)
+  }
+
+  return(list(pass = pass, summary = summary, details = details))
+}
+
+capture_renv_status <- function(project) {
+  output <- utils::capture.output(
+    status <- suppressMessages(
+      renv::status(project = project, sources = FALSE)
+    )
+  )
+
+  return(list(status = status, output = output))
 }
 
 check_seed <- function(seed) {

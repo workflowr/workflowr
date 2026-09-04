@@ -325,6 +325,52 @@ packages
 1. Delete `.Rprofile` with `wflow_remove(".Rprofile")` and manually load
 workflowr with `library(workflowr)` every time you start a new R session
 
+## How can I use renv with a workflowr project?
+
+[renv](https://rstudio.github.io/renv/) creates a project-specific R package
+library and records its package versions in `renv.lock`. To initialize renv and
+workflowr together in a new project, set `renv = TRUE`:
+
+```{r workflowr-renv-start, eval=FALSE}
+wflow_start("path/to/new-project", renv = TRUE)
+```
+
+You can also initialize renv explicitly in an existing workflowr project:
+
+```{r workflowr-renv-existing, eval=FALSE}
+renv::init()
+wflow_git_commit(
+  c(
+    ".Rprofile",
+    "renv.lock",
+    "renv/activate.R",
+    "renv/settings.json",
+    "renv/.gitignore"
+  ),
+  "Initialize renv."
+)
+```
+
+The generated `.Rprofile` activates the renv project library and continues to
+load workflowr. Commit `renv.lock`, `.Rprofile`, `renv/activate.R`,
+`renv/settings.json`, and `renv/.gitignore` so collaborators can restore the
+same environment with `renv::restore()`.
+
+workflowr reports whether an existing renv project is synchronized or out of
+sync each time it builds an analysis. It does not update `renv.lock`
+automatically. After you have deliberately installed or updated packages and
+confirmed that the analysis still works, update and commit the lockfile
+explicitly:
+
+```{r workflowr-renv-snapshot, eval=FALSE}
+renv::status()
+renv::snapshot()
+wflow_git_commit("renv.lock", "Update renv lockfile.")
+```
+
+Run `wflow_build()` and `wflow_publish()` from the workflowr project directory
+so their isolated R sessions load the project `.Rprofile` and renv library.
+
 
 ## Can I create a single HTML or PDF file of one of my workflowr R Markdown files?
 

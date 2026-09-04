@@ -68,6 +68,22 @@ test_that("wflow_start_rstudio git = FALSE does not initialize a Git repository"
   expect_null(o$commit)
 })
 
+test_that("wflow_start_rstudio passes the renv option to wflow_start", {
+
+  testthat::local_mocked_bindings(
+    wflow_start = function(...) list(...),
+    .package = "workflowr"
+  )
+
+  observed <- wflow_start_rstudio(
+    directory = tempfile(),
+    git = FALSE,
+    renv = TRUE
+  )
+
+  expect_true(observed$renv)
+})
+
 test_that("wflow_start_rstudio does not overwrite files by default", {
 
   # start project in a tempdir

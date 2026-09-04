@@ -26,6 +26,7 @@ imports="\
 suggests="\
   r-cran-clipr \
   r-cran-miniui \
+  r-cran-renv \
   r-cran-reticulate \
   r-cran-sessioninfo \
   r-cran-shiny \

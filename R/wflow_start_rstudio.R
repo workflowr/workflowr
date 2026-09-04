@@ -3,6 +3,7 @@
 wflow_start_rstudio <- function(directory,
                                 name = "",
                                 git = TRUE,
+                                renv = FALSE,
                                 existing = FALSE,
                                 overwrite = FALSE,
                                 user.name = "",
@@ -18,6 +19,8 @@ wflow_start_rstudio <- function(directory,
   }
 
   git_rs <- git
+
+  renv_rs <- renv
 
   existing_rs <- existing
 
@@ -42,6 +45,7 @@ wflow_start_rstudio <- function(directory,
   wflow_start(directory = directory_rs,
               name = name_rs,
               git = git_rs,
+              renv = renv_rs,
               existing = existing_rs,
               overwrite = overwrite_rs,
               user.name = user.name_rs,

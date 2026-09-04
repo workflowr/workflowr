@@ -26,6 +26,12 @@ Label: Use Git for version control
 Default: On
 Position: left
 
+Parameter: renv
+Widget: CheckboxInput
+Label: Use renv for package management
+Default: Off
+Position: left
+
 Parameter: existing
 Widget: CheckboxInput
 Label: Directory already exists
